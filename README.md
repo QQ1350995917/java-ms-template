@@ -1,1 +1,1 @@
-# java-ms-template
+# ms-web-initializr
