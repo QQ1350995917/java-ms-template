@@ -16,12 +16,12 @@
   <url>http://maven.apache.org</url>
 
   <modules>
-    <module>registry</module>
-    <module>account</module>
-    <module>configure</module>
-    <module>access</module>
-    <module>logger</module>
-    <module>monitor</module>
+    <module>ms-web-registry</module>
+    <module>ms-web-account</module>
+    <module>ms-web-configure</module>
+    <module>ms-web-access</module>
+    <module>ms-web-logger</module>
+    <module>ms-web-monitor</module>
   </modules>
 
   <properties>
