@@ -19,6 +19,9 @@
     <module>registry</module>
     <module>account</module>
     <module>configure</module>
+    <module>access</module>
+    <module>logger</module>
+    <module>monitor</module>
   </modules>
 
   <properties>
