@@ -9,19 +9,17 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>ms-web-account</artifactId>
+  <artifactId>lib-common-web</artifactId>
   <packaging>jar</packaging>
 
   <dependencies>
     <dependency>
-      <groupId>org.springframework.cloud</groupId>
-      <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-    </dependency>
-    <dependency>
       <groupId>pwd.initializr</groupId>
-      <artifactId>lib-common-web</artifactId>
+      <artifactId>lib-common</artifactId>
       <version>0.0.1-SNAPSHOT</version>
+      <type>jar</type>
     </dependency>
   </dependencies>
+
 
 </project>
