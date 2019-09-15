@@ -2,6 +2,8 @@ package pwd.initializr.account.api.user;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,11 +34,12 @@ import pwd.initializr.common.web.api.user.UserController;
 @RequestMapping(value = "/api/signup")
 public class SignUpController extends UserController implements SignUpApi {
 
+    private Logger logger = LoggerFactory.getLogger(getClass());
+
     @ApiOperation(value = "注册方式清单")
     @GetMapping(value = {"/"}, produces = "application/json;charset=UTF-8")
     @Override
     public void listSignUpWays(ListSignUpByWaysInput input) {
-
         super.outputData();
     }
 
