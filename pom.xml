@@ -17,14 +17,15 @@
   <url>http://maven.apache.org</url>
 
   <modules>
+    <module>lib-common</module>
+    <module>lib-common-web</module>
     <module>ms-web-registry</module>
     <module>ms-web-account</module>
     <module>ms-web-configure</module>
     <module>ms-web-access</module>
     <module>ms-web-logger</module>
     <module>ms-web-monitor</module>
-    <module>lib-common</module>
-    <module>lib-common-web</module>
+    <module>ms-web-gateway</module>
   </modules>
 
   <properties>
