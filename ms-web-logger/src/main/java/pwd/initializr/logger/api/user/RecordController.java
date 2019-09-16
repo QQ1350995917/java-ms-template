@@ -24,11 +24,11 @@ import pwd.initializr.common.web.api.user.UserController;
     description = "日志记录API"
 )
 @RestController(value = "loggerRecordApi")
-@RequestMapping(value = "/logger/api/user/logger")
+@RequestMapping(value = "/api/user/logger")
 public class RecordController extends UserController implements RecordApi {
 
     @ApiOperation(value = "日志记录")
-    @PostMapping(value = {"/"}, produces = "application/json;charset=UTF-8")
+    @PostMapping(value = {""}, produces = "application/json;charset=UTF-8")
     @Override
     public void record() {
         super.outputData();

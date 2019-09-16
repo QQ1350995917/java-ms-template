@@ -24,8 +24,15 @@ import pwd.initializr.common.web.api.admin.AdminController;
     description = "日志查询API"
 )
 @RestController(value = "loggerQueryApi")
-@RequestMapping(value = "/logger/api/admin/logger")
+@RequestMapping(value = "/api/admin/logger")
 public class QueryController extends AdminController implements QueryApi {
+
+
+    @ApiOperation(value = "接口首页")
+    @GetMapping(value = {""}, produces = "application/json;charset=UTF-8")
+    public void index() {
+        super.outputData();
+    }
 
     @ApiOperation(value = "用户轨迹")
     @GetMapping(value = {"/account"}, produces = "application/json;charset=UTF-8")

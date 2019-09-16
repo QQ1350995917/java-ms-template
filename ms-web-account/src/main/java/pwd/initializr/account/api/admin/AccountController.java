@@ -27,7 +27,7 @@ import pwd.initializr.common.web.api.admin.AdminController;
     description = "系统账号管理API"
 )
 @RestController(value = "accountManageApi")
-@RequestMapping(value = "/account/api/admin/account")
+@RequestMapping(value = "/api/admin/account")
 public class AccountController extends AdminController implements AccountApi {
 
     @ApiOperation(value = "下载账号模板")
@@ -52,7 +52,7 @@ public class AccountController extends AdminController implements AccountApi {
     }
 
     @ApiOperation(value = "系统账号清单")
-    @GetMapping(value = {"/"}, produces = "application/json;charset=UTF-8")
+    @GetMapping(value = {""}, produces = "application/json;charset=UTF-8")
     @Override
     public void listAccounts() {
         super.outputData();

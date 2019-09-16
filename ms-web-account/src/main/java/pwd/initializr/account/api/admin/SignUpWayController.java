@@ -25,11 +25,11 @@ import pwd.initializr.common.web.api.admin.AdminController;
     description = "注册方式管理API"
 )
 @RestController(value = "signup")
-@RequestMapping(value = "/account/api/admin/singup")
+@RequestMapping(value = "/api/admin/singup")
 public class SignUpWayController extends AdminController implements SignUpWayApi {
 
     @ApiOperation(value = "注册方式清单")
-    @GetMapping(value = {"/"}, produces = "application/json;charset=UTF-8")
+    @GetMapping(value = {""}, produces = "application/json;charset=UTF-8")
     @Override
     public void listSignUpWays() {
         super.outputData();

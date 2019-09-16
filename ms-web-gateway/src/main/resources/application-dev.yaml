@@ -8,28 +8,28 @@ spring:
       discovery:
         locator:
           enabled: true
-          lower-case-service-id: false
+          lower-case-service-id: true
       routes:
-       - id: account
+       - id: account-route
          uri: lb://account
          predicates:
           - Path=/account/**
-         filters:
-          - StripPrefix=1
-       - id: logger
+       - id: logger-route
          uri: lb://logger
          predicates:
            - Path=/logger/**
-         filters:
-           - StripPrefix=1
 eureka:
   instance:
     hostname: localhost
     status-page-url: http://localhost:${server.port}/swagger-ui.html
+    prefer-ip-address: true
   client:
     service-url:
       defaultZone: http://localhost:11220/eureka/
+    enabled: true
 
 logging:
 #  config: classpath:logback-spring.xml
-  path: /Users/pwd/Desktop/logger
+#  path: /Users/pwd/Desktop/logger
+  level:
+    org.springframework.cloud.gateway: debug

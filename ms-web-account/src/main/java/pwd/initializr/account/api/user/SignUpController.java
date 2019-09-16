@@ -31,13 +31,13 @@ import pwd.initializr.common.web.api.user.UserController;
     description = "用户注册系统账号的API"
 )
 @RestController(value = "accountCreateApi")
-@RequestMapping(value = "/account/api/signup")
+@RequestMapping(value = "/api/signup")
 public class SignUpController extends UserController implements SignUpApi {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
     @ApiOperation(value = "注册方式清单")
-    @GetMapping(value = {"/"}, produces = "application/json;charset=UTF-8")
+    @GetMapping(value = {""}, produces = "application/json;charset=UTF-8")
     @Override
     public void listSignUpWays(ListSignUpByWaysInput input) {
         super.outputData();
