@@ -27,7 +27,7 @@ import pwd.initializr.common.web.api.admin.AdminController;
     description = "系统账号管理API"
 )
 @RestController(value = "accountManageApi")
-@RequestMapping(value = "/api/admin/account")
+@RequestMapping(value = "/account/api/admin/account")
 public class AccountController extends AdminController implements AccountApi {
 
     @ApiOperation(value = "下载账号模板")

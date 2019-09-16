@@ -31,7 +31,7 @@ import pwd.initializr.common.web.api.user.UserController;
     description = "用户注册系统账号的API"
 )
 @RestController(value = "accountCreateApi")
-@RequestMapping(value = "/api/signup")
+@RequestMapping(value = "/account/api/signup")
 public class SignUpController extends UserController implements SignUpApi {
 
     private Logger logger = LoggerFactory.getLogger(getClass());

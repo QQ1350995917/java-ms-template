@@ -7,18 +7,21 @@ spring:
     gateway:
       discovery:
         locator:
-          enabled: false
+          enabled: true
           lower-case-service-id: false
       routes:
        - id: account
-         # lb\u4EE3\u8868\u4ECE\u6CE8\u518C\u4E2D\u5FC3\u83B7\u53D6\u670D\u52A1
          uri: lb://account
          predicates:
-          # \u8F6C\u53D1\u8BE5\u8DEF\u5F84
           - Path=/account/**
-          # \u5E26\u524D\u7F00
          filters:
           - StripPrefix=1
+       - id: logger
+         uri: lb://logger
+         predicates:
+           - Path=/logger/**
+         filters:
+           - StripPrefix=1
 eureka:
   instance:
     hostname: localhost

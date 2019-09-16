@@ -24,7 +24,7 @@ import pwd.initializr.common.web.api.admin.AdminController;
     description = "日志查询API"
 )
 @RestController(value = "loggerQueryApi")
-@RequestMapping(value = "/api/admin/logger")
+@RequestMapping(value = "/logger/api/admin/logger")
 public class QueryController extends AdminController implements QueryApi {
 
     @ApiOperation(value = "用户轨迹")
