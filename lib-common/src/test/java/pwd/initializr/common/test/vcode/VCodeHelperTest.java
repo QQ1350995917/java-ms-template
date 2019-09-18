@@ -8,6 +8,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import pwd.initializr.common.vcode.ArithmeticCode;
 import pwd.initializr.common.vcode.CodeMessage;
+import pwd.initializr.common.vcode.GoogleCode;
 import pwd.initializr.common.vcode.StringCode;
 import pwd.initializr.common.vcode.VCodeHelper;
 
@@ -35,6 +36,7 @@ public class VCodeHelperTest {
     public static void main(String[] args) throws Exception {
         createStringCode(new StringCode());
         createArithmeticCode(new ArithmeticCode());
+        createGoogleCode(new GoogleCode());
     }
 
     private static void createStringCode(VCodeHelper vCodeHelper) throws Exception {
@@ -47,6 +49,13 @@ public class VCodeHelperTest {
     private static void createArithmeticCode(VCodeHelper vCodeHelper) throws Exception {
         BufferedImage bufferedImage = vCodeHelper.productImage();
         FileOutputStream fileOutputStream = new FileOutputStream("CodeArithmetic.jpg");
+        ImageIO.write(bufferedImage, "jpg", fileOutputStream);
+        fileOutputStream.close();
+    }
+
+    private static void createGoogleCode(VCodeHelper vCodeHelper) throws Exception {
+        BufferedImage bufferedImage = vCodeHelper.productImage();
+        FileOutputStream fileOutputStream = new FileOutputStream("CodeGoogle.jpg");
         ImageIO.write(bufferedImage, "jpg", fileOutputStream);
         fileOutputStream.close();
     }

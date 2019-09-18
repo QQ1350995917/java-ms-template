@@ -62,8 +62,7 @@ public class ArithmeticCode extends VCodeHelper {
 
     @Override
     public BufferedImage productImage(String codeMessage) {
-        BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-        draw(bufferedImage,codeMessage);
+        BufferedImage bufferedImage = draw(codeMessage);
         return bufferedImage;
     }
 

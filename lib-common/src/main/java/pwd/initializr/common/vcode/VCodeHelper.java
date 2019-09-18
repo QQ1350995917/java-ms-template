@@ -31,11 +31,8 @@ public abstract class VCodeHelper {
 
     public abstract BufferedImage productImage(String codeMessage);
 
-    protected void draw(BufferedImage bufferedImage, String codeMessage) {
-        if (bufferedImage == null) {
-            throw new NullPointerException("验证码画布不能为空");
-        }
-
+    protected BufferedImage draw(String codeMessage) {
+        BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         if (codeMessage == null || "".equals(codeMessage.trim())) {
             throw new NullPointerException("验证码内容不能为空");
         }
@@ -65,6 +62,7 @@ public abstract class VCodeHelper {
             graphics.drawString(code, (i + 1) * 40, 45);
         }
         graphics.dispose();
+        return bufferedImage;
     }
 
     protected Color getRandomColor(int fc, int bc) {

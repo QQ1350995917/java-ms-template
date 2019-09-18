@@ -65,8 +65,7 @@ public class StringCode extends VCodeHelper {
       throw new RuntimeException("验证码信息超出长度限制");
     }
 
-    BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-    draw(bufferedImage,codeMessage);
+    BufferedImage bufferedImage = draw(codeMessage);
     return bufferedImage;
   }
 
