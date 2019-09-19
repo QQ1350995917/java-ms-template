@@ -1,5 +1,7 @@
 package pwd.initializr.logger.api.user;
 
+import pwd.initializr.logger.api.user.vo.RecordInput;
+
 /**
  * pwd.initializr.logger.api.user@ms-web-initializr
  *
@@ -13,6 +15,6 @@ package pwd.initializr.logger.api.user;
  */
 public interface RecordApi {
 
-    void record();
+    void record(RecordInput input);
 
 }

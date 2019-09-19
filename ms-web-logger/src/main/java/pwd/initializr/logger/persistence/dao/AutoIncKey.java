@@ -1,0 +1,23 @@
+package pwd.initializr.logger.persistence.dao;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+/**
+ * pwd.initializr.logger.persistence.dao@ms-web-initializr
+ *
+ * <h1>TODO what you want to do?</h1>
+ *
+ * date 2019-09-19 14:14
+ *
+ * @author DingPengwei[dingpengwei@eversec.com]
+ * @version 1.0.0
+ * @since DistributionVersion
+ */
+@Target(ElementType.FIELD)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface AutoIncKey {
+
+}

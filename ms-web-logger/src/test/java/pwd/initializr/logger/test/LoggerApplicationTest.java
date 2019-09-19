@@ -22,6 +22,7 @@ public class LoggerApplicationTest {
 
     @Test
     public void contextLoads() {
+
     }
 
 }

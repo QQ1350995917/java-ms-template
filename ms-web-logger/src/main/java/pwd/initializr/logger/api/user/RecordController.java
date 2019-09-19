@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.common.web.api.user.UserController;
+import pwd.initializr.logger.api.user.vo.RecordInput;
 
 /**
  * pwd.initializr.logger.api.user@ms-web-initializr
@@ -30,7 +31,7 @@ public class RecordController extends UserController implements RecordApi {
     @ApiOperation(value = "日志记录")
     @PostMapping(value = {""}, produces = "application/json;charset=UTF-8")
     @Override
-    public void record() {
+    public void record(RecordInput input) {
         super.outputData();
     }
 }
