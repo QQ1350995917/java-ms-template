@@ -63,7 +63,7 @@ public class RecordInput {
   @ApiModelProperty(name = "requestUrl", value = "请求地址", required = true, example = "http://127.0.0.1/account/api/login")
   @NotNull(message = "0")
   private String requestUrl;
-  @ApiModelProperty(name = "requestParams", value = "请求参数", required = true, example = "{\"jsonKey\":\"jsonValue\"}")
+  @ApiModelProperty(name = "requestParams", value = "请求参数", required = true, example = "\"{\"jsonKey\":\"jsonValue\"}\"")
   @NotNull(message = "0")
   private String requestParams;
   @ApiModelProperty(name = "requestScheme", value = "请求规范", required = true, example = "http")
@@ -81,7 +81,7 @@ public class RecordInput {
   @ApiModelProperty(name = "responseCode", value = "响应码", required = true, example = "200")
   @NotNull(message = "0")
   private Integer responseCode;
-  @ApiModelProperty(name = "responseData", value = "响应数据", required = true, example = "{\"jsonKey\":\"jsonValue\"}")
+  @ApiModelProperty(name = "responseData", value = "响应数据", required = true, example = "\"{\"jsonKey\":\"jsonValue\"}\"")
   @NotNull(message = "0")
   private String responseData;
   @ApiModelProperty(name = "responseDescription", value = "响应描述", required = true, example = "登录成功")
