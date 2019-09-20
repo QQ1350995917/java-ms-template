@@ -2,8 +2,11 @@ package pwd.initializr.logger.api.user;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.common.web.api.user.UserController;
 import pwd.initializr.logger.api.user.vo.RecordInput;
@@ -20,18 +23,19 @@ import pwd.initializr.logger.api.user.vo.RecordInput;
  * @since DistributionVersion
  */
 @Api(
-    tags = "日志记录",
-    value = "loggerRecordApi",
-    description = "日志记录API"
+    tags = "日志提交",
+    value = "loggerCommitApi",
+    description = "日志提交API"
 )
-@RestController(value = "loggerRecordApi")
+@RestController(value = "loggerCommitApi")
 @RequestMapping(value = "/api/user/logger")
 public class RecordController extends UserController implements RecordApi {
 
-    @ApiOperation(value = "日志记录")
-    @PostMapping(value = {""}, produces = "application/json;charset=UTF-8")
-    @Override
-    public void record(RecordInput input) {
-        super.outputData();
-    }
+  @ApiOperation(value = "日志提交")
+  @PostMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @ResponseBody
+  @Override
+  public void record(@RequestBody RecordInput input) {
+    super.outputData();
+  }
 }
