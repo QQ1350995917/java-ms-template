@@ -4,6 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,14 +38,14 @@ public class SignUpController extends UserController implements SignUpApi {
     private Logger logger = LoggerFactory.getLogger(getClass());
 
     @ApiOperation(value = "注册方式清单")
-    @GetMapping(value = {""}, produces = "application/json;charset=UTF-8")
+    @GetMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @Override
     public void listSignUpWays(ListSignUpByWaysInput input) {
         super.outputData();
     }
 
     @ApiOperation(value = "申请账号")
-    @PostMapping(value = {"/apply"}, produces = "application/json;charset=UTF-8")
+    @PostMapping(value = {"/apply"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @Override
     public void signUpByApply(SignUpByApplyInput input) {
 
@@ -52,14 +53,14 @@ public class SignUpController extends UserController implements SignUpApi {
     }
 
     @ApiOperation(value = "手机号验证")
-    @PostMapping(value = {"/phone/code"}, produces = "application/json;charset=UTF-8")
+    @PostMapping(value = {"/phone/code"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @Override
     public void verifySignUpPhoneNumber(String signUpPhoneNumber) {
         super.verifyPhone(signUpPhoneNumber);
     }
 
     @ApiOperation(value = "手机号注册账号")
-    @PostMapping(value = {"/phone"}, produces = "application/json;charset=UTF-8")
+    @PostMapping(value = {"/phone"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @Override
     public void signUpByPhoneNumber(SignUpByPhoneNumberInput input) {
 
@@ -67,7 +68,7 @@ public class SignUpController extends UserController implements SignUpApi {
     }
 
     @ApiOperation(value = "邮箱注册账号")
-    @PostMapping(value = {"/email"}, produces = "application/json;charset=UTF-8")
+    @PostMapping(value = {"/email"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @Override
     public void signUpByEmail(SignUpByEmailInput input) {
 
