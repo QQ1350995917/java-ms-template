@@ -18,13 +18,13 @@ import pwd.initializr.common.web.middleware.redis.RedisClient;
  * @version 1.0.0
  * @since DistributionVersion
  */
-@RunWith(SpringRunner.class)
-@SpringBootTest
+//@RunWith(SpringRunner.class)
+//@SpringBootTest
 public class RedisClientTest {
   @Autowired
   private RedisClient redisClient;
 
-  @Test
+//  @Test
   public void testRedisClient(){
     redisClient.set("pwd","hello",0);
   }

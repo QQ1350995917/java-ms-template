@@ -47,20 +47,10 @@ public class Output<T> {
         this.meta = meta;
     }
 
-    /**
-     * @param data
-     * @return
-     */
     public static Output output(Object data) {
         return new Output(Meta.successMeta(), data);
     }
 
-    /**
-     * @param code
-     * @param errorMessage
-     * @param data
-     * @return
-     */
     public static Output error(int code, String errorMessage, Object data) {
         throw new BaseException(code, errorMessage);
     }
