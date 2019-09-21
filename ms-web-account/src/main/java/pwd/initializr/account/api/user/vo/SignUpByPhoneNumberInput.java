@@ -1,5 +1,14 @@
 package pwd.initializr.account.api.user.vo;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import javax.validation.constraints.Null;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
 /**
  * pwd.initializr.account.api.user.vo@ms-web-initializr
  *
@@ -11,6 +20,20 @@ package pwd.initializr.account.api.user.vo;
  * @version 1.0.0
  * @since DistributionVersion
  */
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString
+@ApiModel(value = "signUpByPhoneNumber", description = "使用手机号码注册")
 public class SignUpByPhoneNumberInput {
-
+  @ApiModelProperty(name = "phoneNumber", value = "手机号码", required = true, example = "18511694468")
+  @Null(message = "0")
+  private String phoneNumber;
+  @ApiModelProperty(name = "smsCode", value = "短信验证码", required = true, example = "123456")
+  @Null(message = "0")
+  private String smsCode;
+  @ApiModelProperty(name = "vCode", value = "图形验证码", required = false, example = "123456")
+  @Null(message = "0")
+  private String vCode;
 }

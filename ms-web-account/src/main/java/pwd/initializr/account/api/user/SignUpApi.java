@@ -22,6 +22,8 @@ public interface SignUpApi {
 
     void signUpByApply(SignUpByApplyInput input);
 
+    void verifySignUpPhoneNumber(String signUpPhoneNumber);
+
     void signUpByPhoneNumber(SignUpByPhoneNumberInput input);
 
     void signUpByEmail(SignUpByEmailInput input);

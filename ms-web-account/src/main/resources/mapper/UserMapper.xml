@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pwd.initializr.account.persistence.mapper.UserMapper">
+  <!-- insertUser -->
+  <insert id="insertUser" keyProperty="id"
+    parameterType="pwd.initializr.account.persistence.dao.UserEntity"
+    useGeneratedKeys="true">
+		insert into `user`
+		(`id`,`name`,`status`,`create_time`,`update_time`)
+		values
+		(#{id},#{name},#{status},#{createTime},#{updateTime})
+	</insert>
+
+	<!--listUser-->
+	<select id="listUser"
+		resultType="pwd.initializr.account.persistence.dao.UserEntity">
+		select
+		`id` as id,
+		`name` as name,
+		`status` as status,
+		`create_time` as createTime,
+		`update_time` as updateTime
+		from `user`
+	</select>
+
+  <!--findByUserId-->
+  <select id="findByUserId" parameterType="java.lang.Long"
+    resultType="pwd.initializr.account.persistence.dao.UserEntity">
+		select
+		`id` as id,
+		`name` as name,
+		`status` as status,
+		`create_time` as createTime,
+		`update_time` as updateTime
+		from `user`
+		where id = #{id}
+	</select>
+
+  <!--countUser-->
+  <select id="countUser" resultType="java.lang.Long">
+		select
+		count(1)
+		from
+		`user`
+	</select>
+</mapper>

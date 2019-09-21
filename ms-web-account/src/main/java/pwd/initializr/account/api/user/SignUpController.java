@@ -51,6 +51,13 @@ public class SignUpController extends UserController implements SignUpApi {
         super.outputData();
     }
 
+    @ApiOperation(value = "手机号验证")
+    @PostMapping(value = {"/phone/code"}, produces = "application/json;charset=UTF-8")
+    @Override
+    public void verifySignUpPhoneNumber(String signUpPhoneNumber) {
+        super.verifyPhone(signUpPhoneNumber);
+    }
+
     @ApiOperation(value = "手机号注册账号")
     @PostMapping(value = {"/phone"}, produces = "application/json;charset=UTF-8")
     @Override
@@ -84,4 +91,6 @@ public class SignUpController extends UserController implements SignUpApi {
 
         super.outputData();
     }
+
+
 }

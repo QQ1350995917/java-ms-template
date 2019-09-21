@@ -31,6 +31,33 @@ public abstract class VCodeHelper {
 
     public abstract BufferedImage productImage(String codeMessage);
 
+    public static CodeMessage productSMSCode(){
+        return productSMSCode(6);
+    }
+
+    private static CodeMessage productSMSCode(Integer length){
+        if (length == null) {
+            length = 6;
+        }
+
+        if (length < 1) {
+            length = 1;
+        }
+
+        if (length > 9) {
+            length = 9;
+        }
+        String originCode = "0123456789";
+        StringBuilder stringBuilder = new StringBuilder();
+        Random random = new Random();
+        for (int i = 0; i < length; i++) {
+            char code = originCode.charAt(random.nextInt(originCode.length()));
+            stringBuilder.append(code);
+        }
+
+        return new CodeMessage(stringBuilder.toString(),stringBuilder.toString());
+    }
+
     protected BufferedImage draw(String codeMessage) {
         BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         if (codeMessage == null || "".equals(codeMessage.trim())) {

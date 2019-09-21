@@ -1,6 +1,12 @@
 package pwd.initializr.common.web.business.bo;
 
+import java.util.LinkedList;
 import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
  * pwd.initializr.common.web.business.bo@ms-web-initializr
@@ -13,6 +19,11 @@ import java.util.List;
  * @version 1.0.0
  * @since DistributionVersion
  */
+@AllArgsConstructor
+@NoArgsConstructor
+@Setter
+@Getter
+@ToString
 public class ObjectList<T> {
 
     /**
@@ -32,45 +43,5 @@ public class ObjectList<T> {
      */
     private Long size;
 
-    private List<T> elements;
-
-    public Long getTotal() {
-        return total;
-    }
-
-    public void setTotal(Long total) {
-        this.total = total;
-    }
-
-    public Long getPages() {
-        return pages;
-    }
-
-    public void setPages(Long pages) {
-        this.pages = pages;
-    }
-
-    public Long getIndex() {
-        return index;
-    }
-
-    public void setIndex(Long index) {
-        this.index = index;
-    }
-
-    public Long getSize() {
-        return size;
-    }
-
-    public void setSize(Long size) {
-        this.size = size;
-    }
-
-    public List<T> getElements() {
-        return elements;
-    }
-
-    public void setElements(List<T> elements) {
-        this.elements = elements;
-    }
+    private List<T> elements = new LinkedList<>();
 }

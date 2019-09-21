@@ -149,4 +149,13 @@ public class ApiController {
 
         return bytes;
     }
+
+
+    protected void verifyManual(String identify){
+
+    }
+
+    protected void verifyPhone(String phoneNumber){
+
+    }
 }
