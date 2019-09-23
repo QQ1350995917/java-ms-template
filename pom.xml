@@ -26,6 +26,7 @@
     <module>ms-web-logger</module>
     <module>ms-web-monitor</module>
     <module>ms-web-gateway</module>
+    <module>lib-common-mw-redis</module>
   </modules>
 
   <properties>

@@ -5,7 +5,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import pwd.initializr.common.web.middleware.redis.RedisClient;
+import pwd.initializr.common.mw.redis.RedisClient;
 
 /**
  * pwd.initializr.account@ms-web-initializr
@@ -22,16 +22,16 @@ import pwd.initializr.common.web.middleware.redis.RedisClient;
 @SpringBootTest
 public class AccountApplicationTest {
 
+
     @Test
     public void contextLoads() {
     }
-
     @Autowired
     private RedisClient redisClient;
 
     @Test
     public void testRedisClient(){
-        redisClient.set("pwd","helloxxx",0);
+        redisClient.set("pwd","xxx",0);
     }
 
 }

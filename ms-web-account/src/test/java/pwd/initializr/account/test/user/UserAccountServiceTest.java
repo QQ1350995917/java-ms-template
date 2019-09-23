@@ -26,54 +26,54 @@ import pwd.initializr.common.web.business.bo.ObjectList;
  * @version 1.0.0
  * @since DistributionVersion
  */
-@RunWith(SpringRunner.class)
-@SpringBootTest
+//@RunWith(SpringRunner.class)
+//@SpringBootTest
 public class UserAccountServiceTest {
-
-  @Autowired
-  private UserAccountService userAccountService;
-
-  @Autowired
-  private UserService userService;
-
-  @Autowired
-  private AccountService accountService;
-
-  @Test
-  public void testCreateUserAccount() {
-    User user = new User(null, "pwd-test-0", ConstantStatus.ENABLE.value(),
-        System.currentTimeMillis(),
-        System.currentTimeMillis());
-    Account account = new Account(null, user.getId(), "000000", "000000", Type.GRANT.value(),
-        ConstantStatus.ENABLE.value(), System.currentTimeMillis(), System.currentTimeMillis());
-    UserAccount userAccount = userAccountService.createUserAccount(user, account);
-    System.out.println(userAccount);
-  }
-
-
-  @Test
-  public void testCountUser() {
-    Long result = userService.countUser();
-    System.out.println(result);
-  }
-
-  @Test
-  public void testListUser() {
-    ObjectList<User> userObjectList = userService.listUser();
-    System.out.println(userObjectList);
-  }
-
-  @Test
-  public void testFindUserById() {
-    User byUserId = userService.findByUserId(5L);
-    System.out.println(byUserId);
-  }
-
-  @Test
-  public void testListAccountByUserId() {
-    ObjectList<Account> accountObjectList = accountService.findByUserId(5L);
-    System.out.println(accountObjectList);
-  }
+//
+//  @Autowired
+//  private UserAccountService userAccountService;
+//
+//  @Autowired
+//  private UserService userService;
+//
+//  @Autowired
+//  private AccountService accountService;
+//
+//  @Test
+//  public void testCreateUserAccount() {
+//    User user = new User(null, "pwd-test-0", ConstantStatus.ENABLE.value(),
+//        System.currentTimeMillis(),
+//        System.currentTimeMillis());
+//    Account account = new Account(null, user.getId(), "000000", "000000", Type.GRANT.value(),
+//        ConstantStatus.ENABLE.value(), System.currentTimeMillis(), System.currentTimeMillis());
+//    UserAccount userAccount = userAccountService.createUserAccount(user, account);
+//    System.out.println(userAccount);
+//  }
+//
+//
+//  @Test
+//  public void testCountUser() {
+//    Long result = userService.countUser();
+//    System.out.println(result);
+//  }
+//
+//  @Test
+//  public void testListUser() {
+//    ObjectList<User> userObjectList = userService.listUser();
+//    System.out.println(userObjectList);
+//  }
+//
+//  @Test
+//  public void testFindUserById() {
+//    User byUserId = userService.findByUserId(5L);
+//    System.out.println(byUserId);
+//  }
+//
+//  @Test
+//  public void testListAccountByUserId() {
+//    ObjectList<Account> accountObjectList = accountService.findByUserId(5L);
+//    System.out.println(accountObjectList);
+//  }
 
 
 }

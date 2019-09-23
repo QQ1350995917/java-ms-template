@@ -1,11 +1,14 @@
 package pwd.initializr.common.web.test;
 
+
+import java.util.Date;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import pwd.initializr.common.web.middleware.redis.RedisClient;
+import pwd.initializr.common.mw.redis.RedisClient;
+import redis.clients.jedis.JedisPool;
 
 /**
  * pwd.initializr.common.web.test@ms-web-initializr
@@ -18,14 +21,14 @@ import pwd.initializr.common.web.middleware.redis.RedisClient;
  * @version 1.0.0
  * @since DistributionVersion
  */
-//@RunWith(SpringRunner.class)
-//@SpringBootTest
+@RunWith(SpringRunner.class)
+@SpringBootTest
 public class RedisClientTest {
   @Autowired
   private RedisClient redisClient;
 
-//  @Test
+  @Test
   public void testRedisClient(){
-    redisClient.set("pwd","hello",0);
+    redisClient.set("pwd","hello:" + new Date().getTime(),0);
   }
 }
