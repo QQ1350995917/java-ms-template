@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.common.web.api.ApiController;
-import pwd.initializr.common.web.api.Meta;
-import pwd.initializr.common.web.api.Output;
+import pwd.initializr.common.web.api.vo.Meta;
+import pwd.initializr.common.web.api.vo.Output;
 
 /**
  * pwd.initializr.common.web.api.test@ms-web-initializr

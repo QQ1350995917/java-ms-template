@@ -22,6 +22,11 @@ import javax.imageio.ImageIO;
 public class ArithmeticCode extends VCodeHelper {
 
     @Override
+    protected String getOriginCode() {
+        return null;
+    }
+
+    @Override
     public CodeMessage productMessage() {
         return productMessage(2);
     }

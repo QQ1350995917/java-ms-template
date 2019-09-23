@@ -1,4 +1,4 @@
-package pwd.initializr.common.web.api;
+package pwd.initializr.common.web.api.vo;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import pwd.initializr.common.web.exception.BaseException;

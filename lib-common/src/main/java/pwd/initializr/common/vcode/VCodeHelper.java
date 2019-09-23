@@ -23,19 +23,11 @@ public abstract class VCodeHelper {
     int height = 60;
     int fontSize = 50;
 
-    public abstract CodeMessage productMessage();
-
-    protected abstract CodeMessage productMessage(Integer length);
-
-    public abstract BufferedImage productImage();
-
-    public abstract BufferedImage productImage(String codeMessage);
-
-    public static CodeMessage productSMSCode(){
-        return productSMSCode(6);
+    public CodeMessage productMessage(){
+        return productMessage(null);
     }
 
-    private static CodeMessage productSMSCode(Integer length){
+    protected CodeMessage productMessage(Integer length){
         if (length == null) {
             length = 6;
         }
@@ -47,16 +39,24 @@ public abstract class VCodeHelper {
         if (length > 9) {
             length = 9;
         }
-        String originCode = "0123456789";
+        String originCode = getOriginCode();
+        if (originCode == null || "".equals(originCode.trim())) {
+            originCode = "test";
+        }
         StringBuilder stringBuilder = new StringBuilder();
         Random random = new Random();
         for (int i = 0; i < length; i++) {
             char code = originCode.charAt(random.nextInt(originCode.length()));
             stringBuilder.append(code);
         }
-
         return new CodeMessage(stringBuilder.toString(),stringBuilder.toString());
     }
+
+    protected abstract String getOriginCode();
+
+    public abstract BufferedImage productImage();
+
+    public abstract BufferedImage productImage(String codeMessage);
 
     protected BufferedImage draw(String codeMessage) {
         BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);

@@ -657,6 +657,35 @@ public class RedisClient {
     }
   }
 
+
+  /**
+   * <p>
+   * 通过key获取储存在redis中的value
+   * </p>
+   * <p>
+   * 并释放连接
+   * </p>
+   *
+   * @param key key
+   * @return 成功返回value 失败返回null
+   */
+  public String get(String key) {
+    Jedis jedis = null;
+    String value = null;
+    try {
+      jedis = jedisPool.getResource();
+      jedis.select(0);
+      value = jedis.get(key);
+      log.info(value);
+    } catch (Exception e) {
+
+      log.error(e.getMessage());
+    } finally {
+      returnResource(jedisPool, jedis);
+    }
+    return value;
+  }
+
   /**
    * <p>
    * 通过key获取储存在redis中的value
@@ -712,6 +741,32 @@ public class RedisClient {
       returnResource(jedisPool, jedis);
     }
     return value;
+  }
+
+  /**
+   * <p>
+   * 向redis存入key和value,并释放连接资源
+   * </p>
+   * <p>
+   * 如果key已经存在 则覆盖
+   * </p>
+   *
+   * @param key key
+   * @param value value
+   * @return 成功 返回OK 失败返回 0
+   */
+  public String set(String key, String value) {
+    Jedis jedis = null;
+    try {
+      jedis = jedisPool.getResource();
+      jedis.select(0);
+      return jedis.set(key, value);
+    } catch (Exception e) {
+      log.error(e.getMessage());
+      return "0";
+    } finally {
+      returnResource(jedisPool, jedis);
+    }
   }
 
   /**
@@ -906,6 +961,30 @@ public class RedisClient {
     return null;
   }
 
+
+  /**
+   * <p>
+   * 为给定 key 设置生存时间，当 key 过期时(生存时间为 0 )，它会被自动删除。
+   * </p>
+   *
+   * @param key key
+   * @param value 过期时间，单位：秒
+   * @return 成功返回1 如果存在 和 发生异常 返回 0
+   */
+  public Long expire(String key, int value) {
+    Jedis jedis = null;
+    try {
+      jedis = jedisPool.getResource();
+      jedis.select(0);
+      return jedis.expire(key, value);
+    } catch (Exception e) {
+      log.error(e.getMessage());
+      return 0L;
+    } finally {
+      returnResource(jedisPool, jedis);
+    }
+  }
+
   /**
    * <p>
    * 为给定 key 设置生存时间，当 key 过期时(生存时间为 0 )，它会被自动删除。
@@ -990,6 +1069,7 @@ public class RedisClient {
     Jedis jedis = null;
     try {
       jedis = jedisPool.getResource();
+      jedis.select(0);
       return jedis.setex(key, seconds, value);
     } catch (Exception e) {
 

@@ -8,9 +8,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import pwd.initializr.common.utils.GzipUtil;
 import pwd.initializr.common.utils.StringUtil;
+import pwd.initializr.common.utils.VerifyUtil;
+import pwd.initializr.common.web.api.vo.Meta;
+import pwd.initializr.common.web.api.vo.Output;
+import pwd.initializr.common.web.business.SMSCodeService;
 import pwd.initializr.common.web.exception.BaseException;
 
 /**
@@ -27,135 +32,143 @@ import pwd.initializr.common.web.exception.BaseException;
  * @since DistributionVersion
  */
 public class ApiController {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ApiController.class);
 
-    public static ThreadLocal<HttpServletRequest> requestLocal = new ThreadLocal();
-    public static ThreadLocal<HttpServletResponse> responseLocal = new ThreadLocal();
+  private static final Logger LOGGER = LoggerFactory.getLogger(ApiController.class);
+  public static ThreadLocal<HttpServletRequest> requestLocal = new ThreadLocal();
+  public static ThreadLocal<HttpServletResponse> responseLocal = new ThreadLocal();
 
-    protected String local = "en";
+  @Autowired
+  protected SMSCodeService smsCodeService;
 
-    public String getLocal() {
-        return local == null ? "en" : local;
+  protected String local = "en";
+
+  public static void setRequestLocal(HttpServletRequest httpServletRequest) {
+    requestLocal.set(httpServletRequest);
+  }
+
+  public static void setResponseLocal(HttpServletResponse httpServletResponse) {
+    responseLocal.set(httpServletResponse);
+  }
+
+  public static HttpServletRequest getRequest() {
+    return requestLocal.get();
+  }
+
+  public static HttpServletResponse getResponse() {
+    return responseLocal.get();
+  }
+
+  public String getLocal() {
+    return local == null ? "en" : local;
+  }
+
+  public String getPlatform() {
+    return "Android";
+  }
+
+  @ModelAttribute
+  public void setReqAndRes(HttpServletRequest request, HttpServletResponse response) {
+    setRequestLocal(request);
+    setResponseLocal(response);
+  }
+
+  public <T extends ApiController> void outputExceptionToLog(Class<T> clazz, Exception e,
+      Object... input) {
+    if (e instanceof BaseException) {
+      // 如果是baseException，是手动抛出，不需要告警，只打印info日志
+      LOGGER.info(String
+          .format("IntervalServerError:className:%s，requestParams:%s，", clazz.getName(),
+              JSONObject.toJSONString(input)), e);
+    } else {
+      LOGGER.error(String
+          .format("IntervalServerError:className:%s，requestParams:%s，", clazz.getName(),
+              JSONObject.toJSONString(input)), e);
     }
+  }
 
-    public String getPlatform() {
-        return "Android";
+  public void outputException(int code, String message) {
+    Meta meta = new Meta(code, message);
+    Output<Object> objectOutput = new Output<>(meta, null);
+    this.finalOutput(JSON.toJSONString(objectOutput));
+  }
+
+  public void outputException(int code) {
+    String message = ApiProperties.apiBundles.get(getLocal()).getString(code + "");
+    Meta meta = new Meta(code, message);
+    Output<Object> objectOutput = new Output<>(meta, null);
+    this.finalOutput(JSON.toJSONString(objectOutput));
+  }
+
+  public void outputData() {
+    Meta meta = new Meta();
+    Output<Object> objectOutput = new Output<>(meta, null);
+    this.finalOutput(JSON.toJSONString(objectOutput));
+  }
+
+  public <T> void outputData(Meta meta, T t) {
+    Output<Object> objectOutput = new Output<>(meta, t);
+    this.finalOutput(JSON.toJSONString(objectOutput));
+  }
+
+  public <T> void outputData(Meta meta) {
+    Output<Object> objectOutput = new Output<>(meta, null);
+    this.finalOutput(JSON.toJSONString(objectOutput));
+  }
+
+  public <T> void outputData(T t) {
+    this.outputData(new Meta(), t);
+  }
+
+  private void finalOutput(String data) {
+    String clientEncoding = getRequest().getHeader("Accept-Encoding");
+    boolean canGzip = false;
+    if (clientEncoding != null && clientEncoding.indexOf("gzip") > -1
+        && StringUtil.null2Str(data).length() >= 200) {
+      canGzip = true;
+      getResponse().setHeader("Content-Encoding", "gzip");
     }
-
-    public static void setRequestLocal(HttpServletRequest httpServletRequest) {
-        requestLocal.set(httpServletRequest);
-    }
-
-    public static void setResponseLocal(HttpServletResponse httpServletResponse) {
-        responseLocal.set(httpServletResponse);
-    }
-
-    public static HttpServletRequest getRequest() {
-        return requestLocal.get();
-    }
-
-    public static HttpServletResponse getResponse() {
-        return responseLocal.get();
-    }
-
-    @ModelAttribute
-    public void setReqAndRes(HttpServletRequest request, HttpServletResponse response) {
-        setRequestLocal(request);
-        setResponseLocal(response);
-    }
-
-    public <T extends ApiController> void outputExceptionToLog(Class<T> clazz, Exception e,
-        Object... input) {
-        if (e instanceof BaseException) {
-            // 如果是baseException，是手动抛出，不需要告警，只打印info日志
-            LOGGER.info(String
-                .format("IntervalServerError:className:%s，requestParams:%s，", clazz.getName(),
-                    JSONObject.toJSONString(input)), e);
-        } else {
-            LOGGER.error(String
-                .format("IntervalServerError:className:%s，requestParams:%s，", clazz.getName(),
-                    JSONObject.toJSONString(input)), e);
+    getResponse().setHeader("Content-Type", "application/json");
+    getResponse().setCharacterEncoding("UTF-8");
+    try {
+      if (canGzip) {
+        byte[] e = this.compressData(data);
+        ServletOutputStream out = getResponse().getOutputStream();
+        if (e != null) {
+          out.write(e);
         }
+        out.flush();
+        out.close();
+      } else {
+        getResponse().getWriter().append(data);
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  private byte[] compressData(String data) {
+    byte[] bytes = null;
+
+    try {
+      bytes = GzipUtil.compress(data.getBytes("UTF-8"));
+    } catch (Exception e) {
+      e.printStackTrace();
     }
 
-    public void outputException(int code, String message) {
-        Meta meta = new Meta(code, message);
-        Output<Object> objectOutput = new Output<>(meta, null);
-        this.finalOutput(JSON.toJSONString(objectOutput));
+    return bytes;
+  }
+
+
+  protected void verifyManual(String identify) {
+
+  }
+
+  protected void verifyPhone(String phoneNumber) {
+    if (VerifyUtil.phoneNumber(phoneNumber)) {
+      smsCodeService.productSMSCode(phoneNumber);
+      outputData();
+    } else {
+      outputException(400);
     }
-
-    public void outputException(int code) {
-        String message = ApiProperties.apiBundles.get(getLocal()).getString(code + "");
-        Meta meta = new Meta(code, message);
-        Output<Object> objectOutput = new Output<>(meta, null);
-        this.finalOutput(JSON.toJSONString(objectOutput));
-    }
-
-    public void outputData() {
-        Meta meta = new Meta();
-        Output<Object> objectOutput = new Output<>(meta, null);
-        this.finalOutput(JSON.toJSONString(objectOutput));
-    }
-
-    public <T> void outputData(Meta meta, T t) {
-        Output<Object> objectOutput = new Output<>(meta, t);
-        this.finalOutput(JSON.toJSONString(objectOutput));
-    }
-
-    public <T> void outputData(Meta meta) {
-        Output<Object> objectOutput = new Output<>(meta, null);
-        this.finalOutput(JSON.toJSONString(objectOutput));
-    }
-
-    public <T> void outputData(T t) {
-        this.outputData(new Meta(), t);
-    }
-
-    private void finalOutput(String data) {
-        String clientEncoding = getRequest().getHeader("Accept-Encoding");
-        boolean canGzip = false;
-        if (clientEncoding != null && clientEncoding.indexOf("gzip") > -1
-            && StringUtil.null2Str(data).length() >= 200) {
-            canGzip = true;
-            getResponse().setHeader("Content-Encoding", "gzip");
-        }
-        getResponse().setHeader("Content-Type", "application/json");
-        getResponse().setCharacterEncoding("UTF-8");
-        try {
-            if (canGzip) {
-                byte[] e = this.compressData(data);
-                ServletOutputStream out = getResponse().getOutputStream();
-                if (e != null) {
-                    out.write(e);
-                }
-                out.flush();
-                out.close();
-            } else {
-                getResponse().getWriter().append(data);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private byte[] compressData(String data) {
-        byte[] bytes = null;
-
-        try {
-            bytes = GzipUtil.compress(data.getBytes("UTF-8"));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return bytes;
-    }
-
-
-    protected void verifyManual(String identify){
-
-    }
-
-    protected void verifyPhone(String phoneNumber){
-
-    }
+  }
 }

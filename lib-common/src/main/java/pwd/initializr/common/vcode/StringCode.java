@@ -19,35 +19,11 @@ import java.util.Random;
  */
 public class StringCode extends VCodeHelper {
 
-  private static final String originCode = "abcdefghigklmnopqrstuvwxyzZXCVBNMASDFGHJKLQWERTYUIOP0123456789";
+  private final String originCode = "abcdefghigklmnopqrstuvwxyzZXCVBNMASDFGHJKLQWERTYUIOP0123456789";
 
   @Override
-  public CodeMessage productMessage() {
-    return productMessage(null);
-  }
-
-  @Override
-  protected CodeMessage productMessage(Integer length) {
-    if (length == null) {
-      length = 6;
-    }
-
-    if (length < 1) {
-      length = 1;
-    }
-
-    if (length > 9) {
-      length = 9;
-    }
-
-    StringBuilder stringBuilder = new StringBuilder();
-    Random random = new Random();
-    for (int i = 0; i < length; i++) {
-      char code = originCode.charAt(random.nextInt(originCode.length()));
-      stringBuilder.append(code);
-    }
-
-    return new CodeMessage(stringBuilder.toString(),stringBuilder.toString());
+  public String getOriginCode() {
+    return originCode;
   }
 
   @Override

@@ -17,7 +17,12 @@ import java.util.Properties;
  * @since DistributionVersion
  */
 public class GoogleCode extends VCodeHelper {
-    private static final String originCode = "abcdefghigklmnopqrstuvwxyzZXCVBNMASDFGHJKLQWERTYUIOP0123456789";
+    private final String originCode = "abcdefghigklmnopqrstuvwxyzZXCVBNMASDFGHJKLQWERTYUIOP0123456789";
+
+    @Override
+    public String getOriginCode() {
+        return originCode;
+    }
 
     @Override
     public CodeMessage productMessage() {

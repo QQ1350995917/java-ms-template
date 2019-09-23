@@ -4,6 +4,7 @@ import pwd.initializr.account.api.user.vo.ListSignUpByWaysInput;
 import pwd.initializr.account.api.user.vo.SignUpByApplyInput;
 import pwd.initializr.account.api.user.vo.SignUpByEmailInput;
 import pwd.initializr.account.api.user.vo.SignUpByPhoneNumberInput;
+import pwd.initializr.common.web.api.vo.SMSCodeInput;
 
 /**
  * pwd.initializr.account.api.user@ms-web-initializr
@@ -22,7 +23,7 @@ public interface SignUpApi {
 
     void signUpByApply(SignUpByApplyInput input);
 
-    void verifySignUpPhoneNumber(String signUpPhoneNumber);
+    void verifySignUpPhoneNumber(SMSCodeInput input);
 
     void signUpByPhoneNumber(SignUpByPhoneNumberInput input);
 
