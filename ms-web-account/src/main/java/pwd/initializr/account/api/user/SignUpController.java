@@ -1,22 +1,27 @@
 package pwd.initializr.account.api.user;
 
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.account.api.user.vo.ListSignUpByWaysInput;
 import pwd.initializr.account.api.user.vo.SignUpByApplyInput;
 import pwd.initializr.account.api.user.vo.SignUpByEmailInput;
 import pwd.initializr.account.api.user.vo.SignUpByPhoneNumberInput;
+import pwd.initializr.account.api.user.vo.SignUpByPhoneNumberOutput;
+import pwd.initializr.account.business.user.UserAccountService;
+import pwd.initializr.account.business.user.bo.Account;
+import pwd.initializr.account.business.user.bo.User;
+import pwd.initializr.account.business.user.bo.UserAccount;
+import pwd.initializr.account.persistence.dao.AccountEntity.Type;
+import pwd.initializr.account.persistence.dao.ConstantStatus;
 import pwd.initializr.common.web.api.user.UserController;
 import pwd.initializr.common.web.api.vo.SMSCodeInput;
 import pwd.initializr.common.web.business.bo.SMSCode;
@@ -42,6 +47,8 @@ import pwd.initializr.common.web.business.bo.SMSCode;
 public class SignUpController extends UserController implements SignUpApi {
 
   private Logger logger = LoggerFactory.getLogger(getClass());
+  @Autowired
+  private UserAccountService userAccountService;
 
   @ApiOperation(value = "注册方式清单")
   @GetMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -71,10 +78,19 @@ public class SignUpController extends UserController implements SignUpApi {
   public void signUpByPhoneNumber(SignUpByPhoneNumberInput input) {
     SMSCode smsCode = new SMSCode();
     BeanUtils.copyProperties(input, smsCode);
-    Boolean match = smsCodeService.match(smsCode);
+    Boolean match = smsCodeService.matchOnce(smsCode);
     if (match) {
       // TODO session设置，返回身份信息，跳转页面
-      super.outputData();
+      User user = new User(null, input.getPhoneNumber(), ConstantStatus.ENABLE.value(),
+          System.currentTimeMillis(),
+          System.currentTimeMillis());
+      Account account = new Account(null, null, input.getPhoneNumber(), null, Type.PHONE.value(),
+          ConstantStatus.ENABLE.value(), System.currentTimeMillis(), System.currentTimeMillis());
+      UserAccount userAccount = userAccountService.createUserAccount(user, account);
+      SignUpByPhoneNumberOutput signUpByPhoneNumberOutput = new SignUpByPhoneNumberOutput();
+      BeanUtils.copyProperties(userAccount.getAccounts().get(0),signUpByPhoneNumberOutput);
+      BeanUtils.copyProperties(userAccount.getUser(),signUpByPhoneNumberOutput);
+      super.outputData(signUpByPhoneNumberOutput);
     } else {
       super.outputException(401);
     }

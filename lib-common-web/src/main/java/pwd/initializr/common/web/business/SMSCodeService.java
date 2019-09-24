@@ -20,4 +20,6 @@ public interface SMSCodeService {
 
   Boolean match(SMSCode smsCode);
 
+  Boolean matchOnce(SMSCode smsCode);
+
 }

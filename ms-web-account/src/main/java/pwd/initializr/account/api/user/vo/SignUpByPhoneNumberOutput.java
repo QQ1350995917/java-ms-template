@@ -1,5 +1,11 @@
 package pwd.initializr.account.api.user.vo;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
 /**
  * pwd.initializr.account.api.user.vo@ms-web-initializr
  *
@@ -11,6 +17,15 @@ package pwd.initializr.account.api.user.vo;
  * @version 1.0.0
  * @since DistributionVersion
  */
+@AllArgsConstructor
+@NoArgsConstructor
+@Setter
+@Getter
+@ToString
 public class SignUpByPhoneNumberOutput {
-
+  private Long id;
+  private String name;
+  private String identify;
+  private Long createTime;
+  private Long updateTime;
 }

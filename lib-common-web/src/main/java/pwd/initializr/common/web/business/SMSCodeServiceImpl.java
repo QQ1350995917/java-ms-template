@@ -58,8 +58,15 @@ public class SMSCodeServiceImpl implements SMSCodeService {
     if (!smsCodeInRedis.equals(smsCode.getSmsCode())) {
       return false;
     }
-
-    redisClient.expire(Constant.REDIS_KEY_PHONE_SMS_CODE_PREFIX + smsCode.getPhoneNumber(), 0);
     return true;
+  }
+
+  @Override
+  public Boolean matchOnce(SMSCode smsCode) {
+    Boolean match = match(smsCode);
+    if (match){
+      redisClient.expire(Constant.REDIS_KEY_PHONE_SMS_CODE_PREFIX + smsCode.getPhoneNumber(), 0);
+    }
+    return match;
   }
 }
