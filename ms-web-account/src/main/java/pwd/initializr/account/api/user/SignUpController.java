@@ -2,6 +2,8 @@ package pwd.initializr.account.api.user;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import java.util.LinkedList;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -12,18 +14,22 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.account.api.user.vo.ListSignUpByWaysInput;
+import pwd.initializr.account.api.user.vo.ListSignUpByWaysOutput;
 import pwd.initializr.account.api.user.vo.SignUpByApplyInput;
 import pwd.initializr.account.api.user.vo.SignUpByEmailInput;
 import pwd.initializr.account.api.user.vo.SignUpByPhoneNumberInput;
 import pwd.initializr.account.api.user.vo.SignUpByPhoneNumberOutput;
+import pwd.initializr.account.business.user.EntranceService;
 import pwd.initializr.account.business.user.UserAccountService;
 import pwd.initializr.account.business.user.bo.Account;
+import pwd.initializr.account.business.user.bo.Entrance;
 import pwd.initializr.account.business.user.bo.User;
 import pwd.initializr.account.business.user.bo.UserAccount;
 import pwd.initializr.account.persistence.dao.AccountEntity.Type;
 import pwd.initializr.account.persistence.dao.ConstantStatus;
 import pwd.initializr.common.web.api.user.UserController;
 import pwd.initializr.common.web.api.vo.SMSCodeInput;
+import pwd.initializr.common.web.business.bo.ObjectList;
 import pwd.initializr.common.web.business.bo.SMSCode;
 
 /**
@@ -44,11 +50,14 @@ import pwd.initializr.common.web.business.bo.SMSCode;
 )
 @RestController(value = "accountCreateApi")
 @RequestMapping(value = "/api/signup")
-public class SignUpController extends UserController implements SignUpApi {
+public class SignUpController extends UserController implements SignUpApi, SignUpWayApi {
 
   private Logger logger = LoggerFactory.getLogger(getClass());
   @Autowired
   private UserAccountService userAccountService;
+
+  @Autowired
+  private EntranceService entranceService;
 
   @ApiOperation(value = "注册方式清单")
   @GetMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -61,8 +70,18 @@ public class SignUpController extends UserController implements SignUpApi {
   @PostMapping(value = {"/apply"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
   public void signUpByApply(SignUpByApplyInput input) {
-
-    super.outputData();
+    ObjectList<Entrance> userEntranceByType = entranceService.findUserEntranceByType(0);
+    ObjectList<ListSignUpByWaysOutput> result = new ObjectList<>();
+    BeanUtils.copyProperties(userEntranceByType, result);
+    List<Entrance> userEntranceByTypeElements = userEntranceByType.getElements();
+    List<ListSignUpByWaysOutput> resultElements = new LinkedList<>();
+    for (Entrance userEntranceByTypeElement : userEntranceByTypeElements) {
+      ListSignUpByWaysOutput listSignUpByWaysOutput = new ListSignUpByWaysOutput();
+      BeanUtils.copyProperties(userEntranceByTypeElement, listSignUpByWaysOutput);
+      resultElements.add(listSignUpByWaysOutput);
+    }
+    result.setElements(resultElements);
+    super.outputData(result);
   }
 
   @ApiOperation(value = "手机号验证")
@@ -88,8 +107,8 @@ public class SignUpController extends UserController implements SignUpApi {
           ConstantStatus.ENABLE.value(), System.currentTimeMillis(), System.currentTimeMillis());
       UserAccount userAccount = userAccountService.createUserAccount(user, account);
       SignUpByPhoneNumberOutput signUpByPhoneNumberOutput = new SignUpByPhoneNumberOutput();
-      BeanUtils.copyProperties(userAccount.getAccounts().get(0),signUpByPhoneNumberOutput);
-      BeanUtils.copyProperties(userAccount.getUser(),signUpByPhoneNumberOutput);
+      BeanUtils.copyProperties(userAccount.getAccounts().get(0), signUpByPhoneNumberOutput);
+      BeanUtils.copyProperties(userAccount.getUser(), signUpByPhoneNumberOutput);
       super.outputData(signUpByPhoneNumberOutput);
     } else {
       super.outputException(401);

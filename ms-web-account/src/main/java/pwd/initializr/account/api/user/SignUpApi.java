@@ -19,8 +19,6 @@ import pwd.initializr.common.web.api.vo.SMSCodeInput;
  */
 public interface SignUpApi {
 
-    void listSignUpWays(ListSignUpByWaysInput input);
-
     void signUpByApply(SignUpByApplyInput input);
 
     void verifySignUpPhoneNumber(SMSCodeInput input);
