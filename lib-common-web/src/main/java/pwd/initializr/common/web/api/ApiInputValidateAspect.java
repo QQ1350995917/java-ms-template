@@ -28,7 +28,7 @@ public class ApiInputValidateAspect {
         .byProvider(HibernateValidator.class).configure();
     private static ValidatorFactory factory = configuration.failFast(true).buildValidatorFactory();
 
-    @Pointcut("execution(* pwd.calligraphy.studio.cloud.api..*.*(..)) && !execution(* pwd.calligraphy.studio.cloud.api.test.TestController.*(..)) && @annotation(org.springframework.web.bind.annotation.RequestMapping)")
+    @Pointcut("execution(* pwd.initializr.*.api..*.*(..)) && !execution(* pwd.initializr.*.api.test.TestController.*(..)) && @annotation(org.springframework.web.bind.annotation.RequestMapping)")
     public void apiInputPointcut() {
     }
 
