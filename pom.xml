@@ -27,6 +27,7 @@
     <module>ms-web-monitor</module>
     <module>ms-web-gateway</module>
     <module>lib-common-mw-redis</module>
+    <module>ms-web-storage</module>
   </modules>
 
   <properties>
