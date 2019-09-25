@@ -63,13 +63,6 @@ public class SignUpController extends UserController implements SignUpApi, SignU
   @GetMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
   public void listSignUpWays(ListSignUpByWaysInput input) {
-    super.outputData();
-  }
-
-  @ApiOperation(value = "申请账号")
-  @PostMapping(value = {"/apply"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  @Override
-  public void signUpByApply(SignUpByApplyInput input) {
     ObjectList<Entrance> userEntranceByType = entranceService.findUserEntranceByType(0);
     ObjectList<ListSignUpByWaysOutput> result = new ObjectList<>();
     BeanUtils.copyProperties(userEntranceByType, result);
@@ -82,6 +75,13 @@ public class SignUpController extends UserController implements SignUpApi, SignU
     }
     result.setElements(resultElements);
     super.outputData(result);
+  }
+
+  @ApiOperation(value = "申请账号")
+  @PostMapping(value = {"/apply"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @Override
+  public void signUpByApply(SignUpByApplyInput input) {
+    super.outputData();
   }
 
   @ApiOperation(value = "手机号验证")
