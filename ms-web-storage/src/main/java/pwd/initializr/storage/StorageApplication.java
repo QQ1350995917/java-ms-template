@@ -2,6 +2,7 @@ package pwd.initializr.storage;
 
 import javax.servlet.MultipartConfigElement;
 import org.apache.coyote.http11.AbstractHttp11Protocol;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.embedded.tomcat.TomcatConnectorCustomizer;
@@ -26,6 +27,7 @@ import org.springframework.util.unit.DataSize;
 @SpringBootApplication
 @EnableEurekaClient
 @EnableDiscoveryClient
+@MapperScan("pwd.initializr.storage.persistence.mapper")
 public class StorageApplication {
 
   public static void main(String[] args) throws Exception {

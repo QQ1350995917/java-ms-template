@@ -3,11 +3,13 @@ package pwd.initializr.storage.api.user;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +18,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import pwd.initializr.common.web.api.ApiController;
+import pwd.initializr.storage.business.StorageService;
+import pwd.initializr.storage.business.StorageServiceImpl;
+import pwd.initializr.storage.business.bo.Storage;
 
 /**
  * pwd.initializr.storage.api.user@ms-web-initializr
@@ -39,6 +44,9 @@ public class UploadController extends ApiController implements UploadApi {
 
   private static String UPLOADED_FOLDER = "e://temp//";
 
+  @Autowired
+  private StorageServiceImpl storageService;
+
   @ApiOperation(value = "文件上传页面")
   @GetMapping(value = {""})
   public String upload(Model model) {
@@ -51,10 +59,10 @@ public class UploadController extends ApiController implements UploadApi {
   @PostMapping(value = {""})
   public String upload(MultipartFile file, Model model) {
     String name = file.getOriginalFilename();
+    String suffix = name.substring(name.lastIndexOf("."), name.length());
     try {
-      byte[] bytes = file.getBytes();
-      Path path = Paths.get(UPLOADED_FOLDER + name);
-      Files.write(path, bytes);
+      InputStream inputStream = file.getInputStream();
+      Storage storage = storageService.uploadFile(inputStream, suffix);
       model.addAttribute("message", "单文件上传[" + name + "]成功");
     } catch (IOException e) {
       e.printStackTrace();
