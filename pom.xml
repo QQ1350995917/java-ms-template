@@ -18,6 +18,8 @@
 
   <modules>
     <module>lib-common</module>
+    <module>lib-common-mw-minio</module>
+    <module>lib-common-mw-redis</module>
     <module>lib-common-web</module>
     <module>ms-web-registry</module>
     <module>ms-web-account</module>
@@ -26,7 +28,6 @@
     <module>ms-web-logger</module>
     <module>ms-web-monitor</module>
     <module>ms-web-gateway</module>
-    <module>lib-common-mw-redis</module>
     <module>ms-web-storage</module>
   </modules>
 

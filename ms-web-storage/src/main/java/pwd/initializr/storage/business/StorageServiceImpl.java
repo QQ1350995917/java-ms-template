@@ -2,6 +2,7 @@ package pwd.initializr.storage.business;
 
 import io.minio.MinioClient;
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import pwd.initializr.common.mw.minio.MinIOClient;
 import pwd.initializr.storage.business.bo.Storage;
 import pwd.initializr.storage.persistence.dao.StorageEntity;
 import pwd.initializr.storage.persistence.mapper.StorageMapper;
@@ -27,29 +29,24 @@ import pwd.initializr.storage.persistence.mapper.StorageMapper;
  */
 @Service
 public class StorageServiceImpl implements StorageService {
-
-  @Value("${minio.url}")
-  private String minioUrl;
-  @Value("${minio.access_key}")
-  private String minioAccessKey;
-  @Value("${minio.secret_key}")
-  private String minioSecretKey;
-  @Value("${minio.bucket_name}")
+  @Value("${spring.minio.bucket_name}")
   private String minioBucketName;
 
   @Autowired
   private StorageMapper storageMapper;
+  @Autowired
+  private MinIOClient minIOClient;
 
-  public Storage uploadImage(InputStream inputStream, String suffix) throws Exception {
-    return upload(inputStream, suffix, "image/jpeg");
+  public Storage uploadImage(InputStream inputStream, String filename) throws Exception {
+    return upload(inputStream, filename, "image/jpeg");
   }
 
-  public Storage uploadVideo(InputStream inputStream, String suffix) throws Exception {
-    return upload(inputStream, suffix, "video/mp4");
+  public Storage uploadVideo(InputStream inputStream, String filename) throws Exception {
+    return upload(inputStream, filename, "video/mp4");
   }
 
-  public Storage uploadFile(InputStream inputStream, String suffix) throws Exception {
-    return upload(inputStream, suffix, "application/octet-stream");
+  public Storage uploadFile(InputStream inputStream, String filename) throws Exception {
+    return upload(inputStream, filename, "application/octet-stream");
   }
 
   public Storage uploadString(String str) throws Exception {
@@ -60,17 +57,18 @@ public class StorageServiceImpl implements StorageService {
     return upload(inputStream, null, "text/html");
   }
 
-  private Storage upload(InputStream inputStream, String suffix, String contentType)
+
+  private Storage upload(InputStream inputStream, String filename, String contentType)
       throws Exception {
-    MinioClient minioClient = new MinioClient(minioUrl, minioAccessKey, minioSecretKey);
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyyMM");
-    String ymd = sdf.format(new Date());
-    String objectName = ymd + "/" + UUID.randomUUID().toString() + (suffix != null ? suffix : "");
-    minioClient.putObject(minioBucketName, objectName, inputStream, null, null, null, contentType);
-    String url = minioClient.getObjectUrl(minioBucketName, objectName);
-    String path = minioBucketName + "/" + objectName;
+    String suffix = filename.substring(filename.lastIndexOf("."));
+    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    String format = simpleDateFormat.format(new Date());
+    String objectName = format + File.separator + UUID.randomUUID().toString() + (suffix != null ? filename : "");
+    minIOClient.putObject(minioBucketName, objectName, inputStream, null, null, null, contentType);
+    String url = minIOClient.getObjectUrl(minioBucketName, objectName);
+    String path = minioBucketName + File.separator + objectName;
     storageMapper.insertFile(
-        new StorageEntity(null, 0L, "test", url, path,0, System.currentTimeMillis(), System.currentTimeMillis()));
+        new StorageEntity(null, 0L, minioBucketName, url, path,0, System.currentTimeMillis(), System.currentTimeMillis()));
     return new Storage(url, path);
   }
 }

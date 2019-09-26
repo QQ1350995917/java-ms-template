@@ -1,0 +1,33 @@
+{
+  "hints": [
+    {
+      "name": "redis.client.database",
+      "values": [
+        {
+          "value": "0",
+          "description": "使用第一个数据库"
+        },
+        {
+          "value": "1",
+          "description": "使用第二个数据库"
+        }
+      ]
+    }
+  ],
+  "groups": [
+    {
+      "sourceType": "pwd.initializr.common.mw.redis.RedisConfig",
+      "name": "redis.client",
+      "type": "pwd.initializr.common.mw.redis.RedisConfig"
+    }
+  ],
+  "properties": [
+    {
+      "sourceType": "pwd.initializr.common.mw.redis.RedisConfig",
+      "name": "hello.client.database",
+      "type": "java.lang.String",
+      "description": "设置所使用的数据库",
+      "defaultValue": "0"
+    }
+  ]
+}
