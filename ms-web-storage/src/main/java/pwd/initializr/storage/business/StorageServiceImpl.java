@@ -47,6 +47,7 @@ public class StorageServiceImpl implements StorageService {
     return upload(inputStream, filename, "video/mp4");
   }
 
+  @Override
   public Storage uploadFile(InputStream inputStream, String filename) throws Exception {
     return upload(inputStream, filename, "application/octet-stream");
   }
@@ -69,10 +70,10 @@ public class StorageServiceImpl implements StorageService {
     minIOClient.putObject(minioBucketName, objectName, inputStream, null, null, null, contentType);
     String url = minIOClient.getObjectUrl(minioBucketName, objectName);
     String path = minioBucketName + "/" + objectName;
-    StorageEntity storageEntity = new StorageEntity(null, 0L, minioBucketName, url, path, 0,
+    StorageEntity storageEntity = new StorageEntity(null, 0L, filename, url, path, 0,
         System.currentTimeMillis(), System.currentTimeMillis());
 //    storageMapper.insertFile(storageEntity);
     mongoTemplate.save(storageEntity);
-    return new Storage(url, path);
+    return new Storage(url, filename);
   }
 }

@@ -24,5 +24,5 @@ import lombok.ToString;
 @ToString
 public class Storage {
   private String url;
-  private String path;
+  private String name;
 }

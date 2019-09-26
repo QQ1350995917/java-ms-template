@@ -11,7 +11,11 @@ import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.util.unit.DataSize;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
  * pwd.initializr.storage@ms-web-initializr
@@ -24,14 +28,32 @@ import org.springframework.util.unit.DataSize;
  * @version 1.0.0
  * @since DistributionVersion
  */
+@Configuration
 @SpringBootApplication
 @EnableEurekaClient
 @EnableDiscoveryClient
 @MapperScan("pwd.initializr.storage.persistence.mapper")
-public class StorageApplication {
+public class StorageApplication implements WebMvcConfigurer {
 
   public static void main(String[] args) throws Exception {
     SpringApplication.run(StorageApplication.class, args);
+  }
+
+  @Override
+  public void addViewControllers(ViewControllerRegistry registry) {
+    registry.addViewController("/").setViewName("login");
+    registry.addViewController("/login.html").setViewName("login");
+    registry.addViewController("/websocket.html").setViewName("websocket");
+    registry.addViewController("/error.html").setViewName("error");
+    registry.addViewController("/file.html").setViewName("file");
+  }
+
+  @Override
+  public void addResourceHandlers(ResourceHandlerRegistry registry) {
+    registry.addResourceHandler("swagger-ui.html")
+        .addResourceLocations("classpath:/META-INF/resources/");
+    registry.addResourceHandler("/webjars/**")
+        .addResourceLocations("classpath:/META-INF/resources/webjars/");
   }
 
   @Bean

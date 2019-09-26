@@ -37,8 +37,6 @@ import pwd.initializr.storage.business.StorageServiceImpl;
 @RequestMapping(value = "/api/user/upload")
 public class UploadController extends ApiController implements UploadApi {
 
-  private static String UPLOADED_FOLDER = "e://temp//";
-
   @Autowired
   private StorageServiceImpl storageService;
 
