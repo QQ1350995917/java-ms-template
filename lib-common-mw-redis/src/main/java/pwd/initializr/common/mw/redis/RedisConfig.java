@@ -6,12 +6,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
@@ -45,10 +42,10 @@ public class RedisConfig {
   private int maxIdle;
   private long maxWaitMillis;
   private String password;
-  private boolean  blockWhenExhausted;
+  private boolean blockWhenExhausted;
 
   @Bean
-  public JedisPool redisPoolFactory()  throws Exception{
+  public JedisPool redisPoolFactory() throws Exception {
     JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
     jedisPoolConfig.setMaxIdle(maxIdle);
     jedisPoolConfig.setMaxWaitMillis(maxWaitMillis);

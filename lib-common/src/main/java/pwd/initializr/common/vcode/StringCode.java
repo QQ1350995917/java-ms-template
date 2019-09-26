@@ -1,10 +1,6 @@
 package pwd.initializr.common.vcode;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.util.Random;
 
 /**
  * pwd.initializr.common.vcode@ms-web-initializr

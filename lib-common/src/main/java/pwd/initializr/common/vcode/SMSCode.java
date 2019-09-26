@@ -1,6 +1,5 @@
 package pwd.initializr.common.vcode;
 
-import java.awt.Color;
 import java.awt.image.BufferedImage;
 
 /**

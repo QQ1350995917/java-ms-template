@@ -21,49 +21,49 @@ import javax.validation.constraints.NotNull;
 @ApiModel
 public class Meta {
 
-    @NotNull(message = "400")
-    @ApiModelProperty(value = "响应code", required = true)
-    private int code = 200;
+  @NotNull(message = "400")
+  @ApiModelProperty(value = "响应code", required = true)
+  private int code = 200;
 
-    @NotBlank(message = "400")
-    @ApiModelProperty(value = "提示信息", required = true)
-    private String message = "ok";
+  @NotBlank(message = "400")
+  @ApiModelProperty(value = "提示信息", required = true)
+  private String message = "ok";
 
 
-    public Meta() {
-        super();
-    }
+  public Meta() {
+    super();
+  }
 
-    public Meta(int code, String message) {
-        this.code = code;
-        this.message = message;
-    }
+  public Meta(int code, String message) {
+    this.code = code;
+    this.message = message;
+  }
 
-    /**
-     * <P>提供便捷的生成响应成功的元数据</P>
-     * <P>不提供对应的errorMeta的元数据</P>
-     * <P>正常的响应总是相同的，异常的响应各有各的不同</P>
-     *
-     * @author 丁朋伟@600100@18511694468 on 2018-12-21 10:57
-     * @return Meta
-     */
-    public static Meta successMeta() {
-        return new Meta();
-    }
+  /**
+   * <P>提供便捷的生成响应成功的元数据</P>
+   * <P>不提供对应的errorMeta的元数据</P>
+   * <P>正常的响应总是相同的，异常的响应各有各的不同</P>
+   *
+   * @return Meta
+   * @author 丁朋伟@600100@18511694468 on 2018-12-21 10:57
+   */
+  public static Meta successMeta() {
+    return new Meta();
+  }
 
-    public int getCode() {
-        return code;
-    }
+  public int getCode() {
+    return code;
+  }
 
-    public void setCode(int code) {
-        this.code = code;
-    }
+  public void setCode(int code) {
+    this.code = code;
+  }
 
-    public String getMessage() {
-        return message;
-    }
+  public String getMessage() {
+    return message;
+  }
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
+  public void setMessage(String message) {
+    this.message = message;
+  }
 }

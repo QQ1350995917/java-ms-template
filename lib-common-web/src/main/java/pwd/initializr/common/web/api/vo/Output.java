@@ -17,41 +17,41 @@ import pwd.initializr.common.web.exception.BaseException;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class Output<T> {
 
-    private T data;
+  private T data;
 
-    private Meta meta;
+  private Meta meta;
 
-    public Output(T data) {
-        this.meta = Meta.successMeta();
-        this.data = data;
-    }
+  public Output(T data) {
+    this.meta = Meta.successMeta();
+    this.data = data;
+  }
 
-    public Output(Meta meta, T data) {
-        this.meta = meta;
-        this.data = data;
-    }
+  public Output(Meta meta, T data) {
+    this.meta = meta;
+    this.data = data;
+  }
 
-    public T getData() {
-        return data;
-    }
+  public static Output output(Object data) {
+    return new Output(Meta.successMeta(), data);
+  }
 
-    public void setData(T data) {
-        this.data = data;
-    }
+  public static Output error(int code, String errorMessage, Object data) {
+    throw new BaseException(code, errorMessage);
+  }
 
-    public Meta getMeta() {
-        return meta;
-    }
+  public T getData() {
+    return data;
+  }
 
-    public void setMeta(Meta meta) {
-        this.meta = meta;
-    }
+  public void setData(T data) {
+    this.data = data;
+  }
 
-    public static Output output(Object data) {
-        return new Output(Meta.successMeta(), data);
-    }
+  public Meta getMeta() {
+    return meta;
+  }
 
-    public static Output error(int code, String errorMessage, Object data) {
-        throw new BaseException(code, errorMessage);
-    }
+  public void setMeta(Meta meta) {
+    this.meta = meta;
+  }
 }

@@ -8,8 +8,6 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.hibernate.validator.HibernateValidator;
 import org.hibernate.validator.HibernateValidatorConfiguration;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -23,17 +21,34 @@ import org.springframework.stereotype.Component;
 @Order(0)
 public class ApiInputValidateAspect {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ApiInputValidateAspect.class);
-    private static HibernateValidatorConfiguration configuration = Validation
-        .byProvider(HibernateValidator.class).configure();
-    private static ValidatorFactory factory = configuration.failFast(true).buildValidatorFactory();
+  private static HibernateValidatorConfiguration configuration = Validation
+      .byProvider(HibernateValidator.class).configure();
+  private static ValidatorFactory factory = configuration.failFast(true).buildValidatorFactory();
 
-    @Pointcut("execution(* pwd.initializr.*.api..*.*(..)) && !execution(* pwd.initializr.*.api.test.TestController.*(..)) && @annotation(org.springframework.web.bind.annotation.RequestMapping)")
-    public void apiInputPointcut() {
-    }
+  /**
+   * 基于hibernate的参数校验
+   */
+  public static <E> String valid(E t) {
+//        Validator validator = factory.getValidator();
+//        Set<ConstraintViolation<E>> constraintViolations = validator.validate(t);
+//        String errorMessage = null;
+//        if (null != constraintViolations && !constraintViolations.isEmpty()) {
+//            ConstraintViolation constraintViolation = (ConstraintViolation) constraintViolations
+//                .toArray()[0];
+//            errorMessage = constraintViolation.getMessage();
+//            return errorMessage;
+//        } else {
+//            return errorMessage;
+//        }
+    return null;
+  }
 
-    @Around("apiInputPointcut()")
-    public void validateParam(ProceedingJoinPoint pjp) {
+  @Pointcut("execution(* pwd.initializr.*.api..*.*(..)) && !execution(* pwd.initializr.*.api.test.TestController.*(..)) && @annotation(org.springframework.web.bind.annotation.RequestMapping)")
+  public void apiInputPointcut() {
+  }
+
+  @Around("apiInputPointcut()")
+  public void validateParam(ProceedingJoinPoint pjp) {
 //        ApiController target = (ApiController) pjp.getTarget();
 //        Object[] params = pjp.getArgs();
 //        try {
@@ -56,24 +71,6 @@ public class ApiInputValidateAspect {
 //            LOGGER.info(
 //                "invalidParams[unknown]:" + th.getMessage(), th);
 //        }
-    }
-
-    /**
-     * 基于hibernate的参数校验
-     */
-    public static <E> String valid(E t) {
-//        Validator validator = factory.getValidator();
-//        Set<ConstraintViolation<E>> constraintViolations = validator.validate(t);
-//        String errorMessage = null;
-//        if (null != constraintViolations && !constraintViolations.isEmpty()) {
-//            ConstraintViolation constraintViolation = (ConstraintViolation) constraintViolations
-//                .toArray()[0];
-//            errorMessage = constraintViolation.getMessage();
-//            return errorMessage;
-//        } else {
-//            return errorMessage;
-//        }
-        return null;
-    }
+  }
 
 }

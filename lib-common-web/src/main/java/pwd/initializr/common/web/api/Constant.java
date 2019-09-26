@@ -12,5 +12,6 @@ package pwd.initializr.common.web.api;
  * @since DistributionVersion
  */
 public interface Constant {
+
   String REDIS_KEY_PHONE_SMS_CODE_PREFIX = "sms_code_";
 }

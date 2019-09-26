@@ -6,8 +6,7 @@ import java.io.IOException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import pwd.initializr.common.utils.GzipUtil;
@@ -30,10 +29,10 @@ import pwd.initializr.common.web.exception.BaseException;
  * @author DingPengwei[www.dingpengwei@foxmail.com]
  * @version 1.0.0
  * @since DistributionVersion
- */
+*/
+@Slf4j
 public class ApiController {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(ApiController.class);
   public static ThreadLocal<HttpServletRequest> requestLocal = new ThreadLocal();
   public static ThreadLocal<HttpServletResponse> responseLocal = new ThreadLocal();
 
@@ -76,11 +75,11 @@ public class ApiController {
       Object... input) {
     if (e instanceof BaseException) {
       // 如果是baseException，是手动抛出，不需要告警，只打印info日志
-      LOGGER.info(String
+      log.info(String
           .format("IntervalServerError:className:%s，requestParams:%s，", clazz.getName(),
               JSONObject.toJSONString(input)), e);
     } else {
-      LOGGER.error(String
+      log.error(String
           .format("IntervalServerError:className:%s，requestParams:%s，", clazz.getName(),
               JSONObject.toJSONString(input)), e);
     }

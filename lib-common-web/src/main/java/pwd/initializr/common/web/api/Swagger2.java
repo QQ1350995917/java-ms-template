@@ -28,50 +28,49 @@ import springfox.documentation.swagger.web.UiConfigurationBuilder;
 //@EnableSwagger2
 public class Swagger2 {
 
-    //    @Bean
-    public Docket createTestApi() {
-        ParameterBuilder parameterBuilder = new ParameterBuilder();
-        List<Parameter> parameters = new ArrayList<>();
-        parameterBuilder
-            .name("x-ac-uid")
-            .description("userId")
-            .modelRef(new ModelRef("long"))
-            .parameterType("header")
-            .required(false)
-            .name("x-ac-vc")
-            .description("versionCode")
-            .modelRef(new ModelRef("long"))
-            .parameterType("header")
-            .required(false)
-            .name("x-a-p")
-            .description("platform")
-            .modelRef(new ModelRef("long"))
-            .parameterType("header")
-            .required(false)
-            .build();
-        parameters.add(parameterBuilder.build());
-        return new Docket(DocumentationType.SWAGGER_12)
-            .groupName("Test")
-            .apiInfo(apiInfo("TestApi", "TestApi"))
-            .select()
-            .apis(RequestHandlerSelectors.basePackage("pwd.common.api.test"))
-            .paths(PathSelectors.any())
-            .build().globalOperationParameters(parameters);
-    }
+  //    @Bean
+  public Docket createTestApi() {
+    ParameterBuilder parameterBuilder = new ParameterBuilder();
+    List<Parameter> parameters = new ArrayList<>();
+    parameterBuilder
+        .name("x-ac-uid")
+        .description("userId")
+        .modelRef(new ModelRef("long"))
+        .parameterType("header")
+        .required(false)
+        .name("x-ac-vc")
+        .description("versionCode")
+        .modelRef(new ModelRef("long"))
+        .parameterType("header")
+        .required(false)
+        .name("x-a-p")
+        .description("platform")
+        .modelRef(new ModelRef("long"))
+        .parameterType("header")
+        .required(false)
+        .build();
+    parameters.add(parameterBuilder.build());
+    return new Docket(DocumentationType.SWAGGER_12)
+        .groupName("Test")
+        .apiInfo(apiInfo("TestApi", "TestApi"))
+        .select()
+        .apis(RequestHandlerSelectors.basePackage("pwd.common.api.test"))
+        .paths(PathSelectors.any())
+        .build().globalOperationParameters(parameters);
+  }
 
 
+  private ApiInfo apiInfo(String title, String description) {
+    return new ApiInfoBuilder()
+        .title(title)
+        .description(description)
+        .termsOfServiceUrl("localhost:8080/")
+        .version("1.0")
+        .build();
+  }
 
-    private ApiInfo apiInfo(String title, String description) {
-        return new ApiInfoBuilder()
-            .title(title)
-            .description(description)
-            .termsOfServiceUrl("localhost:8080/")
-            .version("1.0")
-            .build();
-    }
-
-    //    @Bean
-    public UiConfigurationBuilder uiConfig() {
-        return UiConfigurationBuilder.builder();
-    }
+  //    @Bean
+  public UiConfigurationBuilder uiConfig() {
+    return UiConfigurationBuilder.builder();
+  }
 }
