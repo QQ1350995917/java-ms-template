@@ -1,0 +1,3 @@
+[submodule "ms-web-schedule"]
+	path = ms-web-schedule
+	url = https://github.com/xuxueli/xxl-job.git
