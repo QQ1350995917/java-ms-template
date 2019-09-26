@@ -6,6 +6,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import net.bytebuddy.description.field.FieldDescription.InGenericShape;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 /**
  * pwd.initializr.storage.persistence.dao@ms-web-initializr
@@ -23,13 +26,24 @@ import net.bytebuddy.description.field.FieldDescription.InGenericShape;
 @Setter
 @Getter
 @ToString
+@Document(collection = "file")
 public class StorageEntity {
-  private Long id;
+
+  @Id
+  @Field("id")
+  private String id;
+  @Field("uid")
   private Long userId;
+  @Field("name")
   private String name;
+  @Field("url")
   private String url;
+  @Field("path")
   private String path;
+  @Field("stat")
   private Integer status;
+  @Field("ct")
   private Long createTime;
+  @Field("ut")
   private Long updateTime;
 }

@@ -58,7 +58,7 @@ public class UploadController extends ApiController implements UploadApi {
       InputStream inputStream = file.getInputStream();
       storageService.uploadFile(inputStream, name);
       model.addAttribute("message", "单文件上传[" + name + "]成功");
-    } catch (IOException e) {
+    } catch (Exception e) {
       e.printStackTrace();
       model.addAttribute("message", "单文件上传[" + name + "]失败");
     } finally {

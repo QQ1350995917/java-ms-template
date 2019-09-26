@@ -1,14 +1,13 @@
 package pwd.initializr.storage.business;
 
-import io.minio.MinioClient;
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import pwd.initializr.common.mw.minio.MinIOClient;
@@ -29,11 +28,14 @@ import pwd.initializr.storage.persistence.mapper.StorageMapper;
  */
 @Service
 public class StorageServiceImpl implements StorageService {
+
   @Value("${spring.minio.bucket_name}")
   private String minioBucketName;
 
   @Autowired
   private StorageMapper storageMapper;
+  @Autowired
+  private MongoTemplate mongoTemplate;
   @Autowired
   private MinIOClient minIOClient;
 
@@ -63,12 +65,14 @@ public class StorageServiceImpl implements StorageService {
     String suffix = filename.substring(filename.lastIndexOf("."));
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
     String format = simpleDateFormat.format(new Date());
-    String objectName = format + File.separator + UUID.randomUUID().toString() + (suffix != null ? filename : "");
+    String objectName = format + "/" + UUID.randomUUID().toString() + suffix;
     minIOClient.putObject(minioBucketName, objectName, inputStream, null, null, null, contentType);
     String url = minIOClient.getObjectUrl(minioBucketName, objectName);
-    String path = minioBucketName + File.separator + objectName;
-    storageMapper.insertFile(
-        new StorageEntity(null, 0L, minioBucketName, url, path,0, System.currentTimeMillis(), System.currentTimeMillis()));
+    String path = minioBucketName + "/" + objectName;
+    StorageEntity storageEntity = new StorageEntity(null, 0L, minioBucketName, url, path, 0,
+        System.currentTimeMillis(), System.currentTimeMillis());
+//    storageMapper.insertFile(storageEntity);
+    mongoTemplate.save(storageEntity);
     return new Storage(url, path);
   }
 }
