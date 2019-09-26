@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -13,7 +14,6 @@ import org.springframework.util.StringUtils;
 import pwd.initializr.common.mw.minio.MinIOClient;
 import pwd.initializr.storage.business.bo.Storage;
 import pwd.initializr.storage.persistence.dao.StorageEntity;
-import pwd.initializr.storage.persistence.mapper.StorageMapper;
 
 /**
  * pwd.initializr.storage.business@ms-web-initializr
@@ -32,8 +32,6 @@ public class StorageServiceImpl implements StorageService {
   @Value("${spring.minio.bucket_name}")
   private String minioBucketName;
 
-  @Autowired
-  private StorageMapper storageMapper;
   @Autowired
   private MongoTemplate mongoTemplate;
   @Autowired
@@ -60,7 +58,6 @@ public class StorageServiceImpl implements StorageService {
     return upload(inputStream, null, "text/html");
   }
 
-
   private Storage upload(InputStream inputStream, String filename, String contentType)
       throws Exception {
     String suffix = filename.substring(filename.lastIndexOf("."));
@@ -70,10 +67,11 @@ public class StorageServiceImpl implements StorageService {
     minIOClient.putObject(minioBucketName, objectName, inputStream, null, null, null, contentType);
     String url = minIOClient.getObjectUrl(minioBucketName, objectName);
     String path = minioBucketName + "/" + objectName;
-    StorageEntity storageEntity = new StorageEntity(null, 0L, filename, url, path, 0,
-        System.currentTimeMillis(), System.currentTimeMillis());
-//    storageMapper.insertFile(storageEntity);
+    StorageEntity storageEntity = new StorageEntity(null, 0L, filename, minioBucketName, objectName,
+        url, path, 0, System.currentTimeMillis(), System.currentTimeMillis());
     mongoTemplate.save(storageEntity);
-    return new Storage(url, filename);
+    Storage storage = new Storage();
+    BeanUtils.copyProperties(storageEntity, storage);
+    return storage;
   }
 }

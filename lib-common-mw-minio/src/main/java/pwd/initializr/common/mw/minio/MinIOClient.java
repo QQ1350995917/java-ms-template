@@ -56,6 +56,10 @@ public class MinIOClient {
         .putObject(bucketName, objectName, stream, size, headerMap, sse, contentType);
   }
 
+  public InputStream getObject(String bucketName,String objectName) throws Exception {
+    return getMinioClientInstance().getObject(bucketName,objectName);
+  }
+
   public String getObjectUrl(String bucketName, String objectName)
       throws Exception {
     return getMinioClientInstance().getObjectUrl(bucketName, objectName);

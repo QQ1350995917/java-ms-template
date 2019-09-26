@@ -1,7 +1,9 @@
 package pwd.initializr.storage.business;
 
+import java.io.InputStream;
 import pwd.initializr.common.web.business.bo.ObjectList;
 import pwd.initializr.storage.business.bo.Storage;
+import pwd.initializr.storage.persistence.dao.StorageEntity;
 
 /**
  * pwd.initializr.storage.business@ms-web-initializr
@@ -19,5 +21,7 @@ public interface QueryService {
   ObjectList<Storage> listFile();
 
   Storage findOneByUrl(String url);
+
+  InputStream getObject(Storage storage) throws Exception;
 
 }

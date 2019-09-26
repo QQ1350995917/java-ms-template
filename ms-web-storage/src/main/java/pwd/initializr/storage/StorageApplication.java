@@ -41,11 +41,11 @@ public class StorageApplication implements WebMvcConfigurer {
 
   @Override
   public void addViewControllers(ViewControllerRegistry registry) {
-    registry.addViewController("/").setViewName("login");
-    registry.addViewController("/login.html").setViewName("login");
-    registry.addViewController("/websocket.html").setViewName("websocket");
-    registry.addViewController("/error.html").setViewName("error");
-    registry.addViewController("/file.html").setViewName("file");
+//    registry.addViewController("/").setViewName("login");
+//    registry.addViewController("/login.html").setViewName("login");
+//    registry.addViewController("/websocket.html").setViewName("websocket");
+//    registry.addViewController("/error.html").setViewName("error");
+//    registry.addViewController("/file.html").setViewName("file");
   }
 
   @Override

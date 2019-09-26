@@ -23,6 +23,15 @@ import lombok.ToString;
 @Getter
 @ToString
 public class Storage {
+
+  private String id;
+  private Long userId;
+  private String filename;
+  private String bucketName;
+  private String objectName;
   private String url;
-  private String name;
+  private String path;
+  private Integer status;
+  private Long createTime;
+  private Long updateTime;
 }

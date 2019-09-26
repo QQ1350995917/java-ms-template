@@ -34,8 +34,12 @@ public class StorageEntity {
   private String id;
   @Field("uid")
   private Long userId;
-  @Field("name")
-  private String name;
+  @Field("fn")
+  private String filename;
+  @Field("bn")
+  private String bucketName;
+  @Field("on")
+  private String objectName;
   @Field("url")
   private String url;
   @Field("path")

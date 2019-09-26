@@ -13,6 +13,7 @@ import pwd.initializr.common.web.business.bo.ObjectList;
 import pwd.initializr.storage.api.user.vo.ListInput;
 import pwd.initializr.storage.business.QueryService;
 import pwd.initializr.storage.business.bo.Storage;
+import pwd.initializr.storage.persistence.dao.StorageEntity;
 
 /**
  * pwd.initializr.storage.api.user.vo@ms-web-initializr

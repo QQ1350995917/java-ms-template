@@ -31,7 +31,7 @@ public class DownloadInput {
   @ApiModelProperty(name = "userId", value = "用户ID", required = true, example = "-1")
   @Null(message = "0")
   private Long userId;
-  @ApiModelProperty(name = "url", value = "文件地址", required = true, example = "http://localhost:9000/test/2019-09-26/91889727-7fc6-4d78-a14f-e179e3b6ad09.jpg")
+  @ApiModelProperty(name = "url", value = "文件地址", required = true, example = "http://localhost:9000/test/2019-09-26/e8468e98-aa36-484e-9fec-0f476a217c16.jpg")
   @Null(message = "0")
   private String url;
 }
