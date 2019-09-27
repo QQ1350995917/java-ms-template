@@ -11,7 +11,7 @@
  Target Server Version : 50727
  File Encoding         : 65001
 
- Date: 25/09/2019 10:25:31
+ Date: 27/09/2019 18:56:11
 */
 
 SET NAMES utf8mb4;
@@ -34,13 +34,6 @@ CREATE TABLE `account`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Records of account
--- ----------------------------
-INSERT INTO `account` VALUES (1, 5, '000000', '000000', 0, 0, 1569056125916, 1569056125916);
-INSERT INTO `account` VALUES (2, 6, '000000', '000000', 0, 0, 1569157853487, 1569157853487);
-INSERT INTO `account` VALUES (3, 7, '18511694468', NULL, 1, 0, 1569301125579, 1569301125579);
-
--- ----------------------------
 -- Table structure for entrance
 -- ----------------------------
 DROP TABLE IF EXISTS `entrance`;
@@ -57,18 +50,24 @@ CREATE TABLE `entrance`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Records of entrance
+-- Table structure for organization
 -- ----------------------------
-INSERT INTO `entrance` VALUES (1, 0, '申请账号', NULL, 0, 0, 1569313255558, 1569313255558);
-INSERT INTO `entrance` VALUES (2, 1, '手机注册', NULL, 0, 0, 1569313255558, 1569313255558);
-INSERT INTO `entrance` VALUES (3, 2, '邮箱注册', NULL, 0, 0, 1569313255558, 1569313255558);
-INSERT INTO `entrance` VALUES (4, 3, '微信注册', NULL, 0, 0, 1569313255558, 1569313255558);
-INSERT INTO `entrance` VALUES (5, 4, '微博注册', NULL, 0, 0, 1569313255558, 1569313255558);
-INSERT INTO `entrance` VALUES (6, 0, '申请账号', NULL, 1, 0, 1569313631610, 1569313631610);
-INSERT INTO `entrance` VALUES (7, 1, '手机登录', NULL, 1, 0, 1569313631610, 1569313631610);
-INSERT INTO `entrance` VALUES (8, 2, '邮箱登录', NULL, 1, 0, 1569313631610, 1569313631610);
-INSERT INTO `entrance` VALUES (9, 3, '微信登录', NULL, 1, 0, 1569313631610, 1569313631610);
-INSERT INTO `entrance` VALUES (10, 4, '微博登录', NULL, 1, 0, 1569313631610, 1569313631610);
+DROP TABLE IF EXISTS `organization`;
+CREATE TABLE `organization`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `pid` bigint(20) NOT NULL DEFAULT 0 COMMENT '上级组织',
+  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '组织名称',
+  `logo` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '组织logo',
+  `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '组织描述',
+  `slogan` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '组织slogan',
+  `level` int(8) NOT NULL DEFAULT 0 COMMENT '组织等级',
+  `sort` int(8) NOT NULL DEFAULT 0 COMMENT '组织排序',
+  `members` int(8) NOT NULL DEFAULT 1 COMMENT '组织成员数量',
+  `status` int(8) NOT NULL COMMENT '状态，0正常，1禁用，2删除',
+  `create_time` bigint(11) NOT NULL COMMENT '首次创建时间',
+  `update_time` bigint(11) NOT NULL COMMENT '最近修改时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for user
@@ -84,13 +83,17 @@ CREATE TABLE `user`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Records of user
+-- Table structure for user_org
 -- ----------------------------
-INSERT INTO `user` VALUES (1, 'pwd-test-0', 0, 1569055616899, 1569055616899);
-INSERT INTO `user` VALUES (2, 'pwd-test-0', 0, 1569055718761, 1569055718761);
-INSERT INTO `user` VALUES (4, 'pwd-test-0', 0, 1569055940369, 1569055940369);
-INSERT INTO `user` VALUES (5, 'pwd-test-0', 0, 1569056125916, 1569056125916);
-INSERT INTO `user` VALUES (6, 'pwd-test-0', 0, 1569157853487, 1569157853487);
-INSERT INTO `user` VALUES (7, '18511694468', 0, 1569301125579, 1569301125579);
+DROP TABLE IF EXISTS `user_org`;
+CREATE TABLE `user_org`  (
+  `user_id` bigint(20) NOT NULL COMMENT '外键，用户ID',
+  `org_id` bigint(20) NOT NULL COMMENT '外键，组织ID',
+  `level` int(11) NOT NULL DEFAULT 0 COMMENT '级别，0普通成员，1管理员，2拥有者',
+  `status` int(11) NOT NULL DEFAULT 0 COMMENT '状态，0正常，1禁用，2删除',
+  `create_time` datetime(0) NOT NULL COMMENT '首次创建时间',
+  `update_time` datetime(0) NOT NULL ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '最近修改时间',
+  PRIMARY KEY (`user_id`, `org_id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;
