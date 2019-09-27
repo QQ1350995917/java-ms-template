@@ -1,4 +1,4 @@
-package pwd.initializr.account.test.user;
+package pwd.initializr.account.test.user.service;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -7,9 +7,9 @@
     parameterType="pwd.initializr.account.persistence.dao.UserOrgEntity"
     useGeneratedKeys="true">
 		insert into `user_org`
-		(`user_id`,`org_id`,`level`,`status`)
+		(`user_id`,`org_id`,`level`,`status`,`create_time`,`update_time`)
 		values
-		(#{userId},#{orgId},#{level},#{status})
+		(#{userId},#{orgId},#{level},#{status},#{createTime},#{updateTime})
 	</insert>
 
   <!-- updateLevel -->

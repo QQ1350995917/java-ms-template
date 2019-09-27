@@ -2,6 +2,7 @@ package pwd.initializr.account.persistence.mapper;
 
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import pwd.initializr.account.persistence.dao.OrganizationEntity;
 
 /**
@@ -50,7 +51,7 @@ public interface OrganizationMapper {
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  void updateLevelById(Long id, Integer level);
+  void updateLevelById(@Param("id")Long id, @Param("level")Integer level);
 
   /*
    *
@@ -99,6 +100,6 @@ public interface OrganizationMapper {
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  List<OrganizationEntity> listByPidAndStatus(Integer pid, Integer status);
+  List<OrganizationEntity> listByPidAndStatus(Long pid, Integer status);
 
 }

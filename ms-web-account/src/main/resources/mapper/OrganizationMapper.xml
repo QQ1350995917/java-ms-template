@@ -7,9 +7,9 @@
     parameterType="pwd.initializr.account.persistence.dao.OrganizationEntity"
     useGeneratedKeys="true">
 		insert into `organization`
-		(`id`,`pid`,`name`,`logo`,`description`,`slogan`,`level`,`sort`,`members`,`status`)
+		(`id`,`pid`,`name`,`logo`,`description`,`slogan`,`level`,`sort`,`members`,`status`,`create_time`,`update_time`)
 		values
-		(#{id},#{pid},#{name},#{logo},#{description},#{slogan},#{level},#{sort},#{status})
+		(#{id},#{pid},#{name},#{logo},#{description},#{slogan},#{level},#{sort},#{members},#{status},#{createTime},#{updateTime})
 	</insert>
 
   <!-- update -->
@@ -35,35 +35,35 @@
   </update>
 
   <!-- updateLevelById -->
-  <update id="updateLevelById" parameterType="java.lang.Integer">
+  <update id="updateLevelById">
 		update `organization`
 		set `level` = #{level}
 		where `id` = #{id}
 	</update>
 
   <!-- updateSortById -->
-  <update id="updateSortById" parameterType="java.lang.Integer">
+  <update id="updateSortById">
 		update `organization`
 		set `sort` = #{sort}
 		where `id` = #{id}
 	</update>
 
   <!-- updateMembersById -->
-  <update id="updateMembersById" parameterType="java.lang.Integer">
+  <update id="updateMembersById">
 		update `organization`
 		set `members` = #{members}
 		where `id` = #{id}
 	</update>
 
   <!-- updateStatusById -->
-  <update id="updateStatusById" parameterType="java.lang.Integer">
+  <update id="updateStatusById">
 		update `organization`
 		set `status` = #{status}
 		where `id` = #{id}
 	</update>
 
   <!-- listByPidAndStatus -->
-  <select id="listByPidAndStatus" parameterType="java.lang.Integer"
+  <select id="listByPidAndStatus"
     resultType="pwd.initializr.account.persistence.dao.OrganizationEntity">
 		select
 		`id` as `id`,
