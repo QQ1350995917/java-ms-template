@@ -69,6 +69,11 @@ public class OrganizationMapperTest {
   }
 
   @Test
+  public void testUpdateProgressById() {
+    organizationMapper.updateProgressById(1L, 2);
+  }
+
+  @Test
   public void testListByPidAndStatus() {
     List<OrganizationEntity> organizationEntities = organizationMapper.listByPidAndStatus(0L, 1);
     Assert.assertNotEquals(organizationEntities.size(), 0);

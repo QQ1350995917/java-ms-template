@@ -22,6 +22,8 @@ public interface OrganizationService {
 
   void update(Organization organization);
 
-  ObjectList<Organization> listByPidAndStatus(Integer pid, Integer status);
+  void reviewCommit(Object object);
+
+  ObjectList<Organization> listByPidAndStatus(Long pid, Integer status);
 
 }

@@ -1,4 +1,4 @@
-package pwd.initializr.account.persistence.dao;
+package pwd.initializr.account.business.user.bo;
 
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -6,13 +6,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import pwd.initializr.account.persistence.dao.UserOrgEntity;
+import pwd.initializr.account.persistence.dao.UserOrgEntity.Level;
 
 /**
- * pwd.initializr.account.persistence.dao@ms-web-initializr
+ * pwd.initializr.account.business.user.bo@ms-web-initializr
  *
  * <h1>TODO what you want to do?</h1>
  *
- * date 2019-09-27 17:46
+ * date 2019-09-28 23:10
  *
  * @author DingPengwei[dingpengwei@eversec.com]
  * @version 1.0.0
@@ -23,7 +25,7 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class UserOrgEntity {
+public class UserOrg {
 
   /**
    * 联合主键用户ID
@@ -36,7 +38,7 @@ public class UserOrgEntity {
   @NotNull
   private Long orgId;
   /**
-   * 成员等级 see {@link Level}
+   * 成员等级 see {@link UserOrgEntity.Level}
    */
   @NotNull
   private Integer level;

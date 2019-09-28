@@ -51,7 +51,7 @@ public interface OrganizationMapper {
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  void updateLevelById(@Param("id")Long id, @Param("level")Integer level);
+  void updateLevelById(@Param("id") Long id, @Param("level") Integer level);
 
   /*
    *
@@ -89,6 +89,18 @@ public interface OrganizationMapper {
    * @since DistributionVersion
    */
   void updateStatusById(Long id, Integer status);
+
+  /*
+   *
+   * <h2>更新组织审核</h2>
+   * date 2019-09-28
+   *
+   * @param id 组织ID
+   * @param progress 审核进度
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  void updateProgressById(Long id, Integer progress);
 
   /*
    *

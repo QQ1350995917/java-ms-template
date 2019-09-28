@@ -7,9 +7,9 @@
     parameterType="pwd.initializr.account.persistence.dao.OrganizationEntity"
     useGeneratedKeys="true">
 		insert into `organization`
-		(`id`,`pid`,`name`,`logo`,`description`,`slogan`,`level`,`sort`,`members`,`status`,`create_time`,`update_time`)
+		(`id`,`pid`,`name`,`logo`,`description`,`slogan`,`level`,`sort`,`members`,`progress`,`status`,`create_time`,`update_time`)
 		values
-		(#{id},#{pid},#{name},#{logo},#{description},#{slogan},#{level},#{sort},#{members},#{status},#{createTime},#{updateTime})
+		(#{id},#{pid},#{name},#{logo},#{description},#{slogan},#{level},#{sort},#{members},#{progress},#{status},#{createTime},#{updateTime})
 	</insert>
 
   <!-- update -->
@@ -75,6 +75,18 @@
 		`organization`
 		set
 		`status` = #{status},
+		`update_time` = REPLACE(unix_timestamp(current_timestamp(3)),'.','')
+		where
+		`id` = #{id}
+	</update>
+
+
+	<!-- updateProgressById -->
+	<update id="updateProgressById">
+		update
+		`organization`
+		set
+		`progress` = #{progress},
 		`update_time` = REPLACE(unix_timestamp(current_timestamp(3)),'.','')
 		where
 		`id` = #{id}

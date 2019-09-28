@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import pwd.initializr.account.persistence.dao.OrganizationEntity.Progress;
 
 /**
  * pwd.initializr.account.business.user.bo@ms-web-initializr
@@ -71,6 +72,11 @@ public class Organization {
    */
   @NotNull
   private Integer members = 1;
+  /**
+   * 处理过程 see {@link Progress}
+   */
+  @NotNull
+  private Integer progress = 0;
   /**
    * 状态
    * see {@link pwd.initializr.account.persistence.dao.ConstantStatus}

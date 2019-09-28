@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.springframework.lang.NonNull;
 
 /**
  * pwd.initializr.account.persistence.dao@ms-web-initializr
@@ -73,8 +72,12 @@ public class OrganizationEntity {
   @NotNull
   private Integer members = 1;
   /**
-   * 状态
-   * see {@link pwd.initializr.account.persistence.dao.ConstantStatus}
+   * 处理过程 see {@link Progress}
+   */
+  @NotNull
+  private Integer progress = 0;
+  /**
+   * 状态 see {@link pwd.initializr.account.persistence.dao.ConstantStatus}
    */
   @NotNull
   private Integer status = 0;
@@ -88,4 +91,29 @@ public class OrganizationEntity {
    */
   @NotNull
   private Long updateTime;
+
+
+  public enum Progress {
+
+    //                        |--->审核通过4--->重新复核5---|
+    // 新建0--->待审核1--->审核中2                          |
+    //          ^             |--->审核拒绝3---|           |
+    //          |-----------------------------|<---------|
+    NEW(0),
+    REVIEW_PENDING(1),
+    REVIEW_EXECUTION(2),
+    REVIEW_REFUSE(3),
+    REVIEW_APPROVE(4),
+    REVIEW_RECHECK(5);
+
+    private int value;
+
+    Progress(int value) {
+      this.value = value;
+    }
+
+    public int value() {
+      return value;
+    }
+  }
 }
