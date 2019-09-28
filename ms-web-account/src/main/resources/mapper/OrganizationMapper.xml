@@ -14,7 +14,8 @@
 
   <!-- update -->
   <update id="update" parameterType="pwd.initializr.account.persistence.mapper.OrganizationMapper">
-    update `organization`
+    update
+    `organization`
     <set>
       <if test="name!=null">
         `name` = #{name},
@@ -28,6 +29,7 @@
       <if test="slogan!=null">
         `slogan` = #{slogan},
       </if>
+      `update_time` = REPLACE(unix_timestamp(current_timestamp(3)),'.','')
     </set>
     <where>
       `id` = #{id}
@@ -36,30 +38,46 @@
 
   <!-- updateLevelById -->
   <update id="updateLevelById">
-		update `organization`
-		set `level` = #{level}
-		where `id` = #{id}
+		update
+		`organization`
+		set
+		`level` = #{level},
+		`update_time` = REPLACE(unix_timestamp(current_timestamp(3)),'.','')
+		where
+		`id` = #{id}
 	</update>
 
   <!-- updateSortById -->
   <update id="updateSortById">
-		update `organization`
-		set `sort` = #{sort}
-		where `id` = #{id}
+		update
+		`organization`
+		set
+		`sort` = #{sort},
+		`update_time` = REPLACE(unix_timestamp(current_timestamp(3)),'.','')
+		where
+		`id` = #{id}
 	</update>
 
   <!-- updateMembersById -->
   <update id="updateMembersById">
-		update `organization`
-		set `members` = #{members}
-		where `id` = #{id}
+		update
+		`organization`
+		set
+		`members` = #{members},
+		`update_time` = REPLACE(unix_timestamp(current_timestamp(3)),'.','')
+		where
+		`id` = #{id}
 	</update>
 
   <!-- updateStatusById -->
   <update id="updateStatusById">
-		update `organization`
-		set `status` = #{status}
-		where `id` = #{id}
+		update
+		`organization`
+		set
+		`status` = #{status},
+		`update_time` = REPLACE(unix_timestamp(current_timestamp(3)),'.','')
+		where
+		`id` = #{id}
 	</update>
 
   <!-- listByPidAndStatus -->

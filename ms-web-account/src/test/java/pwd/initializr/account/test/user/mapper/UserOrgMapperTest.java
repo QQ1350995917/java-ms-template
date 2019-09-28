@@ -1,12 +1,12 @@
 package pwd.initializr.account.test.user.mapper;
 
+import java.util.List;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import pwd.initializr.account.persistence.dao.UserOrgEntity;
-import pwd.initializr.account.persistence.mapper.OrganizationMapper;
 import pwd.initializr.account.persistence.mapper.UserOrgMapper;
 
 /**
@@ -23,6 +23,7 @@ import pwd.initializr.account.persistence.mapper.UserOrgMapper;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class UserOrgMapperTest {
+
   @Autowired
   private UserOrgMapper userOrgMapper;
 
@@ -41,12 +42,33 @@ public class UserOrgMapperTest {
 
   @Test
   public void testUpdateLevel() {
-    userOrgMapper.updateLevel(1L,1L,250);
+    userOrgMapper.updateLevel(1L, 1L, 250);
   }
 
   @Test
   public void testUpdateStatus() {
-    userOrgMapper.updateStatus(1L,1L,250);
+    userOrgMapper.updateStatus(1L, 1L, 250);
   }
+
+
+  @Test
+  public void testFindOne() {
+    UserOrgEntity one = userOrgMapper.findOne(1L, 1L);
+    System.out.println();
+  }
+
+  @Test
+  public void testListByOrgId() {
+    List<UserOrgEntity> userOrgEntities = userOrgMapper.listByOrgId(2L, 0);
+    System.out.println();
+  }
+
+  @Test
+  public void testListByUserId() {
+    List<UserOrgEntity> userOrgEntities = userOrgMapper.listByUserId(1L, 0);
+    System.out.println();
+  }
+
+
 
 }
