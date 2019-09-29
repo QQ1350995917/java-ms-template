@@ -4,3 +4,6 @@
 [submodule "static-web-admin"]
 	path = static-web-admin
 	url = https://github.com/QQ1350995917/vue-element-admin.git
+[submodule "static-web-user"]
+	path = static-web-user
+	url = https://github.com/QQ1350995917/static-web-user.git
