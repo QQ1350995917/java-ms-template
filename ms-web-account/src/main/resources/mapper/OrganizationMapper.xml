@@ -113,4 +113,24 @@
 		and `status` = #{status};
 	</select>
 
+  <!-- listByStatus -->
+  <select id="listByStatus"
+    resultType="pwd.initializr.account.persistence.dao.OrganizationEntity">
+		select
+		`id` as `id`,
+		`pid` as `pid`,
+		`name` as `name`,
+		`logo` as `logo`,
+		`description` as `description`,
+		`slogan` as `slogan`,
+		`level` as `level`,
+		`sort` as `sort`,
+		`members` as `members`,
+		`status` as `status`,
+		`create_time` as `createTime`,
+		`update_time` as `updateTime`
+		from `organization`
+		where `status` = #{status};
+	</select>
+
 </mapper>

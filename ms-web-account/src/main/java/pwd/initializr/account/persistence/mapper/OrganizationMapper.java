@@ -114,4 +114,16 @@ public interface OrganizationMapper {
    */
   List<OrganizationEntity> listByPidAndStatus(Long pid, Integer status);
 
+
+  /*
+   *
+   * <h2>根据状态查询组织集</h2>
+   * date 2019-10-12
+   *
+   * @param status 组织状态
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  List<OrganizationEntity> listByStatus(Integer status);
+
 }

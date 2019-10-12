@@ -1,16 +1,14 @@
-package pwd.initializr.account.business.user;
+package pwd.initializr.account.business.admin;
 
-import java.util.List;
-import pwd.initializr.account.business.user.bo.Organization;
-import pwd.initializr.account.persistence.dao.OrganizationEntity;
+import pwd.initializr.account.business.admin.bo.Organization;
 import pwd.initializr.common.web.business.bo.ObjectList;
 
 /**
- * pwd.initializr.account.business.user@ms-web-initializr
+ * pwd.initializr.account.business.admin@ms-web-initializr
  *
  * <h1>TODO what you want to do?</h1>
  *
- * date 2019-09-27 22:37
+ * date 2019-10-12 18:35
  *
  * @author DingPengwei[dingpengwei@eversec.com]
  * @version 1.0.0
@@ -22,8 +20,15 @@ public interface OrganizationService {
 
   void update(Organization organization);
 
-  void reviewPending(Long id);
+  void reviewExecution(Long id);
+
+  void reviewRefuse(Long id);
+
+  void reviewApprove(Long id);
+
+  void reviewRecheck(Long id);
 
   ObjectList<Organization> listByPidAndStatus(Long pid, Integer status);
 
+  ObjectList<Organization> listByStatus(Integer status);
 }
