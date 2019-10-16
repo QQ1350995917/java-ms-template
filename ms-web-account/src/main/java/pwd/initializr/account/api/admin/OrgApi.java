@@ -1,5 +1,6 @@
 package pwd.initializr.account.api.admin;
 
+import pwd.initializr.account.api.admin.vo.OrgCreateInput;
 import pwd.initializr.account.api.admin.vo.OrgListInput;
 
 /**
@@ -19,7 +20,7 @@ public interface OrgApi {
 
   void queryTopOrg();
 
-  void createTopOrg();
+  void createTopOrg(OrgCreateInput input);
 
   void reviewExecution();
 

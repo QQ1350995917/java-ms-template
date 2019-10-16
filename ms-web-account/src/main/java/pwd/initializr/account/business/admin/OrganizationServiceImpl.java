@@ -28,13 +28,18 @@ public class OrganizationServiceImpl implements OrganizationService {
   private OrganizationMapper organizationMapper;
 
   @Override
-  public void create(Organization organization) {
+  public Organization create(Organization organization) {
+    return createTopOrganization(organization);
+  }
+
+  private Organization createTopOrganization(Organization organization){
     OrganizationEntity organizationEntity = new OrganizationEntity();
     BeanUtils.copyProperties(organization,organizationEntity);
     organizationEntity.setPid(0L);
     organizationEntity.setCreateTime(System.currentTimeMillis());
     organizationEntity.setUpdateTime(System.currentTimeMillis());
     organizationMapper.create(organizationEntity);
+    return organization;
   }
 
   @Override

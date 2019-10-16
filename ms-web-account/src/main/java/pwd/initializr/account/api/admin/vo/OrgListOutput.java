@@ -26,7 +26,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-@ApiModel(value = "orgListInput", description = "组织列表响应参数")
+@ApiModel(value = "orgListOutput", description = "组织列表响应参数")
 public class OrgListOutput {
 
   @ApiModelProperty(name = "hasNext", value = "是否还有下一页", required = true, example = "false")

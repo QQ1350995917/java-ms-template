@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import pwd.initializr.account.api.admin.vo.OrgCreateInput;
+import pwd.initializr.account.api.admin.vo.OrgCreateOutput;
 import pwd.initializr.account.api.admin.vo.OrgListInput;
 import pwd.initializr.account.api.admin.vo.OrgListItem;
 import pwd.initializr.account.api.admin.vo.OrgListOutput;
@@ -68,8 +70,13 @@ public class OrgController extends AdminController implements OrgApi {
   @ApiOperation(value = "创建顶级组织")
   @PostMapping(value = {"/top"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
-  public void createTopOrg() {
-
+  public void createTopOrg(OrgCreateInput input) {
+    Organization organization = new Organization();
+    BeanUtils.copyProperties(input, organization);
+    Organization createResult = organizationService.create(organization);
+    OrgCreateOutput orgCreateOutput = new OrgCreateOutput();
+    BeanUtils.copyProperties(createResult, orgCreateOutput);
+    outputData(orgCreateOutput);
   }
 
   @ApiOperation(value = "组织审核中")
