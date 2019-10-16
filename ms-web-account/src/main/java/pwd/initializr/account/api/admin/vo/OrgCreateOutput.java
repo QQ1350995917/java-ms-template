@@ -90,9 +90,4 @@ public class OrgCreateOutput {
    */
   @NotNull
   private Long createTime;
-  /**
-   * 更新时间
-   */
-  @NotNull
-  private Long updateTime;
 }

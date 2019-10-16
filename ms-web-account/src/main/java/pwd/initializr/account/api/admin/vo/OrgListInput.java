@@ -28,7 +28,7 @@ import lombok.ToString;
 @ApiModel(value = "orgListInput", description = "组织列表请求参数")
 public class OrgListInput {
 
-  @ApiModelProperty(name = "status", value = "状态", required = true, example = "1")
+  @ApiModelProperty(name = "status", value = "状态", required = true, example = "0")
   @NotNull(message = "0")
   private Integer status;
 

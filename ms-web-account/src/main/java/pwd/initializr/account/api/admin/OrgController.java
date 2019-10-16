@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiOperation;
 import java.util.LinkedList;
 import java.util.List;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,6 +41,7 @@ import pwd.initializr.common.web.business.bo.ObjectList;
 @RequestMapping(value = "/api/admin/org")
 public class OrgController extends AdminController implements OrgApi {
 
+  @Autowired
   private OrganizationService organizationService;
 
   @ApiOperation(value = "组织列表")

@@ -39,6 +39,7 @@ public class OrganizationServiceImpl implements OrganizationService {
     organizationEntity.setCreateTime(System.currentTimeMillis());
     organizationEntity.setUpdateTime(System.currentTimeMillis());
     organizationMapper.create(organizationEntity);
+    BeanUtils.copyProperties(organizationEntity,organization);
     return organization;
   }
 
