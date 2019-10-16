@@ -1,5 +1,7 @@
 package pwd.initializr.account.api.admin;
 
+import pwd.initializr.account.api.admin.vo.OrgListInput;
+
 /**
  * pwd.initializr.account.api.admin@ms-web-initializr
  *
@@ -13,7 +15,7 @@ package pwd.initializr.account.api.admin;
  */
 public interface OrgApi {
 
-  void listOrg();
+  void listOrg(OrgListInput input);
 
   void queryTopOrg();
 

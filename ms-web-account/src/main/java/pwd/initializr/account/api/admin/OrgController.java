@@ -2,12 +2,21 @@ package pwd.initializr.account.api.admin;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import java.util.LinkedList;
+import java.util.List;
+import org.springframework.beans.BeanUtils;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import pwd.initializr.account.api.admin.vo.OrgListInput;
+import pwd.initializr.account.api.admin.vo.OrgListItem;
+import pwd.initializr.account.api.admin.vo.OrgListOutput;
+import pwd.initializr.account.business.admin.OrganizationService;
+import pwd.initializr.account.business.admin.bo.Organization;
 import pwd.initializr.common.web.api.admin.AdminController;
+import pwd.initializr.common.web.business.bo.ObjectList;
 
 /**
  * pwd.initializr.account.api.admin@ms-web-initializr
@@ -29,11 +38,24 @@ import pwd.initializr.common.web.api.admin.AdminController;
 @RequestMapping(value = "/api/admin/org")
 public class OrgController extends AdminController implements OrgApi {
 
+  private OrganizationService organizationService;
+
   @ApiOperation(value = "组织列表")
   @GetMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
-  public void listOrg() {
-
+  public void listOrg(OrgListInput input) {
+    ObjectList<Organization> organizationObjectList = organizationService
+        .listByStatus(input.getStatus());
+    OrgListOutput orgListOutput = new OrgListOutput();
+    List<OrgListItem> orgListItems = new LinkedList<>();
+    for (Organization organization : organizationObjectList.getElements()) {
+      OrgListItem orgListItem = new OrgListItem();
+      BeanUtils.copyProperties(organization, orgListItem);
+      orgListItems.add(orgListItem);
+    }
+    orgListOutput.setOrg(orgListItems);
+    orgListOutput.setHasNext(false);
+    outputData(orgListOutput);
   }
 
   @ApiOperation(value = "顶级组织信息")
