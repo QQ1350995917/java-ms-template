@@ -26,6 +26,7 @@ public class User {
 
   private Long id;
   private String name;
+  private String phoneNumber;
   private Integer status;
   private Long createTime;
   private Long updateTime;

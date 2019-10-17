@@ -7,20 +7,21 @@
     parameterType="pwd.initializr.account.persistence.dao.UserEntity"
     useGeneratedKeys="true">
 		insert into `user`
-		(`id`,`name`,`status`,`create_time`,`update_time`)
+		(`id`,`name`,`phone_number`,`status`,`create_time`,`update_time`)
 		values
-		(#{id},#{name},#{status},#{createTime},#{updateTime})
+		(#{id},#{name},{phoneNumber},#{status},#{createTime},#{updateTime})
 	</insert>
 
 	<!--listUser-->
 	<select id="listUser"
 		resultType="pwd.initializr.account.persistence.dao.UserEntity">
 		select
-		`id` as id,
-		`name` as name,
-		`status` as status,
-		`create_time` as createTime,
-		`update_time` as updateTime
+		`id` as `id`,
+		`name` as `name`,
+		`phone_number` as `phoneNumber`,
+		`status` as `status`,
+		`create_time` as `createTime`,
+		`update_time` as `updateTime`
 		from `user`
 	</select>
 
@@ -28,11 +29,12 @@
   <select id="findByUserId" parameterType="java.lang.Long"
     resultType="pwd.initializr.account.persistence.dao.UserEntity">
 		select
-		`id` as id,
-		`name` as name,
-		`status` as status,
-		`create_time` as createTime,
-		`update_time` as updateTime
+		`id` as `id`,
+		`name` as `name`,
+		`phone_number` as `phoneNumber`,
+		`status` as `status`,
+		`create_time` as `createTime`,
+		`update_time` as `updateTime`
 		from `user`
 		where id = #{id}
 	</select>
