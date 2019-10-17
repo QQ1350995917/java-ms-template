@@ -14,6 +14,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.common.vcode.ArithmeticCode;
@@ -35,6 +36,7 @@ import pwd.initializr.common.vcode.VCodeHelper;
 @EnableEurekaClient
 @EnableDiscoveryClient
 @RestController
+@EnableTransactionManagement
 @ComponentScan(nameGenerator = FullPathNameGenerator.class)
 @MapperScan("pwd.initializr.account.persistence.mapper")
 public class AccountApplication {

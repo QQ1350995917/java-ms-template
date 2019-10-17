@@ -9,7 +9,7 @@
 		insert into `user`
 		(`id`,`name`,`phone_number`,`status`,`create_time`,`update_time`)
 		values
-		(#{id},#{name},{phoneNumber},#{status},#{createTime},#{updateTime})
+		(#{id},#{name},#{phoneNumber},#{status},#{createTime},#{updateTime})
 	</insert>
 
 	<!--listUser-->

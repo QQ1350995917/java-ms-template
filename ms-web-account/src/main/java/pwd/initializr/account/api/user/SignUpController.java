@@ -98,9 +98,10 @@ public class SignUpController extends UserController implements SignUpApi, SignU
     SMSCode smsCode = new SMSCode();
     BeanUtils.copyProperties(input, smsCode);
     Boolean match = smsCodeService.matchOnce(smsCode);
+    match = true;
     if (match) {
       // TODO session设置，返回身份信息，跳转页面
-      User user = new User(null, input.getPhoneNumber(), input.getPhoneNumber(), ConstantStatus.ENABLE.value(),
+      User user = new User(null, input.getUsername(), input.getPhoneNumber(), ConstantStatus.ENABLE.value(),
           System.currentTimeMillis(),
           System.currentTimeMillis());
       Account account = new Account(null, null, input.getPhoneNumber(), null, Type.PHONE.value(),
