@@ -11,7 +11,11 @@ package pwd.initializr.account.api.admin;
  * @version 1.0.0
  * @since DistributionVersion
  */
-public interface LoginApi {
+public interface SessionApi {
 
   void login();
+
+  void info();
+
+  void logout();
 }
