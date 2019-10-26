@@ -11,7 +11,7 @@ package pwd.initializr.account.api.admin;
  * @version 1.0.0
  * @since DistributionVersion
  */
-public interface AccountApi {
+public interface UserApi {
 
     void downloadAccountTemplate();
 

@@ -21,13 +21,13 @@ import pwd.initializr.common.web.api.admin.AdminController;
  * @since DistributionVersion
  */
 @Api(
-    tags = "系统账号管理",
-    value = "accountManageApi",
-    description = "系统账号管理API"
+    tags = "系统用户管理",
+    value = "userManageApi",
+    description = "系统用户管理API"
 )
-@RestController(value = "accountManageApi")
-@RequestMapping(value = "/api/admin/account")
-public class AccountController extends AdminController implements AccountApi {
+@RestController(value = "userManageApi")
+@RequestMapping(value = "/api/admin/user")
+public class UserController extends AdminController implements UserApi {
 
     @ApiOperation(value = "下载账号模板")
     @GetMapping(value = {"/template"}, produces = "application/json;charset=UTF-8")
