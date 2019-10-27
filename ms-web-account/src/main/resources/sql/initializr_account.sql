@@ -11,7 +11,7 @@
  Target Server Version : 50727
  File Encoding         : 65001
 
- Date: 27/09/2019 18:56:11
+ Date: 27/10/2019 21:09:05
 */
 
 SET NAMES utf8mb4;
@@ -31,7 +31,7 @@ CREATE TABLE `account`  (
   `create_time` bigint(11) NOT NULL COMMENT '首次创建时间',
   `update_time` bigint(11) NOT NULL COMMENT '最近更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 68 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for entrance
@@ -60,14 +60,30 @@ CREATE TABLE `organization`  (
   `logo` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '组织logo',
   `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '组织描述',
   `slogan` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '组织slogan',
-  `level` int(8) NOT NULL DEFAULT 0 COMMENT '组织等级',
-  `sort` int(8) NOT NULL DEFAULT 0 COMMENT '组织排序',
-  `members` int(8) NOT NULL DEFAULT 1 COMMENT '组织成员数量',
-  `status` int(8) NOT NULL COMMENT '状态，0正常，1禁用，2删除',
+  `level` int(11) NOT NULL DEFAULT 0 COMMENT '组织等级',
+  `sort` int(11) NOT NULL DEFAULT 0 COMMENT '组织排序',
+  `members` int(11) NOT NULL DEFAULT 1 COMMENT '组织成员数量',
+  `progress` int(11) NOT NULL DEFAULT 0 COMMENT '组织审核进度',
+  `status` int(11) NOT NULL COMMENT '状态，0正常，1禁用，2删除',
   `create_time` bigint(11) NOT NULL COMMENT '首次创建时间',
   `update_time` bigint(11) NOT NULL COMMENT '最近修改时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 26 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for system
+-- ----------------------------
+DROP TABLE IF EXISTS `system`;
+CREATE TABLE `system`  (
+  `id` int(11) NOT NULL,
+  `key` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
+  `value` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
+  `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
+  `status` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
+  `create_time` datetime(0) NULL DEFAULT NULL,
+  `update_time` datetime(0) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for user
@@ -76,11 +92,12 @@ DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user`  (
   `id` bigint(11) NOT NULL AUTO_INCREMENT COMMENT '用户ID，主键',
   `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '用户名',
+  `phone_number` varchar(11) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '用户手机号码',
   `status` int(8) NOT NULL DEFAULT 0 COMMENT '用户状态，0启用，1禁用，2删除',
   `create_time` bigint(11) NOT NULL COMMENT '首次创建时间',
   `update_time` bigint(11) NOT NULL COMMENT '最近修改时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 72 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for user_org
@@ -91,8 +108,8 @@ CREATE TABLE `user_org`  (
   `org_id` bigint(20) NOT NULL COMMENT '外键，组织ID',
   `level` int(11) NOT NULL DEFAULT 0 COMMENT '级别，0普通成员，1管理员，2拥有者',
   `status` int(11) NOT NULL DEFAULT 0 COMMENT '状态，0正常，1禁用，2删除',
-  `create_time` datetime(0) NOT NULL COMMENT '首次创建时间',
-  `update_time` datetime(0) NOT NULL ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '最近修改时间',
+  `create_time` bigint(20) NOT NULL COMMENT '首次创建时间',
+  `update_time` bigint(20) NOT NULL COMMENT '最近修改时间',
   PRIMARY KEY (`user_id`, `org_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
 
