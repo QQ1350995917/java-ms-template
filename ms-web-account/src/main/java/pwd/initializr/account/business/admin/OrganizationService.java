@@ -16,9 +16,11 @@ import pwd.initializr.common.web.business.bo.ObjectList;
  */
 public interface OrganizationService {
 
-  Organization create(Organization organization);
+  Organization createRoot(Organization organization);
 
-  void update(Organization organization);
+  Organization getRoot();
+
+  void updateRoot(Organization organization);
 
   void reviewExecution(Long id);
 

@@ -18,9 +18,9 @@ public interface OrgApi {
 
   void listOrg(OrgListInput input);
 
-  void queryTopOrg();
+  void queryRootOrg();
 
-  void createTopOrg(OrgCreateInput input);
+  void createRootOrg(OrgCreateInput input);
 
   void reviewExecution();
 

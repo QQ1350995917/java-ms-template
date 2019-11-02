@@ -34,6 +34,10 @@ public class Meta {
     super();
   }
 
+  public Meta(int code) {
+    this.code = code;
+  }
+
   public Meta(int code, String message) {
     this.code = code;
     this.message = message;

@@ -104,6 +104,12 @@ public class ApiController {
     this.finalOutput(JSON.toJSONString(objectOutput));
   }
 
+  public void outputData(Integer code) {
+    Meta meta = new Meta(code);
+    Output<Object> objectOutput = new Output<>(meta, null);
+    this.finalOutput(JSON.toJSONString(objectOutput));
+  }
+
   public <T> void outputData(Meta meta, T t) {
     Output<Object> objectOutput = new Output<>(meta, t);
     this.finalOutput(JSON.toJSONString(objectOutput));

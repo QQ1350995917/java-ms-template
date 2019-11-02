@@ -8,6 +8,7 @@ import java.util.Map;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.account.api.admin.vo.LoginInput;
@@ -37,7 +38,7 @@ public class SessionController extends AdminController implements SessionApi {
   @ApiOperation(value = "登录")
   @PostMapping(value = {"/login"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
-  public void login(LoginInput input) {
+  public void login(@RequestBody LoginInput input) {
     LoginOutput loginOutput = new LoginOutput("admin-token");
     outputData(loginOutput);
   }
@@ -48,7 +49,7 @@ public class SessionController extends AdminController implements SessionApi {
   public void info() {
     JSONObject jsonObject = new JSONObject();
     JSONObject content = new JSONObject();
-    content.put("roles","admin");
+    content.put("roles",new String[]{"admin"});
     content.put("introduction","I am a super administrator");
     content.put("avatar","https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif");
     content.put("name","Super Admin");

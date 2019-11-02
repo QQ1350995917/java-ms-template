@@ -28,11 +28,7 @@ public class OrganizationServiceImpl implements OrganizationService {
   private OrganizationMapper organizationMapper;
 
   @Override
-  public Organization create(Organization organization) {
-    return createTopOrganization(organization);
-  }
-
-  private Organization createTopOrganization(Organization organization){
+  public Organization createRoot(Organization organization) {
     OrganizationEntity organizationEntity = new OrganizationEntity();
     BeanUtils.copyProperties(organization,organizationEntity);
     organizationEntity.setPid(0L);
@@ -44,7 +40,18 @@ public class OrganizationServiceImpl implements OrganizationService {
   }
 
   @Override
-  public void update(Organization organization) {
+  public Organization getRoot() {
+    OrganizationEntity rootOrg = organizationMapper.findOneById(1L);
+    if (rootOrg == null) {
+      return null;
+    }
+    Organization organization = new Organization();
+    BeanUtils.copyProperties(rootOrg,organization);
+    return organization;
+  }
+
+  @Override
+  public void updateRoot(Organization organization) {
     OrganizationEntity organizationEntity = new OrganizationEntity();
     BeanUtils.copyProperties(organization,organizationEntity);
     organizationMapper.update(organizationEntity);

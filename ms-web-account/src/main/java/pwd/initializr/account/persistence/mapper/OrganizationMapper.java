@@ -3,6 +3,7 @@ package pwd.initializr.account.persistence.mapper;
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import pwd.initializr.account.business.user.bo.Organization;
 import pwd.initializr.account.persistence.dao.OrganizationEntity;
 
 /**
@@ -101,6 +102,17 @@ public interface OrganizationMapper {
    * @since DistributionVersion
    */
   void updateProgressById(Long id, Integer progress);
+
+  /**
+   * <h2>通过ID查找</h2>
+   * date 2019-11-02 09:57
+   *
+   * @param id 自主ID
+   * @return pwd.initializr.account.persistence.dao.OrganizationEntity
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  OrganizationEntity findOneById(Long id);
 
   /*
    *
