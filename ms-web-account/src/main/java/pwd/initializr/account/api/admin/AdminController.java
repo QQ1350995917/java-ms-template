@@ -31,7 +31,23 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
   @ApiOperation(value = "查询信息")
   @GetMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
-  public void queryInfo() {
+  public void list() {
+
+  }
+
+
+  @Override
+  public void create() {
+
+  }
+
+  @Override
+  public void enable() {
+
+  }
+
+  @Override
+  public void disable() {
 
   }
 }

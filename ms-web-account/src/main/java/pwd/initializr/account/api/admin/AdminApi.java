@@ -13,5 +13,12 @@ package pwd.initializr.account.api.admin;
  */
 public interface AdminApi {
 
-  void queryInfo();
+  void list();
+
+  void create();
+
+  void enable();
+
+  void disable();
+
 }

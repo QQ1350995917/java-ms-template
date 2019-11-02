@@ -1,6 +1,7 @@
 package pwd.initializr.account.api.user;
 
 import pwd.initializr.account.api.admin.UserController;
+import pwd.initializr.account.api.admin.vo.LoginInput;
 
 /**
  * pwd.initializr.account.api.user@ms-web-initializr
@@ -15,4 +16,18 @@ import pwd.initializr.account.api.admin.UserController;
  */
 public class SessionController extends UserController implements SessionApi {
 
+  @Override
+  public void login(LoginInput input) {
+
+  }
+
+  @Override
+  public void info() {
+
+  }
+
+  @Override
+  public void logout() {
+
+  }
 }
