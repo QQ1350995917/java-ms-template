@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pwd.initializr.account.persistence.mapper.UserOrgMapper">
+  <!-- addMemToOrg -->
+  <insert id="addMemToOrg" keyProperty="id"
+    parameterType="pwd.initializr.organization.persistence.dao.OrgMemEntity"
+    useGeneratedKeys="true">
+		insert into `organization_member`
+		(`org_id`,`mem_id`,`level`,`status`,`create_time`,`update_time`)
+		values
+		(#{orgId},#{memId},#{level},#{status},#{createTime},#{updateTime})
+	</insert>
+
+  <!-- updateMemLevelInOrg -->
+  <update id="updateMemLevelInOrg" parameterType="java.lang.Long">
+    update `organization_member`
+    <set>
+      `level` = #{level},
+			`update_time` = REPLACE(unix_timestamp(current_timestamp(3)),'.','')
+    </set>
+    <where>
+      `mem_id` = #{memId}
+      and
+      `org_id` = #{orgId}
+      and
+      `status` = 0
+    </where>
+  </update>
+  <!-- updateMemStatusInOrg -->
+  <update id="updateMemStatusInOrg" parameterType="java.lang.Long">
+    update `organization_member`
+    <set>
+      `status` = #{status},
+			`update_time` = REPLACE(unix_timestamp(current_timestamp(3)),'.','')
+    </set>
+    <where>
+      `mem_id` = #{memId}
+      and
+      `org_id` = #{orgId}
+    </where>
+  </update>
+
+  <!-- findOneMemInOrg -->
+  <select id="findOneMemInOrg" parameterType="java.lang.Long"
+    resultType="pwd.initializr.organization.persistence.dao.OrgMemEntity">
+		SELECT
+		`org_id` AS `orgId`,
+		`mem_id` AS `memId`,
+		`level` AS `level`,
+		`status` AS `status`,
+		`create_time` AS `createTime`,
+		`update_time` AS `updateTime`
+		FROM `organization_member`
+		WHERE `mem_id` = #{memId}
+		AND `org_id` = #{orgId}
+	</select>
+
+  <!-- listMemInOrgByOrgId -->
+  <select id="listMemInOrgByOrgId"
+    resultType="pwd.initializr.organization.persistence.dao.OrgMemEntity">
+		SELECT
+		`org_id` AS `orgId`,
+		`mem_id` AS `memId`,
+		`level` AS `level`,
+		`status` AS `status`,
+		`create_time` AS `createTime`,
+		`update_time` AS `updateTime`
+		FROM `organization_member`
+		WHERE `org_id` = #{orgId}
+		AND `status` = #{status}
+	</select>
+
+  <!-- listOrgContainMemByMemId -->
+  <select id="listOrgContainMemByMemId"
+    resultType="pwd.initializr.organization.persistence.dao.OrgMemEntity">
+		select
+		`org_id` AS `orgId`,
+		`mem_id` AS `memId`,
+		`level` AS `level`,
+		`status` AS `status`,
+		`create_time` AS `createTime`,
+		`update_time` AS `updateTime`
+		from `organization_member`
+		where `mem_id` = #{memId}
+	  and `status` = #{status}
+	</select>
+
+</mapper>
