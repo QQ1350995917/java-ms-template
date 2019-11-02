@@ -1,5 +1,7 @@
 package pwd.initializr.account.api.admin;
 
+import pwd.initializr.account.api.admin.vo.LoginInput;
+
 /**
  * pwd.initializr.account.api.admin@ms-web-initializr
  *
@@ -13,7 +15,7 @@ package pwd.initializr.account.api.admin;
  */
 public interface SessionApi {
 
-  void login();
+  void login(LoginInput input);
 
   void info();
 

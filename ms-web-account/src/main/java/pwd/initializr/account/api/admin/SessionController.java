@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import pwd.initializr.account.api.admin.vo.LoginInput;
+import pwd.initializr.account.api.admin.vo.LoginOutput;
 import pwd.initializr.common.web.api.admin.AdminController;
 
 /**
@@ -35,10 +37,9 @@ public class SessionController extends AdminController implements SessionApi {
   @ApiOperation(value = "登录")
   @PostMapping(value = {"/login"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
-  public void login() {
-    Map<String,String> data = new HashMap<>();
-    data.put("token","admin-token");
-    outputData(data);
+  public void login(LoginInput input) {
+    LoginOutput loginOutput = new LoginOutput("admin-token");
+    outputData(loginOutput);
   }
 
   @ApiOperation(value = "登录信息")
