@@ -30,6 +30,7 @@
     <module>ms-web-gateway</module>
     <module>ms-web-storage</module>
     <module>ms-web-schedule</module>
+    <module>ms-web-organization</module>
   </modules>
 
   <properties>
