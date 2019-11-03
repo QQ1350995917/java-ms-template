@@ -33,7 +33,7 @@ public class Swagger2 {
     public Docket createUserApi() {
         return new Docket(DocumentationType.SWAGGER_2)
             .groupName("UserApi")
-            .apiInfo(apiInfo("UserApi", "用户接口"))
+            .apiInfo(apiInfo("UserApi", "Organization用户接口"))
             .select()
             .apis(RequestHandlerSelectors.basePackage("pwd.initializr.organization.api.user"))
             .paths(PathSelectors.any())
@@ -44,7 +44,7 @@ public class Swagger2 {
     public Docket createAdminApi() {
         return new Docket(DocumentationType.SWAGGER_2)
             .groupName("AdminApi")
-            .apiInfo(apiInfo("AdminApi", "管理接口"))
+            .apiInfo(apiInfo("AdminApi", "Organization管理接口"))
             .select()
             .apis(RequestHandlerSelectors.basePackage("pwd.initializr.organization.api.admin"))
             .paths(PathSelectors.any())

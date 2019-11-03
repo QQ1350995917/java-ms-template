@@ -2,6 +2,7 @@ package pwd.initializr.organization.persistence.mapper;
 
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import pwd.initializr.organization.persistence.dao.OrgMemEntity;
 
 /**
@@ -66,7 +67,7 @@ public interface OrganizationMemberMapper {
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  List<OrgMemEntity> listOrgContainMemByMemId(Long memId, Integer status);
+  List<OrgMemEntity> listOrgContainMemByMemId(@Param("memId")Long memId, @Param("status") Integer status);
 
 
   /*

@@ -112,6 +112,32 @@
 		where `id` = #{id}
 	</select>
 
+  <!-- listByIdAndStatus -->
+  <select id="listByIdAndStatus"
+    resultType="pwd.initializr.organization.persistence.dao.OrganizationEntity">
+		select
+		`id` as `id`,
+		`pid` as `pid`,
+		`name` as `name`,
+		`logo` as `logo`,
+		`description` as `description`,
+		`slogan` as `slogan`,
+		`level` as `level`,
+		`sort` as `sort`,
+		`members` as `members`,
+		`status` as `status`,
+		`create_time` as `createTime`,
+		`update_time` as `updateTime`
+		from `organization`
+		where `id` in
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+		     #{item}
+		</foreach>
+		<if test="status != null">
+			and `status` = #{status}
+		</if>
+	</select>
+
   <!-- listByPidAndStatus -->
   <select id="listByPidAndStatus"
     resultType="pwd.initializr.organization.persistence.dao.OrganizationEntity">
@@ -130,7 +156,9 @@
 		`update_time` as `updateTime`
 		from `organization`
 		where `pid` = #{pid}
-		and `status` = #{status};
+		<if test="status != null">
+			and `status` = #{status}
+		</if>
 	</select>
 
   <!-- listByStatus -->

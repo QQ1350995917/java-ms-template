@@ -1,4 +1,4 @@
-package pwd.initializr.account.test.user.mapper;
+package pwd.initializr.organization.test.mapper;
 
 import java.util.List;
 import org.junit.Assert;
@@ -7,8 +7,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import pwd.initializr.account.persistence.dao.OrganizationEntity;
-import pwd.initializr.account.persistence.mapper.OrganizationMapper;
+import pwd.initializr.organization.persistence.dao.OrganizationEntity;
+import pwd.initializr.organization.persistence.mapper.OrganizationMapper;
 
 /**
  * pwd.initializr.account.test.user.mapper@ms-web-initializr
@@ -37,6 +37,15 @@ public class OrganizationMapperTest {
     organizationMapper.create(organizationEntity);
   }
 
+
+  @Test
+  public void testListByPidAndStatus() {
+    List<OrganizationEntity> organizationEntities = organizationMapper
+        .listByPidAndStatus(0L, 1);
+    Assert.assertNotEquals(organizationEntities.size(), 0);
+  }
+
+
   @Test
   public void testUpdate() {
     OrganizationEntity organizationEntity = new OrganizationEntity();
@@ -48,35 +57,42 @@ public class OrganizationMapperTest {
     organizationMapper.update(organizationEntity);
   }
 
+
   @Test
   public void testUpdateLevelById() {
     organizationMapper.updateLevelById(1L, 250);
   }
 
-  @Test
-  public void testUpdateSortById() {
-    organizationMapper.updateSortById(0L, 1L, 250);
-  }
 
   @Test
   public void testUpdateMembersById() {
     organizationMapper.updateMembersById(1L, 250);
   }
 
-  @Test
-  public void testUpdateStatusById() {
-    organizationMapper.updateStatusById(1L, 2);
-  }
 
   @Test
   public void testUpdateProgressById() {
     organizationMapper.updateProgressById(1L, 2);
   }
 
+
   @Test
-  public void testListByPidAndStatus() {
-    List<OrganizationEntity> organizationEntities = organizationMapper.listByPidAndStatus(0L, 1);
-    Assert.assertNotEquals(organizationEntities.size(), 0);
+  public void testUpdateSortById() {
+    organizationMapper.updateSortById(0L, 1L, 250);
+  }
+
+
+  @Test
+  public void testUpdateStatusById() {
+    organizationMapper.updateStatusById(1L, 2);
+  }
+
+
+  @Test
+  public void testListByIdAndStatus() {
+    List<OrganizationEntity> organizationEntities = organizationMapper
+        .listByIdAndStatus(new Long[]{1L, 2L}, null);
+    System.out.println(organizationEntities.size());
   }
 
 

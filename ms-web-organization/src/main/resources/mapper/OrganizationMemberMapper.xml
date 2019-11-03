@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="pwd.initializr.account.persistence.mapper.UserOrgMapper">
+<mapper namespace="pwd.initializr.organization.persistence.mapper.OrganizationMemberMapper">
   <!-- addMemToOrg -->
   <insert id="addMemToOrg" keyProperty="id"
     parameterType="pwd.initializr.organization.persistence.dao.OrgMemEntity"
@@ -17,7 +17,7 @@
     update `organization_member`
     <set>
       `level` = #{level},
-			`update_time` = REPLACE(unix_timestamp(current_timestamp(3)),'.','')
+      `update_time` = REPLACE(unix_timestamp(current_timestamp(3)),'.','')
     </set>
     <where>
       `mem_id` = #{memId}
@@ -32,7 +32,7 @@
     update `organization_member`
     <set>
       `status` = #{status},
-			`update_time` = REPLACE(unix_timestamp(current_timestamp(3)),'.','')
+      `update_time` = REPLACE(unix_timestamp(current_timestamp(3)),'.','')
     </set>
     <where>
       `mem_id` = #{memId}
@@ -59,31 +59,35 @@
   <!-- listMemInOrgByOrgId -->
   <select id="listMemInOrgByOrgId"
     resultType="pwd.initializr.organization.persistence.dao.OrgMemEntity">
-		SELECT
-		`org_id` AS `orgId`,
-		`mem_id` AS `memId`,
-		`level` AS `level`,
-		`status` AS `status`,
-		`create_time` AS `createTime`,
-		`update_time` AS `updateTime`
-		FROM `organization_member`
-		WHERE `org_id` = #{orgId}
-		AND `status` = #{status}
-	</select>
+    SELECT
+    `org_id` AS `orgId`,
+    `mem_id` AS `memId`,
+    `level` AS `level`,
+    `status` AS `status`,
+    `create_time` AS `createTime`,
+    `update_time` AS `updateTime`
+    FROM `organization_member`
+    WHERE `org_id` = #{orgId}
+    <if test="status != null">
+      and `status` = #{status}
+    </if>
+  </select>
 
   <!-- listOrgContainMemByMemId -->
   <select id="listOrgContainMemByMemId"
     resultType="pwd.initializr.organization.persistence.dao.OrgMemEntity">
-		select
-		`org_id` AS `orgId`,
-		`mem_id` AS `memId`,
-		`level` AS `level`,
-		`status` AS `status`,
-		`create_time` AS `createTime`,
-		`update_time` AS `updateTime`
-		from `organization_member`
-		where `mem_id` = #{memId}
-	  and `status` = #{status}
-	</select>
+    select
+    `org_id` AS `orgId`,
+    `mem_id` AS `memId`,
+    `level` AS `level`,
+    `status` AS `status`,
+    `create_time` AS `createTime`,
+    `update_time` AS `updateTime`
+    from `organization_member`
+    where `mem_id` = #{memId}
+    <if test="status != null">
+      and `status` = #{status}
+    </if>
+  </select>
 
 </mapper>

@@ -70,7 +70,7 @@ public class Organization {
    * 成员数量
    */
   @NotNull
-  private Integer members = 1;
+  private Integer members = 0;
   /**
    * 处理过程 see {@link }
    */

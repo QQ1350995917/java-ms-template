@@ -1,4 +1,4 @@
-package pwd.initializr.account.test.user.mapper;
+package pwd.initializr.organization.test.mapper;
 
 import java.util.List;
 import org.junit.Test;
@@ -6,8 +6,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import pwd.initializr.account.persistence.dao.UserOrgEntity;
-import pwd.initializr.account.persistence.mapper.UserOrgMapper;
+import pwd.initializr.organization.persistence.dao.OrgMemEntity;
+import pwd.initializr.organization.persistence.mapper.OrganizationMemberMapper;
 
 /**
  * pwd.initializr.account.test.user.mapper@ms-web-initializr
@@ -22,50 +22,50 @@ import pwd.initializr.account.persistence.mapper.UserOrgMapper;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class UserOrgMapperTest {
+public class OrganizationMemberMapperTest {
 
   @Autowired
-  private UserOrgMapper userOrgMapper;
+  private OrganizationMemberMapper organizationMemberMapper;
 
   @Test
   public void testAddUserToOrg() {
-    UserOrgEntity userOrgEntity = new UserOrgEntity();
-    userOrgEntity.setUserId(1L);
+    OrgMemEntity userOrgEntity = new OrgMemEntity();
+    userOrgEntity.setMemId(1L);
     userOrgEntity.setOrgId(2L);
     userOrgEntity.setLevel(1);
     userOrgEntity.setStatus(0);
     userOrgEntity.setCreateTime(System.currentTimeMillis());
     userOrgEntity.setUpdateTime(System.currentTimeMillis());
-    userOrgMapper.addUserToOrg(userOrgEntity);
+    organizationMemberMapper.addMemToOrg(userOrgEntity);
   }
 
 
   @Test
   public void testUpdateLevel() {
-    userOrgMapper.updateLevel(1L, 1L, 250);
+    organizationMemberMapper.updateMemLevelInOrg(1L, 1L, 250);
   }
 
   @Test
   public void testUpdateStatus() {
-    userOrgMapper.updateStatus(1L, 1L, 250);
+    organizationMemberMapper.updateMemStatusInOrg(1L, 1L, 250);
   }
 
 
   @Test
   public void testFindOne() {
-    UserOrgEntity one = userOrgMapper.findOne(1L, 1L);
+    OrgMemEntity one = organizationMemberMapper.findOneMemInOrg(1L, 1L);
     System.out.println();
   }
 
   @Test
   public void testListByOrgId() {
-    List<UserOrgEntity> userOrgEntities = userOrgMapper.listByOrgId(2L, 0);
+    List<OrgMemEntity> userOrgEntities = organizationMemberMapper.listOrgContainMemByMemId(1L, 0);
     System.out.println();
   }
 
   @Test
   public void testListByUserId() {
-    List<UserOrgEntity> userOrgEntities = userOrgMapper.listByUserId(1L, 0);
+    List<OrgMemEntity> userOrgEntities = organizationMemberMapper.listOrgContainMemByMemId(1L, 0);
     System.out.println();
   }
 

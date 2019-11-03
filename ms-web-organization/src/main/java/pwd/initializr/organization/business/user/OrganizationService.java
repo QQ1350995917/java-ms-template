@@ -1,8 +1,10 @@
 package pwd.initializr.organization.business.user;
 
 
+import org.springframework.transaction.annotation.Transactional;
 import pwd.initializr.common.web.business.bo.ObjectList;
 import pwd.initializr.organization.business.user.bo.Organization;
+import pwd.initializr.organization.business.user.bo.OrganizationMember;
 
 /**
  * pwd.initializr.account.business.user@ms-web-initializr
@@ -17,12 +19,15 @@ import pwd.initializr.organization.business.user.bo.Organization;
  */
 public interface OrganizationService {
 
-  void create(Organization organization);
+  @Transactional
+  void create(Organization organization,OrganizationMember organizationMember);
 
   void update(Organization organization);
 
   void reviewPending(Long id);
 
-  ObjectList<Organization> listByPidAndStatus(Long pid, Integer status);
+  ObjectList<Organization> listById(Long[] ids, Integer status);
+
+  ObjectList<Organization> listByPid(Long pid, Integer status);
 
 }

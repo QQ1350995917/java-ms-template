@@ -1,5 +1,7 @@
 package pwd.initializr.organization.api.user;
 
+import pwd.initializr.organization.api.user.vo.CreateOrgInput;
+
 /**
  * pwd.initializr.account.api.user@ms-web-initializr
  *
@@ -13,9 +15,9 @@ package pwd.initializr.organization.api.user;
  */
 public interface OrgApi {
 
-  void listOrg();
+  void listOrgByMemId();
 
-  void create();
+  void create(CreateOrgInput input);
 
   void reviewPending();
 }

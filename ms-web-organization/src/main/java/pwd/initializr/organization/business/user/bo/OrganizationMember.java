@@ -23,18 +23,18 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class OrgMem {
+public class OrganizationMember {
 
-  /**
-   * 联合主键用户ID
-   */
-  @NotNull
-  private Long userId;
   /**
    * 联合主键组织ID
    */
   @NotNull
   private Long orgId;
+  /**
+   * 联合主键成员ID
+   */
+  @NotNull
+  private Long memId;
   /**
    * 成员等级 see {@link }
    */
@@ -44,7 +44,7 @@ public class OrgMem {
    * 数据状态 see {@link pwd.initializr.organization.persistence.dao.ConstantStatus}
    */
   @NotNull
-  private Integer status;
+  private Integer status = 0;
   /**
    * 首次创建时间
    */

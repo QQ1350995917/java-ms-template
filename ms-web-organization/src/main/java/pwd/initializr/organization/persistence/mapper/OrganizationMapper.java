@@ -116,6 +116,18 @@ public interface OrganizationMapper {
   /*
    *
    * <h2>根据等级查询下级组织集</h2>
+   * date 2019-10-03
+   *
+   * @param ids 组织ID
+   * @param status 组织状态
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  List<OrganizationEntity> listByIdAndStatus(@Param("ids")Long[] ids, @Param("status")Integer status);
+
+  /*
+   *
+   * <h2>根据等级查询下级组织集</h2>
    * date 2019-09-27
    *
    * @param pid 上级组织ID
