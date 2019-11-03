@@ -57,18 +57,4 @@ public class OrganizationMemberMapperTest {
     System.out.println();
   }
 
-  @Test
-  public void testListByOrgId() {
-    List<OrganizationMemberEntity> userOrgEntities = organizationMemberMapper.listOrgContainMemByMemId(1L, 0);
-    System.out.println();
-  }
-
-  @Test
-  public void testListByUserId() {
-    List<OrganizationMemberEntity> userOrgEntities = organizationMemberMapper.listOrgContainMemByMemId(1L, 0);
-    System.out.println();
-  }
-
-
-
 }
