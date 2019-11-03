@@ -23,7 +23,7 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class OrgMemEntity {
+public class OrganizationMemberEntity {
 
   /**
    * 联合主键组织ID

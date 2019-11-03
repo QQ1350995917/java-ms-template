@@ -3,7 +3,8 @@ package pwd.initializr.organization.persistence.mapper;
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import pwd.initializr.organization.persistence.dao.OrgMemEntity;
+import org.springframework.stereotype.Component;
+import pwd.initializr.organization.persistence.dao.OrganizationMemberEntity;
 
 /**
  * pwd.initializr.account.persistence.mapper@ms-web-initializr
@@ -16,6 +17,7 @@ import pwd.initializr.organization.persistence.dao.OrgMemEntity;
  * @version 1.0.0
  * @since DistributionVersion
  */
+@Component
 @Mapper
 public interface OrganizationMemberMapper {
 
@@ -28,33 +30,21 @@ public interface OrganizationMemberMapper {
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  void addMemToOrg(OrgMemEntity orgMemEntity);
+  void addMemToOrg(OrganizationMemberEntity orgMemEntity);
 
 
-  /*
+  /**
+   * <h2>找到我创建的组织</h2>
+   * date 2019-11-03 21:31
    *
-   * <h2>找到组织中当前用户的信息</h2>
-   * date 2019-09-27
-   *
-   * @param orgId  组织ID
-   * @param memId 用户ID
+   * @param memId 成员ID
+   * @param status 成员状态
+   * @return java.util.List<pwd.initializr.organization.persistence.dao.OrganizationMemberEntity>
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  OrgMemEntity findOneMemInOrg(Long orgId, Long memId);
-
-
-  /*
-   *
-   * <h2>根据组织ID查询其中的用户</h2>
-   * date 2019-09-27
-   *
-   * @param orgId 组织ID
-   * @param status 状态
-   * @author DingPengwei[www.dingpengwei@foxmail.com]
-   * @since DistributionVersion
-   */
-  List<OrgMemEntity> listMemInOrgByOrgId(Long orgId, Integer status);
+  List<OrganizationMemberEntity> findMyCreation(@Param("memId") Long memId,
+      @Param("status") Integer status);
 
 
   /*
@@ -67,7 +57,34 @@ public interface OrganizationMemberMapper {
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  List<OrgMemEntity> listOrgContainMemByMemId(@Param("memId")Long memId, @Param("status") Integer status);
+  List<OrganizationMemberEntity> findMyJoined(@Param("memId") Long memId,
+      @Param("status") Integer status);
+
+
+  /*
+   *
+   * <h2>找到组织中当前用户的信息</h2>
+   * date 2019-09-27
+   *
+   * @param orgId  组织ID
+   * @param memId 用户ID
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  OrganizationMemberEntity findOneMemInOrg(Long orgId, Long memId);
+
+
+  /*
+   *
+   * <h2>根据组织ID查询其中的用户</h2>
+   * date 2019-09-27
+   *
+   * @param orgId 组织ID
+   * @param status 状态
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  List<OrganizationMemberEntity> listMemInOrgByOrgId(Long orgId, Integer status);
 
 
   /*

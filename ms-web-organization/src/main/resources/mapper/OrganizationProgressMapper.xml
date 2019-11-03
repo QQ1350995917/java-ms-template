@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pwd.initializr.organization.persistence.mapper.OrganizationProgressMapper">
+  <!-- create -->
+  <insert id="create" keyProperty="id"
+    parameterType="pwd.initializr.organization.persistence.dao.OrganizationProgressEntity"
+    useGeneratedKeys="true">
+		insert into `organization_progress`
+		(`org_id`,`applicant_id`,`applicant_content`,`ref_id`,`status`,`create_time`,`update_time`)
+		values
+		(#{orgId},#{applicantId},#{applicantContent},#{refId},#{status},#{createTime},#{updateTime})
+	</insert>
+
+  <!-- auditById -->
+  <update id="auditById" parameterType="pwd.initializr.organization.persistence.dao.OrganizationProgressEntity">
+    update `organization_progress`
+    <set>
+      `auditor_id` = #{auditorId},
+      `auditor_content` = #{auditorContent},
+      `auditor_result` = #{auditorResult},
+      `auditor_time` = #{auditorTime},
+      `update_time` = REPLACE(unix_timestamp(current_timestamp(3)),'.','')
+    </set>
+    <where>
+      `id` = #{id}
+    </where>
+  </update>
+
+  <!-- listByOrgId -->
+  <select id="listByOrgId" parameterType="java.lang.Long"
+    resultType="pwd.initializr.organization.persistence.dao.OrganizationProgressEntity">
+		SELECT
+		`id` AS `id`,
+		`org_id` AS `orgId`,
+		`applicant_id` AS `applicantId`,
+		`applicant_content` AS `applicantContent`,
+		`ref_id` AS `refId`,
+		`auditor_id` AS `auditorId`,
+		`auditor_content` AS `auditorContent`,
+		`auditor_result` AS `auditorResult`,
+		`auditor_time` AS `auditorTime`,
+		`status` AS `status`,
+		`create_time` AS `createTime`,
+		`update_time` AS `updateTime`
+		FROM `organization_progress`
+		WHERE `org_id` = #{orgId}
+    <if test="status != null">
+      and `status` = #{status}
+    </if>
+    ORDER BY create_time DESC
+	</select>
+
+
+	<!-- updateProgressById -->
+	<update id="updateProgressById">
+		update
+		`organization_progress`
+		set
+		`auditor_result` = #{progress},
+		`update_time` = REPLACE(unix_timestamp(current_timestamp(3)),'.','')
+		where
+		`org_id` = #{orgId}
+	</update>
+
+</mapper>

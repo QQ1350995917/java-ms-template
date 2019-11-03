@@ -6,7 +6,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import pwd.initializr.organization.persistence.dao.OrgMemEntity;
+import pwd.initializr.organization.persistence.dao.OrganizationMemberEntity;
 import pwd.initializr.organization.persistence.mapper.OrganizationMemberMapper;
 
 /**
@@ -29,7 +29,7 @@ public class OrganizationMemberMapperTest {
 
   @Test
   public void testAddUserToOrg() {
-    OrgMemEntity userOrgEntity = new OrgMemEntity();
+    OrganizationMemberEntity userOrgEntity = new OrganizationMemberEntity();
     userOrgEntity.setMemId(1L);
     userOrgEntity.setOrgId(2L);
     userOrgEntity.setLevel(1);
@@ -53,19 +53,19 @@ public class OrganizationMemberMapperTest {
 
   @Test
   public void testFindOne() {
-    OrgMemEntity one = organizationMemberMapper.findOneMemInOrg(1L, 1L);
+    OrganizationMemberEntity one = organizationMemberMapper.findOneMemInOrg(1L, 1L);
     System.out.println();
   }
 
   @Test
   public void testListByOrgId() {
-    List<OrgMemEntity> userOrgEntities = organizationMemberMapper.listOrgContainMemByMemId(1L, 0);
+    List<OrganizationMemberEntity> userOrgEntities = organizationMemberMapper.listOrgContainMemByMemId(1L, 0);
     System.out.println();
   }
 
   @Test
   public void testListByUserId() {
-    List<OrgMemEntity> userOrgEntities = organizationMemberMapper.listOrgContainMemByMemId(1L, 0);
+    List<OrganizationMemberEntity> userOrgEntities = organizationMemberMapper.listOrgContainMemByMemId(1L, 0);
     System.out.println();
   }
 

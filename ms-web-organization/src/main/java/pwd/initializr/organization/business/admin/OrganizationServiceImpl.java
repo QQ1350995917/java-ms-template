@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import pwd.initializr.common.web.business.bo.ObjectList;
 import pwd.initializr.organization.business.user.bo.Organization;
 import pwd.initializr.organization.persistence.dao.OrganizationEntity;
-import pwd.initializr.organization.persistence.dao.OrganizationEntity.Progress;
 import pwd.initializr.organization.persistence.mapper.OrganizationMapper;
 
 /**
@@ -30,14 +29,15 @@ public class OrganizationServiceImpl implements OrganizationService {
   @Override
   public Organization createRoot(Organization organization) {
     OrganizationEntity organizationEntity = new OrganizationEntity();
-    BeanUtils.copyProperties(organization,organizationEntity);
+    BeanUtils.copyProperties(organization, organizationEntity);
     organizationEntity.setPid(0L);
     organizationEntity.setCreateTime(System.currentTimeMillis());
     organizationEntity.setUpdateTime(System.currentTimeMillis());
     organizationMapper.create(organizationEntity);
-    BeanUtils.copyProperties(organizationEntity,organization);
+    BeanUtils.copyProperties(organizationEntity, organization);
     return organization;
   }
+
 
   @Override
   public Organization getRoot() {
@@ -46,36 +46,10 @@ public class OrganizationServiceImpl implements OrganizationService {
       return null;
     }
     Organization organization = new Organization();
-    BeanUtils.copyProperties(rootOrg,organization);
+    BeanUtils.copyProperties(rootOrg, organization);
     return organization;
   }
 
-  @Override
-  public void updateRoot(Organization organization) {
-    OrganizationEntity organizationEntity = new OrganizationEntity();
-    BeanUtils.copyProperties(organization,organizationEntity);
-    organizationMapper.update(organizationEntity);
-  }
-
-  @Override
-  public void reviewExecution(Long id) {
-    organizationMapper.updateProgressById(id, Progress.REVIEW_EXECUTION.value());
-  }
-
-  @Override
-  public void reviewRefuse(Long id) {
-    organizationMapper.updateProgressById(id, Progress.REVIEW_REFUSE.value());
-  }
-
-  @Override
-  public void reviewApprove(Long id) {
-    organizationMapper.updateProgressById(id, Progress.REVIEW_APPROVE.value());
-  }
-
-  @Override
-  public void reviewRecheck(Long id) {
-    organizationMapper.updateProgressById(id, Progress.REVIEW_RECHECK.value());
-  }
 
   @Override
   public ObjectList<Organization> listByPidAndStatus(Long pid, Integer status) {
@@ -84,11 +58,12 @@ public class OrganizationServiceImpl implements OrganizationService {
         .listByPidAndStatus(pid, status);
     for (OrganizationEntity organizationEntity : organizationEntities) {
       Organization organization = new Organization();
-      BeanUtils.copyProperties(organizationEntity,organization);
+      BeanUtils.copyProperties(organizationEntity, organization);
       result.getElements().add(organization);
     }
     return result;
   }
+
 
   @Override
   public ObjectList<Organization> listByStatus(Integer status) {
@@ -97,9 +72,19 @@ public class OrganizationServiceImpl implements OrganizationService {
         .listByStatus(status);
     for (OrganizationEntity organizationEntity : organizationEntities) {
       Organization organization = new Organization();
-      BeanUtils.copyProperties(organizationEntity,organization);
+      BeanUtils.copyProperties(organizationEntity, organization);
       result.getElements().add(organization);
     }
     return result;
   }
+
+
+  @Override
+  public void updateRoot(Organization organization) {
+    OrganizationEntity organizationEntity = new OrganizationEntity();
+    BeanUtils.copyProperties(organization, organizationEntity);
+    organizationMapper.update(organizationEntity);
+  }
+
+
 }

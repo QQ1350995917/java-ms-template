@@ -3,6 +3,7 @@ package pwd.initializr.organization.persistence.mapper;
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Component;
 import pwd.initializr.organization.persistence.dao.OrganizationEntity;
 
 /**
@@ -16,6 +17,7 @@ import pwd.initializr.organization.persistence.dao.OrganizationEntity;
  * @version 1.0.0
  * @since DistributionVersion
  */
+@Component
 @Mapper
 public interface OrganizationMapper {
 

@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pwd.initializr.common.web.business.bo.ObjectList;
 import pwd.initializr.organization.business.user.bo.OrganizationMember;
-import pwd.initializr.organization.persistence.dao.OrgMemEntity;
+import pwd.initializr.organization.persistence.dao.OrganizationMemberEntity;
 import pwd.initializr.organization.persistence.mapper.OrganizationMemberMapper;
 
 /**
@@ -27,9 +27,9 @@ public class OrganizationMemberServiceImpl implements OrganizationMemberService 
   private OrganizationMemberMapper organizationMemberMapper;
 
   @Override
-  public void addMemToOrg(OrganizationMember userOrg) {
-    OrgMemEntity userOrgEntity = new OrgMemEntity();
-    BeanUtils.copyProperties(userOrg, userOrgEntity);
+  public void addMemToOrg(OrganizationMember organizationMember) {
+    OrganizationMemberEntity userOrgEntity = new OrganizationMemberEntity();
+    BeanUtils.copyProperties(organizationMember, userOrgEntity);
     userOrgEntity.setCreateTime(System.currentTimeMillis());
     userOrgEntity.setUpdateTime(System.currentTimeMillis());
     organizationMemberMapper.addMemToOrg(userOrgEntity);
@@ -37,20 +37,36 @@ public class OrganizationMemberServiceImpl implements OrganizationMemberService 
 
 
   @Override
-  public void updateMemLevel(Long userId, Long orgId, Integer level) {
-    organizationMemberMapper.updateMemLevelInOrg(userId, orgId, level);
+  public ObjectList<OrganizationMember> findMyCreation(Long memId, Integer status) {
+    ObjectList<OrganizationMember> result = new ObjectList<>();
+    List<OrganizationMemberEntity> userOrgEntities = organizationMemberMapper
+        .findMyCreation(memId, status);
+    for (OrganizationMemberEntity userOrgEntity : userOrgEntities) {
+      OrganizationMember userOrg = new OrganizationMember();
+      BeanUtils.copyProperties(userOrgEntity, userOrg);
+      result.getElements().add(userOrg);
+    }
+    return result;
   }
 
 
   @Override
-  public void updateMemStatus(Long userId, Long orgId, Integer status) {
-    organizationMemberMapper.updateMemStatusInOrg(userId, orgId, status);
+  public ObjectList<OrganizationMember> findMyJoined(Long memId, java.lang.Integer status) {
+    ObjectList<OrganizationMember> result = new ObjectList<>();
+    List<OrganizationMemberEntity> userOrgEntities = organizationMemberMapper
+        .findMyJoined(memId, status);
+    for (OrganizationMemberEntity userOrgEntity : userOrgEntities) {
+      OrganizationMember userOrg = new OrganizationMember();
+      BeanUtils.copyProperties(userOrgEntity, userOrg);
+      result.getElements().add(userOrg);
+    }
+    return result;
   }
 
 
   @Override
   public OrganizationMember findOneMemInOrg(Long orgId, Long memId) {
-    OrgMemEntity userOrgEntity = organizationMemberMapper.findOneMemInOrg(orgId, memId);
+    OrganizationMemberEntity userOrgEntity = organizationMemberMapper.findOneMemInOrg(orgId, memId);
     OrganizationMember userOrg = new OrganizationMember();
     BeanUtils.copyProperties(userOrgEntity, userOrg);
     return userOrg;
@@ -60,9 +76,9 @@ public class OrganizationMemberServiceImpl implements OrganizationMemberService 
   @Override
   public ObjectList<OrganizationMember> listByOrgId(Long orgId, Integer status) {
     ObjectList<OrganizationMember> result = new ObjectList<>();
-    List<OrgMemEntity> userOrgEntities = organizationMemberMapper
+    List<OrganizationMemberEntity> userOrgEntities = organizationMemberMapper
         .listMemInOrgByOrgId(orgId, status);
-    for (OrgMemEntity userOrgEntity : userOrgEntities) {
+    for (OrganizationMemberEntity userOrgEntity : userOrgEntities) {
       OrganizationMember userOrg = new OrganizationMember();
       BeanUtils.copyProperties(userOrgEntity, userOrg);
       result.getElements().add(userOrg);
@@ -72,16 +88,14 @@ public class OrganizationMemberServiceImpl implements OrganizationMemberService 
 
 
   @Override
-  public ObjectList<OrganizationMember> listByMemId(Long userId, Integer status) {
-    ObjectList<OrganizationMember> result = new ObjectList<>();
-    List<OrgMemEntity> userOrgEntities = organizationMemberMapper
-        .listOrgContainMemByMemId(userId, status);
-    for (OrgMemEntity userOrgEntity : userOrgEntities) {
-      OrganizationMember userOrg = new OrganizationMember();
-      BeanUtils.copyProperties(userOrgEntity, userOrg);
-      result.getElements().add(userOrg);
-    }
-    return result;
+  public void updateMemLevel(Long orgId, Long memId, Integer level) {
+    organizationMemberMapper.updateMemLevelInOrg(orgId, memId, level);
+  }
+
+
+  @Override
+  public void updateMemStatus(Long orgId, Long memId, Integer status) {
+    organizationMemberMapper.updateMemStatusInOrg(memId, orgId, status);
   }
 
 

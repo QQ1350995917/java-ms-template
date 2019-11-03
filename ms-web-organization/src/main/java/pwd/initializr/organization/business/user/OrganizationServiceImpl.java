@@ -8,7 +8,7 @@ import pwd.initializr.common.web.business.bo.ObjectList;
 import pwd.initializr.organization.business.user.bo.Organization;
 import pwd.initializr.organization.business.user.bo.OrganizationMember;
 import pwd.initializr.organization.business.user.bo.OrganizationMember.Level;
-import pwd.initializr.organization.persistence.dao.OrgMemEntity;
+import pwd.initializr.organization.persistence.dao.OrganizationMemberEntity;
 import pwd.initializr.organization.persistence.dao.OrganizationEntity;
 import pwd.initializr.organization.persistence.dao.OrganizationEntity.Progress;
 import pwd.initializr.organization.persistence.mapper.OrganizationMapper;
@@ -44,7 +44,7 @@ public class OrganizationServiceImpl implements OrganizationService {
     organizationMember.setCreateTime(System.currentTimeMillis());
     organizationMember.setUpdateTime(System.currentTimeMillis());
     organizationMember.setLevel(Level.OWNER.value());
-    OrgMemEntity orgMemEntity = new OrgMemEntity();
+    OrganizationMemberEntity orgMemEntity = new OrganizationMemberEntity();
     BeanUtils.copyProperties(organizationMember, orgMemEntity);
     organizationMemberMapper.addMemToOrg(orgMemEntity);
   }

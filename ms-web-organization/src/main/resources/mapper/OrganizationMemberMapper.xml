@@ -4,7 +4,7 @@
 <mapper namespace="pwd.initializr.organization.persistence.mapper.OrganizationMemberMapper">
   <!-- addMemToOrg -->
   <insert id="addMemToOrg" keyProperty="id"
-    parameterType="pwd.initializr.organization.persistence.dao.OrgMemEntity"
+    parameterType="pwd.initializr.organization.persistence.dao.OrganizationMemberEntity"
     useGeneratedKeys="true">
 		insert into `organization_member`
 		(`org_id`,`mem_id`,`level`,`status`,`create_time`,`update_time`)
@@ -43,7 +43,7 @@
 
   <!-- findOneMemInOrg -->
   <select id="findOneMemInOrg" parameterType="java.lang.Long"
-    resultType="pwd.initializr.organization.persistence.dao.OrgMemEntity">
+    resultType="pwd.initializr.organization.persistence.dao.OrganizationMemberEntity">
 		SELECT
 		`org_id` AS `orgId`,
 		`mem_id` AS `memId`,
@@ -58,7 +58,7 @@
 
   <!-- listMemInOrgByOrgId -->
   <select id="listMemInOrgByOrgId"
-    resultType="pwd.initializr.organization.persistence.dao.OrgMemEntity">
+    resultType="pwd.initializr.organization.persistence.dao.OrganizationMemberEntity">
     SELECT
     `org_id` AS `orgId`,
     `mem_id` AS `memId`,
@@ -73,9 +73,27 @@
     </if>
   </select>
 
-  <!-- listOrgContainMemByMemId -->
-  <select id="listOrgContainMemByMemId"
-    resultType="pwd.initializr.organization.persistence.dao.OrgMemEntity">
+
+  <!-- findMyCreation -->
+  <select id="findMyCreation"
+    resultType="pwd.initializr.organization.persistence.dao.OrganizationMemberEntity">
+    select
+    `org_id` AS `orgId`,
+    `mem_id` AS `memId`,
+    `level` AS `level`,
+    `status` AS `status`,
+    `create_time` AS `createTime`,
+    `update_time` AS `updateTime`
+    from `organization_member`
+    where `mem_id` = #{memId}
+    <if test="status != null">
+      and `status` = #{status}
+    </if>
+  </select>
+
+  <!-- findMyJoined -->
+  <select id="findMyJoined"
+    resultType="pwd.initializr.organization.persistence.dao.OrganizationMemberEntity">
     select
     `org_id` AS `orgId`,
     `mem_id` AS `memId`,

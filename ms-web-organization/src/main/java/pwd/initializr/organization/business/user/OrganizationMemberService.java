@@ -16,15 +16,96 @@ import pwd.initializr.organization.business.user.bo.OrganizationMember;
  */
 public interface OrganizationMemberService {
 
-  void addMemToOrg(OrganizationMember userOrg);
+  /**
+   * <h2>添加成员到组织</h2>
+   * date 2019-11-03 21:14
+   *
+   * @param organizationMember 成员信息
+   * @return void
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  void addMemToOrg(OrganizationMember organizationMember);
 
-  void updateMemLevel(Long userId, Long orgId, Integer level);
 
-  void updateMemStatus(Long userId, Long orgId, Integer status);
+  /**
+   * <h2>找到我创建的组织</h2>
+   * date 2019-11-03 21:16
+   *
+   * @param memId 成员ID
+   * @param status 成员状态
+   * @return pwd.initializr.organization.business.user.bo.OrganizationMember
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  ObjectList<OrganizationMember> findMyCreation(Long memId, Integer status);
 
-  OrganizationMember findOneMemInOrg(Long orgId,Long memId);
 
+  /**
+   * <h2>找到我加入的组织</h2>
+   * date 2019-11-03 21:29
+   *
+   * @param memId 成员ID
+   * @param status 成员状态
+   * @return pwd.initializr.common.web.business.bo.ObjectList<pwd.initializr.organization.business.user.bo.OrganizationMember>
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  ObjectList<OrganizationMember> findMyJoined(Long memId, Integer status);
+
+
+  /**
+   * <h2>在指定的组织中查找成员</h2>
+   * date 2019-11-03 21:16
+   *
+   * @param orgId 组织ID
+   * @param memId 成员ID
+   * @return pwd.initializr.organization.business.user.bo.OrganizationMember
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  OrganizationMember findOneMemInOrg(Long orgId, Long memId);
+
+
+  /**
+   * <h2>成员列表</h2>
+   * date 2019-11-03 21:16
+   *
+   * @param orgId 组织ID
+   * @param status 成员状态
+   * @return pwd.initializr.common.web.business.bo.ObjectList<pwd.initializr.organization.business.user.bo.OrganizationMember>
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
   ObjectList<OrganizationMember> listByOrgId(Long orgId, Integer status);
 
-  ObjectList<OrganizationMember> listByMemId(Long medId, Integer status);
+
+  /**
+   * <h2>更新小组中成员级别</h2>
+   * date 2019-11-03 21:14
+   *
+   * @param orgId 组织ID
+   * @param memId 成员ID
+   * @param level 成员等级
+   * @return void
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  void updateMemLevel(Long orgId, Long memId, Integer level);
+
+
+  /**
+   * <h2>更新成员状态</h2>
+   * date 2019-11-03 21:16
+   *
+   * @param memId 成员ID
+   * @param orgId 组织ID
+   * @param status 成员状态
+   * @return void
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  void updateMemStatus(Long orgId, Long memId, Integer status);
+
+
 }

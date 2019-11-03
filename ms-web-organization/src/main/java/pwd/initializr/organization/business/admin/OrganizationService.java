@@ -16,21 +16,63 @@ import pwd.initializr.organization.business.user.bo.Organization;
  */
 public interface OrganizationService {
 
+  /**
+   * <h2>创建根节点组织</h2>
+   * date 2019-11-03 21:36
+   *
+   * @param organization 组织信息
+   * @return pwd.initializr.organization.business.user.bo.Organization
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
   Organization createRoot(Organization organization);
 
+
+  /**
+   * <h2>根节点组织查询</h2>
+   * date 2019-11-03 21:36
+   *
+   * @return pwd.initializr.organization.business.user.bo.Organization
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
   Organization getRoot();
 
-  void updateRoot(Organization organization);
 
-  void reviewExecution(Long id);
-
-  void reviewRefuse(Long id);
-
-  void reviewApprove(Long id);
-
-  void reviewRecheck(Long id);
-
+  /**
+   * <h2>子级组织查询</h2>
+   * date 2019-11-03 21:36
+   *
+   * @param pid 上级组织
+   * @param status 组织状态
+   * @return pwd.initializr.common.web.business.bo.ObjectList<pwd.initializr.organization.business.user.bo.Organization>
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
   ObjectList<Organization> listByPidAndStatus(Long pid, Integer status);
 
+
+  /**
+   * <h2>根据状态查询组织</h2>
+   * date 2019-11-03 21:36
+   *
+   * @param status 组织状态
+   * @return pwd.initializr.common.web.business.bo.ObjectList<pwd.initializr.organization.business.user.bo.Organization>
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
   ObjectList<Organization> listByStatus(Integer status);
+
+  /**
+   * <h2>更新根节点组织的信息</h2>
+   * date 2019-11-03 21:36
+   *
+   * @param organization 组织信息
+   * @return void
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  void updateRoot(Organization organization);
+
+
 }
