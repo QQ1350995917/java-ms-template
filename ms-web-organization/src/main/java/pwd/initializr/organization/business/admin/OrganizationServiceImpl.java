@@ -79,7 +79,6 @@ public class OrganizationServiceImpl implements OrganizationService {
     return result;
   }
 
-
   @Override
   public void updateRoot(Organization organization) {
     OrganizationEntity organizationEntity = new OrganizationEntity();
@@ -88,27 +87,7 @@ public class OrganizationServiceImpl implements OrganizationService {
   }
 
   @Override
-  public void reviewApprove(Long id) {
-    organizationMapper.updateProgressById(id, Progress.REVIEW_APPROVE.value());
+  public void updateProgress(Long id, Integer progress) {
+    organizationMapper.updateProgressById(id,progress);
   }
-
-
-  @Override
-  public void reviewExecution(Long id) {
-    organizationMapper.updateProgressById(id, Progress.REVIEW_EXECUTION.value());
-  }
-
-
-  @Override
-  public void reviewRecheck(Long id) {
-    organizationMapper.updateProgressById(id, Progress.REVIEW_RECHECK.value());
-  }
-
-
-  @Override
-  public void reviewRefuse(Long id) {
-    organizationMapper.updateProgressById(id, Progress.REVIEW_REFUSE.value());
-  }
-
-
 }

@@ -1,64 +1,51 @@
-package pwd.initializr.organization.business.user.bo;
+package pwd.initializr.organization.api.admin.vo;
 
+import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import pwd.initializr.organization.persistence.dao.OrganizationEntity.Progress;
+import pwd.initializr.organization.api.admin.OrgReviewApi;
 import pwd.initializr.organization.persistence.dao.OrganizationProgressEntity.Type;
 
 /**
- * pwd.initializr.organization.business.user.bo@ms-web-initializr
+ * pwd.initializr.organization.api.admin.vo@ms-web-initializr
  *
  * <h1>TODO what you want to do?</h1>
  *
- * date 2019-11-03 20:09
+ * date 2019-11-04 14:15
  *
- * @author DingPengwei[www.dingpengwei@foxmail.com]
+ * @author DingPengwei[dingpengwei@eversec.com]
  * @version 1.0.0
  * @since DistributionVersion
  */
 @AllArgsConstructor
 @NoArgsConstructor
-@Setter
 @Getter
+@Setter
 @ToString
-public class OrganizationProgress {
+@ApiModel(value = "orgReviewOutput", description = "组织审核响应参数")
+public class OrgReviewOutput extends OrgReviewInput {
 
   /**
    * 主键
    */
   private Long id;
   /**
-   * 组织ID
-   */
-  private Long orgId;
-  /**
    * 提交人ID
    */
   private Long editorId;
-  /**
-   * 提交内容
-   */
-  private String content;
-  /**
-   * 关联ID
-   */
-  private Long refId;
   /**
    * 数据类型
    * see {@link Type}
    */
   private Integer type;
   /**
-   * 审核进度 see {@link Progress}
-   */
-  private Integer progress;
-  /**
    * 审核答复时间
    */
   private Long auditorTime;
+
   /**
    * 数据状态 see {@link pwd.initializr.organization.persistence.dao.ConstantStatus}
    */

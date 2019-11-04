@@ -1,4 +1,4 @@
-package pwd.initializr.organization.business.user.bo;
+package pwd.initializr.organization.business.admin.bo;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,13 +9,13 @@ import pwd.initializr.organization.persistence.dao.OrganizationEntity.Progress;
 import pwd.initializr.organization.persistence.dao.OrganizationProgressEntity.Type;
 
 /**
- * pwd.initializr.organization.business.user.bo@ms-web-initializr
+ * pwd.initializr.organization.business.admin.bo@ms-web-initializr
  *
  * <h1>TODO what you want to do?</h1>
  *
- * date 2019-11-03 20:09
+ * date 2019-11-04 13:50
  *
- * @author DingPengwei[www.dingpengwei@foxmail.com]
+ * @author DingPengwei[dingpengwei@eversec.com]
  * @version 1.0.0
  * @since DistributionVersion
  */

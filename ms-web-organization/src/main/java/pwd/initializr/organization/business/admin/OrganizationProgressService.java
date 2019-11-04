@@ -1,6 +1,11 @@
 package pwd.initializr.organization.business.admin;
 
+import java.util.List;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import pwd.initializr.common.web.business.bo.ObjectList;
+import pwd.initializr.organization.business.admin.bo.OrganizationProgress;
+import pwd.initializr.organization.persistence.dao.OrganizationEntity.Progress;
 
 /**
  * pwd.initializr.organization.business.admin@ms-web-initializr
@@ -16,50 +21,14 @@ import org.springframework.stereotype.Service;
 @Service
 public interface OrganizationProgressService {
 
-  /**
-   * <h2>组织审核审核结果：通过</h2>
-   * date 2019-11-03 21:36
-   *
-   * @param id 组织ID
-   * @return void
-   * @author DingPengwei[www.dingpengwei@foxmail.com]
-   * @since DistributionVersion
-   */
-  void reviewApprove(Long id);
+
+  ObjectList<OrganizationProgress> listReviewByOrgId(Long orgId, Integer status);
+
+  Progress[] listReviewOption();
+
+  @Transactional
+  void createReview(OrganizationProgress organizationProgress);
 
 
-  /**
-   * <h2>组织审核结果行进中</h2>
-   * date 2019-11-03 21:36
-   *
-   * @param id 组织ID
-   * @return void
-   * @author DingPengwei[www.dingpengwei@foxmail.com]
-   * @since DistributionVersion
-   */
-  void reviewExecution(Long id);
 
-
-  /**
-   * <h2>组织审核结果：重新审核</h2>
-   * date 2019-11-03 21:36
-   *
-   * @param id 组织ID
-   * @return void
-   * @author DingPengwei[www.dingpengwei@foxmail.com]
-   * @since DistributionVersion
-   */
-  void reviewRecheck(Long id);
-
-
-  /**
-   * <h2>组织审核结果；拒接</h2>
-   * date 2019-11-03 21:36
-   *
-   * @param id 组织ID
-   * @return void
-   * @author DingPengwei[www.dingpengwei@foxmail.com]
-   * @since DistributionVersion
-   */
-  void reviewRefuse(Long id);
 }

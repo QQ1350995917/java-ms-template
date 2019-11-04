@@ -7,7 +7,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pwd.initializr.common.web.business.bo.ObjectList;
 import pwd.initializr.organization.business.user.bo.OrganizationProgress;
+import pwd.initializr.organization.persistence.dao.OrganizationEntity.Progress;
 import pwd.initializr.organization.persistence.dao.OrganizationProgressEntity;
+import pwd.initializr.organization.persistence.dao.OrganizationProgressEntity.Type;
 import pwd.initializr.organization.persistence.mapper.OrganizationProgressMapper;
 
 /**
@@ -47,6 +49,10 @@ public class OrganizationProgressServiceImpl implements OrganizationProgressServ
   public void reviewPending(OrganizationProgress organizationProgress) {
     OrganizationProgressEntity organizationProgressEntity = new OrganizationProgressEntity();
     BeanUtils.copyProperties(organizationProgress,organizationProgressEntity);
+    organizationProgressEntity.setType(Type.USER.value());
+    organizationProgressEntity.setProgress(Progress.REVIEW_PENDING.value());
+    organizationProgressEntity.setCreateTime(System.currentTimeMillis());
+    organizationProgressEntity.setUpdateTime(System.currentTimeMillis());
     organizationProgressMapper.create(organizationProgressEntity);
     organizationService.reviewPending(organizationProgress.getOrgId());
   }

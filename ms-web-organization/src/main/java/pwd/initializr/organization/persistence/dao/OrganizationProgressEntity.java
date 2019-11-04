@@ -46,7 +46,8 @@ public class OrganizationProgressEntity {
    */
   private Long refId;
   /**
-   * 数据类型 记录类型，1：审核，用户类型，2：答复，管理员类型
+   * 数据类型
+   * see {@link Type}
    */
   private Integer type;
   /**
@@ -69,5 +70,22 @@ public class OrganizationProgressEntity {
    * 更新时间
    */
   private Long updateTime;
+
+
+  public enum Type {
+    // 记录类型，1：审核，用户类型，2：答复，管理员类型
+    USER(0),// 用户类型
+    ADMIN(1); // 管理员类型
+
+    private int value;
+
+    Type(int value) {
+      this.value = value;
+    }
+
+    public int value() {
+      return value;
+    }
+  }
 
 }

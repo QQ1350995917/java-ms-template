@@ -74,13 +74,16 @@ public interface OrganizationService {
    */
   void updateRoot(Organization organization);
 
-  void reviewApprove(Long id);
-
-  void reviewExecution(Long id);
-
-  void reviewRecheck(Long id);
-
-  void reviewRefuse(Long id);
-
+  /*
+   *
+   * <h2>更新审核状态</h2>
+   * date 2019-11-04
+   *
+   * @param id 组织ID
+   * @param progress 审核状态
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  void updateProgress(Long id, Integer progress);
 
 }

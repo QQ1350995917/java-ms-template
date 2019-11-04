@@ -91,32 +91,4 @@ public class OrgController extends AdminController implements OrgApi {
       outputData(orgCreateOutput);
     }
   }
-
-  @ApiOperation(value = "组织审核中")
-  @PostMapping(value = {"/review/exec"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  @Override
-  public void reviewExecution() {
-
-  }
-
-  @ApiOperation(value = "拒绝新创建的组织")
-  @PostMapping(value = {"/review/refuse"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  @Override
-  public void reviewRefuse() {
-
-  }
-
-  @ApiOperation(value = "批准新创建的组织")
-  @PostMapping(value = {"/review/approve"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  @Override
-  public void reviewApprove() {
-
-  }
-
-  @ApiOperation(value = "从新审核组织信息")
-  @PostMapping(value = {"/review/recheck"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  @Override
-  public void reviewRecheck() {
-
-  }
 }

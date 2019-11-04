@@ -50,8 +50,7 @@ public class OrgController extends UserController implements OrgApi {
 
   @Autowired
   private OrganizationMemberService organizationMemberService;
-  @Autowired
-  private OrganizationProgressService organizationProgressService;
+
   @Autowired
   private OrganizationService organizationService;
 
@@ -102,33 +101,6 @@ public class OrgController extends UserController implements OrgApi {
   }
 
 
-  @ApiOperation(value = "查询组织审核信息")
-  @GetMapping(value = {"/pending"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  @Override
-  public void listReviewPending(Long orgId) {
-    // TODO 检查orgId和当前memId的匹配性
-    ObjectList<OrganizationProgress> organizationProgressObjectList = organizationProgressService
-        .listReviewPending(1L, null);
-    List<ReviewPendingOutput> result = new LinkedList<>();
-    for (OrganizationProgress organizationProgress : organizationProgressObjectList.getElements()) {
-      ReviewPendingOutput reviewPendingOutput = new ReviewPendingOutput();
-      BeanUtils.copyProperties(organizationProgress, reviewPendingOutput);
-      result.add(reviewPendingOutput);
-    }
-    outputData(result);
-  }
-
-
-  @ApiOperation(value = "提交组织到待审核")
-  @PostMapping(value = {"/pending"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  @Override
-  public void reviewPending(@RequestBody ReviewPendingInput input) {
-    OrganizationProgress organizationProgress = new OrganizationProgress();
-    BeanUtils.copyProperties(input, organizationProgress);
-    organizationProgress.setApplicantId(1L); // TODO ID
-    organizationProgressService.reviewPending(organizationProgress);
-    outputData();
-  }
 
 
 }

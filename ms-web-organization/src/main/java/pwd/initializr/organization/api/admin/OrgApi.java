@@ -23,12 +23,6 @@ public interface OrgApi {
 
   void createRootOrg(OrgCreateInput input);
 
-  void reviewExecution();
 
-  void reviewRefuse();
-
-  void reviewApprove();
-
-  void reviewRecheck();
 
 }
