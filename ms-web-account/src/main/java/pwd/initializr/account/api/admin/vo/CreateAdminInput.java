@@ -5,14 +5,12 @@ package pwd.initializr.account.api.admin.vo;
  *
  * <h1>TODO what you want to do?</h1>
  *
- * date 2019-09-26 18:10
+ * date 2019-11-04 22:48
  *
  * @author DingPengwei[dingpengwei@eversec.com]
  * @version 1.0.0
  * @since DistributionVersion
  */
-public class UserTemplateUploadInput {
+public class CreateAdminInput {
 
-  private String url;
-  private String version;
 }

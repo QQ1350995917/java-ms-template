@@ -35,6 +35,11 @@ public class SessionServiceImpl implements SessionService {
   private RedisClient redisClient;
 
   @Override
+  public String genSession(Account account) {
+    return account.getId() + "";
+  }
+
+  @Override
   public String login(Account account) {
     AccountEntity accountEntity = accountMapper
         .findByIdentifyAndPassword(account.getIdentify(), account.getPassword());
@@ -45,7 +50,7 @@ public class SessionServiceImpl implements SessionService {
     BeanUtils.copyProperties(accountEntity, result);
     this.createSession(result);
     // TODO 加密混淆或者md5等操作
-    return result.getId() + "";
+    return this.genSession(account);
   }
 
   @Override

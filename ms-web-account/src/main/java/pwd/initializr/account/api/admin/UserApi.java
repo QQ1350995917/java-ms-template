@@ -13,17 +13,11 @@ package pwd.initializr.account.api.admin;
  */
 public interface UserApi {
 
-    void downloadAccountTemplate();
+    void listUser();
 
-    void importAccount();
+    void detailedUser(Long id);
 
-    void createAccount();
+    void blockUser(Long id);
 
-    void listAccounts();
-
-    void detailAccount();
-
-    void blockAccount();
-
-    void unblockAccount();
+    void unblockUser(Long id);
 }

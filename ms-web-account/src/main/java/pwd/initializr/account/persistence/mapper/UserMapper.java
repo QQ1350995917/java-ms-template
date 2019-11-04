@@ -17,6 +17,7 @@ import pwd.initializr.account.persistence.dao.UserEntity;
  * @version 1.0.0
  * @since DistributionVersion
  */
+@Component
 @Mapper
 public interface UserMapper {
 

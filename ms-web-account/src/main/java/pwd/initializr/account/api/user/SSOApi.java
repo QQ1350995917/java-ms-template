@@ -13,4 +13,9 @@ package pwd.initializr.account.api.user;
  */
 public interface SSOApi {
 
+  void login();
+
+  void verify();
+
+  void logout();
 }

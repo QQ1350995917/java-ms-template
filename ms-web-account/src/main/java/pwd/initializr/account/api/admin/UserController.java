@@ -2,12 +2,17 @@ package pwd.initializr.account.api.admin;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import pwd.initializr.account.business.admin.UserService;
+import pwd.initializr.account.business.admin.bo.User;
 import pwd.initializr.common.web.api.admin.AdminController;
+import pwd.initializr.common.web.business.bo.ObjectList;
 
 /**
  * pwd.initializr.account.api.admin@ms-web-initializr
@@ -23,58 +28,42 @@ import pwd.initializr.common.web.api.admin.AdminController;
 @Api(
     tags = "系统用户管理",
     value = "userManageApi",
-    description = "系统用户管理API"
+    description = "[用户列表，用户详情，禁用用户，启用用户]"
 )
 @RestController(value = "userManageApi")
 @RequestMapping(value = "/api/admin/user")
 public class UserController extends AdminController implements UserApi {
 
-    @ApiOperation(value = "下载账号模板")
-    @GetMapping(value = {"/template"}, produces = "application/json;charset=UTF-8")
-    @Override
-    public void downloadAccountTemplate() {
-        super.outputData();
-    }
+  @Autowired
+  private UserService userService;
 
-    @ApiOperation(value = "导入账号")
-    @PostMapping(value = {"/import"}, produces = "application/json;charset=UTF-8")
-    @Override
-    public void importAccount() {
-        super.outputData();
-    }
+  @ApiOperation(value = "用户列表")
+  @GetMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @Override
+  public void listUser() {
+    ObjectList<User> userObjectList = userService.listUser();
+    outputData(userObjectList);// TODO 转化为VO
+  }
 
-    @ApiOperation(value = "创建账号")
-    @PostMapping(value = {"/create"}, produces = "application/json;charset=UTF-8")
-    @Override
-    public void createAccount() {
-        super.outputData();
-    }
+  @ApiOperation(value = "用户详情")
+  @GetMapping(value = {"/{id}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @Override
+  public void detailedUser(@PathVariable Long id) {
+    User user = userService.findById(id);
+    outputData(user);// TODO 转化为VO
+  }
 
-    @ApiOperation(value = "系统账号清单")
-    @GetMapping(value = {""}, produces = "application/json;charset=UTF-8")
-    @Override
-    public void listAccounts() {
-        super.outputData();
-    }
+  @ApiOperation(value = "禁用用户")
+  @PatchMapping(value = {"/block/{id}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @Override
+  public void blockUser(@PathVariable Long id) {
 
-    @ApiOperation(value = "账号详情")
-    @GetMapping(value = {"/detail"}, produces = "application/json;charset=UTF-8")
-    @Override
-    public void detailAccount() {
-        super.outputData();
-    }
+  }
 
-    @ApiOperation(value = "封禁账号")
-    @PutMapping(value = {"/block"}, produces = "application/json;charset=UTF-8")
-    @Override
-    public void blockAccount() {
-        super.outputData();
-    }
+  @ApiOperation(value = "启用用户")
+  @PatchMapping(value = {"/unBlock/{id}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @Override
+  public void unblockUser(@PathVariable Long id) {
 
-    @ApiOperation(value = "解禁账号")
-    @PutMapping(value = {"/unblock"}, produces = "application/json;charset=UTF-8")
-    @Override
-    public void unblockAccount() {
-        super.outputData();
-    }
+  }
 }

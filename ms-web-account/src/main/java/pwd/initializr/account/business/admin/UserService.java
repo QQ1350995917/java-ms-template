@@ -20,6 +20,8 @@ public interface UserService {
 
   ObjectList<User> listUser();
 
+  User findById(Long userId);
+
   ObjectList<User> listUserById(String[] ids,Integer status);
 
 }

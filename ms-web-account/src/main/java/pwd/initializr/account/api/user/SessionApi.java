@@ -1,6 +1,6 @@
 package pwd.initializr.account.api.user;
 
-import pwd.initializr.account.api.admin.vo.LoginInput;
+import pwd.initializr.account.api.user.vo.LoginInput;
 
 /**
  * pwd.initializr.account.api.user@ms-web-initializr

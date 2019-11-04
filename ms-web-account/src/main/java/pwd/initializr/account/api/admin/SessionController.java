@@ -6,8 +6,10 @@ import io.swagger.annotations.ApiOperation;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,22 +30,22 @@ import pwd.initializr.common.web.api.admin.AdminController;
  */
 @Api(
     tags = "会话管理",
-    value = "sessionManageApi",
-    description = "会话管理API"
+    value = "adminSessionManageApi",
+    description = "[管理员登录，登录信息，管理员退出]"
 )
-@RestController(value = "session")
+@RestController(value = "adminSessionApi")
 @RequestMapping(value = "/api/admin/session")
 public class SessionController extends AdminController implements SessionApi {
 
   @ApiOperation(value = "登录")
-  @PostMapping(value = {"/login"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @PutMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
   public void login(@RequestBody LoginInput input) {
     LoginOutput loginOutput = new LoginOutput("admin-token");
     outputData(loginOutput);
   }
 
-  @ApiOperation(value = "登录信息")
+  @ApiOperation(value = "信息查询")
   @GetMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
   public void info() {
@@ -57,10 +59,8 @@ public class SessionController extends AdminController implements SessionApi {
     outputData(content);
   }
 
-
-
   @ApiOperation(value = "退出")
-  @PostMapping(value = {"/logout"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @DeleteMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
   public void logout() {
     outputData("success");

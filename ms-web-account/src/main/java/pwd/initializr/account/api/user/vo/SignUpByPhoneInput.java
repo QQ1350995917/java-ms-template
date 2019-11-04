@@ -27,7 +27,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @ApiModel(value = "signUpByPhoneNumber", description = "使用手机号码注册")
-public class SignUpByPhoneNumberInput {
+public class SignUpByPhoneInput {
 
   @ApiModelProperty(name = "username", value = "真实姓名", required = true, example = "诸葛亮")
   @NotNull(message = "0")

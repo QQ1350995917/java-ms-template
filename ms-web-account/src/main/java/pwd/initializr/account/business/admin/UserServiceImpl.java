@@ -3,6 +3,7 @@ package pwd.initializr.account.business.admin;
 import java.util.List;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import pwd.initializr.account.business.admin.bo.User;
 import pwd.initializr.account.persistence.dao.UserEntity;
 import pwd.initializr.account.persistence.mapper.UserMapper;
@@ -19,6 +20,7 @@ import pwd.initializr.common.web.business.bo.ObjectList;
  * @version 1.0.0
  * @since DistributionVersion
  */
+@Service
 public class UserServiceImpl implements UserService {
 
   @Autowired
@@ -34,6 +36,14 @@ public class UserServiceImpl implements UserService {
       result.getElements().add(user);
     }
     return result;
+  }
+
+  @Override
+  public User findById(Long userId) {
+    UserEntity userEntity = userMapper.findByUserId(userId);
+    User user = new User();
+    BeanUtils.copyProperties(userEntity,user);
+    return user;
   }
 
   @Override
