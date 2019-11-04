@@ -35,7 +35,7 @@ import pwd.initializr.organization.business.user.bo.OrganizationProgress;
     value = "orgApi",
     description = "用户组织API"
 )
-@RestController(value = "orgApi")
+@RestController(value = "orgReviewApi")
 @RequestMapping(value = "/api/org/review")
 public class OrgReviewController extends UserController implements OrgReviewApi {
 
