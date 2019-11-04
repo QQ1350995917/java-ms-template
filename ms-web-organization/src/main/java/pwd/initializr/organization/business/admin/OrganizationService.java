@@ -74,5 +74,13 @@ public interface OrganizationService {
    */
   void updateRoot(Organization organization);
 
+  void reviewApprove(Long id);
+
+  void reviewExecution(Long id);
+
+  void reviewRecheck(Long id);
+
+  void reviewRefuse(Long id);
+
 
 }

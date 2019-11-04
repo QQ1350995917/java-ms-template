@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 public interface OrganizationProgressService {
 
   /**
-   * <h2>标记组织审核状态为审核通过</h2>
+   * <h2>组织审核审核结果：通过</h2>
    * date 2019-11-03 21:36
    *
    * @param id 组织ID
@@ -29,7 +29,7 @@ public interface OrganizationProgressService {
 
 
   /**
-   * <h2>标组组织审核状态为行进中</h2>
+   * <h2>组织审核结果行进中</h2>
    * date 2019-11-03 21:36
    *
    * @param id 组织ID
@@ -41,7 +41,7 @@ public interface OrganizationProgressService {
 
 
   /**
-   * <h2>标记组织审核状态为重新审核</h2>
+   * <h2>组织审核结果：重新审核</h2>
    * date 2019-11-03 21:36
    *
    * @param id 组织ID
@@ -53,7 +53,7 @@ public interface OrganizationProgressService {
 
 
   /**
-   * <h2>标记组织审核状态为拒接</h2>
+   * <h2>组织审核结果；拒接</h2>
    * date 2019-11-03 21:36
    *
    * @param id 组织ID

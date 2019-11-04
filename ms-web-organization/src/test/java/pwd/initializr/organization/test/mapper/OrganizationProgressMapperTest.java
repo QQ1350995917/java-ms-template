@@ -34,13 +34,11 @@ public class OrganizationProgressMapperTest {
   public void testCreate(){
     OrganizationProgressEntity organizationProgressEntity = new OrganizationProgressEntity();
     organizationProgressEntity.setOrgId(1L);
-    organizationProgressEntity.setApplicantId(1L);
-    organizationProgressEntity.setApplicantContent("neirong =");
-//    organizationProgressEntity.setRefId(9L);
-    organizationProgressEntity.setAuditorContent("organizationProgressEntity");
-    organizationProgressEntity.setAuditorId(10L);
-    organizationProgressEntity.setAuditorResult(Progress.REVIEW_REFUSE.value());
-    organizationProgressEntity.setAuditorTime(System.currentTimeMillis());
+    organizationProgressEntity.setEditorId(1L);
+    organizationProgressEntity.setContent("neirong =");
+    organizationProgressEntity.setRefId(9L);
+    organizationProgressEntity.setType(1);
+//    organizationProgressEntity.setProgress(0);
     organizationProgressEntity.setStatus(0);
     organizationProgressEntity.setCreateTime(System.currentTimeMillis());
     organizationProgressEntity.setUpdateTime(System.currentTimeMillis());
@@ -55,26 +53,5 @@ public class OrganizationProgressMapperTest {
         .listByOrgId(1L, null);
     System.out.println(organizationProgressEntities.size());
   }
-
-
-  @Test
-  public void testAuditById(){
-    OrganizationProgressEntity organizationProgressEntity = new OrganizationProgressEntity();
-    organizationProgressEntity.setId(1L);
-    organizationProgressEntity.setOrgId(1L);
-    organizationProgressEntity.setApplicantId(1L);
-    organizationProgressEntity.setApplicantContent("neirong =");
-//    organizationProgressEntity.setRefId(9L);
-    organizationProgressEntity.setAuditorContent("organizationProgressEntity");
-    organizationProgressEntity.setAuditorId(10L);
-    organizationProgressEntity.setAuditorResult(Progress.REVIEW_REFUSE.value());
-    organizationProgressEntity.setAuditorTime(System.currentTimeMillis());
-    organizationProgressEntity.setStatus(0);
-    organizationProgressEntity.setCreateTime(System.currentTimeMillis());
-    organizationProgressEntity.setUpdateTime(System.currentTimeMillis());
-    organizationProgressMapper.auditById(organizationProgressEntity);
-    System.out.println(organizationProgressEntity);
-  }
-
 
 }

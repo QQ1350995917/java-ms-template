@@ -1,4 +1,4 @@
-CREATE DATABASE `initializr_organization` /*!40100 DEFAULT CHARACTER SET utf8 */;
+CREATE DATABASE `initializr_organization`; /*!40100 DEFAULT CHARACTER SET utf8 */;
 
 CREATE TABLE `organization` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
@@ -15,7 +15,7 @@ CREATE TABLE `organization` (
   `create_time` bigint(11) NOT NULL COMMENT '首次创建时间',
   `update_time` bigint(11) NOT NULL COMMENT '最近修改时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_bin ROW_FORMAT=DYNAMIC
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_bin ROW_FORMAT=DYNAMIC;
 
 CREATE TABLE `organization_member` (
   `org_id` bigint(20) NOT NULL COMMENT '外键，组织ID',
@@ -25,20 +25,18 @@ CREATE TABLE `organization_member` (
   `create_time` bigint(20) NOT NULL COMMENT '首次创建时间',
   `update_time` bigint(20) NOT NULL COMMENT '最近修改时间',
   PRIMARY KEY (`org_id`,`mem_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin ROW_FORMAT=DYNAMIC
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin ROW_FORMAT=DYNAMIC;
 
-CREATE TABLE `organization_progress` (
+CREATE TABLE `organization_progress`  (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `org_id` bigint(20) NOT NULL COMMENT '组织ID',
-  `applicant_id` bigint(20) NOT NULL COMMENT '申请者的ID',
-  `applicant_content` text NOT NULL COMMENT '申请内容',
-  `ref_id` bigint(20) DEFAULT NULL COMMENT '相关的记录Id',
-  `auditor_id` bigint(20) DEFAULT NULL COMMENT '评审者ID',
-  `auditor_content` text COMMENT '评审内容',
-  `auditor_result` int(11) DEFAULT NULL COMMENT '评审结果',
-  `auditor_time` bigint(20) DEFAULT NULL COMMENT '审核时间',
-  `status` int(11) NOT NULL DEFAULT '0' COMMENT '0可用 1删除',
-  `create_time` bigint(20) NOT NULL COMMENT '首次创建时间',
-  `update_time` bigint(20) NOT NULL COMMENT '最后修改时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8
+  `editor_id` bigint(20) NOT NULL COMMENT '操作人的ID',
+  `content` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '内容',
+  `ref_id` bigint(20) NULL DEFAULT NULL COMMENT '相关的记录Id',
+  `type` int(11) NOT NULL COMMENT '记录类型，0：用户类型，1：管理员类型',
+  `progress` int(20) NULL DEFAULT 0 COMMENT '审核进度，管理员类型不可为空，新建0--->待审核1--->审核中2，审核拒绝3，审核通过4--->重新复核5',
+  `status` int(11) NOT NULL DEFAULT 0 COMMENT '0可用 1删除',
+  `create_time` bigint(20) NULL DEFAULT NULL COMMENT '首次创建时间',
+  `update_time` bigint(20) NOT NULL DEFAULT 0 COMMENT '最后修改时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;

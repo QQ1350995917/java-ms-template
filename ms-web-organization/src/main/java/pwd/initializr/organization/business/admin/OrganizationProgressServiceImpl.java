@@ -23,27 +23,24 @@ public class OrganizationProgressServiceImpl implements OrganizationProgressServ
 
   @Autowired
   private OrganizationProgressMapper organizationProgressMapper;
+
   @Override
   public void reviewApprove(Long id) {
-    organizationProgressMapper.updateProgressById(id, Progress.REVIEW_APPROVE.value());
-  }
 
+  }
 
   @Override
   public void reviewExecution(Long id) {
-    organizationProgressMapper.updateProgressById(id, Progress.REVIEW_EXECUTION.value());
-  }
 
+  }
 
   @Override
   public void reviewRecheck(Long id) {
-    organizationProgressMapper.updateProgressById(id, Progress.REVIEW_RECHECK.value());
-  }
 
+  }
 
   @Override
   public void reviewRefuse(Long id) {
-    organizationProgressMapper.updateProgressById(id, Progress.REVIEW_REFUSE.value());
-  }
 
+  }
 }

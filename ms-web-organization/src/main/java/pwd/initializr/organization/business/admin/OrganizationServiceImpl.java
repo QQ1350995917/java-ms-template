@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import pwd.initializr.common.web.business.bo.ObjectList;
 import pwd.initializr.organization.business.user.bo.Organization;
 import pwd.initializr.organization.persistence.dao.OrganizationEntity;
+import pwd.initializr.organization.persistence.dao.OrganizationEntity.Progress;
 import pwd.initializr.organization.persistence.mapper.OrganizationMapper;
 
 /**
@@ -84,6 +85,29 @@ public class OrganizationServiceImpl implements OrganizationService {
     OrganizationEntity organizationEntity = new OrganizationEntity();
     BeanUtils.copyProperties(organization, organizationEntity);
     organizationMapper.update(organizationEntity);
+  }
+
+  @Override
+  public void reviewApprove(Long id) {
+    organizationMapper.updateProgressById(id, Progress.REVIEW_APPROVE.value());
+  }
+
+
+  @Override
+  public void reviewExecution(Long id) {
+    organizationMapper.updateProgressById(id, Progress.REVIEW_EXECUTION.value());
+  }
+
+
+  @Override
+  public void reviewRecheck(Long id) {
+    organizationMapper.updateProgressById(id, Progress.REVIEW_RECHECK.value());
+  }
+
+
+  @Override
+  public void reviewRefuse(Long id) {
+    organizationMapper.updateProgressById(id, Progress.REVIEW_REFUSE.value());
   }
 
 

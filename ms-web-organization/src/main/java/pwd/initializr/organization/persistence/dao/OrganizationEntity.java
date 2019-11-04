@@ -99,12 +99,12 @@ public class OrganizationEntity {
     // 新建0--->待审核1--->审核中2                          |
     //          ^             |--->审核拒绝3---|           |
     //          |-----------------------------|<---------|
-    NEW(0),
-    REVIEW_PENDING(1),
-    REVIEW_EXECUTION(2),
-    REVIEW_REFUSE(3),
-    REVIEW_APPROVE(4),
-    REVIEW_RECHECK(5);
+    NEW(0),// 新建状态
+    REVIEW_PENDING(1), // 待审核状态
+    REVIEW_EXECUTION(2), // 审核中状态
+    REVIEW_REFUSE(3), // 审核拒绝状态
+    REVIEW_APPROVE(4), // 审核通过状态
+    REVIEW_RECHECK(5); // 重新复核状态 等价于0 重新走审核逻辑
 
     private int value;
 

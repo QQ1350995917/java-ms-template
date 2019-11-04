@@ -1,13 +1,11 @@
 package pwd.initializr.organization.persistence.dao;
 
-import io.swagger.annotations.ApiModelProperty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import pwd.initializr.organization.persistence.dao.OrganizationEntity.Progress;
 
 /**
  * pwd.initializr.organization.persistence.dao@ms-web-initializr
@@ -38,33 +36,29 @@ public class OrganizationProgressEntity {
   /**
    * 提交人ID
    */
-  private Long applicantId;
+  private Long editorId;
   /**
    * 提交内容
    */
-  private String applicantContent;
+  private String content;
   /**
    * 关联ID
    */
   private Long refId;
   /**
-   * 审核人ID
+   * 数据类型 记录类型，1：审核，用户类型，2：答复，管理员类型
    */
-  private Long auditorId;
+  private Integer type;
   /**
-   * 审核答复
+   * 审核进度 see {@link Progress}
    */
-  private String auditorContent;
-  /**
-   * 审核答复结果
-   */
-  private Integer auditorResult;
+  private Integer progress;
   /**
    * 审核答复时间
    */
   private Long auditorTime;
   /**
-   * 数据状态
+   * 数据状态 see {@link pwd.initializr.organization.persistence.dao.ConstantStatus}
    */
   private Integer status;
   /**

@@ -102,7 +102,7 @@ public class OrgController extends UserController implements OrgApi {
   }
 
 
-  @ApiOperation(value = "提交组织到待审核")
+  @ApiOperation(value = "查询组织审核信息")
   @GetMapping(value = {"/pending"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
   public void listReviewPending(Long orgId) {
