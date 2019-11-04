@@ -21,7 +21,7 @@ import pwd.initializr.account.business.user.bo.UserAccount;
  */
 @Service
 
-public class UserAccountServerImpl implements UserAccountService {
+public class UserAccountServiceImpl implements UserAccountService {
 
   @Autowired
   private UserService userService;

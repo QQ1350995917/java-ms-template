@@ -3,6 +3,7 @@ package pwd.initializr.account.persistence.mapper;
 
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Component;
 import pwd.initializr.account.persistence.dao.UserEntity;
 
 /**

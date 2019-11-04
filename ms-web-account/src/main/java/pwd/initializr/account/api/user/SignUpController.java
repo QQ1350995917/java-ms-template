@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.account.api.user.vo.ListSignUpByWaysInput;
@@ -20,6 +21,7 @@ import pwd.initializr.account.api.user.vo.SignUpByEmailInput;
 import pwd.initializr.account.api.user.vo.SignUpByPhoneNumberInput;
 import pwd.initializr.account.api.user.vo.SignUpByPhoneNumberOutput;
 import pwd.initializr.account.business.user.EntranceService;
+import pwd.initializr.account.business.user.SessionService;
 import pwd.initializr.account.business.user.UserAccountService;
 import pwd.initializr.account.business.user.bo.Account;
 import pwd.initializr.account.business.user.bo.Entrance;
@@ -59,6 +61,9 @@ public class SignUpController extends UserController implements SignUpApi, SignU
   @Autowired
   private EntranceService entranceService;
 
+  @Autowired
+  private SessionService sessionService;
+
   @ApiOperation(value = "注册方式清单")
   @GetMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
@@ -94,7 +99,7 @@ public class SignUpController extends UserController implements SignUpApi, SignU
   @ApiOperation(value = "手机号注册账号")
   @PostMapping(value = {"/phone"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
-  public void signUpByPhoneNumber(SignUpByPhoneNumberInput input) {
+  public void signUpByPhoneNumber(@RequestBody SignUpByPhoneNumberInput input) {
     SMSCode smsCode = new SMSCode();
     BeanUtils.copyProperties(input, smsCode);
     Boolean match = smsCodeService.matchOnce(smsCode);
@@ -110,6 +115,7 @@ public class SignUpController extends UserController implements SignUpApi, SignU
       SignUpByPhoneNumberOutput signUpByPhoneNumberOutput = new SignUpByPhoneNumberOutput();
       BeanUtils.copyProperties(userAccount.getAccounts().get(0), signUpByPhoneNumberOutput);
       BeanUtils.copyProperties(userAccount.getUser(), signUpByPhoneNumberOutput);
+      sessionService.createSession(account);
       super.outputData(signUpByPhoneNumberOutput);
     } else {
       super.outputException(401);

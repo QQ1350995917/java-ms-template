@@ -2,6 +2,8 @@ package pwd.initializr.account.persistence.mapper;
 
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Component;
 import pwd.initializr.account.persistence.dao.AccountEntity;
 
 /**
@@ -15,12 +17,15 @@ import pwd.initializr.account.persistence.dao.AccountEntity;
  * @version 1.0.0
  * @since DistributionVersion
  */
+@Component
 @Mapper
 public interface AccountMapper {
 
   void insertAccount(AccountEntity accountEntity);
 
   List<AccountEntity> findByUserId(Long userId);
+
+  AccountEntity findByIdentifyAndPassword(@Param("identify") String identify,@Param("password") String password);
 
   AccountEntity findByAccountId(Long accountId);
 
