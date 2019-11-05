@@ -33,7 +33,7 @@ public class ReviewPendingInput {
   private Long orgId;
   @ApiModelProperty(name = "applicantContent", value = "工单内容", required = true, example = "这是一个工单内容")
   @NotNull(message = "0")
-  private String applicantContent;
+  private String content;
   @ApiModelProperty(name = "refId", value = "相关的工单ID", required = false, example = "0")
   @Null(message = "0")
   private Long refId;

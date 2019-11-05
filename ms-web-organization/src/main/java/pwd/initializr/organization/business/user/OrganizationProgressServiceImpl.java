@@ -5,8 +5,10 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pwd.initializr.common.web.api.Constant;
 import pwd.initializr.common.web.business.bo.ObjectList;
 import pwd.initializr.organization.business.user.bo.OrganizationProgress;
+import pwd.initializr.organization.persistence.dao.ConstantStatus;
 import pwd.initializr.organization.persistence.dao.OrganizationEntity.Progress;
 import pwd.initializr.organization.persistence.dao.OrganizationProgressEntity;
 import pwd.initializr.organization.persistence.dao.OrganizationProgressEntity.Type;
@@ -49,6 +51,7 @@ public class OrganizationProgressServiceImpl implements OrganizationProgressServ
   public void reviewPending(OrganizationProgress organizationProgress) {
     OrganizationProgressEntity organizationProgressEntity = new OrganizationProgressEntity();
     BeanUtils.copyProperties(organizationProgress,organizationProgressEntity);
+    organizationProgressEntity.setStatus(ConstantStatus.ENABLE.value());
     organizationProgressEntity.setType(Type.USER.value());
     organizationProgressEntity.setProgress(Progress.REVIEW_PENDING.value());
     organizationProgressEntity.setCreateTime(System.currentTimeMillis());

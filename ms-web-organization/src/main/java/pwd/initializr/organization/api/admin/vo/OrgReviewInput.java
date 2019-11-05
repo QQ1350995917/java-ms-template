@@ -1,6 +1,9 @@
 package pwd.initializr.organization.api.admin.vo;
 
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,22 +31,17 @@ import pwd.initializr.organization.persistence.dao.OrganizationProgressEntity.Ty
 @ApiModel(value = "orgReviewInput", description = "组织审核请求参数")
 public class OrgReviewInput {
 
-  /**
-   * 组织ID
-   */
+  @ApiModelProperty(name = "orgId", value = "组织ID", required = true, example = "1")
+  @NotNull(message = "0")
   private Long orgId;
-
-  /**
-   * 提交内容
-   */
+  @ApiModelProperty(name = "content", value = "审核结果描述", required = true, example = "要加油哦")
+  @Null(message = "0")
   private String content;
-  /**
-   * 关联ID
-   */
+  @ApiModelProperty(name = "refId", value = "相关审核记录ID", required = true, example = "1")
+  @NotNull(message = "0")
   private Long refId;
-  /**
-   * 审核进度 see {@link Progress}
-   */
+  @ApiModelProperty(name = "progress", value = "审核进度", required = true, example = "1")
+  @NotNull(message = "0")
   private Integer progress;
 
 }

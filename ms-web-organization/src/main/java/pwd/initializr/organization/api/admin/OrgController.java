@@ -2,13 +2,13 @@ package pwd.initializr.organization.api.admin;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import java.util.LinkedList;
-import java.util.List;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,8 +17,6 @@ import pwd.initializr.common.web.business.bo.ObjectList;
 import pwd.initializr.organization.api.admin.vo.OrgCreateInput;
 import pwd.initializr.organization.api.admin.vo.OrgCreateOutput;
 import pwd.initializr.organization.api.admin.vo.OrgListInput;
-import pwd.initializr.organization.api.admin.vo.OrgListItem;
-import pwd.initializr.organization.api.admin.vo.OrgListOutput;
 import pwd.initializr.organization.business.admin.OrganizationService;
 import pwd.initializr.organization.business.user.bo.Organization;
 
@@ -34,9 +32,9 @@ import pwd.initializr.organization.business.user.bo.Organization;
  * @since DistributionVersion
  */
 @Api(
-    tags = "后台组织管理",
+    tags = "组织管理",
     value = "orgAdminApi",
-    description = "后台组织管理API"
+    description = "组织管理API"
 )
 @RestController(value = "orgAdminApi")
 @RequestMapping(value = "/api/admin/org")
@@ -51,22 +49,13 @@ public class OrgController extends AdminController implements OrgApi {
   public void listOrg(OrgListInput input) {
     ObjectList<Organization> organizationObjectList = organizationService
         .listByStatus(input.getStatus());
-    OrgListOutput orgListOutput = new OrgListOutput();
-    List<OrgListItem> orgListItems = new LinkedList<>();
-    for (Organization organization : organizationObjectList.getElements()) {
-      OrgListItem orgListItem = new OrgListItem();
-      BeanUtils.copyProperties(organization, orgListItem);
-      orgListItems.add(orgListItem);
-    }
-    orgListOutput.setOrg(orgListItems);
-    orgListOutput.setHasNext(false);
-    outputData(orgListOutput);
+    outputData(organizationObjectList);
   }
 
   @ApiOperation(value = "顶级组织信息")
-  @GetMapping(value = {"/root"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @GetMapping(value = {"/{orgId}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
-  public void queryRootOrg() {
+  public void queryRootOrg(@PathVariable Long orgId) {
     Organization rootOrg = organizationService.getRoot();
     if(rootOrg == null) {
       outputData(404);
@@ -76,7 +65,7 @@ public class OrgController extends AdminController implements OrgApi {
   }
 
   @ApiOperation(value = "创建顶级组织")
-  @PostMapping(value = {"/root"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @PutMapping(value = {"/root"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
   public void createRootOrg(@RequestBody OrgCreateInput input) {
     Organization rootOrg = organizationService.getRoot();

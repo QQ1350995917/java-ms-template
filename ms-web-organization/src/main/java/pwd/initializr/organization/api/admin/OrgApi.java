@@ -19,7 +19,7 @@ public interface OrgApi {
 
   void listOrg(OrgListInput input);
 
-  void queryRootOrg();
+  void queryRootOrg(Long orgId);
 
   void createRootOrg(OrgCreateInput input);
 

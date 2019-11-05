@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.common.web.api.admin.AdminController;
@@ -28,9 +30,9 @@ import pwd.initializr.organization.business.admin.bo.OrganizationProgress;
  * @since DistributionVersion
  */
 @Api(
-    tags = "后台组织审核管理",
+    tags = "组织审核管理",
     value = "orgReviewAdminApi",
-    description = "后台组织审核管理API"
+    description = "组织审核管理API"
 )
 @RestController(value = "orgReviewAdminApi")
 @RequestMapping(value = "/api/admin/org/review")
@@ -56,11 +58,12 @@ public class OrgReviewController extends AdminController implements OrgReviewApi
   }
 
   @ApiOperation(value = "审核组织")
-  @PostMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @PutMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
-  public void review(OrgReviewInput input) {
+  public void review(@RequestBody OrgReviewInput input) {
     OrganizationProgress organizationProgress = new OrganizationProgress();
     BeanUtils.copyProperties(input, organizationProgress);
+    organizationProgress.setEditorId(1L); // TODO ID
     organizationProgressService.createReview(organizationProgress);
     OrgReviewOutput orgReviewOutput = new OrgReviewOutput();
     BeanUtils.copyProperties(organizationProgress, orgReviewOutput);

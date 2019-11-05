@@ -2,6 +2,7 @@ package pwd.initializr.organization.api.user;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -60,8 +61,12 @@ public class OrgController extends UserController implements OrgApi {
   public void listOrgByMemId() {
     ObjectList<OrganizationMember> organizationMemberObjectList = organizationMemberService
         .findMyJoined(1L, null); // TODO memId
+    List<Long> orgIds = new ArrayList<>();
+    for (OrganizationMember element : organizationMemberObjectList.getElements()) {
+      orgIds.add(element.getOrgId());
+    }
     ObjectList<Organization> organizationObjectList = organizationService
-        .listById(new Long[]{1L, 2L}, null);// TODO memId
+        .listById(orgIds.toArray(new Long[]{}), null);// TODO memId
     Map<Long, Organization> temp = new HashMap<>();
     for (Organization organization : organizationObjectList.getElements()) {
       temp.put(organization.getId(), organization);

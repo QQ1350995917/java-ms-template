@@ -18,8 +18,8 @@
 		SELECT
 		`id` AS `id`,
 		`org_id` AS `orgId`,
-		`editor_id` AS `applicantId`,
-		`content` AS `applicantContent`,
+		`editor_id` AS `editorId`,
+		`content` AS `content`,
 		`ref_id` AS `refId`,
 		`type` AS `type`,
 		`progress` AS `progress`,

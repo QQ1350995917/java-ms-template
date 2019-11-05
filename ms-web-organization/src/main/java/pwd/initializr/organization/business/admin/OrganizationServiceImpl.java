@@ -42,6 +42,7 @@ public class OrganizationServiceImpl implements OrganizationService {
 
   @Override
   public Organization getRoot() {
+    // TODO 按照id=1的组织为跟组织是不合适的
     OrganizationEntity rootOrg = organizationMapper.findOneById(1L);
     if (rootOrg == null) {
       return null;

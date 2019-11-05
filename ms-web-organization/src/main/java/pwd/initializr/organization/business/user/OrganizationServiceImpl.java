@@ -65,10 +65,10 @@ public class OrganizationServiceImpl implements OrganizationService {
   }
 
   @Override
-  public ObjectList<Organization> listById(Long[] ids, Integer status) {
+  public ObjectList<Organization> listById(Long[] orgIds, Integer status) {
     ObjectList<Organization> result = new ObjectList<>();
     List<OrganizationEntity> organizationEntities = organizationMapper
-        .listByIdAndStatus(ids, status);
+        .listByIdAndStatus(orgIds, status);
     for (OrganizationEntity organizationEntity : organizationEntities) {
       Organization organization = new Organization();
       BeanUtils.copyProperties(organizationEntity, organization);

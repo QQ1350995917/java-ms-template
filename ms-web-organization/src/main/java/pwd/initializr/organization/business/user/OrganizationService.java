@@ -37,13 +37,13 @@ public interface OrganizationService {
    * <h2>根据组织ID批量查询组织信息</h2>
    * date 2019-11-03 20:17
    *
-   * @param ids 组织ID集合
+   * @param orgIds 组织ID集合
    * @param status 组织状态
    * @return pwd.initializr.common.web.business.bo.ObjectList<pwd.initializr.organization.business.user.bo.Organization>
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  ObjectList<Organization> listById(Long[] ids, Integer status);
+  ObjectList<Organization> listById(Long[] orgIds, Integer status);
 
 
   /**

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pwd.initializr.common.web.business.bo.ObjectList;
 import pwd.initializr.organization.business.admin.bo.OrganizationProgress;
+import pwd.initializr.organization.persistence.dao.ConstantStatus;
 import pwd.initializr.organization.persistence.dao.OrganizationEntity;
 import pwd.initializr.organization.persistence.dao.OrganizationEntity.Progress;
 import pwd.initializr.organization.persistence.dao.OrganizationProgressEntity;
@@ -46,6 +47,14 @@ public class OrganizationProgressServiceImpl implements OrganizationProgressServ
 
   @Override
   public Progress[] listReviewOption() {
+    // TODO 返回结果形式[
+    //    "NEW",
+    //    "REVIEW_PENDING",
+    //    "REVIEW_EXECUTION",
+    //    "REVIEW_REFUSE",
+    //    "REVIEW_APPROVE",
+    //    "REVIEW_RECHECK"
+    //  ]
     return OrganizationEntity.Progress.values();
   }
 
@@ -53,6 +62,7 @@ public class OrganizationProgressServiceImpl implements OrganizationProgressServ
   public void createReview(OrganizationProgress organizationProgress) {
     OrganizationProgressEntity organizationProgressEntity = new OrganizationProgressEntity();
     BeanUtils.copyProperties(organizationProgress, organizationProgressEntity);
+    organizationProgressEntity.setStatus(ConstantStatus.ENABLE.value());
     organizationProgressEntity.setAuditorTime(System.currentTimeMillis());
     organizationProgressEntity.setType(Type.ADMIN.value());
     organizationProgressEntity.setCreateTime(System.currentTimeMillis());
