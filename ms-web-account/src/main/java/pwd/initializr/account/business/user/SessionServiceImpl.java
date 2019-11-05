@@ -47,10 +47,10 @@ public class SessionServiceImpl implements SessionService {
       return null;
     }
     Account result = new Account();
-    BeanUtils.copyProperties(accountEntity, result);
+    BeanUtils.copyProperties(accountEntity, result,"password");
     this.createSession(result);
     // TODO 加密混淆或者md5等操作
-    return this.genSession(account);
+    return this.genSession(result);
   }
 
   @Override

@@ -29,9 +29,9 @@ import lombok.ToString;
 @ApiModel(value = "loginInput", description = "登录请求参数")
 public class LoginInput {
 
-  @ApiModelProperty(name = "name", value = "登录名称", required = true, example = "DingPengwei")
+  @ApiModelProperty(name = "identify", value = "登录名称", required = true, example = "DingPengwei")
   @NotNull(message = "0")
-  private String name;
+  private String identify;
   @ApiModelProperty(name = "password", value = "登录密码", required = true, example = "123456")
   @NotNull(message = "0")
   private String password;

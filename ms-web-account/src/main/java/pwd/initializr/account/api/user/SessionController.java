@@ -2,13 +2,11 @@ package pwd.initializr.account.api.user;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -45,10 +43,14 @@ public class SessionController extends UserController implements SessionApi {
   @PutMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
   public void login(LoginInput input) {
-    Account account = new Account();
-    BeanUtils.copyProperties(input,account);
+    Account  account= new Account();
+    BeanUtils.copyProperties(input, account);
     String session = sessionService.login(account);
-    outputData(new LoginOutput(session));
+    if (session == null) {
+      outputData(400);
+    } else {
+      outputData(new LoginOutput(session));
+    }
   }
 
   @ApiOperation(value = "信息查询")

@@ -1,5 +1,11 @@
 package pwd.initializr.account.business.admin.bo;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
 /**
  * pwd.initializr.account.business.admin.bo@ms-web-initializr
  *
@@ -11,6 +17,16 @@ package pwd.initializr.account.business.admin.bo;
  * @version 1.0.0
  * @since DistributionVersion
  */
+@AllArgsConstructor
+@NoArgsConstructor
+@Setter
+@Getter
+@ToString
 public class User {
-
+  private Long id;
+  private String name;
+  private String phoneNumber;
+  private Integer status;
+  private Long createTime;
+  private Long updateTime;
 }

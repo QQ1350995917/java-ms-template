@@ -41,7 +41,7 @@
 		`create_time` as createTime,
 		`update_time` as updateTime
 		from `account`
-		where identify = #{accountId}
+		where identify = #{identify}
 		AND password = #{password}
 	</select>
 
