@@ -21,6 +21,10 @@ public class Output<T> {
 
   private Meta meta;
 
+  public Output() {
+    super();
+  }
+
   public Output(T data) {
     this.meta = Meta.successMeta();
     this.data = data;

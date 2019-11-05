@@ -1,7 +1,11 @@
 package pwd.initializr.organization.business.user;
 
+import java.util.List;
 import org.springframework.stereotype.Component;
+import pwd.initializr.common.web.api.vo.Meta;
+import pwd.initializr.common.web.api.vo.Output;
 import pwd.initializr.organization.business.user.OrganizationMemberInfoService;
+import pwd.initializr.organization.business.user.bo.OrganizationMemberInfo;
 
 /**
  * pwd.initializr.organization.business@ms-web-initializr
@@ -18,7 +22,7 @@ import pwd.initializr.organization.business.user.OrganizationMemberInfoService;
 public class OrganizationMemberInfoServiceImpl implements OrganizationMemberInfoService {
 
   @Override
-  public Object fetchMemberInfo(Long[] userIds) {
-    return "er";
+  public Output<List<OrganizationMemberInfo>> fetchMemberInfo(Long[] userIds) {
+    return new Output(new Meta(400));
   }
 }

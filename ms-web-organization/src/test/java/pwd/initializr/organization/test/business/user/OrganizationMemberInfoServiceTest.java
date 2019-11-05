@@ -1,12 +1,15 @@
 package pwd.initializr.organization.test.business.user;
 
+import java.util.List;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import pwd.initializr.common.web.api.vo.Output;
 import pwd.initializr.organization.business.user.OrganizationMemberInfoService;
 import pwd.initializr.organization.business.user.OrganizationService;
+import pwd.initializr.organization.business.user.bo.OrganizationMemberInfo;
 
 /**
  * pwd.initializr.organization.test.business.user@ms-web-initializr
@@ -28,8 +31,9 @@ public class OrganizationMemberInfoServiceTest {
 
   @Test
   public void testFeign(){
-    Object o = organizationMemberInfoService.fetchMemberInfo(new Long[]{1L, 2L});
-    System.out.println(o);
+    Output<List<OrganizationMemberInfo>> listOutput = organizationMemberInfoService
+        .fetchMemberInfo(new Long[]{1L, 2L});
+    System.out.println(listOutput);
   }
 
 }

@@ -1,10 +1,13 @@
 package pwd.initializr.organization.business.user;
 
+import java.util.List;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import pwd.initializr.common.web.api.vo.Output;
+import pwd.initializr.organization.business.user.bo.OrganizationMemberInfo;
 
 /**
  * pwd.initializr.organization.business.user@ms-web-initializr
@@ -20,5 +23,5 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient(name = "api",url = "${ms.account.url}")
 public interface OrganizationMemberInfoService {
   @RequestMapping(value = "/api/robot/user", method = RequestMethod.GET)
-  Object fetchMemberInfo(@RequestParam(value="userIds") Long[] userIds);
+  Output<List<OrganizationMemberInfo>> fetchMemberInfo(@RequestParam(value="userIds") Long[] userIds);
 }
