@@ -23,7 +23,7 @@ import pwd.initializr.organization.persistence.dao.OrganizationEntity.Progress;
 @Setter
 @Getter
 @ToString
-public class OrganizationProgressEntity {
+public class OrganizationReviewEntity {
 
   /**
    * 主键

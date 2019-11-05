@@ -4,7 +4,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.BeanUtils;
@@ -20,14 +19,10 @@ import pwd.initializr.common.web.business.bo.ObjectList;
 import pwd.initializr.organization.api.user.vo.CreateOrgInput;
 import pwd.initializr.organization.api.user.vo.CreateOrgOutput;
 import pwd.initializr.organization.api.user.vo.ListMineOrgOutput;
-import pwd.initializr.organization.api.user.vo.ReviewPendingInput;
-import pwd.initializr.organization.api.user.vo.ReviewPendingOutput;
 import pwd.initializr.organization.business.user.OrganizationMemberService;
-import pwd.initializr.organization.business.user.OrganizationProgressService;
 import pwd.initializr.organization.business.user.OrganizationService;
 import pwd.initializr.organization.business.user.bo.Organization;
 import pwd.initializr.organization.business.user.bo.OrganizationMember;
-import pwd.initializr.organization.business.user.bo.OrganizationProgress;
 
 /**
  * pwd.initializr.account.api.user@ms-web-initializr

@@ -18,7 +18,7 @@ import pwd.initializr.organization.business.user.bo.OrganizationProgress;
  * @since DistributionVersion
  */
 @Service
-public interface OrganizationProgressService {
+public interface OrganizationReviewService {
 
   /**
    * <h2>TODO what you want to do</h2>

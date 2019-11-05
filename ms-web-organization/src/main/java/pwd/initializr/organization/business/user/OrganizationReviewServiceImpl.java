@@ -4,15 +4,13 @@ import java.util.List;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import pwd.initializr.common.web.api.Constant;
 import pwd.initializr.common.web.business.bo.ObjectList;
 import pwd.initializr.organization.business.user.bo.OrganizationProgress;
 import pwd.initializr.organization.persistence.dao.ConstantStatus;
 import pwd.initializr.organization.persistence.dao.OrganizationEntity.Progress;
-import pwd.initializr.organization.persistence.dao.OrganizationProgressEntity;
-import pwd.initializr.organization.persistence.dao.OrganizationProgressEntity.Type;
-import pwd.initializr.organization.persistence.mapper.OrganizationProgressMapper;
+import pwd.initializr.organization.persistence.dao.OrganizationReviewEntity;
+import pwd.initializr.organization.persistence.dao.OrganizationReviewEntity.Type;
+import pwd.initializr.organization.persistence.mapper.OrganizationReviewMapper;
 
 /**
  * pwd.initializr.organization.business.user@ms-web-initializr
@@ -26,19 +24,19 @@ import pwd.initializr.organization.persistence.mapper.OrganizationProgressMapper
  * @since DistributionVersion
  */
 @Service
-public class OrganizationProgressServiceImpl implements OrganizationProgressService {
+public class OrganizationReviewServiceImpl implements OrganizationReviewService {
 
   @Autowired
-  private OrganizationProgressMapper organizationProgressMapper;
+  private OrganizationReviewMapper organizationProgressMapper;
   @Autowired
   private OrganizationService organizationService;
 
   @Override
   public ObjectList<OrganizationProgress> listReviewPending(Long orgId, Integer status) {
-    List<OrganizationProgressEntity> organizationProgressEntities = organizationProgressMapper
+    List<OrganizationReviewEntity> organizationProgressEntities = organizationProgressMapper
         .listByOrgId(orgId, status);
     ObjectList<OrganizationProgress> result = new ObjectList<>();
-    for (OrganizationProgressEntity organizationProgressEntity : organizationProgressEntities) {
+    for (OrganizationReviewEntity organizationProgressEntity : organizationProgressEntities) {
       OrganizationProgress organizationProgress = new OrganizationProgress();
       BeanUtils.copyProperties(organizationProgressEntity,organizationProgress);
       result.getElements().add(organizationProgress);
@@ -49,7 +47,7 @@ public class OrganizationProgressServiceImpl implements OrganizationProgressServ
 
   @Override
   public void reviewPending(OrganizationProgress organizationProgress) {
-    OrganizationProgressEntity organizationProgressEntity = new OrganizationProgressEntity();
+    OrganizationReviewEntity organizationProgressEntity = new OrganizationReviewEntity();
     BeanUtils.copyProperties(organizationProgress,organizationProgressEntity);
     organizationProgressEntity.setStatus(ConstantStatus.ENABLE.value());
     organizationProgressEntity.setType(Type.USER.value());

@@ -16,7 +16,7 @@ import pwd.initializr.common.web.api.user.UserController;
 import pwd.initializr.common.web.business.bo.ObjectList;
 import pwd.initializr.organization.api.user.vo.ReviewPendingInput;
 import pwd.initializr.organization.api.user.vo.ReviewPendingOutput;
-import pwd.initializr.organization.business.user.OrganizationProgressService;
+import pwd.initializr.organization.business.user.OrganizationReviewService;
 import pwd.initializr.organization.business.user.bo.OrganizationProgress;
 
 /**
@@ -40,7 +40,7 @@ import pwd.initializr.organization.business.user.bo.OrganizationProgress;
 public class OrgReviewController extends UserController implements OrgReviewApi {
 
   @Autowired
-  private OrganizationProgressService organizationProgressService;
+  private OrganizationReviewService organizationProgressService;
 
   @ApiOperation(value = "查询组织审核信息")
   @GetMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

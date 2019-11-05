@@ -6,8 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import pwd.initializr.organization.api.admin.OrgReviewApi;
-import pwd.initializr.organization.persistence.dao.OrganizationProgressEntity.Type;
+import pwd.initializr.organization.persistence.dao.OrganizationReviewEntity.Type;
 
 /**
  * pwd.initializr.organization.api.admin.vo@ms-web-initializr

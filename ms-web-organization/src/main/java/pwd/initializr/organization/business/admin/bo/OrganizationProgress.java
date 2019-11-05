@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import pwd.initializr.organization.persistence.dao.OrganizationEntity.Progress;
-import pwd.initializr.organization.persistence.dao.OrganizationProgressEntity.Type;
+import pwd.initializr.organization.persistence.dao.OrganizationReviewEntity.Type;
 
 /**
  * pwd.initializr.organization.business.admin.bo@ms-web-initializr

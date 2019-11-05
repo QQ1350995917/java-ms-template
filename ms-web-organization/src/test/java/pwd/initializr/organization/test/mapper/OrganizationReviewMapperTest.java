@@ -1,16 +1,13 @@
 package pwd.initializr.organization.test.mapper;
 
-import com.netflix.discovery.converters.Auto;
 import java.util.List;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import pwd.initializr.organization.business.user.bo.Organization;
-import pwd.initializr.organization.persistence.dao.OrganizationEntity.Progress;
-import pwd.initializr.organization.persistence.dao.OrganizationProgressEntity;
-import pwd.initializr.organization.persistence.mapper.OrganizationProgressMapper;
+import pwd.initializr.organization.persistence.dao.OrganizationReviewEntity;
+import pwd.initializr.organization.persistence.mapper.OrganizationReviewMapper;
 
 /**
  * pwd.initializr.organization.test.mapper@ms-web-initializr
@@ -25,14 +22,14 @@ import pwd.initializr.organization.persistence.mapper.OrganizationProgressMapper
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class OrganizationProgressMapperTest {
+public class OrganizationReviewMapperTest {
 
   @Autowired
-  private OrganizationProgressMapper organizationProgressMapper;
+  private OrganizationReviewMapper organizationProgressMapper;
 
   @Test
   public void testCreate(){
-    OrganizationProgressEntity organizationProgressEntity = new OrganizationProgressEntity();
+    OrganizationReviewEntity organizationProgressEntity = new OrganizationReviewEntity();
     organizationProgressEntity.setOrgId(1L);
     organizationProgressEntity.setEditorId(1L);
     organizationProgressEntity.setContent("neirong =");
@@ -49,7 +46,7 @@ public class OrganizationProgressMapperTest {
 
   @Test
   public void testListByOrgId(){
-    List<OrganizationProgressEntity> organizationProgressEntities = organizationProgressMapper
+    List<OrganizationReviewEntity> organizationProgressEntities = organizationProgressMapper
         .listByOrgId(1L, null);
     System.out.println(organizationProgressEntities.size());
   }

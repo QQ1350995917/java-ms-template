@@ -27,7 +27,7 @@ CREATE TABLE `organization_member` (
   PRIMARY KEY (`org_id`,`mem_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin ROW_FORMAT=DYNAMIC;
 
-CREATE TABLE `organization_progress`  (
+CREATE TABLE `organization_review`  (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `org_id` bigint(20) NOT NULL COMMENT '组织ID',
   `editor_id` bigint(20) NOT NULL COMMENT '操作人的ID',

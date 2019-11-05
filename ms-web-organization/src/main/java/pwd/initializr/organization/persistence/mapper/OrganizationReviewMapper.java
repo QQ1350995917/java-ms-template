@@ -4,7 +4,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
-import pwd.initializr.organization.persistence.dao.OrganizationProgressEntity;
+import pwd.initializr.organization.persistence.dao.OrganizationReviewEntity;
 
 /**
  * pwd.initializr.organization.persistence.mapper@ms-web-initializr
@@ -19,7 +19,7 @@ import pwd.initializr.organization.persistence.dao.OrganizationProgressEntity;
  */
 @Component
 @Mapper
-public interface OrganizationProgressMapper {
+public interface OrganizationReviewMapper {
 
   /**
    * <h2>创建组织审核记录</h2>
@@ -30,7 +30,7 @@ public interface OrganizationProgressMapper {
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  void create(OrganizationProgressEntity organizationProgressEntity);
+  void create(OrganizationReviewEntity organizationProgressEntity);
 
 
   /**
@@ -39,11 +39,11 @@ public interface OrganizationProgressMapper {
    *
    * @param orgId 组织ID
    * @param status 进度状态
-   * @return java.util.List<pwd.initializr.organization.persistence.dao.OrganizationProgressEntity>
+   * @return java.util.List<pwd.initializr.organization.persistence.dao.OrganizationReviewEntity>
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  List<OrganizationProgressEntity> listByOrgId(@Param("orgId") Long orgId,
+  List<OrganizationReviewEntity> listByOrgId(@Param("orgId") Long orgId,
       @Param("status") Integer status);
 
   /*
@@ -56,6 +56,6 @@ public interface OrganizationProgressMapper {
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  List<OrganizationProgressEntity> listMyExecution(@Param("editorId") Long editorId,
+  List<OrganizationReviewEntity> listMyExecution(@Param("editorId") Long editorId,
       @Param("status") Integer status);
 }
