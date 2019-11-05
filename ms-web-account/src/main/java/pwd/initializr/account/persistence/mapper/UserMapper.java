@@ -3,6 +3,7 @@ package pwd.initializr.account.persistence.mapper;
 
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 import pwd.initializr.account.persistence.dao.UserEntity;
 
@@ -24,6 +25,8 @@ public interface UserMapper {
   void insertUser(UserEntity userEntity);
 
   List<UserEntity> listUser();
+
+  List<UserEntity> listUserByIds(@Param("ids") Long[] ids);
 
   UserEntity findByUserId(Long userId);
 

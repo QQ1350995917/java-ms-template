@@ -1,4 +1,4 @@
-package pwd.initializr.account.business.admin.bo;
+package pwd.initializr.account.business.robot.bo;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,11 +7,11 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * pwd.initializr.account.business.admin.bo@ms-web-initializr
+ * pwd.initializr.account.business.robot.bo@ms-web-initializr
  *
  * <h1>TODO what you want to do?</h1>
  *
- * date 2019-11-04 18:40
+ * date 2019-11-05 15:37
  *
  * @author DingPengwei[dingpengwei@eversec.com]
  * @version 1.0.0
@@ -23,7 +23,6 @@ import lombok.ToString;
 @Getter
 @ToString
 public class User {
-
   private Long id;
   private String name;
   private String phoneNumber;

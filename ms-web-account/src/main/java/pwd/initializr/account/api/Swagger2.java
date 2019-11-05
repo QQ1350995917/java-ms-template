@@ -51,6 +51,17 @@ public class Swagger2 {
             .build();
     }
 
+    @Bean
+    public Docket createRobotApi() {
+        return new Docket(DocumentationType.SWAGGER_2)
+            .groupName("RobotApi")
+            .apiInfo(apiInfo("RobotApi", "信息接口"))
+            .select()
+            .apis(RequestHandlerSelectors.basePackage("pwd.initializr.account.api.robot"))
+            .paths(PathSelectors.any())
+            .build();
+    }
+
 
     private ApiInfo apiInfo(String title, String description) {
         return new ApiInfoBuilder()
