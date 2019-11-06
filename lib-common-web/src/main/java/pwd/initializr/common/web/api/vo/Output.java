@@ -30,6 +30,10 @@ public class Output<T> {
     this.data = data;
   }
 
+  public Output(Meta meta) {
+    this.meta = meta;
+  }
+
   public Output(Meta meta, T data) {
     this.meta = meta;
     this.data = data;

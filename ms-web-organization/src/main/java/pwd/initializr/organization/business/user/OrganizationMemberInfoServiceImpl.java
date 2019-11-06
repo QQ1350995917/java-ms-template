@@ -23,6 +23,6 @@ public class OrganizationMemberInfoServiceImpl implements OrganizationMemberInfo
 
   @Override
   public Output<List<OrganizationMemberInfo>> fetchMemberInfo(Long[] userIds) {
-    return new Output(new Meta(400));
+    return new Output<>(new Meta(400));
   }
 }
