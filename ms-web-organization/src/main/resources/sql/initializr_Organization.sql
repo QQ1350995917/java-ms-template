@@ -27,6 +27,19 @@ CREATE TABLE `organization_member` (
   PRIMARY KEY (`org_id`,`mem_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin ROW_FORMAT=DYNAMIC;
 
+CREATE TABLE `organization_member_deal`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `org_id` bigint(20) NOT NULL COMMENT '组织ID',
+  `user_id` bigint(20) NOT NULL COMMENT '用户ID',
+  `type` int(8) NOT NULL COMMENT '0:组织发起，1:用户发起',
+  `deal` int(8) NOT NULL DEFAULT 0 COMMENT '0:未达成，1:已达成',
+  `counter` int(16) NOT NULL DEFAULT 1 COMMENT '达成前的计数器',
+  `status` int(8) NOT NULL DEFAULT 0 COMMENT '状态，0正常1禁用2删除',
+  `create_time` bigint(20) NOT NULL COMMENT '首次创建时间',
+  `update_time` bigint(20) NOT NULL COMMENT '最近更新时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
 CREATE TABLE `organization_review`  (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `org_id` bigint(20) NOT NULL COMMENT '组织ID',
