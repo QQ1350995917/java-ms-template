@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pwd.initializr.organization.persistence.mapper.OrganizationMemberDealMapper">
+  <!-- create -->
+  <insert id="create" keyProperty="id"
+    parameterType="pwd.initializr.organization.persistence.dao.OrganizationMemberDealEntity"
+    useGeneratedKeys="true">
+		insert into `organization_member_deal`
+		(`org_id`,`user_id`,`type`,`deal`,`counter`,`status`,`create_time`,`update_time`)
+		values
+		(#{orgId},#{userId},#{type},#{deal},#{counter},#{status},#{createTime},#{updateTime})
+	</insert>
+
+  <!-- updateCounter -->
+  <update id="updateCounter" parameterType="java.lang.Long">
+    update `organization_member_deal`
+    <set>
+      `counter` = `counter` + 1,
+      `update_time` = REPLACE(unix_timestamp(current_timestamp(3)),'.','')
+    </set>
+    <where>
+			WHERE `org_id` = #{orgId}
+			AND `user_id` = #{userId}
+			AND `type` = #{type}
+    </where>
+  </update>
+
+  <!-- findOneByOrgIdUserIdType -->
+  <select id="findOneByOrgIdUserIdType"
+    resultType="pwd.initializr.organization.persistence.dao.OrganizationMemberDealEntity">
+		SELECT
+		`org_id` AS `orgId`,
+		`user_id` AS `userId`,
+		`type` AS `type`,
+		`deal` AS `deal`,
+		`counter` AS `counter`,
+		`status` AS `status`,
+		`create_time` AS `createTime`,
+		`update_time` AS `updateTime`
+		FROM `organization_member_deal`
+		WHERE `org_id` = #{orgId}
+		AND `user_id` = #{userId}
+		AND `type` = #{type}
+	</select>
+
+
+  <!-- listByOrgId -->
+  <select id="listByOrgId"
+    resultType="pwd.initializr.organization.persistence.dao.OrganizationMemberDealEntity">
+		SELECT
+		`org_id` AS `orgId`,
+		`user_id` AS `userId`,
+		`type` AS `type`,
+		`deal` AS `deal`,
+		`counter` AS `counter`,
+		`status` AS `status`,
+		`create_time` AS `createTime`,
+		`update_time` AS `updateTime`
+		FROM `organization_member_deal`
+		WHERE `org_id` = #{orgId}
+		AND `type` = #{type}
+	</select>
+
+
+  <!-- listByUserId -->
+  <select id="listByUserId"
+    resultType="pwd.initializr.organization.persistence.dao.OrganizationMemberDealEntity">
+		SELECT
+		`org_id` AS `orgId`,
+		`user_id` AS `userId`,
+		`type` AS `type`,
+		`deal` AS `deal`,
+		`counter` AS `counter`,
+		`status` AS `status`,
+		`create_time` AS `createTime`,
+		`update_time` AS `updateTime`
+		FROM `organization_member_deal`
+		AND `org_id` = #{userId}
+		AND `type` = #{type}
+	</select>
+
+</mapper>

@@ -26,7 +26,8 @@ public interface OrganizationMemberDealMapper {
 
   void create(OrganizationMemberDealEntity organizationMemberDealEntity);
 
-  void updateCounter(@Param("id") Long id);
+  void updateCounter(@Param("orgId") Long orgId,
+      @Param("userId") Long userId, @Param("type") Integer type);
 
   List<OrganizationMemberDealEntity> listByOrgId(@Param("orgId") Long orgId,
       @Param("type") Integer type);
