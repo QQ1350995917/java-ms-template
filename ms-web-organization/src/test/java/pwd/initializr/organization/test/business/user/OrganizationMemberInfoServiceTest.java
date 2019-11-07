@@ -31,9 +31,9 @@ public class OrganizationMemberInfoServiceTest {
 
   @Test
   public void testFeign(){
-    Output<List<OrganizationMemberInfo>> listOutput = organizationMemberInfoService
+    List<OrganizationMemberInfo> organizationMemberInfos = organizationMemberInfoService
         .fetchMemberInfo(new Long[]{1L, 2L});
-    System.out.println(listOutput);
+    System.out.println(organizationMemberInfos);
   }
 
 }
