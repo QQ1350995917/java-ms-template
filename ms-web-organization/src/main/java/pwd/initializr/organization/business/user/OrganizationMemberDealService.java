@@ -1,6 +1,5 @@
 package pwd.initializr.organization.business.user;
 
-import org.apache.ibatis.annotations.Param;
 import pwd.initializr.common.web.business.bo.ObjectList;
 import pwd.initializr.organization.business.user.bo.OrganizationMemberDeal;
 
@@ -17,16 +16,15 @@ import pwd.initializr.organization.business.user.bo.OrganizationMemberDeal;
  */
 public interface OrganizationMemberDealService {
 
-  OrganizationMemberDeal findOne(@Param("orgId") Long orgId,
-      @Param("userId") Long userId, @Param("type") Integer type);
-
   void create(OrganizationMemberDeal organizationMemberDeal);
 
-  void updateCounterById(Long id);
+  OrganizationMemberDeal findOne(Long orgId, Long userId, Integer type);
 
-  ObjectList<OrganizationMemberDeal> listByOrgId(@Param("orgId") Long orgId,
-      @Param("type") Integer type);
+  ObjectList<OrganizationMemberDeal> listByOrgId(Long orgId, Integer type);
 
-  ObjectList<OrganizationMemberDeal> listByUserId(@Param("userId") Long userId,
-      @Param("type") Integer type);
+  ObjectList<OrganizationMemberDeal> listByUserId(Long userId, Integer type);
+
+  void updateCounterById(Long orgId, Long userId, Integer type);
+
+
 }

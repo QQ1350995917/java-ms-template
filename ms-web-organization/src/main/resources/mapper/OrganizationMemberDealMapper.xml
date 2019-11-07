@@ -19,11 +19,9 @@
       `counter` = `counter` + 1,
       `update_time` = REPLACE(unix_timestamp(current_timestamp(3)),'.','')
     </set>
-    <where>
-			WHERE `org_id` = #{orgId}
-			AND `user_id` = #{userId}
-			AND `type` = #{type}
-    </where>
+    WHERE `org_id` = #{orgId}
+    AND `user_id` = #{userId}
+    AND `type` = #{type}
   </update>
 
   <!-- findOneByOrgIdUserIdType -->
@@ -76,7 +74,7 @@
 		`create_time` AS `createTime`,
 		`update_time` AS `updateTime`
 		FROM `organization_member_deal`
-		AND `org_id` = #{userId}
+		WHERE `user_id` = #{userId}
 		AND `type` = #{type}
 	</select>
 
