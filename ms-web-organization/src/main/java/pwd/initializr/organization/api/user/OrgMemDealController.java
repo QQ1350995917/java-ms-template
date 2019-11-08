@@ -1,7 +1,7 @@
 package pwd.initializr.organization.api.user;
 
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,6 +9,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.common.web.api.user.UserController;
+import pwd.initializr.common.web.business.bo.ObjectList;
+import pwd.initializr.organization.business.user.OrganizationMemberDealService;
+import pwd.initializr.organization.business.user.OrganizationMemberService;
+import pwd.initializr.organization.business.user.bo.OrganizationMember;
+import pwd.initializr.organization.business.user.bo.OrganizationMemberDeal;
 
 /**
  * pwd.initializr.organization.api.user@ms-web-initializr
@@ -22,55 +27,102 @@ import pwd.initializr.common.web.api.user.UserController;
  * @since DistributionVersion
  */
 @RestController(value = "orgDealApi")
-@RequestMapping(value = "/api/org/")
+@RequestMapping(value = "/api/org/deal")
 public class OrgMemDealController extends UserController implements OrgMemDealApi {
+
+  @Autowired
+  private OrganizationMemberDealService organizationMemberDealService;
+  @Autowired
+  private OrganizationMemberService organizationMemberService;
 
   @ApiOperation(value = "组织发出邀请")
   @PutMapping(value = {"/invite/{userId}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
   public void invite(@PathVariable("userId") Long userId) {
-
+    OrganizationMemberDeal organizationMemberDeal = organizationMemberDealService
+        .findOneByOrgIdUserIdType(1L, userId, 0);// TODO 根据当前token查出userId，查出所在的orgId，枚举化type
+    if (organizationMemberDeal != null) {
+      organizationMemberDealService
+          .updateCounterById(1L, userId, 0);// TODO 根据当前token查出userId，查出所在的orgId，枚举化type
+      outputData();
+    } else {
+      OrganizationMemberDeal organizationMemberDeal1 = new OrganizationMemberDeal();
+      // TODO 根据当前token查出userId，查出所在的orgId，枚举化type
+      organizationMemberDeal1.setOrgId(1L);
+      organizationMemberDeal1.setUserId(userId);
+      organizationMemberDeal1.setType(0);
+      organizationMemberDealService.create(organizationMemberDeal1);
+    }
   }
 
-  @ApiOperation(value = "组织发出的邀请列表")
+  @ApiOperation(value = "组织发出的邀请列表，组织收到的申请列表")
   @GetMapping(value = {"/invitation/{orgId}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
-  public void invitationInOrg(@PathVariable("orgId")Long orgId) {
-
-  }
-
-  @ApiOperation(value = "组织收到的申请列表")
-  @GetMapping(value = {"/application/{orgId}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  @Override
-  public void applicationInOrg(@PathVariable("orgId")Long orgId) {
-
+  public void invitation(@PathVariable(value = "orgId", name = "组织ID") Long orgId,
+      @PathVariable(value = "type", name = "0:组织邀请，1:用户申请") Integer type) {
+    ObjectList<OrganizationMemberDeal> organizationMemberDealObjectList = organizationMemberDealService
+        .listByOrgId(orgId, type);
+    outputData(organizationMemberDealObjectList);
   }
 
   @ApiOperation(value = "用户发出申请")
   @PutMapping(value = {"/user/apply/{orgId}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
   public void apply(@PathVariable("orgId") Long orgId) {
-
+    OrganizationMemberDeal organizationMemberDeal = organizationMemberDealService
+        .findOneByOrgIdUserIdType(orgId, 1L, 1);// TODO 根据当前token查出userId，枚举化type
+    if (organizationMemberDeal != null) {
+      organizationMemberDealService
+          .updateCounterById(orgId, 1L, 1);// TODO 根据当前token查出userId，枚举化type
+      outputData();
+    } else {
+      OrganizationMemberDeal organizationMemberDeal1 = new OrganizationMemberDeal();
+      // TODO 根据当前token查出userId，枚举化type
+      organizationMemberDeal1.setOrgId(orgId);
+      organizationMemberDeal1.setUserId(1L);
+      organizationMemberDeal1.setType(1);
+      organizationMemberDealService.create(organizationMemberDeal1);
+    }
   }
 
-  @ApiOperation(value = "用户发出的申请列表")
-  @GetMapping(value = {"/user/application/{userId}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @ApiOperation(value = "用户收到的邀请列表，用户发出的申请列表")
+  @GetMapping(value = {"/application/{orgId}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
-  public void applicationInUser(@PathVariable("userId") Long userId) {
-
-  }
-
-  @ApiOperation(value = "用户收到的邀请列表")
-  @GetMapping(value = {"/user/invitation/{userId}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  @Override
-  public void invitationInUser(@PathVariable("userId") Long userId) {
-
+  public void application(@PathVariable(value = "orgId", name = "组织ID") Long userId,
+      @PathVariable(value = "type", name = "0:组织邀请，1:用户申请") Integer type) {
+    ObjectList<OrganizationMemberDeal> organizationMemberDealObjectList = organizationMemberDealService
+        .listByUserId(userId, type);
+    outputData(organizationMemberDealObjectList);
   }
 
   @ApiOperation(value = "成为组织成员")
   @PutMapping(value = {"/{dealId}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
   public void deal(@PathVariable("dealId") Long dealId) {
-
+    OrganizationMemberDeal oneById = organizationMemberDealService.findOneById(dealId);
+    if (oneById.getType() == 0) {
+      // 组织同意申请
+      // TODO 找到当前用户所创建的组织的id比对
+      ObjectList<OrganizationMember> myCreation = organizationMemberService
+          .findMyCreation(1L, null);
+      if (myCreation == null || myCreation.getElements() == null
+          || myCreation.getElements().size() == 0) {
+        outputException(400);
+      } else {
+        if (oneById.getOrgId() == myCreation.getElements().get(0).getOrgId()) {
+          organizationMemberDealService.deal(dealId);
+        } else {
+          outputException(400);
+        }
+      }
+    } else if (oneById.getType() == 1L) {
+      // 用户同意邀请
+      // TODO 找到当前用户的id比对
+      if (oneById.getUserId() == 1L) {
+        organizationMemberDealService.deal(dealId);
+      } else {
+        outputException(400);
+      }
+    }
   }
 }

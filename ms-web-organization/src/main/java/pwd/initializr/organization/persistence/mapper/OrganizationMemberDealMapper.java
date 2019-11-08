@@ -21,6 +21,8 @@ import pwd.initializr.organization.persistence.dao.OrganizationMemberDealEntity;
 @Mapper
 public interface OrganizationMemberDealMapper {
 
+  OrganizationMemberDealEntity findOneById(@Param("id") Long id);
+
   OrganizationMemberDealEntity findOneByOrgIdUserIdType(@Param("orgId") Long orgId,
       @Param("userId") Long userId, @Param("type") Integer type);
 
@@ -34,4 +36,6 @@ public interface OrganizationMemberDealMapper {
 
   List<OrganizationMemberDealEntity> listByUserId(@Param("userId") Long userId,
       @Param("type") Integer type);
+
+  void updateToDeal(@Param("id") Long id);
 }

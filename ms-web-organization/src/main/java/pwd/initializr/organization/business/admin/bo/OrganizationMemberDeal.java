@@ -1,4 +1,4 @@
-package pwd.initializr.organization.business.user.bo;
+package pwd.initializr.organization.business.admin.bo;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,11 +7,11 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * pwd.initializr.organization.business.user.bo@ms-web-initializr
+ * pwd.initializr.organization.business.admin.bo@ms-web-initializr
  *
  * <h1>TODO what you want to do?</h1>
  *
- * date 2019-11-07 13:04
+ * date 2019-11-08 18:34
  *
  * @author DingPengwei[dingpengwei@eversec.com]
  * @version 1.0.0
@@ -40,6 +40,14 @@ public class OrganizationMemberDeal {
    * 0:未达成，1:已达成
    */
   private Integer deal;
+  /**
+   * 达成前的计数器
+   */
+  private Integer counter;
+  /**
+   * 状态，0正常1禁用2删除
+   */
+  private Integer status;
   /**
    * 首次创建时间
    */

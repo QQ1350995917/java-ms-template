@@ -3,7 +3,6 @@ package pwd.initializr.organization.business.user;
 import java.util.List;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import pwd.initializr.common.web.business.bo.ObjectList;
 import pwd.initializr.organization.business.user.bo.OrganizationMemberDeal;
@@ -28,11 +27,20 @@ public class OrganizationMemberDealServiceImpl implements OrganizationMemberDeal
   private OrganizationMemberDealMapper organizationMemberDealMapper;
 
   @Override
-  public OrganizationMemberDeal findOne(Long orgId, Long userId,Integer type) {
+  public OrganizationMemberDeal findOneById(Long id) {
+    OrganizationMemberDealEntity organizationMemberDealEntity = organizationMemberDealMapper
+        .findOneById(id);
+    OrganizationMemberDeal organizationMemberDeal = new OrganizationMemberDeal();
+    BeanUtils.copyProperties(organizationMemberDealEntity, organizationMemberDeal);
+    return organizationMemberDeal;
+  }
+
+  @Override
+  public OrganizationMemberDeal findOneByOrgIdUserIdType(Long orgId, Long userId, Integer type) {
     OrganizationMemberDealEntity organizationMemberDealEntity = organizationMemberDealMapper
         .findOneByOrgIdUserIdType(orgId, userId, type);
     OrganizationMemberDeal organizationMemberDeal = new OrganizationMemberDeal();
-    BeanUtils.copyProperties(organizationMemberDealEntity,organizationMemberDeal);
+    BeanUtils.copyProperties(organizationMemberDealEntity, organizationMemberDeal);
     return organizationMemberDeal;
   }
 
@@ -40,7 +48,7 @@ public class OrganizationMemberDealServiceImpl implements OrganizationMemberDeal
   @Override
   public void create(OrganizationMemberDeal organizationMemberDeal) {
     OrganizationMemberDealEntity organizationMemberDealEntity = new OrganizationMemberDealEntity();
-    BeanUtils.copyProperties(organizationMemberDeal,organizationMemberDealEntity);
+    BeanUtils.copyProperties(organizationMemberDeal, organizationMemberDealEntity);
     organizationMemberDealEntity.setDeal(0);
     organizationMemberDealEntity.setCounter(1);
     organizationMemberDealEntity.setStatus(0);
@@ -52,7 +60,7 @@ public class OrganizationMemberDealServiceImpl implements OrganizationMemberDeal
 
   @Override
   public void updateCounterById(Long orgId, Long userId, Integer type) {
-    organizationMemberDealMapper.updateCounter(orgId,userId,type);
+    organizationMemberDealMapper.updateCounter(orgId, userId, type);
   }
 
 
@@ -63,7 +71,7 @@ public class OrganizationMemberDealServiceImpl implements OrganizationMemberDeal
     ObjectList<OrganizationMemberDeal> result = new ObjectList<>();
     for (OrganizationMemberDealEntity organizationMemberDealEntity : organizationMemberDealEntities) {
       OrganizationMemberDeal organizationMemberDeal = new OrganizationMemberDeal();
-      BeanUtils.copyProperties(organizationMemberDealEntity,organizationMemberDeal);
+      BeanUtils.copyProperties(organizationMemberDealEntity, organizationMemberDeal);
       result.getElements().add(organizationMemberDeal);
     }
     return result;
@@ -77,11 +85,14 @@ public class OrganizationMemberDealServiceImpl implements OrganizationMemberDeal
     ObjectList<OrganizationMemberDeal> result = new ObjectList<>();
     for (OrganizationMemberDealEntity organizationMemberDealEntity : organizationMemberDealEntities) {
       OrganizationMemberDeal organizationMemberDeal = new OrganizationMemberDeal();
-      BeanUtils.copyProperties(organizationMemberDealEntity,organizationMemberDeal);
+      BeanUtils.copyProperties(organizationMemberDealEntity, organizationMemberDeal);
       result.getElements().add(organizationMemberDeal);
     }
     return result;
   }
 
-
+  @Override
+  public void deal(Long dealId) {
+    organizationMemberDealMapper.updateToDeal(dealId);
+  }
 }

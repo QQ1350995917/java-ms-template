@@ -18,13 +18,17 @@ public interface OrganizationMemberDealService {
 
   void create(OrganizationMemberDeal organizationMemberDeal);
 
-  OrganizationMemberDeal findOne(Long orgId, Long userId, Integer type);
+  OrganizationMemberDeal findOneById(Long id);
+
+  OrganizationMemberDeal findOneByOrgIdUserIdType(Long orgId, Long userId, Integer type);
 
   ObjectList<OrganizationMemberDeal> listByOrgId(Long orgId, Integer type);
 
   ObjectList<OrganizationMemberDeal> listByUserId(Long userId, Integer type);
 
   void updateCounterById(Long orgId, Long userId, Integer type);
+
+  void deal(Long dealId);
 
 
 }

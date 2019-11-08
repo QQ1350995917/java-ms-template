@@ -16,21 +16,17 @@ import io.swagger.annotations.Api;
 @Api(
     tags = "组织用户关系管理",
     value = "orgDealApi",
-    description = "[组织发出邀请，组织发出的邀请列表，组织收到的申请列表，用户发出申请，用户发出的申请列表，用户收到的邀请列表，成为组织成员]"
+    description = "[组织发出邀请，组织发出的邀请列表，组织收到的申请列表，用户发出申请，用户收到的邀请列表，用户发出的申请列表，成为组织成员]"
 )
 public interface OrgMemDealApi {
 
   void invite(Long userId);
 
-  void invitationInOrg(Long orgId);
-
-  void applicationInOrg(Long orgId);
+  void invitation(Long orgId,Integer type);
 
   void apply(Long orgId);
 
-  void applicationInUser(Long userId);
-
-  void invitationInUser(Long userId);
+  void application(Long userId,Integer type);
 
   void deal(Long dealId);
 }

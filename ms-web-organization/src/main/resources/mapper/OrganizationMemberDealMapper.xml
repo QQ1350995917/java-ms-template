@@ -24,6 +24,22 @@
     AND `type` = #{type}
   </update>
 
+	<!-- findOneById -->
+	<select id="findOneById"
+		resultType="pwd.initializr.organization.persistence.dao.OrganizationMemberDealEntity">
+		SELECT
+		`org_id` AS `orgId`,
+		`user_id` AS `userId`,
+		`type` AS `type`,
+		`deal` AS `deal`,
+		`counter` AS `counter`,
+		`status` AS `status`,
+		`create_time` AS `createTime`,
+		`update_time` AS `updateTime`
+		FROM `organization_member_deal`
+		WHERE `id` = #{id}
+	</select>
+
   <!-- findOneByOrgIdUserIdType -->
   <select id="findOneByOrgIdUserIdType"
     resultType="pwd.initializr.organization.persistence.dao.OrganizationMemberDealEntity">
@@ -77,5 +93,15 @@
 		WHERE `user_id` = #{userId}
 		AND `type` = #{type}
 	</select>
+
+	<!-- updateToDeal -->
+	<update id="updateToDeal" parameterType="java.lang.Long">
+		update `organization_member_deal`
+		<set>
+			`deal` = 1,
+			`update_time` = REPLACE(unix_timestamp(current_timestamp(3)),'.','')
+		</set>
+		WHERE `id` = #{id}
+	</update>
 
 </mapper>
