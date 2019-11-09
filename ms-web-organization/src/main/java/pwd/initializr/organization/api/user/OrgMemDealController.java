@@ -3,6 +3,7 @@ package pwd.initializr.organization.api.user;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import javax.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,9 +34,10 @@ import pwd.initializr.organization.business.user.bo.OrganizationMemberDeal;
 public class OrgMemDealController extends UserController implements OrgMemDealApi {
 
   @Autowired
-  private OrganizationMemberDealService organizationMemberDealService;
-  @Autowired
   private OrganizationMemberService organizationMemberService;
+  @Autowired
+  private OrganizationMemberDealService organizationMemberDealService;
+
 
   @ApiImplicitParams({
       @ApiImplicitParam(name = "userId", value = "用户ID", required = true, dataType = "Long", example = "1", paramType = "path")
@@ -44,20 +46,29 @@ public class OrgMemDealController extends UserController implements OrgMemDealAp
   @PutMapping(value = {"/invite/{userId}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
   public void invite(@PathVariable("userId") Long userId) {
-    OrganizationMemberDeal organizationMemberDeal = organizationMemberDealService
-        .findOneByOrgIdUserIdType(1L, userId, 0);// TODO 根据当前token查出userId，查出所在的orgId，枚举化type
-    if (organizationMemberDeal != null) {
-      organizationMemberDealService
-          .updateCounterById(1L, userId, 0);// TODO 根据当前token查出userId，查出所在的orgId，枚举化type
-      outputData();
+    ObjectList<OrganizationMember> myCreation = organizationMemberService
+        .findMyCreation(getUid(), null);
+    if (myCreation == null || myCreation.getElements() == null || myCreation.getElements().size() < 1) {
+      outputData(400);
     } else {
-      OrganizationMemberDeal organizationMemberDeal1 = new OrganizationMemberDeal();
-      // TODO 根据当前token查出userId，查出所在的orgId，枚举化type
-      organizationMemberDeal1.setOrgId(1L);
-      organizationMemberDeal1.setUserId(userId);
-      organizationMemberDeal1.setType(0);
-      organizationMemberDealService.create(organizationMemberDeal1);
+      Long orgId = myCreation.getElements().get(0).getOrgId();
+      OrganizationMemberDeal organizationMemberDeal = organizationMemberDealService
+          .findOneByOrgIdUserIdType(orgId, userId, 0);// TODO 枚举化type
+      if (organizationMemberDeal != null) {
+        organizationMemberDealService
+            .updateCounterById(orgId, userId, 0);// TODO 枚举化type
+        outputData();
+      } else {
+        OrganizationMemberDeal organizationMemberDeal1 = new OrganizationMemberDeal();
+        // TODO 枚举化type
+        organizationMemberDeal1.setOrgId(orgId);
+        organizationMemberDeal1.setUserId(userId);
+        organizationMemberDeal1.setType(0);
+        organizationMemberDealService.create(organizationMemberDeal1);
+      }
     }
+
+
   }
 
   @ApiImplicitParams({

@@ -1,16 +1,24 @@
 package pwd.initializr.gateway.filter;
 
+import com.alibaba.fastjson.JSON;
 import java.nio.charset.StandardCharsets;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.server.RequestPath;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
-import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
+import pwd.initializr.common.mw.redis.RedisClient;
+import pwd.initializr.common.web.api.ApiConstant;
+import pwd.initializr.common.web.api.vo.Meta;
+import pwd.initializr.common.web.api.vo.Output;
 import reactor.core.publisher.Mono;
 
 /**
@@ -26,38 +34,45 @@ import reactor.core.publisher.Mono;
  */
 public class SessionFilter implements GlobalFilter, Ordered {
 
+  @Value("${account_login_prefix}")
+  private String SESSION_PREFIX;
+
+  @Autowired
+  private RedisClient redisClient;
+
   @Override
   public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-    String jwtToken = exchange.getRequest().getHeaders().getFirst("X-Token");
-    if (jwtToken != null) {
-      System.out.println("-=-token is " + jwtToken + "-=-");
-      return chain.filter(exchange);
+    String token = exchange.getRequest().getHeaders().getFirst(ApiConstant.HTTP_HEADER_KEY_TOKEN);
+    String uid = exchange.getRequest().getHeaders().getFirst(ApiConstant.HTTP_HEADER_KEY_UID);
+    if (token != null && uid != null) {
+      String key = StringUtils.join(new String[]{SESSION_PREFIX, String.valueOf(uid)});
+      String userJson = redisClient.get(key);
+      if (userJson != null) {
+        return chain.filter(exchange);
+      }
     }
-
-    //不合法(响应未登录的异常)
+    ServerHttpRequest serverHttpRequest = exchange.getRequest();
+    RequestPath path = serverHttpRequest.getPath();
+    String redirect;
+    // TODO 可配置
+    if (path.value().contains("/api/admin")) {
+      redirect = "";// TODO 重定向到管理员登录
+    } else {
+      redirect = "";// TODO 重定向到用户登录
+    }
+    String method = serverHttpRequest.getMethodValue();
     ServerHttpResponse response = exchange.getResponse();
-    //设置headers
+    response.setStatusCode(HttpStatus.FOUND);
     HttpHeaders httpHeaders = response.getHeaders();
     httpHeaders.add("Content-Type", "application/json; charset=UTF-8");
     httpHeaders.add("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0");
-    //设置body
-    String warningStr = "未登录或登录超时";
-    DataBuffer bodyDataBuffer = response.bufferFactory().wrap(warningStr.getBytes());
+    httpHeaders.add("Location", redirect);
+    Output<Object> objectOutput = new Output<>(
+        new Meta(HttpStatus.UNAUTHORIZED.value(), "未登录或登录超时"));
+    String warning = JSON.toJSONString(objectOutput);
+    DataBuffer bodyDataBuffer = response.bufferFactory()
+        .wrap(warning.getBytes(StandardCharsets.UTF_8));
     return response.writeWith(Mono.just(bodyDataBuffer));
-
-//    ServerHttpRequest serverHttpRequest = exchange.getRequest();
-//    String method = serverHttpRequest.getMethodValue();
-//    if(!"POST".equals(method)){
-//      ServerHttpResponse response = exchange.getResponse();
-//      String message= "非法请求";
-//      byte[] bits = message.getBytes(StandardCharsets.UTF_8);
-//      DataBuffer buffer = response.bufferFactory().wrap(bits);
-//      response.setStatusCode(HttpStatus.UNAUTHORIZED);
-//      //指定编码，否则在浏览器中会中文乱码
-//      response.getHeaders().add("Content-Type", "text/plain;charset=UTF-8");
-//      return response.writeWith(Mono.just(buffer));
-//    }
-//    return chain.filter(exchange);
   }
 
   @Override

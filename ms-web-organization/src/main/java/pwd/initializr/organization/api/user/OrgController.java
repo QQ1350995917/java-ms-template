@@ -55,13 +55,13 @@ public class OrgController extends UserController implements OrgApi {
   @Override
   public void listOrgByMemId() {
     ObjectList<OrganizationMember> organizationMemberObjectList = organizationMemberService
-        .findMyJoined(1L, null); // TODO memId
+        .findMyJoined(getUid(), null);
     List<Long> orgIds = new ArrayList<>();
     for (OrganizationMember element : organizationMemberObjectList.getElements()) {
       orgIds.add(element.getOrgId());
     }
     ObjectList<Organization> organizationObjectList = organizationService
-        .listById(orgIds.toArray(new Long[]{}), null);// TODO memId
+        .listById(orgIds.toArray(new Long[]{}), null);
     Map<Long, Organization> temp = new HashMap<>();
     for (Organization organization : organizationObjectList.getElements()) {
       temp.put(organization.getId(), organization);
@@ -83,20 +83,28 @@ public class OrgController extends UserController implements OrgApi {
   @Override
   public void create(@RequestBody CreateOrgInput input) {
     ObjectList<OrganizationMember> myCreation = organizationMemberService
-        .findMyCreation(1L, null);//TODO finbug:id
+        .findMyCreation(getUid(), null);
     if (myCreation != null && myCreation.getElements() != null
         && myCreation.getElements().size() > 0) {
-      outputData(400);// TODO
+      // 已经创建过一个组织
+      outputData(400);
     } else {
-      Organization organization = new Organization();
-      organization.setPid(1L);// TODO fixbug:pid
-      BeanUtils.copyProperties(input, organization);
-      OrganizationMember organizationMember = new OrganizationMember();
-      organizationMember.setMemId(1L); // TODO fixbug:memId
-      organizationService.create(organization, organizationMember);
-      CreateOrgOutput createOrgOutput = new CreateOrgOutput();
-      BeanUtils.copyProperties(organization, createOrgOutput);
-      outputData(createOrgOutput);
+      ObjectList<OrganizationMember> myJoined = organizationMemberService
+          .findMyJoined(getUid(), null);
+      if (myJoined != null && myJoined.getElements() != null
+          && myJoined.getElements().size() > 0) {
+        Organization organization = new Organization();
+        organization.setPid(myJoined.getElements().get(0).getOrgId());
+        BeanUtils.copyProperties(input, organization);
+        OrganizationMember organizationMember = new OrganizationMember();
+        organizationMember.setMemId(getUid());
+        organizationService.create(organization, organizationMember);
+        CreateOrgOutput createOrgOutput = new CreateOrgOutput();
+        BeanUtils.copyProperties(organization, createOrgOutput);
+        outputData(createOrgOutput);
+      } else {
+        outputData(400);// TODO 还没有加入组织
+      }
     }
   }
 

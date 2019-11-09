@@ -62,25 +62,25 @@ public class ApiSwagger2 {
   protected List<Parameter> buildGlobalOperationParameters() {
     List<Parameter> globalOperationParameters = new ArrayList<>();
     globalOperationParameters.add(new ParameterBuilder()
-        .name("x-token").defaultValue("x-token")
-        .description("token,cookie")
+        .name(ApiConstant.HTTP_HEADER_KEY_TOKEN).defaultValue("x-token")
+        .description("认证信息")
         .modelRef(new ModelRef("String"))
         .parameterType("header")
         .required(true).build());
     globalOperationParameters.add(new ParameterBuilder()
-        .name("x-uid").defaultValue("1")
+        .name(ApiConstant.HTTP_HEADER_KEY_UID).defaultValue("1")
         .description("用户ID")
         .modelRef(new ModelRef("Long"))
         .parameterType("header")
         .required(true).build());
     globalOperationParameters.add(new ParameterBuilder()
-        .name("x-vc").defaultValue("1.0.0")
+        .name(ApiConstant.HTTP_HEADER_KEY_SERVICE_VERSION).defaultValue("1.0.0")
         .description("服务版本号")
         .modelRef(new ModelRef("String"))
         .parameterType("header")
         .required(true).build());
     globalOperationParameters.add(new ParameterBuilder()
-        .name("x-os").defaultValue("iOS")
+        .name(ApiConstant.HTTP_HEADER_KEY_OS).defaultValue("iOS")
         .description("操作系统")
         .modelRef(new ModelRef("String"))
         .parameterType("header")

@@ -45,3 +45,5 @@ logging:
 #  path: /Users/pwd/Desktop/logger
   level:
     org.springframework.cloud.gateway: debug
+
+account_login_prefix: sso_identify_

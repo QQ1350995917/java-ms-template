@@ -11,7 +11,12 @@ package pwd.initializr.common.web.api;
  * @version 1.0.0
  * @since DistributionVersion
  */
-public interface Constant {
+public interface ApiConstant {
 
   String REDIS_KEY_PHONE_SMS_CODE_PREFIX = "sms_code_";
+  String HTTP_HEADER_KEY_TOKEN = "x-token";
+  String HTTP_HEADER_KEY_UID = "x-uid";
+  String HTTP_HEADER_KEY_SERVICE_VERSION = "x-vc";
+  String HTTP_HEADER_KEY_OS = "x-os";
+
 }

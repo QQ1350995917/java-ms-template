@@ -26,8 +26,8 @@ import pwd.initializr.common.utils.StringUtil;
 @Service
 public class SessionServiceImpl implements SessionService {
 
-  @Value("account_login_prefix")
-  private static String SESSION_PREFIX = "sso_identify_";
+  @Value("${account_login_prefix:sso_identify_}")
+  private static String SESSION_PREFIX;
 
   @Autowired
   private AccountMapper accountMapper;

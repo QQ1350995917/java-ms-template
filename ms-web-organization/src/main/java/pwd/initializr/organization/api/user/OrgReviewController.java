@@ -8,6 +8,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,12 +44,11 @@ public class OrgReviewController extends UserController implements OrgReviewApi 
   private OrganizationReviewService organizationProgressService;
 
   @ApiOperation(value = "查询组织审核信息")
-  @GetMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @GetMapping(value = {"/{orgId}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
-  public void listReviewPending(Long orgId) {
-    // TODO 检查orgId和当前memId的匹配性
+  public void listReviewPending(@PathVariable("orgId") Long orgId) {
     ObjectList<OrganizationProgress> organizationProgressObjectList = organizationProgressService
-        .listReviewPending(1L, null);
+        .listReviewPending(orgId, null);
     List<ReviewPendingOutput> result = new LinkedList<>();
     for (OrganizationProgress organizationProgress : organizationProgressObjectList.getElements()) {
       ReviewPendingOutput reviewPendingOutput = new ReviewPendingOutput();
@@ -65,7 +65,7 @@ public class OrgReviewController extends UserController implements OrgReviewApi 
   public void reviewPending(@RequestBody ReviewPendingInput input) {
     OrganizationProgress organizationProgress = new OrganizationProgress();
     BeanUtils.copyProperties(input, organizationProgress);
-    organizationProgress.setEditorId(1L); // TODO ID
+    organizationProgress.setEditorId(getUid());
     organizationProgressService.reviewPending(organizationProgress);
     outputData();
   }

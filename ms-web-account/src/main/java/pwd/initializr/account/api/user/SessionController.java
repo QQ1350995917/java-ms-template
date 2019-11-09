@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.account.api.user.vo.LoginInput;
@@ -42,7 +43,7 @@ public class SessionController extends UserController implements SessionApi {
   @ApiOperation(value = "登录")
   @PutMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
-  public void login(LoginInput input) {
+  public void login(@RequestBody LoginInput input) {
     Account  account= new Account();
     BeanUtils.copyProperties(input, account);
     String session = sessionService.login(account);

@@ -53,16 +53,25 @@ public class ApiController {
     return requestLocal.get();
   }
 
+  public static Long getUid() {
+    String uid = getRequest().getHeader(ApiConstant.HTTP_HEADER_KEY_UID);
+    if (uid == null || uid.trim().equals("")) {
+      return null;
+    }
+    return Long.parseLong(uid);
+  }
+
+  public static String getClientOS() {
+    String os = getRequest().getHeader(ApiConstant.HTTP_HEADER_KEY_OS);
+    return os;
+  }
+
   public static HttpServletResponse getResponse() {
     return responseLocal.get();
   }
 
   public String getLocal() {
     return local == null ? "en" : local;
-  }
-
-  public String getPlatform() {
-    return "Android";
   }
 
   @ModelAttribute

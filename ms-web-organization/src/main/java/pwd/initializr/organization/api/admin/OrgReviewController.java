@@ -63,7 +63,7 @@ public class OrgReviewController extends AdminController implements OrgReviewApi
   public void review(@RequestBody OrgReviewInput input) {
     OrganizationProgress organizationProgress = new OrganizationProgress();
     BeanUtils.copyProperties(input, organizationProgress);
-    organizationProgress.setEditorId(1L); // TODO ID
+    organizationProgress.setEditorId(getUid());
     organizationProgressService.createReview(organizationProgress);
     OrgReviewOutput orgReviewOutput = new OrgReviewOutput();
     BeanUtils.copyProperties(organizationProgress, orgReviewOutput);
