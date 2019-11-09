@@ -3,14 +3,11 @@ package pwd.initializr.storage.api;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import springfox.documentation.builders.ApiInfoBuilder;
+import pwd.initializr.common.web.api.ApiSwagger2;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.service.ApiInfo;
-import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger.web.UiConfigurationBuilder;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
@@ -27,43 +24,27 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 @EnableSwagger2
 @ComponentScan(basePackages = "pwd.initializr.storage.api")
-public class Swagger2 {
+public class Swagger2 extends ApiSwagger2 {
 
-    @Bean
-    public Docket createUserApi() {
-        return new Docket(DocumentationType.SWAGGER_2)
-            .groupName("UserApi")
-            .apiInfo(apiInfo("UserApi", "用户接口"))
-            .select()
-            .apis(RequestHandlerSelectors.basePackage("pwd.initializr.storage.api.user"))
-            .paths(PathSelectors.any())
-            .build();
-    }
+  @Bean
+  public Docket createAdminApi() {
+    return new Docket(DocumentationType.SWAGGER_2)
+        .groupName("AdminApi")
+        .apiInfo(apiInfo("AdminApi", "管理接口"))
+        .select()
+        .apis(RequestHandlerSelectors.basePackage("pwd.initializr.storage.api.admin"))
+        .paths(PathSelectors.any())
+        .build().globalOperationParameters(buildGlobalOperationParameters());
+  }
 
-    @Bean
-    public Docket createAdminApi() {
-        return new Docket(DocumentationType.SWAGGER_2)
-            .groupName("AdminApi")
-            .apiInfo(apiInfo("AdminApi", "管理接口"))
-            .select()
-            .apis(RequestHandlerSelectors.basePackage("pwd.initializr.storage.api.admin"))
-            .paths(PathSelectors.any())
-            .build();
-    }
-
-
-    private ApiInfo apiInfo(String title, String description) {
-        return new ApiInfoBuilder()
-            .title(title)
-            .description(description)
-            .termsOfServiceUrl("localhost:8080/")
-            .version("1.0")
-            .contact(new Contact("DingPengwei", "", "www.dingpengwei@foxmail"))
-            .build();
-    }
-
-    @Bean
-    public UiConfigurationBuilder uiConfig() {
-        return UiConfigurationBuilder.builder();
-    }
+  @Bean
+  public Docket createUserApi() {
+    return new Docket(DocumentationType.SWAGGER_2)
+        .groupName("UserApi")
+        .apiInfo(apiInfo("UserApi", "用户接口"))
+        .select()
+        .apis(RequestHandlerSelectors.basePackage("pwd.initializr.storage.api.user"))
+        .paths(PathSelectors.any())
+        .build().globalOperationParameters(buildGlobalOperationParameters());
+  }
 }

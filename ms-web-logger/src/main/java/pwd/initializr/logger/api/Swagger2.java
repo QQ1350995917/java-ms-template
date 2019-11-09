@@ -3,6 +3,7 @@ package pwd.initializr.logger.api;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import pwd.initializr.common.web.api.ApiSwagger2;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -27,7 +28,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 @EnableSwagger2
 @ComponentScan(basePackages = "pwd.initializr.logger.api")
-public class Swagger2 {
+public class Swagger2 extends ApiSwagger2 {
 
     @Bean
     public Docket createUserApi() {
@@ -37,7 +38,7 @@ public class Swagger2 {
             .select()
             .apis(RequestHandlerSelectors.basePackage("pwd.initializr.logger.api.user"))
             .paths(PathSelectors.any())
-            .build();
+            .build().globalOperationParameters(buildGlobalOperationParameters());
     }
 
     @Bean
@@ -48,22 +49,6 @@ public class Swagger2 {
             .select()
             .apis(RequestHandlerSelectors.basePackage("pwd.initializr.logger.api.admin"))
             .paths(PathSelectors.any())
-            .build();
-    }
-
-
-    private ApiInfo apiInfo(String title, String description) {
-        return new ApiInfoBuilder()
-            .title(title)
-            .description(description)
-            .termsOfServiceUrl("localhost:8080/")
-            .version("1.0")
-            .contact(new Contact("DingPengwei", "", "www.dingpengwei@foxmail"))
-            .build();
-    }
-
-    @Bean
-    public UiConfigurationBuilder uiConfig() {
-        return UiConfigurationBuilder.builder();
+            .build().globalOperationParameters(buildGlobalOperationParameters());
     }
 }

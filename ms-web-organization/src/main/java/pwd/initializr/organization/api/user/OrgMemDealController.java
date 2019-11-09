@@ -1,5 +1,7 @@
 package pwd.initializr.organization.api.user;
 
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -35,6 +37,9 @@ public class OrgMemDealController extends UserController implements OrgMemDealAp
   @Autowired
   private OrganizationMemberService organizationMemberService;
 
+  @ApiImplicitParams({
+      @ApiImplicitParam(name = "userId", value = "用户ID", required = true, dataType = "Long", example = "1", paramType = "path")
+  })
   @ApiOperation(value = "组织发出邀请")
   @PutMapping(value = {"/invite/{userId}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
@@ -55,18 +60,24 @@ public class OrgMemDealController extends UserController implements OrgMemDealAp
     }
   }
 
+  @ApiImplicitParams({
+      @ApiImplicitParam(name = "orgId", value = "组织ID", required = true, dataType = "Long", example = "1", paramType = "path")
+  })
   @ApiOperation(value = "组织发出的邀请列表，组织收到的申请列表")
   @GetMapping(value = {"/invitation/{orgId}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
-  public void invitation(@PathVariable(value = "orgId", name = "组织ID") Long orgId,
-      @PathVariable(value = "type", name = "0:组织邀请，1:用户申请") Integer type) {
+  public void invitation(@PathVariable(value = "orgId") Long orgId,
+      @PathVariable(value = "type") Integer type) {
     ObjectList<OrganizationMemberDeal> organizationMemberDealObjectList = organizationMemberDealService
         .listByOrgId(orgId, type);
     outputData(organizationMemberDealObjectList);
   }
 
+  @ApiImplicitParams({
+      @ApiImplicitParam(name = "orgId", value = "组织ID", required = true, dataType = "Long", example = "1", paramType = "path")
+  })
   @ApiOperation(value = "用户发出申请")
-  @PutMapping(value = {"/user/apply/{orgId}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @PutMapping(value = {"/apply/{orgId}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
   public void apply(@PathVariable("orgId") Long orgId) {
     OrganizationMemberDeal organizationMemberDeal = organizationMemberDealService
@@ -85,11 +96,15 @@ public class OrgMemDealController extends UserController implements OrgMemDealAp
     }
   }
 
+
+  @ApiImplicitParams({
+      @ApiImplicitParam(name = "orgId", value = "组织ID", required = true, dataType = "Long", example = "1", paramType = "path")
+  })
   @ApiOperation(value = "用户收到的邀请列表，用户发出的申请列表")
   @GetMapping(value = {"/application/{orgId}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
-  public void application(@PathVariable(value = "orgId", name = "组织ID") Long userId,
-      @PathVariable(value = "type", name = "0:组织邀请，1:用户申请") Integer type) {
+  public void application(@PathVariable(value = "orgId") Long userId,
+      @PathVariable(value = "type") Integer type) {
     ObjectList<OrganizationMemberDeal> organizationMemberDealObjectList = organizationMemberDealService
         .listByUserId(userId, type);
     outputData(organizationMemberDealObjectList);

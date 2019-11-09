@@ -1,5 +1,7 @@
 package pwd.initializr.organization.api.admin;
 
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -30,23 +32,32 @@ public class OrgMemDealController extends AdminController implements OrgMemDealA
   @Autowired
   private OrganizationMemberDealService organizationMemberDealService;
 
+  @ApiImplicitParams({
+      @ApiImplicitParam(name = "orgId", value = "组织ID", required = true, dataType = "Long", example = "1", paramType = "path"),
+      @ApiImplicitParam(name = "type", value = "0：组织发出的邀请；1：组织收到的申请", required = true, dataType = "Integer", example = "1", paramType = "path")
+  })
   @ApiOperation(value = "组织发出的邀请列表，组织收到的申请列表")
   @GetMapping(value = {
       "/invitation/{orgId}/{type}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
-  public void invitation(@PathVariable(value = "orgId", name = "组织ID") Long orgId,
-      @PathVariable(value = "type", name = "0:组织邀请，1:用户申请") Integer type) {
+  public void invitation(@PathVariable(value = "orgId") Long orgId,
+      @PathVariable(value = "type") Integer type) {
     ObjectList<OrganizationMemberDeal> organizationMemberDealObjectList = organizationMemberDealService
         .listByOrgId(orgId, type);
     outputData(organizationMemberDealObjectList);
   }
 
+
+  @ApiImplicitParams({
+      @ApiImplicitParam(name = "userId", value = "用户ID", required = true, dataType = "Long", example = "1", paramType = "path"),
+      @ApiImplicitParam(name = "type", value = "0：组织发出的邀请；1：组织收到的申请", required = true, dataType = "Integer", example = "1", paramType = "path")
+  })
   @ApiOperation(value = "用户收到的邀请列表，用户发出的申请列表")
   @GetMapping(value = {
       "/application/{userId}/{type}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
-  public void application(@PathVariable(value = "orgId", name = "组织ID") Long userId,
-      @PathVariable(value = "type", name = "0:组织邀请，1:用户申请") Integer type) {
+  public void application(@PathVariable(value = "userId") Long userId,
+      @PathVariable(value = "type") Integer type) {
     ObjectList<OrganizationMemberDeal> organizationMemberDealObjectList = organizationMemberDealService
         .listByUserId(userId, type);
     outputData(organizationMemberDealObjectList);

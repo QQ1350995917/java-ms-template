@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 @EnableDiscoveryClient
 @RestController
 public class GatewayApplication {
+
     public static void main(String[] args) {
         SpringApplication.run(GatewayApplication.class, args);
     }
@@ -30,5 +31,6 @@ public class GatewayApplication {
     @GetMapping(value = "")
     public String index() {
         return "this is gateway index";
+
     }
 }

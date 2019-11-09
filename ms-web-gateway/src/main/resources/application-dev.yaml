@@ -21,7 +21,15 @@ spring:
        - id: logger-route
          uri: lb://logger
          predicates:
-           - Path=/logger/**
+          - Path=/logger/**
+    filters:
+      -
+  security:
+    user:
+      name: pwd
+      password: pwd
+      roles:
+        - USER
 eureka:
   instance:
     hostname: localhost
