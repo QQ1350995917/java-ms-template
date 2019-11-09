@@ -36,18 +36,17 @@ public class OAuthFilter implements GlobalFilter, Ordered {
   @Override
   public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
     /**oauth授权*/
-//    String auth = securityUserName.concat(":").concat(securityUserPassword);
-//    String encodedAuth = new sun.misc.BASE64Encoder()
-//        .encode(auth.getBytes(Charset.forName("US-ASCII")));
-//    //注意Basic后面有空格
-//    String authHeader = "Basic " + encodedAuth;
-//    //向headers中放授权信息
-//    ServerHttpRequest serverHttpRequest = exchange.getRequest().mutate()
-//        .header("Authorization", authHeader).build();
-//    //将现在的request变成change对象
-//    ServerWebExchange build = exchange.mutate().request(serverHttpRequest).build();
-//    return chain.filter(build);
-    return chain.filter(exchange);
+    String auth = securityUserName.concat(":").concat(securityUserPassword);
+    String encodedAuth = new sun.misc.BASE64Encoder()
+        .encode(auth.getBytes(Charset.forName("US-ASCII")));
+    //注意Basic后面有空格
+    String authHeader = "Basic " + encodedAuth;
+    //向headers中放授权信息
+    ServerHttpRequest serverHttpRequest = exchange.getRequest().mutate()
+        .header("Authorization", new String[]{authHeader}).build();
+    //将现在的request变成change对象
+    ServerWebExchange build = exchange.mutate().request(serverHttpRequest).build();
+    return chain.filter(build);
   }
 
   @Override

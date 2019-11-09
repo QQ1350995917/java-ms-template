@@ -17,7 +17,7 @@ import pwd.initializr.account.business.user.bo.Account;
 @Service
 public interface SessionService {
 
-  String genSession(Account account);
+  String genToken(Account account);
 
   String login(Account account);
 

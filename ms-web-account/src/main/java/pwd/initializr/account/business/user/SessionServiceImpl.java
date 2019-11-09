@@ -1,6 +1,8 @@
 package pwd.initializr.account.business.user;
 
 import com.alibaba.fastjson.JSON;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,8 +37,10 @@ public class SessionServiceImpl implements SessionService {
   private RedisClient redisClient;
 
   @Override
-  public String genSession(Account account) {
-    return account.getId() + "";
+  public String genToken(Account account) {
+    String token = JWT.create().withAudience(String.valueOf(account.getId()))
+        .sign(Algorithm.HMAC256(account.getPassword()));
+    return token;
   }
 
   @Override
@@ -47,10 +51,9 @@ public class SessionServiceImpl implements SessionService {
       return null;
     }
     Account result = new Account();
-    BeanUtils.copyProperties(accountEntity, result,"password");
+    BeanUtils.copyProperties(accountEntity, result);
     this.createSession(result);
-    // TODO 加密混淆或者md5等操作
-    return this.genSession(result);
+    return this.genToken(result);
   }
 
   @Override

@@ -1,6 +1,11 @@
 package pwd.initializr.gateway.filter;
 
 import com.alibaba.fastjson.JSON;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTDecodeException;
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import java.nio.charset.StandardCharsets;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,37 +47,69 @@ public class SessionFilter implements GlobalFilter, Ordered {
 
   @Override
   public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-    String token = exchange.getRequest().getHeaders().getFirst(ApiConstant.HTTP_HEADER_KEY_TOKEN);
-    String uid = exchange.getRequest().getHeaders().getFirst(ApiConstant.HTTP_HEADER_KEY_UID);
-    if (token != null && uid != null) {
-      String key = StringUtils.join(new String[]{SESSION_PREFIX, String.valueOf(uid)});
-      String userJson = redisClient.get(key);
-      if (userJson != null) {
-        return chain.filter(exchange);
-      }
-    }
-    ServerHttpRequest serverHttpRequest = exchange.getRequest();
-    RequestPath path = serverHttpRequest.getPath();
-    String redirect;
-    // TODO 可配置
-    if (path.value().contains("/api/admin")) {
-      redirect = "";// TODO 重定向到管理员登录
-    } else {
-      redirect = "";// TODO 重定向到用户登录
-    }
-    String method = serverHttpRequest.getMethodValue();
+    ServerHttpRequest request = exchange.getRequest();
     ServerHttpResponse response = exchange.getResponse();
-    response.setStatusCode(HttpStatus.FOUND);
-    HttpHeaders httpHeaders = response.getHeaders();
-    httpHeaders.add("Content-Type", "application/json; charset=UTF-8");
-    httpHeaders.add("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0");
-    httpHeaders.add("Location", redirect);
-    Output<Object> objectOutput = new Output<>(
-        new Meta(HttpStatus.UNAUTHORIZED.value(), "未登录或登录超时"));
-    String warning = JSON.toJSONString(objectOutput);
-    DataBuffer bodyDataBuffer = response.bufferFactory()
-        .wrap(warning.getBytes(StandardCharsets.UTF_8));
-    return response.writeWith(Mono.just(bodyDataBuffer));
+    String token = request.getHeaders().getFirst(ApiConstant.HTTP_HEADER_KEY_TOKEN);
+    String uid;
+    try {
+      uid = JWT.decode(token).getAudience().get(0);
+    } catch (JWTDecodeException e) {
+      Output<Object> objectOutput = new Output<>(
+          new Meta(HttpStatus.BAD_REQUEST.value(), "认证参数错误"));
+      String warning = JSON.toJSONString(objectOutput);
+      DataBuffer bodyDataBuffer = response.bufferFactory()
+          .wrap(warning.getBytes(StandardCharsets.UTF_8));
+      return response.writeWith(Mono.just(bodyDataBuffer));
+    }
+    if (uid == null) {
+      Output<Object> objectOutput = new Output<>(
+          new Meta(HttpStatus.BAD_REQUEST.value(), "认证参数错误"));
+      String warning = JSON.toJSONString(objectOutput);
+      DataBuffer bodyDataBuffer = response.bufferFactory()
+          .wrap(warning.getBytes(StandardCharsets.UTF_8));
+      return response.writeWith(Mono.just(bodyDataBuffer));
+    }
+
+    String key = StringUtils.join(new String[]{SESSION_PREFIX, uid});
+    String userJson = redisClient.get(key);
+    if (userJson != null) {
+      String password = JSON.parseObject(userJson).getString("password");
+      JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(password)).build();
+      try {
+        jwtVerifier.verify(token);
+      } catch (JWTVerificationException e) {
+        Output<Object> objectOutput = new Output<>(
+            new Meta(HttpStatus.BAD_REQUEST.value(), "认证参数错误"));
+        String warning = JSON.toJSONString(objectOutput);
+        DataBuffer bodyDataBuffer = response.bufferFactory()
+            .wrap(warning.getBytes(StandardCharsets.UTF_8));
+        return response.writeWith(Mono.just(bodyDataBuffer));
+      }
+      return chain.filter(exchange);
+    } else {
+      RequestPath path = request.getPath();
+      String url = request.getURI().getPath();
+      String redirect;
+      // TODO 可配置
+      if (path.value().contains("/api/admin")) {
+        redirect = "";// TODO 重定向到管理员登录
+      } else {
+        redirect = "";// TODO 重定向到用户登录
+      }
+      String method = request.getMethodValue();
+
+      response.setStatusCode(HttpStatus.FOUND);
+      HttpHeaders httpHeaders = response.getHeaders();
+      httpHeaders.add("Content-Type", "application/json; charset=UTF-8");
+      httpHeaders.add("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0");
+      httpHeaders.add("Location", redirect);
+      Output<Object> objectOutput = new Output<>(
+          new Meta(HttpStatus.UNAUTHORIZED.value(), "未登录或登录超时"));
+      String warning = JSON.toJSONString(objectOutput);
+      DataBuffer bodyDataBuffer = response.bufferFactory()
+          .wrap(warning.getBytes(StandardCharsets.UTF_8));
+      return response.writeWith(Mono.just(bodyDataBuffer));
+    }
   }
 
   @Override
