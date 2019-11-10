@@ -77,7 +77,7 @@ public class AccountController extends UserController implements AccountApi {
           ConstantStatus.ENABLE.value(), System.currentTimeMillis(), System.currentTimeMillis());
       UserAccount userAccount = userAccountService.createUserAccount(user, account);
       sessionService.createSession(account);
-      String session = sessionService.genSession(account);
+      String session = sessionService.genToken(account);
       // TODO addCookie
       super.outputData(new LoginOutput(session));
     } else {

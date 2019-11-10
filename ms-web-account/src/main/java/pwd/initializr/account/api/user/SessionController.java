@@ -44,7 +44,7 @@ public class SessionController extends UserController implements SessionApi {
   @PutMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
   public void login(@RequestBody LoginInput input) {
-    Account  account= new Account();
+    Account account = new Account();
     BeanUtils.copyProperties(input, account);
     String session = sessionService.login(account);
     if (session == null) {

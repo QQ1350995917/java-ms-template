@@ -24,12 +24,12 @@ spring:
           - Path=/logger/**
     filters:
       -
-  security:
-    user:
-      name: pwd
-      password: pwd
-      roles:
-        - USER
+#  security:
+#    user:
+#      name: pwd
+#      password: pwd
+#      roles:
+#        - USER
 eureka:
   instance:
     hostname: localhost

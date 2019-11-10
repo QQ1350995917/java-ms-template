@@ -24,6 +24,7 @@ import pwd.initializr.common.mw.redis.RedisClient;
 import pwd.initializr.common.web.api.ApiConstant;
 import pwd.initializr.common.web.api.vo.Meta;
 import pwd.initializr.common.web.api.vo.Output;
+import pwd.initializr.gateway.list.KeyValueList;
 import reactor.core.publisher.Mono;
 
 /**
@@ -49,25 +50,23 @@ public class SessionFilter implements GlobalFilter, Ordered {
   public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
     ServerHttpRequest request = exchange.getRequest();
     ServerHttpResponse response = exchange.getResponse();
+    String method = request.getMethodValue();
+    String url = request.getURI().getPath();
+    if ("".equalsIgnoreCase(method) && "".equalsIgnoreCase(url)) {
+      // TODO 白名单
+    }
     String token = request.getHeaders().getFirst(ApiConstant.HTTP_HEADER_KEY_TOKEN);
+    if (token == null) {
+      return buildSessionErrorMono(request,response,"请求参数错误");
+    }
     String uid;
     try {
       uid = JWT.decode(token).getAudience().get(0);
     } catch (JWTDecodeException e) {
-      Output<Object> objectOutput = new Output<>(
-          new Meta(HttpStatus.BAD_REQUEST.value(), "认证参数错误"));
-      String warning = JSON.toJSONString(objectOutput);
-      DataBuffer bodyDataBuffer = response.bufferFactory()
-          .wrap(warning.getBytes(StandardCharsets.UTF_8));
-      return response.writeWith(Mono.just(bodyDataBuffer));
+      return buildSessionErrorMono(request,response,"请求参数错误");
     }
     if (uid == null) {
-      Output<Object> objectOutput = new Output<>(
-          new Meta(HttpStatus.BAD_REQUEST.value(), "认证参数错误"));
-      String warning = JSON.toJSONString(objectOutput);
-      DataBuffer bodyDataBuffer = response.bufferFactory()
-          .wrap(warning.getBytes(StandardCharsets.UTF_8));
-      return response.writeWith(Mono.just(bodyDataBuffer));
+      return buildSessionErrorMono(request,response,"请求参数错误");
     }
 
     String key = StringUtils.join(new String[]{SESSION_PREFIX, uid});
@@ -78,38 +77,38 @@ public class SessionFilter implements GlobalFilter, Ordered {
       try {
         jwtVerifier.verify(token);
       } catch (JWTVerificationException e) {
-        Output<Object> objectOutput = new Output<>(
-            new Meta(HttpStatus.BAD_REQUEST.value(), "认证参数错误"));
-        String warning = JSON.toJSONString(objectOutput);
-        DataBuffer bodyDataBuffer = response.bufferFactory()
-            .wrap(warning.getBytes(StandardCharsets.UTF_8));
-        return response.writeWith(Mono.just(bodyDataBuffer));
+        // Session 获取到 验证失败
+        return buildSessionErrorMono(request,response,"请求参数错误");
       }
+      // Session 获取到 验证成功
       return chain.filter(exchange);
     } else {
-      RequestPath path = request.getPath();
-      String url = request.getURI().getPath();
-      String redirect;
-      // TODO 可配置
-      if (path.value().contains("/api/admin")) {
-        redirect = "";// TODO 重定向到管理员登录
-      } else {
-        redirect = "";// TODO 重定向到用户登录
-      }
-      String method = request.getMethodValue();
-
-      response.setStatusCode(HttpStatus.FOUND);
-      HttpHeaders httpHeaders = response.getHeaders();
-      httpHeaders.add("Content-Type", "application/json; charset=UTF-8");
-      httpHeaders.add("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0");
-      httpHeaders.add("Location", redirect);
-      Output<Object> objectOutput = new Output<>(
-          new Meta(HttpStatus.UNAUTHORIZED.value(), "未登录或登录超时"));
-      String warning = JSON.toJSONString(objectOutput);
-      DataBuffer bodyDataBuffer = response.bufferFactory()
-          .wrap(warning.getBytes(StandardCharsets.UTF_8));
-      return response.writeWith(Mono.just(bodyDataBuffer));
+      // Session 未获取到 超时或者未登录
+      return buildSessionErrorMono(request,response,"未登录或登录超时");
     }
+  }
+
+  private Mono<Void> buildSessionErrorMono(ServerHttpRequest request ,ServerHttpResponse response,String message){
+    RequestPath path = request.getPath();
+    String url = request.getURI().getPath();
+    String redirect;
+    if (path.value().contains(KeyValueList.adminPath)) {
+      redirect = KeyValueList.adminLogin;
+    } else {
+      redirect = KeyValueList.userLogin;
+    }
+    String method = request.getMethodValue();
+    response.setStatusCode(HttpStatus.FOUND);
+    HttpHeaders httpHeaders = response.getHeaders();
+    httpHeaders.add("Content-Type", "application/json; charset=UTF-8");
+    httpHeaders.add("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0");
+    httpHeaders.add("Location", redirect);
+    Output<Object> objectOutput = new Output<>(
+        new Meta(HttpStatus.FOUND.value(), message));
+    String warning = JSON.toJSONString(objectOutput);
+    DataBuffer bodyDataBuffer = response.bufferFactory()
+        .wrap(warning.getBytes(StandardCharsets.UTF_8));
+    return response.writeWith(Mono.just(bodyDataBuffer));
   }
 
   @Override
