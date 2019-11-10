@@ -51,9 +51,10 @@ public class SessionFilter implements GlobalFilter, Ordered {
     ServerHttpRequest request = exchange.getRequest();
     ServerHttpResponse response = exchange.getResponse();
     String method = request.getMethodValue();
-    String url = request.getURI().getPath();
-    if ("".equalsIgnoreCase(method) && "".equalsIgnoreCase(url)) {
-      // TODO 白名单
+    String path = request.getURI().getPath();
+    if (KeyValueList.skipToken(path,method)) {
+      // 白名单
+      return chain.filter(exchange);
     }
     String token = request.getHeaders().getFirst(ApiConstant.HTTP_HEADER_KEY_TOKEN);
     if (token == null) {
@@ -80,6 +81,7 @@ public class SessionFilter implements GlobalFilter, Ordered {
         // Session 获取到 验证失败
         return buildSessionErrorMono(request,response,"请求参数错误");
       }
+      request.getHeaders().add(ApiConstant.HTTP_HEADER_KEY_UID,uid);
       // Session 获取到 验证成功
       return chain.filter(exchange);
     } else {

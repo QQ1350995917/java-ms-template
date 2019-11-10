@@ -1,6 +1,7 @@
 package pwd.initializr.gateway.list;
 
 import java.util.HashMap;
+import java.util.Map;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;
 
@@ -21,6 +22,20 @@ public class KeyValueList extends HashMap implements InitializingBean {
   public static String adminLogin = "/account/api/admin/session";// 管理员登录页面
   public static String adminPath = "/api/admin";// 管理员url中path特征
   public static String userLogin = "/account/api/session";// 用户登录页面
+
+  private static final Map<String,String> withoutTokenUrl = new HashMap<>();
+
+  static {
+    withoutTokenUrl.put("/account/api/admin/session","PUT");
+    withoutTokenUrl.put("/account/api/session","PUT");
+  }
+
+  public static boolean skipToken(String path,String method){
+    if (withoutTokenUrl.containsKey(path) && withoutTokenUrl.containsValue(method)) {
+      return true;
+    }
+    return false;
+  }
 
   @Override
   public void afterPropertiesSet() throws Exception {
