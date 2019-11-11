@@ -6,6 +6,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import zipkin2.server.internal.EnableZipkinServer;
 
 /**
  * pwd.initializr.account@ms-web-initializr
@@ -21,7 +22,8 @@ import org.springframework.web.bind.annotation.RestController;
 @SpringBootApplication
 @EnableEurekaClient
 @EnableDiscoveryClient
-@RestController
+//@RestController
+@EnableZipkinServer
 public class LoggerApplication {
     public static void main(String[] args) {
         SpringApplication.run(LoggerApplication.class, args);
