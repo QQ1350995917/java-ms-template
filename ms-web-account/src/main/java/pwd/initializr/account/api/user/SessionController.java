@@ -15,6 +15,7 @@ import pwd.initializr.account.api.user.vo.LoginInput;
 import pwd.initializr.account.api.user.vo.LoginOutput;
 import pwd.initializr.account.business.user.SessionService;
 import pwd.initializr.account.business.user.bo.Account;
+import pwd.initializr.account.business.user.bo.UserAccount;
 import pwd.initializr.common.web.api.user.UserController;
 
 /**
@@ -46,11 +47,14 @@ public class SessionController extends UserController implements SessionApi {
   public void login(@RequestBody LoginInput input) {
     Account account = new Account();
     BeanUtils.copyProperties(input, account);
-    String session = sessionService.login(account);
-    if (session == null) {
+    UserAccount userAccount = sessionService.login(account);
+
+    if (userAccount == null) {
       outputData(400);
     } else {
-      outputData(new LoginOutput(session));
+      String token = sessionService.genToken(userAccount);
+      sessionService.saveSession(userAccount);
+      outputData(new LoginOutput(userAccount.getUser().getId(),token));
     }
   }
 

@@ -3,12 +3,16 @@ package pwd.initializr.account.business.user;
 import com.alibaba.fastjson.JSON;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import java.util.LinkedList;
+import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import pwd.initializr.account.business.user.bo.Account;
+import pwd.initializr.account.business.user.bo.User;
+import pwd.initializr.account.business.user.bo.UserAccount;
 import pwd.initializr.account.persistence.dao.AccountEntity;
 import pwd.initializr.account.persistence.mapper.AccountMapper;
 import pwd.initializr.common.mw.redis.RedisClient;
@@ -34,31 +38,39 @@ public class SessionServiceImpl implements SessionService {
   @Autowired
   private AccountMapper accountMapper;
   @Autowired
+  private UserService userService;
+
+  @Autowired
   private RedisClient redisClient;
 
   @Override
-  public String genToken(Account account) {
-    String token = JWT.create().withAudience(String.valueOf(account.getId()))
-        .sign(Algorithm.HMAC256(account.getPassword()));
+  public String genToken(UserAccount userAccount) {
+    User user = userAccount.getUser();
+    String token = JWT.create().withAudience(String.valueOf(user.getId()))
+        .sign(Algorithm.HMAC256(user.getPhoneNumber()));
     return token;
   }
 
   @Override
-  public String login(Account account) {
+  public UserAccount login(Account account) {
     AccountEntity accountEntity = accountMapper
         .findByIdentifyAndPassword(account.getIdentify(), account.getPassword());
     if (accountEntity == null) {
       return null;
     }
-    Account result = new Account();
-    BeanUtils.copyProperties(accountEntity, result);
-    this.createSession(result);
-    return this.genToken(result);
+    Account accountResult = new Account();
+    BeanUtils.copyProperties(accountEntity, accountResult);
+    User user = userService.findByUserId(accountEntity.getUserId());
+    List<Account> accountList = new LinkedList<>();
+    accountList.add(accountResult);
+    UserAccount userAccount = new UserAccount(user,accountList);
+    this.saveSession(userAccount);
+    return userAccount;
   }
 
   @Override
-  public Account info(String sessionId) {
-    String session = this.getSession(sessionId);
+  public Account info(String userId) {
+    String session = this.getSession(userId);
     if (session == null) {
       return null;
     }
@@ -71,21 +83,22 @@ public class SessionServiceImpl implements SessionService {
   }
 
   @Override
-  public void createSession(Account account) {
+  public void saveSession(UserAccount userAccount) {
     // TODO 详细设计Session
-    String key = StringUtils.join(new String[]{SESSION_PREFIX, String.valueOf(account.getId())});
-    redisClient.set(key, JSON.toJSONString(account));
+    User user = userAccount.getUser();
+    String key = StringUtils.join(new String[]{SESSION_PREFIX, String.valueOf(user.getId())});
+    redisClient.set(key, JSON.toJSONString(user));
   }
 
   @Override
-  public String getSession(String sessionId) {
-    String key = StringUtils.join(new String[]{SESSION_PREFIX, sessionId});
+  public String getSession(String userId) {
+    String key = StringUtils.join(new String[]{SESSION_PREFIX, userId});
     return redisClient.get(key);
   }
 
   @Override
-  public void delSession(String sessionId) {
-    String key = StringUtils.join(new String[]{SESSION_PREFIX, sessionId});
+  public void delSession(String userId) {
+    String key = StringUtils.join(new String[]{SESSION_PREFIX, userId});
     redisClient.del(key);
   }
 }

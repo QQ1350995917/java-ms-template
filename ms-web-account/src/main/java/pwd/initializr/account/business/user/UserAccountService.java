@@ -18,5 +18,4 @@ import pwd.initializr.account.business.user.bo.UserAccount;
 public interface UserAccountService {
 
   UserAccount createUserAccount(User user, Account account);
-
 }

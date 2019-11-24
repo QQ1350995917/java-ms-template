@@ -2,6 +2,7 @@ package pwd.initializr.account.business.user;
 
 import org.springframework.stereotype.Service;
 import pwd.initializr.account.business.user.bo.Account;
+import pwd.initializr.account.business.user.bo.UserAccount;
 
 /**
  * pwd.initializr.account.business.user@ms-web-initializr
@@ -17,17 +18,17 @@ import pwd.initializr.account.business.user.bo.Account;
 @Service
 public interface SessionService {
 
-  String genToken(Account account);
+  String genToken(UserAccount userAccount);
 
-  String login(Account account);
+  UserAccount login(Account account);
 
-  Account info(String sessionId);
+  Account info(String userId);
 
-  void logout(String sessionId);
+  void logout(String userId);
 
-  void createSession(Account account);
+  void saveSession(UserAccount userAccount);
 
-  String getSession(String sessionId);
+  String getSession(String userId);
 
-  void delSession(String sessionId);
+  void delSession(String userId);
 }

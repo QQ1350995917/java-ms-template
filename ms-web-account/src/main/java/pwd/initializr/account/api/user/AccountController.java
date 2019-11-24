@@ -71,15 +71,16 @@ public class AccountController extends UserController implements AccountApi {
     if (match) {
       // TODO session设置，返回身份信息，跳转页面
       User user = new User(null, input.getUsername(), input.getPhoneNumber(), ConstantStatus.ENABLE.value(),
-          System.currentTimeMillis(),
-          System.currentTimeMillis());
-      Account account = new Account(null, null, input.getPhoneNumber(), null, Type.PHONE.value(),
+          System.currentTimeMillis(), System.currentTimeMillis());
+      // TODO 优化password业务
+      String password = smsCode.getSmsCode();
+      Account account = new Account(null, null, input.getPhoneNumber(), password, Type.PHONE.value(),
           ConstantStatus.ENABLE.value(), System.currentTimeMillis(), System.currentTimeMillis());
       UserAccount userAccount = userAccountService.createUserAccount(user, account);
-      sessionService.createSession(account);
-      String session = sessionService.genToken(account);
+      sessionService.saveSession(userAccount);
+      String session = sessionService.genToken(userAccount);
       // TODO addCookie
-      super.outputData(new LoginOutput(session));
+      super.outputData(new LoginOutput(user.getId(),session));
     } else {
       super.outputException(401);
     }

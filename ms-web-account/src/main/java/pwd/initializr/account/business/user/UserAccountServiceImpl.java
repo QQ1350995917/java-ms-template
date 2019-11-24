@@ -37,4 +37,5 @@ public class UserAccountServiceImpl implements UserAccountService {
     UserAccount userAccount = new UserAccount(insertUser, Arrays.asList(insertAccount));
     return userAccount;
   }
+
 }
