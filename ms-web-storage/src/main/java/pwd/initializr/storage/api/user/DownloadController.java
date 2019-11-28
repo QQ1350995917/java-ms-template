@@ -20,7 +20,7 @@ import pwd.initializr.storage.business.bo.Storage;
  *
  * date 2019-09-26 18:13
  *
- * @author DingPengwei[dingpengwei@eversec.com]
+ * @author DingPengwei[dingpengwei@foxmail.com]
  * @version 1.0.0
  * @since DistributionVersion
  */

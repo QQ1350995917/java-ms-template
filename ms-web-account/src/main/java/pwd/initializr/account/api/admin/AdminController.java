@@ -20,7 +20,7 @@ import pwd.initializr.account.api.admin.vo.CreateAdminInput;
  *
  * date 2019-10-26 8:14
  *
- * @author DingPengwei[dingpengwei@eversec.com]
+ * @author DingPengwei[dingpengwei@foxmail.com]
  * @version 1.0.0
  * @since DistributionVersion
  */

@@ -7,7 +7,7 @@ package pwd.initializr.account.business.admin.bo;
  *
  * date 2019-11-04 18:42
  *
- * @author DingPengwei[dingpengwei@eversec.com]
+ * @author DingPengwei[dingpengwei@foxmail.com]
  * @version 1.0.0
  * @since DistributionVersion
  */

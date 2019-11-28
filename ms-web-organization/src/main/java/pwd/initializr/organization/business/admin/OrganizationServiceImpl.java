@@ -17,7 +17,7 @@ import pwd.initializr.organization.persistence.mapper.OrganizationMapper;
  *
  * date 2019-10-12 18:39
  *
- * @author DingPengwei[dingpengwei@eversec.com]
+ * @author DingPengwei[dingpengwei@foxmail.com]
  * @version 1.0.0
  * @since DistributionVersion
  */

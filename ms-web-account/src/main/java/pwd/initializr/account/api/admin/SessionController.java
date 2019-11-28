@@ -24,7 +24,7 @@ import pwd.initializr.common.web.api.admin.AdminController;
  *
  * date 2019-10-25 20:18
  *
- * @author DingPengwei[dingpengwei@eversec.com]
+ * @author DingPengwei[dingpengwei@foxmail.com]
  * @version 1.0.0
  * @since DistributionVersion
  */

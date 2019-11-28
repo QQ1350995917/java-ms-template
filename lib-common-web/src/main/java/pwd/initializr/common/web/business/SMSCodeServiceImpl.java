@@ -17,7 +17,7 @@ import pwd.initializr.common.web.business.bo.SMSCode;
  *
  * date 2019-09-20 22:45
  *
- * @author DingPengwei[dingpengwei@eversec.com]
+ * @author DingPengwei[dingpengwei@foxmail.com]
  * @version 1.0.0
  * @since DistributionVersion
  */

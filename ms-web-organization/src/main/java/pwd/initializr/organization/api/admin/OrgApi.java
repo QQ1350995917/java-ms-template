@@ -11,7 +11,7 @@ import pwd.initializr.organization.api.admin.vo.OrgListInput;
  *
  * date 2019-10-12 17:59
  *
- * @author DingPengwei[dingpengwei@eversec.com]
+ * @author DingPengwei[dingpengwei@foxmail.com]
  * @version 1.0.0
  * @since DistributionVersion
  */

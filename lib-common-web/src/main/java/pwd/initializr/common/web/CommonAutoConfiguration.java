@@ -13,7 +13,7 @@ import pwd.initializr.common.web.business.SMSCodeServiceImpl;
  *
  * date 2019-09-23 18:19
  *
- * @author DingPengwei[dingpengwei@eversec.com]
+ * @author DingPengwei[dingpengwei@foxmail.com]
  * @version 1.0.0
  * @since DistributionVersion
  */

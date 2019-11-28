@@ -13,7 +13,7 @@ import java.util.Random;
  *
  * date 2019-09-18 18:54
  *
- * @author DingPengwei[dingpengwei@eversec.com]
+ * @author DingPengwei[dingpengwei@foxmail.com]
  * @version 1.0.0
  * @since DistributionVersion
  */

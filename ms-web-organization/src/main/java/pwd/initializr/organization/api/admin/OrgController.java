@@ -27,7 +27,7 @@ import pwd.initializr.organization.business.user.bo.Organization;
  *
  * date 2019-10-12 18:02
  *
- * @author DingPengwei[dingpengwei@eversec.com]
+ * @author DingPengwei[dingpengwei@foxmail.com]
  * @version 1.0.0
  * @since DistributionVersion
  */

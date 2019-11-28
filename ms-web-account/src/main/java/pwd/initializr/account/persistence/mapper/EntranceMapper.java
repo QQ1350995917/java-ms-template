@@ -12,7 +12,7 @@ import pwd.initializr.account.persistence.dao.EntranceEntity;
  *
  * date 2019-09-24 16:31
  *
- * @author DingPengwei[dingpengwei@eversec.com]
+ * @author DingPengwei[dingpengwei@foxmail.com]
  * @version 1.0.0
  * @since DistributionVersion
  */

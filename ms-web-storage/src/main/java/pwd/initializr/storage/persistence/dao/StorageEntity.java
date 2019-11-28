@@ -17,7 +17,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
  *
  * date 2019-09-25 19:48
  *
- * @author DingPengwei[dingpengwei@eversec.com]
+ * @author DingPengwei[dingpengwei@foxmail.com]
  * @version 1.0.0
  * @since DistributionVersion
  */
