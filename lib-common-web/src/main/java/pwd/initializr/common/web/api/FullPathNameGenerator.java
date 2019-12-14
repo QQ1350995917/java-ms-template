@@ -1,4 +1,4 @@
-package pwd.initializr.account;
+package pwd.initializr.common.web.api;
 
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinition;

@@ -9,7 +9,7 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>ms-web-logger</artifactId>
+  <artifactId>ms-web-article</artifactId>
   <packaging>jar</packaging>
 
   <dependencies>

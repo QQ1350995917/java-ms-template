@@ -1,5 +1,11 @@
 package pwd.initializr.article.business.user.bo;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
 /**
  * pwd.initializr.article.business.user.bo@ms-web-initializr
  *
@@ -11,6 +17,17 @@ package pwd.initializr.article.business.user.bo;
  * @version 1.0.0
  * @since DistributionVersion
  */
+@AllArgsConstructor
+@NoArgsConstructor
+@Setter
+@Getter
+@ToString
 public class BookBO {
-
+  private Long id;
+  private String title;
+  private String subTitle;
+  private String summary;
+  private Integer status;
+  private Long createTime;
+  private Long updateTime;
 }

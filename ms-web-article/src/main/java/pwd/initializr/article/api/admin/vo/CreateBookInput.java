@@ -1,5 +1,11 @@
 package pwd.initializr.article.api.admin.vo;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
 /**
  * pwd.initializr.article.api.admin.vo@ms-web-initializr
  *
@@ -11,6 +17,13 @@ package pwd.initializr.article.api.admin.vo;
  * @version 1.0.0
  * @since DistributionVersion
  */
+@AllArgsConstructor
+@NoArgsConstructor
+@Setter
+@Getter
+@ToString
 public class CreateBookInput {
-
+  private String title;
+  private String subTitle;
+  private String summary;
 }

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.common.vcode.ArithmeticCode;
 import pwd.initializr.common.vcode.CodeMessage;
 import pwd.initializr.common.vcode.VCodeHelper;
+import pwd.initializr.common.web.api.FullPathNameGenerator;
 
 /**
  * pwd.initializr.account@ms-web-initializr

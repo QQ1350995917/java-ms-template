@@ -1,4 +1,8 @@
-package pwd.initializr.article.business.admin;
+package pwd.initializr.article.business.user;
+
+import org.springframework.stereotype.Service;
+import pwd.initializr.article.business.user.bo.BookBO;
+import pwd.initializr.common.web.business.bo.ObjectList;
 
 /**
  * pwd.initializr.article.business.admin@ms-web-initializr
@@ -11,6 +15,9 @@ package pwd.initializr.article.business.admin;
  * @version 1.0.0
  * @since DistributionVersion
  */
+@Service
 public interface BookService {
+
+  ObjectList<BookBO> listBookByRange();
 
 }

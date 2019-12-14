@@ -1,4 +1,4 @@
-package pwd.initializr.logger.api;
+package pwd.initializr.article.api;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -27,7 +27,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  */
 @Configuration
 @EnableSwagger2
-@ComponentScan(basePackages = "pwd.initializr.logger.api")
+@ComponentScan(basePackages = "pwd.initializr.article.api")
 public class Swagger2 extends ApiSwagger2 {
 
     @Bean
@@ -36,7 +36,7 @@ public class Swagger2 extends ApiSwagger2 {
             .groupName("UserApi")
             .apiInfo(apiInfo("UserApi", "用户接口"))
             .select()
-            .apis(RequestHandlerSelectors.basePackage("pwd.initializr.logger.api.user"))
+            .apis(RequestHandlerSelectors.basePackage("pwd.initializr.article.api.user"))
             .paths(PathSelectors.any())
             .build().globalOperationParameters(buildGlobalOperationParameters());
     }
@@ -47,7 +47,7 @@ public class Swagger2 extends ApiSwagger2 {
             .groupName("AdminApi")
             .apiInfo(apiInfo("AdminApi", "管理接口"))
             .select()
-            .apis(RequestHandlerSelectors.basePackage("pwd.initializr.logger.api.admin"))
+            .apis(RequestHandlerSelectors.basePackage("pwd.initializr.article.api.admin"))
             .paths(PathSelectors.any())
             .build().globalOperationParameters(buildGlobalOperationParameters());
     }

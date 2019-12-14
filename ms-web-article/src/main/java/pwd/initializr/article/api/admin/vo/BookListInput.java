@@ -1,4 +1,4 @@
-package pwd.initializr.article.api.user.vo;
+package pwd.initializr.article.api.admin.vo;
 
 import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;

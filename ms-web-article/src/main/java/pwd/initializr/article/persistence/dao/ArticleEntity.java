@@ -1,5 +1,15 @@
 package pwd.initializr.article.persistence.dao;
 
+import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+
 /**
  * pwd.initializr.article.persistence.dao@ms-web-initializr
  *
@@ -11,6 +21,30 @@ package pwd.initializr.article.persistence.dao;
  * @version 1.0.0
  * @since DistributionVersion
  */
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString
+@Document(collection = "article")
 public class ArticleEntity {
 
+  @Id
+  @AutoIncKey
+  @Field("id")
+  private Long id;
+  @Field("bookId")
+  private Long bookId;
+  @Field("title")
+  private String title;
+  @Field("sub_title")
+  private String subTitle;
+  @Field("paragraphs")
+  private List<String> paragraphs;
+  @Field("status")
+  private Integer status;
+  @Field("create_time")
+  private Long createTime;
+  @Field("update_time")
+  private Long updateTime;
 }

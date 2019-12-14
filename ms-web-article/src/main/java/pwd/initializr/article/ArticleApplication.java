@@ -1,11 +1,12 @@
-package pwd.initializr.logger;
+package pwd.initializr.article;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import pwd.initializr.common.web.api.FullPathNameGenerator;
 import zipkin2.server.internal.EnableZipkinServer;
 
 /**
@@ -23,25 +24,27 @@ import zipkin2.server.internal.EnableZipkinServer;
 @EnableEurekaClient
 @EnableDiscoveryClient
 //@RestController
+@ComponentScan(nameGenerator = FullPathNameGenerator.class)
 @EnableZipkinServer
-public class LoggerApplication {
-    public static void main(String[] args) {
-        SpringApplication.run(LoggerApplication.class, args);
-    }
+public class ArticleApplication {
 
-    @GetMapping(value = "")
-    public String index0() {
-        return "this is logger 0 index";
-    }
+  public static void main(String[] args) {
+    SpringApplication.run(ArticleApplication.class, args);
+  }
 
-    @GetMapping(value = "/")
-    public String index1() {
-        return "this is logger 1 index";
-    }
+  @GetMapping(value = "")
+  public String index0() {
+    return "this is article 0 index";
+  }
 
-    @GetMapping(value = "/logger")
-    public String index2() {
-        return "this is logger 2 index";
-    }
+  @GetMapping(value = "/")
+  public String index1() {
+    return "this is article 1 index";
+  }
+
+  @GetMapping(value = "/logger")
+  public String index2() {
+    return "this is article 2 index";
+  }
 
 }

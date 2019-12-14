@@ -1,4 +1,4 @@
-package pwd.initializr.logger.persistence.dao;
+package pwd.initializr.article.persistence.dao;
 
 import java.lang.reflect.Field;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.mapping.event.BeforeConvertEvent;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
+import org.springframework.stereotype.Component;
 import org.springframework.util.ReflectionUtils;
 
 /**
@@ -22,7 +23,7 @@ import org.springframework.util.ReflectionUtils;
  * @version 1.0.0
  * @since DistributionVersion
  */
-//@Component
+@Component
 public class AutoIncKeyEventListener extends AbstractMongoEventListener {
 
   @Autowired

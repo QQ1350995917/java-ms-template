@@ -1,5 +1,12 @@
 package pwd.initializr.article.api.user.vo;
 
+import io.swagger.annotations.ApiModel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
 /**
  * pwd.initializr.article.api.user.vo@ms-web-initializr
  *
@@ -11,6 +18,12 @@ package pwd.initializr.article.api.user.vo;
  * @version 1.0.0
  * @since DistributionVersion
  */
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString
+@ApiModel(value = "bookDetailInput", description = "图书详情输入参数")
 public class BookDetailInput {
-
+  private Long id;
 }

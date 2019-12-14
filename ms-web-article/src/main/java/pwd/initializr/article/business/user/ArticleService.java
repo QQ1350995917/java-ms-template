@@ -1,5 +1,9 @@
 package pwd.initializr.article.business.user;
 
+import org.springframework.stereotype.Service;
+import pwd.initializr.article.business.user.bo.ArticleBO;
+import pwd.initializr.common.web.business.bo.ObjectList;
+
 /**
  * pwd.initializr.article.business.user@ms-web-initializr
  *
@@ -11,6 +15,11 @@ package pwd.initializr.article.business.user;
  * @version 1.0.0
  * @since DistributionVersion
  */
+@Service
 public interface ArticleService {
+
+  ObjectList<ArticleBO> listArticleByBookId(Long bookId);
+
+  ArticleBO detailArticleByArticleId(Long articleId);
 
 }

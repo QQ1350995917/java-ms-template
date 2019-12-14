@@ -1,4 +1,4 @@
-package pwd.initializr.logger.persistence.dao;
+package pwd.initializr.article.persistence.dao;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

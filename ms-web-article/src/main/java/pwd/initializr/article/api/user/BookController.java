@@ -2,14 +2,18 @@ package pwd.initializr.article.api.user;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import pwd.initializr.article.api.user.vo.BookListInput;
+import pwd.initializr.article.business.user.BookService;
+import pwd.initializr.article.business.user.bo.BookBO;
 import pwd.initializr.common.web.api.user.UserController;
-import pwd.initializr.logger.api.user.vo.RecordInput;
+import pwd.initializr.common.web.business.bo.ObjectList;
 
 /**
  * pwd.initializr.logger.api.user@ms-web-initializr
@@ -23,19 +27,31 @@ import pwd.initializr.logger.api.user.vo.RecordInput;
  * @since DistributionVersion
  */
 @Api(
-    tags = "日志提交",
-    value = "loggerCommitApi",
-    description = "日志提交API"
+    tags = "图书信息",
+    value = "userBookApi",
+    description = "图书信息API"
 )
-@RestController(value = "loggerCommitApi")
-@RequestMapping(value = "/api/user/logger")
-public class RecordController extends UserController implements RecordApi {
+@RestController(value = "userBookApi")
+@RequestMapping(value = "/api/user/book")
+public class BookController extends UserController implements BookApi {
 
-  @ApiOperation(value = "日志提交")
-  @PostMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  @ResponseBody
+  @Autowired
+  private BookService bookService;
+
+  @ApiOperation(value = "图书清单")
+  @GetMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
-  public void record(@RequestBody RecordInput input) {
+  public void fetchBookListByRange(@RequestBody BookListInput input) {
+    ObjectList<BookBO> bookBOObjectList = bookService.listBookByRange();
+    super.outputData(bookBOObjectList);
+  }
+
+  @ApiOperation(value = "图书详情")
+  @GetMapping(value = {"/{id}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @Override
+  public void fetchBookDetailByBookId(@PathVariable("id") Long input) {
+
     super.outputData();
   }
 }
+
