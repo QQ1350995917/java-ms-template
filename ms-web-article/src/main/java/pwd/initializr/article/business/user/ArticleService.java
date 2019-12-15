@@ -20,6 +20,6 @@ public interface ArticleService {
 
   ObjectList<ArticleBO> listArticleByBookId(Long bookId);
 
-  ArticleBO detailArticleByArticleId(Long articleId);
+  ArticleBO detailArticleByArticleId(Long bookId, Long articleId);
 
 }

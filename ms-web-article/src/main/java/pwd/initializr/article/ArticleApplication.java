@@ -2,12 +2,10 @@ package pwd.initializr.article;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.common.web.api.FullPathNameGenerator;
-import zipkin2.server.internal.EnableZipkinServer;
 
 /**
  * pwd.initializr.account@ms-web-initializr
@@ -21,11 +19,8 @@ import zipkin2.server.internal.EnableZipkinServer;
  * @since DistributionVersion
  */
 @SpringBootApplication
-@EnableEurekaClient
-@EnableDiscoveryClient
-//@RestController
+@RestController
 @ComponentScan(nameGenerator = FullPathNameGenerator.class)
-@EnableZipkinServer
 public class ArticleApplication {
 
   public static void main(String[] args) {

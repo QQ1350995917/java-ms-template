@@ -20,4 +20,6 @@ public interface BookApi {
 
     void fetchBookDetailByBookId(Long input);
 
+    void fetchArticleDetailByArticleId(Long bookId,Long articleId);
+
 }

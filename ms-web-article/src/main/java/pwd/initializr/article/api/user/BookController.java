@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.article.api.user.vo.BookListInput;
+import pwd.initializr.article.business.user.ArticleService;
 import pwd.initializr.article.business.user.BookService;
+import pwd.initializr.article.business.user.bo.ArticleBO;
 import pwd.initializr.article.business.user.bo.BookBO;
 import pwd.initializr.common.web.api.user.UserController;
 import pwd.initializr.common.web.business.bo.ObjectList;
@@ -37,21 +39,31 @@ public class BookController extends UserController implements BookApi {
 
   @Autowired
   private BookService bookService;
+  @Autowired
+  private ArticleService articleService;
 
   @ApiOperation(value = "图书清单")
   @GetMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
-  public void fetchBookListByRange(@RequestBody BookListInput input) {
+  public void fetchBookListByRange(BookListInput input) {
     ObjectList<BookBO> bookBOObjectList = bookService.listBookByRange();
     super.outputData(bookBOObjectList);
   }
 
   @ApiOperation(value = "图书详情")
-  @GetMapping(value = {"/{id}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @GetMapping(value = {"/{bookId}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
-  public void fetchBookDetailByBookId(@PathVariable("id") Long input) {
+  public void fetchBookDetailByBookId(@PathVariable("bookId") Long input) {
+    ObjectList<ArticleBO> articleBOObjectList = articleService.listArticleByBookId(input);
+    super.outputData(articleBOObjectList);
+  }
 
-    super.outputData();
+  @ApiOperation(value = "文章详情")
+  @GetMapping(value = {"/{bookId}/{articleId}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @Override
+  public void fetchArticleDetailByArticleId(@PathVariable("bookId") Long bookId,@PathVariable("articleId") Long articleId) {
+    ArticleBO articleBO = articleService.detailArticleByArticleId(bookId, articleId);
+    super.outputData(articleBO);
   }
 }
 

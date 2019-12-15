@@ -1,12 +1,17 @@
 package pwd.initializr.article.business.user;
 
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
 import java.util.LinkedList;
 import java.util.List;
+import org.bson.Document;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.CriteriaDefinition;
+import org.springframework.data.mongodb.core.query.Field;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import pwd.initializr.article.business.user.bo.ArticleBO;
@@ -34,7 +39,19 @@ public class ArticleServiceImpl implements ArticleService {
 
   @Override
   public ObjectList<ArticleBO> listArticleByBookId(Long bookId) {
-    List<ArticleEntity> articleEntities = mongoTemplate.findAll(ArticleEntity.class);
+    Document queryObject = new Document();
+    queryObject.put("bookId", bookId);
+
+    Document fieldsObject = new Document();
+    fieldsObject.put("id", true);
+    fieldsObject.put("bookId", true);
+    fieldsObject.put("title", true);
+    fieldsObject.put("subTitle", true);
+
+    Query query = new BasicQuery(queryObject,fieldsObject);
+
+    List<ArticleEntity> articleEntities = mongoTemplate.find(query,ArticleEntity.class);
+
     ObjectList<ArticleBO> result = new ObjectList<>();
     List<ArticleBO> articleBOS = new LinkedList<>();
     for (ArticleEntity articleEntity : articleEntities) {
@@ -47,9 +64,15 @@ public class ArticleServiceImpl implements ArticleService {
   }
 
   @Override
-  public ArticleBO detailArticleByArticleId(Long articleId) {
-    ArticleEntity articleEntity = mongoTemplate
-        .findOne(Query.query(Criteria.where("_id").is(articleId)), ArticleEntity.class);
+  public ArticleBO detailArticleByArticleId(Long bookId,Long articleId) {
+    Document queryObject = new Document();
+    queryObject.put("bookId", bookId);
+    queryObject.put("id", articleId);
+
+    Query query = new BasicQuery(queryObject);
+
+    ArticleEntity articleEntity = mongoTemplate.findOne(query,ArticleEntity.class);
+
     ArticleBO articleBO = new ArticleBO();
     BeanUtils.copyProperties(articleEntity,articleBO);
     return articleBO;

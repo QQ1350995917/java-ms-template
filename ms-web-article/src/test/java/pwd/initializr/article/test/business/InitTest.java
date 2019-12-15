@@ -37,20 +37,31 @@ public class InitTest {
 
   @Test
   public void init() throws Exception {
-    String filePath = "/Users/pwd/Downloads/金庸小说全集三联版txt/射雕英雄传.txt";
+    Long bookId = 15L;
+    String filePath = "/Users/pwd/Downloads/金庸小说全集三联版txt/雪山飞狐.txt";
     BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(filePath),Charset.forName("GB18030")));
     String line;
     List<ArticleBO> articleEntities = new LinkedList<>();
     ArticleBO currentArticleEntity = new ArticleBO();
-    currentArticleEntity.setBookId(1L);
+    currentArticleEntity.setBookId(bookId);
     currentArticleEntity.setTitle("序");
     currentArticleEntity.setParagraphs(new LinkedList<>());
     articleEntities.add(currentArticleEntity);
+    List<String> titles = new LinkedList<>();
+    titles.add("　　一");
+    titles.add("　　二");
+    titles.add("　　三");
+    titles.add("　　四");
+    titles.add("　　五");
+    titles.add("　　六");
+    titles.add("　　七");
+    titles.add("　　八");
+    titles.add("　　九");
     while ((line = bufferedReader.readLine()) != null) {
-      if (line.contains("回　")){
+      if (titles.contains(line)){
         System.out.println(line);
         currentArticleEntity = new ArticleBO();
-        currentArticleEntity.setBookId(1L);
+        currentArticleEntity.setBookId(bookId);
         currentArticleEntity.setTitle(line.trim());
         currentArticleEntity.setParagraphs(new LinkedList<>());
         articleEntities.add(currentArticleEntity);
