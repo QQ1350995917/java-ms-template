@@ -6,6 +6,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import java.nio.charset.StandardCharsets;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,9 @@ public class SessionFilter implements GlobalFilter, Ordered {
   @Value("${account_login_prefix}")
   private String SESSION_PREFIX;
 
+  @Value("${filter_skip_all:true}")
+  private Boolean filterSkipAll;
+
   @Autowired
   private RedisClient redisClient;
 
@@ -52,6 +56,9 @@ public class SessionFilter implements GlobalFilter, Ordered {
     ServerHttpResponse response = exchange.getResponse();
     String method = request.getMethodValue();
     String path = request.getURI().getPath();
+    if (filterSkipAll) {
+      return chain.filter(exchange);
+    }
     if (KeyValueList.skipToken(path,method)) {
       // 白名单
       return chain.filter(exchange);

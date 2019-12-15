@@ -25,6 +25,10 @@ spring:
          uri: lb://organization
          predicates:
           - Path=/organization/**
+       - id: article-route
+         uri: lb://article
+         predicates:
+          - Path=/article/**
        - id: logger-route
          uri: lb://logger
          predicates:
@@ -54,3 +58,4 @@ logging:
     org.springframework.cloud.gateway: debug
 
 account_login_prefix: sso_identify_
+filter_skip_all: true
