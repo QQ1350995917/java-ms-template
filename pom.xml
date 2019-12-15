@@ -29,7 +29,7 @@
     <module>ms-web-monitor</module>
     <module>ms-web-gateway</module>
     <module>ms-web-storage</module>
-    <module>ms-web-schedule</module>
+    <!--<module>ms-web-schedule</module>-->
     <module>ms-web-organization</module>
     <module>ms-web-article</module>
   </modules>
@@ -93,23 +93,23 @@
           <encoding>UTF-8</encoding>
         </configuration>
       </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.0.1</version>
-        <configuration>
-          <source>${java.version}</source>
-          <encoding>UTF-8</encoding>
-        </configuration>
-        <executions>
-          <execution>
-            <id>attach-javadocs</id>
-            <goals>
-              <goal>jar</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
+      <!--<plugin>-->
+        <!--<groupId>org.apache.maven.plugins</groupId>-->
+        <!--<artifactId>maven-javadoc-plugin</artifactId>-->
+        <!--<version>3.0.1</version>-->
+        <!--<configuration>-->
+          <!--<source>${java.version}</source>-->
+          <!--<encoding>UTF-8</encoding>-->
+        <!--</configuration>-->
+        <!--<executions>-->
+          <!--<execution>-->
+            <!--<id>attach-javadocs</id>-->
+            <!--<goals>-->
+              <!--<goal>jar</goal>-->
+            <!--</goals>-->
+          <!--</execution>-->
+        <!--</executions>-->
+      <!--</plugin>-->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>

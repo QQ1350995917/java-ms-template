@@ -24,7 +24,7 @@ import pwd.initializr.article.persistence.dao.ArticleEntity;
  *
  * date 2019-09-19 12:47
  *
- * @author DingPengwei[dingpengwei@eversec.com]
+ * @author DingPengwei[dingpengwei@foxmail.com]
  * @version 1.0.0
  * @since DistributionVersion
  */
