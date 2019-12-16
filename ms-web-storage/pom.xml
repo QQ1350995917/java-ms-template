@@ -49,7 +49,7 @@
     </dependency>
     <dependency>
       <groupId>pwd.initializr</groupId>
-      <artifactId>lib-common-mv-minio</artifactId>
+      <artifactId>lib-common-mw-minio</artifactId>
       <version>0.0.1-SNAPSHOT</version>
     </dependency>
     <dependency>

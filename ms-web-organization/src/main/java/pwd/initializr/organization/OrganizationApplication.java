@@ -15,6 +15,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import pwd.initializr.common.web.api.FullPathNameGenerator;
 
 /**
  * pwd.initializr.organization@ms-web-initializr

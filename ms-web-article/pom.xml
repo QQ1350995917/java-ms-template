@@ -120,7 +120,7 @@
           </archive>
           <!--打包的时候忽略classes 路径下的配置文件 -->
           <includes>
-            <include>**/com/**</include>
+            <include>**/pwd/**</include>
           </includes>
           <!-- 
           <excludes> 
