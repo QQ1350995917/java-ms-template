@@ -58,6 +58,15 @@ public class BookController extends UserController implements BookApi {
     super.outputData(articleBOObjectList);
   }
 
+  @ApiOperation(value = "图书详情")
+  @GetMapping(value = {"/around/{bookId}/{articleId}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @Override
+  public void fetchBookDetailByBookId(@PathVariable("bookId") Long bookId, @PathVariable("articleId") Long articleId) {
+    ObjectList<ArticleBO> articleBOObjectList = articleService
+        .aroundArticleByArticleId(bookId, articleId);
+    super.outputData(articleBOObjectList);
+  }
+
   @ApiOperation(value = "文章详情")
   @GetMapping(value = {"/{bookId}/{articleId}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override

@@ -44,8 +44,8 @@ public class SessionFilter implements GlobalFilter, Ordered {
   @Value("${account_login_prefix}")
   private String SESSION_PREFIX;
 
-  @Value("${filter_skip_all:true}")
-  private Boolean filterSkipAll;
+//  @Value("${filter_skip_all:false}")
+  private Boolean filterSkipAll = false;
 
   @Autowired
   private RedisClient redisClient;

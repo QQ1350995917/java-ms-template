@@ -22,4 +22,6 @@ public interface ArticleService {
 
   ArticleBO detailArticleByArticleId(Long bookId, Long articleId);
 
+  ObjectList<ArticleBO> aroundArticleByArticleId(Long bookId, Long articleId);
+
 }
