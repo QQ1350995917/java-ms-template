@@ -41,7 +41,7 @@ public class ArticleServiceImpl implements ArticleService {
   private MongoTemplate mongoTemplate;
 
   @Override
-  public ObjectList<ArticleBO> listArticleByBookId(Long bookId) {
+  public ObjectList<ArticleBO> listTablesInBook(Long bookId) {
     Document queryObject = new Document();
     queryObject.put("bookId", bookId);
 
@@ -66,23 +66,9 @@ public class ArticleServiceImpl implements ArticleService {
     return result;
   }
 
-  @Override
-  public ArticleBO detailArticleByArticleId(Long bookId,Long articleId) {
-    Document queryObject = new Document();
-    queryObject.put("bookId", bookId);
-    queryObject.put("id", articleId);
-
-    Query query = new BasicQuery(queryObject);
-
-    ArticleEntity articleEntity = mongoTemplate.findOne(query,ArticleEntity.class);
-
-    ArticleBO articleBO = new ArticleBO();
-    BeanUtils.copyProperties(articleEntity,articleBO);
-    return articleBO;
-  }
 
   @Override
-  public ObjectList<ArticleBO> aroundArticleByArticleId(Long bookId, Long articleId) {
+  public ObjectList<ArticleBO> listTablesAroundInBook(Long bookId, Long articleId) {
     Document query = new Document();
     query.append("bookId", bookId).append("_id ", new Document().append("$lt",articleId));
 
@@ -115,4 +101,20 @@ public class ArticleServiceImpl implements ArticleService {
     result.setElements(articleBOS);
     return result;
   }
+
+  @Override
+  public ArticleBO findArticleByArticleIdInBook(Long bookId,Long articleId) {
+    Document queryObject = new Document();
+    queryObject.put("bookId", bookId);
+    queryObject.put("id", articleId);
+
+    Query query = new BasicQuery(queryObject);
+
+    ArticleEntity articleEntity = mongoTemplate.findOne(query,ArticleEntity.class);
+
+    ArticleBO articleBO = new ArticleBO();
+    BeanUtils.copyProperties(articleEntity,articleBO);
+    return articleBO;
+  }
+
 }

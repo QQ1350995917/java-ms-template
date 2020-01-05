@@ -20,4 +20,6 @@ public interface BookService {
 
   ObjectList<BookBO> listBookByRange();
 
+  BookBO findBookById(Long bookId);
+
 }

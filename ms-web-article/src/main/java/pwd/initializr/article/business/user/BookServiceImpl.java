@@ -6,6 +6,8 @@ import org.aspectj.lang.annotation.AfterReturning;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import pwd.initializr.article.business.user.bo.BookBO;
 import pwd.initializr.article.persistence.dao.BookEntity;
@@ -40,5 +42,14 @@ public class BookServiceImpl implements BookService {
     }
     result.setElements(bookBOS);
     return result;
+  }
+
+  @Override
+  public BookBO findBookById(Long bookId) {
+    BookEntity bookEntity = mongoTemplate
+        .findOne(Query.query(Criteria.where("id").is(bookId)), BookEntity.class);
+    BookBO bookBO = new BookBO();
+    BeanUtils.copyProperties(bookEntity,bookBO);
+    return bookBO;
   }
 }
