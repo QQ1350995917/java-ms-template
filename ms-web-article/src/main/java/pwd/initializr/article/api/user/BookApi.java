@@ -20,12 +20,6 @@ import pwd.initializr.article.api.user.vo.BookListInput;
  * @version 1.0.0
  * @since DistributionVersion
  */
-@Api(
-    tags = "图书信息",
-    value = "userBookApi",
-    description = "图书信息API"
-)
-@RestController(value = "userBookApi")
 @RequestMapping(value = "/api/user/book")
 public interface BookApi {
 

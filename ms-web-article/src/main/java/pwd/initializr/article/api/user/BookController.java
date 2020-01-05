@@ -1,7 +1,9 @@
 package pwd.initializr.article.api.user;
 
+import io.swagger.annotations.Api;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.article.api.user.vo.ArticleVO;
 import pwd.initializr.article.api.user.vo.BookListInput;
 import pwd.initializr.article.api.user.vo.BookTableVO;
@@ -24,7 +26,12 @@ import pwd.initializr.common.web.business.bo.ObjectList;
  * @version 1.0.0
  * @since DistributionVersion
  */
-
+@Api(
+    tags = "图书信息",
+    value = "userBookApi",
+    description = "图书信息API"
+)
+@RestController(value = "userBookApi")
 public class BookController extends UserController implements BookApi {
 
   @Autowired
@@ -54,13 +61,13 @@ public class BookController extends UserController implements BookApi {
 
   @Override
   public void fetchBookTables(Long bookId, Long startId, Long pageSize) {
-    ObjectList<ArticleBO> articleBOObjectList = articleService.listTablesInBook(bookId);
+//    ObjectList<ArticleBO> articleBOObjectList = articleService.listTablesInBook(bookId);
     ObjectList<BookTableVO> bookTableVOObjectList = new ObjectList<>();
-    for (ArticleBO articleBO : articleBOObjectList.getElements()) {
-      BookTableVO bookTableVO = new BookTableVO();
-      BeanUtils.copyProperties(articleBO,bookTableVO);
-      bookTableVOObjectList.getElements().add(bookTableVO);
-    }
+//    for (ArticleBO articleBO : articleBOObjectList.getElements()) {
+//      BookTableVO bookTableVO = new BookTableVO();
+//      BeanUtils.copyProperties(articleBO,bookTableVO);
+//      bookTableVOObjectList.getElements().add(bookTableVO);
+//    }
     super.outputData(bookTableVOObjectList);
   }
 
