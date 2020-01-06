@@ -6,10 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.article.api.user.vo.ArticleVO;
 import pwd.initializr.article.api.user.vo.BookListInput;
+import pwd.initializr.article.api.user.vo.BookTableAroundVO;
 import pwd.initializr.article.api.user.vo.BookTableVO;
 import pwd.initializr.article.api.user.vo.BookVO;
 import pwd.initializr.article.business.user.ArticleService;
 import pwd.initializr.article.business.user.BookService;
+import pwd.initializr.article.business.user.bo.ArticleAroundBO;
 import pwd.initializr.article.business.user.bo.ArticleBO;
 import pwd.initializr.article.business.user.bo.BookBO;
 import pwd.initializr.common.web.api.user.UserController;
@@ -61,21 +63,35 @@ public class BookController extends UserController implements BookApi {
 
   @Override
   public void fetchBookTables(Long bookId, Long startId, Long pageSize) {
-//    ObjectList<ArticleBO> articleBOObjectList = articleService.listTablesInBook(bookId);
+    ObjectList<ArticleBO> articleBOObjectList = articleService.listTablesInBook(bookId);
     ObjectList<BookTableVO> bookTableVOObjectList = new ObjectList<>();
-//    for (ArticleBO articleBO : articleBOObjectList.getElements()) {
-//      BookTableVO bookTableVO = new BookTableVO();
-//      BeanUtils.copyProperties(articleBO,bookTableVO);
-//      bookTableVOObjectList.getElements().add(bookTableVO);
-//    }
+    for (ArticleBO articleBO : articleBOObjectList.getElements()) {
+      BookTableVO bookTableVO = new BookTableVO();
+      BeanUtils.copyProperties(articleBO,bookTableVO);
+      bookTableVOObjectList.getElements().add(bookTableVO);
+    }
     super.outputData(bookTableVOObjectList);
   }
 
   @Override
   public void fetchBookTablesAround(Long bookId, Long tableId) {
-    ObjectList<ArticleBO> articleBOObjectList = articleService
-        .listTablesAroundInBook(bookId, tableId);
-    super.outputData(articleBOObjectList);
+    ArticleAroundBO articleAroundBO = articleService.listTablesAroundInBook(bookId, tableId);
+    ArticleBO pre = articleAroundBO.getPre();
+    ArticleBO next = articleAroundBO.getNext();
+
+    BookTableAroundVO bookTableAroundVO = new BookTableAroundVO();
+    if (pre != null) {
+      BookTableVO preBookTableVO = new BookTableVO();
+      BeanUtils.copyProperties(pre,preBookTableVO);
+      bookTableAroundVO.setPre(preBookTableVO);
+    }
+    if (next != null) {
+      BookTableVO nextBookTableVO = new BookTableVO();
+      BeanUtils.copyProperties(next,nextBookTableVO);
+      bookTableAroundVO.setNext(nextBookTableVO);
+    }
+
+    super.outputData(bookTableAroundVO);
   }
 
   @Override

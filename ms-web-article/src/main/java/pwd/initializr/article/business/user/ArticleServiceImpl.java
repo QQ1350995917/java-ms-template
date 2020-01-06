@@ -17,6 +17,7 @@ import org.springframework.data.mongodb.core.query.CriteriaDefinition;
 import org.springframework.data.mongodb.core.query.Field;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
+import pwd.initializr.article.business.user.bo.ArticleAroundBO;
 import pwd.initializr.article.business.user.bo.ArticleBO;
 import pwd.initializr.article.business.user.bo.BookBO;
 import pwd.initializr.article.persistence.dao.ArticleEntity;
@@ -68,9 +69,8 @@ public class ArticleServiceImpl implements ArticleService {
 
 
   @Override
-  public ObjectList<ArticleBO> listTablesAroundInBook(Long bookId, Long articleId) {
+  public ArticleAroundBO listTablesAroundInBook(Long bookId, Long articleId) {
     Document query = new Document();
-    query.append("bookId", bookId).append("_id ", new Document().append("$lt",articleId));
 
     Document fieldsObject = new Document();
     fieldsObject.put("id", true);
@@ -79,26 +79,28 @@ public class ArticleServiceImpl implements ArticleService {
     fieldsObject.put("subTitle", true);
 
     Query queryBefore = new BasicQuery(query,fieldsObject);
+    queryBefore.addCriteria(Criteria.where("bookId").is(bookId).and("_id").lt(articleId));
     queryBefore.with(new Sort(Direction.DESC,"_id"));
     ArticleEntity beforeArticleEntity = mongoTemplate.findOne(queryBefore, ArticleEntity.class);
 
-    query.put("articleId ", new Document().append("$gt",articleId));
     Query queryAfter = new BasicQuery(query,fieldsObject);
-
+    queryAfter.addCriteria(Criteria.where("bookId").is(bookId).and("_id").gt(articleId));
+    queryAfter.with(new Sort(Direction.ASC,"_id"));
     ArticleEntity afterArticleEntity = mongoTemplate.findOne(queryAfter, ArticleEntity.class);
 
-    ObjectList<ArticleBO> result = new ObjectList<>();
-    List<ArticleBO> articleBOS = new LinkedList<>();
+    ArticleAroundBO result = new ArticleAroundBO();
+    if (beforeArticleEntity != null) {
+      ArticleBO beforeArticleBO = new ArticleBO();
+      BeanUtils.copyProperties(beforeArticleEntity,beforeArticleBO);
+      result.setPre(beforeArticleBO);
+    }
 
-    ArticleBO beforeArticleBO = new ArticleBO();
-    BeanUtils.copyProperties(beforeArticleEntity,beforeArticleBO);
-    articleBOS.add(beforeArticleBO);
+    if (afterArticleEntity != null) {
+      ArticleBO afterArticleBO = new ArticleBO();
+      BeanUtils.copyProperties(afterArticleEntity,afterArticleBO);
+      result.setNext(afterArticleBO);
+    }
 
-    ArticleBO afterArticleBO = new ArticleBO();
-    BeanUtils.copyProperties(afterArticleEntity,afterArticleBO);
-    articleBOS.add(afterArticleBO);
-
-    result.setElements(articleBOS);
     return result;
   }
 
