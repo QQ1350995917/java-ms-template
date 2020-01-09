@@ -1,4 +1,4 @@
-package pwd.initializr.access.test;
+package pwd.initializr.etl.test;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

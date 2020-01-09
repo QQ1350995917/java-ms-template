@@ -32,6 +32,8 @@
     <!--<module>ms-web-schedule</module>-->
     <module>ms-web-organization</module>
     <module>ms-web-article</module>
+    <module>ms-web-etl</module>
+    <module>ms-web-etl-plugin</module>
   </modules>
 
   <properties>
@@ -94,7 +96,7 @@
         </configuration>
       </plugin>
       <!--<plugin>-->
-        <!--<groupId>org.apache.maven.plugins</groupId>-->
+        <!--<groupId>org.apache.maven.plugins.json</groupId>-->
         <!--<artifactId>maven-javadoc-plugin</artifactId>-->
         <!--<version>3.0.1</version>-->
         <!--<configuration>-->
