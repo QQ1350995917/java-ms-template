@@ -1,6 +1,7 @@
 package pwd.initializr.article.api.user.vo;
 
 import io.swagger.annotations.ApiModel;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,7 @@ import lombok.ToString;
  *
  * <h1>TODO what you want to do?</h1>
  *
- * date 2019-12-14 20:50
+ * date 2020-01-05 22:55
  *
  * @author DingPengwei[www.dingpengwei@foxmail.com]
  * @version 1.0.0
@@ -23,7 +24,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-@ApiModel(value = "bookDetailInput", description = "图书详情输入参数")
-public class BookDetailInput {
-  private Long id;
+@ApiModel(value = "bookArticleVO", description = "图书文章VO属性")
+public class ArticleVO extends BookTableVO {
+  private List<String> paragraphs;
 }

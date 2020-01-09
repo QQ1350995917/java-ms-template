@@ -37,27 +37,20 @@
       <artifactId>java-jwt</artifactId>
       <version>3.8.3</version>
     </dependency>
+    <!--<dependency>-->
+      <!--<groupId>pwd.initializr</groupId>-->
+      <!--<artifactId>lib-common-web</artifactId>-->
+      <!--<version>0.0.1-SNAPSHOT</version>-->
+      <!--<exclusions>-->
+        <!--<exclusion>-->
+          <!--<groupId>org.springframework.boot</groupId>-->
+          <!--<artifactId>spring-boot-starter-web</artifactId>-->
+        <!--</exclusion>-->
+      <!--</exclusions>-->
+    <!--</dependency>-->
     <dependency>
-      <groupId>pwd.initializr</groupId>
-      <artifactId>lib-common-web</artifactId>
-      <version>0.0.1-SNAPSHOT</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.springframework.boot</groupId>
-          <artifactId>spring-boot-starter-web</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>pwd.initializr</groupId>
-      <artifactId>lib-common-mw-redis</artifactId>
-      <version>0.0.1-SNAPSHOT</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.springframework.boot</groupId>
-          <artifactId>spring-boot-starter-web</artifactId>
-        </exclusion>
-      </exclusions>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-redis</artifactId>
     </dependency>
   </dependencies>
 

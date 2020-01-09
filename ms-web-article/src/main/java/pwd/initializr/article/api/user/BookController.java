@@ -1,17 +1,17 @@
 package pwd.initializr.article.api.user;
 
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import pwd.initializr.article.api.user.vo.ArticleVO;
 import pwd.initializr.article.api.user.vo.BookListInput;
+import pwd.initializr.article.api.user.vo.BookTableAroundVO;
+import pwd.initializr.article.api.user.vo.BookTableVO;
+import pwd.initializr.article.api.user.vo.BookVO;
 import pwd.initializr.article.business.user.ArticleService;
 import pwd.initializr.article.business.user.BookService;
+import pwd.initializr.article.business.user.bo.ArticleAroundBO;
 import pwd.initializr.article.business.user.bo.ArticleBO;
 import pwd.initializr.article.business.user.bo.BookBO;
 import pwd.initializr.common.web.api.user.UserController;
@@ -34,7 +34,6 @@ import pwd.initializr.common.web.business.bo.ObjectList;
     description = "图书信息API"
 )
 @RestController(value = "userBookApi")
-@RequestMapping(value = "/api/user/book")
 public class BookController extends UserController implements BookApi {
 
   @Autowired
@@ -42,28 +41,65 @@ public class BookController extends UserController implements BookApi {
   @Autowired
   private ArticleService articleService;
 
-  @ApiOperation(value = "图书清单")
-  @GetMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
-  public void fetchBookListByRange(BookListInput input) {
+  public void fetchBooks(BookListInput input) {
     ObjectList<BookBO> bookBOObjectList = bookService.listBookByRange();
-    super.outputData(bookBOObjectList);
+    ObjectList<BookVO> bookVOObjectList = new ObjectList<>();
+    for (BookBO bookBO : bookBOObjectList.getElements()) {
+      BookVO bookVO = new BookVO();
+      BeanUtils.copyProperties(bookBO,bookVO);
+      bookVOObjectList.getElements().add(bookVO);
+    }
+    super.outputData(bookVOObjectList);
   }
 
-  @ApiOperation(value = "图书详情")
-  @GetMapping(value = {"/{bookId}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
-  public void fetchBookDetailByBookId(@PathVariable("bookId") Long input) {
-    ObjectList<ArticleBO> articleBOObjectList = articleService.listArticleByBookId(input);
-    super.outputData(articleBOObjectList);
+  public void fetchBookSummary(Long bookId) {
+    BookBO bookBO = bookService.findBookById(bookId);
+    BookVO bookVO = new BookVO();
+    BeanUtils.copyProperties(bookBO,bookVO);
+    super.outputData(bookVO);
   }
 
-  @ApiOperation(value = "文章详情")
-  @GetMapping(value = {"/{bookId}/{articleId}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
-  public void fetchArticleDetailByArticleId(@PathVariable("bookId") Long bookId,@PathVariable("articleId") Long articleId) {
-    ArticleBO articleBO = articleService.detailArticleByArticleId(bookId, articleId);
-    super.outputData(articleBO);
+  public void fetchBookTables(Long bookId, Long startId, Long pageSize) {
+    ObjectList<ArticleBO> articleBOObjectList = articleService.listTablesInBook(bookId);
+    ObjectList<BookTableVO> bookTableVOObjectList = new ObjectList<>();
+    for (ArticleBO articleBO : articleBOObjectList.getElements()) {
+      BookTableVO bookTableVO = new BookTableVO();
+      BeanUtils.copyProperties(articleBO,bookTableVO);
+      bookTableVOObjectList.getElements().add(bookTableVO);
+    }
+    super.outputData(bookTableVOObjectList);
+  }
+
+  @Override
+  public void fetchBookTablesAround(Long bookId, Long tableId) {
+    ArticleAroundBO articleAroundBO = articleService.listTablesAroundInBook(bookId, tableId);
+    ArticleBO pre = articleAroundBO.getPre();
+    ArticleBO next = articleAroundBO.getNext();
+
+    BookTableAroundVO bookTableAroundVO = new BookTableAroundVO();
+    if (pre != null) {
+      BookTableVO preBookTableVO = new BookTableVO();
+      BeanUtils.copyProperties(pre,preBookTableVO);
+      bookTableAroundVO.setPre(preBookTableVO);
+    }
+    if (next != null) {
+      BookTableVO nextBookTableVO = new BookTableVO();
+      BeanUtils.copyProperties(next,nextBookTableVO);
+      bookTableAroundVO.setNext(nextBookTableVO);
+    }
+
+    super.outputData(bookTableAroundVO);
+  }
+
+  @Override
+  public void fetchArticle(Long bookId, Long articleId) {
+    ArticleBO articleBO = articleService.findArticleByArticleIdInBook(bookId, articleId);
+    ArticleVO articleVO = new ArticleVO();
+    BeanUtils.copyProperties(articleBO,articleVO);
+    super.outputData(articleVO);
   }
 }
 

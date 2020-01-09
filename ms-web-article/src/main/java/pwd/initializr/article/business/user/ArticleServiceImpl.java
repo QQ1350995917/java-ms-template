@@ -2,11 +2,14 @@ package pwd.initializr.article.business.user;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import org.bson.Document;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -14,6 +17,7 @@ import org.springframework.data.mongodb.core.query.CriteriaDefinition;
 import org.springframework.data.mongodb.core.query.Field;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
+import pwd.initializr.article.business.user.bo.ArticleAroundBO;
 import pwd.initializr.article.business.user.bo.ArticleBO;
 import pwd.initializr.article.business.user.bo.BookBO;
 import pwd.initializr.article.persistence.dao.ArticleEntity;
@@ -38,7 +42,7 @@ public class ArticleServiceImpl implements ArticleService {
   private MongoTemplate mongoTemplate;
 
   @Override
-  public ObjectList<ArticleBO> listArticleByBookId(Long bookId) {
+  public ObjectList<ArticleBO> listTablesInBook(Long bookId) {
     Document queryObject = new Document();
     queryObject.put("bookId", bookId);
 
@@ -63,8 +67,45 @@ public class ArticleServiceImpl implements ArticleService {
     return result;
   }
 
+
   @Override
-  public ArticleBO detailArticleByArticleId(Long bookId,Long articleId) {
+  public ArticleAroundBO listTablesAroundInBook(Long bookId, Long articleId) {
+    Document query = new Document();
+
+    Document fieldsObject = new Document();
+    fieldsObject.put("id", true);
+    fieldsObject.put("bookId", true);
+    fieldsObject.put("title", true);
+    fieldsObject.put("subTitle", true);
+
+    Query queryBefore = new BasicQuery(query,fieldsObject);
+    queryBefore.addCriteria(Criteria.where("bookId").is(bookId).and("_id").lt(articleId));
+    queryBefore.with(new Sort(Direction.DESC,"_id"));
+    ArticleEntity beforeArticleEntity = mongoTemplate.findOne(queryBefore, ArticleEntity.class);
+
+    Query queryAfter = new BasicQuery(query,fieldsObject);
+    queryAfter.addCriteria(Criteria.where("bookId").is(bookId).and("_id").gt(articleId));
+    queryAfter.with(new Sort(Direction.ASC,"_id"));
+    ArticleEntity afterArticleEntity = mongoTemplate.findOne(queryAfter, ArticleEntity.class);
+
+    ArticleAroundBO result = new ArticleAroundBO();
+    if (beforeArticleEntity != null) {
+      ArticleBO beforeArticleBO = new ArticleBO();
+      BeanUtils.copyProperties(beforeArticleEntity,beforeArticleBO);
+      result.setPre(beforeArticleBO);
+    }
+
+    if (afterArticleEntity != null) {
+      ArticleBO afterArticleBO = new ArticleBO();
+      BeanUtils.copyProperties(afterArticleEntity,afterArticleBO);
+      result.setNext(afterArticleBO);
+    }
+
+    return result;
+  }
+
+  @Override
+  public ArticleBO findArticleByArticleIdInBook(Long bookId,Long articleId) {
     Document queryObject = new Document();
     queryObject.put("bookId", bookId);
     queryObject.put("id", articleId);
@@ -77,4 +118,5 @@ public class ArticleServiceImpl implements ArticleService {
     BeanUtils.copyProperties(articleEntity,articleBO);
     return articleBO;
   }
+
 }

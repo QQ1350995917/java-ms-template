@@ -3,6 +3,9 @@ server:
 spring:
   application:
     name: gateway
+  redis:
+    host: localhost
+    port: 6379
   zipkin:
     base-url: http://localhost:11250/
     sender:
@@ -15,36 +18,10 @@ spring:
       discovery:
         locator:
           enabled: true
-          lower-case-service-id: true
-      routes:
-       - id: account-route
-         uri: lb://account
-         predicates:
-          - Path=/account/**
-       - id: organization-route
-         uri: lb://organization
-         predicates:
-          - Path=/organization/**
-       - id: article-route
-         uri: lb://article
-         predicates:
-          - Path=/article/**
-       - id: logger-route
-         uri: lb://logger
-         predicates:
-          - Path=/logger/**
-    filters:
-      -
-#  security:
-#    user:
-#      name: pwd
-#      password: pwd
-#      roles:
-#        - USER
 eureka:
   instance:
     hostname: localhost
-    status-page-url: http://localhost:${server.port}/swagger-ui.html
+    status-page-url: http://localhost:${server.port}
     prefer-ip-address: true
   client:
     service-url:
@@ -58,4 +35,4 @@ logging:
     org.springframework.cloud.gateway: debug
 
 account_login_prefix: sso_identify_
-filter_skip_all: true
+filter_skip_all: false

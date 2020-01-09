@@ -1,5 +1,6 @@
 package pwd.initializr.gateway;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
@@ -19,18 +20,30 @@ import org.springframework.web.bind.annotation.RestController;
  * @since DistributionVersion
  */
 @SpringBootApplication
-@EnableEurekaClient
 @EnableDiscoveryClient
 @RestController
 public class GatewayApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(GatewayApplication.class, args);
-    }
+  public static void main(String[] args) {
+    SpringApplication.run(GatewayApplication.class, args);
+  }
 
-    @GetMapping(value = "")
-    public String index() {
-        return "this is gateway index";
+//  @Autowired
+//  DynamicGatewayService dynamicGatewayService;
 
-    }
+  @GetMapping(value = "")
+  public String index0() {
+    return "this is gateway 0 index";
+  }
+
+  @GetMapping(value = "/")
+  public String index1() {
+//    dynamicGatewayService.save();
+    return "this is gateway 1 index";
+  }
+
+  @GetMapping(value = "/gateway")
+  public String index2() {
+    return "this is gateway 2 index";
+  }
 }
