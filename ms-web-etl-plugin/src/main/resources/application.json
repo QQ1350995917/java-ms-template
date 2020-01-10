@@ -1,0 +1,12 @@
+{
+  "config": {
+    "thread": {
+      "core": "1",
+      "max": "3"
+    },
+    "plugin": "E:\\workspace\\github\\ms-web-initializr\\ms-web-etl-plugin\\target",
+    "input":"E:\\etl\\input",
+    "output": "E:\\etl\\output"
+  },
+  "plugins": ["pwd.initializr.etl.plugin.ETLine"]
+}

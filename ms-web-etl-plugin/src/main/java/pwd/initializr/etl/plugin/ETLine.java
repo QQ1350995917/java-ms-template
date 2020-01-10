@@ -1,5 +1,8 @@
 package pwd.initializr.etl.plugin;
 
+import pwd.initializr.etl.ETLDefaultHandler;
+import pwd.initializr.etl.ETLHandler;
+
 /**
  * pwd.initializr.etl.plugins@ms-web-initializr
  *
@@ -11,10 +14,16 @@ package pwd.initializr.etl.plugin;
  * @version 1.0.0
  * @since DistributionVersion
  */
-public class ETLine {
+public class ETLine extends ETLDefaultHandler {
 
-
-  public void handler(){
+  @Override
+  public void handle(Object object) {
     System.out.println("bingo000");
+    try {
+      Thread.sleep(3000);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
   }
+
 }
