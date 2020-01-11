@@ -14,6 +14,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import pwd.initializr.etl.ETLDriver.HandleDriver;
 
 /**
  * pwd.initializr.account@ms-web-initializr
@@ -30,11 +31,7 @@ public class ETLApplication implements ETLController {
 
   static final String APPLICATION = "application.json";
 
-
-
   private List<ETLHandler> etlHandlers = new LinkedList<>();
-
-  private final LinkedList<String> inputSet = new LinkedList<>();
 
   public static void main(String[] args) throws Exception {
     InputStream inputStream;
@@ -61,6 +58,7 @@ public class ETLApplication implements ETLController {
       String next = iterator.next().toString();
       Class<?> classz = classLoader.loadClass(next);
       ETLHandler currentInstance = (ETLHandler) classz.newInstance();
+      currentInstance.init();
       if (preInstance != null) {
         preInstance.setNext(currentInstance);
       }
@@ -75,6 +73,8 @@ public class ETLApplication implements ETLController {
     int core = thread.getIntValue("core");
     int max = thread.getIntValue("max");
 
+    new ETLDriver(core,max,input,output,etlHandlers.get(0));
+
   }
 
   @Override
@@ -84,7 +84,9 @@ public class ETLApplication implements ETLController {
 
   @Override
   public void stop() {
-
+    for (ETLHandler etlHandler : etlHandlers) {
+      etlHandler.close();
+    }
   }
 
   @Override
