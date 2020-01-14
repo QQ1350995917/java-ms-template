@@ -36,7 +36,6 @@ public class ETLDriver {
   private static String output;
   private static ETLHandler etlHandler;
 
-
   public static void main(String[] args) throws Exception {
     new ETLDriver(1,3,"/Users/pwd/Documents/etl/input","/Users/pwd/Documents/etl/output",null);
   }
