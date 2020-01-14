@@ -5,8 +5,15 @@
       "max": "3"
     },
     "plugin": "E:\\workspace\\github\\ms-web-initializr\\ms-web-etl-plugin\\target",
-    "input":"E:\\etl\\input",
+    "input": "E:\\etl\\input",
     "output": "E:\\etl\\output"
   },
-  "plugins": ["pwd.initializr.etl.plugin.ETLine"]
+  "plugins": [
+    "pwd.initializr.etl.plugin.ETRowBreaker",
+    "pwd.initializr.etl.plugin.ETColumnBreaker",
+    "pwd.initializr.etl.plugin.ETDomain",
+    "pwd.initializr.etl.plugin.ETRepeater",
+    "pwd.initializr.etl.plugin.ETAdditional",
+    "pwd.initializr.etl.plugin.ETDBInsert"
+  ]
 }
