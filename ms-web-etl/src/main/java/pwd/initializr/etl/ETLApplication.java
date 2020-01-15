@@ -4,17 +4,13 @@ package pwd.initializr.etl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.net.URLClassLoader;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-import pwd.initializr.etl.ETLDriver.HandleDriver;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
  * pwd.initializr.account@ms-web-initializr
@@ -27,6 +23,7 @@ import pwd.initializr.etl.ETLDriver.HandleDriver;
  * @version 1.0.0
  * @since DistributionVersion
  */
+@SpringBootApplication
 public class ETLApplication implements ETLController {
 
   static final String APPLICATION = "application.json";
@@ -34,14 +31,15 @@ public class ETLApplication implements ETLController {
   private List<ETLHandler> etlHandlers = new LinkedList<>();
 
   public static void main(String[] args) throws Exception {
-    InputStream inputStream;
-    if (args == null) {
-      inputStream = ETLApplication.class.getClassLoader().getResourceAsStream(APPLICATION);
-      new ETLApplication().start(inputStream);
-    } else {
-      inputStream = new FileInputStream(args[0]);
+    SpringApplication.run(ETLApplication.class, args);
+    String application = APPLICATION;
+    if (args != null && args.length != 0) {
+      application = args[0];
     }
-    new ETLApplication().start(inputStream);
+    try (InputStream inputStream = ETLApplication.class.getClassLoader()
+        .getResourceAsStream(application)) {
+      new ETLApplication().start(inputStream);
+    }
   }
 
   @Override
@@ -72,8 +70,11 @@ public class ETLApplication implements ETLController {
     JSONObject thread = config.getJSONObject("thread");
     int core = thread.getIntValue("core");
     int max = thread.getIntValue("max");
-
-    new ETLDriver(core,max,input,output,etlHandlers.get(0));
+    if (etlHandlers.size() == 0) {
+      new ETLDriver(core, max, input, output, null);
+    } else {
+      new ETLDriver(core, max, input, output, etlHandlers.get(0));
+    }
 
   }
 
