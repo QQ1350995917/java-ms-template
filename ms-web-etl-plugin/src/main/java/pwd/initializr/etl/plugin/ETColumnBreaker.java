@@ -28,10 +28,6 @@ public class ETColumnBreaker extends ETLDefaultHandler {
     List<String> lines = (List) object;
     List<Map<String, String>> keyValues = new LinkedList<>();
     for (String line : lines) {
-      if (keyValues.size() == batchSize) {
-        this.getNext().handle(keyValues);
-        keyValues.clear();
-      }
       Map<String, String> item = new LinkedHashMap<>();
       String[] split = line.split(breaker);
       item.put("ip", split[0]);
@@ -41,8 +37,12 @@ public class ETColumnBreaker extends ETLDefaultHandler {
       } else {
         item.put("errorFlag", "true");
       }
-
       keyValues.add(item);
+
+      if (keyValues.size() == batchSize) {
+        this.getNext().handle(keyValues);
+        keyValues.clear();
+      }
     }
   }
 

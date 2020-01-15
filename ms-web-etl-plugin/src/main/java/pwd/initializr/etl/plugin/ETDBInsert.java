@@ -1,5 +1,12 @@
 package pwd.initializr.etl.plugin;
 
+import com.alibaba.fastjson.JSON;
+import java.io.IOException;
+import java.io.InputStream;
+import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import pwd.initializr.etl.ETLDefaultHandler;
 
 /**
@@ -15,8 +22,29 @@ import pwd.initializr.etl.ETLDefaultHandler;
  */
 public class ETDBInsert extends ETLDefaultHandler {
 
+  private String resource = "mybatis-config.xml";
+
+  @Override
+  public void init() {
+    try (
+        InputStream inputStream = Resources.getResourceAsStream(resource);
+    ) {
+
+      SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+      SqlSession sqlSession = sqlSessionFactory.openSession();
+      ETLMapper mapper = sqlSession.getMapper(ETLMapper.class);
+
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
   @Override
   public void handle(Object object) {
+    System.out.println(JSON.toJSON(object));
+  }
 
+  public static void main(String[] args) {
+    new ETDBInsert().init();
   }
 }
