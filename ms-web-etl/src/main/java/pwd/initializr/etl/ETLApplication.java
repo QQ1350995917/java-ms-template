@@ -11,6 +11,7 @@ import java.util.LinkedList;
 import java.util.List;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
  * pwd.initializr.account@ms-web-initializr
@@ -24,6 +25,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @since DistributionVersion
  */
 @SpringBootApplication
+@EnableScheduling
 public class ETLApplication implements ETLController {
 
   static final String APPLICATION = "application.json";

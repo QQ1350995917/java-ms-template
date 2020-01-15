@@ -4,9 +4,9 @@
       "core": "1",
       "max": "3"
     },
-    "plugin": "/Users/pwd/Documents/etl/plugin",
-    "input":"/Users/pwd/Documents/etl/input",
-    "output": "/Users/pwd/Documents/etl/output"
+    "plugin": "E:\\etl\\plugin",
+    "input":"E:\\etl\\input",
+    "output": "E:\\etl\\output"
   },
   "plugins": []
 }
