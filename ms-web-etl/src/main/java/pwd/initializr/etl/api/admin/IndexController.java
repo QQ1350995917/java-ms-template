@@ -1,9 +1,13 @@
 package pwd.initializr.etl.api.admin;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import pwd.initializr.etl.business.admin.ReportTask;
+import pwd.initializr.etl.business.admin.bo.InputReportBO;
 
 /**
  * pwd.initializr.etl.api.admin@ms-web-initializr
@@ -18,12 +22,14 @@ import org.springframework.web.servlet.ModelAndView;
  */
 @Controller
 public class IndexController {
+  @Value("${server.port}")
+  private Integer port;
 
   @RequestMapping(value = "/",method = RequestMethod.GET)
   public ModelAndView index() {
     ModelAndView modelAndView = new ModelAndView();
     modelAndView.setViewName("index");
-    modelAndView.addObject("key", 12345);
+    modelAndView.addObject("port", port);
     return modelAndView;
   }
 }

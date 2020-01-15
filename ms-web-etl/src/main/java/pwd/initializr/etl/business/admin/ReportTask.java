@@ -1,14 +1,12 @@
 package pwd.initializr.etl.business.admin;
 
+import com.alibaba.fastjson.JSON;
 import java.io.File;
-import java.util.Date;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import pwd.initializr.etl.ETLApplication;
+import pwd.initializr.etl.api.admin.MonitorWebService;
+import pwd.initializr.etl.business.admin.bo.InputReportBO;
 
 /**
  * pwd.initializr.etl.business.admin@ms-web-initializr
@@ -21,42 +19,34 @@ import org.springframework.stereotype.Service;
  * @version 1.0.0
  * @since DistributionVersion
  */
-@Getter
 @Service
 public class ReportTask {
 
-  private static InputReport inputReport = new InputReport();
+  private static InputReportBO inputReportBO = new InputReportBO();
 
   @Scheduled(cron = "${etl.report.input.cron}")
   private void inputReport() {
-    System.out.println("ReportTask" + new Date());
+    scanInput();
   }
 
   private void scanInput() {
-    String filePath = null;
-    inputReport.setTransferring(8);
-    inputReport.setTransferred(50);
-    inputReport.setProcessing(5);
-    inputReport.setData(63);
+    String filePath = ETLApplication.inputDir;
+    File[] files = new File(filePath).listFiles();
+    inputReportBO.setFilePath(filePath);
+    inputReportBO.setTotal(files.length);
+    int transferring = 0;
+    for (File file : files) {
+      String name = file.getName();
+    }
+    inputReportBO.setTransferring(8);
+    inputReportBO.setTransferred(50);
+    inputReportBO.setProcessing(5);
 
+
+    MonitorWebService.sendInfo(JSON.toJSONString(inputReportBO),null);
   }
-}
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Setter
-@Getter
-@ToString
-class InputReport {
-
-  // 输入区路径
-  private String filePath;
-  // 输入区域中正在输入的文件总数
-  private Integer transferring;
-  // 输入区域中已经输入完成的文件总数
-  private Integer transferred;
-  // 输入区域中正在处理的文件总数
-  private Integer Processing;
-  // 输入区域中数据文件总数
-  private Integer data;
+  public InputReportBO getInputReport() {
+    return inputReportBO;
+  }
 }

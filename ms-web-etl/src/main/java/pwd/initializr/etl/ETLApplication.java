@@ -29,6 +29,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 public class ETLApplication implements ETLController {
 
   static final String APPLICATION = "application.json";
+  public static String inputDir;
+  public static String outputDir;
 
   private List<ETLHandler> etlHandlers = new LinkedList<>();
 
@@ -47,9 +49,9 @@ public class ETLApplication implements ETLController {
   @Override
   public void start(InputStream application) throws Exception {
     JSONObject jsonObject = JSON.parseObject(application, JSONObject.class, null);
-    JSONObject config = jsonObject.getJSONObject("config");
-    String plugin = config.getString("plugin");
-    URLClassLoader classLoader = new URLClassLoader(ETLUtil.getPlugins(plugin),
+    JSONObject basic = jsonObject.getJSONObject("basic");
+    String pluginDir = basic.getString("pluginDir");
+    URLClassLoader classLoader = new URLClassLoader(ETLUtil.getPlugins(pluginDir),
         Thread.currentThread().getContextClassLoader());
     JSONArray plugins = jsonObject.getJSONArray("plugins");
     ETLHandler preInstance = null;
@@ -66,16 +68,16 @@ public class ETLApplication implements ETLController {
       etlHandlers.add(currentInstance);
     }
 
-    String input = config.getString("input");
-    String output = config.getString("output");
+    inputDir = basic.getString("inputDir");
+    outputDir = basic.getString("outputDir");
 
-    JSONObject thread = config.getJSONObject("thread");
-    int core = thread.getIntValue("core");
-    int max = thread.getIntValue("max");
+    JSONObject worker = basic.getJSONObject("worker");
+    int core = worker.getIntValue("core");
+    int max = worker.getIntValue("max");
     if (etlHandlers.size() == 0) {
-      new ETLDriver(core, max, input, output, null);
+      new ETLDriver(core, max, inputDir, outputDir, null);
     } else {
-      new ETLDriver(core, max, input, output, etlHandlers.get(0));
+      new ETLDriver(core, max, inputDir, outputDir, etlHandlers.get(0));
     }
 
   }

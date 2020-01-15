@@ -1,12 +1,61 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>ETL-Index</title>
+  <title>MONITOR</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
+  <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+  <!-- Bootstrap -->
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <!-- HTML5 shim 和 Respond.js 是为了让 IE8 支持 HTML5 元素和媒体查询（media queries）功能 -->
+  <!-- 警告：通过 file:// 协议（就是直接将 html 页面拖拽到浏览器中）访问页面时 Respond.js 不起作用 -->
+  <!--[if lt IE 9]>
+  <script src="js/bootstrap.min.js"></script>
+  <![endif]-->
 </head>
 <body>
-<h1>this is the hello.html in templates</h1>
+<div id="tip" class="alert alert-success alert-dismissable" role="alert"></div>
+<div class="panel panel-default">
+  <!-- Default panel contents -->
+  <div class="panel-heading">Default Channel</div>
+  <div class="panel-body">
+    <p>基本信息</p>
+  </div>
 
-<span th:text="${key}"></span>
+</div>
+<script>
+  var socket;
+  if (typeof (WebSocket) == "undefined") {
+    console.log("您的浏览器不支持WebSocket");
+  } else {
+    console.log("您的浏览器支持WebSocket");
+    //实现化WebSocket对象，指定要连接的服务器地址与端口  建立连接
+    //等同于socket = new WebSocket("ws://localhost:8083/checkcentersys/websocket/20");
+    socket = new WebSocket("ws://localhost:11234/monitor");
+    //打开事件
+    socket.onopen = function () {
+      console.log("Socket 已打开");
+      //socket.send("这是来自客户端的消息" + location.href + new Date());
+    };
+    //获得消息事件
+    socket.onmessage = function (msg) {
+      document.getElementById("tip").innerText = "";
+      document.getElementById("tip").innerText = msg.data;
+      //发现消息进入    开始处理前端触发逻辑
+    };
+    //关闭事件
+    socket.onclose = function () {
+      console.log("Socket已关闭");
+    };
+    //发生了错误事件
+    socket.onerror = function () {
+      alert("Socket发生了错误");
+      //此时可以尝试刷新页面
+    }
+  }
+</script>
 </body>
 </html>
