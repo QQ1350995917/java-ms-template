@@ -6,56 +6,430 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
+  <link rel="stylesheet" type="text/css" th:href="@{css/bootstrap.css}">
   <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
   <!-- Bootstrap -->
-  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/bootstrap.css" rel="stylesheet">
   <!-- HTML5 shim 和 Respond.js 是为了让 IE8 支持 HTML5 元素和媒体查询（media queries）功能 -->
   <!-- 警告：通过 file:// 协议（就是直接将 html 页面拖拽到浏览器中）访问页面时 Respond.js 不起作用 -->
   <!--[if lt IE 9]>
   <script src="js/bootstrap.min.js"></script>
+
   <![endif]-->
+  <script src="js/echarts.min.js"></script>
 </head>
 <body>
-<div id="tip" class="alert alert-success alert-dismissable" role="alert"></div>
 <div class="panel panel-default">
   <!-- Default panel contents -->
-  <div class="panel-heading">Default Channel</div>
+  <div class="panel-heading" id="tip">Default Channel</div>
   <div class="panel-body">
-    <p>基本信息</p>
+    <div id="inputReport" style="width:600px; height:400px;"></div>
+    <div id="other" style="width:600px; height:400px;"></div>
   </div>
 
 </div>
 <script>
   var socket;
-  if (typeof (WebSocket) == "undefined") {
-    console.log("您的浏览器不支持WebSocket");
+  if (typeof (WebSocket) == 'undefined') {
+    console.log('您的浏览器不支持WebSocket');
   } else {
-    console.log("您的浏览器支持WebSocket");
+    console.log('您的浏览器支持WebSocket');
     //实现化WebSocket对象，指定要连接的服务器地址与端口  建立连接
     //等同于socket = new WebSocket("ws://localhost:8083/checkcentersys/websocket/20");
-    socket = new WebSocket("ws://localhost:11234/monitor");
+    socket = new WebSocket('ws://localhost:11234/monitor');
     //打开事件
-    socket.onopen = function () {
-      console.log("Socket 已打开");
+    socket.onopen = function() {
+      console.log('Socket 已打开');
       //socket.send("这是来自客户端的消息" + location.href + new Date());
     };
     //获得消息事件
-    socket.onmessage = function (msg) {
-      document.getElementById("tip").innerText = "";
-      document.getElementById("tip").innerText = msg.data;
+    socket.onmessage = function(msg) {
+      document.getElementById('tip').innerText = '';
+      document.getElementById('tip').innerText = msg.data;
+      onRefreshInputReport(JSON.parse(msg.data));
+      onRefreshInputReport2(JSON.parse(msg.data));
       //发现消息进入    开始处理前端触发逻辑
     };
     //关闭事件
-    socket.onclose = function () {
-      console.log("Socket已关闭");
+    socket.onclose = function() {
+      console.log('Socket已关闭');
     };
     //发生了错误事件
-    socket.onerror = function () {
-      alert("Socket发生了错误");
+    socket.onerror = function() {
+      alert('Socket发生了错误');
       //此时可以尝试刷新页面
-    }
+    };
   }
+
+
+
+  var inputReport = echarts.init(document.getElementById('inputReport'));
+
+
+
+  function onRefreshInputReport(data){
+    console.log(data.processing)
+    var scale = 1;
+    var inputReportOptionRichEchartData = [{
+      value: data.processing,
+      name: 'processing'
+    }, {
+      value: data.transferring,
+      name: 'transferring'
+    }, {
+      value: data.transferred,
+      name: 'transferred'
+    }];
+    var inputReportOptionRich = {
+      yellow: {
+        color: '#ffc72b',
+        fontSize: 30 * scale,
+        padding: [5, 4],
+        align: 'center'
+      },
+      total: {
+        color: '#ffc72b',
+        fontSize: 40 * scale,
+        align: 'center'
+      },
+      white: {
+        color: '#fff',
+        align: 'center',
+        fontSize: 14 * scale,
+        padding: [21, 0]
+      },
+      blue: {
+        color: '#49dff0',
+        fontSize: 16 * scale,
+        align: 'center'
+      },
+      hr: {
+        borderColor: '#0b5263',
+        width: '100%',
+        borderWidth: 1,
+        height: 0
+      }
+    };
+    inputReportOption = {
+      backgroundColor: '#031f2d',
+      title: {
+        text: '总考生数',
+        left: 'center',
+        top: '53%',
+        padding: [24, 0],
+        textStyle: {
+          color: '#fff',
+          fontSize: 18 * scale,
+          align: 'center'
+        }
+      },
+      legend: {
+        selectedMode: false,
+        formatter: function(name) {
+          var total = 0; //各科正确率总和
+          var averagePercent; //综合正确率
+          inputReportOptionRichEchartData.forEach(function(value, index, array) {
+            total += value.value;
+          });
+          return '{total|' + total + '}';
+        },
+        data: [inputReportOptionRichEchartData[0].name],
+        // data: ['高等教育学'],
+        // itemGap: 50,
+        left: 'center',
+        top: 'center',
+        icon: 'none',
+        align: 'center',
+        textStyle: {
+          color: '#fff',
+          fontSize: 16 * scale,
+          rich: inputReportOptionRich
+        }
+      },
+      series: [{
+        name: '总考生数量',
+        type: 'pie',
+        radius: ['42%', '50%'],
+        hoverAnimation: false,
+        color: ['#c487ee', '#deb140', '#49dff0', '#034079', '#6f81da', '#00ffb4'],
+        label: {
+          normal: {
+            formatter: function(params, ticket, callback) {
+              var total = 0; //考生总数量
+              var percent = 0; //考生占比
+              inputReportOptionRichEchartData.forEach(function(value, index, array) {
+                total += value.value;
+              });
+              percent = ((params.value / total) * 100).toFixed(1);
+              return '{white|' + params.name + '}\n{hr|}\n{yellow|' + params.value + '}\n{blue|'
+                  + percent + '%}';
+            },
+            rich: inputReportOptionRich
+          }
+        },
+        labelLine: {
+          normal: {
+            length: 55 * scale,
+            length2: 0,
+            lineStyle: {
+              color: '#0b5263'
+            }
+          }
+        },
+        data: inputReportOptionRichEchartData
+      }]
+    };
+    // use configuration item and data specified to show chart
+    inputReport.setOption(inputReportOption);
+  }
+
+  var other = echarts.init(document.getElementById('other'));
+
+  function onRefreshInputReport2(data){
+    var dataStyle = {
+      normal: {
+        label: {
+          show: false
+        },
+        labelLine: {
+          show: false
+        },
+        shadowBlur: 0,
+        shadowColor: '#203665'
+      }
+    };
+    option = {
+      backgroundColor: "#031f2d",
+      series: [{
+        name: '第一个圆环',
+        type: 'pie',
+        clockWise: false,
+        radius: [70, 80],
+        itemStyle: dataStyle,
+        hoverAnimation: false,
+        center: ['15%', '50%'],
+        data: [{
+          value: data.processing + data.transferring + data.transferred,
+          label: {
+            normal: {
+              rich: {
+                a: {
+                  color: '#3a7ad5',
+                  align: 'center',
+                  fontSize: 20,
+                  fontWeight: "bold"
+                },
+                b: {
+                  color: '#fff',
+                  align: 'center',
+                  fontSize: 16
+                }
+              },
+              formatter: function(params){
+                return "{b|在线统计}\n\n"+"{a|"+params.value+"个}"+"\n\n{b|增长2%}";
+              },
+              position: 'center',
+              show: true,
+              textStyle: {
+                fontSize: '14',
+                fontWeight: 'normal',
+                color: '#fff'
+              }
+            }
+          },
+          itemStyle: {
+            normal: {
+              color: '#2c6cc4',
+              shadowColor: '#2c6cc4',
+              shadowBlur: 0
+            }
+          }
+        }, {
+          value: 75,
+          name: 'invisible',
+          itemStyle: {
+            normal: {
+              color: '#24375c'
+            },
+            emphasis: {
+              color: '#24375c'
+            }
+          }
+        }]
+      }, {
+        name: '第二个圆环',
+        type: 'pie',
+        clockWise: false,
+        radius: [70, 80],
+        itemStyle: dataStyle,
+        hoverAnimation: false,
+        center: ['50%', '50%'],
+        data: [{
+          value: data.transferring,
+          label: {
+            normal: {
+              rich: {
+                a: {
+                  color: '#d03e93',
+                  align: 'center',
+                  fontSize: 20,
+                  fontWeight: "bold"
+                },
+                b: {
+                  color: '#fff',
+                  align: 'center',
+                  fontSize: 16
+                }
+              },
+              formatter: function(params){
+                return "{b|离线统计}\n\n"+"{a|"+params.value+"个}"+"\n\n{b|增长2%}";
+              },
+              position: 'center',
+              show: true,
+              textStyle: {
+                fontSize: '14',
+                fontWeight: 'normal',
+                color: '#fff'
+              }
+            }
+          },
+          itemStyle: {
+            normal: {
+              color: '#ef45ac',
+              shadowColor: '#ef45ac',
+              shadowBlur: 0
+            }
+          }
+        }, {
+          value: 50,
+          name: 'invisible',
+          itemStyle: {
+            normal: {
+              color: '#412a4e'
+            },
+            emphasis: {
+              color: '#412a4e'
+            }
+          }
+        }]
+      }, {
+        name: '第三个圆环',
+        type: 'pie',
+        clockWise: false,
+        radius: [70, 80],
+        itemStyle: dataStyle,
+        hoverAnimation: false,
+        center: ['85%', '50%'],
+        data: [{
+          value: data.transferred,
+          label: {
+            normal: {
+              rich: {
+                a: {
+                  color: '#603dd0',
+                  align: 'center',
+                  fontSize: 20,
+                  fontWeight: "bold"
+                },
+                b: {
+                  color: '#fff',
+                  align: 'center',
+                  fontSize: 16
+                }
+              },
+              formatter: function(params){
+                return "{b|缺报统计}\n\n"+"{a|"+params.value+"个}"+"\n\n{b|增长2%}";
+              },
+              position: 'center',
+              show: true,
+              textStyle: {
+                fontSize: '14',
+                fontWeight: 'normal',
+                color: '#fff'
+              }
+            }
+          },
+          itemStyle: {
+            normal: {
+              color: '#613fd1',
+              shadowColor: '#613fd1',
+              shadowBlur: 0
+            }
+          }
+        }, {
+          value: 25,
+          name: 'invisible',
+          itemStyle: {
+            normal: {
+              color: '#453284'
+            },
+            emphasis: {
+              color: '#453284'
+            }
+          }
+        }]
+      }, {
+        name: '第三个圆环',
+        type: 'pie',
+        clockWise: false,
+        radius: [70, 80],
+        itemStyle: dataStyle,
+        hoverAnimation: false,
+        center: ['85%', '50%'],
+        data: [{
+          value: data.transferred,
+          label: {
+            normal: {
+              rich: {
+                a: {
+                  color: '#603dd0',
+                  align: 'center',
+                  fontSize: 20,
+                  fontWeight: "bold"
+                },
+                b: {
+                  color: '#fff',
+                  align: 'center',
+                  fontSize: 16
+                }
+              },
+              formatter: function(params){
+                return "{b|缺报统计}\n\n"+"{a|"+params.value+"个}"+"\n\n{b|增长2%}";
+              },
+              position: 'center',
+              show: true,
+              textStyle: {
+                fontSize: '14',
+                fontWeight: 'normal',
+                color: '#fff'
+              }
+            }
+          },
+          itemStyle: {
+            normal: {
+              color: '#613fd1',
+              shadowColor: '#613fd1',
+              shadowBlur: 0
+            }
+          }
+        }, {
+          value: 25,
+          name: 'invisible',
+          itemStyle: {
+            normal: {
+              color: '#453284'
+            },
+            emphasis: {
+              color: '#453284'
+            }
+          }
+        }]
+      }]
+    }
+
+    other.setOption(option);
+  }
+
 </script>
 </body>
 </html>

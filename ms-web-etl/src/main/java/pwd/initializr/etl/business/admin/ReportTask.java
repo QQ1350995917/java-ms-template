@@ -2,6 +2,7 @@ package pwd.initializr.etl.business.admin;
 
 import com.alibaba.fastjson.JSON;
 import java.io.File;
+import java.util.Random;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import pwd.initializr.etl.ETLApplication;
@@ -28,7 +29,7 @@ public class ReportTask {
   private void inputReport() {
     scanInput();
   }
-
+  Random random = new Random(10);
   private void scanInput() {
     String filePath = ETLApplication.inputDir;
     File[] files = new File(filePath).listFiles();
@@ -38,10 +39,12 @@ public class ReportTask {
     for (File file : files) {
       String name = file.getName();
     }
-    inputReportBO.setTransferring(8);
-    inputReportBO.setTransferred(50);
-    inputReportBO.setProcessing(5);
 
+
+    inputReportBO.setTransferring(random.nextInt(100));
+    inputReportBO.setTransferred(random.nextInt(100));
+    inputReportBO.setProcessing(random.nextInt(100));
+    inputReportBO.setTotal(inputReportBO.getTransferring() + inputReportBO.getTransferred() + inputReportBO.getTransferring());
 
     MonitorWebService.sendInfo(JSON.toJSONString(inputReportBO),null);
   }
