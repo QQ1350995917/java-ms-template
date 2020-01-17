@@ -23,6 +23,11 @@ import pwd.initializr.etl.business.admin.bo.InputReportBO;
 public class ReportTask {
 
   private static InputReportBO inputReportBO = new InputReportBO();
+  boolean transferringFlag = true;
+  int transferring = 0;
+  boolean transferredFlag = true;
+  int transferred = 0;
+  int processing = 0;
 
   @Scheduled(cron = "${etl.report.input.cron}")
   private void inputReport() {
@@ -34,16 +39,35 @@ public class ReportTask {
     File[] files = new File(filePath).listFiles();
     inputReportBO.setFilePath(filePath);
     inputReportBO.setTotal(files.length);
-    int transferring = 0;
+
     for (File file : files) {
       String name = file.getName();
     }
+
+    if (transferringFlag && transferring <= 100) {
+      transferring += 5;
+    } else {
+      transferringFlag = false;
+    }
+
+    if (transferredFlag && transferred <= 100){
+      transferred += 3;
+      transferring -= 3;
+      if (transferring < 5) {
+        transferringFlag = true;
+      }
+    } else {
+      transferredFlag = false;
+    }
+
+    processing ++;
+    transferred --;
+
     inputReportBO.setTransferring(8);
     inputReportBO.setTransferred(50);
     inputReportBO.setProcessing(5);
 
-
-    MonitorWebService.sendInfo(JSON.toJSONString(inputReportBO),null);
+    MonitorWebService.sendInfo(JSON.toJSONString(inputReportBO), null);
   }
 
   public InputReportBO getInputReport() {
