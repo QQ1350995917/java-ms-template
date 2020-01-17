@@ -2,6 +2,7 @@ package pwd.initializr.etl.business.admin;
 
 import com.alibaba.fastjson.JSON;
 import java.io.File;
+import java.util.Random;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import pwd.initializr.etl.ETLApplication;
@@ -33,19 +34,19 @@ public class ReportTask {
   private void inputReport() {
     scanInput();
   }
-
+  Random random = new Random(10);
   private void scanInput() {
     String filePath = ETLApplication.inputDir;
-    File[] files = new File(filePath).listFiles();
+//    File[] files = new File(filePath).listFiles();
     inputReportBO.setFilePath(filePath);
-    inputReportBO.setTotal(files.length);
+//    inputReportBO.setTotal(files.length);
 
-    for (File file : files) {
-      String name = file.getName();
-    }
+//    for (File file : files) {
+//      String name = file.getName();
+//    }
 
     if (transferringFlag && transferring <= 100) {
-      transferring += 5;
+      transferring += 8;
     } else {
       transferringFlag = false;
     }
@@ -57,15 +58,26 @@ public class ReportTask {
         transferringFlag = true;
       }
     } else {
+      transferring -= 3;
+      if (transferring < 5) {
+        transferringFlag = true;
+      }
       transferredFlag = false;
     }
 
     processing ++;
     transferred --;
+    if (transferred < 1) {
+      transferredFlag = true;
+    }
 
-    inputReportBO.setTransferring(8);
-    inputReportBO.setTransferred(50);
-    inputReportBO.setProcessing(5);
+    if (processing > 200) {
+      processing = 10;
+    }
+
+    inputReportBO.setTransferring(transferring);
+    inputReportBO.setTransferred(transferred);
+    inputReportBO.setProcessing(processing);
 
     MonitorWebService.sendInfo(JSON.toJSONString(inputReportBO), null);
   }
