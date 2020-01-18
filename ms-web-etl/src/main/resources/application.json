@@ -2,11 +2,11 @@
   "basic": {
     "worker": {
       "core": "1",
-      "max": "3"
+      "max": "1"
     },
-    "pluginDir": "E:\\etl\\plugin",
-    "inputDir":"E:\\etl\\input",
-    "outputDir": "E:\\etl\\output"
+    "pluginDir": "/Users/pwd/Documents/etl/plugin",
+    "inputDir":"/Users/pwd/Documents/etl/input",
+    "outputDir": "/Users/pwd/Documents/etl/output"
   },
-  "plugins": []
+  "plugins": ["pwd.initializr.etl.ETLPluginTest"]
 }

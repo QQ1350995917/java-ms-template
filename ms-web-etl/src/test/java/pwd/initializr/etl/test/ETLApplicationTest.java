@@ -19,6 +19,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class ETLApplicationTest {
 
     public void contextLoads() {
+
     }
 
 }

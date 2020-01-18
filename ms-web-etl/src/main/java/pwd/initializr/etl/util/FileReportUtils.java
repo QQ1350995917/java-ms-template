@@ -25,7 +25,7 @@ import java.util.Map;
  */
 public class FileReportUtils {
 
-  public Map<String,Integer> countFile(String filePath){
+  public static Map<String,Integer> countFile(String filePath){
     Map<String,Integer> result = new HashMap<>();
     result.put("transferring",0);
     result.put("transferred",0);
@@ -35,7 +35,7 @@ public class FileReportUtils {
       Integer allData = new File(filePath).listFiles(new FilenameFilter() {
         @Override
         public boolean accept(File dir, String name) {
-          if (name.endsWith(".data")){
+          if (name.endsWith(".data") || name.endsWith(".dataing")){
             return true;
           }
           return false;
@@ -45,7 +45,7 @@ public class FileReportUtils {
       Integer transferred = new File(filePath).listFiles(new FilenameFilter() {
         @Override
         public boolean accept(File dir, String name) {
-          if (name.endsWith(".data.ok")){
+          if (name.endsWith(".ok")){
             return true;
           }
           return false;
@@ -55,7 +55,7 @@ public class FileReportUtils {
       Integer processing = new File(filePath).listFiles(new FilenameFilter() {
         @Override
         public boolean accept(File dir, String name) {
-          if (name.endsWith(".data.oking")){
+          if (name.endsWith(".oking")){
             return true;
           }
           return false;

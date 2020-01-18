@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -86,21 +87,21 @@ public class ETLDriver {
       while (true){
         try {
           lock.lock();
-          while (inputScannerBlockingQueue.size() == 0){
+          while (inputScannerBlockingQueue.size() <= 0){
             handleDriverCondition.await();
           }
 
-          if (executorService.getQueue().size() <= MAX_CAPACITY) {
+          if (executorService.getQueue().size() < MAX_CAPACITY) {
             String ok = inputScannerBlockingQueue.iterator().next();
             if (ok != null) {
               String oking = ok.replace(".ok", ".oking");
-              String data = ok.replace(".ok", "");
-              String dataing = data.concat(".dataing");
+              String data = ok.replace(".ok", ".data");
+              String dataing = data.replace(".data",".dataing");
               String fileName = new File(data).getName();
               new File(ok).renameTo(new File(oking));
               new File(data).renameTo(new File(dataing));
               inputScannerBlockingQueue.remove(ok);
-              executorService.execute(new HandleWorker(oking,dataing,fileName));
+              executorService.execute(new HandleWorker(oking,dataing,fileName.replace(".data","")));
             }
             if (inputScannerBlockingQueue.size() < MAX_CAPACITY) {
               inputScannerCondition.signalAll();
@@ -122,14 +123,14 @@ public class ETLDriver {
       while (true) {
         try {
           lock.lock();
-          while (inputScannerBlockingQueue.size() == MAX_CAPACITY){
+          while (inputScannerBlockingQueue.size() >= MAX_CAPACITY){
             inputScannerCondition.await();
           }
 
           File[] files = new File(input).listFiles(new FilenameFilter() {
             @Override
             public boolean accept(File dir, String name) {
-              if (name.endsWith(".ok")) {
+              if (name.endsWith(".ok") || name.endsWith(".oking")) {
                   return true;
               }
               return false;
@@ -138,10 +139,8 @@ public class ETLDriver {
 
           if (files != null && files.length > 0) {
             for (File file : files) {
-              boolean offer = inputScannerBlockingQueue.add(file.getAbsolutePath());
-              if (offer) {
-                continue;
-              } else {
+              inputScannerBlockingQueue.add(file.getAbsolutePath());
+              if (inputScannerBlockingQueue.size() >= MAX_CAPACITY) {
                 break;
               }
             }

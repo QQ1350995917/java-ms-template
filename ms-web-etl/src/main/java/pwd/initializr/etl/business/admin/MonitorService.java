@@ -1,8 +1,6 @@
-package pwd.initializr.etl.api.admin;
+package pwd.initializr.etl.business.admin;
 
-import com.alibaba.fastjson.JSON;
 import java.io.IOException;
-import java.util.List;
 import java.util.concurrent.CopyOnWriteArraySet;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
@@ -14,6 +12,7 @@ import javax.websocket.server.ServerEndpoint;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 /**
  * pwd.initializr.etl.api.admin@ms-web-initializr
@@ -26,15 +25,14 @@ import org.springframework.stereotype.Component;
  * @version 1.0.0
  * @since DistributionVersion
  */
-@ServerEndpoint("/monitor")
-@Component
-public class MonitorWebService {
+@Service
+public class MonitorService {
 
-  static Log log = LogFactory.getLog(MonitorWebService.class);
+  private static Log log = LogFactory.getLog(MonitorService.class);
   //静态变量，用来记录当前在线连接数。应该把它设计成线程安全的。
   private static int onlineCount = 0;
   //concurrent包的线程安全Set，用来存放每个客户端对应的MyWebSocket对象。
-  private static CopyOnWriteArraySet<MonitorWebService> webSocketSet = new CopyOnWriteArraySet<MonitorWebService>();
+  private static CopyOnWriteArraySet<MonitorService> webSocketSet = new CopyOnWriteArraySet<MonitorService>();
 
   //与某个客户端的连接会话，需要通过它来给客户端发送数据
   private Session session;
@@ -45,7 +43,6 @@ public class MonitorWebService {
   /**
    * 连接建立成功调用的方法
    */
-  @OnOpen
   public void onOpen(Session session, @PathParam("sid") String sid) {
     this.session = session;
     webSocketSet.add(this);     //加入set中
@@ -62,7 +59,6 @@ public class MonitorWebService {
   /**
    * 连接关闭调用的方法
    */
-  @OnClose
   public void onClose() {
     webSocketSet.remove(this);  //从set中删除
     subOnlineCount();           //在线数减1
@@ -74,11 +70,10 @@ public class MonitorWebService {
    *
    * @param message 客户端发送过来的消息
    */
-  @OnMessage
   public void onMessage(String message, Session session) {
     log.info("收到来自窗口" + sid + "的信息:" + message);
     //群发消息
-    for (MonitorWebService item : webSocketSet) {
+    for (MonitorService item : webSocketSet) {
       try {
         item.sendMessage(message);
       } catch (IOException e) {
@@ -90,7 +85,6 @@ public class MonitorWebService {
   /**
    *
    */
-  @OnError
   public void onError(Session session, Throwable error) {
     log.error("发生错误");
     error.printStackTrace();
@@ -107,9 +101,9 @@ public class MonitorWebService {
   /**
    * 群发自定义消息
    */
-  public static void sendInfo(String message, @PathParam("sid") String sid) {
+  public void sendInfo(String message, @PathParam("sid") String sid) {
     //log.info("推送消息到窗口" + sid + "，推送内容:" + message);
-    for (MonitorWebService item : webSocketSet) {
+    for (MonitorService item : webSocketSet) {
       try {
         //这里可以设定只推送给这个sid的，为null则全部推送
         if (sid == null) {
@@ -123,15 +117,15 @@ public class MonitorWebService {
     }
   }
 
-  public static synchronized int getOnlineCount() {
+  public synchronized int getOnlineCount() {
     return onlineCount;
   }
 
-  public static synchronized void addOnlineCount() {
-    MonitorWebService.onlineCount++;
+  public synchronized void addOnlineCount() {
+    MonitorService.onlineCount++;
   }
 
-  public static synchronized void subOnlineCount() {
-    MonitorWebService.onlineCount--;
+  public synchronized void subOnlineCount() {
+    MonitorService.onlineCount--;
   }
 }
