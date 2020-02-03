@@ -7,11 +7,9 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pwd.initializr.etl.ETLApplicationContextAware;
 import pwd.initializr.etl.business.admin.MonitorService;
-import pwd.initializr.etl.business.admin.ReportTask;
 
 /**
  * pwd.initializr.etl.api.admin@ms-web-initializr
@@ -30,23 +28,23 @@ public class MonitorController {
 
   private MonitorService monitorService = ETLApplicationContextAware.getBean(MonitorService.class);
 
-  @OnOpen
-  public void onOpen(Session session, @PathParam("sid") String sid) {
-    monitorService.onOpen(session,sid);
-  }
-
-  @OnMessage
-  public void onMessage(String message, Session session) {
-    monitorService.onMessage(message,session);
+  @OnClose
+  public void onClose() {
+    monitorService.onClose();
   }
 
   @OnError
   public void onError(Session session, Throwable error) {
-    monitorService.onError(session,error);
+    monitorService.onError(session, error);
   }
 
-  @OnClose
-  public void onClose() {
-    monitorService.onClose();
+  @OnMessage
+  public void onMessage(String message, Session session) {
+    monitorService.onMessage(message, session);
+  }
+
+  @OnOpen
+  public void onOpen(Session session, @PathParam("sid") String sid) {
+    monitorService.onOpen(session, sid);
   }
 }
