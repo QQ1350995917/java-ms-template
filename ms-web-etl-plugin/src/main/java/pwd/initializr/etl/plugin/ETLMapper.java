@@ -11,7 +11,7 @@ import org.apache.ibatis.annotations.Mapper;
  *
  * date 2020-01-14 17:13
  *
- * @author DingPengwei[dingpengwei@eversec.com]
+ * @author DingPengwei[dingpengwei@foxmail.com]
  * @version 1.0.0
  * @since DistributionVersion
  */
