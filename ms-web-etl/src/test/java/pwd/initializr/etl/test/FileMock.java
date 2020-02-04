@@ -18,8 +18,9 @@ import java.util.UUID;
 public class FileMock {
 
   public static void main(String[] args) throws Exception {
-    String fileDir = "/Users/pwd/Documents/etl/input";
-    Integer num = 3;
+    String inputFileDir = "/Users/pwd/Documents/etl/input";
+    String outputFileDir = "/Users/pwd/Documents/etl/output";
+    Integer num = 1;
     Random random = new Random(3000);
     for (int i = 0; i < num; i++) {
       new Thread(new Runnable(){
@@ -27,7 +28,7 @@ public class FileMock {
         public void run() {
           try {
             while (true) {
-              String file = fileDir + File.separator + UUID.randomUUID();
+              String file = inputFileDir + File.separator + UUID.randomUUID();
               new File(file + ".data").createNewFile();
               Thread.sleep(random.nextInt(5000));
               new File(file + ".ok").createNewFile();
@@ -38,6 +39,24 @@ public class FileMock {
         }
       }).start();
     }
+    new Thread(new Runnable() {
+      @Override
+      public void run() {
+        while (true) {
+          try {
+            File[] files = new File(outputFileDir).listFiles();
+            if (files != null) {
+              for (File file : files) {
+                file.delete();
+              }
+            }
+            Thread.sleep(30000);
+          } catch (Exception e) {
+            e.printStackTrace();
+          }
+        }
+      }
+    }).start();
   }
 
 }

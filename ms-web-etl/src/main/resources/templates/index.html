@@ -24,8 +24,8 @@
   <!-- Default panel contents -->
   <div class="panel-heading" id="tip">Default Channel</div>
   <div class="panel-body">
-    <div id="inputReport" style="width:600px; height:400px;"></div>
-    <div id="other" style="width:600px; height:400px;"></div>
+    <div id="inputReport" style="width:600px; height:500px;"></div>
+    <div id="other" style="width:600px; height:300px;"></div>
   </div>
 
 </div>
@@ -69,7 +69,6 @@
 
 
   function onRefreshInputReport(data){
-    console.log(data.processing)
     var scale = 1;
     var inputReportOptionRichEchartData = [{
       value: data.processing,
@@ -81,6 +80,7 @@
       value: data.transferred,
       name: 'transferred'
     }];
+
     var inputReportOptionRich = {
       yellow: {
         color: '#ffc72b',

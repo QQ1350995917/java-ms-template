@@ -71,7 +71,7 @@ public class ETLDriver {
           etlHandler.handle(this.dataing);
         }
         Files.deleteIfExists(Paths.get(output + "/" + fileName));
-        Files.move(Paths.get(this.dataing),Paths.get(output + "/" + fileName));
+        Files.move(Paths.get(this.dataing),Paths.get(output + "/" + fileName + ".data"));
         Files.deleteIfExists(Paths.get(output + "/" + fileName + ".ok"));
         Files.move(Paths.get(this.oking),Paths.get(output + "/" + fileName + ".ok"));
       } catch (Exception e) {
@@ -130,7 +130,7 @@ public class ETLDriver {
           File[] files = new File(input).listFiles(new FilenameFilter() {
             @Override
             public boolean accept(File dir, String name) {
-              if (name.endsWith(".ok") || name.endsWith(".oking")) {
+              if (name.endsWith(".ok")) {
                   return true;
               }
               return false;

@@ -1,12 +1,15 @@
 {
-  "config": {
-    "thread": {
+  "basic": {
+    "worker": {
       "core": "1",
-      "max": "3"
+      "max": "1"
     },
-    "plugin": "E:\\workspace\\github\\ms-web-initializr\\ms-web-etl-plugin\\target",
-    "input": "E:\\etl\\input",
-    "output": "E:\\etl\\output"
+    "file":{
+
+    },
+    "pluginDir": "/Users/pwd/workspace/dingpw/ms-web-initializr/ms-web-etl-plugin/target",
+    "inputDir":"/Users/pwd/Documents/etl/input",
+    "outputDir": "/Users/pwd/Documents/etl/output"
   },
   "plugins": [
     "pwd.initializr.etl.plugin.ETRowBreaker",

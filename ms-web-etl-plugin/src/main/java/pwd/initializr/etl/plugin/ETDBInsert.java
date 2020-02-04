@@ -23,7 +23,7 @@ import pwd.initializr.etl.ETLDefaultHandler;
 public class ETDBInsert extends ETLDefaultHandler {
 
   private String resource = "mybatis-config.xml";
-
+  private ETLMapper mapper;
   @Override
   public void init() {
     try (
@@ -32,7 +32,7 @@ public class ETDBInsert extends ETLDefaultHandler {
 
       SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
       SqlSession sqlSession = sqlSessionFactory.openSession();
-      ETLMapper mapper = sqlSession.getMapper(ETLMapper.class);
+      mapper = sqlSession.getMapper(ETLMapper.class);
 
     } catch (IOException e) {
       throw new RuntimeException(e);
@@ -41,7 +41,9 @@ public class ETDBInsert extends ETLDefaultHandler {
 
   @Override
   public void handle(Object object) {
-    System.out.println(JSON.toJSON(object));
+    if (mapper != null) {
+      mapper.selectRegisterEnterprise();
+    }
   }
 
   public static void main(String[] args) {

@@ -1,5 +1,14 @@
 package pwd.initializr.etl.plugin;
 
+import com.alibaba.fastjson.JSON;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
+import java.util.Map;
+import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import pwd.initializr.etl.ETLDefaultHandler;
 
 /**
@@ -14,9 +23,35 @@ import pwd.initializr.etl.ETLDefaultHandler;
  * @since DistributionVersion
  */
 public class ETAdditional extends ETLDefaultHandler {
+  private String resource = "mybatis-config.xml";
+  private ETLMapper mapper;
+  @Override
+  public void init() {
+    try (
+        InputStream inputStream = Resources.getResourceAsStream(resource);
+    ) {
+
+      SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+      SqlSession sqlSession = sqlSessionFactory.openSession();
+      mapper = sqlSession.getMapper(ETLMapper.class);
+
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
+  }
 
   @Override
   public void handle(Object object) {
+    if (mapper != null) {
+      List<Map<String, String>> maps = mapper.selectRegisterEnterprise();
+      try {
+        Thread.sleep(1000);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+      System.out.println(JSON.toJSON(maps));
+    }
     getNext().handle(object);
   }
 }

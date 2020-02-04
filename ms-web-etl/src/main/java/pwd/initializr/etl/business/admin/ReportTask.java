@@ -40,12 +40,14 @@ public class ReportTask {
 
   private void scanInput() {
     String filePath = ETLApplication.inputDir;
-    Map<String, Integer> stringIntegerMap = FileReportUtils.countFile(filePath);
-    inputReportBO.setTransferring(stringIntegerMap.get("transferring"));
-    inputReportBO.setTransferred(stringIntegerMap.get("transferred"));
-    inputReportBO.setProcessing(stringIntegerMap.get("processing"));
-    inputReportBO.setFilePath(filePath);
-    monitorService.sendInfo(JSON.toJSONString(inputReportBO), null);
+    if (filePath != null) {
+      Map<String, Integer> stringIntegerMap = FileReportUtils.countFile(filePath);
+      inputReportBO.setTransferring(stringIntegerMap.get("transferring"));
+      inputReportBO.setTransferred(stringIntegerMap.get("transferred"));
+      inputReportBO.setProcessing(stringIntegerMap.get("processing"));
+      inputReportBO.setFilePath(filePath);
+      monitorService.sendInfo(JSON.toJSONString(inputReportBO), null);
+    }
   }
 
   public InputReportBO getInputReport() {
