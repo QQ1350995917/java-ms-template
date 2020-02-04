@@ -6,10 +6,16 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.lang.reflect.Method;
+import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import javassist.ClassPool;
+import javassist.CtClass;
+import javassist.CtField;
+import javassist.CtMethod;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
@@ -30,7 +36,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 @EnableScheduling
 public class ETLApplication implements ApplicationRunner, ETLController {
-
+  static final ClassPool classPool = ClassPool.getDefault();
   static final String APPLICATION = "application.json";
   public static String inputDir;
   public static String outputDir;
@@ -67,15 +73,31 @@ public class ETLApplication implements ApplicationRunner, ETLController {
     JSONObject jsonObject = JSON.parseObject(application, JSONObject.class, null);
     JSONObject basic = jsonObject.getJSONObject("basic");
     String pluginDir = basic.getString("pluginDir");
-    URLClassLoader classLoader = new URLClassLoader(ETLUtil.getPlugins(pluginDir),
-        Thread.currentThread().getContextClassLoader());
+
+    URLClassLoader urlLoader = (URLClassLoader) ClassLoader.getSystemClassLoader();
+    Class urlClassLoaderClass = URLClassLoader.class;
+    Method method = urlClassLoaderClass.getDeclaredMethod("addURL", new Class[]{URL.class});
+    method.setAccessible(true);
+    URL[] pluginUrls = ETLUtil.getPlugins(pluginDir);
+    for (URL pluginUrl : pluginUrls) {
+      method.invoke(urlLoader, pluginUrl);
+    }
     JSONArray plugins = jsonObject.getJSONArray("plugins");
     ETLHandler preInstance = null;
     Iterator<Object> iterator = plugins.iterator();
     while (iterator.hasNext()) {
       String next = iterator.next().toString();
-      Class<?> classz = classLoader.loadClass(next);
-      ETLHandler currentInstance = (ETLHandler) classz.newInstance();
+      CtClass ctClass = classPool.get(next);
+      ctClass.addField(new CtField(classPool.get("pwd.initializr.etl.ETLHandlerReporter"),"reporter",ctClass));
+      CtMethod ctMethod = ctClass.getDeclaredMethod("handle");
+      ctMethod.addLocalVariable("startTime", CtClass.longType);
+      ctMethod.insertBefore("startTime = System.currentTimeMillis();");
+//      ctMethod.insertAfter("System.out.println(\"leave " + ctClass.getName() + " and time is :\" + (System.currentTimeMillis() - startTime));");
+      ctMethod.insertAfter("reporter.report(\"" + ctClass.getName() + "\",\"" + ctMethod.getName() + "\",(System.currentTimeMillis() - startTime));");
+
+      Class c = ctClass.toClass();
+      ETLHandler currentInstance = (ETLHandler) c.newInstance();
+
       currentInstance.init();
       if (preInstance != null) {
         preInstance.setNext(currentInstance);

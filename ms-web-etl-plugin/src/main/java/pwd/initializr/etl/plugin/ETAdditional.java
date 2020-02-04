@@ -50,7 +50,6 @@ public class ETAdditional extends ETLDefaultHandler {
       } catch (InterruptedException e) {
         e.printStackTrace();
       }
-      System.out.println(JSON.toJSON(maps));
     }
     getNext().handle(object);
   }
