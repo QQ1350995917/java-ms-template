@@ -70,7 +70,7 @@ public class ETLDriver {
         if (etlHandler != null) {
           etlHandler.handle(this.dataing);
         }
-        Files.deleteIfExists(Paths.get(output + "/" + fileName));
+        Files.deleteIfExists(Paths.get(output + "/" + fileName + ".data"));
         Files.move(Paths.get(this.dataing),Paths.get(output + "/" + fileName + ".data"));
         Files.deleteIfExists(Paths.get(output + "/" + fileName + ".ok"));
         Files.move(Paths.get(this.oking),Paths.get(output + "/" + fileName + ".ok"));

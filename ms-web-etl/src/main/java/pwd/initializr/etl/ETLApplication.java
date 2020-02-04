@@ -49,9 +49,17 @@ public class ETLApplication implements ApplicationRunner, ETLController {
       application = sourceArgs[0];
     }
 
-    try (InputStream inputStream = new FileInputStream(application)) {
-      start(inputStream);
+    if (APPLICATION.equals(application)) {
+      try (InputStream inputStream = this.getClass().getClassLoader()
+          .getResourceAsStream(application)) {
+        start(inputStream);
+      }
+    } else {
+      try (InputStream inputStream = new FileInputStream(application)) {
+        start(inputStream);
+      }
     }
+
   }
 
   @Override
