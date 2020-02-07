@@ -88,12 +88,13 @@ public class ETLApplication implements ApplicationRunner, ETLController {
     while (iterator.hasNext()) {
       String next = iterator.next().toString();
       CtClass ctClass = classPool.get(next);
-      ctClass.addField(new CtField(classPool.get("pwd.initializr.etl.ETLHandlerReporter"),"reporter",ctClass));
+      ctClass.addField(new CtField(classPool.get("pwd.initializr.etl.ETLReporter"),"reporter",ctClass));
       CtMethod ctMethod = ctClass.getDeclaredMethod("handle");
       ctMethod.addLocalVariable("startTime", CtClass.longType);
       ctMethod.insertBefore("startTime = System.currentTimeMillis();");
+      ctMethod.insertBefore("reporter.onHandleStart(\"" + ctClass.getName() + "\",\"" + ctMethod.getName() + "\");");
 //      ctMethod.insertAfter("System.out.println(\"leave " + ctClass.getName() + " and time is :\" + (System.currentTimeMillis() - startTime));");
-      ctMethod.insertAfter("reporter.report(\"" + ctClass.getName() + "\",\"" + ctMethod.getName() + "\",(System.currentTimeMillis() - startTime));");
+      ctMethod.insertAfter("reporter.onHandleEnd(\"" + ctClass.getName() + "\",\"" + ctMethod.getName() + "\",(System.currentTimeMillis() - startTime));");
 
       Class c = ctClass.toClass();
       ETLHandler currentInstance = (ETLHandler) c.newInstance();
@@ -136,6 +137,8 @@ public class ETLApplication implements ApplicationRunner, ETLController {
   public void restart() {
 
   }
+
+
 
 
 }

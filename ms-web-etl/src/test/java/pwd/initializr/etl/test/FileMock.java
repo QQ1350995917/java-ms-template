@@ -1,6 +1,9 @@
 package pwd.initializr.etl.test;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.util.Random;
 import java.util.UUID;
 
@@ -20,7 +23,7 @@ public class FileMock {
   public static void main(String[] args) throws Exception {
     String inputFileDir = "/Users/pwd/Documents/etl/input";
     String outputFileDir = "/Users/pwd/Documents/etl/output";
-    Integer num = 1;
+    Integer num = 2;
     Random random = new Random(3000);
     for (int i = 0; i < num; i++) {
       new Thread(new Runnable(){
@@ -30,6 +33,9 @@ public class FileMock {
             while (true) {
               String file = inputFileDir + File.separator + UUID.randomUUID();
               new File(file + ".data").createNewFile();
+              BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file + ".data"));
+              bufferedWriter.write("127.0.0.1|apn.apn.apn.apn|www.pwd.com");
+              bufferedWriter.close();
               Thread.sleep(random.nextInt(5000));
               new File(file + ".ok").createNewFile();
             }

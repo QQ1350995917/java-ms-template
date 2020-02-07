@@ -47,11 +47,10 @@ public class ETRowBreaker extends ETLDefaultHandler {
       List<String> lines = new LinkedList<>();
       String line;
       while ((line = input.readLine()) != null) {
+        lines.add(line);
         if (lines.size() == batchSize) {
           this.getNext().handle(lines);
           lines.clear();
-        } else {
-          lines.add(line);
         }
       }
     } catch (Exception e) {

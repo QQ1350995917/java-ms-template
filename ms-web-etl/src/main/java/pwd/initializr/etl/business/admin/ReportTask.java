@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import pwd.initializr.etl.ETLApplication;
+import pwd.initializr.etl.ETLReporter;
 import pwd.initializr.etl.business.admin.bo.InputReportBO;
 import pwd.initializr.etl.util.FileReportUtils;
 
@@ -46,6 +47,7 @@ public class ReportTask {
       inputReportBO.setTransferred(stringIntegerMap.get("transferred"));
       inputReportBO.setProcessing(stringIntegerMap.get("processing"));
       inputReportBO.setFilePath(filePath);
+      inputReportBO.setSpeed(ETLReporter.getReport());
       monitorService.sendInfo(JSON.toJSONString(inputReportBO), null);
     }
   }

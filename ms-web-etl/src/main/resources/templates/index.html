@@ -25,7 +25,7 @@
   <div class="panel-heading" id="tip">Default Channel</div>
   <div class="panel-body">
     <div id="inputReport" style="width:600px; height:500px;"></div>
-    <div id="other" style="width:600px; height:300px;"></div>
+    <div id="speed" style="width:600px; height:400px;"></div>
   </div>
 
 </div>
@@ -48,7 +48,7 @@
       document.getElementById('tip').innerText = '';
       document.getElementById('tip').innerText = msg.data;
       onRefreshInputReport(JSON.parse(msg.data));
-      onRefreshInputReport2(JSON.parse(msg.data));
+      onRefreshSpeed(JSON.parse(msg.data).speed)
       //发现消息进入    开始处理前端触发逻辑
     };
     //关闭事件
@@ -62,12 +62,7 @@
     };
   }
 
-
-
   var inputReport = echarts.init(document.getElementById('inputReport'));
-
-
-
   function onRefreshInputReport(data){
     var scale = 1;
     var inputReportOptionRichEchartData = [{
@@ -184,251 +179,101 @@
     inputReport.setOption(inputReportOption);
   }
 
-  var other = echarts.init(document.getElementById('other'));
+  var speed = echarts.init(document.getElementById('speed'));
+  function onRefreshSpeed(data){
 
-  function onRefreshInputReport2(data){
-    var dataStyle = {
-      normal: {
-        label: {
-          show: false
-        },
-        labelLine: {
-          show: false
-        },
-        shadowBlur: 0,
-        shadowColor: '#203665'
-      }
-    };
     option = {
       backgroundColor: "#031f2d",
-      series: [{
-        name: '第一个圆环',
-        type: 'pie',
-        clockWise: false,
-        radius: [70, 80],
-        itemStyle: dataStyle,
-        hoverAnimation: false,
-        center: ['15%', '50%'],
-        data: [{
-          value: data.processing + data.transferring + data.transferred,
-          label: {
+      title: {
+        x: 'center',
+        text: '执行器执行耗时',
+      },
+      textStyle: {
+        fontSize: '14',
+        fontWeight: 'normal',
+        color: '#fff'
+      },
+      tooltip: {
+        trigger: 'item'
+      },
+      toolbox: {
+        show: false,
+        feature: {
+          //dataView: {show: true, readOnly: false},
+          //restore: {show: true},
+          saveAsImage: {show: true}
+        }
+      },
+      calculable: true,
+      grid: {
+        borderWidth: 0,
+        y: 70,
+        y2: 60
+      },
+      xAxis: [
+        {
+          type: 'category',
+          show: true,
+          // data: ["2013年","2014年","2015年","2016年","2017年","2018年"],//['Line', 'Bar', 'Scatter', 'K', 'Pie', 'Radar', 'Chord', 'Force', 'Map', 'Gauge', 'Funnel']
+          data: [],//['Line', 'Bar', 'Scatter', 'K', 'Pie', 'Radar', 'Chord', 'Force', 'Map', 'Gauge', 'Funnel']
+        }
+      ],
+      yAxis: [
+        {
+          type: 'value',
+          show: false
+        }
+      ],
+      series: [
+        {
+          name: '执行器执行耗时',
+          textStyle: {
+            fontSize: '14',
+            fontWeight: 'normal',
+            color: '#fff'
+          },
+          type: 'bar',
+          itemStyle: {
             normal: {
-              rich: {
-                a: {
-                  color: '#3a7ad5',
-                  align: 'center',
-                  fontSize: 20,
-                  fontWeight: "bold"
-                },
-                b: {
-                  color: '#fff',
-                  align: 'center',
-                  fontSize: 16
-                }
+              color: function(params) {
+                // build a color map as your need.
+                var colorList = [
+                  '#C1232B','#FCCE10','#E87C25','#60C0DD','#27727B',
+                  '#FE8463','#9BCA63','#FAD860','#F3A43B', '#D7504B','#C6E579','#F4E001','#F0805A','#26C0C0'
+                ];
+                return colorList[params.dataIndex]
               },
-              formatter: function(params){
-                return "{b|在线统计}\n\n"+"{a|"+params.value+"个}"+"\n\n{b|增长2%}";
-              },
-              position: 'center',
-              show: true,
-              textStyle: {
-                fontSize: '14',
-                fontWeight: 'normal',
-                color: '#fff'
+              label: {
+                show: true,
+                position: 'top',
+                formatter: '{b}\n{c}'
               }
             }
           },
-          itemStyle: {
-            normal: {
-              color: '#2c6cc4',
-              shadowColor: '#2c6cc4',
-              shadowBlur: 0
-            }
-          }
-        }, {
-          value: 75,
-          name: 'invisible',
-          itemStyle: {
-            normal: {
-              color: '#24375c'
-            },
-            emphasis: {
-              color: '#24375c'
-            }
-          }
-        }]
-      }, {
-        name: '第二个圆环',
-        type: 'pie',
-        clockWise: false,
-        radius: [70, 80],
-        itemStyle: dataStyle,
-        hoverAnimation: false,
-        center: ['50%', '50%'],
-        data: [{
-          value: data.transferring,
-          label: {
-            normal: {
-              rich: {
-                a: {
-                  color: '#d03e93',
-                  align: 'center',
-                  fontSize: 20,
-                  fontWeight: "bold"
-                },
-                b: {
-                  color: '#fff',
-                  align: 'center',
-                  fontSize: 16
-                }
-              },
+          // data: [533,4326,4983,3908,3929,3544],//[12,21,10,4,12,5,6,5,25,23,7],
+          data: [],//[12,21,10,4,12,5,6,5,25,23,7],
+          markPoint: {
+            tooltip: {
+              trigger: 'item',
+              backgroundColor: 'rgba(0,0,0,0)',
               formatter: function(params){
-                return "{b|离线统计}\n\n"+"{a|"+params.value+"个}"+"\n\n{b|增长2%}";
-              },
-              position: 'center',
-              show: true,
-              textStyle: {
-                fontSize: '14',
-                fontWeight: 'normal',
-                color: '#fff'
+                return '<img src="'
+                    + params.data.symbol.replace('image://', '')
+                    + '"/>';
               }
             }
-          },
-          itemStyle: {
-            normal: {
-              color: '#ef45ac',
-              shadowColor: '#ef45ac',
-              shadowBlur: 0
-            }
           }
-        }, {
-          value: 50,
-          name: 'invisible',
-          itemStyle: {
-            normal: {
-              color: '#412a4e'
-            },
-            emphasis: {
-              color: '#412a4e'
-            }
-          }
-        }]
-      }, {
-        name: '第三个圆环',
-        type: 'pie',
-        clockWise: false,
-        radius: [70, 80],
-        itemStyle: dataStyle,
-        hoverAnimation: false,
-        center: ['85%', '50%'],
-        data: [{
-          value: data.transferred,
-          label: {
-            normal: {
-              rich: {
-                a: {
-                  color: '#603dd0',
-                  align: 'center',
-                  fontSize: 20,
-                  fontWeight: "bold"
-                },
-                b: {
-                  color: '#fff',
-                  align: 'center',
-                  fontSize: 16
-                }
-              },
-              formatter: function(params){
-                return "{b|缺报统计}\n\n"+"{a|"+params.value+"个}"+"\n\n{b|增长2%}";
-              },
-              position: 'center',
-              show: true,
-              textStyle: {
-                fontSize: '14',
-                fontWeight: 'normal',
-                color: '#fff'
-              }
-            }
-          },
-          itemStyle: {
-            normal: {
-              color: '#613fd1',
-              shadowColor: '#613fd1',
-              shadowBlur: 0
-            }
-          }
-        }, {
-          value: 25,
-          name: 'invisible',
-          itemStyle: {
-            normal: {
-              color: '#453284'
-            },
-            emphasis: {
-              color: '#453284'
-            }
-          }
-        }]
-      }, {
-        name: '第三个圆环',
-        type: 'pie',
-        clockWise: false,
-        radius: [70, 80],
-        itemStyle: dataStyle,
-        hoverAnimation: false,
-        center: ['85%', '50%'],
-        data: [{
-          value: data.transferred,
-          label: {
-            normal: {
-              rich: {
-                a: {
-                  color: '#603dd0',
-                  align: 'center',
-                  fontSize: 20,
-                  fontWeight: "bold"
-                },
-                b: {
-                  color: '#fff',
-                  align: 'center',
-                  fontSize: 16
-                }
-              },
-              formatter: function(params){
-                return "{b|缺报统计}\n\n"+"{a|"+params.value+"个}"+"\n\n{b|增长2%}";
-              },
-              position: 'center',
-              show: true,
-              textStyle: {
-                fontSize: '14',
-                fontWeight: 'normal',
-                color: '#fff'
-              }
-            }
-          },
-          itemStyle: {
-            normal: {
-              color: '#613fd1',
-              shadowColor: '#613fd1',
-              shadowBlur: 0
-            }
-          }
-        }, {
-          value: 25,
-          name: 'invisible',
-          itemStyle: {
-            normal: {
-              color: '#453284'
-            },
-            emphasis: {
-              color: '#453284'
-            }
-          }
-        }]
-      }]
+        }
+      ]
+    };
+
+
+    for (var proId in data) {
+      option.xAxis[0].data.push(proId);
+      option.series[0].data.push(data[proId]);
     }
 
-    other.setOption(option);
+    speed.setOption(option);
   }
 
 </script>

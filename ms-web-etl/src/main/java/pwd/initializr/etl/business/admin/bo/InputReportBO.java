@@ -1,5 +1,6 @@
 package pwd.initializr.etl.business.admin.bo;
 
+import java.util.HashMap;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,4 +33,6 @@ public class InputReportBO {
   private Integer Processing;
   // 输入区域中数据文件总数
   private Integer total;
+  // 处理速度
+  private HashMap<String, Long> speed;
 }

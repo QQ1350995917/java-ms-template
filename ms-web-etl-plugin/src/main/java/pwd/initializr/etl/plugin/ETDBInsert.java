@@ -22,27 +22,17 @@ import pwd.initializr.etl.ETLDefaultHandler;
  */
 public class ETDBInsert extends ETLDefaultHandler {
 
-  private String resource = "mybatis-config.xml";
-  private ETLMapper mapper;
   @Override
   public void init() {
-    try (
-        InputStream inputStream = Resources.getResourceAsStream(resource);
-    ) {
 
-      SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
-      SqlSession sqlSession = sqlSessionFactory.openSession();
-      mapper = sqlSession.getMapper(ETLMapper.class);
-
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
   }
 
   @Override
   public void handle(Object object) {
-    if (mapper != null) {
-      mapper.selectRegisterEnterprise();
+    try {
+      Thread.sleep(200);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
     }
   }
 
