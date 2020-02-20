@@ -90,6 +90,10 @@ fabric.properties
 
 # Log file
 *.log
+log
+log/
+log/*
+*.log
 
 # BlueJ files
 *.ctxt
