@@ -21,6 +21,7 @@
     <module>lib-common-mw-minio</module>
     <module>lib-common-mw-redis</module>
     <module>lib-common-web</module>
+    <module>lib-etl-core</module>
     <module>ms-web-registry</module>
     <module>ms-web-account</module>
     <module>ms-web-configure</module>
