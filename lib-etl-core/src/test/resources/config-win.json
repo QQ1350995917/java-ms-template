@@ -1,0 +1,32 @@
+{
+  "group": "group",
+  "name": "name",
+  "id": "id",
+  "logDir": "",
+  "input": {
+    "capacity": 100,
+    "scanners": [
+      {
+        "group": "group",
+        "name": "name",
+        "id": "id",
+        "type": "file",
+        "enable": true,
+        "sourceDir": "file:///",
+        "suffix": "txt",
+        "completeSuffix": "ok",
+        "capacity": 5,
+        "processor": {
+          "class": "pwd.initializr.etl.core.input.processor.TXTProcessor",
+          "rowDelimiter": "\r\n",
+          "columnDelimiter": "|",
+          "threadNum": 3,
+          "over": {
+            "strategy": "MOVE",
+            "targetDir": "file:///"
+          }
+        }
+      }
+    ]
+  }
+}
