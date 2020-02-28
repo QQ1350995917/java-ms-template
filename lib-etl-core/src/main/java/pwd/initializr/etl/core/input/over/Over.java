@@ -21,6 +21,6 @@ public interface Over {
 
   void over(String filePathFaker);
 
-  void setConfig(JSONObject config);
+  Over setConfig(JSONObject config);
 
 }

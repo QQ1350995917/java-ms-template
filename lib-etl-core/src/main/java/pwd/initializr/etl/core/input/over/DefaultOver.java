@@ -16,8 +16,8 @@ import java.io.File;
  */
 public abstract class DefaultOver implements Over {
 
-  protected String completeSuffix;
-  protected String suffix;
+  private String completeSuffix;
+  private String suffix;
 
   public DefaultOver() {
   }
@@ -27,9 +27,10 @@ public abstract class DefaultOver implements Over {
   }
 
   @Override
-  public void setConfig(JSONObject config) {
+  public DefaultOver setConfig(JSONObject config) {
     this.suffix = config.getString("suffix");
     this.completeSuffix = config.getString("completeSuffix");
+    return this;
   }
 
   @Override

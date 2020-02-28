@@ -18,7 +18,8 @@
         "capacity": 5,
         "processor": {
           "class": "pwd.initializr.etl.core.input.processor.TXTProcessor",
-          "delimiter": "|",
+          "rowDelimiter": "\r\n",
+          "columnDelimiter": "|",
           "threadNum": 3,
           "over": {
             "strategy": "MOVE",

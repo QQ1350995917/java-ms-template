@@ -22,9 +22,10 @@ public class Move extends DefaultOver {
   protected String targetDir;
 
   @Override
-  public void setConfig(JSONObject config) {
+  public Move setConfig(JSONObject config) {
     super.setConfig(config);
     this.targetDir = config.getString("targetDir");
+    return this;
   }
 
   @Override

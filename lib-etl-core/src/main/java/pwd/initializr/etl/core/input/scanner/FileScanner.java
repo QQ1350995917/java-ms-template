@@ -10,7 +10,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-import pwd.initializr.etl.core.input.processor.DefaultFileProcessor;
+import pwd.initializr.etl.core.input.processor.Processor;
+import pwd.initializr.etl.core.input.processor.ProcessorFactory;
 
 /**
  * pwd.initializr.etl.core.input.scanner@ms-web-initializr
@@ -29,11 +30,11 @@ public class FileScanner implements Runnable {
   private final Condition inputScannerCondition = lock.newCondition();
   private final Condition handleDriverCondition = lock.newCondition();
 
-  private int MAX_CAPACITY = 5;
   private Integer capacity = 5;
+  private int MAX_CAPACITY = capacity;
   private String completeSuffix = "ok";
   private LinkedHashSet<String> inputScannerBlockingQueue;
-  private DefaultFileProcessor processor;
+  private JSONObject processorConfig;
   private String sourceDir;
   private String suffix;
   private Integer threadNum = 1;
@@ -49,16 +50,14 @@ public class FileScanner implements Runnable {
     this.setConfig(config);
   }
 
-  public FileScanner setBlockingQueue(BlockingQueue blockingQueue){
-    this.blockingQueue = blockingQueue;
-    return this;
-  }
-
-  public BlockingQueue getBlockingQueue(){
+  public BlockingQueue<Map> getBlockingQueue() {
     return this.blockingQueue;
   }
 
-
+  public FileScanner setBlockingQueue(BlockingQueue blockingQueue) {
+    this.blockingQueue = blockingQueue;
+    return this;
+  }
 
   public FileScanner setConfig(JSONObject config) {
     this.sourceDir = config.getString("sourceDir");
@@ -68,23 +67,10 @@ public class FileScanner implements Runnable {
     this.MAX_CAPACITY = capacity;
     this.inputScannerBlockingQueue = new LinkedHashSet<>(MAX_CAPACITY);
 
-    JSONObject processorConfig = config.getJSONObject("processor");
-    processorConfig.put("suffix",this.suffix);
-    processorConfig.put("completeSuffix",this.completeSuffix);
-    String processorClass = processorConfig.getString("class");
-
-    try {
-      this.processor = (DefaultFileProcessor) Class.forName(processorClass).newInstance();
-      this.processor.setConfig(processorConfig);
-    } catch (InstantiationException e) {
-      e.printStackTrace();
-    } catch (IllegalAccessException e) {
-      e.printStackTrace();
-    } catch (ClassNotFoundException e) {
-      e.printStackTrace();
-    }
-
-    this.threadNum = processorConfig.getInteger("threadNum");
+    this.processorConfig = config.getJSONObject("processor");
+    this.processorConfig.put("suffix", this.suffix);
+    this.processorConfig.put("completeSuffix", this.completeSuffix);
+    this.threadNum = this.processorConfig.getInteger("threadNum");
     return this;
   }
 
@@ -113,9 +99,12 @@ public class FileScanner implements Runnable {
     }
   }
 
-  private DefaultFileProcessor getFileProcessor() {
-
-    return null;
+  private Processor getFileProcessor() {
+    String aClass = processorConfig.getString("class");
+    Processor processor = ProcessorFactory.getInstance(aClass);
+    processor.setConfig(processorConfig);
+    processor.setBlockingQueue(this.getBlockingQueue());
+    return processor;
   }
 
   class InputScanner implements Runnable {
@@ -168,7 +157,7 @@ public class FileScanner implements Runnable {
           }
 
           String completeFilePath = inputScannerBlockingQueue.iterator().next();
-          DefaultFileProcessor fileProcessor = getFileProcessor();
+          Processor fileProcessor = getFileProcessor();
           if (fileProcessor != null) {
             fileProcessor.setBlockingQueue(getBlockingQueue());
             fileProcessor.process(completeFilePath);

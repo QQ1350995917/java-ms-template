@@ -22,7 +22,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 public class InputDriver {
 
-  private BlockingQueue<Map> blockingQueue = new LinkedBlockingQueue<>();
+  private BlockingQueue<Map> blockingQueue = new LinkedBlockingQueue<>(128);
   private List<FileScanner> fileScanners = new LinkedList<>();
 
   public InputDriver() {
@@ -33,6 +33,9 @@ public class InputDriver {
   }
 
   public InputDriver setConfig(JSONObject config) {
+    Integer capacity = config.getInteger("capacity");
+    this.blockingQueue = new LinkedBlockingQueue<>(capacity);
+
     JSONArray scanners = config.getJSONArray("scanners");
     Iterator<Object> iterator = scanners.iterator();
     while (iterator.hasNext()) {

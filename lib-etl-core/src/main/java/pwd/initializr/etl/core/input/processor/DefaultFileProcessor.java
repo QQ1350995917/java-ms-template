@@ -5,6 +5,7 @@ import java.io.File;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import pwd.initializr.etl.core.input.over.Over;
+import pwd.initializr.etl.core.input.over.OverFactory;
 
 /**
  * pwd.initializr.etl.core.input.processor@ms-web-initializr
@@ -19,11 +20,12 @@ import pwd.initializr.etl.core.input.over.Over;
  */
 public abstract class DefaultFileProcessor implements FileProcessor {
 
-  protected BlockingQueue blockingQueue;
-  protected String delimiter;
+  private BlockingQueue<Map> blockingQueue;
+  private String rowDelimiter;
+  private String columnDelimiter;
   private String completeSuffix;
-  private Over over;
   private String suffix;
+  private JSONObject overConfig;
 
   public DefaultFileProcessor() {
 
@@ -34,40 +36,31 @@ public abstract class DefaultFileProcessor implements FileProcessor {
   }
 
   @Override
-  public void setConfig(JSONObject config) {
-    this.delimiter = config.getString("delimiter");
-    JSONObject overConfig = config.getJSONObject("over");
+  public DefaultFileProcessor setConfig(JSONObject config) {
+    this.rowDelimiter = config.getString("rowDelimiter");
+    this.columnDelimiter = config.getString("columnDelimiter");
+    this.overConfig = config.getJSONObject("over");
     this.suffix = config.getString("suffix");
     this.completeSuffix = config.getString("completeSuffix");
-    overConfig.put("suffix", this.suffix);
-    overConfig.put("completeSuffix", this.completeSuffix);
-    String strategy = overConfig.getString("strategy");
-    try {
-      this.over = (Over) Class.forName("pwd.initializr.etl.core.input.over." + strategy)
-          .newInstance();
-      this.over.setConfig(overConfig);
-    } catch (InstantiationException e) {
-      e.printStackTrace();
-    } catch (IllegalAccessException e) {
-      e.printStackTrace();
-    } catch (ClassNotFoundException e) {
-      e.printStackTrace();
-    }
+    this.overConfig.put("suffix", this.suffix);
+    this.overConfig.put("completeSuffix", this.completeSuffix);
+    return this;
   }
 
   public BlockingQueue<Map> getBlockingQueue() {
     return this.blockingQueue;
   }
 
-  public void setBlockingQueue(BlockingQueue blockingQueue) {
+  public void setBlockingQueue(BlockingQueue<Map> blockingQueue) {
     this.blockingQueue = blockingQueue;
   }
 
+  @Override
   public void process(Object object) {
     String filePathFaker = object.toString();
     if (filePathFaker != null) {
-      String ok = filePathFaker + "." + getCompleteSuffix();
-      String data = filePathFaker + "." + getSuffix();
+      String ok = filePathFaker + "." + this.completeSuffix;
+      String data = filePathFaker + "." + this.suffix;
       String oking = ok + ".ing";
       String dataing = data + ".ing";
       new File(ok).renameTo(new File(oking));
@@ -77,12 +70,20 @@ public abstract class DefaultFileProcessor implements FileProcessor {
     }
   }
 
-  public String getCompleteSuffix() {
-    return completeSuffix;
+  @Override
+  public Over getOver() {
+    String strategy = overConfig.getString("strategy");
+    return OverFactory.getInstance(strategy, overConfig);
   }
 
-  public String getSuffix() {
-    return this.suffix;
+  @Override
+  public String getRowDelimiter() {
+    return rowDelimiter;
+  }
+
+  @Override
+  public String getColumnDelimiter() {
+    return columnDelimiter;
   }
 
   public abstract void onProcess(String filePath);
@@ -91,14 +92,7 @@ public abstract class DefaultFileProcessor implements FileProcessor {
     this.getOver().over(filePathFaker);
   }
 
-  @Override
-  public void setOver() {
 
-  }
-
-  public Over getOver() {
-    return this.over;
-  }
 
 
 }

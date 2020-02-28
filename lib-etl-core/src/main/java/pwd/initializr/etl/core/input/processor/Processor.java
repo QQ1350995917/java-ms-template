@@ -1,6 +1,7 @@
 package pwd.initializr.etl.core.input.processor;
 
 import com.alibaba.fastjson.JSONObject;
+import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import pwd.initializr.etl.core.input.over.Over;
 
@@ -17,15 +18,13 @@ import pwd.initializr.etl.core.input.over.Over;
  */
 public interface Processor {
 
-  void setConfig(JSONObject config);
+  Processor setConfig(JSONObject config);
 
   void process(Object object);
 
-  void setBlockingQueue(BlockingQueue blockingQueue);
+  void setBlockingQueue(BlockingQueue<Map> blockingQueue);
 
   BlockingQueue getBlockingQueue();
-
-  void setOver();
 
   Over getOver();
 

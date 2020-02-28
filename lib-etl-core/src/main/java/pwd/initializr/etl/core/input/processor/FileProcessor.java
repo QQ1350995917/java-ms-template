@@ -1,7 +1,5 @@
 package pwd.initializr.etl.core.input.processor;
 
-import com.alibaba.fastjson.JSONObject;
-
 /**
  * pwd.initializr.etl.core.input.processor@ms-web-initializr
  *
@@ -13,8 +11,9 @@ import com.alibaba.fastjson.JSONObject;
  * @version 1.0.0
  * @since DistributionVersion
  */
-public interface FileProcessor extends Processor{
+public interface FileProcessor extends Processor {
 
+  String getRowDelimiter();
 
-
+  String getColumnDelimiter();
 }
