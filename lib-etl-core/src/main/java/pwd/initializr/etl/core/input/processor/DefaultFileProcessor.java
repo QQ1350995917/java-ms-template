@@ -65,7 +65,7 @@ public abstract class DefaultFileProcessor implements FileProcessor {
       String dataing = data + ".ing";
       new File(ok).renameTo(new File(oking));
       new File(data).renameTo(new File(dataing));
-      this.onProcess(data);
+      this.onProcess(dataing);
       this.onOver(filePathFaker);
     }
   }

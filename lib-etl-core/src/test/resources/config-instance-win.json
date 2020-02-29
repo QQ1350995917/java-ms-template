@@ -7,23 +7,21 @@
     "capacity": 100,
     "scanners": [
       {
-        "group": "group",
         "name": "name",
-        "id": "id",
         "type": "file",
         "enable": true,
-        "sourceDir": "file:///",
+        "sourceDir": "/Users/pwd/Documents/etl/input",
         "suffix": "txt",
         "completeSuffix": "ok",
         "capacity": 5,
         "processor": {
           "class": "pwd.initializr.etl.core.input.processor.TXTProcessor",
           "rowDelimiter": "\r\n",
-          "columnDelimiter": "|",
-          "threadNum": 3,
+          "columnDelimiter": "\\|",
+          "threadNum": 1,
           "over": {
-            "strategy": "MOVE",
-            "targetDir": "file:///"
+            "strategy": "Move",
+            "targetDir": "/Users/pwd/Documents/etl/output"
           }
         }
       }

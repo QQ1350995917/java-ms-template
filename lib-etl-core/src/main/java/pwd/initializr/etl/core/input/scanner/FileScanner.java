@@ -74,10 +74,6 @@ public class FileScanner implements Runnable {
     return this;
   }
 
-  public Integer getCapacity() {
-    return capacity;
-  }
-
   public String getCompleteSuffix() {
     return completeSuffix;
   }
@@ -86,9 +82,6 @@ public class FileScanner implements Runnable {
     return sourceDir;
   }
 
-  public String getSuffix() {
-    return suffix;
-  }
 
   @Override
   public void run() {
@@ -126,7 +119,9 @@ public class FileScanner implements Runnable {
 
           if (files != null && files.length > 0) {
             for (File file : files) {
-              inputScannerBlockingQueue.add(file.getAbsolutePath());
+              String absolutePath = file.getAbsolutePath();
+              String filePathFaker = absolutePath.substring(0,absolutePath.lastIndexOf("."));
+              inputScannerBlockingQueue.add(filePathFaker);
               if (inputScannerBlockingQueue.size() >= MAX_CAPACITY) {
                 break;
               }

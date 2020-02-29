@@ -1,6 +1,7 @@
 package pwd.initializr.etl.core.input.over;
 
 import com.alibaba.fastjson.JSONObject;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -31,8 +32,8 @@ public class Move extends DefaultOver {
   @Override
   protected void onOver(String dataingFilePath, String okingFilePath, String fileName) {
     try {
-      Path targetDataPath = Paths.get(this.targetDir, fileName, this.getSuffix());
-      Path targetOkPath = Paths.get(this.targetDir, fileName, this.getCompleteSuffix());
+      Path targetDataPath = Paths.get(this.targetDir + File.separator + fileName + "." + this.getSuffix());
+      Path targetOkPath = Paths.get(this.targetDir + File.separator + fileName + "." + this.getCompleteSuffix());
       Files.deleteIfExists(targetDataPath);
       Files.deleteIfExists(targetOkPath);
       Files.move(Paths.get(dataingFilePath), targetOkPath);

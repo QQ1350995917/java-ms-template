@@ -7,9 +7,7 @@
     "capacity": 100,
     "scanners": [
       {
-        "group": "group",
         "name": "name",
-        "id": "id",
         "type": "file",
         "enable": true,
         "sourceDir": "file:///",

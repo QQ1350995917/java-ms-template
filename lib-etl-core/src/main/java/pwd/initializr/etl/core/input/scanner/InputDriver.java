@@ -7,6 +7,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
@@ -23,9 +25,11 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class InputDriver {
 
   private BlockingQueue<Map> blockingQueue = new LinkedBlockingQueue<>(128);
+  private ExecutorService executorService = Executors.newFixedThreadPool(1);
   private List<FileScanner> fileScanners = new LinkedList<>();
 
   public InputDriver() {
+
   }
 
   public InputDriver(JSONObject config) {
@@ -41,18 +45,23 @@ public class InputDriver {
     while (iterator.hasNext()) {
       JSONObject scanner = (JSONObject) iterator.next();
       String name = scanner.getString("name");
+      String type = scanner.getString("type");
       Boolean enable = scanner.getBoolean("enable");
-      if ("file".equals(name) && enable) {
-        FileScanner fileScanner = new FileScanner(scanner).setBlockingQueue(blockingQueue);
-        fileScanners.add(fileScanner);
+      if ("file".equals(type)) {
+        this.fileScanners.add(new FileScanner(scanner).setBlockingQueue(this.blockingQueue));
       }
     }
     return this;
   }
 
-  public void start() {
-    for (FileScanner fileScanner : fileScanners) {
+  public BlockingQueue<Map> getBlockingQueue() {
+    return blockingQueue;
+  }
 
+  public void start() {
+    this.executorService = Executors.newFixedThreadPool(fileScanners.size());
+    for (FileScanner fileScanner : fileScanners) {
+      this.executorService.execute(fileScanner);
     }
   }
 }

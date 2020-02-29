@@ -50,7 +50,8 @@ public abstract class DefaultOver implements Over {
     String oking = ok + ".ing";
     String dataing = data + ".ing";
     String fileName = new File(ok).getName();
-    onOver(dataing, oking, fileName);
+    String fileNameFaker = fileName.substring(0,fileName.lastIndexOf("."));
+    onOver(dataing, oking, fileNameFaker);
   }
 
   protected abstract void onOver(String dataingFilePath, String okingFilePath, String fileName);
