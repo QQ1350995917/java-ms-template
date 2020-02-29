@@ -9,7 +9,7 @@
       {
         "name": "name",
         "type": "file",
-        "enable": true,
+        "enable": false,
         "sourceDir": "/Users/pwd/Documents/etl/input",
         "suffix": "txt",
         "completeSuffix": "ok",

@@ -15,7 +15,7 @@ import java.nio.file.Paths;
  * @version 1.0.0
  * @since DistributionVersion
  */
-public class Delete extends DefaultOver {
+public class Delete extends DefaultFileOver {
 
   @Override
   protected void onOver(String dataingFilePath, String okingFilePath, String fileName) {

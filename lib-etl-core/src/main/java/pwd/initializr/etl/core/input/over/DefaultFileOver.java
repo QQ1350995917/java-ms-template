@@ -14,20 +14,20 @@ import java.io.File;
  * @version 1.0.0
  * @since DistributionVersion
  */
-public abstract class DefaultOver implements Over {
+public abstract class DefaultFileOver implements FileOver {
 
   private String completeSuffix;
   private String suffix;
 
-  public DefaultOver() {
+  public DefaultFileOver() {
   }
 
-  public DefaultOver(JSONObject config) {
+  public DefaultFileOver(JSONObject config) {
     this.setConfig(config);
   }
 
   @Override
-  public DefaultOver setConfig(JSONObject config) {
+  public DefaultFileOver setConfig(JSONObject config) {
     this.suffix = config.getString("suffix");
     this.completeSuffix = config.getString("completeSuffix");
     return this;

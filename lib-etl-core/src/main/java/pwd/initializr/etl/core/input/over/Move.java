@@ -18,7 +18,7 @@ import java.nio.file.Paths;
  * @version 1.0.0
  * @since DistributionVersion
  */
-public class Move extends DefaultOver {
+public class Move extends DefaultFileOver {
 
   protected String targetDir;
 
