@@ -25,6 +25,26 @@
             "targetDir": "file:///"
           }
         }
+      },
+      {
+        "name": "name",
+        "type": "file",
+        "enable": true,
+        "sourceDir": "file:///",
+        "suffix": "zip",
+        "completeSuffix": "ok",
+        "capacity": 5,
+        "processor": {
+          "class": "pwd.initializr.etl.core.input.processor.ZIPProcessor",
+          "charset":"utf-8",
+          "rowDelimiter": "\r\n",
+          "columnDelimiter": "|",
+          "threadNum": 3,
+          "over": {
+            "strategy": "MOVE",
+            "targetDir": "file:///"
+          }
+        }
       }
     ]
   }

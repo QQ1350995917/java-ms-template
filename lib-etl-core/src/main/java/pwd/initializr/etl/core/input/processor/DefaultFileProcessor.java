@@ -67,7 +67,7 @@ public abstract class DefaultFileProcessor implements FileProcessor {
     this.blockingQueue = blockingQueue;
   }
 
-  public void onOver(String filePathFaker) {
+  private void onOver(String filePathFaker) {
     this.getOver().over(filePathFaker);
   }
 
