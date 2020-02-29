@@ -61,7 +61,8 @@ class Consume implements Runnable {
     while (true) {
       try {
         System.out.println(this.blockingQueue.size());
-        this.blockingQueue.take();
+        Map take = this.blockingQueue.take();
+        System.out.println(JSON.toJSON(take));
       } catch (InterruptedException e) {
         e.printStackTrace();
       }
@@ -83,7 +84,7 @@ class Produce implements Runnable {
 
   @Override
   public void run() {
-    for (int i = 0; i < 1000; i++) {
+    for (int i = 0; i < 10; i++) {
       String fakeFilePath =
           sourceDir + File.separator + UUID.randomUUID().toString() + "-" + System
               .currentTimeMillis();
@@ -91,7 +92,7 @@ class Produce implements Runnable {
       String okFilePath = fakeFilePath + "." + completeSuffix;
       try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(dataFilePath));) {
         for (int j = 0; j < 100; j++) {
-          bufferedWriter.write("a|b|c|d|e|f|g");
+          bufferedWriter.write("我|和|我|的|祖|国|a");
           bufferedWriter.newLine();
         }
         bufferedWriter.flush();

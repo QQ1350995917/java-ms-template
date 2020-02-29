@@ -13,6 +13,8 @@ package pwd.initializr.etl.core.input.processor;
  */
 public interface FileProcessor extends Processor {
 
+  String getCharset();
+
   String getRowDelimiter();
 
   String getColumnDelimiter();

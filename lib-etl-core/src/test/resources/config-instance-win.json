@@ -16,6 +16,7 @@
         "capacity": 5,
         "processor": {
           "class": "pwd.initializr.etl.core.input.processor.TXTProcessor",
+          "charset":"utf-8",
           "rowDelimiter": "\r\n",
           "columnDelimiter": "\\|",
           "threadNum": 4,

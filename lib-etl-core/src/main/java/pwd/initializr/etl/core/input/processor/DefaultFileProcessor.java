@@ -21,6 +21,7 @@ import pwd.initializr.etl.core.util.FileUtil;
 public abstract class DefaultFileProcessor implements FileProcessor {
 
   private BlockingQueue<Map> blockingQueue;
+  private String charset;
   private String columnDelimiter;
   private String completeSuffix;
   private JSONObject overConfig;
@@ -37,6 +38,7 @@ public abstract class DefaultFileProcessor implements FileProcessor {
 
   @Override
   public DefaultFileProcessor setConfig(JSONObject config) {
+    this.charset = config.getString("charset");
     this.rowDelimiter = config.getString("rowDelimiter");
     this.columnDelimiter = config.getString("columnDelimiter");
     this.overConfig = config.getJSONObject("over");
@@ -67,6 +69,11 @@ public abstract class DefaultFileProcessor implements FileProcessor {
 
   public void onOver(String filePathFaker) {
     this.getOver().over(filePathFaker);
+  }
+
+  @Override
+  public String getCharset() {
+    return charset;
   }
 
   @Override

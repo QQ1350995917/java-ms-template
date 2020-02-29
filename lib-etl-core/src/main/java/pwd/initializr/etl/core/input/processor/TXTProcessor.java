@@ -4,6 +4,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,7 +26,7 @@ public class TXTProcessor extends DefaultFileProcessor {
     try (
         FileInputStream fileInputStream = new FileInputStream(filePath);
         BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
-        InputStreamReader inputStreamReader = new InputStreamReader(bufferedInputStream);
+        InputStreamReader inputStreamReader = new InputStreamReader(bufferedInputStream,Charset.forName(getCharset()));
         BufferedReader input = new BufferedReader(inputStreamReader);
     ) {
       String line;
