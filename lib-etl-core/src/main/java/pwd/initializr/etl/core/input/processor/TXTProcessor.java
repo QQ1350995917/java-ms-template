@@ -5,8 +5,6 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -24,7 +22,6 @@ public class TXTProcessor extends DefaultFileProcessor {
 
   @Override
   public void onProcess(String filePath) {
-
     try (
         FileInputStream fileInputStream = new FileInputStream(filePath);
         BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
@@ -43,8 +40,7 @@ public class TXTProcessor extends DefaultFileProcessor {
         for (int i = 0; i < split.length; i++) {
           map.put(Integer.toString(i), split[i]);
         }
-
-        this.getBlockingQueue().offer(map);
+        this.getBlockingQueue().put(map);
       }
     } catch (Exception e) {
       throw new RuntimeException(e);

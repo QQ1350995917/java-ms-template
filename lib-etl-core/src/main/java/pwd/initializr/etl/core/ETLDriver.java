@@ -22,5 +22,4 @@ import pwd.initializr.etl.core.util.ConfigUtil;
  */
 public class ETLDriver {
 
-
 }

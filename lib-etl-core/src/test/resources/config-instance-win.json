@@ -4,7 +4,7 @@
   "id": "id",
   "logDir": "",
   "input": {
-    "capacity": 100,
+    "capacity": 10,
     "scanners": [
       {
         "name": "name",
@@ -18,9 +18,9 @@
           "class": "pwd.initializr.etl.core.input.processor.TXTProcessor",
           "rowDelimiter": "\r\n",
           "columnDelimiter": "\\|",
-          "threadNum": 1,
+          "threadNum": 4,
           "over": {
-            "strategy": "Move",
+            "strategy": "Delete",
             "targetDir": "/Users/pwd/Documents/etl/output"
           }
         }

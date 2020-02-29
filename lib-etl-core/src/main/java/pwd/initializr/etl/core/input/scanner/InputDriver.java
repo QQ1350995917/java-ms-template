@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -24,7 +25,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 public class InputDriver {
 
-  private BlockingQueue<Map> blockingQueue = new LinkedBlockingQueue<>(128);
+  private BlockingQueue<Map> blockingQueue = new ArrayBlockingQueue<>(128);
   private ExecutorService executorService = Executors.newFixedThreadPool(1);
   private List<FileScanner> fileScanners = new LinkedList<>();
 

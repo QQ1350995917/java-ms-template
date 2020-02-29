@@ -1,11 +1,11 @@
 package pwd.initializr.etl.core.input.processor;
 
 import com.alibaba.fastjson.JSONObject;
-import java.io.File;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import pwd.initializr.etl.core.input.over.Over;
 import pwd.initializr.etl.core.input.over.OverFactory;
+import pwd.initializr.etl.core.util.FileUtil;
 
 /**
  * pwd.initializr.etl.core.input.processor@ms-web-initializr
@@ -21,11 +21,11 @@ import pwd.initializr.etl.core.input.over.OverFactory;
 public abstract class DefaultFileProcessor implements FileProcessor {
 
   private BlockingQueue<Map> blockingQueue;
-  private String rowDelimiter;
   private String columnDelimiter;
   private String completeSuffix;
-  private String suffix;
   private JSONObject overConfig;
+  private String rowDelimiter;
+  private String suffix;
 
   public DefaultFileProcessor() {
 
@@ -47,38 +47,35 @@ public abstract class DefaultFileProcessor implements FileProcessor {
     return this;
   }
 
-  public BlockingQueue<Map> getBlockingQueue() {
-    return this.blockingQueue;
-  }
-
-  public void setBlockingQueue(BlockingQueue<Map> blockingQueue) {
-    this.blockingQueue = blockingQueue;
-  }
-
   @Override
   public void process(Object object) {
     String filePathFaker = object.toString();
     if (filePathFaker != null) {
-      String ok = filePathFaker + "." + this.completeSuffix;
-      String data = filePathFaker + "." + this.suffix;
-      String oking = ok + ".ing";
-      String dataing = data + ".ing";
-      new File(ok).renameTo(new File(oking));
-      new File(data).renameTo(new File(dataing));
-      this.onProcess(dataing);
+
+      String dataIng = FileUtil.getIngFilePathByFaker(filePathFaker, this.suffix);
+      this.onProcess(dataIng);
       this.onOver(filePathFaker);
+      System.out.println();
     }
+  }  public BlockingQueue<Map> getBlockingQueue() {
+    return this.blockingQueue;
   }
 
-  @Override
-  public Over getOver() {
-    String strategy = overConfig.getString("strategy");
-    return OverFactory.getInstance(strategy, overConfig);
+  public abstract void onProcess(String filePath);  public void setBlockingQueue(BlockingQueue<Map> blockingQueue) {
+    this.blockingQueue = blockingQueue;
+  }
+
+  public void onOver(String filePathFaker) {
+    this.getOver().over(filePathFaker);
   }
 
   @Override
   public String getRowDelimiter() {
     return rowDelimiter;
+  }  @Override
+  public Over getOver() {
+    String strategy = overConfig.getString("strategy");
+    return OverFactory.getInstance(strategy, overConfig);
   }
 
   @Override
@@ -86,11 +83,9 @@ public abstract class DefaultFileProcessor implements FileProcessor {
     return columnDelimiter;
   }
 
-  public abstract void onProcess(String filePath);
 
-  public void onOver(String filePathFaker) {
-    this.getOver().over(filePathFaker);
-  }
+
+
 
 
 

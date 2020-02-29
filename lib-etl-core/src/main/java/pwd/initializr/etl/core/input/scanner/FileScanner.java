@@ -4,14 +4,13 @@ import com.alibaba.fastjson.JSONObject;
 import java.io.File;
 import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import pwd.initializr.etl.core.input.processor.Processor;
 import pwd.initializr.etl.core.input.processor.ProcessorFactory;
+import pwd.initializr.etl.core.util.FileUtil;
 
 /**
  * pwd.initializr.etl.core.input.scanner@ms-web-initializr
@@ -26,20 +25,15 @@ import pwd.initializr.etl.core.input.processor.ProcessorFactory;
  */
 public class FileScanner implements Runnable {
 
-  private final Lock lock = new ReentrantLock();
-  private final Condition inputScannerCondition = lock.newCondition();
-  private final Condition handleDriverCondition = lock.newCondition();
-
+  private BlockingQueue<Map> blockingQueue;
   private Integer capacity = 5;
   private int MAX_CAPACITY = capacity;
   private String completeSuffix = "ok";
+  private ThreadPoolExecutor executorService;
   private LinkedHashSet<String> inputScannerBlockingQueue;
   private JSONObject processorConfig;
   private String sourceDir;
   private String suffix;
-  private Integer threadNum = 1;
-
-  private BlockingQueue<Map> blockingQueue;
 
 
   public FileScanner() {
@@ -48,15 +42,6 @@ public class FileScanner implements Runnable {
 
   public FileScanner(JSONObject config) {
     this.setConfig(config);
-  }
-
-  public BlockingQueue<Map> getBlockingQueue() {
-    return this.blockingQueue;
-  }
-
-  public FileScanner setBlockingQueue(BlockingQueue blockingQueue) {
-    this.blockingQueue = blockingQueue;
-    return this;
   }
 
   public FileScanner setConfig(JSONObject config) {
@@ -70,26 +55,68 @@ public class FileScanner implements Runnable {
     this.processorConfig = config.getJSONObject("processor");
     this.processorConfig.put("suffix", this.suffix);
     this.processorConfig.put("completeSuffix", this.completeSuffix);
-    this.threadNum = this.processorConfig.getInteger("threadNum");
+    Integer threadNum = this.processorConfig.getInteger("threadNum");
+    executorService = new ThreadPoolExecutor(threadNum, threadNum, 60L, TimeUnit.SECONDS,
+        new ArrayBlockingQueue<>(1));
     return this;
   }
 
-  public String getCompleteSuffix() {
-    return completeSuffix;
+  @Override
+  public void run() {
+    while (true) {
+      File[] files = new File(getSourceDir()).listFiles((File dir, String name) -> {
+        if (name.endsWith(getCompleteSuffix())) {
+          return true;
+        }
+        return false;
+      });
+
+      if (files != null && files.length > 0) {
+        for (File file : files) {
+          String absolutePath = file.getAbsolutePath();
+          String filePathFaker = absolutePath.substring(0, absolutePath.lastIndexOf("."));
+          if (inputScannerBlockingQueue.size() >= MAX_CAPACITY) {
+            break;
+          } else {
+            inputScannerBlockingQueue.add(filePathFaker);
+          }
+        }
+      }
+
+      if (executorService.getActiveCount() < executorService.getMaximumPoolSize()) {
+        if (inputScannerBlockingQueue.iterator().hasNext()) {
+          String fakeFilePath = inputScannerBlockingQueue.iterator().next();
+          String data = FileUtil.getFilePathByFaker(fakeFilePath, suffix);
+          String dataIng = FileUtil.getIngFilePathByFaker(fakeFilePath, suffix);
+          String ok = FileUtil.getFilePathByFaker(fakeFilePath, completeSuffix);
+          String okIng = FileUtil.getIngFilePathByFaker(fakeFilePath, completeSuffix);
+          new File(ok).renameTo(new File(okIng));
+          new File(data).renameTo(new File(dataIng));
+          executorService.execute(() -> {
+            Processor fileProcessor = getFileProcessor();
+            if (fileProcessor != null) {
+              fileProcessor.setBlockingQueue(getBlockingQueue());
+              fileProcessor.process(fakeFilePath);
+            }
+          });
+          inputScannerBlockingQueue.remove(fakeFilePath);
+        }
+      } else {
+        try {
+          Thread.sleep(1000);
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
+      }
+    }
   }
 
   public String getSourceDir() {
     return sourceDir;
   }
 
-
-  @Override
-  public void run() {
-    ExecutorService executorService = Executors.newFixedThreadPool(threadNum + 1);
-    executorService.execute(new InputScanner());
-    for (int i = 0; i < threadNum; i++) {
-      executorService.execute(new InputScannerProcessor());
-    }
+  public String getCompleteSuffix() {
+    return completeSuffix;
   }
 
   private Processor getFileProcessor() {
@@ -100,74 +127,12 @@ public class FileScanner implements Runnable {
     return processor;
   }
 
-  class InputScanner implements Runnable {
-
-    @Override
-    public void run() {
-      while (true) {
-        try {
-          lock.lock();
-          while (inputScannerBlockingQueue.size() >= MAX_CAPACITY) {
-            inputScannerCondition.await();
-          }
-          File[] files = new File(getSourceDir()).listFiles((File dir, String name) -> {
-            if (name.endsWith(getCompleteSuffix())) {
-              return true;
-            }
-            return false;
-          });
-
-          if (files != null && files.length > 0) {
-            for (File file : files) {
-              String absolutePath = file.getAbsolutePath();
-              String filePathFaker = absolutePath.substring(0,absolutePath.lastIndexOf("."));
-              inputScannerBlockingQueue.add(filePathFaker);
-              if (inputScannerBlockingQueue.size() >= MAX_CAPACITY) {
-                break;
-              }
-            }
-          }
-
-          if (inputScannerBlockingQueue.size() > 0) {
-            handleDriverCondition.signalAll();
-          }
-        } catch (Exception e) {
-          e.printStackTrace();
-        } finally {
-          lock.unlock();
-        }
-      }
-    }
+  public BlockingQueue<Map> getBlockingQueue() {
+    return this.blockingQueue;
   }
 
-  class InputScannerProcessor implements Runnable {
-
-    @Override
-    public void run() {
-      while (true) {
-        try {
-          lock.lock();
-          while (inputScannerBlockingQueue.size() <= 0) {
-            handleDriverCondition.await();
-          }
-
-          String completeFilePath = inputScannerBlockingQueue.iterator().next();
-          Processor fileProcessor = getFileProcessor();
-          if (fileProcessor != null) {
-            fileProcessor.setBlockingQueue(getBlockingQueue());
-            fileProcessor.process(completeFilePath);
-          }
-          inputScannerBlockingQueue.remove(completeFilePath);
-
-          if (inputScannerBlockingQueue.size() < MAX_CAPACITY) {
-            inputScannerCondition.signalAll();
-          }
-        } catch (Exception e) {
-          e.printStackTrace();
-        } finally {
-          lock.unlock();
-        }
-      }
-    }
+  public FileScanner setBlockingQueue(BlockingQueue blockingQueue) {
+    this.blockingQueue = blockingQueue;
+    return this;
   }
 }
