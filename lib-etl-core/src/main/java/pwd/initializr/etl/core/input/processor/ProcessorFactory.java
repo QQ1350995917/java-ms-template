@@ -1,8 +1,5 @@
 package pwd.initializr.etl.core.input.processor;
 
-import com.alibaba.fastjson.JSONObject;
-import pwd.initializr.etl.core.input.over.Over;
-
 /**
  * pwd.initializr.etl.core.input.processor@ms-web-initializr
  *
@@ -16,7 +13,7 @@ import pwd.initializr.etl.core.input.over.Over;
  */
 public class ProcessorFactory {
 
-  public static Processor getInstance(String aClass){
+  public static Processor getInstance(String aClass) {
     Processor processor = null;
     try {
       processor = (Processor) Class.forName(aClass).newInstance();

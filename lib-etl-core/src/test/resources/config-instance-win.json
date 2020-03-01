@@ -25,6 +25,24 @@
             "targetDir": "/Users/pwd/Documents/etl/output"
           }
         }
+      },
+      {
+        "name": "name",
+        "type": "kafka",
+        "enable": true,
+        "bootstrapServers": "127.0.0.1:9092",
+        "groupId": "testGroupID",
+        "enableAutoCommit": true,
+        "autoCommitIntervalMs": 1000,
+        "autoOffsetReset": "earliest",
+        "sessionTimeoutMs": 30000,
+        "keyDeserializer": "org.apache.kafka.common.serialization.StringDeserializer",
+        "valueDeserializer": "org.apache.kafka.common.serialization.StringDeserializer",
+        "topic": "etl-test",
+        "processor": {
+          "class": "pwd.initializr.etl.core.input.processor.KAFKAProcessor",
+          "threadNum": 3
+        }
       }
     ]
   }

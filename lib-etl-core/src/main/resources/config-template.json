@@ -17,8 +17,7 @@
         "processor": {
           "class": "pwd.initializr.etl.core.input.processor.TXTProcessor",
           "charset":"utf-8",
-          "rowDelimiter": "\r\n",
-          "columnDelimiter": "|",
+          "delimiter": "\r\n",
           "threadNum": 3,
           "over": {
             "strategy": "MOVE",
@@ -37,13 +36,30 @@
         "processor": {
           "class": "pwd.initializr.etl.core.input.processor.ZIPProcessor",
           "charset":"utf-8",
-          "rowDelimiter": "\r\n",
-          "columnDelimiter": "|",
+          "delimiter": "\r\n",
           "threadNum": 3,
           "over": {
             "strategy": "MOVE",
             "targetDir": "file:///"
           }
+        }
+      },
+      {
+        "name": "name",
+        "type": "kafka",
+        "enable": true,
+        "bootstrapServers": "192.168.123.128:9092",
+        "groupId": "groupID",
+        "enableAutoCommit": true,
+        "autoCommitIntervalMs": 1000,
+        "autoOffsetReset": "earliest",
+        "sessionTimeoutMs": 30000,
+        "keyDeserializer": "org.apache.kafka.common.serialization.StringDeserializer",
+        "valueDeserializer": "org.apache.kafka.common.serialization.StringDeserializer",
+        "topic": "topic",
+        "processor": {
+          "class": "pwd.initializr.etl.core.input.processor.KAFKAProcessor",
+          "threadNum": 3
         }
       }
     ]

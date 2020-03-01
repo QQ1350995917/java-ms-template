@@ -42,7 +42,7 @@ public class ZIPProcessor extends TXTProcessor {
             Integer lineNum = 0;
             while ((line = bufferedReader.readLine()) != null) {
               lineNum++;
-              this.getBlockingQueue().put(super.buildMap(line, filePath, lineNum));
+              putToBlockingQueue(super.buildMap(line, filePath, lineNum));
             }
             bufferedReader.close();
           }

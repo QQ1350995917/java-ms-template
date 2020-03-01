@@ -20,11 +20,13 @@ public interface Processor {
 
   Processor setConfig(JSONObject config);
 
+  JSONObject getConfig();
+
   void process(Object object);
 
-  void setBlockingQueue(BlockingQueue<Map> blockingQueue);
+  Processor setBlockingQueue(BlockingQueue<Map<String,Object>> blockingQueue);
 
-  BlockingQueue getBlockingQueue();
+  void putToBlockingQueue(Map<String,Object> map);
 
   Over getOver();
 

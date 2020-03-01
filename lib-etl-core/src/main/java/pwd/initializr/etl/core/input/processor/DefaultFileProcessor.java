@@ -1,10 +1,6 @@
 package pwd.initializr.etl.core.input.processor;
 
 import com.alibaba.fastjson.JSONObject;
-import java.util.Map;
-import java.util.concurrent.BlockingQueue;
-import pwd.initializr.etl.core.input.over.Over;
-import pwd.initializr.etl.core.input.over.OverFactory;
 import pwd.initializr.etl.core.util.FileUtil;
 
 /**
@@ -18,83 +14,47 @@ import pwd.initializr.etl.core.util.FileUtil;
  * @version 1.0.0
  * @since DistributionVersion
  */
-public abstract class DefaultFileProcessor implements FileProcessor {
+public abstract class DefaultFileProcessor extends DefaultProcessor {
 
-  private BlockingQueue<Map> blockingQueue;
   private String charset;
-  private String columnDelimiter;
   private String completeSuffix;
+  private String delimiter;
   private JSONObject overConfig;
-  private String rowDelimiter;
   private String suffix;
 
-  public DefaultFileProcessor() {
-
+  public String getCharset() {
+    return charset;
   }
 
-  public DefaultFileProcessor(JSONObject config) {
-    this.setConfig(config);
-  }
-
-  @Override
-  public DefaultFileProcessor setConfig(JSONObject config) {
-    this.charset = config.getString("charset");
-    this.rowDelimiter = config.getString("rowDelimiter");
-    this.columnDelimiter = config.getString("columnDelimiter");
-    this.overConfig = config.getJSONObject("over");
-    this.suffix = config.getString("suffix");
-    this.completeSuffix = config.getString("completeSuffix");
-    this.overConfig.put("suffix", this.suffix);
-    this.overConfig.put("completeSuffix", this.completeSuffix);
-    return this;
+  public String getDelimiter() {
+    return delimiter;
   }
 
   @Override
   public void process(Object object) {
     String filePathFaker = object.toString();
     if (filePathFaker != null) {
-
       String dataIng = FileUtil.getIngFilePathByFaker(filePathFaker, this.suffix);
       this.onProcess(dataIng);
       this.onOver(filePathFaker);
-      System.out.println();
     }
-  }  public BlockingQueue<Map> getBlockingQueue() {
-    return this.blockingQueue;
   }
 
-  public abstract void onProcess(String filePath);  public void setBlockingQueue(BlockingQueue<Map> blockingQueue) {
-    this.blockingQueue = blockingQueue;
-  }
+  public abstract void onProcess(String filePath);
 
   private void onOver(String filePathFaker) {
     this.getOver().over(filePathFaker);
   }
 
   @Override
-  public String getCharset() {
-    return charset;
+  public Processor setConfig(JSONObject config) {
+    this.charset = config.getString("charset");
+    this.delimiter = config.getString("delimiter");
+    this.overConfig = config.getJSONObject("over");
+    this.suffix = config.getString("suffix");
+    this.completeSuffix = config.getString("completeSuffix");
+    this.overConfig.put("suffix", this.suffix);
+    this.overConfig.put("completeSuffix", this.completeSuffix);
+    return super.setConfig(config);
   }
-
-  @Override
-  public String getRowDelimiter() {
-    return rowDelimiter;
-  }  @Override
-  public Over getOver() {
-    String strategy = overConfig.getString("strategy");
-    return OverFactory.getInstance(strategy, overConfig);
-  }
-
-  @Override
-  public String getColumnDelimiter() {
-    return columnDelimiter;
-  }
-
-
-
-
-
-
-
-
 }

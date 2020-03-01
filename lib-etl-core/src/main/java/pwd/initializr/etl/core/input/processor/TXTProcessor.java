@@ -33,22 +33,18 @@ public class TXTProcessor extends DefaultFileProcessor {
       Integer lineNum = 0;
       while ((line = input.readLine()) != null) {
         lineNum++;
-        this.getBlockingQueue().put(buildMap(line,filePath,lineNum));
+        putToBlockingQueue(buildMap(line,filePath,lineNum));
       }
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
   }
 
-  protected Map<String,String> buildMap(String line,String filePath,Integer lineNum){
-    String[] split = line.split(getColumnDelimiter());
-    Map<String, String> map = new HashMap<>(split.length + 2);
+  protected Map<String,Object> buildMap(String line,String filePath,Integer lineNum){
+    Map<String, Object> map = new HashMap<>(3);
     map.put("_file", filePath);
-    map.put("_line_number", Integer.toString(lineNum++));
-
-    for (int i = 0; i < split.length; i++) {
-      map.put(Integer.toString(i), split[i]);
-    }
+    map.put("_lineNumber", Integer.toString(lineNum++));
+    map.put("_value", line);
     return map;
   }
 }
