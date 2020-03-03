@@ -40,8 +40,8 @@ public class HandlerDriver {
     return this;
   }
 
-  public HandlerDriver setInputBlockingQueue(BlockingQueue<Map<String, Object>> blockingQueue) {
-    this.inputBlockingQueue = blockingQueue;
+  public HandlerDriver setInputBlockingQueue(BlockingQueue<Map<String, Object>> inputBlockingQueue) {
+    this.inputBlockingQueue = inputBlockingQueue;
     return this;
   }
 
@@ -81,7 +81,4 @@ public class HandlerDriver {
     return this;
   }
 
-  private void loadPlugin() {
-
-  }
 }

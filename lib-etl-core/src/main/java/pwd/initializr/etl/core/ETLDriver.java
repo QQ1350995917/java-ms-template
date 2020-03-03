@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import pwd.initializr.etl.core.handle.HandlerDriver;
 import pwd.initializr.etl.core.input.InputDriver;
+import pwd.initializr.etl.core.output.OutputDriver;
 import pwd.initializr.etl.core.util.ConfigUtil;
 import pwd.initializr.etl.core.util.PluginUtil;
 
@@ -56,15 +57,18 @@ public class ETLDriver {
     loadPlugin(pluginDir);
 
     JSONObject config = ConfigUtil.loadConfig(configJsonPath);
+
     JSONObject inputConfig = config.getJSONObject("input");
-    JSONObject handleConfig = config.getJSONObject("handle");
     InputDriver inputDriver = new InputDriver().setConfig(inputConfig).start();
     this.inputBlockingQueue = inputDriver.getInputBlockingQueue();
 
+    JSONObject handleConfig = config.getJSONObject("handle");
     HandlerDriver handlerDriver = new HandlerDriver().setConfig(handleConfig)
         .setInputBlockingQueue(inputBlockingQueue).start();
-
     this.outBlockingQueue = handlerDriver.getOutBlockingQueue();
+
+    JSONObject outputConfig = config.getJSONObject("output");
+    new OutputDriver().setConfig(outputConfig).setOutBlockingQueue(this.outBlockingQueue).start();
 
     return this;
   }

@@ -33,7 +33,7 @@ public class TXTProcessor extends DefaultFileProcessor {
       Integer lineNum = 0;
       while ((line = input.readLine()) != null) {
         lineNum++;
-        putToBlockingQueue(buildMap(line,filePath,lineNum));
+        putToInputBlockingQueue(buildMap(line,filePath,lineNum));
       }
     } catch (Exception e) {
       throw new RuntimeException(e);

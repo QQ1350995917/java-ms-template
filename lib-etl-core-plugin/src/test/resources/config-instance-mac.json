@@ -65,5 +65,27 @@
         ]
       }
     ]
+  },
+  "output": {
+    "outputs": [
+      {
+        "name": "name",
+        "type": "kafka",
+        "id": "kafka",
+        "enable": true,
+        "threadNum": 1,
+        "bootstrapServers": "127.0.0.1:9092",
+        "acks": "1",
+        "retries": 0,
+        "compressionType": "snappy",
+        "batchSize": 100,
+        "lingerMs": 100,
+        "bufferMemory": 10240,
+        "maxInFlightRequestsPerConnection": 1,
+        "keySerializer": "org.apache.kafka.common.serialization.StringSerializer",
+        "valueSerializer": "org.apache.kafka.common.serialization.StringSerializer",
+        "topic": "etl-test-out"
+      }
+    ]
   }
 }

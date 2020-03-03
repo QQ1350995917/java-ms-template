@@ -66,7 +66,7 @@ public class FILEScanner extends DefaultScanner {
           executorService.execute(() -> {
             Processor fileProcessor = getProcessor();
             if (fileProcessor != null) {
-              fileProcessor.setBlockingQueue(getBlockingQueue());
+              fileProcessor.setInputBlockingQueue(this.getInputBlockingQueue());
               fileProcessor.process(fakeFilePath);
             }
           });

@@ -24,9 +24,9 @@ public interface Processor {
 
   void process(Object object);
 
-  Processor setBlockingQueue(BlockingQueue<Map<String,Object>> blockingQueue);
+  Processor setInputBlockingQueue(BlockingQueue<Map<String,Object>> inputBlockingQueue);
 
-  void putToBlockingQueue(Map<String,Object> map);
+  void putToInputBlockingQueue(Map<String,Object> map);
 
   Over getOver();
 

@@ -19,7 +19,7 @@ public class KAFKAProcessor extends DefaultMQProcessor {
   @Override
   public void process(Object object) {
     Map<String,Object> map = (Map)object;
-    putToBlockingQueue(map);
+    putToInputBlockingQueue(map);
   }
 
 }

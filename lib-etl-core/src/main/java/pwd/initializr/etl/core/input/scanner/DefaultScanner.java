@@ -19,17 +19,17 @@ import pwd.initializr.etl.core.input.processor.ProcessorFactory;
  */
 public abstract class DefaultScanner implements Scanner {
 
-  private BlockingQueue<Map<String, Object>> blockingQueue;
   private JSONObject config;
+  private BlockingQueue<Map<String, Object>> inputBlockingQueue;
 
   @Override
-  public BlockingQueue<Map<String, Object>> getBlockingQueue() {
-    return blockingQueue;
+  public BlockingQueue<Map<String, Object>> getInputBlockingQueue() {
+    return this.inputBlockingQueue;
   }
 
   @Override
-  public Scanner setBlockingQueue(BlockingQueue<Map<String, Object>> blockingQueue) {
-    this.blockingQueue = blockingQueue;
+  public Scanner setInputBlockingQueue(BlockingQueue<Map<String, Object>> blockingQueue) {
+    this.inputBlockingQueue = blockingQueue;
     return this;
   }
 
@@ -39,7 +39,7 @@ public abstract class DefaultScanner implements Scanner {
     String aClass = processorConfig.getString("class");
     Processor processor = ProcessorFactory.getInstance(aClass);
     processor.setConfig(processorConfig);
-    processor.setBlockingQueue(this.getBlockingQueue());
+    processor.setInputBlockingQueue(this.getInputBlockingQueue());
     return processor;
   }
 

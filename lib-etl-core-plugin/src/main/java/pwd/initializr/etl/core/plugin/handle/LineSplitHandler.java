@@ -42,4 +42,5 @@ public class LineSplitHandler implements Handler {
   public void update(JSONObject config) {
 
   }
+
 }

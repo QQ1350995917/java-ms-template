@@ -18,9 +18,9 @@ import pwd.initializr.etl.core.input.processor.Processor;
  */
 public interface Scanner extends Runnable{
 
-  BlockingQueue<Map<String, Object>> getBlockingQueue();
+  BlockingQueue<Map<String, Object>> getInputBlockingQueue();
 
-  Scanner setBlockingQueue(BlockingQueue<Map<String, Object>> blockingQueue);
+  Scanner setInputBlockingQueue(BlockingQueue<Map<String, Object>> blockingQueue);
 
   Processor getProcessor();
 

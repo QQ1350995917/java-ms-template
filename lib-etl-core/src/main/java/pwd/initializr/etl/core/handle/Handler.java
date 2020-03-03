@@ -21,4 +21,5 @@ public interface Handler {
   void init(JSONObject config);
 
   void update(JSONObject config);
+
 }

@@ -20,8 +20,7 @@ import pwd.initializr.etl.core.input.over.OverFactory;
 public abstract class DefaultProcessor implements Processor {
 
   protected JSONObject config;
-
-  private BlockingQueue<Map<String, Object>> blockingQueue;
+  private BlockingQueue<Map<String, Object>> inputBlockingQueue;
 
   @Override
   public Processor setConfig(JSONObject config) {
@@ -35,15 +34,15 @@ public abstract class DefaultProcessor implements Processor {
   }
 
   @Override
-  public Processor setBlockingQueue(BlockingQueue<Map<String, Object>> blockingQueue) {
-    this.blockingQueue = blockingQueue;
+  public Processor setInputBlockingQueue(BlockingQueue<Map<String, Object>> inputBlockingQueue) {
+    this.inputBlockingQueue = inputBlockingQueue;
     return this;
   }
 
   @Override
-  public void putToBlockingQueue(Map<String, Object> map) {
+  public void putToInputBlockingQueue(Map<String, Object> map) {
     try {
-      blockingQueue.put(map);
+      this.inputBlockingQueue.put(map);
     } catch (InterruptedException e) {
       throw new RuntimeException(e);
     }

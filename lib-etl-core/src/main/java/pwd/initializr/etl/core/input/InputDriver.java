@@ -6,7 +6,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -28,7 +27,8 @@ import pwd.initializr.etl.core.input.scanner.ScannerFactory;
 public class InputDriver {
 
   private ExecutorService executorService;
-  private BlockingQueue<Map<String, Object>> inputBlockingQueue = new ArrayBlockingQueue<>(128);
+  private BlockingQueue<Map<String, Object>> inputBlockingQueue;
+  private BlockingQueue<Map<String, Object>> outputBlockingQueue;
   private List<Scanner> scanners = new LinkedList<>();
 
   public BlockingQueue<Map<String, Object>> getInputBlockingQueue() {
@@ -45,9 +45,15 @@ public class InputDriver {
       JSONObject scannerConfig = (JSONObject) iterator.next();
       String type = scannerConfig.getString("type");
       Scanner instance = ScannerFactory.getInstance(type);
-      instance.setConfig(scannerConfig).setBlockingQueue(this.inputBlockingQueue);
+      instance.setConfig(scannerConfig).setInputBlockingQueue(this.inputBlockingQueue);
       this.scanners.add(instance);
     }
+    return this;
+  }
+
+  public InputDriver setOutputBlockingQueue(
+      BlockingQueue<Map<String, Object>> outputBlockingQueue) {
+    this.outputBlockingQueue = outputBlockingQueue;
     return this;
   }
 
