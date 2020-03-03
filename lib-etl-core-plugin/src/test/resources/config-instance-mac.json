@@ -4,62 +4,41 @@
   "id": "id",
   "logDir": "",
   "input": {
-    "capacity": 100,
+    "capacity": 10,
     "scanners": [
       {
         "name": "name",
         "type": "file",
-        "id": "file",
-        "enable": true,
-        "sourceDir": "file:///",
+        "enable": false,
+        "sourceDir": "/Users/pwd/Documents/etl/input",
         "suffix": "txt",
         "completeSuffix": "ok",
         "capacity": 5,
         "processor": {
           "class": "pwd.initializr.etl.core.input.processor.TXTProcessor",
-          "charset": "utf-8",
-          "delimiter": "\r\n",
-          "threadNum": 3,
+          "charset":"utf-8",
+          "rowDelimiter": "\r\n",
+          "columnDelimiter": "\\|",
+          "threadNum": 4,
           "over": {
-            "strategy": "MOVE",
-            "targetDir": "file:///"
-          }
-        }
-      },
-      {
-        "name": "name",
-        "type": "file",
-        "id": "file",
-        "enable": true,
-        "sourceDir": "file:///",
-        "suffix": "zip",
-        "completeSuffix": "ok",
-        "capacity": 5,
-        "processor": {
-          "class": "pwd.initializr.etl.core.input.processor.ZIPProcessor",
-          "charset": "utf-8",
-          "delimiter": "\r\n",
-          "threadNum": 3,
-          "over": {
-            "strategy": "MOVE",
-            "targetDir": "file:///"
+            "strategy": "Delete",
+            "targetDir": "/Users/pwd/Documents/etl/output"
           }
         }
       },
       {
         "name": "name",
         "type": "kafka",
-        "id": "kafka",
         "enable": true,
-        "bootstrapServers": "192.168.123.128:9092",
-        "groupId": "groupID",
+        "bootstrapServers": "127.0.0.1:9092",
+        "groupId": "testGroupID",
         "enableAutoCommit": true,
         "autoCommitIntervalMs": 1000,
         "autoOffsetReset": "earliest",
         "sessionTimeoutMs": 30000,
         "keyDeserializer": "org.apache.kafka.common.serialization.StringDeserializer",
         "valueDeserializer": "org.apache.kafka.common.serialization.StringDeserializer",
-        "topic": "topic",
+        "topic": "etl-test",
         "processor": {
           "class": "pwd.initializr.etl.core.input.processor.KAFKAProcessor",
           "threadNum": 3

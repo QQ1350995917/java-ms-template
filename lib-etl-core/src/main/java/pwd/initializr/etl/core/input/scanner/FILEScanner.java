@@ -95,7 +95,7 @@ public class FILEScanner extends DefaultScanner {
     this.processorConfig.put("suffix", this.suffix);
     this.processorConfig.put("completeSuffix", this.completeSuffix);
     Integer threadNum = this.processorConfig.getInteger("threadNum");
-    executorService = new ThreadPoolExecutor(threadNum, threadNum, 60L, TimeUnit.SECONDS,
+    this.executorService = new ThreadPoolExecutor(threadNum, threadNum, 60L, TimeUnit.SECONDS,
         new ArrayBlockingQueue<>(1));
     return super.setConfig(config);
   }

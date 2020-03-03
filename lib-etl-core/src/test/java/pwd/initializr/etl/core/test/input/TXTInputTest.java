@@ -1,18 +1,13 @@
 package pwd.initializr.etl.core.test.input;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.BlockingQueue;
-import pwd.initializr.etl.core.input.scanner.InputDriver;
-import pwd.initializr.etl.core.util.ConfigUtil;
+import pwd.initializr.etl.core.ETLDriver;
 
 /**
  * pwd.initializr.etl.core.test.input@ms-web-initializr
@@ -28,26 +23,15 @@ import pwd.initializr.etl.core.util.ConfigUtil;
 public class TXTInputTest {
 
   public static void main(String[] args) {
-    TXTInputTest txtInputTest = new TXTInputTest();
-    String jsonFilePath = "/Users/pwd/workspace/dingpw/ms-web-initializr/lib-etl-core/src/test/resources/config-instance-win.json";
-    JSONObject config = ConfigUtil.loadConfig(jsonFilePath);
-    JSONObject inputConfig = config.getJSONObject("input");
-    InputDriver inputDriver = new InputDriver(inputConfig);
-    inputDriver.start();
-    BlockingQueue<Map<String,Object>> blockingQueue = inputDriver.getBlockingQueue();
-    JSONArray scanners = inputConfig.getJSONArray("scanners");
-    Iterator<Object> iterator = scanners.iterator();
-    while (iterator.hasNext()) {
-      JSONObject next = (JSONObject)iterator.next();
-      String sourceDir = next.getString("sourceDir");
-      String suffix = next.getString("suffix");
-      String completeSuffix = next.getString("completeSuffix");
-      new Thread(txtInputTest.new Produce(sourceDir,suffix,completeSuffix)).start();
-    }
-
+    String jsonFilePath = "/Users/pwd/workspace/dingpw/ms-web-initializr/lib-etl-core/src/test/resources/config-instance-mac.json";
+    ETLDriver etlDriver = new ETLDriver().start(jsonFilePath, null);
+    BlockingQueue<Map<String, Object>> blockingQueue = etlDriver.getInputBlockingQueue();
     new Thread(new Consume(blockingQueue)).start();
+    String completeSuffix = "ok";
+    String sourceDir = "";
+    String suffix = "txt";
+    new Thread(new TXTInputTest().new Produce(sourceDir, suffix, completeSuffix)).start();
   }
-
 
 
   class Produce implements Runnable {
@@ -86,8 +70,7 @@ public class TXTInputTest {
           e.printStackTrace();
         }
       }
-
     }
-}
+  }
 
 }

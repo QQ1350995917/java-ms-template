@@ -1,16 +1,12 @@
 package pwd.initializr.etl.core.test.input;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.BlockingQueue;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
-import pwd.initializr.etl.core.input.scanner.InputDriver;
-import pwd.initializr.etl.core.util.ConfigUtil;
+import pwd.initializr.etl.core.ETLDriver;
 
 /**
  * pwd.initializr.etl.core.test.input@ms-web-initializr
@@ -26,15 +22,11 @@ import pwd.initializr.etl.core.util.ConfigUtil;
 public class KAFKAInputTest {
 
   public static void main(String[] args) {
-    KAFKAInputTest kafkaInputTest = new KAFKAInputTest();
-    String jsonFilePath = "/Users/pwd/workspace/dingpw/ms-web-initializr/lib-etl-core/src/test/resources/config-instance-win.json";
-    JSONObject config = ConfigUtil.loadConfig(jsonFilePath);
-    JSONObject inputConfig = config.getJSONObject("input");
-    InputDriver inputDriver = new InputDriver(inputConfig);
-    inputDriver.start();
-    BlockingQueue<Map<String,Object>> blockingQueue = inputDriver.getBlockingQueue();
+    String jsonFilePath = "/Users/pwd/workspace/dingpw/ms-web-initializr/lib-etl-core/src/test/resources/config-instance-mac.json";
+    ETLDriver etlDriver = new ETLDriver().start(jsonFilePath,null);
+    BlockingQueue<Map<String, Object>> blockingQueue = etlDriver.getInputBlockingQueue();
     new Thread(new Consume(blockingQueue)).start();
-//    new Thread(kafkaInputTest.new Produce());
+//    new Thread(new KAFKAInputTest().new Produce());
   }
 
   class Produce implements Runnable {

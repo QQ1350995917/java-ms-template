@@ -1,4 +1,4 @@
-package pwd.initializr.etl.core.input.scanner;
+package pwd.initializr.etl.core.input;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -11,6 +11,8 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
+import pwd.initializr.etl.core.input.scanner.Scanner;
+import pwd.initializr.etl.core.input.scanner.ScannerFactory;
 
 /**
  * pwd.initializr.etl.core.input.scanner@ms-web-initializr
@@ -25,21 +27,17 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 public class InputDriver {
 
-  private BlockingQueue<Map<String, Object>> blockingQueue = new ArrayBlockingQueue<>(128);
-  private ExecutorService executorService = Executors.newFixedThreadPool(1);
+  private ExecutorService executorService;
+  private BlockingQueue<Map<String, Object>> inputBlockingQueue = new ArrayBlockingQueue<>(128);
   private List<Scanner> scanners = new LinkedList<>();
 
-  public InputDriver() {
-
-  }
-
-  public InputDriver(JSONObject config) {
-    this.setConfig(config);
+  public BlockingQueue<Map<String, Object>> getInputBlockingQueue() {
+    return inputBlockingQueue;
   }
 
   public InputDriver setConfig(JSONObject config) {
     Integer capacity = config.getInteger("capacity");
-    this.blockingQueue = new LinkedBlockingQueue<>(capacity);
+    this.inputBlockingQueue = new LinkedBlockingQueue<>(capacity);
 
     JSONArray scanners = config.getJSONArray("scanners");
     Iterator<Object> iterator = scanners.iterator();
@@ -47,22 +45,19 @@ public class InputDriver {
       JSONObject scannerConfig = (JSONObject) iterator.next();
       String type = scannerConfig.getString("type");
       Scanner instance = ScannerFactory.getInstance(type);
-      instance.setConfig(scannerConfig).setBlockingQueue(this.blockingQueue);
+      instance.setConfig(scannerConfig).setBlockingQueue(this.inputBlockingQueue);
       this.scanners.add(instance);
     }
     return this;
   }
 
-  public BlockingQueue<Map<String, Object>> getBlockingQueue() {
-    return blockingQueue;
-  }
-
-  public void start() {
+  public InputDriver start() {
     this.executorService = Executors.newFixedThreadPool(scanners.size());
     for (Scanner scanner : scanners) {
       if (scanner.isEnable()) {
         this.executorService.execute(scanner);
       }
     }
+    return this;
   }
 }
