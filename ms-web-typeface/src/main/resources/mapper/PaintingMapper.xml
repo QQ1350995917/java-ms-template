@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pwd.initializr.typeface.persistence.mapper.PaintingMapper">
+  <!-- insert -->
+  <insert id="insert" keyProperty="id"
+    parameterType="pwd.initializr.typeface.persistence.dao.PaintingEntity"
+    useGeneratedKeys="true">
+		insert into `painting` (
+		`user_id`,
+		`font_id`,
+		`font_size`,
+		`content`,
+		`background`,
+		`foreground`,
+		`width`,
+		`height`,
+		`image_url`,
+		`status`,
+		`create_time`,
+		`update_time`
+		) values (
+		#{paintingEntity.userId},
+		#{paintingEntity.fontId},
+		#{paintingEntity.fontSize},
+		#{paintingEntity.content},
+		#{paintingEntity.background},
+		#{paintingEntity.foreground},
+		#{paintingEntity.width},
+		#{paintingEntity.height},
+		#{paintingEntity.imageUrl},
+		#{paintingEntity.status},
+		#{paintingEntity.createTime},
+		#{paintingEntity.updateTime})
+	</insert>
+
+  <!--findById-->
+  <select id="findById" parameterType="java.lang.Long"
+    resultType="pwd.initializr.typeface.persistence.dao.PaintingEntity">
+		select
+		`id` as id,
+		`user_id` as userId,
+		`font_id` as fontId,
+		`font_size` as fileUrl,
+		`content`,
+		`background`,
+		`foreground`,
+		`width`,
+		`height`,
+		`image_url` as imageUrl,
+		`status` as status,
+		`create_time` as createTime,
+		`update_time` as updateTime
+		from `painting`
+		where id = #{id}
+	</select>
+
+  <!--countByCondition-->
+  <select id="countByCondition"
+    parameterType="pwd.initializr.typeface.persistence.dao.PaintingEntity"
+    resultType="java.lang.Long">
+    select count(*)
+    from `painting`
+    <where>
+      <include refid="whereCondition"></include>
+    </where>
+  </select>
+
+  <!--findByCondition-->
+  <select id="findByCondition"
+    parameterType="pwd.initializr.typeface.persistence.dao.PaintingEntity"
+    resultType="pwd.initializr.typeface.persistence.dao.PaintingEntity">
+    select
+    `id` as id,
+    `user_id` as userId,
+    `font_id` as fontId,
+    `font_size` as fontSize,
+    `content`,
+    `background`,
+    `foreground`,
+    `width`,
+    `height`,
+    `image_url` as imageUrl,
+    `status` as status,
+    `create_time` as createTime,
+    `update_time` as updateTime
+    from `painting`
+    <where>
+      <include refid="whereCondition"></include>
+    </where>
+    limit #{offset}, #{rows}
+  </select>
+
+  <!--deleteByIds-->
+  <delete id="deleteByIds" parameterType="java.util.List">
+    DELETE FROM `painting` WHERE `id` IN
+    <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
+      #{id}
+    </foreach>
+  </delete>
+
+  <sql id="whereCondition">
+    <if test="paintingEntity.fontId != null">
+      `font_id` = #{paintingEntity.fontId}
+    </if>
+    <if test="paintingEntity.content != null">
+      `content` like #{paintingEntity.content}
+    </if>
+    <if test="paintingEntity.userId != null">
+      `user_id` = #{paintingEntity.userId}
+    </if>
+    AND status != -1
+  </sql>
+
+</mapper>

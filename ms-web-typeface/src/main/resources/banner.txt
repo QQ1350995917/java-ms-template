@@ -1,0 +1,24 @@
+
+
+         tttt                                                                          ffffffffffffffff
+      ttt:::t                                                                         f::::::::::::::::f
+      t:::::t                                                                        f::::::::::::::::::f
+      t:::::t                                                                        f::::::fffffff:::::f
+ttttttt:::::tttttttyyyyyyy           yyyyyyyppppp   ppppppppp       eeeeeeeeeeee     f:::::f       ffffffaaaaaaaaaaaaa      cccccccccccccccc    eeeeeeeeeeee
+t:::::::::::::::::t y:::::y         y:::::y p::::ppp:::::::::p    ee::::::::::::ee   f:::::f             a::::::::::::a   cc:::::::::::::::c  ee::::::::::::ee
+t:::::::::::::::::t  y:::::y       y:::::y  p:::::::::::::::::p  e::::::eeeee:::::eef:::::::ffffff       aaaaaaaaa:::::a c:::::::::::::::::c e::::::eeeee:::::ee
+tttttt:::::::tttttt   y:::::y     y:::::y   pp::::::ppppp::::::pe::::::e     e:::::ef::::::::::::f                a::::ac:::::::cccccc:::::ce::::::e     e:::::e
+      t:::::t          y:::::y   y:::::y     p:::::p     p:::::pe:::::::eeeee::::::ef::::::::::::f         aaaaaaa:::::ac::::::c     ccccccce:::::::eeeee::::::e
+      t:::::t           y:::::y y:::::y      p:::::p     p:::::pe:::::::::::::::::e f:::::::ffffff       aa::::::::::::ac:::::c             e:::::::::::::::::e
+      t:::::t            y:::::y:::::y       p:::::p     p:::::pe::::::eeeeeeeeeee   f:::::f            a::::aaaa::::::ac:::::c             e::::::eeeeeeeeeee
+      t:::::t    tttttt   y:::::::::y        p:::::p    p::::::pe:::::::e            f:::::f           a::::a    a:::::ac::::::c     ccccccce:::::::e
+      t::::::tttt:::::t    y:::::::y         p:::::ppppp:::::::pe::::::::e          f:::::::f          a::::a    a:::::ac:::::::cccccc:::::ce::::::::e
+      tt::::::::::::::t     y:::::y          p::::::::::::::::p  e::::::::eeeeeeee  f:::::::f          a:::::aaaa::::::a c:::::::::::::::::c e::::::::eeeeeeee
+        tt:::::::::::tt    y:::::y           p::::::::::::::pp    ee:::::::::::::e  f:::::::f           a::::::::::aa:::a cc:::::::::::::::c  ee:::::::::::::e
+          ttttttttttt     y:::::y            p::::::pppppppp        eeeeeeeeeeeeee  fffffffff            aaaaaaaaaa  aaaa   cccccccccccccccc    eeeeeeeeeeeeee
+                         y:::::y             p:::::p
+                        y:::::y              p:::::p
+                       y:::::y              p:::::::p
+                      y:::::y               p:::::::p
+                     yyyyyyy                p:::::::p
+                                            ppppppppp

@@ -36,6 +36,7 @@
     <module>ms-web-article</module>
     <!--<module>ms-web-etl</module>-->
     <!--<module>ms-web-etl-plugin</module>-->
+    <module>ms-web-typeface</module>
   </modules>
 
   <properties>

@@ -26,22 +26,29 @@ import lombok.ToString;
 @ToString
 public class ObjectList<T> {
 
-    /**
-     * 总数据量
-     */
-    private Long total;
-    /**
-     * 总页数
-     */
-    private Long pages;
-    /**
-     * 当前页码
-     */
-    private Long index;
-    /**
-     * 当前页面容量
-     */
-    private Long size;
+  private List<T> elements = new LinkedList<>();
+  /**
+   * 当前页码
+   */
+  private Long index;
+  /**
+   * 总页数
+   */
+  private Long pages;
+  /**
+   * 当前页面容量
+   */
+  private Long size;
+  /**
+   * 总数据量
+   */
+  private Long total;
 
-    private List<T> elements = new LinkedList<>();
+  public ObjectList(Long total, Long index, Long size, List<T> elements) {
+    this.total = total;
+    this.index = index;
+    this.size = size;
+    this.elements = elements;
+    this.pages = total % size == 0 ? (total / size) : (total / size + 1);
+  }
 }
