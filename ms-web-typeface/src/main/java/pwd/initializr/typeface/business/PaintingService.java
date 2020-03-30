@@ -1,9 +1,9 @@
 package pwd.initializr.typeface.business;
 
 import java.util.List;
+import org.springframework.stereotype.Service;
 import pwd.initializr.common.web.business.bo.ObjectList;
 import pwd.initializr.typeface.business.bo.PaintingBO;
-import pwd.initializr.typeface.persistence.dao.PaintingEntity;
 
 /**
  * pwd.initializr.typeface.business@ms-web-initializr
@@ -16,7 +16,10 @@ import pwd.initializr.typeface.persistence.dao.PaintingEntity;
  * @version 1.0.0
  * @since DistributionVersion
  */
+@Service
 public interface PaintingService {
+
+  PaintingBO create(PaintingBO paintingBO);
 
   List<Integer> deleteByIds(List<Long> ids);
 
@@ -24,6 +27,4 @@ public interface PaintingService {
       Long pageSize);
 
   PaintingBO findById(Long id);
-
-  PaintingBO save(PaintingBO paintingBO);
 }

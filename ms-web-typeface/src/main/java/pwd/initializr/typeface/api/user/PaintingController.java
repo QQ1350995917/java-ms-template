@@ -50,7 +50,8 @@ public class PaintingController extends UserController implements PaintingApi {
   public void createPainting(PaintingVO input) {
     PaintingBO paintingBO = new PaintingBO();
     BeanUtils.copyProperties(input, paintingBO);
-    PaintingBO save = paintingService.save(paintingBO);
+    paintingBO.setUserId(getUid());
+    PaintingBO save = paintingService.create(paintingBO);
     BeanUtils.copyProperties(save, input);
     outputData(input);
   }

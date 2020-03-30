@@ -16,6 +16,17 @@ import pwd.initializr.storage.business.bo.Storage;
  */
 public interface StorageService {
 
-  Storage uploadFile(InputStream inputStream, String filename) throws Exception;
+  Storage uploadFile(String bucketName, String objectName, InputStream inputStream)
+      throws Exception;
 
+  Storage uploadFile(String bucketName, String objectName, InputStream inputStream,String contentType)
+      throws Exception;
+
+  Storage uploadHtml(String bucketName, String objectName, String html) throws Exception;
+
+  Storage uploadImage(String bucketName, String objectName, InputStream inputStream)
+      throws Exception;
+
+  Storage uploadVideo(String bucketName, String objectName, InputStream inputStream)
+      throws Exception;
 }

@@ -30,25 +30,25 @@ public class PaintingVO {
 
   @ApiModelProperty(name = "background", value = "背景色")
   @NotNull(message = "0")
-  private String background;
+  private String background = "#00000000";
   @ApiModelProperty(name = "content", value = "内容")
   @NotNull(message = "0")
-  private String content;
+  private String content ="好雨知时节\r\n当春乃发生\r\n随风潜入夜\r\n润物细无声\r\n野径云俱黑\r\n江船火独明\r\n晓看红湿处\r\n花重锦官城";
   @ApiModelProperty(name = "createTime", value = "创建时间")
   @NotNull(message = "0")
   private Long createTime;
   @ApiModelProperty(name = "fontId", value = "字体ID")
   @NotNull(message = "0")
-  private Long fontId;
+  private Long fontId = 74L;
   @ApiModelProperty(name = "fontSize", value = "内容字体大小")
   @NotNull(message = "0")
-  private Float fontSize;
+  private Float fontSize = 12.0F;
   @ApiModelProperty(name = "foreground", value = "前景色")
   @NotNull(message = "0")
-  private String foreground;
+  private String foreground = "#FFFFFFFF";
   @ApiModelProperty(name = "height", value = "图片高度")
   @NotNull(message = "0")
-  private Integer height;
+  private Integer height = 120;
   @ApiModelProperty(name = "id", value = "ID")
   @NotNull(message = "0")
   private Long id;
@@ -57,7 +57,7 @@ public class PaintingVO {
   private String imageUrl;
   @ApiModelProperty(name = "width", value = "图片宽度")
   @NotNull(message = "0")
-  private Integer width;
+  private Integer width = 120;
 
   public PaintingVO(Long id, Long fontId, Float fontSize, String content, String background,
       String foreground, Integer width, Integer height, String imageUrl, Long createTime) {

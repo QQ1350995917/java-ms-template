@@ -43,7 +43,7 @@ public class PaintInit {
       paintingBO.setStatus(0);
       paintingBO.setCreateTime(System.currentTimeMillis());
       paintingBO.setUpdateTime(System.currentTimeMillis());
-      paintingService.save(paintingBO);
+      paintingService.create(paintingBO);
     }
 
   }

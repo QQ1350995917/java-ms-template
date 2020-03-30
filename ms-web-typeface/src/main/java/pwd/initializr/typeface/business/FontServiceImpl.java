@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import pwd.initializr.common.web.business.bo.ObjectList;
 import pwd.initializr.typeface.business.bo.FontBO;
@@ -26,6 +27,8 @@ public class FontServiceImpl implements FontService {
 
   @Autowired
   private FontMapper fontMapper;
+  @Value("${ms.typeface.minio.url}")
+  private String minioUrl;
 
   @Override
   public ObjectList<FontBO> findByCondition(FontBO fontBO, Long pageIndex,
@@ -39,8 +42,9 @@ public class FontServiceImpl implements FontService {
         .findByCondition(fontEntity, pageIndex * pageSize, pageSize);
 
     List<FontBO> collect = findByCondition.stream().map(
-        obj -> new FontBO(obj.getId(), obj.getName(), obj.getFileUrl(),
-            obj.getThumbUrl(), obj.getStatus(), obj.getCreateTime(), obj.getUpdateTime()))
+        obj -> new FontBO(obj.getId(), obj.getName(), String.join("", minioUrl, obj.getFileUrl()),
+            String.join("", minioUrl, obj.getThumbUrl()), obj.getStatus(), obj.getCreateTime(),
+            obj.getUpdateTime()))
         .collect(Collectors.toList());
 
     return new ObjectList<>(count, pageIndex, pageSize, collect);
@@ -51,6 +55,8 @@ public class FontServiceImpl implements FontService {
     FontEntity findById = fontMapper.findById(id);
     FontBO fontBO = new FontBO();
     BeanUtils.copyProperties(findById, fontBO);
+    fontBO.setFileUrl(String.join("", minioUrl, fontBO.getFileUrl()));
+    fontBO.setThumbUrl(String.join("", minioUrl, fontBO.getThumbUrl()));
     return fontBO;
   }
 
@@ -60,6 +66,8 @@ public class FontServiceImpl implements FontService {
     BeanUtils.copyProperties(fontBO, fontEntity);
     fontMapper.insert(fontEntity);
     BeanUtils.copyProperties(fontEntity, fontBO);
+    fontBO.setFileUrl(String.join("", minioUrl, fontBO.getFileUrl()));
+    fontBO.setThumbUrl(String.join("", minioUrl, fontBO.getThumbUrl()));
     return fontBO;
   }
 }

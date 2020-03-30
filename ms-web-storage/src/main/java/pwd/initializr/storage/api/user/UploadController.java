@@ -2,11 +2,11 @@ package pwd.initializr.storage.api.user;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-import pwd.initializr.common.web.api.ApiController;
+import pwd.initializr.common.web.api.user.UserController;
 import pwd.initializr.storage.business.StorageServiceImpl;
 
 /**
@@ -35,34 +35,12 @@ import pwd.initializr.storage.business.StorageServiceImpl;
 )
 @Controller(value = "uploadApi")
 @RequestMapping(value = "/api/user/upload")
-public class UploadController extends ApiController implements UploadApi {
+public class UploadController extends UserController implements UploadApi {
 
+  @Value("${spring.minio.bucket_name}")
+  private String bucketName;
   @Autowired
   private StorageServiceImpl storageService;
-
-  @ApiOperation(value = "文件上传页面")
-  @GetMapping(value = {""})
-  public String upload(Model model) {
-    model.addAttribute("message", "");
-    return "upload";
-  }
-
-
-  @ApiOperation(value = "文件上传")
-  @PostMapping(value = {""})
-  public String upload(MultipartFile file, Model model) {
-    String name = file.getOriginalFilename();
-    try {
-      InputStream inputStream = file.getInputStream();
-      storageService.uploadFile(inputStream, name);
-      model.addAttribute("message", "单文件上传[" + name + "]成功");
-    } catch (Exception e) {
-      e.printStackTrace();
-      model.addAttribute("message", "单文件上传[" + name + "]失败");
-    } finally {
-      return "upload";
-    }
-  }
 
   @PostMapping("/batch")
   public String handleFileUpload(HttpServletRequest request, Model model) {
@@ -75,7 +53,7 @@ public class UploadController extends ApiController implements UploadApi {
         String name = file.getOriginalFilename();
         try {
           InputStream inputStream = file.getInputStream();
-          storageService.uploadFile(inputStream, name);
+          storageService.uploadFile(bucketName, name, inputStream);
           resultMessage.append("第 " + i + " 个文件[" + name + "]上传成功");
         } catch (Exception e) {
           resultMessage.append("第 " + i + " 个文件[" + name + "]上传失败");
@@ -86,6 +64,29 @@ public class UploadController extends ApiController implements UploadApi {
       }
     }
     model.addAttribute("message", resultMessage.toString());
+    return "upload";
+  }
+
+  @ApiOperation(value = "文件上传")
+  @PostMapping(value = {""})
+  public String upload(MultipartFile file, Model model) {
+    String name = file.getOriginalFilename();
+    try {
+      InputStream inputStream = file.getInputStream();
+      storageService.uploadFile(bucketName, name, inputStream);
+      model.addAttribute("message", "单文件上传[" + name + "]成功");
+    } catch (Exception e) {
+      e.printStackTrace();
+      model.addAttribute("message", "单文件上传[" + name + "]失败");
+    } finally {
+      return "upload";
+    }
+  }
+
+  @ApiOperation(value = "文件上传页面")
+  @GetMapping(value = {""})
+  public String upload(Model model) {
+    model.addAttribute("message", "");
     return "upload";
   }
 

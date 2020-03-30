@@ -2,12 +2,8 @@ package pwd.initializr.storage.business;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.UUID;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -29,49 +25,54 @@ import pwd.initializr.storage.persistence.dao.StorageEntity;
 @Service
 public class StorageServiceImpl implements StorageService {
 
-  @Value("${spring.minio.bucket_name}")
-  private String minioBucketName;
-
-  @Autowired
-  private MongoTemplate mongoTemplate;
   @Autowired
   private MinIOClient minIOClient;
+  @Autowired
+  private MongoTemplate mongoTemplate;
 
-  public Storage uploadImage(InputStream inputStream, String filename) throws Exception {
-    return upload(inputStream, filename, "image/jpeg");
-  }
-
-  public Storage uploadVideo(InputStream inputStream, String filename) throws Exception {
-    return upload(inputStream, filename, "video/mp4");
+  @Override
+  public Storage uploadFile(String bucketName, String objectName, InputStream inputStream)
+      throws Exception {
+    return upload(bucketName, objectName, inputStream, "application/octet-stream");
   }
 
   @Override
-  public Storage uploadFile(InputStream inputStream, String filename) throws Exception {
-    return upload(inputStream, filename, "application/octet-stream");
+  public Storage uploadFile(String bucketName, String objectName, InputStream inputStream,
+      String contentType) throws Exception {
+    return upload(bucketName, objectName, inputStream, contentType);
   }
 
-  public Storage uploadString(String str) throws Exception {
-    if (!StringUtils.isEmpty(str)) {
-      return new Storage();
+  @Override
+  public Storage uploadHtml(String bucketName, String objectName, String html) throws Exception {
+    if (StringUtils.isEmpty(html)) {
+      return null;
     }
-    InputStream inputStream = new ByteArrayInputStream(str.getBytes());
-    return upload(inputStream, null, "text/html");
+    InputStream inputStream = new ByteArrayInputStream(html.getBytes());
+    return upload(bucketName, objectName, inputStream, "text/html");
   }
 
-  private Storage upload(InputStream inputStream, String filename, String contentType)
+  @Override
+  public Storage uploadImage(String bucketName, String objectName, InputStream inputStream)
       throws Exception {
-    String suffix = filename.substring(filename.lastIndexOf("."));
-    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    String format = simpleDateFormat.format(new Date());
-    String objectName = format + "/" + UUID.randomUUID().toString() + suffix;
-    minIOClient.putObject(minioBucketName, objectName, inputStream, null, null, null, contentType);
-    String url = minIOClient.getObjectUrl(minioBucketName, objectName);
-    String path = minioBucketName + "/" + objectName;
-    StorageEntity storageEntity = new StorageEntity(null, 0L, filename, minioBucketName, objectName,
-        url, path, 0, System.currentTimeMillis(), System.currentTimeMillis());
+    return upload(bucketName, objectName, inputStream, "image/jpeg");
+  }
+
+  @Override
+  public Storage uploadVideo(String bucketName, String objectName, InputStream inputStream)
+      throws Exception {
+    return upload(bucketName, objectName, inputStream, "video/mp4");
+  }
+
+  private Storage upload(String bucketName, String objectName, InputStream inputStream,
+      String contentType) throws Exception {
+    minIOClient.putObject(bucketName, objectName, inputStream, null, null, null, contentType);
+    String url = minIOClient.getObjectUrl(bucketName, objectName);
+    StorageEntity storageEntity = new StorageEntity(null, 0L, objectName, bucketName,
+        objectName, url, url, 0, System.currentTimeMillis(), System.currentTimeMillis());
     mongoTemplate.save(storageEntity);
     Storage storage = new Storage();
     BeanUtils.copyProperties(storageEntity, storage);
     return storage;
   }
+
 }
