@@ -3,8 +3,6 @@ package pwd.initializr.storage.api.user;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,8 +10,7 @@ import pwd.initializr.common.web.api.ApiController;
 import pwd.initializr.common.web.business.bo.ObjectList;
 import pwd.initializr.storage.api.user.vo.ListInput;
 import pwd.initializr.storage.business.QueryService;
-import pwd.initializr.storage.business.bo.Storage;
-import pwd.initializr.storage.persistence.dao.StorageEntity;
+import pwd.initializr.storage.business.bo.StorageBO;
 
 /**
  * pwd.initializr.storage.api.user.vo@ms-web-initializr
@@ -42,7 +39,7 @@ public class ListController extends ApiController implements ListApi {
   @GetMapping(value = {""})
   @Override
   public void list(ListInput input) {
-    ObjectList<Storage> storageObjectList = queryService.listFile();
+    ObjectList<StorageBO> storageObjectList = queryService.listFile();
     super.outputData(storageObjectList);
   }
 

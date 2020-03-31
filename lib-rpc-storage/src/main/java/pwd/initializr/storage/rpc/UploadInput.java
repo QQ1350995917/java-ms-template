@@ -1,5 +1,6 @@
-package pwd.initializr.storage.api.robot.vo;
+package pwd.initializr.storage.rpc;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,9 +25,14 @@ import lombok.ToString;
 @ToString
 public class UploadInput {
 
+  @ApiModelProperty(name = "appName", value = "appName", required = true, example = "appName")
   private String appName;
+  @ApiModelProperty(name = "bucketName", value = "bucketName", required = true, example = "bucketName")
   private String bucketName;
-  private String contentType;
+  @ApiModelProperty(name = "objectName", value = "objectName", required = true, example = "objectName")
   private String objectName;
+  @ApiModelProperty(name = "contentType", value = "contentType", required = true, example = "application/octet-stream")
+  private String contentType;
+
 
 }

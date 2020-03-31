@@ -3,7 +3,6 @@ package pwd.initializr.typeface.test;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import io.minio.MinioClient;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -23,9 +22,6 @@ public class FontInitUpload {
 
   public static void main(String[] args) throws Exception {
     String bucketName = "initializr-typeface";
-    MinioClient minioClient = new MinioClient("http://127.0.0.1:9000", "84ONV0EUUA9N7Q2Z5D9S",
-        "OLx6QPGX7tp7M/yENinEgCzmM2kuHCYvSczJcAqD");
-
     File file = new File("/Users/pwd/workspace/dingpw/hornbook-service/xresources/jsons/All.json");
     JSONArray jsonArray = JSON.parseObject(new FileInputStream(file), JSONArray.class, null);
     jsonArray.stream().forEach(jsonObject -> {
@@ -41,13 +37,14 @@ public class FontInitUpload {
               new File(
                   "/Users/pwd/workspace/dingpw/hornbook-service/xresources/thumb/" + id + ".png"));
           String thumbName = "font/" + title + ".png";
-          minioClient.putObject(bucketName, thumbName, thumbInputStream, "image/jpeg");
+
+//          minioClient.putObject(bucketName, thumbName, thumbInputStream, "image/jpeg");
 
           InputStream ttfInputStream = new FileInputStream(
               new File("/Users/pwd/workspace/dingpw/hornbook-service/xresources/fonts/" + title
                   + ".ttf"));
           String ttfName = "font/" + title + ".ttf";
-          minioClient.putObject(bucketName, ttfName, ttfInputStream, "application/x-font-ttf");
+//          minioClient.putObject(bucketName, ttfName, ttfInputStream, "application/x-font-ttf");
 
         } catch (Exception e) {
           e.printStackTrace();

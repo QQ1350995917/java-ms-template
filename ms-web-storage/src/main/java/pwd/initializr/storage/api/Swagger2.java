@@ -38,6 +38,17 @@ public class Swagger2 extends ApiSwagger2 {
   }
 
   @Bean
+  public Docket createRobotApi() {
+    return new Docket(DocumentationType.SWAGGER_2)
+        .groupName("RobotApi")
+        .apiInfo(apiInfo("RobotApi", "管理接口"))
+        .select()
+        .apis(RequestHandlerSelectors.basePackage("pwd.initializr.storage.api.robot"))
+        .paths(PathSelectors.any())
+        .build().globalOperationParameters(buildGlobalOperationParameters());
+  }
+
+  @Bean
   public Docket createUserApi() {
     return new Docket(DocumentationType.SWAGGER_2)
         .groupName("UserApi")

@@ -11,11 +11,13 @@ import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.unit.DataSize;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import pwd.initializr.common.web.api.FullPathNameGenerator;
 
 /**
  * pwd.initializr.storage@ms-web-initializr
@@ -32,6 +34,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @SpringBootApplication
 @EnableEurekaClient
 @EnableDiscoveryClient
+@ComponentScan(nameGenerator = FullPathNameGenerator.class)
 @MapperScan("pwd.initializr.storage.persistence.mapper")
 public class StorageApplication implements WebMvcConfigurer {
 

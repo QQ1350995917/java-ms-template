@@ -9,7 +9,7 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>ms-web-storage</artifactId>
+  <artifactId>ms-web-storageBO</artifactId>
 
   <dependencies>
     <dependency>
@@ -35,6 +35,11 @@
     <dependency>
       <groupId>pwd.initializr</groupId>
       <artifactId>lib-common-web</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>pwd.initializr</groupId>
+      <artifactId>lib-rpc-storage</artifactId>
       <version>0.0.1-SNAPSHOT</version>
     </dependency>
     <dependency>

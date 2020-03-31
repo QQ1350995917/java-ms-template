@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import pwd.initializr.common.mw.minio.MinIOClient;
-import pwd.initializr.storage.business.bo.Storage;
+import pwd.initializr.storage.business.bo.StorageBO;
 import pwd.initializr.storage.persistence.dao.StorageEntity;
 
 /**
@@ -31,19 +31,19 @@ public class StorageServiceImpl implements StorageService {
   private MongoTemplate mongoTemplate;
 
   @Override
-  public Storage uploadFile(String bucketName, String objectName, InputStream inputStream)
+  public StorageBO uploadFile(String bucketName, String objectName, InputStream inputStream)
       throws Exception {
     return upload(bucketName, objectName, inputStream, "application/octet-stream");
   }
 
   @Override
-  public Storage uploadFile(String bucketName, String objectName, InputStream inputStream,
+  public StorageBO uploadFile(String bucketName, String objectName, InputStream inputStream,
       String contentType) throws Exception {
     return upload(bucketName, objectName, inputStream, contentType);
   }
 
   @Override
-  public Storage uploadHtml(String bucketName, String objectName, String html) throws Exception {
+  public StorageBO uploadHtml(String bucketName, String objectName, String html) throws Exception {
     if (StringUtils.isEmpty(html)) {
       return null;
     }
@@ -52,27 +52,27 @@ public class StorageServiceImpl implements StorageService {
   }
 
   @Override
-  public Storage uploadImage(String bucketName, String objectName, InputStream inputStream)
+  public StorageBO uploadImage(String bucketName, String objectName, InputStream inputStream)
       throws Exception {
     return upload(bucketName, objectName, inputStream, "image/jpeg");
   }
 
   @Override
-  public Storage uploadVideo(String bucketName, String objectName, InputStream inputStream)
+  public StorageBO uploadVideo(String bucketName, String objectName, InputStream inputStream)
       throws Exception {
     return upload(bucketName, objectName, inputStream, "video/mp4");
   }
 
-  private Storage upload(String bucketName, String objectName, InputStream inputStream,
+  private StorageBO upload(String bucketName, String objectName, InputStream inputStream,
       String contentType) throws Exception {
     minIOClient.putObject(bucketName, objectName, inputStream, null, null, null, contentType);
     String url = minIOClient.getObjectUrl(bucketName, objectName);
     StorageEntity storageEntity = new StorageEntity(null, 0L, objectName, bucketName,
         objectName, url, url, 0, System.currentTimeMillis(), System.currentTimeMillis());
     mongoTemplate.save(storageEntity);
-    Storage storage = new Storage();
-    BeanUtils.copyProperties(storageEntity, storage);
-    return storage;
+    StorageBO storageBO = new StorageBO();
+    BeanUtils.copyProperties(storageEntity, storageBO);
+    return storageBO;
   }
 
 }

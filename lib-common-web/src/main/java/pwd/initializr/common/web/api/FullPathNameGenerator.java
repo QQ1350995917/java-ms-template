@@ -19,6 +19,7 @@ import org.springframework.util.StringUtils;
  * @since DistributionVersion
  */
 public class FullPathNameGenerator extends AnnotationBeanNameGenerator {
+
   @Override
   public String generateBeanName(BeanDefinition definition, BeanDefinitionRegistry registry) {
     if (definition instanceof AnnotatedBeanDefinition) {

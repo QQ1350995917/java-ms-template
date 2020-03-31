@@ -10,7 +10,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import pwd.initializr.common.mw.minio.MinIOClient;
 import pwd.initializr.common.web.business.bo.ObjectList;
-import pwd.initializr.storage.business.bo.Storage;
+import pwd.initializr.storage.business.bo.StorageBO;
 import pwd.initializr.storage.persistence.dao.StorageEntity;
 
 /**
@@ -33,29 +33,29 @@ public class QueryServiceImpl implements QueryService {
   private MinIOClient minIOClient;
 
   @Override
-  public ObjectList<Storage> listFile() {
+  public ObjectList<StorageBO> listFile() {
     List<StorageEntity> findAll = mongoTemplate.findAll(StorageEntity.class);
-    ObjectList<Storage> result = new ObjectList<>();
-    List<Storage> resultElements = result.getElements();
+    ObjectList<StorageBO> result = new ObjectList<>();
+    List<StorageBO> resultElements = result.getElements();
     for (StorageEntity storageEntity : findAll) {
-      Storage storage = new Storage();
-      BeanUtils.copyProperties(storageEntity, storage);
-      resultElements.add(storage);
+      StorageBO storageBO = new StorageBO();
+      BeanUtils.copyProperties(storageEntity, storageBO);
+      resultElements.add(storageBO);
     }
     return result;
   }
 
   @Override
-  public Storage findOneByUrl(String url) {
+  public StorageBO findOneByUrl(String url) {
     Query query = new Query(Criteria.where("url").is(url));
     StorageEntity one = mongoTemplate.findOne(query, StorageEntity.class);
-    Storage storage = new Storage();
-    BeanUtils.copyProperties(one, storage);
-    return storage;
+    StorageBO storageBO = new StorageBO();
+    BeanUtils.copyProperties(one, storageBO);
+    return storageBO;
   }
 
   @Override
-  public InputStream getObject(Storage storage) throws Exception {
-    return minIOClient.getObject(storage.getBucketName(), storage.getObjectName());
+  public InputStream getObject(StorageBO storageBO) throws Exception {
+    return minIOClient.getObject(storageBO.getBucketName(), storageBO.getObjectName());
   }
 }

@@ -1,9 +1,8 @@
 package pwd.initializr.storage.api.robot;
 
-import javax.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import pwd.initializr.storage.api.robot.vo.UploadInput;
+import pwd.initializr.storage.rpc.UploadInput;
 
 /**
  * pwd.initializr.storage.api.robot@ms-web-initializr
@@ -18,7 +17,5 @@ import pwd.initializr.storage.api.robot.vo.UploadInput;
  */
 public interface UploadApi {
 
-  void upload(HttpServletRequest request);
-
-  void upload(@RequestParam("file") MultipartFile file,UploadInput input);
+  void upload(@RequestParam("file") MultipartFile file, UploadInput input);
 }

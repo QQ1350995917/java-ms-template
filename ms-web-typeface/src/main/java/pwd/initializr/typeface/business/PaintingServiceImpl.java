@@ -1,19 +1,31 @@
 package pwd.initializr.typeface.business;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import javax.imageio.ImageIO;
+import org.apache.commons.fileupload.disk.DiskFileItem;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import pwd.initializr.common.web.api.vo.Output;
 import pwd.initializr.common.web.business.bo.ObjectList;
+import pwd.initializr.storage.rpc.UploadInput;
+import pwd.initializr.storage.rpc.UploadOutput;
 import pwd.initializr.typeface.business.bo.FontBO;
 import pwd.initializr.typeface.business.bo.PaintingBO;
 import pwd.initializr.typeface.persistence.dao.PaintingEntity;
@@ -34,8 +46,11 @@ import pwd.initializr.typeface.util.Painter;
 @Service
 public class PaintingServiceImpl implements PaintingService {
 
+  @Value("${spring.application.name}")
+  private String applicationName;
   @Value("${ms.typeface.bucket.name}")
   private String bucketName;
+
   @Autowired
   private FontService fontService;
   @Autowired
@@ -44,6 +59,7 @@ public class PaintingServiceImpl implements PaintingService {
   private String printer;
   @Autowired
   private StorageService storageService;
+
   @Value("${ms.typeface.ttf.dir}")
   private String ttfDir;
 
@@ -64,17 +80,41 @@ public class PaintingServiceImpl implements PaintingService {
     InputStream inputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
     String objectName = String
         .join("/", printer, String.valueOf(System.currentTimeMillis()), UUID.randomUUID() + ".jpg");
-//    storageService.upload();
-    paintingBO.setImageUrl(objectName);
-    paintingBO.setCreateTime(System.currentTimeMillis());
-    paintingBO.setUpdateTime(System.currentTimeMillis());
-
-    PaintingEntity paintingEntity = new PaintingEntity();
-    BeanUtils.copyProperties(paintingBO, paintingEntity);
-    paintingMapper.insert(paintingEntity);
-    BeanUtils.copyProperties(paintingEntity, paintingBO);
-
-    return paintingBO;
+    UploadInput uploadInput = new UploadInput();
+    uploadInput.setAppName(applicationName);
+    uploadInput.setBucketName(bucketName);
+    uploadInput.setObjectName(objectName);
+    uploadInput.setContentType("image/jpeg");
+    try {
+      String name = UUID.randomUUID().toString() + ".jpg";
+      DiskFileItem fileItem = (DiskFileItem) new DiskFileItemFactory().createItem("file",
+          MediaType.TEXT_PLAIN_VALUE, true, name);
+      OutputStream outputStream = fileItem.getOutputStream();
+      IOUtils.copy(inputStream, outputStream);
+      MultipartFile multipartFile = new CommonsMultipartFile(fileItem);
+      String upload = storageService
+          .upload(multipartFile, applicationName, bucketName, objectName, "image/jpeg");
+      Output<UploadOutput> output = JSON
+          .parseObject(upload, new TypeReference<Output<UploadOutput>>() {
+          });
+      if (200 == output.getMeta().getCode()) {
+        UploadOutput uploadOutput = output.getData();
+        paintingBO.setImageUrl(uploadOutput.getUrl());
+        paintingBO.setCreateTime(System.currentTimeMillis());
+        paintingBO.setUpdateTime(System.currentTimeMillis());
+        PaintingEntity paintingEntity = new PaintingEntity();
+        BeanUtils.copyProperties(paintingBO, paintingEntity);
+        paintingEntity.setStatus(0);
+        paintingMapper.insert(paintingEntity);
+        BeanUtils.copyProperties(paintingEntity, paintingBO);
+        return paintingBO;
+      } else {
+        return null;
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return null;
   }
 
   @Override

@@ -33,7 +33,7 @@ import pwd.initializr.storage.business.StorageServiceImpl;
     value = "文件上传Api",
     description = "文件上传API"
 )
-@Controller(value = "uploadApi")
+@Controller(value = "uploadApiByUser")
 @RequestMapping(value = "/api/user/upload")
 public class UploadController extends UserController implements UploadApi {
 

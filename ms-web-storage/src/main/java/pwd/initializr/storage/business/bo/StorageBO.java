@@ -17,12 +17,11 @@ import lombok.ToString;
  * @version 1.0.0
  * @since DistributionVersion
  */
-@AllArgsConstructor
 @NoArgsConstructor
 @Setter
 @Getter
 @ToString
-public class Storage {
+public class StorageBO {
 
   private String id;
   private Long userId;
@@ -34,4 +33,19 @@ public class Storage {
   private Integer status;
   private Long createTime;
   private Long updateTime;
+
+  public StorageBO(String id, Long userId, String filename, String bucketName,
+      String objectName, String url, String path, Integer status, Long createTime,
+      Long updateTime) {
+    this.id = id;
+    this.userId = userId;
+    this.filename = filename;
+    this.bucketName = bucketName;
+    this.objectName = objectName;
+    this.url = url;
+    this.path = path;
+    this.status = status;
+    this.createTime = createTime;
+    this.updateTime = updateTime;
+  }
 }

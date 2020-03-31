@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.common.web.api.ApiController;
 import pwd.initializr.storage.api.user.vo.DownloadInput;
 import pwd.initializr.storage.business.QueryService;
-import pwd.initializr.storage.business.bo.Storage;
+import pwd.initializr.storage.business.bo.StorageBO;
 
 /**
  * pwd.initializr.storage.api.user@ms-web-initializr
@@ -40,7 +40,7 @@ public class DownloadController extends ApiController implements DownloadApi {
   @GetMapping(value = {""})
   @Override
   public void download(DownloadInput input) {
-    Storage oneByUrl = queryService.findOneByUrl(input.getUrl());
+    StorageBO oneByUrl = queryService.findOneByUrl(input.getUrl());
     getResponse().reset();
     getResponse().setContentType("application/octet-stream");
     getResponse().addHeader("Content-Disposition", "attachment;fileName=" + oneByUrl.getFilename());

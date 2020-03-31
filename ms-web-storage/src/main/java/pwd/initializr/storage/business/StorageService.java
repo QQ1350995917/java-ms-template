@@ -1,7 +1,7 @@
 package pwd.initializr.storage.business;
 
 import java.io.InputStream;
-import pwd.initializr.storage.business.bo.Storage;
+import pwd.initializr.storage.business.bo.StorageBO;
 
 /**
  * pwd.initializr.storage.business@ms-web-initializr
@@ -16,17 +16,17 @@ import pwd.initializr.storage.business.bo.Storage;
  */
 public interface StorageService {
 
-  Storage uploadFile(String bucketName, String objectName, InputStream inputStream)
+  StorageBO uploadFile(String bucketName, String objectName, InputStream inputStream)
       throws Exception;
 
-  Storage uploadFile(String bucketName, String objectName, InputStream inputStream,String contentType)
+  StorageBO uploadFile(String bucketName, String objectName, InputStream inputStream,String contentType)
       throws Exception;
 
-  Storage uploadHtml(String bucketName, String objectName, String html) throws Exception;
+  StorageBO uploadHtml(String bucketName, String objectName, String html) throws Exception;
 
-  Storage uploadImage(String bucketName, String objectName, InputStream inputStream)
+  StorageBO uploadImage(String bucketName, String objectName, InputStream inputStream)
       throws Exception;
 
-  Storage uploadVideo(String bucketName, String objectName, InputStream inputStream)
+  StorageBO uploadVideo(String bucketName, String objectName, InputStream inputStream)
       throws Exception;
 }

@@ -12,7 +12,7 @@
 |access|11240| 
 |logger|11250| 
 |monitor|11260| 
-|storage|11270| 
+|storageBO|11270| 
 |schedule|11280|
 
 http://patorjk.com/software/taag/#p=display&f=Doh

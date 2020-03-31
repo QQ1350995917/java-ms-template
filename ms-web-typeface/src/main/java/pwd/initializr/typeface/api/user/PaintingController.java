@@ -69,6 +69,7 @@ public class PaintingController extends UserController implements PaintingApi {
   @Override
   public void findByCondition(PaintingListInput input) {
     PaintingBO paintingBO = new PaintingBO();
+    paintingBO.setUserId(getUid());
     paintingBO.setContent(input.getContent());
     paintingBO.setFontId(input.getFontId());
 

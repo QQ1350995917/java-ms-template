@@ -1,12 +1,13 @@
 package pwd.initializr.typeface.business;
 
-import java.util.Map;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import pwd.initializr.storage.rpc.UploadInput;
 
 /**
  * pwd.initializr.typeface.business@ms-web-initializr
@@ -19,11 +20,19 @@ import org.springframework.web.multipart.MultipartFile;
  * @version 1.0.0
  * @since DistributionVersion
  */
+// TODO 比较两种写法，boundary是干嘛的
 @FeignClient(value = "storage", configuration = StorageServiceSupportConfig.class)
 public interface StorageService {
 
-  @PostMapping(value = "/api/robot/upload/multi", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-  String upload(@RequestPart(value = "file") MultipartFile file,
-      @RequestParam Map<String, Object> map);
+  @ResponseBody
+  @PostMapping(value = "/api/robot/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+  String upload(@RequestParam(value = "file") MultipartFile file, UploadInput input);
 
+  @ResponseBody
+  @PostMapping(value = "/api/robot/upload", consumes = "multipart/form-data; boundary=----WebKitFormBoundaryiok3pBT6h8LrgwGw")
+  String upload(@RequestPart(value = "file") MultipartFile file,
+      @RequestParam("appName") String appName,
+      @RequestParam("bucketName") String bucketName,
+      @RequestParam("objectName") String objectName,
+      @RequestParam("contentType") String contentType);
 }

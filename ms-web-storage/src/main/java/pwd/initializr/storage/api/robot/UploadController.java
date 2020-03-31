@@ -2,7 +2,7 @@ package pwd.initializr.storage.api.robot;
 
 import io.swagger.annotations.Api;
 import java.io.InputStream;
-import javax.servlet.http.HttpServletRequest;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,9 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import pwd.initializr.common.web.api.ApiController;
-import pwd.initializr.storage.api.robot.vo.UploadInput;
 import pwd.initializr.storage.business.StorageServiceImpl;
-import pwd.initializr.storage.business.bo.Storage;
+import pwd.initializr.storage.business.bo.StorageBO;
+import pwd.initializr.storage.rpc.UploadInput;
+import pwd.initializr.storage.rpc.UploadOutput;
 
 /**
  * pwd.initializr.storage.api.robot@ms-web-initializr
@@ -30,31 +31,25 @@ import pwd.initializr.storage.business.bo.Storage;
     value = "文件上传Api",
     description = "文件上传API"
 )
-@Controller(value = "uploadApi")
+@Controller(value = "uploadApiByRobot")
 @RequestMapping(value = "/api/robot/upload")
 public class UploadController extends ApiController implements UploadApi {
 
   @Autowired
   private StorageServiceImpl storageService;
 
-
-  @PostMapping("")
+  @PostMapping(value = "")
   @Override
-  public void upload(HttpServletRequest request) {
-
-  }
-
-  @PostMapping("/multi")
-  @Override
-  public void upload(@RequestParam(value = "file") MultipartFile file,
-      @RequestParam(value = "params") UploadInput input) {
+  public void upload(@RequestParam(value = "file") MultipartFile file, UploadInput input) {
     String name = file.getOriginalFilename();
     try {
       InputStream inputStream = file.getInputStream();
-      Storage storage = storageService
+      StorageBO storageBO = storageService
           .uploadFile(input.getBucketName(), input.getObjectName(), inputStream,
               input.getContentType());
-      outputData(storage.getUrl());
+      UploadOutput uploadOutput = new UploadOutput();
+      BeanUtils.copyProperties(storageBO, uploadOutput);
+      outputData(uploadOutput);
     } catch (Exception e) {
       e.printStackTrace();
     }
