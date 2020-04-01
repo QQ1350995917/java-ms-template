@@ -1,7 +1,8 @@
 package pwd.initializr.typeface.business;
 
+import feign.Logger;
+import feign.Logger.Level;
 import feign.codec.Encoder;
-import feign.form.spring.SpringFormEncoder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -21,6 +22,11 @@ public class StorageServiceSupportConfig {
 
   @Bean
   public Encoder feignFormEncoder() {
-    return new SpringFormEncoder();
+    return new StorageServiceFormEncoder();
+  }
+
+  @Bean
+  Logger.Level feignLoggerLevel() {
+    return Level.FULL;
   }
 }

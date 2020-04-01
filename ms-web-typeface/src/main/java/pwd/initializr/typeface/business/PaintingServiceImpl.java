@@ -24,7 +24,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import pwd.initializr.common.web.api.vo.Output;
 import pwd.initializr.common.web.business.bo.ObjectList;
-import pwd.initializr.storage.rpc.UploadInput;
 import pwd.initializr.storage.rpc.UploadOutput;
 import pwd.initializr.typeface.business.bo.FontBO;
 import pwd.initializr.typeface.business.bo.PaintingBO;
@@ -80,20 +79,14 @@ public class PaintingServiceImpl implements PaintingService {
     InputStream inputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
     String objectName = String
         .join("/", printer, String.valueOf(System.currentTimeMillis()), UUID.randomUUID() + ".jpg");
-    UploadInput uploadInput = new UploadInput();
-    uploadInput.setAppName(applicationName);
-    uploadInput.setBucketName(bucketName);
-    uploadInput.setObjectName(objectName);
-    uploadInput.setContentType("image/jpeg");
     try {
-      String name = UUID.randomUUID().toString() + ".jpg";
-      DiskFileItem fileItem = (DiskFileItem) new DiskFileItemFactory().createItem("file",
-          MediaType.TEXT_PLAIN_VALUE, true, name);
+      DiskFileItem fileItem = (DiskFileItem) new DiskFileItemFactory().createItem(objectName,
+          MediaType.IMAGE_JPEG_VALUE, true, "file");
       OutputStream outputStream = fileItem.getOutputStream();
       IOUtils.copy(inputStream, outputStream);
       MultipartFile multipartFile = new CommonsMultipartFile(fileItem);
       String upload = storageService
-          .upload(multipartFile, applicationName, bucketName, objectName, "image/jpeg");
+          .upload(new MultipartFile[]{multipartFile}, applicationName, bucketName);
       Output<UploadOutput> output = JSON
           .parseObject(upload, new TypeReference<Output<UploadOutput>>() {
           });

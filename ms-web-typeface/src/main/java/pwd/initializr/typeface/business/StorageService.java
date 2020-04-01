@@ -24,9 +24,17 @@ import pwd.initializr.storage.rpc.UploadInput;
 @FeignClient(value = "storage", configuration = StorageServiceSupportConfig.class)
 public interface StorageService {
 
+
   @ResponseBody
   @PostMapping(value = "/api/robot/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-  String upload(@RequestParam(value = "file") MultipartFile file, UploadInput input);
+  String upload(@RequestPart(value = "file") MultipartFile[] files);
+
+
+  @ResponseBody
+  @PostMapping(value = "/api/robot/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+  String upload(@RequestPart(value = "file") MultipartFile[] files,
+      @RequestParam("appName") String appName,
+      @RequestParam("bucketName") String bucketName);
 
   @ResponseBody
   @PostMapping(value = "/api/robot/upload", consumes = "multipart/form-data; boundary=----WebKitFormBoundaryiok3pBT6h8LrgwGw")

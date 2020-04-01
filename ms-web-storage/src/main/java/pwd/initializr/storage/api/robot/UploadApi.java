@@ -17,5 +17,5 @@ import pwd.initializr.storage.rpc.UploadInput;
  */
 public interface UploadApi {
 
-  void upload(@RequestParam("file") MultipartFile file, UploadInput input);
+  void upload(@RequestParam("file") MultipartFile[] files, UploadInput input);
 }

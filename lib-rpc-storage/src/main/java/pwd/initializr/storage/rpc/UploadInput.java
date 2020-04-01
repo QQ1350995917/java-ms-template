@@ -29,10 +29,4 @@ public class UploadInput {
   private String appName;
   @ApiModelProperty(name = "bucketName", value = "bucketName", required = true, example = "bucketName")
   private String bucketName;
-  @ApiModelProperty(name = "objectName", value = "objectName", required = true, example = "objectName")
-  private String objectName;
-  @ApiModelProperty(name = "contentType", value = "contentType", required = true, example = "application/octet-stream")
-  private String contentType;
-
-
 }
