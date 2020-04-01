@@ -39,8 +39,8 @@ public class FontServiceImpl implements FontService {
         .findByCondition(fontEntity, pageIndex * pageSize, pageSize);
 
     List<FontBO> collect = findByCondition.stream().map(
-        obj -> new FontBO(obj.getId(), obj.getName(), obj.getFileUrl(), obj.getThumbUrl(),
-            obj.getStatus(), obj.getCreateTime(), obj.getUpdateTime()))
+        obj -> new FontBO(obj.getId(), obj.getTitle(), obj.getName(), obj.getFileUrl(),
+            obj.getThumbUrl(), obj.getStatus(), obj.getCreateTime(), obj.getUpdateTime()))
         .collect(Collectors.toList());
 
     return new ObjectList<>(count, pageIndex, pageSize, collect);

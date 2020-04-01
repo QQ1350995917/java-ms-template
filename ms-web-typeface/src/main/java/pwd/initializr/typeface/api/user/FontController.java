@@ -50,7 +50,7 @@ public class FontController extends UserController implements FontApi {
   @Override
   public void listFont(FontListInput input) {
     FontBO fontBO = new FontBO();
-    fontBO.setName(input.getName());
+    fontBO.setTitle(input.getTitle());
     ObjectList<FontBO> byCondition = fontService
         .findByCondition(fontBO, input.getIndex(), input.getSize());
     FontListOutput<FontVO> output = new FontListOutput<FontVO>();
@@ -59,7 +59,7 @@ public class FontController extends UserController implements FontApi {
     output.setPages(byCondition.getPages());
     output.setTotal(byCondition.getTotal());
     List<FontVO> collect = byCondition.getElements().stream().map(
-        obj -> new FontVO(obj.getId(), obj.getName(), obj.getThumbUrl(), obj.getCreateTime(),
+        obj -> new FontVO(obj.getId(), obj.getTitle(), obj.getThumbUrl(), obj.getCreateTime(),
             obj.getUpdateTime()))
         .collect(Collectors.toList());
     output.setData(collect);
@@ -71,7 +71,7 @@ public class FontController extends UserController implements FontApi {
   @Override
   public void findFont(@PathVariable Long id) {
     FontBO obj = fontService.findById(id);
-    FontVO fontVO = new FontVO(obj.getId(), obj.getName(), obj.getThumbUrl(), obj.getCreateTime(),
+    FontVO fontVO = new FontVO(obj.getId(), obj.getTitle(), obj.getThumbUrl(), obj.getCreateTime(),
         obj.getUpdateTime());
     outputData(fontVO);
   }

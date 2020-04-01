@@ -23,7 +23,7 @@ public interface PaintingMapper {
 
   Long countByCondition(@Param("paintingEntity") PaintingEntity paintingEntity);
 
-  List<Integer> deleteByIds(@Param("ids") List<Long> ids);
+  Integer deleteByIds(@Param("ids") List<Long> ids);
 
   List<PaintingEntity> findByCondition(@Param("paintingEntity") PaintingEntity paintingEntity,
       @Param("offset") Long offset, @Param("rows") Long rows);

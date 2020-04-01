@@ -21,7 +21,7 @@ public interface PaintingService {
 
   PaintingBO create(PaintingBO paintingBO);
 
-  List<Integer> deleteByIds(List<Long> ids);
+  Integer deleteByIds(List<Long> ids);
 
   ObjectList<PaintingBO> findByCondition(PaintingBO paintingBO, Long pageIndex,
       Long pageSize);

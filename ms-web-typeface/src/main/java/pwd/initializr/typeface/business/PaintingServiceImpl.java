@@ -69,7 +69,7 @@ public class PaintingServiceImpl implements PaintingService {
     String[] contents = content.split("\r\n");
 
     FontBO fontBO = fontService.findById(paintingBO.getFontId());
-    String fontPath = String.join("", ttfDir, fontBO.getFileUrl());
+    String fontPath = String.join("", ttfDir, fontBO.getName());
     BufferedImage bufferedImage = Painter.createImage(contents, fontPath);
     ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
     try {
@@ -118,8 +118,9 @@ public class PaintingServiceImpl implements PaintingService {
   }
 
   @Override
-  public List<Integer> deleteByIds(List<Long> ids) {
-    return null;
+  public Integer deleteByIds(List<Long> ids) {
+    Integer integer = paintingMapper.deleteByIds(ids);
+    return integer;
   }
 
   @Override

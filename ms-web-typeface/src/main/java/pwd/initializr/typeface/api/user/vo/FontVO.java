@@ -21,32 +21,31 @@ import lombok.ToString;
  * @since DistributionVersion
  */
 @NoArgsConstructor
-@AllArgsConstructor
 @Setter
 @Getter
 @ToString
 @ApiModel
 public class FontVO {
 
-  @ApiModelProperty(name = "createTime", value = "真实姓名")
-  @NotNull(message = "0")
-  private Long createTime;
   @ApiModelProperty(name = "id", value = "ID")
   @NotNull(message = "0")
   private Long id;
-  @ApiModelProperty(name = "name", value = "字体名称")
+  @ApiModelProperty(name = "title", value = "字体名称")
   @NotNull(message = "0")
-  private String name;
+  private String title;
   @ApiModelProperty(name = "thumbUrl", value = "图片地址")
   @NotNull(message = "0")
   private String thumbUrl;
+  @ApiModelProperty(name = "createTime", value = "真实姓名")
+  @NotNull(message = "0")
+  private Long createTime;
   @ApiModelProperty(name = "updateTime", value = "更新时间")
   @NotNull(message = "0")
   private Long updateTime;
 
-  public FontVO(Long id, String name, String thumbUrl, Long createTime, Long updateTime) {
+  public FontVO(Long id, String title, String thumbUrl, Long createTime, Long updateTime) {
     this.id = id;
-    this.name = name;
+    this.title = title;
     this.thumbUrl = thumbUrl;
     this.createTime = createTime;
     this.updateTime = updateTime;

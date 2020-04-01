@@ -7,9 +7,23 @@
     parameterType="pwd.initializr.typeface.persistence.dao.FontEntity"
     useGeneratedKeys="true">
 		insert into `font`
-		(`name`,`file_url`,`thumb_url`,`create_time`,`update_time`)
+		(
+		`title`,
+		`name`,
+		`file_url`,
+		`thumb_url`,
+		`create_time`,
+		`update_time`
+		)
 		values
-		(#{fontEntity.name},#{fontEntity.fileUrl},#{fontEntity.thumbUrl},#{fontEntity.createTime},#{fontEntity.updateTime})
+		(
+		#{fontEntity.title},
+		#{fontEntity.name},
+		#{fontEntity.fileUrl},
+		#{fontEntity.thumbUrl},
+		#{fontEntity.createTime},
+		#{fontEntity.updateTime}
+		)
 	</insert>
 
   <!--findById-->
@@ -17,6 +31,7 @@
     resultType="pwd.initializr.typeface.persistence.dao.FontEntity">
 		select
 		`id` as id,
+		`title` as `title`,
 		`name` as `name`,
 		`file_url` as fileUrl,
 		`thumb_url` as thumbUrl,
@@ -44,6 +59,7 @@
     resultType="pwd.initializr.typeface.persistence.dao.FontEntity">
     select
     `id` as id,
+    `title` as `title`,
     `name` as `name`,
     `file_url` as fileUrl,
     `thumb_url` as thumbUrl,
@@ -58,8 +74,8 @@
   </select>
 
   <sql id="whereCondition">
-    <if test="fontEntity.name != null">
-      `name` like #{fontEntity.name}
+    <if test="fontEntity.title != null">
+      `title` like concat('%',#{fontEntity.title},'%')
     </if>
   </sql>
 

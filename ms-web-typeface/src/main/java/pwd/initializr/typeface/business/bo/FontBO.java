@@ -23,8 +23,8 @@ import pwd.initializr.typeface.persistence.dao.FontEntity;
 @ToString
 public class FontBO extends FontEntity {
 
-  public FontBO(Long id, String name, String fileUrl, String thumbUrl,
+  public FontBO(Long id, String title, String name, String fileUrl, String thumbUrl,
       Integer status, Long createTime, Long updateTime) {
-    super(id, name, fileUrl, thumbUrl, status, createTime, updateTime);
+    super(id, title, name, fileUrl, thumbUrl, status, createTime, updateTime);
   }
 }

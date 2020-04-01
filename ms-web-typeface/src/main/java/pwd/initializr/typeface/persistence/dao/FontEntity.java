@@ -23,17 +23,19 @@ import lombok.ToString;
 @ToString
 public class FontEntity implements Serializable {
 
-  private Long createTime;
-  private String fileUrl;
   private Long id;
+  private String title;
   private String name;
-  private Integer status;
+  private String fileUrl;
   private String thumbUrl;
+  private Integer status;
+  private Long createTime;
   private Long updateTime;
 
-  public FontEntity(Long id, String name, String fileUrl, String thumbUrl, Integer status,
+  public FontEntity(Long id, String title, String name, String fileUrl, String thumbUrl, Integer status,
       Long createTime, Long updateTime) {
     this.id = id;
+    this.title = title;
     this.name = name;
     this.fileUrl = fileUrl;
     this.thumbUrl = thumbUrl;

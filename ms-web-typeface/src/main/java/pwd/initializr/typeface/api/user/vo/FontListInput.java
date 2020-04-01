@@ -29,7 +29,7 @@ import pwd.initializr.common.web.api.vo.PageInput;
 @ApiModel(value = "listFontInput", description = "查询字体库输入参数")
 public class FontListInput extends PageInput {
 
-  @ApiModelProperty(name = "name", value = "字体名称")
+  @ApiModelProperty(name = "title", value = "字体名称")
   @NotNull(message = "0")
-  private String name;
+  private String title;
 }

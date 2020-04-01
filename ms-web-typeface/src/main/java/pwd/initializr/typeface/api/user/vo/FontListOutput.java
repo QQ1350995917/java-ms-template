@@ -29,7 +29,7 @@ import pwd.initializr.common.web.api.vo.PageOutput;
 @ApiModel(value = "listFont", description = "查询字体库响应参数")
 public class FontListOutput<T> extends PageOutput<T> {
 
-  @ApiModelProperty(name = "name", value = "字体名称")
+  @ApiModelProperty(name = "title", value = "字体名称")
   @NotNull(message = "0")
-  private String name;
+  private String title;
 }
