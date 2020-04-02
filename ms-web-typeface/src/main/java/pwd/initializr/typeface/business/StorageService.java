@@ -26,13 +26,13 @@ public interface StorageService {
 
 
   @ResponseBody
-  @PostMapping(value = "/api/robot/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-  String upload(@RequestPart(value = "file") MultipartFile[] files);
+  @PostMapping(value = "/api/robot/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE,produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+  String upload(@RequestPart(value = "file") MultipartFile file);
 
 
   @ResponseBody
-  @PostMapping(value = "/api/robot/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-  String upload(@RequestPart(value = "file") MultipartFile[] files,
+  @PostMapping(value = "/api/robot/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE,produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+  String upload(@RequestPart(value = "file") MultipartFile file,
       @RequestParam("appName") String appName,
       @RequestParam("bucketName") String bucketName);
 

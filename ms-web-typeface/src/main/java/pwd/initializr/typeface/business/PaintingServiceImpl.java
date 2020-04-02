@@ -86,7 +86,7 @@ public class PaintingServiceImpl implements PaintingService {
       IOUtils.copy(inputStream, outputStream);
       MultipartFile multipartFile = new CommonsMultipartFile(fileItem);
       String upload = storageService
-          .upload(new MultipartFile[]{multipartFile}, applicationName, bucketName);
+          .upload(multipartFile, applicationName, bucketName);
       Output<UploadOutput> output = JSON
           .parseObject(upload, new TypeReference<Output<UploadOutput>>() {
           });
