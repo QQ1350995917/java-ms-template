@@ -8,6 +8,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -72,21 +73,20 @@ public class PaintingServiceImpl implements PaintingService {
     BufferedImage bufferedImage = Painter.createImage(contents, fontPath);
     ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
     try {
-      ImageIO.write(bufferedImage, "jpg", byteArrayOutputStream);
+      ImageIO.write(bufferedImage, "PNG", byteArrayOutputStream);
     } catch (IOException e) {
       e.printStackTrace();
     }
     InputStream inputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
     String objectName = String
-        .join("/", printer, String.valueOf(System.currentTimeMillis()), UUID.randomUUID() + ".jpg");
+        .join("/", printer, String.valueOf(System.currentTimeMillis()), UUID.randomUUID() + ".png");
     try {
-      DiskFileItem fileItem = (DiskFileItem) new DiskFileItemFactory().createItem(objectName,
-          MediaType.IMAGE_JPEG_VALUE, true, "file");
+      DiskFileItem fileItem = (DiskFileItem) new DiskFileItemFactory().createItem("file",
+          MediaType.IMAGE_PNG_VALUE, false, objectName);
       OutputStream outputStream = fileItem.getOutputStream();
       IOUtils.copy(inputStream, outputStream);
       MultipartFile multipartFile = new CommonsMultipartFile(fileItem);
-      String upload = storageService
-          .upload(multipartFile, applicationName, bucketName);
+      String upload = storageService.upload(applicationName, bucketName, objectName, multipartFile);
       Output<UploadOutput> output = JSON
           .parseObject(upload, new TypeReference<Output<UploadOutput>>() {
           });

@@ -1,11 +1,14 @@
 package pwd.initializr.storage.rpc;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * pwd.initializr.storage.api.robot.vo@ms-web-initializr
@@ -29,4 +32,6 @@ public class UploadInput {
   private String appName;
   @ApiModelProperty(name = "bucketName", value = "bucketName", required = true, example = "bucketName")
   private String bucketName;
+  @ApiModelProperty(name = "objectName", value = "objectName", required = true, example = "objectName")
+  private String objectName;
 }

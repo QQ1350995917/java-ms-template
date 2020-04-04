@@ -23,7 +23,7 @@ import org.springframework.context.annotation.Configuration;
 @SpringBootApplication
 @EnableEurekaClient
 @EnableDiscoveryClient
-@EnableFeignClients
+@EnableFeignClients("pwd.initializr.typeface.business")
 @MapperScan("pwd.initializr.typeface.persistence.mapper")
 public class TypefaceApplication {
 

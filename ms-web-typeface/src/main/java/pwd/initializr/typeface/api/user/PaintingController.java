@@ -53,8 +53,13 @@ public class PaintingController extends UserController implements PaintingApi {
     BeanUtils.copyProperties(input, paintingBO);
     paintingBO.setUserId(getUid());
     PaintingBO save = paintingService.create(paintingBO);
-    BeanUtils.copyProperties(save, input);
-    outputData(input);
+    if (save == null) {
+      outputData();
+    } else {
+      BeanUtils.copyProperties(save, input);
+      outputData(input);
+    }
+
   }
 
   @ApiOperation(value = "删除我的图片")

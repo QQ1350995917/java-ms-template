@@ -14,6 +14,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.unit.DataSize;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -33,6 +35,7 @@ import pwd.initializr.common.web.api.FullPathNameGenerator;
 @Configuration
 @SpringBootApplication
 @EnableEurekaClient
+@RestController
 @EnableDiscoveryClient
 @ComponentScan(nameGenerator = FullPathNameGenerator.class)
 @MapperScan("pwd.initializr.storage.persistence.mapper")
@@ -40,6 +43,21 @@ public class StorageApplication implements WebMvcConfigurer {
 
   public static void main(String[] args) throws Exception {
     SpringApplication.run(StorageApplication.class, args);
+  }
+
+  @GetMapping(value = "")
+  public String index0() {
+    return "this is storage 0 index";
+  }
+
+  @GetMapping(value = "/")
+  public String index1() {
+    return "this is storage 1 index";
+  }
+
+  @GetMapping(value = "/account")
+  public String index2() {
+    return "this is storage 2 index";
   }
 
   @Override

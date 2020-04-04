@@ -2,10 +2,11 @@ package pwd.initializr.typeface.business;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import pwd.initializr.storage.rpc.UploadInput;
 
@@ -20,27 +21,17 @@ import pwd.initializr.storage.rpc.UploadInput;
  * @version 1.0.0
  * @since DistributionVersion
  */
-// TODO 比较两种写法，boundary是干嘛的
-@FeignClient(value = "storage", configuration = StorageServiceSupportConfig.class)
+@FeignClient(value = "storage")
 public interface StorageService {
 
+  @DeleteMapping(value = "/api/robot/file/{appName}/{bucketName}/{objectName}", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = {
+      MediaType.APPLICATION_JSON_UTF8_VALUE})
+  String delete(@PathVariable("appName") String appName,
+      @PathVariable("bucketName") String bucketName, @PathVariable("objectName") String objectName);
 
-  @ResponseBody
-  @PostMapping(value = "/api/robot/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE,produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-  String upload(@RequestPart(value = "file") MultipartFile file);
-
-
-  @ResponseBody
-  @PostMapping(value = "/api/robot/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE,produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-  String upload(@RequestPart(value = "file") MultipartFile file,
-      @RequestParam("appName") String appName,
-      @RequestParam("bucketName") String bucketName);
-
-  @ResponseBody
-  @PostMapping(value = "/api/robot/upload", consumes = "multipart/form-data; boundary=----WebKitFormBoundaryiok3pBT6h8LrgwGw")
-  String upload(@RequestPart(value = "file") MultipartFile file,
-      @RequestParam("appName") String appName,
-      @RequestParam("bucketName") String bucketName,
-      @RequestParam("objectName") String objectName,
-      @RequestParam("contentType") String contentType);
+  @PostMapping(value = "/api/robot/file/{appName}/{bucketName}/{objectName}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = {
+      MediaType.APPLICATION_JSON_UTF8_VALUE})
+  String upload(@PathVariable("appName") String appName,
+      @PathVariable("bucketName") String bucketName, @PathVariable("objectName") String objectName,
+      @RequestPart MultipartFile file);
 }

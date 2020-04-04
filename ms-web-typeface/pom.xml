@@ -33,6 +33,10 @@
       <artifactId>spring-cloud-starter-openfeign</artifactId>
     </dependency>
     <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+    </dependency>
+    <dependency>
       <groupId>pwd.initializr</groupId>
       <artifactId>lib-common-web</artifactId>
       <version>0.0.1-SNAPSHOT</version>

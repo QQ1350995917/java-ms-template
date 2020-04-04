@@ -93,9 +93,12 @@ public class Post extends Http {
     entityBuilder.setCharset(Consts.UTF_8);
     ContentType contentType = ContentType
         .create(ContentType.TEXT_PLAIN.getMimeType(), Consts.UTF_8);
-    for (Map.Entry<String, String> entry : paramsMap.entrySet()) {
-      entityBuilder.addTextBody(entry.getKey(), entry.getValue(), contentType);
+    if (paramsMap != null) {
+      for (Map.Entry<String, String> entry : paramsMap.entrySet()) {
+        entityBuilder.addTextBody(entry.getKey(), entry.getValue(), contentType);
+      }
     }
+
     if (fileInputStream != null && name != null && fileOriginalName != null) {
       entityBuilder
           .addBinaryBody(name, fileInputStream, ContentType.DEFAULT_BINARY, fileOriginalName);

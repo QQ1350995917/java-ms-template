@@ -94,6 +94,7 @@ log
 log/
 log/*
 *.log
+z-log
 
 # BlueJ files
 *.ctxt
