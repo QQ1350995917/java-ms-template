@@ -5,10 +5,9 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
-import pwd.initializr.storage.rpc.UploadInput;
+import pwd.initializr.typeface.FeignConfig;
 
 /**
  * pwd.initializr.typeface.business@ms-web-initializr
@@ -21,7 +20,7 @@ import pwd.initializr.storage.rpc.UploadInput;
  * @version 1.0.0
  * @since DistributionVersion
  */
-@FeignClient(value = "storage")
+@FeignClient(value = "storage", configuration = FeignConfig.class,fallback = StorageServiceFallback.class)
 public interface StorageService {
 
   @DeleteMapping(value = "/api/robot/file/{appName}/{bucketName}/{objectName}", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = {
@@ -34,4 +33,6 @@ public interface StorageService {
   String upload(@PathVariable("appName") String appName,
       @PathVariable("bucketName") String bucketName, @PathVariable("objectName") String objectName,
       @RequestPart MultipartFile file);
+
+
 }
