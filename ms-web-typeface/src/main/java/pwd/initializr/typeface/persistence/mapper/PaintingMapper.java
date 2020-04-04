@@ -30,5 +30,7 @@ public interface PaintingMapper {
 
   PaintingEntity findById(@Param("id") Long id);
 
+  List<PaintingEntity> findByIds(@Param("ids") List<Long> ids);
+
   void insert(@Param("paintingEntity") PaintingEntity paintingEntity);
 }

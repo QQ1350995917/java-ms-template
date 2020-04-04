@@ -2,6 +2,7 @@ package pwd.initializr.storage.business;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.util.List;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -31,15 +32,25 @@ public class StorageServiceImpl implements StorageService {
   private MongoTemplate mongoTemplate;
 
   @Override
-  public StorageBO uploadFile(String bucketName, String objectName, InputStream inputStream)
-      throws Exception {
-    return upload(bucketName, objectName, inputStream, "application/octet-stream");
+  public void delete(String bucketName, String objectName) throws Exception {
+    minIOClient.removeObject(bucketName, objectName);
+  }
+
+  @Override
+  public void delete(String bucketName, List<String> objectNames) throws Exception {
+    minIOClient.removeObjects(bucketName, objectNames);
   }
 
   @Override
   public StorageBO uploadFile(String bucketName, String objectName, InputStream inputStream,
       String contentType) throws Exception {
     return upload(bucketName, objectName, inputStream, contentType);
+  }
+
+  @Override
+  public StorageBO uploadFile(String bucketName, String objectName, InputStream inputStream)
+      throws Exception {
+    return upload(bucketName, objectName, inputStream, "application/octet-stream");
   }
 
   @Override

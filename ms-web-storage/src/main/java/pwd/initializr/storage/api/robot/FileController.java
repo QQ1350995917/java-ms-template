@@ -4,6 +4,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import java.io.InputStream;
+import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -12,6 +14,7 @@ import org.springframework.util.AntPathMatcher;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
@@ -44,11 +47,17 @@ public class FileController extends ApiController implements FileApi {
   @Autowired
   private StorageServiceImpl storageService;
 
-  @DeleteMapping(value = "/{appName}/{bucketName}/**", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @DeleteMapping(value = "/{appName}/{bucketName}", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
   public void delete(@PathVariable("appName") String appName,
-      @PathVariable("bucketName") String bucketName) {
-    // TODO 测试通配符性能
+      @PathVariable("bucketName") String bucketName, @RequestBody List<String> objectNames) {
+    try {
+      storageService.delete(bucketName, objectNames);
+      outputData();
+    } catch (Exception e) {
+      e.printStackTrace();
+      outputException(500, e.getMessage());
+    }
   }
 
   @ApiResponses({
@@ -58,13 +67,7 @@ public class FileController extends ApiController implements FileApi {
   @Override
   public void upload(@PathVariable("appName") String appName,
       @PathVariable("bucketName") String bucketName, @RequestPart("file") MultipartFile file) {
-    // TODO 测试通配符性能
-    String path = (String) requestLocal.get()
-        .getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
-    String bestMatchPattern = (String) requestLocal.get()
-        .getAttribute(HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE);
-    String objectName = new AntPathMatcher().extractPathWithinPattern(bestMatchPattern, path);
-
+    String objectName = getObjectName(this.requestLocal.get());
     String contentType = file.getContentType();
     try {
       InputStream inputStream = file.getInputStream();
@@ -77,5 +80,16 @@ public class FileController extends ApiController implements FileApi {
       e.printStackTrace();
       outputException(500, e.getMessage());
     }
+  }
+
+
+  private String getObjectName(HttpServletRequest httpServletRequest) {
+    // TODO 测试通配符性能
+    String path = (String) httpServletRequest
+        .getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
+    String bestMatchPattern = (String) httpServletRequest
+        .getAttribute(HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE);
+    String objectName = new AntPathMatcher().extractPathWithinPattern(bestMatchPattern, path);
+    return objectName;
   }
 }

@@ -8,11 +8,14 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URLEncoder;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.UUID;
+import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.imageio.ImageIO;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.io.IOUtils;
@@ -44,6 +47,7 @@ import pwd.initializr.typeface.util.Painter;
  * @since DistributionVersion
  */
 @Service
+@Slf4j
 public class PaintingServiceImpl implements PaintingService {
 
   @Value("${spring.application.name}")
@@ -93,6 +97,8 @@ public class PaintingServiceImpl implements PaintingService {
       if (200 == output.getMeta().getCode()) {
         UploadOutput uploadOutput = output.getData();
         paintingBO.setImageUrl(uploadOutput.getUrl());
+        paintingBO.setBucketName(uploadOutput.getBucketName());
+        paintingBO.setObjectName(uploadOutput.getObjectName());
         paintingBO.setCreateTime(System.currentTimeMillis());
         paintingBO.setUpdateTime(System.currentTimeMillis());
         PaintingEntity paintingEntity = new PaintingEntity();
@@ -112,8 +118,26 @@ public class PaintingServiceImpl implements PaintingService {
 
   @Override
   public Integer deleteByIds(List<Long> ids) {
-    Integer integer = paintingMapper.deleteByIds(ids);
-    return integer;
+    Integer result = 0;
+    List<PaintingEntity> deletion = paintingMapper.findByIds(ids);
+    deletion.stream()
+        .collect(Collectors
+            .toMap(PaintingEntity::getBucketName, Function.identity(), (key1, key2) -> key2,
+                LinkedHashMap::new)).forEach((key, values) -> {
+      String delete = storageService
+          .delete(applicationName, key, Stream.of(values).map(value -> value.getObjectName())
+              .collect(Collectors.toList()));
+      Output<UploadOutput> output = JSON
+          .parseObject(delete, new TypeReference<Output<UploadOutput>>() {
+          });
+      if (200 == output.getMeta().getCode()) {
+        Integer integer = paintingMapper
+            .deleteByIds(deletion.stream().map(obj -> obj.getId()).collect(Collectors.toList()));
+      } else {
+        log.error("{}", output);
+      }
+    });
+    return result;
   }
 
   @Override

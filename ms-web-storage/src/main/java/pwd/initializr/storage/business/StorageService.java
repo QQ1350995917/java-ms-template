@@ -1,6 +1,7 @@
 package pwd.initializr.storage.business;
 
 import java.io.InputStream;
+import java.util.List;
 import pwd.initializr.storage.business.bo.StorageBO;
 
 /**
@@ -16,10 +17,15 @@ import pwd.initializr.storage.business.bo.StorageBO;
  */
 public interface StorageService {
 
-  StorageBO uploadFile(String bucketName, String objectName, InputStream inputStream)
+  void delete(String bucketName, String objectName) throws Exception;
+
+  void delete(String bucketName, List<String> objectNames) throws Exception;
+
+  StorageBO uploadFile(String bucketName, String objectName, InputStream inputStream,
+      String contentType)
       throws Exception;
 
-  StorageBO uploadFile(String bucketName, String objectName, InputStream inputStream,String contentType)
+  StorageBO uploadFile(String bucketName, String objectName, InputStream inputStream)
       throws Exception;
 
   StorageBO uploadHtml(String bucketName, String objectName, String html) throws Exception;

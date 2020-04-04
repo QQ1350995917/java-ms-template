@@ -23,23 +23,25 @@ import lombok.ToString;
 @ToString
 public class PaintingEntity implements Serializable {
 
-  private String background;
-  private String content;
-  private Long createTime;
+  private Long id;
+  private Long userId;
   private Long fontId;
   private Float fontSize;
+  private String content;
+  private String background;
   private String foreground;
-  private Integer height;
-  private Long id;
-  private String imageUrl;
-  private Integer status;
-  private Long updateTime;
-  private Long userId;
   private Integer width;
+  private Integer height;
+  private String imageUrl;
+  private String bucketName;
+  private String objectName;
+  private Integer status;
+  private Long createTime;
+  private Long updateTime;
 
   public PaintingEntity(Long id, Long userId, Long fontId, Float fontSize, String content,
       String background, String foreground, Integer width, Integer height, String imageUrl,
-      Integer status, Long createTime, Long updateTime) {
+      String bucketName,String objectName, Integer status, Long createTime, Long updateTime) {
     this.id = id;
     this.userId = userId;
     this.fontId = fontId;

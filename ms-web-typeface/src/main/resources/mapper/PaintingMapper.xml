@@ -16,6 +16,8 @@
 		`width`,
 		`height`,
 		`image_url`,
+		`bucket_name`,
+		`object_name`,
 		`status`,
 		`create_time`,
 		`update_time`
@@ -29,6 +31,8 @@
 		#{paintingEntity.width},
 		#{paintingEntity.height},
 		#{paintingEntity.imageUrl},
+		#{paintingEntity.bucketName},
+		#{paintingEntity.objectName},
 		#{paintingEntity.status},
 		#{paintingEntity.createTime},
 		#{paintingEntity.updateTime})
@@ -48,11 +52,39 @@
 		`width`,
 		`height`,
 		`image_url` as imageUrl,
+		`bucket_name` as bucketName,
+		`object_name` as objectName,
 		`status` as status,
 		`create_time` as createTime,
 		`update_time` as updateTime
 		from `painting`
 		where id = #{id}
+	</select>
+
+  <!--findByIds-->
+  <select id="findByIds" parameterType="java.util.List"
+    resultType="pwd.initializr.typeface.persistence.dao.PaintingEntity">
+		select
+		`id` as id,
+		`user_id` as userId,
+		`font_id` as fontId,
+		`font_size` as fileUrl,
+		`content`,
+		`background`,
+		`foreground`,
+		`width`,
+		`height`,
+		`image_url` as imageUrl,
+		`bucket_name` as bucketName,
+		`object_name` as objectName,
+		`status` as status,
+		`create_time` as createTime,
+		`update_time` as updateTime
+		from `painting`
+		where id IN
+    <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
+     #{id}
+    </foreach>
 	</select>
 
   <!--countByCondition-->
@@ -81,6 +113,8 @@
     `width`,
     `height`,
     `image_url` as imageUrl,
+    `bucket_name` as bucketName,
+    `object_name` as objectName,
     `status` as status,
     `create_time` as createTime,
     `update_time` as updateTime

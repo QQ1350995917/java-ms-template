@@ -1,9 +1,12 @@
 package pwd.initializr.common.mw.minio;
 
 import io.minio.MinioClient;
+import io.minio.Result;
 import io.minio.ServerSideEncryption;
 import io.minio.errors.MinioException;
+import io.minio.messages.DeleteError;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Map;
 import lombok.Getter;
 import lombok.Setter;
@@ -33,10 +36,25 @@ import org.springframework.stereotype.Component;
 public class MinIOClient {
 
   private static MinioClient minioClient = null;
-
-  private String url;
   private String accessKey;
   private String secretKey;
+  private String url;
+
+  public InputStream getObject(String bucketName, String objectName) throws Exception {
+    return getMinioClientInstance().getObject(bucketName, objectName);
+  }
+
+  public String getObjectUrl(String bucketName, String objectName)
+      throws Exception {
+    return getMinioClientInstance().getObjectUrl(bucketName, objectName);
+  }
+
+  public void putObject(String bucketName, String objectName, InputStream stream, Long size,
+      Map<String, String> headerMap, ServerSideEncryption sse, String contentType)
+      throws Exception {
+    getMinioClientInstance()
+        .putObject(bucketName, objectName, stream, size, headerMap, sse, contentType);
+  }
 
   private MinioClient getMinioClientInstance() throws MinioException {
     if (minioClient == null) {
@@ -49,20 +67,13 @@ public class MinIOClient {
     return minioClient;
   }
 
-  public void putObject(String bucketName, String objectName, InputStream stream, Long size,
-      Map<String, String> headerMap, ServerSideEncryption sse, String contentType)
-      throws Exception {
-    getMinioClientInstance()
-        .putObject(bucketName, objectName, stream, size, headerMap, sse, contentType);
+  public void removeObject(String bucketName, String objectName) throws Exception {
+    getMinioClientInstance().removeObject(bucketName, objectName);
   }
 
-  public InputStream getObject(String bucketName,String objectName) throws Exception {
-    return getMinioClientInstance().getObject(bucketName,objectName);
-  }
-
-  public String getObjectUrl(String bucketName, String objectName)
+  public Iterable<Result<DeleteError>> removeObjects(String bucketName, List<String> objectNames)
       throws Exception {
-    return getMinioClientInstance().getObjectUrl(bucketName, objectName);
+    return getMinioClientInstance().removeObjects(bucketName, objectNames);
   }
 
 
