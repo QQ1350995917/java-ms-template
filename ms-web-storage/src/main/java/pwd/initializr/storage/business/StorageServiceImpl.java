@@ -1,7 +1,11 @@
 package pwd.initializr.storage.business;
 
+import io.minio.Result;
+import io.minio.messages.DeleteError;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +13,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import pwd.initializr.common.mw.minio.MinIOClient;
+import pwd.initializr.storage.business.bo.ObjectDelErrorBO;
 import pwd.initializr.storage.business.bo.StorageBO;
 import pwd.initializr.storage.persistence.dao.StorageEntity;
 
@@ -37,8 +42,28 @@ public class StorageServiceImpl implements StorageService {
   }
 
   @Override
-  public void delete(String bucketName, List<String> objectNames) throws Exception {
-    minIOClient.removeObjects(bucketName, objectNames);
+  public List<ObjectDelErrorBO> delete(String bucketName, List<String> objectNames)
+      throws Exception {
+    List<ObjectDelErrorBO> result = new LinkedList<>();
+    Iterable<Result<DeleteError>> results = minIOClient.removeObjects(bucketName, objectNames);
+    Iterator<Result<DeleteError>> iterator = results.iterator();
+    while (iterator.hasNext()) {
+      Result<DeleteError> next = iterator.next();
+      try {
+        DeleteError deleteError = next.get();
+        result.add(
+            new ObjectDelErrorBO(deleteError.code(), deleteError.message(),
+                deleteError.bucketName(),
+                deleteError.objectName(), deleteError.resource(), deleteError.requestId(),
+                deleteError.hostId(), deleteError.errorCode().code()));
+      } catch (Exception e) {
+        e.printStackTrace();
+        ObjectDelErrorBO objectDelErrorBO = new ObjectDelErrorBO();
+        objectDelErrorBO.setMessage(e.getMessage());
+        result.add(objectDelErrorBO);
+      }
+    }
+    return result;
   }
 
   @Override

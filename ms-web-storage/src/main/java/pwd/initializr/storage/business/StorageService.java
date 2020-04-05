@@ -2,6 +2,7 @@ package pwd.initializr.storage.business;
 
 import java.io.InputStream;
 import java.util.List;
+import pwd.initializr.storage.business.bo.ObjectDelErrorBO;
 import pwd.initializr.storage.business.bo.StorageBO;
 
 /**
@@ -19,7 +20,7 @@ public interface StorageService {
 
   void delete(String bucketName, String objectName) throws Exception;
 
-  void delete(String bucketName, List<String> objectNames) throws Exception;
+  List<ObjectDelErrorBO> delete(String bucketName, List<String> objectNames) throws Exception;
 
   StorageBO uploadFile(String bucketName, String objectName, InputStream inputStream,
       String contentType)

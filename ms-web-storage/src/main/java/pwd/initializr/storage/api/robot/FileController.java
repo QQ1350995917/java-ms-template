@@ -5,6 +5,8 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import java.io.InputStream;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +22,9 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.HandlerMapping;
 import pwd.initializr.common.web.api.ApiController;
+import pwd.initializr.storage.api.robot.vo.FileDelErrorVO;
 import pwd.initializr.storage.business.StorageServiceImpl;
+import pwd.initializr.storage.business.bo.ObjectDelErrorBO;
 import pwd.initializr.storage.business.bo.StorageBO;
 import pwd.initializr.storage.rpc.UploadOutput;
 
@@ -36,11 +40,11 @@ import pwd.initializr.storage.rpc.UploadOutput;
  * @since DistributionVersion
  */
 @Api(
-    tags = "文件上传",
-    value = "文件上传Api",
-    description = "文件上传API"
+    tags = "文件",
+    value = "文件Api",
+    description = "文件API"
 )
-@Controller(value = "uploadApiByRobot")
+@Controller(value = "fileApiByRobot")
 @RequestMapping(value = "/api/robot/file")
 public class FileController extends ApiController implements FileApi {
 
@@ -52,8 +56,14 @@ public class FileController extends ApiController implements FileApi {
   public void delete(@PathVariable("appName") String appName,
       @PathVariable("bucketName") String bucketName, @RequestBody List<String> objectNames) {
     try {
-      storageService.delete(bucketName, objectNames);
-      outputData();
+      List<ObjectDelErrorBO> objBO = storageService.delete(bucketName, objectNames);
+
+      List<FileDelErrorVO> collect = objBO.stream().flatMap(
+          obj -> Stream.of(new FileDelErrorVO(obj.getCode(), obj.getMessage(), obj.getBucketName(),
+              obj.getObjectName(), obj.getResource(), obj.getRequestId(), obj.getHostId(),
+              obj.getErrorCode()))).collect(Collectors.toList());
+
+      outputData(collect);
     } catch (Exception e) {
       e.printStackTrace();
       outputException(500, e.getMessage());

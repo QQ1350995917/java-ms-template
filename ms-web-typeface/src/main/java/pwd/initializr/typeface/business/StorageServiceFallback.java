@@ -1,6 +1,7 @@
 package pwd.initializr.typeface.business;
 
 import com.alibaba.fastjson.JSON;
+import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import pwd.initializr.common.web.api.vo.Meta;
@@ -21,7 +22,7 @@ import pwd.initializr.common.web.api.vo.Output;
 public class StorageServiceFallback implements StorageService {
 
   @Override
-  public String delete(String appName, String bucketName, String objectName) {
+  public String delete(String appName, String bucketName, List<String> objectNames) {
     return JSON.toJSONString(new Output(new Meta(504)));
   }
 

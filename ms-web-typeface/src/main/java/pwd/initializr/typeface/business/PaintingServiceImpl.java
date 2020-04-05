@@ -8,12 +8,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
-import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import javax.imageio.ImageIO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.fileupload.disk.DiskFileItem;
@@ -118,14 +116,14 @@ public class PaintingServiceImpl implements PaintingService {
 
   @Override
   public Integer deleteByIds(List<Long> ids) {
+    // TODO 外部变量如何对lambda计数
     Integer result = 0;
     List<PaintingEntity> deletion = paintingMapper.findByIds(ids);
-    deletion.stream()
-        .collect(Collectors
-            .toMap(PaintingEntity::getBucketName, Function.identity(), (key1, key2) -> key2,
-                LinkedHashMap::new)).forEach((key, values) -> {
+    Map<String, List<PaintingEntity>> collect = deletion.stream()
+        .collect(Collectors.groupingBy(obj -> obj.getBucketName()));
+    collect.forEach((key, values) -> {
       String delete = storageService
-          .delete(applicationName, key, Stream.of(values).map(value -> value.getObjectName())
+          .delete(applicationName, key, values.stream().map(value -> value.getObjectName())
               .collect(Collectors.toList()));
       Output<UploadOutput> output = JSON
           .parseObject(delete, new TypeReference<Output<UploadOutput>>() {
@@ -154,7 +152,8 @@ public class PaintingServiceImpl implements PaintingService {
     List<PaintingBO> collect = findByCondition.stream().map(
         obj -> new PaintingBO(obj.getId(), obj.getUserId(), obj.getFontId(), obj.getFontSize(),
             obj.getContent(), obj.getBackground(), obj.getForeground(), obj.getWidth(),
-            obj.getHeight(), obj.getImageUrl(), obj.getStatus(), obj.getCreateTime(),
+            obj.getHeight(), obj.getImageUrl(), obj.getBucketName(), obj.getObjectName(),
+            obj.getStatus(), obj.getCreateTime(),
             obj.getUpdateTime()))
         .collect(Collectors.toList());
 
