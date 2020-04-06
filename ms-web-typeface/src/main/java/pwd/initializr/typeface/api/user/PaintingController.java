@@ -2,6 +2,7 @@ package pwd.initializr.typeface.api.user;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.BeanUtils;
@@ -48,7 +49,7 @@ public class PaintingController extends UserController implements PaintingApi {
   @ApiOperation(value = "创建我的图片")
   @PostMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
-  public void createPainting(PaintingVO input) {
+  public void createPainting(@RequestBody PaintingVO input) {
     PaintingBO paintingBO = new PaintingBO();
     BeanUtils.copyProperties(input, paintingBO);
     paintingBO.setUserId(getUid());

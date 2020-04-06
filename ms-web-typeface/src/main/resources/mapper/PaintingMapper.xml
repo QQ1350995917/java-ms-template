@@ -64,28 +64,28 @@
   <!--findByIds-->
   <select id="findByIds" parameterType="java.util.List"
     resultType="pwd.initializr.typeface.persistence.dao.PaintingEntity">
-		select
-		`id` as id,
-		`user_id` as userId,
-		`font_id` as fontId,
-		`font_size` as fileUrl,
-		`content`,
-		`background`,
-		`foreground`,
-		`width`,
-		`height`,
-		`image_url` as imageUrl,
-		`bucket_name` as bucketName,
-		`object_name` as objectName,
-		`status` as status,
-		`create_time` as createTime,
-		`update_time` as updateTime
-		from `painting`
-		where id IN
+    select
+    `id` as id,
+    `user_id` as userId,
+    `font_id` as fontId,
+    `font_size` as fileUrl,
+    `content`,
+    `background`,
+    `foreground`,
+    `width`,
+    `height`,
+    `image_url` as imageUrl,
+    `bucket_name` as bucketName,
+    `object_name` as objectName,
+    `status` as status,
+    `create_time` as createTime,
+    `update_time` as updateTime
+    from `painting`
+    where id IN
     <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
-     #{id}
+      #{id}
     </foreach>
-	</select>
+  </select>
 
   <!--countByCondition-->
   <select id="countByCondition"
@@ -122,6 +122,7 @@
     <where>
       <include refid="whereCondition"></include>
     </where>
+    order by updateTime DESC
     limit #{offset}, #{rows}
   </select>
 
@@ -134,14 +135,15 @@
   </delete>
 
   <sql id="whereCondition">
+    1 = 1
     <if test="paintingEntity.fontId != null">
-      `font_id` = #{paintingEntity.fontId}
+      AND `font_id` = #{paintingEntity.fontId}
     </if>
-    <if test="paintingEntity.content != null">
-      `content` like #{paintingEntity.content}
+    <if test="paintingEntity.content != null and paintingEntity.content != ''">
+      AND `content` like concat('%',#{paintingEntity.content},'%')
     </if>
     <if test="paintingEntity.userId != null">
-      `user_id` = #{paintingEntity.userId}
+      AND `user_id` = #{paintingEntity.userId}
     </if>
     AND status != -1
   </sql>

@@ -36,15 +36,15 @@ public class FontInitUpload {
           InputStream thumbInputStream = new FileInputStream(
               new File(
                   "/Users/pwd/workspace/dingpw/hornbook-service/xresources/thumb/" + id + ".png"));
-          String thumbName = "font/" + title + ".png";
+          String thumbName = "font/" + title + ".jpg";
 
-//          minioClient.putObject(bucketName, thumbName, thumbInputStream, "image/jpeg");
+          //minioClient.putObject(bucketName, thumbName, thumbInputStream, "image/jpeg");
 
           InputStream ttfInputStream = new FileInputStream(
               new File("/Users/pwd/workspace/dingpw/hornbook-service/xresources/fonts/" + title
                   + ".ttf"));
           String ttfName = "font/" + title + ".ttf";
-//          minioClient.putObject(bucketName, ttfName, ttfInputStream, "application/x-font-ttf");
+          //minioClient.putObject(bucketName, ttfName, ttfInputStream, "application/x-font-ttf");
 
         } catch (Exception e) {
           e.printStackTrace();

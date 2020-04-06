@@ -74,7 +74,7 @@
   </select>
 
   <sql id="whereCondition">
-    <if test="fontEntity.title != null">
+    <if test="fontEntity.title != null and fontEntity.title != ''">
       `title` like concat('%',#{fontEntity.title},'%')
     </if>
   </sql>
