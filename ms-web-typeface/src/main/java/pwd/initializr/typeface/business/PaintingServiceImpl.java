@@ -48,6 +48,8 @@ import pwd.initializr.typeface.util.Painter;
 @Slf4j
 public class PaintingServiceImpl implements PaintingService {
 
+  static String lineSeparator = System.getProperty("line.separator", "\n");
+
   @Value("${spring.application.name}")
   private String applicationName;
   @Value("${ms.typeface.bucket.name}")
@@ -68,7 +70,7 @@ public class PaintingServiceImpl implements PaintingService {
   @Override
   public PaintingBO create(PaintingBO paintingBO) {
     String content = paintingBO.getContent();
-    String[] contents = content.split("\r\n");
+    String[] contents = content.split(lineSeparator);
 
     FontBO fontBO = fontService.findById(paintingBO.getFontId());
     String fontPath = String.join("", ttfDir, fontBO.getName());
