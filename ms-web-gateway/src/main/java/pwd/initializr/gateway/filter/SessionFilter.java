@@ -61,23 +61,22 @@ public class SessionFilter implements GlobalFilter, Ordered {
     String method = request.getMethodValue();
     String path = request.getURI().getPath();
 
-    if (KeyValueList.skipToken(path,method)) {
+    if (KeyValueList.skipToken(path, method)) {
       // 白名单
       return chain.filter(exchange);
     }
     String token = request.getHeaders().getFirst(ApiConstant.HTTP_HEADER_KEY_TOKEN);
     if (token == null) {
-      response.setStatusCode(HttpStatus.UNAUTHORIZED);
-      return buildSessionErrorMono(request,response,"请求参数错误");
+      return buildSessionErrorMono(request, response, "请求参数错误");
     }
     String uid;
     try {
       uid = JWT.decode(token).getAudience().get(0);
     } catch (JWTDecodeException e) {
-      return buildSessionErrorMono(request,response,"请求参数错误");
+      return buildSessionErrorMono(request, response, "请求参数错误");
     }
     if (uid == null) {
-      return buildSessionErrorMono(request,response,"请求参数错误");
+      return buildSessionErrorMono(request, response, "请求参数错误");
     }
 
     String key = StringUtils.join(new String[]{SESSION_PREFIX, uid});
@@ -89,18 +88,19 @@ public class SessionFilter implements GlobalFilter, Ordered {
         jwtVerifier.verify(token);
       } catch (JWTVerificationException e) {
         // Session 获取到 验证失败
-        return buildSessionErrorMono(request,response,"请求参数错误");
+        return buildSessionErrorMono(request, response, "请求参数错误");
       }
-      request.getHeaders().add(ApiConstant.HTTP_HEADER_KEY_UID,uid);
+      request.getHeaders().add(ApiConstant.HTTP_HEADER_KEY_UID, uid);
       // Session 获取到 验证成功
       return chain.filter(exchange);
     } else {
       // Session 未获取到 超时或者未登录
-      return buildSessionErrorMono(request,response,"未登录或登录超时");
+      return buildSessionErrorMono(request, response, "未登录或登录超时");
     }
   }
 
-  private Mono<Void> buildSessionErrorMono(ServerHttpRequest request ,ServerHttpResponse response,String message){
+  private Mono<Void> buildSessionErrorMono(ServerHttpRequest request, ServerHttpResponse response,
+      String message) {
     RequestPath path = request.getPath();
     String url = request.getURI().getPath();
     String redirect;
@@ -110,16 +110,16 @@ public class SessionFilter implements GlobalFilter, Ordered {
       redirect = KeyValueList.userLogin;
     }
     String method = request.getMethodValue();
-    response.setStatusCode(HttpStatus.FOUND);
+    response.setStatusCode(HttpStatus.resolve(401));
     HttpHeaders httpHeaders = response.getHeaders();
     httpHeaders.add("Content-Type", "application/json; charset=UTF-8");
     httpHeaders.add("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0");
     httpHeaders.add("Location", redirect);
-    Output<Object> objectOutput = new Output<>(
-        new Meta(HttpStatus.FOUND.value(), message));
+    Output<Object> objectOutput = new Output<>(new Meta(HttpStatus.UNAUTHORIZED.value(), message));
     String warning = JSON.toJSONString(objectOutput);
     DataBuffer bodyDataBuffer = response.bufferFactory()
         .wrap(warning.getBytes(StandardCharsets.UTF_8));
+//    return response.setComplete();
     return response.writeWith(Mono.just(bodyDataBuffer));
   }
 
