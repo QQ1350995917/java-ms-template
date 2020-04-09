@@ -21,7 +21,7 @@ import java.io.InputStream;
 public class FontInitUpload {
 
   public static void main(String[] args) throws Exception {
-    String bucketName = "initializr-typeface";
+
     File file = new File("/Users/pwd/workspace/dingpw/hornbook-service/xresources/jsons/All.json");
     JSONArray jsonArray = JSON.parseObject(new FileInputStream(file), JSONArray.class, null);
     jsonArray.stream().forEach(jsonObject -> {
