@@ -24,6 +24,7 @@
     <module>lib-etl-core</module>
     <module>lib-etl-core-plugin</module>
     <module>lib-rpc-storage</module>
+    <module>lib-rpc-account</module>
     <module>ms-web-registry</module>
     <module>ms-web-account</module>
     <module>ms-web-configure</module>

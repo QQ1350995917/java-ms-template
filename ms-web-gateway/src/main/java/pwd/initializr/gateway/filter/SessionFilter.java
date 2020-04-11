@@ -82,17 +82,22 @@ public class SessionFilter implements GlobalFilter, Ordered {
     String key = StringUtils.join(new String[]{SESSION_PREFIX, uid});
     String userJson = redisClient.get(key);
     if (userJson != null) {
-      String password = JSON.parseObject(userJson).getString("password");
-      JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(password)).build();
+      String phoneNumber = JSON.parseObject(userJson).getString("phoneNumber");
+      JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(phoneNumber))
+          .build();
       try {
         jwtVerifier.verify(token);
       } catch (JWTVerificationException e) {
         // Session 获取到 验证失败
         return buildSessionErrorMono(request, response, "请求参数错误");
       }
-      request.getHeaders().add(ApiConstant.HTTP_HEADER_KEY_UID, uid);
+//      request.getHeaders().add(ApiConstant.HTTP_HEADER_KEY_UID, uid);
+      ServerHttpRequest serverHttpRequest = exchange.getRequest().mutate()
+          .header(ApiConstant.HTTP_HEADER_KEY_UID, new String[]{uid}).build();
+      //将现在的request 变成 change对象
+      ServerWebExchange serverWebExchange = exchange.mutate().request(serverHttpRequest).build();
       // Session 获取到 验证成功
-      return chain.filter(exchange);
+      return chain.filter(serverWebExchange);
     } else {
       // Session 未获取到 超时或者未登录
       return buildSessionErrorMono(request, response, "未登录或登录超时");
