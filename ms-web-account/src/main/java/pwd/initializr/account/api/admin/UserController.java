@@ -41,16 +41,16 @@ public class UserController extends AdminController implements UserApi {
   @GetMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
   public void listUser() {
-    ObjectList<User> userObjectList = userService.listUser();
-    outputData(userObjectList);// TODO 转化为VO
+//    ObjectList<User> userObjectList = userService.listUser();
+//    outputData(userObjectList);// TODO 转化为VO
   }
 
   @ApiOperation(value = "用户详情")
   @GetMapping(value = {"/{id}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
   public void detailedUser(@PathVariable Long id) {
-    User user = userService.findById(id);
-    outputData(user);// TODO 转化为VO
+//    User user = userService.findById(id);
+//    outputData(user);// TODO 转化为VO
   }
 
   @ApiOperation(value = "禁用用户")

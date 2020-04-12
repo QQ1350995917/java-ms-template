@@ -1,11 +1,6 @@
 package pwd.initializr.gateway.filter;
 
 import com.alibaba.fastjson.JSON;
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.JWTVerifier;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.JWTDecodeException;
-import com.auth0.jwt.exceptions.JWTVerificationException;
 import java.nio.charset.StandardCharsets;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +16,8 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
+import pwd.initializr.account.rpc.Token;
+import pwd.initializr.account.rpc.UserSession;
 import pwd.initializr.common.mw.redis.RedisClient;
 import pwd.initializr.common.web.api.ApiConstant;
 import pwd.initializr.common.web.api.vo.Meta;
@@ -42,9 +39,10 @@ import reactor.core.publisher.Mono;
 @Component
 public class SessionFilter implements GlobalFilter, Ordered {
 
+  @Value("${account_secret}")
+  private String ACCOUNT_SECRET;
   @Value("${account_login_prefix}")
   private String SESSION_PREFIX;
-
   @Value("${filter_skip_all:true}")
   private Boolean filterSkipAll;
 
@@ -65,43 +63,33 @@ public class SessionFilter implements GlobalFilter, Ordered {
       // 白名单
       return chain.filter(exchange);
     }
+    String uid = request.getHeaders().getFirst(ApiConstant.HTTP_HEADER_KEY_UID);
     String token = request.getHeaders().getFirst(ApiConstant.HTTP_HEADER_KEY_TOKEN);
-    if (token == null) {
-      return buildSessionErrorMono(request, response, "请求参数错误");
-    }
-    String uid;
-    try {
-      uid = JWT.decode(token).getAudience().get(0);
-    } catch (JWTDecodeException e) {
-      return buildSessionErrorMono(request, response, "请求参数错误");
-    }
-    if (uid == null) {
+    if (StringUtils.isEmpty(uid) || StringUtils.isEmpty(token)) {
       return buildSessionErrorMono(request, response, "请求参数错误");
     }
 
     String key = StringUtils.join(new String[]{SESSION_PREFIX, uid});
     String userJson = redisClient.get(key);
-    if (userJson != null) {
-      String phoneNumber = JSON.parseObject(userJson).getString("phoneNumber");
-      JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(phoneNumber))
-          .build();
-      try {
-        jwtVerifier.verify(token);
-      } catch (JWTVerificationException e) {
-        // Session 获取到 验证失败
-        return buildSessionErrorMono(request, response, "请求参数错误");
-      }
-//      request.getHeaders().add(ApiConstant.HTTP_HEADER_KEY_UID, uid);
-      ServerHttpRequest serverHttpRequest = exchange.getRequest().mutate()
-          .header(ApiConstant.HTTP_HEADER_KEY_UID, new String[]{uid}).build();
-      //将现在的request 变成 change对象
-      ServerWebExchange serverWebExchange = exchange.mutate().request(serverHttpRequest).build();
-      // Session 获取到 验证成功
-      return chain.filter(serverWebExchange);
-    } else {
+    if (StringUtils.isEmpty(userJson)) {
       // Session 未获取到 超时或者未登录
       return buildSessionErrorMono(request, response, "未登录或登录超时");
     }
+
+    UserSession userSession = JSON.parseObject(userJson, UserSession.class);
+    try {
+      Token.verifyToken(userSession, token, ACCOUNT_SECRET);
+    } catch (Exception e) {
+      // Session 获取到 验证失败
+      return buildSessionErrorMono(request, response, "请求参数错误");
+    }
+//  request.getHeaders().add(ApiConstant.HTTP_HEADER_KEY_UID, uid);
+    ServerHttpRequest serverHttpRequest = exchange.getRequest().mutate()
+        .header(ApiConstant.HTTP_HEADER_KEY_UID, new String[]{uid}).build();
+    //将现在的request 变成 change对象
+    ServerWebExchange serverWebExchange = exchange.mutate().request(serverHttpRequest).build();
+    // Session 获取到 验证成功
+    return chain.filter(serverWebExchange);
   }
 
   private Mono<Void> buildSessionErrorMono(ServerHttpRequest request, ServerHttpResponse response,

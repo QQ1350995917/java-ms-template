@@ -31,15 +31,15 @@ public class LoginInput {
 
   @ApiModelProperty(name = "identify", value = "登录名称", required = true, example = "DingPengwei")
   @NotNull(message = "0")
-  private String identify;
+  private String loginName;
   @ApiModelProperty(name = "password", value = "登录密码", required = true, example = "123456")
   @NotNull(message = "0")
   private String password;
-  @ApiModelProperty(name = "vCode", value = "图形验证码", required = false, example = "pwdxyz")
-  @Null(message = "0")
-  private String vCode;
   @ApiModelProperty(name = "smsCode", value = "短信验证码", required = false, example = "123456")
   @Null(message = "0")
   private String smsCode;
+  @ApiModelProperty(name = "vCode", value = "图形验证码", required = false, example = "pwdxyz")
+  @Null(message = "0")
+  private String vCode;
 
 }

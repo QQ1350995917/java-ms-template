@@ -18,10 +18,10 @@ import pwd.initializr.common.web.business.bo.ObjectList;
 @Service
 public interface UserService {
 
-  ObjectList<User> listUser();
-
-  User findById(Long userId);
-
-  ObjectList<User> listUserById(String[] ids,Integer status);
+//  ObjectList<User> listUser();
+//
+//  User findById(Long userId);
+//
+//  ObjectList<User> listUserById(String[] ids,Integer status);
 
 }

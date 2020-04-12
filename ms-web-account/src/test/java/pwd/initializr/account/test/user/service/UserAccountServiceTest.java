@@ -1,19 +1,18 @@
 package pwd.initializr.account.test.user.service;
 
+import java.util.Arrays;
+import java.util.stream.Stream;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import pwd.initializr.account.business.user.AccountService;
+import pwd.initializr.account.AccountApplication;
 import pwd.initializr.account.business.user.UserAccountService;
-import pwd.initializr.account.business.user.UserService;
-import pwd.initializr.account.business.user.bo.Account;
 import pwd.initializr.account.business.user.bo.User;
 import pwd.initializr.account.business.user.bo.UserAccount;
-import pwd.initializr.account.persistence.dao.AccountEntity.Type;
-import pwd.initializr.account.persistence.dao.ConstantStatus;
-import pwd.initializr.common.web.business.bo.ObjectList;
+import pwd.initializr.account.persistence.entity.UserAccountType;
 
 /**
  * pwd.initializr.account.test.user@ms-web-initializr
@@ -26,54 +25,31 @@ import pwd.initializr.common.web.business.bo.ObjectList;
  * @version 1.0.0
  * @since DistributionVersion
  */
-//@RunWith(SpringRunner.class)
-//@SpringBootTest
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = {AccountApplication.class})
 public class UserAccountServiceTest {
-//
-//  @Autowired
-//  private UserAccountService userAccountService;
-//
-//  @Autowired
-//  private UserService userService;
-//
-//  @Autowired
-//  private AccountService accountService;
-//
-//  @Test
-//  public void testCreateUserAccount() {
-//    User user = new User(null, "pwd-test-0", ConstantStatus.ENABLE.value(),
-//        System.currentTimeMillis(),
-//        System.currentTimeMillis());
-//    Account account = new Account(null, user.getId(), "000000", "000000", Type.GRANT.value(),
-//        ConstantStatus.ENABLE.value(), System.currentTimeMillis(), System.currentTimeMillis());
-//    UserAccount userAccount = userAccountService.createUserAccount(user, account);
-//    System.out.println(userAccount);
-//  }
-//
-//
-//  @Test
-//  public void testCountUser() {
-//    Long result = userService.countUser();
-//    System.out.println(result);
-//  }
-//
-//  @Test
-//  public void testListUser() {
-//    ObjectList<User> userObjectList = userService.listUser();
-//    System.out.println(userObjectList);
-//  }
-//
-//  @Test
-//  public void testFindUserById() {
-//    User byUserId = userService.findByUserId(5L);
-//    System.out.println(byUserId);
-//  }
-//
-//  @Test
-//  public void testListAccountByUserId() {
-//    ObjectList<Account> accountObjectList = accountService.findByUserId(5L);
-//    System.out.println(accountObjectList);
-//  }
 
+  @Autowired
+  private UserAccountService userAccountService;
 
+  static String[] names = {"吕布","颜良","关羽","马超","张飞","赵云","典韦","文丑","文鸯","许褚","黄忠","孙策","太史慈","夏侯敦","夏侯渊","张郃","张辽","徐晃","庞德","甘宁","周泰","魏延","邓艾","姜维"};
+  @Test
+  public void testCreateUserAccount() {
+    Stream.of(names).forEach(name -> {
+      User user = new User(name, "18511694468");
+      UserAccount account = new UserAccount(user.getId(), name, "123456",
+          UserAccountType.ByPhoneNumber);
+      user.setAccounts(Arrays.asList(new UserAccount[]{account}));
+      User userAndAccount = userAccountService.createUserAndAccount(user);
+      Assert.assertNotNull(userAndAccount.getId());
+      Assert.assertNotNull(userAndAccount.getAccounts());
+      Assert.assertNotNull(userAndAccount.getAccounts().get(0).getId());
+    });
+  }
+
+  @Test
+  public void testFindAccountByLoginNameAndPassword() {
+    UserAccount 吕布 = userAccountService.findAccountByLoginNameAndPassword("吕布", "123456");
+    Assert.assertNotNull(吕布);
+  }
 }

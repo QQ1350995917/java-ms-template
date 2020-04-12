@@ -4,7 +4,7 @@ import org.apache.ibatis.annotations.Mapper;
 import pwd.initializr.storage.persistence.dao.StorageEntity;
 
 /**
- * pwd.initializr.storage.persistence.mapper@ms-web-initializr
+ * pwd.initializr.storage.persistence.entity@ms-web-initializr
  *
  * <h1>TODO what you want to do?</h1>
  *

@@ -18,8 +18,8 @@ import pwd.initializr.common.mw.redis.RedisClient;
  * @version 1.0.0
  * @since DistributionVersion
  */
-@RunWith(SpringRunner.class)
-@SpringBootTest
+//@RunWith(SpringRunner.class)
+//@SpringBootTest
 public class AccountApplicationTest {
 
 

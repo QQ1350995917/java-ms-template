@@ -34,9 +34,9 @@
       <version>4.5.10</version>
     </dependency>
     <dependency>
-      <groupId>com.auth0</groupId>
-      <artifactId>java-jwt</artifactId>
-      <version>3.8.3</version>
+      <groupId>commons-lang</groupId>
+      <artifactId>commons-lang</artifactId>
+      <version>2.6</version>
     </dependency>
   </dependencies>
 

@@ -15,8 +15,8 @@ import pwd.initializr.common.web.business.bo.ObjectList;
  * @since DistributionVersion
  */
 public interface AdminService {
-  ObjectList<Admin> listAdmin();
-
-  void createAdmin(Admin admin);
+//  ObjectList<Admin> listAdmin();
+//
+//  void createAdmin(Admin admin);
 
 }

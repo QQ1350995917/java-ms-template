@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import pwd.initializr.typeface.persistence.dao.PaintingEntity;
 
 /**
- * pwd.initializr.typeface.persistence.mapper@ms-web-initializr
+ * pwd.initializr.typeface.persistence.entity@ms-web-initializr
  *
  * <h1>TODO what you want to do?</h1>
  *

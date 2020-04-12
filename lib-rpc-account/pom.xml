@@ -11,11 +11,17 @@
 
   <artifactId>lib-rpc-account</artifactId>
   <packaging>jar</packaging>
+
   <dependencies>
     <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-web</artifactId>
+      <groupId>pwd.initializr</groupId>
+      <artifactId>lib-common</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>com.auth0</groupId>
+      <artifactId>java-jwt</artifactId>
+      <version>3.8.3</version>
     </dependency>
   </dependencies>
-
 </project>

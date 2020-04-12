@@ -39,6 +39,7 @@
     <module>ms-web-etl</module>
     <module>ms-web-etl-plugin</module>
     <module>ms-web-typeface</module>
+    <module>project-generator</module>
   </modules>
 
   <properties>

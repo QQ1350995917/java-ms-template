@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import pwd.initializr.organization.persistence.dao.OrganizationReviewEntity;
 
 /**
- * pwd.initializr.organization.persistence.mapper@ms-web-initializr
+ * pwd.initializr.organization.persistence.entity@ms-web-initializr
  *
  * <h1>TODO what you want to do?</h1>
  *

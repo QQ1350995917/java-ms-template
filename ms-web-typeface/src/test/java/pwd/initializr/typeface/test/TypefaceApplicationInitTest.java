@@ -3,29 +3,18 @@ package pwd.initializr.typeface.test;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import java.awt.image.BufferedImage;
-import java.awt.image.Raster;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Iterator;
-import javax.imageio.ImageIO;
-import javax.imageio.ImageReader;
-import javax.imageio.stream.ImageInputStream;
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
-import pwd.initializr.typeface.TypefaceApplication;
 import pwd.initializr.typeface.business.FontService;
 import pwd.initializr.typeface.business.StorageService;
 import pwd.initializr.typeface.business.bo.FontBO;
@@ -41,8 +30,8 @@ import pwd.initializr.typeface.business.bo.FontBO;
  * @version 1.0.0
  * @since DistributionVersion
  */
-@RunWith(SpringRunner.class)
-@SpringBootTest(classes = {TypefaceApplication.class})// 指定启动类
+//@RunWith(SpringRunner.class)
+//@SpringBootTest(classes = {TypefaceApplication.class})
 public class TypefaceApplicationInitTest {
 
   @Autowired
@@ -52,31 +41,7 @@ public class TypefaceApplicationInitTest {
   private StorageService storageService;
 
   public static void main(String[] args) throws Exception {
-    pgm2png("/Users/pwd/Documents/minio/xresources/thumb/351.png","/Users/pwd/Documents/minio/xresources/thumb-0/351.png");
-  }
 
-  private void imageF() throws Exception {
-    String file = "/Users/pwd/Documents/minio/xresources/thumb/351.png";
-    ImageInputStream iis = ImageIO
-        .createImageInputStream(new File(file));
-    Iterator<ImageReader> iterator = ImageIO.getImageReaders(iis);
-    while (iterator.hasNext()) {
-      ImageReader reader = iterator.next();
-      String formatName = reader.getFormatName();
-      System.out.println(formatName);
-    }
-    iis.close();
-  }
-
-  private static void pgm2png(String src, String dest) throws IOException {
-
-    BufferedImage image = ImageIO.read(new File(src));
-    Raster source = image.getRaster();
-    int width = image.getWidth();
-    int height = image.getHeight();
-    BufferedImage image2 = new BufferedImage(width, height, BufferedImage.TYPE_INT_BGR);
-    image2.setData(source);
-    ImageIO.write(image2, "png", new File(dest));
   }
 
   @Test
@@ -91,6 +56,8 @@ public class TypefaceApplicationInitTest {
             null);
 
     initStorageThumb(thumbDir, jsonArray, bucketName);
+    initStorageTTF(ttfDir, jsonArray, bucketName);
+    initFontSQL(jsonArray);
 
   }
 
@@ -118,19 +85,6 @@ public class TypefaceApplicationInitTest {
         });
   }
 
-  private void initFontSQL(JSONArray jsonArray) {
-    jsonArray.stream().forEach(jsonObject -> {
-      String title = ((JSONObject) jsonObject).getString("title");
-      FontBO fontBO = new FontBO();
-      fontBO.setName(title);
-      fontBO.setFileUrl("font/" + title + ".ttf");
-      fontBO.setThumbUrl("font/" + title + ".png");
-      fontBO.setCreateTime(System.currentTimeMillis());
-      fontBO.setUpdateTime(System.currentTimeMillis());
-      fontService.save(fontBO);
-    });
-  }
-
   private void initStorageTTF(String ttfDir, JSONArray sourceJSON, String bucketName) {
     sourceJSON.stream().filter(
         obj -> new File(ttfDir + "/" + ((JSONObject) obj).getString("title") + ".ttf").exists())
@@ -152,6 +106,19 @@ public class TypefaceApplicationInitTest {
             e.printStackTrace();
           }
         });
+  }
+
+  private void initFontSQL(JSONArray jsonArray) {
+    jsonArray.stream().forEach(jsonObject -> {
+      String title = ((JSONObject) jsonObject).getString("title");
+      FontBO fontBO = new FontBO();
+      fontBO.setName(title);
+      fontBO.setFileUrl("font/" + title + ".ttf");
+      fontBO.setThumbUrl("font/" + title + ".png");
+      fontBO.setCreateTime(System.currentTimeMillis());
+      fontBO.setUpdateTime(System.currentTimeMillis());
+      fontService.save(fontBO);
+    });
   }
 
 }

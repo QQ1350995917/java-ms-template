@@ -122,7 +122,7 @@
           <!-- 
           <excludes> 
           <include>**/*.txt</include> 
-          <exclude>**/mapper/*</exclude> 
+          <exclude>**/entity/*</exclude> 
           <exclude>**/ddl/*</exclude> 
           <exclude>*.properties</exclude> 
           <exclude>*.xml</exclude> 

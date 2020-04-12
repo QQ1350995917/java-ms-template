@@ -2,13 +2,13 @@ package pwd.initializr.account.api.user;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.Arrays;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,11 +17,11 @@ import pwd.initializr.account.api.user.vo.LoginOutput;
 import pwd.initializr.account.api.user.vo.SignUpByPhoneInput;
 import pwd.initializr.account.business.user.SessionService;
 import pwd.initializr.account.business.user.UserAccountService;
-import pwd.initializr.account.business.user.bo.Account;
 import pwd.initializr.account.business.user.bo.User;
 import pwd.initializr.account.business.user.bo.UserAccount;
-import pwd.initializr.account.persistence.dao.AccountEntity.Type;
-import pwd.initializr.account.persistence.dao.ConstantStatus;
+import pwd.initializr.account.persistence.entity.UserAccountType;
+import pwd.initializr.account.rpc.Token;
+import pwd.initializr.account.rpc.UserSession;
 import pwd.initializr.common.web.api.user.UserController;
 import pwd.initializr.common.web.api.vo.SMSCodeInput;
 import pwd.initializr.common.web.business.bo.SMSCode;
@@ -44,21 +44,17 @@ import pwd.initializr.common.web.business.bo.SMSCode;
 )
 @RestController(value = "accountApi")
 @RequestMapping(value = "/api/account")
+@Slf4j
 public class AccountController extends UserController implements AccountApi {
 
-  private Logger logger = LoggerFactory.getLogger(getClass());
-  @Autowired
-  private UserAccountService userAccountService;
+  @Value("${account_secret}")
+  private String ACCOUNT_SECRET;
 
   @Autowired
   private SessionService sessionService;
 
-  @ApiOperation(value = "手机号验证码")
-  @GetMapping(value = {"/phone/code"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  @Override
-  public void getSMSCode(SMSCodeInput input) {
-    super.verifyPhone(input.getPhoneNumber());
-  }
+  @Autowired
+  private UserAccountService userAccountService;
 
   @ApiOperation(value = "手机号注册账号")
   @PutMapping(value = {"/phone"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -67,23 +63,36 @@ public class AccountController extends UserController implements AccountApi {
     SMSCode smsCode = new SMSCode();
     BeanUtils.copyProperties(input, smsCode);
     Boolean match = smsCodeService.matchOnce(smsCode);
+    // TODO 对接短信后删除 或者修改为插件形式
     match = true;
     if (match) {
       // TODO session设置，返回身份信息，跳转页面
-      User user = new User(null, input.getUsername(), input.getPhoneNumber(), ConstantStatus.ENABLE.value(),
-          System.currentTimeMillis(), System.currentTimeMillis());
+      User user = new User(input.getUsername(), input.getPhoneNumber());
+      UserAccount account = new UserAccount(input.getPhoneNumber(), null,
+          UserAccountType.ByPhoneNumber);
+      user.setAccounts(Arrays.asList(new UserAccount[]{account}));
       // TODO 优化password业务
       String password = smsCode.getSmsCode();
-      Account account = new Account(null, null, input.getPhoneNumber(), password, Type.PHONE.value(),
-          ConstantStatus.ENABLE.value(), System.currentTimeMillis(), System.currentTimeMillis());
-      UserAccount userAccount = userAccountService.createUserAccount(user, account);
-      sessionService.saveSession(userAccount);
-      String session = sessionService.genToken(userAccount);
+      User userAndAccount = userAccountService.createUserAndAccount(user);
+
+      UserSession userSession = new UserSession();
+      BeanUtils.copyProperties(userAndAccount,userSession);
+
+      sessionService.updateSession(userSession);
+
+      String token = Token.generateToken(userSession, ACCOUNT_SECRET);
       // TODO addCookie
-      super.outputData(new LoginOutput(user.getId(),session));
+      super.outputData(new LoginOutput(user.getId(), token));
     } else {
       super.outputException(401);
     }
+  }
+
+  @ApiOperation(value = "手机号验证码")
+  @GetMapping(value = {"/phone/code"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @Override
+  public void getSMSCode(SMSCodeInput input) {
+    super.verifyPhone(input.getPhoneNumber());
   }
 
 }

@@ -10,7 +10,7 @@ import pwd.initializr.organization.persistence.dao.OrganizationReviewEntity;
 import pwd.initializr.organization.persistence.mapper.OrganizationReviewMapper;
 
 /**
- * pwd.initializr.organization.test.mapper@ms-web-initializr
+ * pwd.initializr.organization.test.entity@ms-web-initializr
  *
  * <h1>TODO what you want to do?</h1>
  *

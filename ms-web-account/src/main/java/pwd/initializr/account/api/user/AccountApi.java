@@ -16,8 +16,8 @@ import pwd.initializr.common.web.api.vo.SMSCodeInput;
  */
 public interface AccountApi {
 
-    void getSMSCode(SMSCodeInput input);
+  void createByPhone(SignUpByPhoneInput input);
 
-    void createByPhone(SignUpByPhoneInput input);
+  void getSMSCode(SMSCodeInput input);
 
 }

@@ -12,22 +12,25 @@ package pwd.initializr.account.rpc;
  * @since DistributionVersion
  */
 public enum UserAccountType {
-  //管理员开通账户
-  ByAdmin(0),
-  //手机号码账户
-  ByPhoneNumber(1) {
+  ByAdmin(0, "管理员开通账户"),
+  ByPhoneNumber(1, "手机号码注册账户") {
     @Override
     public boolean isAdmin() {
       return super.isAdmin();
     }
   },
-  // 邮件账户
-  ByEmail(2);
+  ByEmail(2, "邮箱注册账户");
 
+  String desc;
   Integer type;
 
-  UserAccountType(Integer type) {
+  UserAccountType(Integer type, String desc) {
     this.type = type;
+    this.desc = desc;
+  }
+
+  public String getDesc() {
+    return desc;
   }
 
   public Integer getValue() {

@@ -11,7 +11,7 @@ import pwd.initializr.organization.persistence.dao.OrganizationEntity;
 import pwd.initializr.organization.persistence.mapper.OrganizationMapper;
 
 /**
- * pwd.initializr.account.test.user.mapper@ms-web-initializr
+ * pwd.initializr.account.test.user.entity@ms-web-initializr
  *
  * <h1>TODO what you want to do?</h1>
  *

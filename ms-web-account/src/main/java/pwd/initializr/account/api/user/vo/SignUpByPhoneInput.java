@@ -29,18 +29,15 @@ import lombok.ToString;
 @ApiModel(value = "signUpByPhoneNumber", description = "使用手机号码注册")
 public class SignUpByPhoneInput {
 
-  @ApiModelProperty(name = "username", value = "真实姓名", required = true, example = "诸葛亮")
-  @NotNull(message = "0")
-  private String username;
-
   @ApiModelProperty(name = "phoneNumber", value = "手机号码", required = true, example = "18511694468")
   @NotNull(message = "0")
   private String phoneNumber;
-
   @ApiModelProperty(name = "smsCode", value = "短信验证码", required = true, example = "123456")
   @NotNull(message = "0")
   private String smsCode;
-
+  @ApiModelProperty(name = "username", value = "真实姓名", required = true, example = "诸葛亮")
+  @NotNull(message = "0")
+  private String username;
   @ApiModelProperty(name = "vCode", value = "图形验证码(登录响应无验证码时可为空)", required = true, example = "123456")
   @Null(message = "0")
   private String vCode;

@@ -39,7 +39,7 @@ import pwd.initializr.common.web.api.FullPathNameGenerator;
 @RestController
 @EnableTransactionManagement
 @ComponentScan(nameGenerator = FullPathNameGenerator.class)
-@MapperScan("pwd.initializr.account.persistence.mapper")
+@MapperScan("pwd.initializr.account.persistence")
 public class AccountApplication {
     public static void main(String[] args) {
         SpringApplication.run(AccountApplication.class, args);

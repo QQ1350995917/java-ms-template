@@ -34,7 +34,7 @@ import pwd.initializr.common.web.api.FullPathNameGenerator;
 @RestController
 @EnableTransactionManagement
 @ComponentScan(nameGenerator = FullPathNameGenerator.class)
-@MapperScan("pwd.initializr.organization.persistence.mapper")
+@MapperScan("pwd.initializr.organization.persistence.entity")
 @EnableFeignClients
 @EnableHystrixDashboard
 @EnableCircuitBreaker

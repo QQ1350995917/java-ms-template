@@ -1,5 +1,12 @@
 package pwd.initializr.account.rpc;
 
+import java.io.Serializable;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
 /**
  * pwd.initializr.account.rpc@ms-web-initializr
  *
@@ -11,16 +18,17 @@ package pwd.initializr.account.rpc;
  * @version 1.0.0
  * @since DistributionVersion
  */
-public interface UserAccountSession {
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString
+public class UserAccountSession implements Serializable {
 
-  Long getId();
-
-  Long getUserId();
-
-  String getLoginName();
-
-  Integer getType();
-
-  Integer getStatus();
+  private Long id;
+  private Long userId;
+  private String getLoginName;
+  private UserAccountType getType;
+  private Integer getStatus;
 
 }
