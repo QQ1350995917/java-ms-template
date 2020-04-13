@@ -1,8 +1,7 @@
 package pwd.initializr.typeface.persistence.dao;
 
-import java.util.List;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 import pwd.initializr.typeface.persistence.entity.FontEntity;
 
@@ -19,15 +18,15 @@ import pwd.initializr.typeface.persistence.entity.FontEntity;
  */
 @Component
 @Mapper
-public interface FontMapper {
+public interface FontMapper extends BaseMapper<FontEntity> {
 
-  Long countByCondition(
-      @Param("fontEntity") FontEntity fontEntity);
-
-  List<FontEntity> findByCondition(@Param("fontEntity") FontEntity fontEntity,
-      @Param("offset") Long offset, @Param("rows") Long rows);
-
-  FontEntity findById(@Param("id") Long id);
-
-  void insert(@Param("fontEntity") FontEntity fontEntity);
+//  Long countByCondition(
+//      @Param("fontEntity") FontEntity fontEntity);
+//
+//  List<FontEntity> findByCondition(@Param("fontEntity") FontEntity fontEntity,
+//      @Param("offset") Long offset, @Param("rows") Long rows);
+//
+//  FontEntity findById(@Param("id") Long id);
+//
+//  void insert(@Param("fontEntity") FontEntity fontEntity);
 }

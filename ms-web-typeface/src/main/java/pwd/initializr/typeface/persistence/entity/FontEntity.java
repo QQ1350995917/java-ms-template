@@ -1,5 +1,7 @@
 package pwd.initializr.typeface.persistence.entity;
 
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.extension.activerecord.Model;
 import java.io.Serializable;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,7 +23,8 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class FontEntity implements Serializable {
+@TableName("font")
+public class FontEntity extends Model<FontEntity> {
 
   private Long id;
   private String title;
@@ -42,5 +45,10 @@ public class FontEntity implements Serializable {
     this.status = status;
     this.createTime = createTime;
     this.updateTime = updateTime;
+  }
+
+  @Override
+  protected Serializable pkVal() {
+    return this.id;
   }
 }
