@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import pwd.initializr.typeface.persistence.dao.FontEntity;
+import pwd.initializr.typeface.persistence.entity.FontEntity;
 
 /**
  * pwd.initializr.typeface.business.bo@ms-web-initializr

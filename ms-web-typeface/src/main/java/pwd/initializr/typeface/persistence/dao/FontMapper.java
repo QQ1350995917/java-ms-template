@@ -1,10 +1,10 @@
-package pwd.initializr.typeface.persistence.mapper;
+package pwd.initializr.typeface.persistence.dao;
 
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
-import pwd.initializr.typeface.persistence.dao.FontEntity;
+import pwd.initializr.typeface.persistence.entity.FontEntity;
 
 /**
  * pwd.initializr.typeface.persistence.entity@ms-web-initializr

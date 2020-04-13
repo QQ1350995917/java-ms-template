@@ -29,8 +29,8 @@ import pwd.initializr.common.web.business.bo.ObjectList;
 import pwd.initializr.storage.rpc.UploadOutput;
 import pwd.initializr.typeface.business.bo.FontBO;
 import pwd.initializr.typeface.business.bo.PaintingBO;
-import pwd.initializr.typeface.persistence.dao.PaintingEntity;
-import pwd.initializr.typeface.persistence.mapper.PaintingMapper;
+import pwd.initializr.typeface.persistence.entity.PaintingEntity;
+import pwd.initializr.typeface.persistence.dao.PaintingMapper;
 import pwd.initializr.typeface.util.Painter;
 
 /**

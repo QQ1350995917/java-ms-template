@@ -11,7 +11,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 /**
- * pwd.initializr.storage.persistence.dao@ms-web-initializr
+ * pwd.initializr.storage.persistence.entity@ms-web-initializr
  *
  * <h1>TODO what you want to do?</h1>
  *

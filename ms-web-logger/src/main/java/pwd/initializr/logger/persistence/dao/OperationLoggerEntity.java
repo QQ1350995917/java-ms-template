@@ -11,7 +11,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import pwd.initializr.common.web.business.bo.OperationLogger;
 
 /**
- * pwd.initializr.common.web.dao.logger@ms-web-initializr
+ * pwd.initializr.common.web.entity.logger@ms-web-initializr
  *
  * <h1>TODO what you want to do?</h1>
  *

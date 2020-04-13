@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import pwd.initializr.account.persistence.entity.UserEntity;
 
 /**
- * pwd.initializr.account.persistence.dao@ms-web-initializr
+ * pwd.initializr.account.persistence.entity@ms-web-initializr
  *
  * <h1>TODO what you want to do?</h1>
  *

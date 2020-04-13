@@ -7,7 +7,7 @@ import pwd.initializr.common.web.business.bo.ObjectList;
 import pwd.initializr.logger.business.bo.OperationLogger;
 
 /**
- * pwd.initializr.logger.dao@ms-web-initializr
+ * pwd.initializr.logger.entity@ms-web-initializr
  *
  * <h1>TODO what you want to do?</h1>
  *

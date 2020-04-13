@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pwd.initializr.common.web.business.bo.ObjectList;
 import pwd.initializr.typeface.business.bo.FontBO;
-import pwd.initializr.typeface.persistence.dao.FontEntity;
-import pwd.initializr.typeface.persistence.mapper.FontMapper;
+import pwd.initializr.typeface.persistence.entity.FontEntity;
+import pwd.initializr.typeface.persistence.dao.FontMapper;
 
 /**
  * pwd.initializr.typeface.business@ms-web-initializr

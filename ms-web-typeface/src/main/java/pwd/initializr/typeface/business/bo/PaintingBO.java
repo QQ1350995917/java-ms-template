@@ -1,11 +1,10 @@
 package pwd.initializr.typeface.business.bo;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import pwd.initializr.typeface.persistence.dao.PaintingEntity;
+import pwd.initializr.typeface.persistence.entity.PaintingEntity;
 
 /**
  * pwd.initializr.typeface.business.bo@ms-web-initializr

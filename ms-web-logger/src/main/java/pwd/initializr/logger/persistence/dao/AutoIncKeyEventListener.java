@@ -12,7 +12,7 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.util.ReflectionUtils;
 
 /**
- * pwd.initializr.logger.persistence.dao@ms-web-initializr
+ * pwd.initializr.logger.persistence.entity@ms-web-initializr
  *
  * <h1>TODO what you want to do?</h1>
  *

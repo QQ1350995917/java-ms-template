@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * pwd.initializr.logger.persistence.dao@ms-web-initializr
+ * pwd.initializr.logger.persistence.entity@ms-web-initializr
  *
  * <h1>TODO what you want to do?</h1>
  *

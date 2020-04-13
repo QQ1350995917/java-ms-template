@@ -109,7 +109,7 @@ public interface OrganizationMapper {
    * date 2019-11-02 09:57
    *
    * @param id 自主ID
-   * @return pwd.initializr.account.persistence.dao.OrganizationEntity
+   * @return pwd.initializr.account.persistence.entity.OrganizationEntity
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */

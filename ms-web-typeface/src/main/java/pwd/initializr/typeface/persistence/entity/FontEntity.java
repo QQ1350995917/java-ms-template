@@ -1,4 +1,4 @@
-package pwd.initializr.typeface.persistence.dao;
+package pwd.initializr.typeface.persistence.entity;
 
 import java.io.Serializable;
 import lombok.Getter;
@@ -7,7 +7,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * pwd.initializr.typeface.persistence.dao@ms-web-initializr
+ * pwd.initializr.typeface.persistence.entity@ms-web-initializr
  *
  * <h1>TODO what you want to do?</h1>
  *

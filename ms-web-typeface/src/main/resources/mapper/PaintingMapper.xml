@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="pwd.initializr.typeface.persistence.mapper.PaintingMapper">
+<mapper namespace="pwd.initializr.typeface.persistence.dao.PaintingMapper">
   <!-- insert -->
   <insert id="insert" keyProperty="id"
-    parameterType="pwd.initializr.typeface.persistence.dao.PaintingEntity"
+    parameterType="pwd.initializr.typeface.persistence.entity.PaintingEntity"
     useGeneratedKeys="true">
 		insert into `painting` (
 		`user_id`,
@@ -40,7 +40,7 @@
 
   <!--findById-->
   <select id="findById" parameterType="java.lang.Long"
-    resultType="pwd.initializr.typeface.persistence.dao.PaintingEntity">
+    resultType="pwd.initializr.typeface.persistence.entity.PaintingEntity">
 		select
 		`id` as id,
 		`user_id` as userId,
@@ -63,7 +63,7 @@
 
   <!--findByIds-->
   <select id="findByIds" parameterType="java.util.List"
-    resultType="pwd.initializr.typeface.persistence.dao.PaintingEntity">
+    resultType="pwd.initializr.typeface.persistence.entity.PaintingEntity">
     select
     `id` as id,
     `user_id` as userId,
@@ -89,7 +89,7 @@
 
   <!--countByCondition-->
   <select id="countByCondition"
-    parameterType="pwd.initializr.typeface.persistence.dao.PaintingEntity"
+    parameterType="pwd.initializr.typeface.persistence.entity.PaintingEntity"
     resultType="java.lang.Long">
     select count(*)
     from `painting`
@@ -100,8 +100,8 @@
 
   <!--findByCondition-->
   <select id="findByCondition"
-    parameterType="pwd.initializr.typeface.persistence.dao.PaintingEntity"
-    resultType="pwd.initializr.typeface.persistence.dao.PaintingEntity">
+    parameterType="pwd.initializr.typeface.persistence.entity.PaintingEntity"
+    resultType="pwd.initializr.typeface.persistence.entity.PaintingEntity">
     select
     `id` as id,
     `user_id` as userId,

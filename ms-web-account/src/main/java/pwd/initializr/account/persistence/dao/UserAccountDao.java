@@ -5,7 +5,7 @@ import org.apache.ibatis.annotations.Mapper;
 import pwd.initializr.account.persistence.entity.UserAccountEntity;
 
 /**
- * pwd.initializr.account.persistence.dao@ms-web-initializr
+ * pwd.initializr.account.persistence.entity@ms-web-initializr
  *
  * <h1>TODO what you want to do?</h1>
  *

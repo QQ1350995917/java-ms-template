@@ -8,7 +8,7 @@ import lombok.ToString;
 import pwd.initializr.organization.persistence.dao.OrganizationEntity.Progress;
 
 /**
- * pwd.initializr.organization.persistence.dao@ms-web-initializr
+ * pwd.initializr.organization.persistence.entity@ms-web-initializr
  *
  * <h1>TODO what you want to do?</h1>
  *

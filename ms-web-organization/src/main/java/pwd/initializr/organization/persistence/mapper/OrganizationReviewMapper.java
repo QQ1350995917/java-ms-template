@@ -39,7 +39,7 @@ public interface OrganizationReviewMapper {
    *
    * @param orgId 组织ID
    * @param status 进度状态
-   * @return java.util.List<pwd.initializr.organization.persistence.dao.OrganizationReviewEntity>
+   * @return java.util.List<pwd.initializr.organization.persistence.entity.OrganizationReviewEntity>
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */

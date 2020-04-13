@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="pwd.initializr.typeface.persistence.mapper.FontMapper">
+<mapper namespace="pwd.initializr.typeface.persistence.dao.FontMapper">
   <!-- insert -->
   <insert id="insert" keyProperty="id"
-    parameterType="pwd.initializr.typeface.persistence.dao.FontEntity"
+    parameterType="pwd.initializr.typeface.persistence.entity.FontEntity"
     useGeneratedKeys="true">
 		insert into `font`
 		(
@@ -28,7 +28,7 @@
 
   <!--findById-->
   <select id="findById" parameterType="java.lang.Long"
-    resultType="pwd.initializr.typeface.persistence.dao.FontEntity">
+    resultType="pwd.initializr.typeface.persistence.entity.FontEntity">
 		select
 		`id` as id,
 		`title` as `title`,
@@ -44,7 +44,7 @@
 
   <!--countByCondition-->
   <select id="countByCondition"
-    parameterType="pwd.initializr.typeface.persistence.dao.FontEntity"
+    parameterType="pwd.initializr.typeface.persistence.entity.FontEntity"
     resultType="java.lang.Long">
     select count(*)
     from `font`
@@ -55,8 +55,8 @@
 
   <!--findByCondition-->
   <select id="findByCondition"
-    parameterType="pwd.initializr.typeface.persistence.dao.FontEntity"
-    resultType="pwd.initializr.typeface.persistence.dao.FontEntity">
+    parameterType="pwd.initializr.typeface.persistence.entity.FontEntity"
+    resultType="pwd.initializr.typeface.persistence.entity.FontEntity">
     select
     `id` as id,
     `title` as `title`,

@@ -39,7 +39,7 @@ public interface OrganizationMemberMapper {
    *
    * @param memId 成员ID
    * @param status 成员状态
-   * @return java.util.List<pwd.initializr.organization.persistence.dao.OrganizationMemberEntity>
+   * @return java.util.List<pwd.initializr.organization.persistence.entity.OrganizationMemberEntity>
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */

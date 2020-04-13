@@ -24,7 +24,7 @@ import org.springframework.context.annotation.Configuration;
 @EnableEurekaClient
 @EnableDiscoveryClient
 @EnableFeignClients("pwd.initializr.typeface.business")
-@MapperScan("pwd.initializr.typeface.persistence.mapper")
+@MapperScan("pwd.initializr.typeface.persistence")
 public class TypefaceApplication {
 
   public static void main(String[] args) throws Exception {
