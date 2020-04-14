@@ -1,7 +1,9 @@
 package pwd.initializr.typeface.persistence.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 import pwd.initializr.typeface.persistence.entity.FontEntity;
 
