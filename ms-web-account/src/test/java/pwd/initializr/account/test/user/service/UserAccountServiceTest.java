@@ -52,4 +52,22 @@ public class UserAccountServiceTest {
     UserAccount 吕布 = userAccountService.findAccountByLoginNameAndPassword("吕布", "123456");
     Assert.assertNotNull(吕布);
   }
+
+
+  @Test
+  public void testLargeData(){
+
+    for (int i = 1694471; i < 6694468; i++) {
+      String pre = "1851" + i;
+      User user = new User(pre, pre);
+      UserAccount account = new UserAccount(user.getId(), pre, "123456",
+          UserAccountType.ByPhoneNumber);
+      user.setAccounts(Arrays.asList(new UserAccount[]{account}));
+      userAccountService.createUserAndAccount(user);
+
+      if (i % 10000 == 0) {
+        System.out.println(i);
+      }
+    }
+  }
 }
