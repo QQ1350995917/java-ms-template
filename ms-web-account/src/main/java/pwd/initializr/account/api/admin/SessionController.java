@@ -54,7 +54,7 @@ public class SessionController extends AdminController implements SessionApi {
     content.put("roles",new String[]{"admin"});
     content.put("introduction","I am a super administrator");
     content.put("avatar","https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif");
-    content.put("name","Super Admin");
+    content.put("name","Super AdminEntity");
     jsonObject.put("admin-token",content);
     outputData(content);
   }

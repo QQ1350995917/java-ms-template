@@ -1,6 +1,5 @@
 package pwd.initializr.account.api.admin;
 
-import com.alibaba.fastjson.JSONObject;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.MediaType;
@@ -31,7 +30,8 @@ import pwd.initializr.account.api.admin.vo.CreateAdminInput;
 )
 @RestController(value = "admin")
 @RequestMapping(value = "/api/admin")
-public class AdminController extends pwd.initializr.common.web.api.admin.AdminController implements AdminApi {
+public class AdminController extends pwd.initializr.common.web.api.admin.AdminController implements
+    AdminApi {
 
   @ApiOperation(value = "管理员列表")
   @GetMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

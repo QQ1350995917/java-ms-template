@@ -11,11 +11,6 @@
   <groupId>pwd.initializr</groupId>
   <artifactId>parent</artifactId>
   <packaging>pom</packaging>
-  <version>0.0.1-SNAPSHOT</version>
-  <name>ms-web-initializr</name>
-  <description>Demo project for Spring Boot</description>
-  <url>http://maven.apache.org</url>
-
   <modules>
     <module>lib-common</module>
     <module>lib-common-mw-minio</module>
@@ -25,22 +20,27 @@
     <module>lib-etl-core-plugin</module>
     <module>lib-rpc-storage</module>
     <module>lib-rpc-account</module>
-    <module>ms-web-registry</module>
-    <module>ms-web-account</module>
-    <module>ms-web-configure</module>
     <module>ms-web-access</module>
-    <module>ms-web-logger</module>
-    <module>ms-web-monitor</module>
-    <module>ms-web-gateway</module>
-    <module>ms-web-storage</module>
-    <!--<module>ms-web-schedule</module>-->
-    <module>ms-web-organization</module>
-    <module>ms-web-article</module>
+    <module>ms-web-account</module>
+    <module>ms-web-book</module>
+    <module>ms-web-configure</module>
     <module>ms-web-etl</module>
     <module>ms-web-etl-plugin</module>
+    <module>ms-web-gateway</module>
+    <module>ms-web-logger</module>
+    <module>ms-web-monitor</module>
+    <module>ms-web-organization</module>
+    <module>ms-web-registry</module>
+    <!--<module>ms-web-schedule</module>-->
+    <module>ms-web-storage</module>
     <module>ms-web-typeface</module>
     <module>project-generator</module>
   </modules>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>ms-web-initializr</name>
+  <description>Demo project for Spring Boot</description>
+
+  <url>http://maven.apache.org</url>
 
   <properties>
     <java.version>1.8</java.version>
