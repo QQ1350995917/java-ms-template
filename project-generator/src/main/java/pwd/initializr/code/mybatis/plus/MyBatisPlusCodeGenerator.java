@@ -82,7 +82,7 @@ public class MyBatisPlusCodeGenerator {
     // 如果模板引擎是 freemarker
     String templatePath = "/templates/mapper.xml.ftl";
     // 如果模板引擎是 velocity
-    // String templatePath = "/templates/dao.xml.vm";
+    // String templatePath = "/templates/entity.xml.vm";
 
     // 自定义输出配置
     List<FileOutConfig> focList = new ArrayList<>();
@@ -91,7 +91,7 @@ public class MyBatisPlusCodeGenerator {
       @Override
       public String outputFile(TableInfo tableInfo) {
         // 自定义输出文件名 ， 如果你 Entity 设置了前后缀、此处注意 xml 的名称会跟着发生变化！！
-        return projectPath + "/src/main/resources/dao/" + pc.getModuleName()
+        return projectPath + "/src/main/resources/entity/" + pc.getModuleName()
             + "/" + tableInfo.getEntityName() + "Mapper" + StringPool.DOT_XML;
       }
     });

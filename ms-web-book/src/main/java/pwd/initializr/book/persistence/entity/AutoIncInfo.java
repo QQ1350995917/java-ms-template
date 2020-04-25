@@ -1,4 +1,4 @@
-package pwd.initializr.book.persistence.dao;
+package pwd.initializr.book.persistence.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

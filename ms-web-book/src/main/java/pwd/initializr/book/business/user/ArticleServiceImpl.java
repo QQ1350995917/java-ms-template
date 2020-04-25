@@ -14,7 +14,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import pwd.initializr.book.business.user.bo.ArticleAroundBO;
 import pwd.initializr.book.business.user.bo.ArticleBO;
-import pwd.initializr.book.persistence.dao.ArticleEntity;
+import pwd.initializr.book.persistence.entity.ArticleEntity;
 import pwd.initializr.common.web.business.bo.ObjectList;
 
 /**

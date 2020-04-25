@@ -1,5 +1,6 @@
-package pwd.initializr.book.persistence.dao;
+package pwd.initializr.book.persistence.entity;
 
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -38,6 +39,10 @@ public class BookEntity {
   private String subTitle;
   @Field("summary")
   private String summary;
+  @Field("labels")
+  private Set<String> labels;
+  @Field("thumbs")
+  private Set<String> thumbs;
   @Field("status")
   private Integer status;
   @Field("create_time")

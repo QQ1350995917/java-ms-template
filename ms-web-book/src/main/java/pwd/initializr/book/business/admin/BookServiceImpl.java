@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 import pwd.initializr.book.business.admin.bo.BookBO;
-import pwd.initializr.book.persistence.dao.BookEntity;
+import pwd.initializr.book.persistence.entity.BookEntity;
 import pwd.initializr.common.web.business.bo.ObjectList;
 
 /**
