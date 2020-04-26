@@ -1,10 +1,13 @@
 package pwd.initializr.book.business.admin.bo;
 
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.data.mongodb.core.mapping.Field;
+
 /**
  * pwd.initializr.book.business.admin.bo@ms-web-initializr
  *
@@ -23,9 +26,12 @@ import lombok.ToString;
 @ToString
 public class BookBO {
   private Long id;
+  private Long uid;
   private String title;
   private String subTitle;
   private String summary;
+  private Set<String> labels;
+  private Set<String> thumbs;
   private Integer status;
   private Long createTime;
   private Long updateTime;

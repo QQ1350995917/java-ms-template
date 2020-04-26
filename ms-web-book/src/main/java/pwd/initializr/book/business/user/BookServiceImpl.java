@@ -30,13 +30,14 @@ public class BookServiceImpl implements BookService {
   private MongoTemplate mongoTemplate;
 
   @Override
-  public ObjectList<BookBO> listBookByRange() {
-    List<BookEntity> bookEntities = mongoTemplate.findAll(BookEntity.class);
+  public ObjectList<BookBO> listBookByRange(Long userId) {
+    List<BookEntity> bookEntities = mongoTemplate
+        .find(Query.query(Criteria.where("userId").is(userId)), BookEntity.class);
     ObjectList<BookBO> result = new ObjectList<>();
     List<BookBO> bookBOS = new LinkedList<>();
     for (BookEntity bookEntity : bookEntities) {
       BookBO bookBO = new BookBO();
-      BeanUtils.copyProperties(bookEntity,bookBO);
+      BeanUtils.copyProperties(bookEntity, bookBO);
       bookBOS.add(bookBO);
     }
     result.setElements(bookBOS);
@@ -48,7 +49,7 @@ public class BookServiceImpl implements BookService {
     BookEntity bookEntity = mongoTemplate
         .findOne(Query.query(Criteria.where("id").is(bookId)), BookEntity.class);
     BookBO bookBO = new BookBO();
-    BeanUtils.copyProperties(bookEntity,bookBO);
+    BeanUtils.copyProperties(bookEntity, bookBO);
     return bookBO;
   }
 }

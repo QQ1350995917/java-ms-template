@@ -18,7 +18,7 @@ import pwd.initializr.common.web.business.bo.ObjectList;
 @Service
 public interface BookService {
 
-  ObjectList<BookBO> listBookByRange();
+  ObjectList<BookBO> listBookByRange(Long userId);
 
   BookBO findBookById(Long bookId);
 

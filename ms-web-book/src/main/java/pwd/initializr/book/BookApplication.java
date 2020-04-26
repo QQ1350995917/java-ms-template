@@ -25,10 +25,10 @@ import pwd.initializr.common.web.api.FullPathNameGenerator;
 @EnableDiscoveryClient
 @RestController
 @ComponentScan(nameGenerator = FullPathNameGenerator.class)
-public class ArticleApplication {
+public class BookApplication {
 
   public static void main(String[] args) {
-    SpringApplication.run(ArticleApplication.class, args);
+    SpringApplication.run(BookApplication.class, args);
   }
 
   @GetMapping(value = "")

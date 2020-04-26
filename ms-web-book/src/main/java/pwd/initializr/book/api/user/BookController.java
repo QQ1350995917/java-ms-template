@@ -43,7 +43,7 @@ public class BookController extends UserController implements BookApi {
 
   @Override
   public void fetchBooks(BookListInput input) {
-    ObjectList<BookBO> bookBOObjectList = bookService.listBookByRange();
+    ObjectList<BookBO> bookBOObjectList = bookService.listBookByRange(getUid());
     ObjectList<BookVO> bookVOObjectList = new ObjectList<>();
     for (BookBO bookBO : bookBOObjectList.getElements()) {
       BookVO bookVO = new BookVO();

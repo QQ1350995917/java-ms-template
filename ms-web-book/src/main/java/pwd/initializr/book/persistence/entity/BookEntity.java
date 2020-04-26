@@ -33,6 +33,8 @@ public class BookEntity {
   @AutoIncKey
   @Field("id")
   private Long id;
+  @Field("uid")
+  private Long uid;
   @Field("title")
   private String title;
   @Field("sub_title")
