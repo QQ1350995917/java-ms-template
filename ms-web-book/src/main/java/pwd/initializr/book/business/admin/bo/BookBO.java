@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.springframework.data.mongodb.core.mapping.Field;
 
 /**
  * pwd.initializr.book.business.admin.bo@ms-web-initializr
@@ -25,14 +24,20 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @Getter
 @ToString
 public class BookBO {
+
   private Long id;
   private Long uid;
+  private String isbn;
   private String title;
   private String subTitle;
+  private String authorId;
+  private String authorName;
   private String summary;
-  private Set<String> labels;
   private Set<String> thumbs;
+  private Set<String> labels;
+  private String publisher;
+  private String publicationTime;
   private Integer status;
-  private Long createTime;
-  private Long updateTime;
+  private String createTime;
+  private String updateTime;
 }

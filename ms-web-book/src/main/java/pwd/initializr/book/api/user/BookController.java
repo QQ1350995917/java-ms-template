@@ -47,7 +47,7 @@ public class BookController extends UserController implements BookApi {
     ObjectList<BookVO> bookVOObjectList = new ObjectList<>();
     for (BookBO bookBO : bookBOObjectList.getElements()) {
       BookVO bookVO = new BookVO();
-      BeanUtils.copyProperties(bookBO,bookVO);
+      BeanUtils.copyProperties(bookBO, bookVO);
       bookVOObjectList.getElements().add(bookVO);
     }
     super.outputData(bookVOObjectList);
@@ -57,7 +57,7 @@ public class BookController extends UserController implements BookApi {
   public void fetchBookSummary(Long bookId) {
     BookBO bookBO = bookService.findBookById(bookId);
     BookVO bookVO = new BookVO();
-    BeanUtils.copyProperties(bookBO,bookVO);
+    BeanUtils.copyProperties(bookBO, bookVO);
     super.outputData(bookVO);
   }
 
@@ -67,7 +67,7 @@ public class BookController extends UserController implements BookApi {
     ObjectList<BookTableVO> bookTableVOObjectList = new ObjectList<>();
     for (ArticleBO articleBO : articleBOObjectList.getElements()) {
       BookTableVO bookTableVO = new BookTableVO();
-      BeanUtils.copyProperties(articleBO,bookTableVO);
+      BeanUtils.copyProperties(articleBO, bookTableVO);
       bookTableVOObjectList.getElements().add(bookTableVO);
     }
     super.outputData(bookTableVOObjectList);
@@ -82,12 +82,12 @@ public class BookController extends UserController implements BookApi {
     BookTableAroundVO bookTableAroundVO = new BookTableAroundVO();
     if (pre != null) {
       BookTableVO preBookTableVO = new BookTableVO();
-      BeanUtils.copyProperties(pre,preBookTableVO);
+      BeanUtils.copyProperties(pre, preBookTableVO);
       bookTableAroundVO.setPre(preBookTableVO);
     }
     if (next != null) {
       BookTableVO nextBookTableVO = new BookTableVO();
-      BeanUtils.copyProperties(next,nextBookTableVO);
+      BeanUtils.copyProperties(next, nextBookTableVO);
       bookTableAroundVO.setNext(nextBookTableVO);
     }
 
@@ -98,7 +98,7 @@ public class BookController extends UserController implements BookApi {
   public void fetchArticle(Long bookId, Long articleId) {
     ArticleBO articleBO = articleService.findArticleByArticleIdInBook(bookId, articleId);
     ArticleVO articleVO = new ArticleVO();
-    BeanUtils.copyProperties(articleBO,articleVO);
+    BeanUtils.copyProperties(articleBO, articleVO);
     super.outputData(articleVO);
   }
 }

@@ -1,5 +1,6 @@
 package pwd.initializr.book.business.admin;
 
+import java.util.Set;
 import org.springframework.stereotype.Service;
 import pwd.initializr.book.business.admin.bo.BookBO;
 import pwd.initializr.common.web.business.bo.ObjectList;
@@ -20,6 +21,6 @@ public interface BookService {
 
   BookBO createNewBook(BookBO bookBO);
 
-  ObjectList<BookBO> listBookByRange();
+  ObjectList<BookBO> searchBookByRange(Set<String> words, Integer pageIndex, Integer pageSize);
 
 }

@@ -1,5 +1,10 @@
 package pwd.initializr.book.persistence.entity;
 
+import com.hankcs.hanlp.seg.Dijkstra.DijkstraSegment;
+import com.hankcs.hanlp.seg.Segment;
+import com.hankcs.hanlp.seg.common.Term;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,26 +34,78 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @Document(collection = "book")
 public class BookEntity {
 
+  private static Segment SHORTEST_SEGMENT = new DijkstraSegment().enableCustomDictionary(false)
+      .enablePlaceRecognize(true).enableOrganizationRecognize(true);
+
   @Id
   @AutoIncKey
   @Field("id")
   private Long id;
   @Field("uid")
   private Long uid;
+  @Field("isbn")
+  private String isbn;
   @Field("title")
   private String title;
   @Field("sub_title")
   private String subTitle;
+  @Field("author_id")
+  private String authorId;
+  @Field("author_name")
+  private String authorName;
   @Field("summary")
   private String summary;
-  @Field("labels")
-  private Set<String> labels;
   @Field("thumbs")
   private Set<String> thumbs;
+  @Field("labels")
+  private Set<String> labels;
+  @Field("publisher")
+  private String publisher;
+  @Field("publication_time")
+  private String publicationTime;
   @Field("status")
   private Integer status;
   @Field("create_time")
-  private Long createTime;
+  private String createTime;
   @Field("update_time")
-  private Long updateTime;
+  private String updateTime;
+  @Field("words")
+  private Set<String> words;
+
+  public Set<String> createWords() {
+    HashSet<String> words = new HashSet<>();
+
+    List<Term> isbnSeg = SHORTEST_SEGMENT.seg(isbn);
+    isbnSeg.forEach(obj -> words.add(obj.word));
+
+    List<Term> titleSeg = SHORTEST_SEGMENT.seg(title);
+    titleSeg.forEach(obj -> words.add(obj.word));
+
+    List<Term> subTitleSeg = SHORTEST_SEGMENT.seg(subTitle);
+    subTitleSeg.forEach(obj -> words.add(obj.word));
+
+    List<Term> authorNameSeg = SHORTEST_SEGMENT.seg(authorName);
+    authorNameSeg.forEach(obj -> words.add(obj.word));
+
+    List<Term> summarySeg = SHORTEST_SEGMENT.seg(summary);
+    summarySeg.forEach(obj -> words.add(obj.word));
+
+    List<Term> publisherSeg = SHORTEST_SEGMENT.seg(publisher);
+    publisherSeg.forEach(obj -> words.add(obj.word));
+
+    if (labels != null) {
+      labels.forEach(label -> SHORTEST_SEGMENT.seg(label).forEach(item -> words.add(item.word)));
+    }
+
+    words.addAll(labels);
+
+    List<Term> publicationTimeSeg = SHORTEST_SEGMENT.seg(publicationTime);
+    publicationTimeSeg.forEach(obj -> words.add(obj.word));
+    words.add(publicationTime);
+
+    words.add(createTime);
+    words.add(updateTime);
+
+    return words;
+  }
 }

@@ -51,7 +51,7 @@ public class StringUtil {
             if(type.isPrimitive()) {
                 str = String.valueOf(value);
             } else if(type == Date.class) {
-                str = DateUtil.date2Str((Date)value);
+                str = DateTimeUtil.date2Str((Date)value);
             } else if(type == String.class) {
                 str = (String)value;
             } else {

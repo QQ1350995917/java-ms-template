@@ -1,5 +1,6 @@
 package pwd.initializr.book.business.user.bo;
 
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,11 +24,20 @@ import lombok.ToString;
 @Getter
 @ToString
 public class BookBO {
+
   private Long id;
+  private Long uid;
+  private String isbn;
   private String title;
   private String subTitle;
+  private String authorId;
+  private String authorName;
   private String summary;
+  private Set<String> thumbs;
+  private Set<String> labels;
+  private String publisher;
+  private String publicationTime;
   private Integer status;
-  private Long createTime;
-  private Long updateTime;
+  private String createTime;
+  private String updateTime;
 }

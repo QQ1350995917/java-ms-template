@@ -1,6 +1,7 @@
 package pwd.initializr.book.api.user.vo;
 
 import io.swagger.annotations.ApiModel;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,9 +26,19 @@ import lombok.ToString;
 @ToString
 @ApiModel(value = "bookVO", description = "图书VO属性")
 public class BookVO {
+
   private Long id;
+  private String isbn;
   private String title;
-  private String author;
-  private String cover;
+  private String subTitle;
+  private String authorId;
+  private String authorName;
   private String summary;
+  private Set<String> thumbs;
+  private Set<String> labels;
+  private String publisher;
+  private String publicationTime;
+  private Integer status;
+  private Long createTime;
+  private Long updateTime;
 }

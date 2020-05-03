@@ -2,6 +2,7 @@ package pwd.initializr.book.test.spider;
 
 import java.util.LinkedList;
 import java.util.List;
+import org.assertj.core.util.DateUtil;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -16,6 +17,7 @@ import pwd.initializr.book.business.admin.BookService;
 import pwd.initializr.book.business.admin.bo.ArticleBO;
 import pwd.initializr.book.business.admin.bo.BookBO;
 import pwd.initializr.book.test.HttpClient;
+import pwd.initializr.common.utils.DateTimeUtil;
 
 /**
  * pwd.initializr.book.test.spider@ms-web-initializr
@@ -44,7 +46,7 @@ public class Novel {
     String title = document.title().split("_")[0];
     BookBO bookBO = new BookBO();
     bookBO.setTitle(title);
-    bookBO.setCreateTime(System.currentTimeMillis());
+    bookBO.setCreateTime(DateTimeUtil.getCurrentDateTime());
     bookService.createNewBook(bookBO);
 
     Element body = document.body();

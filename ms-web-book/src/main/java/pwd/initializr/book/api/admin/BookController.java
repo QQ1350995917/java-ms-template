@@ -44,7 +44,7 @@ public class BookController extends AdminController implements BookApi {
   @Override
   public void createNewBook(CreateBookInput input) {
     BookBO bookBO = new BookBO();
-    BeanUtils.copyProperties(input,bookBO);
+    BeanUtils.copyProperties(input, bookBO);
     BookBO newBook = bookService.createNewBook(bookBO);
     super.outputData(newBook);
   }
@@ -54,7 +54,8 @@ public class BookController extends AdminController implements BookApi {
   @GetMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
   public void fetchBookByRange(BookListInput input) {
-    ObjectList<BookBO> bookBOObjectList = bookService.listBookByRange();
+    ObjectList<BookBO> bookBOObjectList = bookService
+        .searchBookByRange(input.getWords(), input.getPageIndex(), input.getPageSize());
     super.outputData(bookBOObjectList);
   }
 }
