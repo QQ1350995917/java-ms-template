@@ -1,7 +1,9 @@
 package pwd.initializr.book.test.spider;
 
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import org.assertj.core.util.DateUtil;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -70,7 +72,7 @@ public class Novel {
     Element content = body.getElementById("tdcontent");
     Elements pTags = content.getElementsByTag("p");
 
-    List<String> ps = new LinkedList<>();
+    Set<String> ps = new LinkedHashSet<>();
     for (Element pTag : pTags) {
       String text = pTag.text();
       ps.add(text);
@@ -81,7 +83,6 @@ public class Novel {
     articleBO.setTitle(title);
     articleBO.setParagraphs(ps);
     articleBO.setStatus(-1);
-    articleBO.setCreateTime(System.currentTimeMillis());
     articleService.createNewArticle(articleBO);
   }
 

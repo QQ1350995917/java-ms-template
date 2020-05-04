@@ -1,6 +1,6 @@
 package pwd.initializr.book.business.admin.bo;
 
-import java.util.List;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,8 +29,15 @@ public class ArticleBO {
   private Long bookId;
   private String title;
   private String subTitle;
-  private List<String> paragraphs;
+  private String authorId;
+  private String authorName;
+  private String summary;
+  private Set<String> thumbs;
+  private Boolean paragraphTokenizer;
+  private Set<String> paragraphs;
+  private Set<String> labels;
+  private String fromUrl;
   private Integer status;
-  private Long createTime;
-  private Long updateTime;
+  private String createTime;
+  private String updateTime;
 }

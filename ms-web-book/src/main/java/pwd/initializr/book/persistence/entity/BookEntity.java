@@ -11,6 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -75,36 +76,50 @@ public class BookEntity {
   public Set<String> createWords() {
     HashSet<String> words = new HashSet<>();
 
-    List<Term> isbnSeg = SHORTEST_SEGMENT.seg(isbn);
-    isbnSeg.forEach(obj -> words.add(obj.word));
-
-    List<Term> titleSeg = SHORTEST_SEGMENT.seg(title);
-    titleSeg.forEach(obj -> words.add(obj.word));
-
-    List<Term> subTitleSeg = SHORTEST_SEGMENT.seg(subTitle);
-    subTitleSeg.forEach(obj -> words.add(obj.word));
-
-    List<Term> authorNameSeg = SHORTEST_SEGMENT.seg(authorName);
-    authorNameSeg.forEach(obj -> words.add(obj.word));
-
-    List<Term> summarySeg = SHORTEST_SEGMENT.seg(summary);
-    summarySeg.forEach(obj -> words.add(obj.word));
-
-    List<Term> publisherSeg = SHORTEST_SEGMENT.seg(publisher);
-    publisherSeg.forEach(obj -> words.add(obj.word));
-
-    if (labels != null) {
-      labels.forEach(label -> SHORTEST_SEGMENT.seg(label).forEach(item -> words.add(item.word)));
+    if (StringUtils.isNotEmpty(isbn)) {
+      List<Term> isbnSeg = SHORTEST_SEGMENT.seg(isbn);
+      isbnSeg.forEach(obj -> words.add(obj.word));
+    }
+    if (StringUtils.isNotEmpty(title)) {
+      List<Term> titleSeg = SHORTEST_SEGMENT.seg(title);
+      titleSeg.forEach(obj -> words.add(obj.word));
+      words.add(title);
     }
 
-    words.addAll(labels);
+    if (StringUtils.isNotEmpty(subTitle)) {
+      List<Term> subTitleSeg = SHORTEST_SEGMENT.seg(subTitle);
+      subTitleSeg.forEach(obj -> words.add(obj.word));
+      words.add(subTitle);
+    }
 
-    List<Term> publicationTimeSeg = SHORTEST_SEGMENT.seg(publicationTime);
-    publicationTimeSeg.forEach(obj -> words.add(obj.word));
-    words.add(publicationTime);
+    if (StringUtils.isNotEmpty(authorName)) {
+      List<Term> authorNameSeg = SHORTEST_SEGMENT.seg(authorName);
+      authorNameSeg.forEach(obj -> words.add(obj.word));
+      words.add(authorName);
+    }
 
-    words.add(createTime);
-    words.add(updateTime);
+    if (StringUtils.isNotEmpty(summary)) {
+      List<Term> summarySeg = SHORTEST_SEGMENT.seg(summary);
+      summarySeg.forEach(obj -> words.add(obj.word));
+    }
+
+    if (StringUtils.isNotEmpty(publisher)) {
+      List<Term> publisherSeg = SHORTEST_SEGMENT.seg(publisher);
+      publisherSeg.forEach(obj -> words.add(obj.word));
+      words.add(publisher);
+    }
+
+    if (labels != null) {
+      labels.forEach(label -> {
+        SHORTEST_SEGMENT.seg(label).forEach(item -> words.add(item.word));
+        words.add(label);
+      });
+    }
+
+    if (StringUtils.isNotEmpty(publicationTime)) {
+      List<Term> publicationTimeSeg = SHORTEST_SEGMENT.seg(publicationTime);
+      publicationTimeSeg.forEach(obj -> words.add(obj.word));
+    }
 
     return words;
   }

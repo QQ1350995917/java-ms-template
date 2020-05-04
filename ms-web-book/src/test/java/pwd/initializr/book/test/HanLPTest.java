@@ -28,6 +28,7 @@ public class HanLPTest {
         "2020-05-03 12:45:41",
         "邪乎到家必有鬼",
         "中国科幻基石",
+        "寥落古行宫，宫花寂寞红。"
     };
     for (String sentence : testCase)
     {

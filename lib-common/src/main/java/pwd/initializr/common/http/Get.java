@@ -26,8 +26,8 @@ public class Get extends Http{
 
   public static HttpResponse doGet(String host, String path, Map<String, String> paramsMap) throws IOException {
     RequestConfig requestConfig = RequestConfig.custom()
-        .setConnectionRequestTimeout(10000)
-        .setConnectTimeout(5000)
+        .setConnectionRequestTimeout(1000 * 60 * 10)
+        .setConnectTimeout(1000 * 60 * 10)
         .build();
     HttpGet httpGet = new HttpGet(getRequestUrl(host, path, paramsMap));
     httpGet.setConfig(requestConfig);

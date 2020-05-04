@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 import pwd.initializr.book.business.admin.bo.ArticleBO;
 import pwd.initializr.book.persistence.entity.ArticleEntity;
+import pwd.initializr.common.utils.DateTimeUtil;
 import pwd.initializr.common.web.business.bo.ObjectList;
 
 /**
@@ -31,6 +32,11 @@ public class ArticleServiceImpl implements ArticleService {
   public ArticleBO createNewArticle(ArticleBO articleBO) {
     ArticleEntity articleEntity = new ArticleEntity();
     BeanUtils.copyProperties(articleBO,articleEntity);
+    articleEntity.setStatus(0);
+    String currentDateTime = DateTimeUtil.getCurrentDateTime();
+    articleEntity.setCreateTime(currentDateTime);
+    articleEntity.setUpdateTime(currentDateTime);
+    articleEntity.setWords(articleEntity.createWords(articleBO.getParagraphTokenizer()));
     ArticleEntity newArticleEntity = mongoTemplate.save(articleEntity);
     BeanUtils.copyProperties(newArticleEntity,articleBO);
     return articleBO;
