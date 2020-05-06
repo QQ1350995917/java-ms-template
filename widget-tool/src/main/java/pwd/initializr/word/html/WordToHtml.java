@@ -19,7 +19,7 @@ import org.zwobble.mammoth.Result;
 public class WordToHtml {
 
   public static void main(String[] args) throws Throwable {
-    final String file = "C:\\Users\\Administrator\\Desktop\\湖南管局物联网综合分析报告20200320.docx";
+    final String file = "C:\\Users\\Administrator\\Desktop\\20200320.docx";
     DocumentConverter converter = new DocumentConverter();
     Result<String> result = converter.convertToHtml(new File(file));
     String html = result.getValue(); // The generated HTML
