@@ -28,7 +28,7 @@ import org.springframework.data.elasticsearch.annotations.Field;
 @Setter
 @Getter
 @ToString
-@Document(indexName = "book")
+@Document(indexName = "book", type = "article")
 public class BookDocument {
 
   private Long id;

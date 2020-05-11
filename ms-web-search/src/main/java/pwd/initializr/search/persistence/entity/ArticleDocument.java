@@ -28,28 +28,28 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 @Setter
 @ToString
 @Data
-@Document(indexName = "store", type = "base")
+@Document(indexName = "book", type = "article")
 public class ArticleDocument {
 
   @Field(type = FieldType.Keyword)
   private Long id;
   @Field(type = FieldType.Keyword)
   private Long bookId;
-  @Field(type = FieldType.Keyword)
+  @Field(type = FieldType.Text, analyzer = "ik_max_word", searchAnalyzer = "ik_max_word")
   private String title;
-  @Field(type = FieldType.Keyword)
+  @Field(type = FieldType.Text, analyzer = "ik_max_word", searchAnalyzer = "ik_max_word")
   private String subTitle;
   @Field(type = FieldType.Keyword)
   private String authorId;
   @Field(type = FieldType.Keyword)
   private String authorName;
-  @Field(type = FieldType.Keyword)
+  @Field(type = FieldType.Text, analyzer = "ik_max_word", searchAnalyzer = "ik_max_word")
   private String summary;
   @Field(type = FieldType.Keyword)
   private Set<String> thumbs;
-  @Field(type = FieldType.Keyword)
+  @Field(type = FieldType.Text, analyzer = "ik_max_word", searchAnalyzer = "ik_max_word")
   private Set<String> paragraphs;
-  @Field(type = FieldType.Keyword)
+  @Field(type = FieldType.Text, analyzer = "ik_max_word", searchAnalyzer = "ik_max_word")
   private Set<String> labels;
   @Field(type = FieldType.Keyword)
   private String fromUrl;
@@ -59,10 +59,10 @@ public class ArticleDocument {
   private String createTime;
   @Field(type = FieldType.Keyword)
   private String updateTime;
-  @Field(type = FieldType.Keyword)
-  private Set<String> words;
 
 }
+
+
 
 
 
