@@ -9,7 +9,7 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>ms-web-book</artifactId>
+  <artifactId>ms-web-search</artifactId>
   <packaging>jar</packaging>
 
   <dependencies>
@@ -30,34 +30,13 @@
       <artifactId>spring-boot-starter-actuator</artifactId>
     </dependency>
     <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
+    </dependency>
+    <dependency>
       <groupId>pwd.initializr</groupId>
       <artifactId>lib-common-web</artifactId>
       <version>0.0.1-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-data-mongodb</artifactId>
-      <version>2.1.6.RELEASE</version>
-    </dependency>
-    <dependency>
-      <groupId>org.jsoup</groupId>
-      <artifactId>jsoup</artifactId>
-      <version>1.12.1</version>
-    </dependency>
-    <dependency>
-      <groupId>com.hankcs</groupId>
-      <artifactId>hanlp</artifactId>
-      <version>portable-1.7.5</version>
-    </dependency>
-    <dependency>
-      <groupId>com.jianggujin</groupId>
-      <artifactId>IKAnalyzer-lucene</artifactId>
-      <version>8.0.0</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.lucene</groupId>
-      <artifactId>lucene-core</artifactId>
-      <version>8.5.1</version>
     </dependency>
   </dependencies>
 
@@ -130,7 +109,7 @@
             <manifest>
               <addClasspath>true</addClasspath>
               <classpathPrefix>lib/</classpathPrefix>
-              <mainClass>pwd.initializr.book.BookApplication</mainClass>
+              <mainClass>pwd.initializr.book.SearchApplication</mainClass>
               <useUniqueVersions>false</useUniqueVersions>
             </manifest>
             <!-- 给清单文件添加键值对(配置文件外置) -->

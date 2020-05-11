@@ -32,6 +32,7 @@
     <module>ms-web-organization</module>
     <module>ms-web-registry</module>
     <!--<module>ms-web-schedule</module>-->
+    <module>ms-web-search</module>
     <module>ms-web-storage</module>
     <module>ms-web-typeface</module>
     <module>project-generator</module>
