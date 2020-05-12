@@ -34,11 +34,15 @@ public class MetadataDocument implements Serializable {
   @Field(type = FieldType.Auto)
   private Long esId;
   @Field(type = FieldType.Keyword)
-  private String appId;
+  private String esAppId;
   @Field(type = FieldType.Keyword)
-  private String appName;
+  private String esAppName;
   @Field(type = FieldType.Keyword)
-  private String secretKey;
+  private String esSecretKey;
   @Field(type = FieldType.Keyword)
-  private String visibility;
+  private String esVisibility;
+  @Field(type = FieldType.Keyword)
+  private String esTitle;
+  @Field(type = FieldType.Keyword)
+  private String esLinkTo;
 }
