@@ -1,6 +1,8 @@
 package pwd.initializr.search.persistence.entity;
 
-import java.util.Set;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import java.util.Date;
+import java.util.LinkedHashSet;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -10,6 +12,7 @@ import lombok.ToString;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * pwd.initializr.book.persistence.entity@ms-web-initializr
@@ -28,37 +31,43 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 @Setter
 @ToString
 @Data
-@Document(indexName = "book", type = "article")
-public class ArticleDocument {
+@Document(indexName = "article", type = "article")
+public class ArticleDocument extends MetadataDocument {
 
   @Field(type = FieldType.Keyword)
   private Long id;
   @Field(type = FieldType.Keyword)
   private Long bookId;
+  @Field(type = FieldType.Keyword)
+  private Long uid;
   @Field(type = FieldType.Text, analyzer = "ik_max_word", searchAnalyzer = "ik_max_word")
   private String title;
   @Field(type = FieldType.Text, analyzer = "ik_max_word", searchAnalyzer = "ik_max_word")
   private String subTitle;
   @Field(type = FieldType.Keyword)
-  private String authorId;
-  @Field(type = FieldType.Keyword)
+  private Long authorId;
+  @Field(type = FieldType.Text, analyzer = "ik_max_word", searchAnalyzer = "ik_max_word")
   private String authorName;
   @Field(type = FieldType.Text, analyzer = "ik_max_word", searchAnalyzer = "ik_max_word")
   private String summary;
   @Field(type = FieldType.Keyword)
-  private Set<String> thumbs;
+  private LinkedHashSet<String> thumbs;
   @Field(type = FieldType.Text, analyzer = "ik_max_word", searchAnalyzer = "ik_max_word")
-  private Set<String> paragraphs;
+  private LinkedHashSet<String> paragraphs;
   @Field(type = FieldType.Text, analyzer = "ik_max_word", searchAnalyzer = "ik_max_word")
-  private Set<String> labels;
+  private LinkedHashSet<String> labels;
   @Field(type = FieldType.Keyword)
   private String fromUrl;
   @Field(type = FieldType.Keyword)
   private Integer status;
-  @Field(type = FieldType.Keyword)
-  private String createTime;
-  @Field(type = FieldType.Keyword)
-  private String updateTime;
+  @Field(type = FieldType.Text, analyzer = "ik_max_word", searchAnalyzer = "ik_max_word")
+  @DateTimeFormat(pattern = "yyyy-MM-dd")
+  @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+  private Date createTime;
+  @Field(type = FieldType.Text, analyzer = "ik_max_word", searchAnalyzer = "ik_max_word")
+  @DateTimeFormat(pattern = "yyyy-MM-dd")
+  @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+  private Date updateTime;
 
 }
 

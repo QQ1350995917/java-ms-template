@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 import pwd.initializr.search.persistence.entity.ArticleDocument;
+import pwd.initializr.search.persistence.entity.BookDocument;
 
 /**
  * pwd.initializr.search.test.business@ms-web-initializr
@@ -22,23 +23,27 @@ import pwd.initializr.search.persistence.entity.ArticleDocument;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class ArticleDocumentTest {
+public class IndexTest {
 
   @Autowired
   private ElasticsearchTemplate elasticsearchTemplate;
   @Test
   public void listIndex(){
-    elasticsearchTemplate.deleteIndex(ArticleDocument.class);
+
   }
 
   @Test
   public void createIndex(){
     elasticsearchTemplate.createIndex(ArticleDocument.class);
     elasticsearchTemplate.putMapping(ArticleDocument.class);
+    elasticsearchTemplate.createIndex(BookDocument.class);
+    elasticsearchTemplate.putMapping(BookDocument.class);
   }
 
   @Test
   public void deleteIndex(){
-
+//    elasticsearchTemplate.deleteIndex(ArticleDocument.class);
+    elasticsearchTemplate.deleteIndex("book");
+//    elasticsearchTemplate.deleteIndex(BookDocument.class);
   }
 }

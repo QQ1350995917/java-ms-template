@@ -1,20 +1,17 @@
 package pwd.initializr.book.persistence.entity;
 
-import com.hankcs.hanlp.seg.Dijkstra.DijkstraSegment;
-import com.hankcs.hanlp.seg.Segment;
-import com.hankcs.hanlp.seg.common.Term;
-import java.util.HashSet;
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import java.util.Date;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * pwd.initializr.book.persistence.entity@ms-web-initializr
@@ -35,15 +32,14 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @Document(collection = "article")
 public class ArticleEntity {
 
-  private static Segment SHORTEST_SEGMENT = new DijkstraSegment().enableCustomDictionary(false)
-      .enablePlaceRecognize(true).enableOrganizationRecognize(true);
-
   @Id
   @AutoIncKey
   @Field("id")
   private Long id;
   @Field("book_id")
   private Long bookId;
+  @Field("uid")
+  private Long uid;
   @Field("title")
   private String title;
   @Field("sub_title")
@@ -65,50 +61,11 @@ public class ArticleEntity {
   @Field("status")
   private Integer status;
   @Field("create_time")
-  private String createTime;
+  @DateTimeFormat(pattern = "yyyy-MM-dd")
+  @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+  private Date createTime;
   @Field("update_time")
-  private String updateTime;
-  @Field("words")
-  private Set<String> words;
-
-  public Set<String> createWords(Boolean paragraphTokenizer) {
-    HashSet<String> words = new HashSet<>();
-
-    if (StringUtils.isNotEmpty(title)) {
-      List<Term> titleSeg = SHORTEST_SEGMENT.seg(title);
-      titleSeg.forEach(obj -> words.add(obj.word));
-      words.add(title);
-    }
-
-    if (StringUtils.isNotEmpty(subTitle)) {
-      List<Term> subTitleSeg = SHORTEST_SEGMENT.seg(subTitle);
-      subTitleSeg.forEach(obj -> words.add(obj.word));
-      words.add(subTitle);
-    }
-
-    if (StringUtils.isNotEmpty(authorName)) {
-      List<Term> authorNameSeg = SHORTEST_SEGMENT.seg(authorName);
-      authorNameSeg.forEach(obj -> words.add(obj.word));
-      words.add(authorName);
-    }
-
-    if (StringUtils.isNotEmpty(summary)) {
-      List<Term> summarySeg = SHORTEST_SEGMENT.seg(summary);
-      summarySeg.forEach(obj -> words.add(obj.word));
-    }
-
-    if (labels != null) {
-      labels.forEach(label -> {
-        SHORTEST_SEGMENT.seg(label).forEach(item -> words.add(item.word));
-        words.add(label);
-      });
-    }
-
-    if (paragraphTokenizer && paragraphs != null) {
-      paragraphs.forEach(
-          paragraph -> SHORTEST_SEGMENT.seg(paragraph).forEach(item -> words.add(item.word)));
-    }
-
-    return words;
-  }
+  @DateTimeFormat(pattern = "yyyy-MM-dd")
+  @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+  private Date updateTime;
 }

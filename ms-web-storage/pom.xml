@@ -9,7 +9,7 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>ms-web-storageBO</artifactId>
+  <artifactId>ms-web-storage</artifactId>
 
   <dependencies>
     <dependency>

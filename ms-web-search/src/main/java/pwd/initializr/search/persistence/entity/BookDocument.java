@@ -1,16 +1,17 @@
 package pwd.initializr.search.persistence.entity;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import java.util.Date;
+import java.util.LinkedHashSet;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * pwd.initializr.book.persistence.entity@ms-web-initializr
@@ -28,24 +29,44 @@ import org.springframework.data.elasticsearch.annotations.Field;
 @Setter
 @Getter
 @ToString
-@Document(indexName = "book", type = "article")
-public class BookDocument {
+@Document(indexName = "book", type = "book")
+public class BookDocument extends MetadataDocument {
 
+  @Field(type = FieldType.Keyword)
   private Long id;
+  @Field(type = FieldType.Keyword)
   private Long uid;
+  @Field(type = FieldType.Text, analyzer = "ik_max_word", searchAnalyzer = "ik_max_word")
   private String isbn;
+  @Field(type = FieldType.Text, analyzer = "ik_max_word", searchAnalyzer = "ik_max_word")
   private String title;
+  @Field(type = FieldType.Text, analyzer = "ik_max_word", searchAnalyzer = "ik_max_word")
   private String subTitle;
-  private String authorId;
+  @Field(type = FieldType.Keyword)
+  private Long authorId;
+  @Field(type = FieldType.Text, analyzer = "ik_max_word", searchAnalyzer = "ik_max_word")
   private String authorName;
+  @Field(type = FieldType.Text, analyzer = "ik_max_word", searchAnalyzer = "ik_max_word")
   private String summary;
-  private Set<String> thumbs;
-  private Set<String> labels;
+  @Field(type = FieldType.Keyword)
+  private LinkedHashSet<String> thumbs;
+  @Field(type = FieldType.Text, analyzer = "ik_max_word", searchAnalyzer = "ik_max_word")
+  private LinkedHashSet<String> labels;
+  @Field(type = FieldType.Text, analyzer = "ik_max_word", searchAnalyzer = "ik_max_word")
   private String publisher;
-  private String publicationTime;
+  @Field(type = FieldType.Text, analyzer = "ik_max_word", searchAnalyzer = "ik_max_word")
+  @DateTimeFormat(pattern = "yyyy-MM-dd")
+  @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+  private Date publicationTime;
+  @Field(type = FieldType.Keyword)
   private Integer status;
-  private String createTime;
-  private String updateTime;
-  private Set<String> words;
+  @Field(type = FieldType.Text, analyzer = "ik_max_word", searchAnalyzer = "ik_max_word")
+  @DateTimeFormat(pattern = "yyyy-MM-dd")
+  @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+  private Date createTime;
+  @Field(type = FieldType.Text, analyzer = "ik_max_word", searchAnalyzer = "ik_max_word")
+  @DateTimeFormat(pattern = "yyyy-MM-dd")
+  @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+  private Date updateTime;
 
 }

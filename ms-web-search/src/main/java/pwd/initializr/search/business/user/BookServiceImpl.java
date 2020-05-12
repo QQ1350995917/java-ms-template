@@ -20,7 +20,6 @@ import pwd.initializr.search.business.user.bo.BookBO;
 @Service
 public class BookServiceImpl implements BookService {
 
-
   @Override
   public ObjectList<BookBO> listBookByRange(Long userId) {
     ObjectList<BookBO> result = new ObjectList<>();
