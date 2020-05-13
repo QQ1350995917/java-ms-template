@@ -53,7 +53,7 @@ public class PutIntoSearchTest {
 
   @Test
   public void copyArticle(){
-    List<ArticleEntity> all = mongoTemplate.findAll(ArticleEntity.class);
+    List<ArticleEntity> all = mongoTemplate.findAll(ArticleEntity.class).subList(400,500);
     all.forEach(articleEntity -> {
       ArticleIntoSearch articleIntoSearch = new ArticleIntoSearch();
       BeanUtils.copyProperties(articleEntity,articleIntoSearch);

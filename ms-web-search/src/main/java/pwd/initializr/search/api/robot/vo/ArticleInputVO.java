@@ -2,11 +2,9 @@ package pwd.initializr.search.api.robot.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import pwd.initializr.book.rpc.ArticleIntoSearch;
-import pwd.initializr.book.rpc.BookIntoSearch;
 
 /**
  * pwd.initializr.search.api.robot.vo@ms-web-initializr

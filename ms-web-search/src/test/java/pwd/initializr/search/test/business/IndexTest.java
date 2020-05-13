@@ -1,12 +1,8 @@
 package pwd.initializr.search.test.business;
 
-import com.netflix.discovery.converters.Auto;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
-import org.springframework.test.context.junit4.SpringRunner;
 import pwd.initializr.search.persistence.entity.ArticleDocument;
 import pwd.initializr.search.persistence.entity.BookDocument;
 
@@ -27,13 +23,9 @@ public class IndexTest {
 
   @Autowired
   private ElasticsearchTemplate elasticsearchTemplate;
-  @Test
-  public void listIndex(){
-
-  }
 
   @Test
-  public void createIndex(){
+  public void createIndex() {
     elasticsearchTemplate.createIndex(ArticleDocument.class);
     elasticsearchTemplate.putMapping(ArticleDocument.class);
     elasticsearchTemplate.createIndex(BookDocument.class);
@@ -41,9 +33,14 @@ public class IndexTest {
   }
 
   @Test
-  public void deleteIndex(){
+  public void deleteIndex() {
 //    elasticsearchTemplate.deleteIndex(ArticleDocument.class);
-    elasticsearchTemplate.deleteIndex("book");
+//    elasticsearchTemplate.deleteIndex("book");
 //    elasticsearchTemplate.deleteIndex(BookDocument.class);
+  }
+
+  @Test
+  public void listIndex() {
+
   }
 }
