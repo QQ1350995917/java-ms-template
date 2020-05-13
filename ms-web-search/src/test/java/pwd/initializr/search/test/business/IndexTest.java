@@ -21,8 +21,8 @@ import pwd.initializr.search.persistence.entity.BookDocument;
  * @version 1.0.0
  * @since DistributionVersion
  */
-@RunWith(SpringRunner.class)
-@SpringBootTest
+//@RunWith(SpringRunner.class)
+//@SpringBootTest
 public class IndexTest {
 
   @Autowired

@@ -8,6 +8,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.common.web.api.FullPathNameGenerator;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
  * pwd.initializr.account@ms-web-initializr
@@ -25,10 +26,10 @@ import pwd.initializr.common.web.api.FullPathNameGenerator;
 @EnableDiscoveryClient
 @RestController
 @ComponentScan(nameGenerator = FullPathNameGenerator.class)
-public class BookApplication {
+public class SearchApplication {
 
   public static void main(String[] args) {
-    SpringApplication.run(BookApplication.class, args);
+    SpringApplication.run(SearchApplication.class, args);
   }
 
   @GetMapping(value = "")

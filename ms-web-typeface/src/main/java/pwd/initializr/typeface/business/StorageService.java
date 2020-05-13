@@ -22,7 +22,7 @@ import pwd.initializr.typeface.FeignConfig;
  * @version 1.0.0
  * @since DistributionVersion
  */
-@FeignClient(value = "storage", configuration = FeignConfig.class,fallback = StorageServiceFallback.class)
+@FeignClient(value = "storage", configuration = FeignConfig.class, fallback = StorageServiceFallbackImpl.class)
 public interface StorageService {
 
   @DeleteMapping(value = "/api/robot/file/{appName}/{bucketName}", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = {

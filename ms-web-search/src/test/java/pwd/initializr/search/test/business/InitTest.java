@@ -18,8 +18,8 @@ import pwd.initializr.search.business.admin.ArticleService;
  * @version 1.0.0
  * @since DistributionVersion
  */
-@RunWith(SpringRunner.class)
-@SpringBootTest
+//@RunWith(SpringRunner.class)
+////@SpringBootTest
 public class InitTest {
 
   @Autowired

@@ -1,5 +1,6 @@
 package pwd.initializr.book.business.admin;
 
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -38,10 +39,9 @@ public class BookServiceImpl implements BookService {
     BookEntity bookEntity = new BookEntity();
     BeanUtils.copyProperties(bookBO, bookEntity);
     bookEntity.setStatus(0);
-    String currentDateTime = DateTimeUtil.getCurrentDateTime();
+    Date currentDateTime = new Date();
     bookEntity.setCreateTime(currentDateTime);
     bookEntity.setUpdateTime(currentDateTime);
-    bookEntity.setWords(bookEntity.createWords());
     BookEntity newBookEntity = mongoTemplate.save(bookEntity);
     BeanUtils.copyProperties(newBookEntity, bookBO);
     return bookBO;

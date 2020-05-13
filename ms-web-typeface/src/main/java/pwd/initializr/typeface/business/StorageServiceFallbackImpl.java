@@ -19,7 +19,7 @@ import pwd.initializr.common.web.api.vo.Output;
  * @since DistributionVersion
  */
 @Service
-public class StorageServiceFallback implements StorageService {
+public class StorageServiceFallbackImpl implements StorageService {
 
   @Override
   public String delete(String appName, String bucketName, List<String> objectNames) {

@@ -1,5 +1,6 @@
 package pwd.initializr.book.business.admin;
 
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import org.springframework.beans.BeanUtils;
@@ -33,10 +34,9 @@ public class ArticleServiceImpl implements ArticleService {
     ArticleEntity articleEntity = new ArticleEntity();
     BeanUtils.copyProperties(articleBO,articleEntity);
     articleEntity.setStatus(0);
-    String currentDateTime = DateTimeUtil.getCurrentDateTime();
+    Date currentDateTime = new Date();
     articleEntity.setCreateTime(currentDateTime);
     articleEntity.setUpdateTime(currentDateTime);
-    articleEntity.setWords(articleEntity.createWords(articleBO.getParagraphTokenizer()));
     ArticleEntity newArticleEntity = mongoTemplate.save(articleEntity);
     BeanUtils.copyProperties(newArticleEntity,articleBO);
     return articleBO;

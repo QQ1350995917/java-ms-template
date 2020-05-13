@@ -1,4 +1,4 @@
-package pwd.initializr.book.api;
+package pwd.initializr.search.api;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -33,6 +33,17 @@ public class Swagger2 extends ApiSwagger2 {
             .apiInfo(apiInfo("UserApi", "用户接口"))
             .select()
             .apis(RequestHandlerSelectors.basePackage("pwd.initializr.search.api.user"))
+            .paths(PathSelectors.any())
+            .build().globalOperationParameters(buildGlobalOperationParameters());
+    }
+
+    @Bean
+    public Docket createRobotApi() {
+        return new Docket(DocumentationType.SWAGGER_2)
+            .groupName("RobotApi")
+            .apiInfo(apiInfo("RobotApi", "Robot接口"))
+            .select()
+            .apis(RequestHandlerSelectors.basePackage("pwd.initializr.search.api.robot"))
             .paths(PathSelectors.any())
             .build().globalOperationParameters(buildGlobalOperationParameters());
     }

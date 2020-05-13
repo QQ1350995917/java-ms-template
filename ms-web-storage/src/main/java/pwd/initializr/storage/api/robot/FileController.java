@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.HandlerMapping;
 import pwd.initializr.common.web.api.ApiController;
+import pwd.initializr.common.web.api.robot.RobotController;
 import pwd.initializr.storage.api.robot.vo.FileDelErrorVO;
 import pwd.initializr.storage.business.StorageServiceImpl;
 import pwd.initializr.storage.business.bo.ObjectDelErrorBO;
@@ -46,7 +47,7 @@ import pwd.initializr.storage.rpc.UploadOutput;
 )
 @Controller(value = "fileApiByRobot")
 @RequestMapping(value = "/api/robot/file")
-public class FileController extends ApiController implements FileApi {
+public class FileController extends RobotController implements FileApi {
 
   @Autowired
   private StorageServiceImpl storageService;

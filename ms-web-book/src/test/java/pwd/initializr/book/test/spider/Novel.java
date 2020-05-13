@@ -1,10 +1,7 @@
 package pwd.initializr.book.test.spider;
 
 import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Set;
-import org.assertj.core.util.DateUtil;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -59,13 +56,13 @@ public class Novel {
     for (Element aTag : aTags) {
       String id = aTag.attr("href").split("=")[1];
       String text = aTag.text();
-      article(bookBO.getId(),text,id);
-      current ++;
+      article(bookBO.getId(), text, id);
+      current++;
       System.out.println(current + " / " + size + " | " + text + " = " + id);
     }
   }
 
-  private void article(Long bookId, String title,String id){
+  private void article(Long bookId, String title, String id) {
     String html = HttpClient.get("" + id);
     Document document = Jsoup.parse(html);
     Element body = document.body();
@@ -85,7 +82,6 @@ public class Novel {
     articleBO.setStatus(-1);
     articleService.createNewArticle(articleBO);
   }
-
 
 
 }

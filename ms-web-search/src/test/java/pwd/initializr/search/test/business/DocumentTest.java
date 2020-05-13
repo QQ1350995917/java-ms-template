@@ -24,8 +24,8 @@ import pwd.initializr.search.persistence.entity.BookDocument;
  * @version 1.0.0
  * @since DistributionVersion
  */
-@RunWith(SpringRunner.class)
-@SpringBootTest
+//@RunWith(SpringRunner.class)
+//@SpringBootTest
 public class DocumentTest {
 
   @Autowired
@@ -69,7 +69,6 @@ public class DocumentTest {
     labels.add("电子书");
     labels.add("唐诗");
     articleDocument.setLabels(labels);
-    articleDocument.setFromUrl("http://pwd.com");
     articleDocument.setStatus(0);
     articleDocument.setCreateTime(new Date());
     articleDocument.setUpdateTime(new Date());
@@ -81,7 +80,6 @@ public class DocumentTest {
   public void saveBook() {
     BookDocument bookDocument = new BookDocument();
     bookDocument.setId(0L);
-    bookDocument.setUid(0L);
     bookDocument.setIsbn("9787229124410");
     bookDocument.setTitle("三体");
     bookDocument.setSubTitle("三体");
