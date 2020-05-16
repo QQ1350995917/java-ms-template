@@ -30,15 +30,15 @@ public interface BookApi {
     void fetchBookSummary(@PathVariable("bookId") Long bookId);
 
     @ApiOperation(value = "图书目录列表")
-    @GetMapping(value = {"/{bookId}/tables/{startId}/{pageSize}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    void fetchBookTables(@PathVariable("bookId") Long bookId,@PathVariable("startId") Long startId,@PathVariable("pageSize") Long pageSize);
+    @GetMapping(value = {"/{bookId}/table","/{bookId}/table/{startId}/{pageSize}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    void fetchBookTables(@PathVariable("bookId") Long bookId,@PathVariable(value = "startId",required = false) Long startId,@PathVariable(value = "pageSize",required = false) Long pageSize);
 
     @ApiOperation(value = "图书指定章节前后目录")
-    @GetMapping(value = {"/{bookId}/tables/around/{tableId}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value = {"/{bookId}/table/around/{tableId}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     void fetchBookTablesAround(@PathVariable("bookId") Long bookId,@PathVariable("tableId") Long articleId);
 
     @ApiOperation(value = "文章详情")
-    @GetMapping(value = {"/{bookId}/{articleId}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value = {"/{bookId}/article/{articleId}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     void fetchArticle(@PathVariable("bookId") Long bookId,@PathVariable("articleId") Long articleId);
 
 }

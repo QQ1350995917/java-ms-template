@@ -1,31 +1,26 @@
 package pwd.initializr.book.business.user.bo;
 
-import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import pwd.initializr.book.persistence.entity.BaseEntity;
 
 /**
  * pwd.initializr.book.business.user.bo@ms-web-initializr
  *
  * <h1>TODO what you want to do?</h1>
  *
- * date 2019-12-14 20:46
+ * date 2020-05-16 23:44
  *
  * @author DingPengwei[www.dingpengwei@foxmail.com]
  * @version 1.0.0
  * @since DistributionVersion
  */
 @AllArgsConstructor
-@NoArgsConstructor
-@Setter
 @Getter
+@Setter
 @ToString
-public class BookBO extends BaseBO {
+public class BaseBO extends BaseEntity {
 
-  private String isbn;
-  private Set<String> thumbs;
-  private String publisher;
 }

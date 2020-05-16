@@ -47,7 +47,6 @@ public class ArticleTest {
   @Test
   public void step0() throws Exception {
     Long bookId = 41L;
-    Boolean paragraphTokenizer = false;
     HttpResponse httpResponse = Get.doGet("https://so.gushiwen.org", "/wenyan/guanzhi.aspx", null);
     if (httpResponse.getStatusLine().getStatusCode() == 200) {
       if (httpResponse != null) {
@@ -80,8 +79,6 @@ public class ArticleTest {
             } else {
               articleBO.setFromUrl("https://so.gushiwen.org" + href);
             }
-
-            articleBO.setParagraphTokenizer(paragraphTokenizer);
 
             String path = articleBO.getFromUrl().replace("https://so.gushiwen.org", "");
             HttpResponse httpResponseDetail = Get.doGet("https://so.gushiwen.org", path, null);

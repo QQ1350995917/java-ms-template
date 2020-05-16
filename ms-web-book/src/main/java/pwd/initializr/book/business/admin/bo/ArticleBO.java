@@ -8,7 +8,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * pwd.initializr.book.business.admin.bo@ms-web-initializr
+ * pwd.initializr.book.business.user.bo@ms-web-initializr
  *
  * <h1>TODO what you want to do?</h1>
  *
@@ -23,21 +23,9 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class ArticleBO {
+public class ArticleBO extends BaseBO {
 
-  private Long id;
   private Long bookId;
-  private String title;
-  private String subTitle;
-  private String authorId;
-  private String authorName;
-  private String summary;
-  private Set<String> thumbs;
-  private Boolean paragraphTokenizer;
   private Set<String> paragraphs;
-  private Set<String> labels;
   private String fromUrl;
-  private Integer status;
-  private String createTime;
-  private String updateTime;
 }

@@ -1,5 +1,6 @@
 package pwd.initializr.book.test.spider;
 
+import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import org.jsoup.Jsoup;
@@ -45,7 +46,7 @@ public class Novel {
     String title = document.title().split("_")[0];
     BookBO bookBO = new BookBO();
     bookBO.setTitle(title);
-    bookBO.setCreateTime(DateTimeUtil.getCurrentDateTime());
+    bookBO.setCreateTime(new Date());
     bookService.createNewBook(bookBO);
 
     Element body = document.body();

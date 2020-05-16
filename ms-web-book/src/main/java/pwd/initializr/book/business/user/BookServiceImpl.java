@@ -30,9 +30,8 @@ public class BookServiceImpl implements BookService {
   private MongoTemplate mongoTemplate;
 
   @Override
-  public ObjectList<BookBO> listBookByRange(Long userId) {
-    List<BookEntity> bookEntities = mongoTemplate
-        .find(Query.query(Criteria.where("userId").is(userId)), BookEntity.class);
+  public ObjectList<BookBO> listBookByRange() {
+    List<BookEntity> bookEntities = mongoTemplate.findAll(BookEntity.class);
     ObjectList<BookBO> result = new ObjectList<>();
     List<BookBO> bookBOS = new LinkedList<>();
     for (BookEntity bookEntity : bookEntities) {

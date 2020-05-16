@@ -23,6 +23,7 @@ import lombok.ToString;
 @Setter
 @ToString
 public class ArticleAroundBO {
+
   private ArticleBO pre;
   private ArticleBO next;
 }

@@ -1,11 +1,13 @@
 package pwd.initializr.book.business.user.bo;
 
 import java.util.List;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 /**
  * pwd.initializr.book.business.user.bo@ms-web-initializr
@@ -23,14 +25,9 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class ArticleBO {
+public class ArticleBO extends BaseBO{
 
-  private Long id;
   private Long bookId;
-  private String title;
-  private String subTitle;
-  private List<String> paragraphs;
-  private Integer status;
-  private Long createTime;
-  private Long updateTime;
+  private Set<String> paragraphs;
+  private String fromUrl;
 }

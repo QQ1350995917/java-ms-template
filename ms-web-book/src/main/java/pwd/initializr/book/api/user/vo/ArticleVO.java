@@ -1,7 +1,7 @@
 package pwd.initializr.book.api.user.vo;
 
 import io.swagger.annotations.ApiModel;
-import java.util.List;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,6 +25,8 @@ import lombok.ToString;
 @Setter
 @ToString
 @ApiModel(value = "bookArticleVO", description = "图书文章VO属性")
-public class ArticleVO extends BookTableVO {
-  private List<String> paragraphs;
+public class ArticleVO extends BaseVO {
+
+  private Long bookId;
+  private Set<String> paragraphs;
 }

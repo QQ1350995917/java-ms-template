@@ -49,18 +49,18 @@ public class BaseEntity implements Serializable {
   private String summary;
   @Field("labels")
   private Set<String> labels;
-//  @Field("publication_time")
-//  @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-//  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+  @Field("publication_time")
+  @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
   private Date publicationTime = new Date();
   @Field("status")
   private Integer status;
-//  @Field("create_time")
-//  @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-//  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+  @Field("create_time")
+  @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
   private Date createTime = new Date();
-//  @Field("update_time")
-//  @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-//  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+  @Field("update_time")
+  @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
   private Date updateTime = new Date();
 }
