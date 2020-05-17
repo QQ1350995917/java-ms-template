@@ -27,8 +27,8 @@ public class SearchInput {
 
   @ApiModelProperty(name = "keyword", value = "keyword", required = false, example = "万里江山", dataType = "java.lang.String")
   private String keyword;
-  @ApiModelProperty(name = "index", value = "pageIndex", required = false, example = "0", dataType = "java.lang.Integer")
-  private Integer index;
-  @ApiModelProperty(name = "size", value = "pageSize", required = false, example = "12", dataType = "java.lang.Integer")
-  private Integer size;
+  @ApiModelProperty(name = "index", value = "index", required = false, example = "0", dataType = "java.lang.Integer")
+  private Integer index = 0;
+  @ApiModelProperty(name = "size", value = "size", required = false, example = "12", dataType = "java.lang.Integer")
+  private Integer size = 12;
 }

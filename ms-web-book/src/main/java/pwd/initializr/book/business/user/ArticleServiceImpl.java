@@ -45,15 +45,15 @@ public class ArticleServiceImpl implements ArticleService {
     fieldsObject.put("title", true);
     fieldsObject.put("subTitle", true);
 
-    Query query = new BasicQuery(queryObject,fieldsObject);
+    Query query = new BasicQuery(queryObject, fieldsObject);
 
-    List<ArticleEntity> articleEntities = mongoTemplate.find(query,ArticleEntity.class);
+    List<ArticleEntity> articleEntities = mongoTemplate.find(query, ArticleEntity.class);
 
     ObjectList<ArticleBO> result = new ObjectList<>();
     List<ArticleBO> articleBOS = new LinkedList<>();
     for (ArticleEntity articleEntity : articleEntities) {
       ArticleBO articleBO = new ArticleBO();
-      BeanUtils.copyProperties(articleEntity,articleBO);
+      BeanUtils.copyProperties(articleEntity, articleBO);
       articleBOS.add(articleBO);
     }
     result.setElements(articleBOS);
@@ -71,26 +71,26 @@ public class ArticleServiceImpl implements ArticleService {
     fieldsObject.put("title", true);
     fieldsObject.put("subTitle", true);
 
-    Query queryBefore = new BasicQuery(query,fieldsObject);
+    Query queryBefore = new BasicQuery(query, fieldsObject);
     queryBefore.addCriteria(Criteria.where("bookId").is(bookId).and("_id").lt(articleId));
-    queryBefore.with(new Sort(Direction.DESC,"_id"));
+    queryBefore.with(new Sort(Direction.DESC, "_id"));
     ArticleEntity beforeArticleEntity = mongoTemplate.findOne(queryBefore, ArticleEntity.class);
 
-    Query queryAfter = new BasicQuery(query,fieldsObject);
+    Query queryAfter = new BasicQuery(query, fieldsObject);
     queryAfter.addCriteria(Criteria.where("bookId").is(bookId).and("_id").gt(articleId));
-    queryAfter.with(new Sort(Direction.ASC,"_id"));
+    queryAfter.with(new Sort(Direction.ASC, "_id"));
     ArticleEntity afterArticleEntity = mongoTemplate.findOne(queryAfter, ArticleEntity.class);
 
     ArticleAroundBO result = new ArticleAroundBO();
     if (beforeArticleEntity != null) {
       ArticleBO beforeArticleBO = new ArticleBO();
-      BeanUtils.copyProperties(beforeArticleEntity,beforeArticleBO);
+      BeanUtils.copyProperties(beforeArticleEntity, beforeArticleBO);
       result.setPre(beforeArticleBO);
     }
 
     if (afterArticleEntity != null) {
       ArticleBO afterArticleBO = new ArticleBO();
-      BeanUtils.copyProperties(afterArticleEntity,afterArticleBO);
+      BeanUtils.copyProperties(afterArticleEntity, afterArticleBO);
       result.setNext(afterArticleBO);
     }
 
@@ -98,17 +98,16 @@ public class ArticleServiceImpl implements ArticleService {
   }
 
   @Override
-  public ArticleBO findArticleByArticleIdInBook(Long bookId,Long articleId) {
+  public ArticleBO findArticleByArticleIdInBook(Long articleId) {
     Document queryObject = new Document();
-    queryObject.put("bookId", bookId);
     queryObject.put("id", articleId);
 
     Query query = new BasicQuery(queryObject);
 
-    ArticleEntity articleEntity = mongoTemplate.findOne(query,ArticleEntity.class);
+    ArticleEntity articleEntity = mongoTemplate.findOne(query, ArticleEntity.class);
 
     ArticleBO articleBO = new ArticleBO();
-    BeanUtils.copyProperties(articleEntity,articleBO);
+    BeanUtils.copyProperties(articleEntity, articleBO);
     return articleBO;
   }
 

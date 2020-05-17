@@ -1,6 +1,5 @@
 package pwd.initializr.book.api.user;
 
-import com.netflix.discovery.converters.Auto;
 import io.swagger.annotations.Api;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -102,8 +101,8 @@ public class BookController extends UserController implements BookApi {
   }
 
   @Override
-  public void fetchArticle(Long bookId, Long articleId) {
-    ArticleBO articleBO = articleService.findArticleByArticleIdInBook(bookId, articleId);
+  public void fetchArticle(Long articleId) {
+    ArticleBO articleBO = articleService.findArticleByArticleIdInBook(articleId);
     ArticleVO articleVO = new ArticleVO();
     BeanUtils.copyProperties(articleBO, articleVO);
     super.outputData(articleVO);

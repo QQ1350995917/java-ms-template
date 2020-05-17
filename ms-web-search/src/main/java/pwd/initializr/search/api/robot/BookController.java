@@ -65,7 +65,7 @@ public class BookController extends RobotController implements BookApi {
     outputData(200);
   }
 
-  @ApiOperation(value = "在ES搜搜图书/文章")
+  @ApiOperation(value = "在ES中搜索图书/文章")
   @GetMapping(value = {"/search"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
   public void search(SearchInputVo input) {

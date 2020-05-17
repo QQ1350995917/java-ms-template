@@ -23,6 +23,6 @@ public interface ArticleService {
 
   ArticleAroundBO listTablesAroundInBook(Long bookId, Long tableId);
 
-  ArticleBO findArticleByArticleIdInBook(Long bookId, Long articleId);
+  ArticleBO findArticleByArticleIdInBook(Long articleId);
 
 }

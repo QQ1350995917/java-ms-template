@@ -39,10 +39,10 @@ public interface BookApi {
     void fetchBookTablesAround(@PathVariable("bookId") Long bookId,@PathVariable("tableId") Long articleId);
 
     @ApiOperation(value = "文章详情")
-    @GetMapping(value = {"/{bookId}/article/{articleId}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    void fetchArticle(@PathVariable("bookId") Long bookId,@PathVariable("articleId") Long articleId);
+    @GetMapping(value = {"/article/{articleId}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    void fetchArticle(@PathVariable("articleId") Long articleId);
 
-    @ApiOperation(value = "文章详情")
+    @ApiOperation(value = "搜索图书/文章")
     @GetMapping(value = {"/search"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     void search(SearchInputVO input);
 

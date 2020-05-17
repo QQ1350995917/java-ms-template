@@ -64,6 +64,7 @@ public class BookServiceImpl implements BookService {
     }
 
     NativeSearchQueryBuilder queryBuilder = new NativeSearchQueryBuilder();
+
     // boolean查询,用于多条件
     BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
     // should相当于or关系; termQuery的机制是：直接去匹配token。
