@@ -1,5 +1,6 @@
 package pwd.initializr.book.api.user;
 
+import com.netflix.discovery.converters.Auto;
 import io.swagger.annotations.Api;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,12 +10,16 @@ import pwd.initializr.book.api.user.vo.BookListInput;
 import pwd.initializr.book.api.user.vo.BookTableAroundVO;
 import pwd.initializr.book.api.user.vo.BookTableVO;
 import pwd.initializr.book.api.user.vo.BookVO;
+import pwd.initializr.book.api.user.vo.SearchInputVO;
+import pwd.initializr.book.business.remote.SearchClientService;
 import pwd.initializr.book.business.user.ArticleService;
 import pwd.initializr.book.business.user.BookService;
 import pwd.initializr.book.business.user.bo.ArticleAroundBO;
 import pwd.initializr.book.business.user.bo.ArticleBO;
 import pwd.initializr.book.business.user.bo.BookBO;
+import pwd.initializr.book.rpc.SearchOutput;
 import pwd.initializr.common.web.api.user.UserController;
+import pwd.initializr.common.web.api.vo.Output;
 import pwd.initializr.common.web.business.bo.ObjectList;
 
 /**
@@ -40,6 +45,8 @@ public class BookController extends UserController implements BookApi {
   private BookService bookService;
   @Autowired
   private ArticleService articleService;
+  @Autowired
+  private SearchClientService searchClientService;
 
   @Override
   public void fetchBooks(BookListInput input) {
@@ -100,6 +107,13 @@ public class BookController extends UserController implements BookApi {
     ArticleVO articleVO = new ArticleVO();
     BeanUtils.copyProperties(articleBO, articleVO);
     super.outputData(articleVO);
+  }
+
+  @Override
+  public void search(SearchInputVO input) {
+    Output<ObjectList<SearchOutput>> search = searchClientService
+        .search(input.getKeyword(), input.getIndex(), input.getSize());
+    super.outputData(search.getData());
   }
 }
 

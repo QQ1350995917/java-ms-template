@@ -1,18 +1,19 @@
-package pwd.initializr.search.api.user.vo;
+package pwd.initializr.search.api.robot.vo;
 
-import io.swagger.annotations.ApiModel;
+import java.util.LinkedHashSet;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import pwd.initializr.book.rpc.SearchOutput;
 
 /**
- * pwd.initializr.book.api.user.vo@ms-web-initializr
+ * pwd.initializr.search.api.robot.vo@ms-web-initializr
  *
  * <h1>TODO what you want to do?</h1>
  *
- * date 2020-01-05 22:51
+ * date 2020-05-17 16:11
  *
  * @author DingPengwei[www.dingpengwei@foxmail.com]
  * @version 1.0.0
@@ -20,13 +21,12 @@ import lombok.ToString;
  */
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
 @Setter
+@Getter
 @ToString
-@ApiModel(value = "bookTableVO", description = "图书目录VO属性")
-public class BookTableVO {
-  private Long id;
+public class SearchOutputVO extends SearchOutput {
+
   private Long bookId;
-  private String title;
-  private String subTitle;
+  private LinkedHashSet<String> paragraphs;
+  private String fromUrl;
 }

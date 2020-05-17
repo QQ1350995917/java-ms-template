@@ -1,8 +1,8 @@
 package pwd.initializr.search.api.robot;
 
-import pwd.initializr.book.rpc.ArticleIntoSearch;
 import pwd.initializr.search.api.robot.vo.ArticleInputVO;
 import pwd.initializr.search.api.robot.vo.BookInputVO;
+import pwd.initializr.search.api.robot.vo.SearchInputVo;
 
 /**
  * pwd.initializr.search.api.robot@ms-web-initializr
@@ -17,14 +17,10 @@ import pwd.initializr.search.api.robot.vo.BookInputVO;
  */
 public interface BookApi {
 
-  void postOrPutBook(BookInputVO input);
-
   void postOrPutArticle(ArticleInputVO input);
 
-  void searchBook();
+  void postOrPutBook(BookInputVO input);
 
-  void searchArticle();
-
-  void searchAll();
+  void search(SearchInputVo input);
 
 }

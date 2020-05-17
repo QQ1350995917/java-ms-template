@@ -2,7 +2,6 @@ package pwd.initializr.book.test.business;
 
 import com.alibaba.fastjson.JSON;
 import java.util.List;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.BeanUtils;
@@ -10,7 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
-import pwd.initializr.book.business.admin.SearchService;
+import pwd.initializr.book.BookApplication;
+import pwd.initializr.book.business.remote.SearchClientService;
 import pwd.initializr.book.persistence.entity.ArticleEntity;
 import pwd.initializr.book.persistence.entity.BookEntity;
 import pwd.initializr.book.rpc.ArticleIntoSearch;
@@ -29,14 +29,14 @@ import pwd.initializr.common.web.api.vo.Output;
  * @since DistributionVersion
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(classes = BookApplication.class)
 public class PutIntoSearchTest {
 
   @Autowired
   private MongoTemplate mongoTemplate;
 
   @Autowired
-  private SearchService searchService;
+  private SearchClientService searchClientService;
 
   @Test
   public void copyBook(){
@@ -45,7 +45,7 @@ public class PutIntoSearchTest {
     all.forEach(bookEntity -> {
       BookIntoSearch bookIntoSearch = new BookIntoSearch();
       BeanUtils.copyProperties(bookEntity,bookIntoSearch);
-      String postOrPutBook = searchService.postOrPutBook(bookIntoSearch);
+      String postOrPutBook = searchClientService.postOrPutBook(bookIntoSearch);
       Output output = JSON.parseObject(postOrPutBook, Output.class);
       System.out.println(output);
     });
@@ -53,11 +53,11 @@ public class PutIntoSearchTest {
 
   @Test
   public void copyArticle(){
-    List<ArticleEntity> all = mongoTemplate.findAll(ArticleEntity.class).subList(400,500);
+    List<ArticleEntity> all = mongoTemplate.findAll(ArticleEntity.class);
     all.forEach(articleEntity -> {
       ArticleIntoSearch articleIntoSearch = new ArticleIntoSearch();
       BeanUtils.copyProperties(articleEntity,articleIntoSearch);
-      searchService.postOrPutArticle(articleIntoSearch);
+      searchClientService.postOrPutArticle(articleIntoSearch);
     });
   }
 }

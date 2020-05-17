@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pwd.initializr.book.api.user.vo.BookListInput;
+import pwd.initializr.book.api.user.vo.SearchInputVO;
 
 /**
  * pwd.initializr.logger.api.user@ms-web-initializr
@@ -40,5 +41,9 @@ public interface BookApi {
     @ApiOperation(value = "文章详情")
     @GetMapping(value = {"/{bookId}/article/{articleId}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     void fetchArticle(@PathVariable("bookId") Long bookId,@PathVariable("articleId") Long articleId);
+
+    @ApiOperation(value = "文章详情")
+    @GetMapping(value = {"/search"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    void search(SearchInputVO input);
 
 }
