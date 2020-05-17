@@ -1,10 +1,15 @@
 package pwd.initializr.search.test.business;
 
+import org.elasticsearch.action.search.SearchRequestBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchService;
+import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 import pwd.initializr.search.business.robot.BookService;
 
@@ -22,11 +27,20 @@ import pwd.initializr.search.business.robot.BookService;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class SearchTest {
+
   @Autowired
-  private BookService bookService;
+  private ElasticsearchTemplate elasticsearchTemplate;
 
   @Test
   public void test(){
-    bookService.search("千古江山",0,12);
+    String keyword = "鹿鼎记";
+    QueryBuilder query = QueryBuilders.boolQuery()
+        .should(QueryBuilders.matchQuery("title", keyword))
+        .should(QueryBuilders.matchQuery("labels", keyword))
+        .should(QueryBuilders.matchQuery("paragraphs", keyword));
+
+    SearchRequestBuilder searchRequestBuilder = elasticsearchTemplate.getClient()
+        .prepareSearch("book", "article")
+        .setQuery(query);
   }
 }
