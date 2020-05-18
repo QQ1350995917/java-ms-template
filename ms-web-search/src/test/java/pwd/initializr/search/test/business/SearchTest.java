@@ -21,6 +21,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
+import pwd.initializr.common.web.business.bo.ObjectList;
+import pwd.initializr.search.business.robot.BookService;
 
 /**
  * pwd.initializr.search.test.business@ms-web-initializr
@@ -40,8 +42,19 @@ public class SearchTest {
   @Autowired
   private ElasticsearchTemplate elasticsearchTemplate;
 
+  @Autowired
+  private BookService bookService;
+
+
   @Test
-  public void test() {
+  public void searchBookTest() {
+    String keyword = "鹿鼎记";
+    ObjectList<Map<String, Object>> search = bookService.search(keyword, 0, 12);
+    System.out.println();
+  }
+
+  @Test
+  public void searchTest() {
     String keyword = "鹿鼎记";
     QueryBuilder query = QueryBuilders.boolQuery()
         .should(QueryBuilders.matchQuery("title", keyword))

@@ -4,6 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -69,7 +70,7 @@ public class BookController extends RobotController implements BookApi {
   @GetMapping(value = {"/search"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
   public void search(SearchInputVo input) {
-    ObjectList<ArticleBO> search = bookService
+    ObjectList<Map<String, Object>> search = bookService
         .search(input.getKeyword(), input.getIndex(), input.getSize());
     ObjectList<SearchOutputVO> result = new ObjectList<>();
     result.setSize(search.getPages());
@@ -83,7 +84,7 @@ public class BookController extends RobotController implements BookApi {
       elements.add(searchOutputVO);
     });
     result.setElements(elements);
-    outputData(result);
+    outputData(search);
   }
 
 }

@@ -1,6 +1,7 @@
 package pwd.initializr.book.business.remote;
 
 import com.alibaba.fastjson.JSON;
+import java.util.Map;
 import org.springframework.stereotype.Component;
 import pwd.initializr.book.rpc.ArticleIntoSearch;
 import pwd.initializr.book.rpc.BookIntoSearch;
@@ -34,7 +35,7 @@ public class SearchClientServiceFallbackImpl implements SearchClientService {
   }
 
   @Override
-  public Output<ObjectList<SearchOutput>> search(String keyword, Integer index, Integer pageSize) {
+  public Output<ObjectList<Map<String, Object>>> search(String keyword, Integer index, Integer pageSize) {
     return new Output<>();
   }
 }

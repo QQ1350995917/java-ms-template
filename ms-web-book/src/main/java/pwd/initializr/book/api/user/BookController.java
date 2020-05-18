@@ -1,6 +1,7 @@
 package pwd.initializr.book.api.user;
 
 import io.swagger.annotations.Api;
+import java.util.Map;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,7 +17,6 @@ import pwd.initializr.book.business.user.BookService;
 import pwd.initializr.book.business.user.bo.ArticleAroundBO;
 import pwd.initializr.book.business.user.bo.ArticleBO;
 import pwd.initializr.book.business.user.bo.BookBO;
-import pwd.initializr.book.rpc.SearchOutput;
 import pwd.initializr.common.web.api.user.UserController;
 import pwd.initializr.common.web.api.vo.Output;
 import pwd.initializr.common.web.business.bo.ObjectList;
@@ -110,7 +110,7 @@ public class BookController extends UserController implements BookApi {
 
   @Override
   public void search(SearchInputVO input) {
-    Output<ObjectList<SearchOutput>> search = searchClientService
+    Output<ObjectList<Map<String, Object>>> search = searchClientService
         .search(input.getKeyword(), input.getIndex(), input.getSize());
     super.outputData(search.getData());
   }

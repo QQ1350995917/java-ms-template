@@ -1,5 +1,7 @@
 package pwd.initializr.search.business.robot.bo;
 
+import pwd.initializr.search.rpc.MetadataDocument;
+
 /**
  * pwd.initializr.search.business.robot.bo@ms-web-initializr
  *
@@ -11,6 +13,6 @@ package pwd.initializr.search.business.robot.bo;
  * @version 1.0.0
  * @since DistributionVersion
  */
-public class SearchBO {
+public class SearchResultBO extends MetadataDocument {
 
 }

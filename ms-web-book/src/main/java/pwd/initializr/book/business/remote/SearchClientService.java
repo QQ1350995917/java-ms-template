@@ -1,5 +1,6 @@
 package pwd.initializr.book.business.remote;
 
+import java.util.Map;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,7 +38,7 @@ public interface SearchClientService {
 
   @GetMapping(value = "/api/robot/book/search", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = {
       MediaType.APPLICATION_JSON_UTF8_VALUE})
-  Output<ObjectList<SearchOutput>> search(@RequestParam("keyword") String keyword,
+  Output<ObjectList<Map<String, Object>>> search(@RequestParam("keyword") String keyword,
       @RequestParam("index") Integer index, @RequestParam("size") Integer size);
 
 }

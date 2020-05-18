@@ -1,9 +1,11 @@
 package pwd.initializr.search.business.robot;
 
+import java.util.Map;
 import org.springframework.stereotype.Service;
 import pwd.initializr.common.web.business.bo.ObjectList;
 import pwd.initializr.search.business.robot.bo.ArticleBO;
 import pwd.initializr.search.business.robot.bo.BookBO;
+import pwd.initializr.search.business.robot.bo.SearchResultBO;
 
 /**
  * pwd.initializr.search.business.robot@ms-web-initializr
@@ -23,5 +25,5 @@ public interface BookService {
 
   ArticleBO postOrPutArticle(ArticleBO articleBO);
 
-  ObjectList<ArticleBO> search(String keyword,Integer pageIndex,Integer pageSize);
+  ObjectList<Map<String, Object>> search(String keyword,Integer pageIndex,Integer pageSize);
 }
