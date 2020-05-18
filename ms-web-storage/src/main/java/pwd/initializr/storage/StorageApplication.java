@@ -38,7 +38,7 @@ import pwd.initializr.common.web.api.FullPathNameGenerator;
 @RestController
 @EnableDiscoveryClient
 @ComponentScan(nameGenerator = FullPathNameGenerator.class)
-@MapperScan("pwd.initializr.storage.persistence.entity")
+@MapperScan("pwd.initializr.storage.persistence.dao")
 public class StorageApplication implements WebMvcConfigurer {
 
   public static void main(String[] args) throws Exception {
