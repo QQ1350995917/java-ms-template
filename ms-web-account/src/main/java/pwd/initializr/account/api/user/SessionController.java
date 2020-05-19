@@ -20,8 +20,8 @@ import pwd.initializr.account.business.user.SessionService;
 import pwd.initializr.account.business.user.UserAccountService;
 import pwd.initializr.account.business.user.bo.User;
 import pwd.initializr.account.business.user.bo.UserAccount;
-import pwd.initializr.account.rpc.Token;
-import pwd.initializr.account.rpc.UserSession;
+import pwd.initializr.account.rpc.RPCToken;
+import pwd.initializr.account.rpc.RPCUserSession;
 import pwd.initializr.common.web.api.user.UserController;
 
 /**
@@ -81,12 +81,12 @@ public class SessionController extends UserController implements SessionApi {
     if (accountByLoginNameAndPassword == null) {
       outputData(400);
     } else {
-      UserSession userSession = new UserSession();
-      BeanUtils.copyProperties(userByUserId,userSession);
+      RPCUserSession RPCUserSession = new RPCUserSession();
+      BeanUtils.copyProperties(userByUserId, RPCUserSession);
 
-      String token = Token.generateToken(userSession, ACCOUNT_SECRET);
+      String token = RPCToken.generateToken(RPCUserSession, ACCOUNT_SECRET);
       if (sessionService.getSession(accountByLoginNameAndPassword.getUserId()) == null) {
-        sessionService.updateSession(userSession);
+        sessionService.updateSession(RPCUserSession);
       }
       outputData(new LoginOutput(userByUserId.getId(), token));
     }

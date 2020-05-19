@@ -1,6 +1,10 @@
 package pwd.initializr.search.business.robot.bo;
 
-import pwd.initializr.search.rpc.MetadataDocument;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+import pwd.initializr.search.rpc.RPCSearchOutput;
 
 /**
  * pwd.initializr.search.business.robot.bo@ms-web-initializr
@@ -13,6 +17,10 @@ import pwd.initializr.search.rpc.MetadataDocument;
  * @version 1.0.0
  * @since DistributionVersion
  */
-public class SearchResultBO extends MetadataDocument {
+@AllArgsConstructor
+@Setter
+@Getter
+@ToString
+public class SearchOutputBO extends RPCSearchOutput {
 
 }

@@ -23,6 +23,7 @@ import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 import pwd.initializr.common.web.business.bo.ObjectList;
 import pwd.initializr.search.business.robot.BookService;
+import pwd.initializr.search.rpc.RPCSearchOutput;
 
 /**
  * pwd.initializr.search.test.business@ms-web-initializr
@@ -48,8 +49,8 @@ public class SearchTest {
 
   @Test
   public void searchBookTest() {
-    String keyword = "鹿鼎记";
-    ObjectList<Map<String, Object>> search = bookService.search(keyword, 0, 12);
+    String keyword = "却把青梅嗅";
+    ObjectList<? extends RPCSearchOutput> search = bookService.search(keyword, 0, 12);
     System.out.println();
   }
 

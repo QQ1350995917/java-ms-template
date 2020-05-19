@@ -3,10 +3,9 @@ package pwd.initializr.book.api.user.vo;
 import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import pwd.initializr.book.rpc.SearchOutput;
+import pwd.initializr.search.rpc.RPCSearchOutput;
 
 /**
  * pwd.initializr.book.api.user.vo@ms-web-initializr
@@ -24,6 +23,6 @@ import pwd.initializr.book.rpc.SearchOutput;
 @Setter
 @ToString
 @ApiModel(value = "bookVO", description = "图书VO属性")
-public class SearchOutputVO extends SearchOutput {
+public class SearchOutputVO extends RPCSearchOutput {
 
 }

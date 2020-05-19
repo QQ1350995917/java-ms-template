@@ -22,7 +22,7 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class UploadOutput {
+public class RPCUploadOutput {
   private String bucketName;
   private String objectName;
   private String url;

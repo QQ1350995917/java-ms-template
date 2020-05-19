@@ -4,7 +4,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -15,13 +14,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.common.web.api.robot.RobotController;
 import pwd.initializr.common.web.business.bo.ObjectList;
-import pwd.initializr.search.api.robot.vo.ArticleInputVO;
-import pwd.initializr.search.api.robot.vo.BookInputVO;
+import pwd.initializr.search.api.robot.vo.ArticleIntoSearchInputVO;
+import pwd.initializr.search.api.robot.vo.BookIntoSearchInputVO;
 import pwd.initializr.search.api.robot.vo.SearchInputVo;
 import pwd.initializr.search.api.robot.vo.SearchOutputVO;
 import pwd.initializr.search.business.robot.BookService;
 import pwd.initializr.search.business.robot.bo.ArticleBO;
 import pwd.initializr.search.business.robot.bo.BookBO;
+import pwd.initializr.search.rpc.RPCSearchOutput;
 
 /**
  * pwd.initializr.search.api.robot@ms-web-initializr
@@ -49,7 +49,7 @@ public class BookController extends RobotController implements BookApi {
   @ApiOperation(value = "向ES添加/更新文章")
   @PostMapping(value = {"/article"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
-  public void postOrPutArticle(@RequestBody ArticleInputVO input) {
+  public void postOrPutArticle(@RequestBody ArticleIntoSearchInputVO input) {
     ArticleBO articleBO = new ArticleBO();
     BeanUtils.copyProperties(input, articleBO);
     bookService.postOrPutArticle(articleBO);
@@ -59,7 +59,7 @@ public class BookController extends RobotController implements BookApi {
   @ApiOperation(value = "向ES添加/更新图书")
   @PostMapping(value = {"/book"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
-  public void postOrPutBook(@RequestBody BookInputVO input) {
+  public void postOrPutBook(@RequestBody BookIntoSearchInputVO input) {
     BookBO bookBO = new BookBO();
     BeanUtils.copyProperties(input, bookBO);
     bookService.postOrPutBook(bookBO);
@@ -70,7 +70,7 @@ public class BookController extends RobotController implements BookApi {
   @GetMapping(value = {"/search"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
   public void search(SearchInputVo input) {
-    ObjectList<Map<String, Object>> search = bookService
+    ObjectList<? extends RPCSearchOutput> search = bookService
         .search(input.getKeyword(), input.getIndex(), input.getSize());
     ObjectList<SearchOutputVO> result = new ObjectList<>();
     result.setSize(search.getPages());

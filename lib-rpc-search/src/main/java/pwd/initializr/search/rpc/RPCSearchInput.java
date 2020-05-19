@@ -1,4 +1,4 @@
-package pwd.initializr.book.rpc;
+package pwd.initializr.search.rpc;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -8,13 +8,13 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * pwd.initializr.book.rpc@ms-web-initializr
+ * pwd.initializr.search.rpc@ms-web-initializr
  *
  * <h1>TODO what you want to do?</h1>
  *
- * date 2020-05-17 08:23
+ * date 2020-05-19 14:34
  *
- * @author DingPengwei[www.dingpengwei@foxmail.com]
+ * @author DingPengwei[dingpengwei@foxmail.com]
  * @version 1.0.0
  * @since DistributionVersion
  */
@@ -23,7 +23,9 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class SearchInput {
+public class RPCSearchInput {
+
+  private static final long serialVersionUID = -4291776028708567323L;
 
   @ApiModelProperty(name = "keyword", value = "keyword", required = false, example = "万里江山", dataType = "java.lang.String")
   private String keyword;

@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import pwd.initializr.account.business.user.bo.User;
-import pwd.initializr.account.rpc.UserSession;
+import pwd.initializr.account.rpc.RPCUserSession;
 import pwd.initializr.common.mw.redis.RedisClient;
 
 /**
@@ -44,7 +44,7 @@ public class SessionServiceImpl implements SessionService {
   }
 
   @Override
-  public Long updateSession(UserSession user) {
+  public Long updateSession(RPCUserSession user) {
     String key = StringUtils.join(new String[]{SESSION_PREFIX, user.getId().toString()});
     if (!"0".equals(redisClient.set(key, JSON.toJSONString(user)))) {
       return 1L;

@@ -2,6 +2,7 @@ package pwd.initializr.search.rpc;
 
 import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
+import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,7 +25,7 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class MetadataDocument implements Serializable {
+public class RPCSearchMetadataInput implements Serializable {
 
   private static final long serialVersionUID = -1659590069838613585L;
 
@@ -38,6 +39,10 @@ public class MetadataDocument implements Serializable {
   private String esVisibility;
   @ApiModelProperty(name = "esTitle", value = "esTitle", required = false, example = "esTitle", dataType = "java.lang.String")
   private String esTitle;
+  @ApiModelProperty(name = "esType", value = "esType", required = false, example = "esType", dataType = "java.lang.String")
+  private String esType;
   @ApiModelProperty(name = "esLinkTo", value = "esLinkTo", required = false, example = "esLinkTo", dataType = "java.lang.String")
   private String esLinkTo;
+  @ApiModelProperty(name = "esUpdateTime", value = "esUpdateTime", required = false, example = "esUpdateTime", dataType = "java.lang.Date")
+  private Date esUpdateTime;
 }

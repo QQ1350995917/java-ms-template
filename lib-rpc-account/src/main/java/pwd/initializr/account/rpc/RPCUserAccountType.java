@@ -11,7 +11,7 @@ package pwd.initializr.account.rpc;
  * @version 1.0.0
  * @since DistributionVersion
  */
-public enum UserAccountType {
+public enum RPCUserAccountType {
   ByAdmin(0, "管理员开通账户"),
   ByPhoneNumber(1, "手机号码注册账户") {
     @Override
@@ -24,7 +24,7 @@ public enum UserAccountType {
   String desc;
   Integer type;
 
-  UserAccountType(Integer type, String desc) {
+  RPCUserAccountType(Integer type, String desc) {
     this.type = type;
     this.desc = desc;
   }

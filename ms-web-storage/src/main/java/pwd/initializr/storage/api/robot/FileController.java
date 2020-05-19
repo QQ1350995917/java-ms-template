@@ -21,13 +21,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.HandlerMapping;
-import pwd.initializr.common.web.api.ApiController;
 import pwd.initializr.common.web.api.robot.RobotController;
 import pwd.initializr.storage.api.robot.vo.FileDelErrorVO;
 import pwd.initializr.storage.business.StorageServiceImpl;
 import pwd.initializr.storage.business.bo.ObjectDelErrorBO;
 import pwd.initializr.storage.business.bo.StorageBO;
-import pwd.initializr.storage.rpc.UploadOutput;
+import pwd.initializr.storage.rpc.RPCUploadOutput;
 
 /**
  * pwd.initializr.storage.api.robot@ms-web-initializr
@@ -72,7 +71,7 @@ public class FileController extends RobotController implements FileApi {
   }
 
   @ApiResponses({
-      @ApiResponse(code = 200, message = "ok", response = UploadOutput.class)
+      @ApiResponse(code = 200, message = "ok", response = RPCUploadOutput.class)
   })
   @PostMapping(value = "/{appName}/{bucketName}/**", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
@@ -84,9 +83,9 @@ public class FileController extends RobotController implements FileApi {
       InputStream inputStream = file.getInputStream();
       StorageBO storageBO = storageService
           .uploadFile(bucketName, objectName, inputStream, contentType);
-      UploadOutput uploadOutput = new UploadOutput();
-      BeanUtils.copyProperties(storageBO, uploadOutput);
-      outputData(uploadOutput);
+      RPCUploadOutput RPCUploadOutput = new RPCUploadOutput();
+      BeanUtils.copyProperties(storageBO, RPCUploadOutput);
+      outputData(RPCUploadOutput);
     } catch (Exception e) {
       e.printStackTrace();
       outputException(500, e.getMessage());

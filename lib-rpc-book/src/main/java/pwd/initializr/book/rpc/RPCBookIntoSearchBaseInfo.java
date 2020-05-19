@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
-import pwd.initializr.search.rpc.MetadataDocument;
+import pwd.initializr.search.rpc.RPCSearchMetadataInput;
 
 /**
  * pwd.initializr.book.rpc@ms-web-initializr
@@ -29,7 +29,7 @@ import pwd.initializr.search.rpc.MetadataDocument;
 @Setter
 @Getter
 @ToString
-public class BaseInfo extends MetadataDocument implements Serializable {
+public class RPCBookIntoSearchBaseInfo extends RPCSearchMetadataInput implements Serializable {
 
   private static final long serialVersionUID = 8618679319107108176L;
 

@@ -1,6 +1,8 @@
 package pwd.initializr.search.persistence.entity;
 
+import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
+import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,8 +39,13 @@ public class MetadataDocument implements Serializable {
   private String esSecretKey;
   @Field(type = FieldType.Keyword)
   private String esVisibility;
-  @Field(type = FieldType.Keyword)
+  @Field(type = FieldType.Text, analyzer = "ik_max_word", searchAnalyzer = "ik_max_word")
   private String esTitle;
   @Field(type = FieldType.Keyword)
+  private String esType;
+  @Field(type = FieldType.Keyword)
   private String esLinkTo;
+  @Field(type = FieldType.Text, analyzer = "ik_max_word", searchAnalyzer = "ik_max_word")
+  private Date esUpdateTime;
+
 }

@@ -26,7 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Setter
 @Getter
 @ToString
-public class UploadInput {
+public class RPCUploadInput {
 
   @ApiModelProperty(name = "appName", value = "appName", required = true, example = "appName")
   private String appName;

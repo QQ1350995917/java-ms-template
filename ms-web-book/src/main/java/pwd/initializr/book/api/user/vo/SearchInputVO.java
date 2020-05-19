@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import pwd.initializr.book.rpc.SearchInput;
+import pwd.initializr.search.rpc.RPCSearchInput;
 
 /**
  * pwd.initializr.book.api.user.vo@ms-web-initializr
@@ -23,6 +23,6 @@ import pwd.initializr.book.rpc.SearchInput;
 @Setter
 @ToString
 @ApiModel(value = "bookVO", description = "图书VO属性")
-public class SearchInputVO extends SearchInput {
+public class SearchInputVO extends RPCSearchInput {
 
 }

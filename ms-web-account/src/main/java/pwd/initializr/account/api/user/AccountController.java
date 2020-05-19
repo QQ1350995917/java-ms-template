@@ -20,8 +20,8 @@ import pwd.initializr.account.business.user.UserAccountService;
 import pwd.initializr.account.business.user.bo.User;
 import pwd.initializr.account.business.user.bo.UserAccount;
 import pwd.initializr.account.persistence.entity.UserAccountType;
-import pwd.initializr.account.rpc.Token;
-import pwd.initializr.account.rpc.UserSession;
+import pwd.initializr.account.rpc.RPCToken;
+import pwd.initializr.account.rpc.RPCUserSession;
 import pwd.initializr.common.web.api.user.UserController;
 import pwd.initializr.common.web.api.vo.SMSCodeInput;
 import pwd.initializr.common.web.business.bo.SMSCode;
@@ -75,12 +75,12 @@ public class AccountController extends UserController implements AccountApi {
       String password = smsCode.getSmsCode();
       User userAndAccount = userAccountService.createUserAndAccount(user);
 
-      UserSession userSession = new UserSession();
-      BeanUtils.copyProperties(userAndAccount,userSession);
+      RPCUserSession RPCUserSession = new RPCUserSession();
+      BeanUtils.copyProperties(userAndAccount, RPCUserSession);
 
-      sessionService.updateSession(userSession);
+      sessionService.updateSession(RPCUserSession);
 
-      String token = Token.generateToken(userSession, ACCOUNT_SECRET);
+      String token = RPCToken.generateToken(RPCUserSession, ACCOUNT_SECRET);
       // TODO addCookie
       super.outputData(new LoginOutput(user.getId(), token));
     } else {

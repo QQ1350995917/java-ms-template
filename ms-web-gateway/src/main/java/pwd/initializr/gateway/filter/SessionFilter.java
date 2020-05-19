@@ -16,8 +16,8 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
-import pwd.initializr.account.rpc.Token;
-import pwd.initializr.account.rpc.UserSession;
+import pwd.initializr.account.rpc.RPCToken;
+import pwd.initializr.account.rpc.RPCUserSession;
 import pwd.initializr.common.mw.redis.RedisClient;
 import pwd.initializr.common.web.api.ApiConstant;
 import pwd.initializr.common.web.api.vo.Meta;
@@ -76,9 +76,9 @@ public class SessionFilter implements GlobalFilter, Ordered {
       return buildSessionErrorMono(request, response, "未登录或登录超时");
     }
 
-    UserSession userSession = JSON.parseObject(userJson, UserSession.class);
+    RPCUserSession RPCUserSession = JSON.parseObject(userJson, RPCUserSession.class);
     try {
-      Token.verifyToken(userSession, token, ACCOUNT_SECRET);
+      RPCToken.verifyToken(RPCUserSession, token, ACCOUNT_SECRET);
     } catch (Exception e) {
       // Session 获取到 验证失败
       return buildSessionErrorMono(request, response, "请求参数错误");

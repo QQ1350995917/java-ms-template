@@ -1,7 +1,7 @@
 package pwd.initializr.search.api.robot;
 
-import pwd.initializr.search.api.robot.vo.ArticleInputVO;
-import pwd.initializr.search.api.robot.vo.BookInputVO;
+import pwd.initializr.search.api.robot.vo.ArticleIntoSearchInputVO;
+import pwd.initializr.search.api.robot.vo.BookIntoSearchInputVO;
 import pwd.initializr.search.api.robot.vo.SearchInputVo;
 
 /**
@@ -17,9 +17,9 @@ import pwd.initializr.search.api.robot.vo.SearchInputVo;
  */
 public interface BookApi {
 
-  void postOrPutArticle(ArticleInputVO input);
+  void postOrPutArticle(ArticleIntoSearchInputVO input);
 
-  void postOrPutBook(BookInputVO input);
+  void postOrPutBook(BookIntoSearchInputVO input);
 
   void search(SearchInputVo input);
 

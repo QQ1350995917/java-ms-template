@@ -24,7 +24,7 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class ArticleIntoSearch extends BaseInfo {
+public class RPCArticleIntoSearch extends RPCBookIntoSearchBaseInfo {
 
   @ApiModelProperty(name = "bookId", value = "bookId", required = false, example = "0", dataType = "java.lang.Long")
   private Long bookId;

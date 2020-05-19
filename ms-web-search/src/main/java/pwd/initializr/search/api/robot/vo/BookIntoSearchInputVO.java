@@ -2,10 +2,9 @@ package pwd.initializr.search.api.robot.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import pwd.initializr.book.rpc.BookIntoSearch;
+import pwd.initializr.book.rpc.RPCBookIntoSearch;
 
 /**
  * pwd.initializr.search.api.robot.vo@ms-web-initializr
@@ -22,7 +21,7 @@ import pwd.initializr.book.rpc.BookIntoSearch;
 @Setter
 @Getter
 @ToString
-public class BookInputVO extends BookIntoSearch {
+public class BookIntoSearchInputVO extends RPCBookIntoSearch {
 
   private static final long serialVersionUID = -45709195707955774L;
 }

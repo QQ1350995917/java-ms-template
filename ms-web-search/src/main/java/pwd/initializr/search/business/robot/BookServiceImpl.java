@@ -1,8 +1,7 @@
 package pwd.initializr.search.business.robot;
 
-import com.alibaba.fastjson.JSON;
 import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import org.elasticsearch.action.search.SearchResponse;
@@ -26,7 +25,7 @@ import org.springframework.stereotype.Service;
 import pwd.initializr.common.web.business.bo.ObjectList;
 import pwd.initializr.search.business.robot.bo.ArticleBO;
 import pwd.initializr.search.business.robot.bo.BookBO;
-import pwd.initializr.search.business.robot.bo.SearchResultBO;
+import pwd.initializr.search.business.robot.bo.SearchOutputBO;
 import pwd.initializr.search.persistence.dao.ArticleRepository;
 import pwd.initializr.search.persistence.dao.BookRepository;
 
@@ -45,8 +44,7 @@ import pwd.initializr.search.persistence.dao.BookRepository;
 public class BookServiceImpl implements BookService {
 
   private static final List<String> fields = Arrays
-      .asList("title", "subTitle", "authorName", "summary", "labels", "paragraphs", "createTime",
-          "updateTime");
+      .asList("subTitle", "summary", "labels", "paragraphs");
   @Autowired
   private BookRepository bookRepository;
   @Autowired
@@ -69,18 +67,18 @@ public class BookServiceImpl implements BookService {
   }
 
   @Override
-  public ObjectList<Map<String, Object>> search(String keyword, Integer pageIndex, Integer pageSize) {
+  public ObjectList<SearchOutputBO> search(String keyword, Integer pageIndex, Integer pageSize) {
     if (keyword.length() > KEY_WORLD_MAX_LENGTH) {
       keyword = keyword.substring(0, KEY_WORLD_MAX_LENGTH);
     }
     final String KEY_WORD = keyword;
-    ObjectList<Map<String, Object>> articleBOObjectList = new ObjectList<>();
+    ObjectList<SearchOutputBO> searchResultBOObjectList = new ObjectList<>();
 
     BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
-        // should相当于or关系; filter过滤;must相当于and关系; mustNot不包含
-        // termQuery的机制是：直接去匹配token。
-        // .should(QueryBuilders.termQuery("", "")
-        // matchQuery的机制是：先检查字段类型是否是analyzed，如果是，则先分词，再去去匹配；如果不是，则直接去匹配
+    // should相当于or关系; filter过滤;must相当于and关系; mustNot不包含
+    // termQuery的机制是：直接去匹配token。
+    // .should(QueryBuilders.termQuery("", "")
+    // matchQuery的机制是：先检查字段类型是否是analyzed，如果是，则先分词，再去去匹配；如果不是，则直接去匹配
     fields.forEach(field -> boolQuery.should(QueryBuilders.matchQuery(field, KEY_WORD)));
 
     //生成高亮查询器
@@ -101,7 +99,7 @@ public class BookServiceImpl implements BookService {
 
     Client client = elasticsearchTemplate.getClient();
     SearchResponse searchResponse = client
-        .prepareSearch("book","article")
+        .prepareSearch("book", "article")
         .setQuery(boolQuery)
         //根据查询相关度进行排序
         .addSort(new ScoreSortBuilder())
@@ -120,21 +118,32 @@ public class BookServiceImpl implements BookService {
       for (SearchHit hit : searchHits) {
         Map<String, HighlightField> highlightFields = hit.getHighlightFields();
         Map<String, Object> source = hit.getSourceAsMap();
+        StringBuilder stringBuilder = new StringBuilder();
         fields.forEach(field -> {
           HighlightField highlightField = highlightFields.get(field);
           if (highlightField != null) {
             Text[] fragments = highlightField.fragments();
-            StringBuilder stringBuilder = new StringBuilder();
             for (Text text : fragments) {
-              stringBuilder.append("......");
-              stringBuilder.append(text);
-              stringBuilder.append("......");
+              if (stringBuilder.length() < 512) {
+                stringBuilder.append("#");
+                stringBuilder.append(text);
+                stringBuilder.append("#");
+              }
             }
-            //高亮字段替换掉原本的内容
-            source.put(field, stringBuilder.toString());
           }
         });
-        articleBOObjectList.getElements().add(source);
+        String summary = stringBuilder.toString();
+        SearchOutputBO searchResultBO = new SearchOutputBO();
+        searchResultBO
+            .setEsType(source.get("esType") == null ? null : source.get("esType").toString());
+        searchResultBO
+            .setEsTitle(source.get("esTitle") == null ? null : source.get("esTitle").toString());
+        searchResultBO.setEsSummary(summary);
+        searchResultBO
+            .setEsLinkTo(source.get("esLinkTo") == null ? null : source.get("esLinkTo").toString());
+        searchResultBO.setEsUpdateTime(source.get("esUpdateTime") == null ? null
+            : new Date(Long.valueOf(source.get("esUpdateTime").toString())));
+        searchResultBOObjectList.getElements().add(searchResultBO);
       }
     } else {
       System.out.println(searchResponse.status());
@@ -182,7 +191,7 @@ public class BookServiceImpl implements BookService {
     // articleBOObjectList.setPages(totalPages.longValue());
     // articleBOObjectList.setTotal(totalElements);
     // articleBOObjectList.setElements(articleBOS);
-    return articleBOObjectList;
+    return searchResultBOObjectList;
 
   }
 }

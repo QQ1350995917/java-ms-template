@@ -7,8 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import pwd.initializr.account.rpc.UserAccountSession;
-import pwd.initializr.account.rpc.UserSession;
 
 /**
  * pwd.initializr.account.business.user.bo@ms-web-initializr

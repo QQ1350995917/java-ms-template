@@ -1,7 +1,6 @@
 package pwd.initializr.account.rpc;
 
 import java.io.Serializable;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +12,7 @@ import lombok.ToString;
  *
  * <h1>TODO what you want to do?</h1>
  *
- * date 2020-04-11 21:28
+ * date 2020-04-11 21:29
  *
  * @author DingPengwei[www.dingpengwei@foxmail.com]
  * @version 1.0.0
@@ -24,11 +23,12 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class UserSession implements Serializable {
+public class RPCUserAccountSession implements Serializable {
 
   private Long id;
-  private String name;
-  private String phoneNumber;
-  private Integer status;
-  private List<? extends UserAccountSession> accounts;
+  private Long userId;
+  private String getLoginName;
+  private RPCUserAccountType getType;
+  private Integer getStatus;
+
 }

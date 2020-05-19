@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import pwd.initializr.book.rpc.SearchInput;
+import pwd.initializr.search.rpc.RPCSearchInput;
 
 /**
  * pwd.initializr.search.api.robot.vo@ms-web-initializr
@@ -21,6 +21,6 @@ import pwd.initializr.book.rpc.SearchInput;
 @Setter
 @Getter
 @ToString
-public class SearchInputVo extends SearchInput {
+public class SearchInputVo extends RPCSearchInput {
 
 }

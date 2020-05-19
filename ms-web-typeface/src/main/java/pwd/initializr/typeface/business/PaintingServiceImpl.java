@@ -26,7 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import pwd.initializr.common.web.api.vo.Output;
 import pwd.initializr.common.web.business.bo.ObjectList;
-import pwd.initializr.storage.rpc.UploadOutput;
+import pwd.initializr.storage.rpc.RPCUploadOutput;
 import pwd.initializr.typeface.business.bo.FontBO;
 import pwd.initializr.typeface.business.bo.PaintingBO;
 import pwd.initializr.typeface.persistence.entity.PaintingEntity;
@@ -91,14 +91,14 @@ public class PaintingServiceImpl implements PaintingService {
       IOUtils.copy(inputStream, outputStream);
       MultipartFile multipartFile = new CommonsMultipartFile(fileItem);
       String upload = storageService.upload(applicationName, bucketName, objectName, multipartFile);
-      Output<UploadOutput> output = JSON
-          .parseObject(upload, new TypeReference<Output<UploadOutput>>() {
+      Output<RPCUploadOutput> output = JSON
+          .parseObject(upload, new TypeReference<Output<RPCUploadOutput>>() {
           });
       if (200 == output.getMeta().getCode()) {
-        UploadOutput uploadOutput = output.getData();
-        paintingBO.setImageUrl(uploadOutput.getUrl());
-        paintingBO.setBucketName(uploadOutput.getBucketName());
-        paintingBO.setObjectName(uploadOutput.getObjectName());
+        RPCUploadOutput RPCUploadOutput = output.getData();
+        paintingBO.setImageUrl(RPCUploadOutput.getUrl());
+        paintingBO.setBucketName(RPCUploadOutput.getBucketName());
+        paintingBO.setObjectName(RPCUploadOutput.getObjectName());
         paintingBO.setCreateTime(System.currentTimeMillis());
         paintingBO.setUpdateTime(System.currentTimeMillis());
         PaintingEntity paintingEntity = new PaintingEntity();
@@ -127,8 +127,8 @@ public class PaintingServiceImpl implements PaintingService {
       String delete = storageService
           .delete(applicationName, key, values.stream().map(value -> value.getObjectName())
               .collect(Collectors.toList()));
-      Output<UploadOutput> output = JSON
-          .parseObject(delete, new TypeReference<Output<UploadOutput>>() {
+      Output<RPCUploadOutput> output = JSON
+          .parseObject(delete, new TypeReference<Output<RPCUploadOutput>>() {
           });
       if (200 == output.getMeta().getCode()) {
         Integer integer = paintingMapper

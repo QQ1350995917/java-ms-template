@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import pwd.initializr.book.rpc.ArticleIntoSearch;
+import pwd.initializr.book.rpc.RPCArticleIntoSearch;
 
 /**
  * pwd.initializr.search.api.robot.vo@ms-web-initializr
@@ -21,7 +21,7 @@ import pwd.initializr.book.rpc.ArticleIntoSearch;
 @Setter
 @Getter
 @ToString
-public class ArticleInputVO extends ArticleIntoSearch {
+public class ArticleIntoSearchInputVO extends RPCArticleIntoSearch {
 
   private static final long serialVersionUID = -12882656771066998L;
 }

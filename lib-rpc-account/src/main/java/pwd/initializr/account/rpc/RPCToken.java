@@ -17,20 +17,20 @@ import org.apache.commons.lang.StringUtils;
  * @version 1.0.0
  * @since DistributionVersion
  */
-public class Token {
+public class RPCToken {
 
-  public static String generateToken(UserSession user, String secret) {
+  public static String generateToken(RPCUserSession user, String secret) {
     String realSecret = getRealSecret(user, secret);
     String token = JWT.create().withAudience(String.valueOf(user.getId()))
         .sign(Algorithm.HMAC256(realSecret));
     return token;
   }
 
-  private static String getRealSecret(UserSession user, String secret) {
+  private static String getRealSecret(RPCUserSession user, String secret) {
     return StringUtils.join(new String[]{secret, "-", user.getId().toString()});
   }
 
-  public static void verifyToken(UserSession user, String token, String secret) {
+  public static void verifyToken(RPCUserSession user, String token, String secret) {
     String realSecret = getRealSecret(user, secret);
     JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(realSecret)).build();
     jwtVerifier.verify(token);

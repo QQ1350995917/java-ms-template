@@ -2,7 +2,7 @@ package pwd.initializr.account.business.user;
 
 import org.springframework.stereotype.Service;
 import pwd.initializr.account.business.user.bo.User;
-import pwd.initializr.account.rpc.UserSession;
+import pwd.initializr.account.rpc.RPCUserSession;
 
 /**
  * pwd.initializr.account.business.user@ms-web-initializr
@@ -22,5 +22,5 @@ public interface SessionService {
 
   User getSession(Long userId);
 
-  Long updateSession(UserSession user);
+  Long updateSession(RPCUserSession user);
 }

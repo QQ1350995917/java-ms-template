@@ -1,16 +1,12 @@
 package pwd.initializr.book.rpc;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
-import java.io.Serializable;
-import java.util.Date;
 import java.util.LinkedHashSet;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * pwd.initializr.storage.api.robot.vo@ms-web-initializr
@@ -28,7 +24,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Setter
 @Getter
 @ToString
-public class BookIntoSearch extends BaseInfo {
+public class RPCBookIntoSearch extends RPCBookIntoSearchBaseInfo {
 
   @ApiModelProperty(name = "isbn", value = "isbn", required = false, example = "00000000000000", dataType = "java.lang.String")
   private String isbn;
