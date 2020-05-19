@@ -40,7 +40,27 @@ public class PutIntoSearchTest {
   private SearchClientService searchClientService;
 
   @Test
-  public void copyBook(){
+  public void copyArticle() {
+    List<ArticleEntity> all = mongoTemplate.findAll(ArticleEntity.class);
+    all.forEach(articleEntity -> {
+      RPCArticleIntoSearch RPCArticleIntoSearch = new RPCArticleIntoSearch();
+      BeanUtils.copyProperties(articleEntity, RPCArticleIntoSearch);
+      RPCArticleIntoSearch.setEsAppId("BOOK-ID");
+      RPCArticleIntoSearch.setEsAppName("BOOK");
+      RPCArticleIntoSearch.setEsSecretKey("SECRET-KEY");
+      RPCArticleIntoSearch.setEsVisibility("VISIBIE");
+      RPCArticleIntoSearch.setEsTitle(articleEntity.getTitle());
+      RPCArticleIntoSearch.setEsType("article");
+      RPCArticleIntoSearch.setEsLinkTo(
+          "http://0.0.0.0:8081/#/book/articleDetail?bookId=" + articleEntity.getBookId()
+              + "&articleId=" + articleEntity.getId());
+      RPCArticleIntoSearch.setEsUpdateTime(new Date());
+      searchClientService.postOrPutArticle(RPCArticleIntoSearch);
+    });
+  }
+
+  @Test
+  public void copyBook() {
     List<BookEntity> all = mongoTemplate.findAll(BookEntity.class);
 
     all.forEach(bookEntity -> {
@@ -52,29 +72,11 @@ public class PutIntoSearchTest {
       RPCBookIntoSearch.setEsVisibility("VISIBIE");
       RPCBookIntoSearch.setEsTitle(bookEntity.getTitle());
       RPCBookIntoSearch.setEsType("book");
-      RPCBookIntoSearch.setEsLinkTo("http://www.baidu.com");
+      RPCBookIntoSearch.setEsLinkTo("http://0.0.0.0:8081/#/book/bookDetail?bookId=" + bookEntity.getId());
       RPCBookIntoSearch.setEsUpdateTime(new Date());
       String postOrPutBook = searchClientService.postOrPutBook(RPCBookIntoSearch);
       Output output = JSON.parseObject(postOrPutBook, Output.class);
       System.out.println(output);
-    });
-  }
-
-  @Test
-  public void copyArticle(){
-    List<ArticleEntity> all = mongoTemplate.findAll(ArticleEntity.class);
-    all.forEach(articleEntity -> {
-      RPCArticleIntoSearch RPCArticleIntoSearch = new RPCArticleIntoSearch();
-      BeanUtils.copyProperties(articleEntity, RPCArticleIntoSearch);
-      RPCArticleIntoSearch.setEsAppId("BOOK-ID");
-      RPCArticleIntoSearch.setEsAppName("BOOK");
-      RPCArticleIntoSearch.setEsSecretKey("SECRET-KEY");
-      RPCArticleIntoSearch.setEsVisibility("VISIBIE");
-      RPCArticleIntoSearch.setEsTitle(articleEntity.getTitle());
-      RPCArticleIntoSearch.setEsType("article");
-      RPCArticleIntoSearch.setEsLinkTo("http://www.baidu.com");
-      RPCArticleIntoSearch.setEsUpdateTime(new Date());
-      searchClientService.postOrPutArticle(RPCArticleIntoSearch);
     });
   }
 }

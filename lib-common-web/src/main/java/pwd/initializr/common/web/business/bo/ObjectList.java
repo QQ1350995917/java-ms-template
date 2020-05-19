@@ -49,6 +49,13 @@ public class ObjectList<T> {
     this.index = index;
     this.size = size;
     this.elements = elements;
-    this.pages = total % size == 0 ? (total / size) : (total / size + 1);
+  }
+
+  public Long getPages() {
+    if (size > 0) {
+      return this.pages = total % size == 0 ? (total / size) : (total / size + 1);
+    } else {
+      return 0L;
+    }
   }
 }

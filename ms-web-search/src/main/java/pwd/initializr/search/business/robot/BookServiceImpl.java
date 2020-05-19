@@ -145,6 +145,9 @@ public class BookServiceImpl implements BookService {
             : new Date(Long.valueOf(source.get("esUpdateTime").toString())));
         searchResultBOObjectList.getElements().add(searchResultBO);
       }
+      searchResultBOObjectList.setIndex(pageIndex.longValue());
+      searchResultBOObjectList.setSize(pageSize.longValue());
+      searchResultBOObjectList.setTotal(searchHits.totalHits);
     } else {
       System.out.println(searchResponse.status());
     }

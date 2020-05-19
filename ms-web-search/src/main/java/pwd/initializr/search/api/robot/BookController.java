@@ -73,7 +73,7 @@ public class BookController extends RobotController implements BookApi {
     ObjectList<? extends RPCSearchOutput> search = bookService
         .search(input.getKeyword(), input.getIndex(), input.getSize());
     ObjectList<SearchOutputVO> result = new ObjectList<>();
-    result.setSize(search.getPages());
+    result.setSize(search.getSize());
     result.setIndex(search.getIndex());
     result.setPages(search.getPages());
     result.setTotal(search.getTotal());

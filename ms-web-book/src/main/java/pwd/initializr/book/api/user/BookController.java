@@ -1,8 +1,11 @@
 package pwd.initializr.book.api.user;
 
 import io.swagger.annotations.Api;
+import java.util.LinkedList;
+import java.util.List;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.book.api.user.vo.ArticleVO;
 import pwd.initializr.book.api.user.vo.BookListInput;
@@ -10,6 +13,7 @@ import pwd.initializr.book.api.user.vo.BookTableAroundVO;
 import pwd.initializr.book.api.user.vo.BookTableVO;
 import pwd.initializr.book.api.user.vo.BookVO;
 import pwd.initializr.book.api.user.vo.SearchInputVO;
+import pwd.initializr.book.api.user.vo.SearchOutputVO;
 import pwd.initializr.book.business.remote.SearchClientService;
 import pwd.initializr.book.business.remote.bo.SearchResultBO;
 import pwd.initializr.book.business.user.ArticleService;
@@ -112,7 +116,23 @@ public class BookController extends UserController implements BookApi {
   public void search(SearchInputVO input) {
     Output<ObjectList<SearchResultBO>> search = searchClientService
         .search(input.getKeyword(), input.getIndex(), input.getSize());
-    super.outputData(search.getData());
+    ObjectList<SearchOutputVO> result = new ObjectList<>();
+    if (search.getMeta().getCode() == HttpStatus.OK.value()) {
+      ObjectList<SearchResultBO> data = search.getData();
+      List<SearchResultBO> elements = data.getElements();
+      List<SearchOutputVO> resultVOS = new LinkedList<>();
+      elements.forEach(element -> {
+        SearchOutputVO searchOutputVO = new SearchOutputVO();
+        BeanUtils.copyProperties(element, searchOutputVO);
+        resultVOS.add(searchOutputVO);
+      });
+      result.setTotal(data.getTotal());
+      result.setPages(data.getPages());
+      result.setIndex(data.getIndex());
+      result.setSize(data.getSize());
+      result.setElements(resultVOS);
+    }
+    super.outputData(result);
   }
 }
 
