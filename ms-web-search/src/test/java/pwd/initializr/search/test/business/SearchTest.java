@@ -72,7 +72,7 @@ public class SearchTest {
     //下面这两项,如果你要高亮如文字内容等有很多字的字段,必须配置,不然会导致高亮不全,文章内容缺失等
     highlightBuilder.fragmentSize(80); //最大高亮分片数
     highlightBuilder.numOfFragments(0); //从第一个分片获取高亮片段
-    FieldSortBuilder sort = SortBuilders.fieldSort("id").order(SortOrder.DESC);
+    FieldSortBuilder sort = SortBuilders.fieldSort("updateTime").order(SortOrder.DESC);
     Client client = elasticsearchTemplate.getClient();
     SearchResponse searchResponse = client
         .prepareSearch("article", "book")

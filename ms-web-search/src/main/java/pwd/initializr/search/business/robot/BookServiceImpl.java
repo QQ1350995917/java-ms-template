@@ -7,6 +7,7 @@ import java.util.Map;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.text.Text;
+import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.rest.RestStatus;
@@ -18,9 +19,13 @@ import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.elasticsearch.search.sort.ScoreSortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
+import org.springframework.data.elasticsearch.core.aggregation.AggregatedPage;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.stereotype.Service;
 import pwd.initializr.common.web.business.bo.ObjectList;
 import pwd.initializr.search.business.robot.bo.ArticleBO;
@@ -28,6 +33,7 @@ import pwd.initializr.search.business.robot.bo.BookBO;
 import pwd.initializr.search.business.robot.bo.SearchOutputBO;
 import pwd.initializr.search.persistence.dao.ArticleRepository;
 import pwd.initializr.search.persistence.dao.BookRepository;
+import pwd.initializr.search.persistence.entity.ArticleDocument;
 
 /**
  * pwd.initializr.search.business.robot@ms-web-initializr
@@ -95,14 +101,13 @@ public class BookServiceImpl implements BookService {
     highlightBuilder.fragmentSize(80);
     //从第一个分片获取高亮片段
     highlightBuilder.numOfFragments(0);
-    FieldSortBuilder sort = SortBuilders.fieldSort("id").order(SortOrder.DESC);
-
+    FieldSortBuilder sort = SortBuilders.fieldSort("score").order(SortOrder.DESC);
+    ScoreSortBuilder scoreSortBuilder = new ScoreSortBuilder();
     Client client = elasticsearchTemplate.getClient();
     SearchResponse searchResponse = client
         .prepareSearch("book", "article")
         .setQuery(boolQuery)
         //根据查询相关度进行排序
-        .addSort(new ScoreSortBuilder())
         .addSort(sort)
         //避免分页之后相关性乱了
         .setTrackScores(true)
@@ -152,49 +157,53 @@ public class BookServiceImpl implements BookService {
       System.out.println(searchResponse.status());
     }
 //    client.close();
-
-//    NativeSearchQueryBuilder queryBuilder = new NativeSearchQueryBuilder();
-//    queryBuilder.withQuery(boolQuery);
-//    queryBuilder.withHighlightFields(
-//        new HighlightBuilder.Field("title"),
-//        new HighlightBuilder.Field("subTitle"),
-//        new HighlightBuilder.Field("authorName"),
-//        new HighlightBuilder.Field("summary"),
-//        new HighlightBuilder.Field("labels"),
-//        new HighlightBuilder.Field("paragraphs"),
-//        new HighlightBuilder.Field("createTime"),
-//        new HighlightBuilder.Field("updateTime")
-//    );
-//
-    // withFilter过滤匹配上的 geoDistanceQuery距离搜索 location mapper字段名 point(double lat, double lon) lat维度 lon经度
-    //　　　　　distance(String distance, DistanceUnit unit) distance距离 unit单位
-    //queryBuilder.withFilter(QueryBuilders.geoDistanceQuery("location").point(1, 1).distance("3", DistanceUnit.KILOMETERS));
-    // withQuery 正常查询按命中率排序 rangeQuery(String name)区间搜索 name mapper你要搜索的字段 get大于等于 ge大于 lte小于等于 lt小于
-    //queryBuilder.withQuery(QueryBuilders.rangeQuery("price").gte(100).lte(500));
-    // withSort排序 fieldSort(String field) field排序的字段 order(SortOrder order)降序还是升序
-//    queryBuilder.withSort(SortBuilders.fieldSort("SystemSort").order(SortOrder.DESC));
-    // 分页  PageRequest of(int page, int size) 当前页 条数 es第一页是0不是1
-    //queryBuilder.withPageable(PageRequest.of(pageIndex, pageSize));
-    // 结果
-    // AggregatedPage<ArticleDocument> articleDocuments = elasticsearchTemplate
-    //     .queryForPage(queryBuilder.build(), ArticleDocument.class);
-
-    // List<ArticleDocument> content = articleDocuments.getContent();
-
-    // content.forEach(articleDocument -> {
-    //   ArticleBO articleBO = new ArticleBO();
-    //   BeanUtils.copyProperties(articleDocument, articleBO);
-    //   articleBOS.add(articleBO);
-    // });
-    // long totalElements = articleDocuments.getTotalElements();
-    // Integer totalPages = articleDocuments.getTotalPages();
-
-    // articleBOObjectList.setSize(pageSize.longValue());
-    // articleBOObjectList.setIndex(pageIndex.longValue());
-    // articleBOObjectList.setPages(totalPages.longValue());
-    // articleBOObjectList.setTotal(totalElements);
-    // articleBOObjectList.setElements(articleBOS);
     return searchResultBOObjectList;
 
+  }
+
+  public void search2(String keyword, Integer pageIndex, Integer pageSize) {
+
+    NativeSearchQueryBuilder queryBuilder = new NativeSearchQueryBuilder();
+    BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
+    queryBuilder.withQuery(boolQuery);
+    queryBuilder.withHighlightFields(
+        new HighlightBuilder.Field("title"),
+        new HighlightBuilder.Field("subTitle"),
+        new HighlightBuilder.Field("authorName"),
+        new HighlightBuilder.Field("summary"),
+        new HighlightBuilder.Field("labels"),
+        new HighlightBuilder.Field("paragraphs"),
+        new HighlightBuilder.Field("createTime"),
+        new HighlightBuilder.Field("updateTime")
+    );
+
+//     withFilter过滤匹配上的 geoDistanceQuery距离搜索 location mapper字段名 point(double lat, double lon) lat维度 lon经度
+//    　　　　　distance(String distance, DistanceUnit unit) distance距离 unit单位
+    queryBuilder.withFilter(QueryBuilders.geoDistanceQuery("location").point(1, 1).distance("3", DistanceUnit.KILOMETERS));
+//     withQuery 正常查询按命中率排序 rangeQuery(String name)区间搜索 name mapper你要搜索的字段 get大于等于 ge大于 lte小于等于 lt小于
+    queryBuilder.withQuery(QueryBuilders.rangeQuery("price").gte(100).lte(500));
+//     withSort排序 fieldSort(String field) field排序的字段 order(SortOrder order)降序还是升序
+    queryBuilder.withSort(SortBuilders.fieldSort("SystemSort").order(SortOrder.DESC));
+//     分页  PageRequest of(int page, int size) 当前页 条数 es第一页是0不是1
+    queryBuilder.withPageable(PageRequest.of(pageIndex, pageSize));
+//     结果
+     AggregatedPage<ArticleDocument> articleDocuments = elasticsearchTemplate
+         .queryForPage(queryBuilder.build(), ArticleDocument.class);
+
+     List<ArticleDocument> content = articleDocuments.getContent();
+
+     content.forEach(articleDocument -> {
+       ArticleBO articleBO = new ArticleBO();
+       BeanUtils.copyProperties(articleDocument, articleBO);
+//       articleBOS.add(articleBO);
+     });
+     long totalElements = articleDocuments.getTotalElements();
+     Integer totalPages = articleDocuments.getTotalPages();
+
+//     articleBOObjectList.setSize(pageSize.longValue());
+//     articleBOObjectList.setIndex(pageIndex.longValue());
+//     articleBOObjectList.setPages(totalPages.longValue());
+//     articleBOObjectList.setTotal(totalElements);
+//     articleBOObjectList.setElements(articleBOS);
   }
 }
