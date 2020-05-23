@@ -29,19 +29,19 @@ import pwd.initializr.common.web.api.user.UserController;
 @RestController(value = "userArticleApi")
 public class ArticleController extends UserController implements ArticleApi {
 
-    @Autowired
-    private ArticleService articleService;
+  @Autowired
+  private ArticleService articleService;
 
-    @Override
-    public void fetchArticles(SearchInput input) {
+  @Override
+  public void fetchArticles(SearchInput input) {
 
-    }
+  }
 
-    @Override
-    public void fetchArticle(Long articleId) {
-        ArticleBO articleBO = articleService.findArticleByArticleIdInBook(articleId);
-        ArticleVO articleVO = new ArticleVO();
-        BeanUtils.copyProperties(articleBO, articleVO);
-        super.outputData(articleVO);
-    }
+  @Override
+  public void fetchArticle(Long articleId) {
+    ArticleBO articleBO = articleService.findArticleById(articleId);
+    ArticleVO articleVO = new ArticleVO();
+    BeanUtils.copyProperties(articleBO, articleVO);
+    super.outputData(articleVO);
+  }
 }

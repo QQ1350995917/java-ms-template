@@ -1,5 +1,6 @@
 package pwd.initializr.book.business.user.bo;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import lombok.AllArgsConstructor;
@@ -28,6 +29,6 @@ import org.springframework.data.mongodb.core.mapping.Field;
 public class ArticleBO extends BaseBO{
 
   private Long bookId;
-  private Set<String> paragraphs;
+  private LinkedList<String> paragraphs;
   private String fromUrl;
 }

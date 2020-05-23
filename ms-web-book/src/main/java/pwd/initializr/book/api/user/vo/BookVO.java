@@ -36,7 +36,7 @@ public class BookVO implements Serializable {
 
   @ApiModelProperty(name = "id", value = "0", required = true, example = "9787229124410")
   @NotNull(message = "0")
-  private String id;
+  private Long id;
   @ApiModelProperty(name = "isbn", value = "International Standard Book Number", required = false, example = "9787229124410")
   @NotNull(message = "0")
   private String isbn;

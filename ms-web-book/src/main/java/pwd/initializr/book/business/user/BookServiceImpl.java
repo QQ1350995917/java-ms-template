@@ -42,8 +42,12 @@ public class BookServiceImpl implements BookService {
     @Override
     public ObjectList<BookBO> listBookByRange(Integer index, Integer size) {
         Pageable pageable = PageRequest.of(index, size);
-        Sort sort = new Sort(Direction.DESC, "updateTime");
-        Query query = new Query(Criteria.where("status").gt("0")).with(pageable).with(sort);
+        Sort sort = new Sort(Direction.DESC, "update_time");
+        Query query = new Query(
+//            Criteria.where("status").gt("0")
+        ).with(pageable)
+//            .with(sort)
+            ;
         long count = mongoTemplate.count(query, BookEntity.class);
         List<BookEntity> bookEntities = mongoTemplate.find(query, BookEntity.class);
         List<BookBO> bookBOS = new LinkedList<>();
@@ -83,7 +87,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public ObjectList<ArticleBO> listBookTable(Long bookId, Integer index, Integer size) {
-        Query query = new Query(Criteria.where("booId").is(bookId))
+        Query query = new Query(Criteria.where("bookId").is(bookId))
             .with(PageRequest.of(index, size)).with(Sort.by(Direction.ASC, "id"));
         Document queryFieldsObject = query.getFieldsObject();
         queryFieldsObject.put("id", true);

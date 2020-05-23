@@ -52,7 +52,7 @@ public class ObjectList<T> {
   }
 
   public Long getPages() {
-    if (size > 0) {
+    if (size != null && size > 0) {
       return this.pages = total % size == 0 ? (total / size) : (total / size + 1);
     } else {
       return 0L;

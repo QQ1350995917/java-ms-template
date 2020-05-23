@@ -1,5 +1,9 @@
 package pwd.initializr.book.business.user.bo;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import pwd.initializr.search.rpc.RPCSearchInput;
 
 /**
@@ -13,7 +17,15 @@ import pwd.initializr.search.rpc.RPCSearchInput;
  * @version 1.0.0
  * @since DistributionVersion
  */
+@AllArgsConstructor
+@Setter
+@Getter
+@ToString
 public class SearchInputBO extends RPCSearchInput {
+
+    public SearchInputBO(String keyword, Integer index, Integer size) {
+        super(keyword, index, size);
+    }
 
     @Override
     public Integer getIndex() {

@@ -37,7 +37,7 @@ public class ArticleServiceImpl implements ArticleService {
 
 
   @Override
-  public ArticleBO findArticleByArticleIdInBook(Long articleId) {
+  public ArticleBO findArticleById(Long articleId) {
     Document queryObject = new Document();
     queryObject.put("id", articleId);
 

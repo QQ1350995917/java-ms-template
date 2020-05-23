@@ -1,5 +1,6 @@
 package pwd.initializr.book.business.user.bo;
 
+import java.util.LinkedHashSet;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,6 +27,6 @@ import lombok.ToString;
 public class BookBO extends BaseBO {
 
   private String isbn;
-  private Set<String> thumbs;
+  private LinkedHashSet<String> thumbs;
   private String publisher;
 }

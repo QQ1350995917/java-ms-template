@@ -71,7 +71,7 @@ public class ArticleTest {
             articleBO.setBookId(bookId);
             articleBO.setTitle(title);
             articleBO.setSubTitle(title);
-            HashSet<String> objects = new HashSet<>();
+            LinkedHashSet<String> objects = new LinkedHashSet<>();
             objects.add(category);
             articleBO.setLabels(objects);
             if (href.contains("https://so.gushiwen.org")) {

@@ -23,11 +23,11 @@ public interface ArticleApi {
 
     @ApiOperation(value = "文章清单")
     @GetMapping(value = {
-        ""}, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+        ""}, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     void fetchArticles(SearchInput input);
 
     @ApiOperation(value = "文章详情")
     @GetMapping(value = {
-        "/{articleId}"}, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+        "/{articleId}"}, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     void fetchArticle(@PathVariable("articleId") Long articleId);
 }
