@@ -1,7 +1,10 @@
 package pwd.initializr.book.business.user;
 
 import org.springframework.stereotype.Service;
+import pwd.initializr.book.business.user.bo.ArticleAroundBO;
+import pwd.initializr.book.business.user.bo.ArticleBO;
 import pwd.initializr.book.business.user.bo.BookBO;
+import pwd.initializr.book.business.user.bo.SearchInputBO;
 import pwd.initializr.common.web.business.bo.ObjectList;
 
 /**
@@ -18,8 +21,14 @@ import pwd.initializr.common.web.business.bo.ObjectList;
 @Service
 public interface BookService {
 
-  ObjectList<BookBO> listBookByRange();
+    ObjectList<BookBO> listBookByRange(Integer index, Integer size);
 
-  BookBO findBookById(Long bookId);
+    ObjectList<BookBO> searchBookByRange(SearchInputBO searchInputBO);
+
+    BookBO findBookById(Long bookId);
+
+    ObjectList<ArticleBO> listBookTable(Long bookId, Integer index, Integer size);
+
+    ArticleAroundBO listBookTableByAround(Long bookId, Long tableId);
 
 }

@@ -3,6 +3,7 @@ package pwd.initializr.book.persistence.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.LinkedHashSet;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -48,7 +49,7 @@ public class BaseEntity implements Serializable {
   @Field("summary")
   private String summary;
   @Field("labels")
-  private Set<String> labels;
+  private LinkedHashSet<String> labels;
   @Field("publication_time")
   @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")

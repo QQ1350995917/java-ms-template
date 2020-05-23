@@ -25,12 +25,20 @@ import lombok.ToString;
 @ToString
 public class RPCSearchInput {
 
-  private static final long serialVersionUID = -4291776028708567323L;
+    private static final long serialVersionUID = -4291776028708567323L;
 
-  @ApiModelProperty(name = "keyword", value = "keyword", required = false, example = "万里江山", dataType = "java.lang.String")
-  private String keyword;
-  @ApiModelProperty(name = "index", value = "index", required = false, example = "0", dataType = "java.lang.Integer")
-  private Integer index = 0;
-  @ApiModelProperty(name = "size", value = "size", required = false, example = "12", dataType = "java.lang.Integer")
-  private Integer size = 12;
+    @ApiModelProperty(name = "keyword", value = "keyword", required = false, example = "万里江山", dataType = "java.lang.String")
+    private String keyword;
+    @ApiModelProperty(name = "index", value = "index", required = false, example = "0", dataType = "java.lang.Integer")
+    private Integer index = 0;
+    @ApiModelProperty(name = "size", value = "size", required = false, example = "12", dataType = "java.lang.Integer")
+    private Integer size = 12;
+
+    public Integer getIndex() {
+        return index == null ? 0 : index;
+    }
+
+    public Integer getSize() {
+        return size == null ? 12 : size;
+    }
 }

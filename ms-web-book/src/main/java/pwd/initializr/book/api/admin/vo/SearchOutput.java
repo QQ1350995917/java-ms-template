@@ -1,17 +1,18 @@
-package pwd.initializr.book.api.user.vo;
+package pwd.initializr.book.api.admin.vo;
 
+import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import pwd.initializr.book.business.user.bo.BaseBO;
+import pwd.initializr.search.rpc.RPCSearchOutput;
 
 /**
  * pwd.initializr.book.api.user.vo@ms-web-initializr
  *
  * <h1>TODO what you want to do?</h1>
  *
- * date 2020-05-17 00:23
+ * date 2020-05-17 16:35
  *
  * @author DingPengwei[www.dingpengwei@foxmail.com]
  * @version 1.0.0
@@ -21,6 +22,7 @@ import pwd.initializr.book.business.user.bo.BaseBO;
 @Getter
 @Setter
 @ToString
-public class BaseVO extends BaseBO {
+@ApiModel(value = "bookVO", description = "图书VO属性")
+public class SearchOutput extends RPCSearchOutput {
 
 }

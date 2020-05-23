@@ -2,6 +2,7 @@ package pwd.initializr.book.business.remote;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,6 +25,7 @@ import pwd.initializr.common.web.business.bo.ObjectList;
  * @version 1.0.0
  * @since DistributionVersion
  */
+@Component
 @FeignClient(value = "search", configuration = FeignConfig.class, fallback = SearchClientServiceFallbackImpl.class)
 public interface SearchClientService {
 

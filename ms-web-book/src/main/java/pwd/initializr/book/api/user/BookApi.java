@@ -5,8 +5,8 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import pwd.initializr.book.api.user.vo.BookListInput;
-import pwd.initializr.book.api.user.vo.SearchInputVO;
+import org.springframework.web.bind.annotation.RequestParam;
+import pwd.initializr.book.api.admin.vo.SearchInput;
 
 /**
  * pwd.initializr.logger.api.user@ms-web-initializr
@@ -23,27 +23,26 @@ import pwd.initializr.book.api.user.vo.SearchInputVO;
 public interface BookApi {
 
     @ApiOperation(value = "图书清单")
-    @GetMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    void fetchBooks(BookListInput input);
+    @GetMapping(value = {
+        ""}, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    void fetchBooksByRange(@RequestParam SearchInput input);
 
-    @ApiOperation(value = "图书简介")
-    @GetMapping(value = {"/{bookId}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    void fetchBookSummary(@PathVariable("bookId") Long bookId);
+    @ApiOperation(value = "图书详情")
+    @GetMapping(value = {
+        "/{bookId}"}, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    void fetchBookById(@PathVariable(name = "bookId") Long bookId);
 
     @ApiOperation(value = "图书目录列表")
-    @GetMapping(value = {"/{bookId}/table","/{bookId}/table/{startId}/{pageSize}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    void fetchBookTables(@PathVariable("bookId") Long bookId,@PathVariable(value = "startId",required = false) Long startId,@PathVariable(value = "pageSize",required = false) Long pageSize);
+    @GetMapping(value = {
+        "/{bookId}/{startId}/{pageSize}"}, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    void fetchBookTables(@PathVariable("bookId") Long bookId,
+        @PathVariable(value = "startId", required = false) Long startId,
+        @PathVariable(value = "pageSize", required = false) Long pageSize);
 
-    @ApiOperation(value = "图书指定章节前后目录")
-    @GetMapping(value = {"/{bookId}/table/around/{tableId}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    void fetchBookTablesAround(@PathVariable("bookId") Long bookId,@PathVariable("tableId") Long articleId);
-
-    @ApiOperation(value = "文章详情")
-    @GetMapping(value = {"/article/{articleId}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    void fetchArticle(@PathVariable("articleId") Long articleId);
-
-    @ApiOperation(value = "搜索图书/文章")
-    @GetMapping(value = {"/search"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    void search(SearchInputVO input);
+    @ApiOperation(value = "图书指定章节以及前后章节")
+    @GetMapping(value = {
+        "/{bookId}/{tableId}"}, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    void fetchBookTablesById(@PathVariable("bookId") Long bookId,
+        @PathVariable("tableId") Long articleId);
 
 }

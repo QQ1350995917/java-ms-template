@@ -1,7 +1,7 @@
 package pwd.initializr.book.api.admin;
 
-import pwd.initializr.book.api.admin.vo.BookListInput;
 import pwd.initializr.book.api.admin.vo.CreateBookInput;
+import pwd.initializr.book.api.admin.vo.SearchInput;
 
 /**
  * pwd.initializr.book.api.admin@ms-web-initializr
@@ -16,8 +16,18 @@ import pwd.initializr.book.api.admin.vo.CreateBookInput;
  */
 public interface BookApi {
 
-  void createNewBook(CreateBookInput input);
+    void fetchBooksByRange(SearchInput input);
 
-  void fetchBookByRange(BookListInput input);
+    void fetchBookById(Long bookId);
+
+    void fetchBookTables(Long bookId, Long startId, Long pageSize);
+
+    void fetchBookTableById(Long bookId, Long articleId);
+
+    void updateBook(Long bookId, CreateBookInput input);
+
+    void createBook(CreateBookInput input);
+
+    void deleteBooks(Long[] bookIds);
 
 }

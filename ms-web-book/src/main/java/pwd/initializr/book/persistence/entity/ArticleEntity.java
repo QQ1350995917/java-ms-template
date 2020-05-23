@@ -1,6 +1,7 @@
 package pwd.initializr.book.persistence.entity;
 
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -32,7 +33,7 @@ public class ArticleEntity extends BaseEntity {
   @Field("book_id")
   private Long bookId;
   @Field("paragraphs")
-  private LinkedHashSet<String> paragraphs;
+  private LinkedList<String> paragraphs;
   @Field("from_url")
   private String fromUrl;
 

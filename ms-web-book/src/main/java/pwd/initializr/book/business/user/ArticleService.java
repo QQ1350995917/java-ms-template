@@ -19,10 +19,6 @@ import pwd.initializr.common.web.business.bo.ObjectList;
 @Service
 public interface ArticleService {
 
-  ObjectList<ArticleBO> listTablesInBook(Long bookId);
-
-  ArticleAroundBO listTablesAroundInBook(Long bookId, Long tableId);
-
   ArticleBO findArticleByArticleIdInBook(Long articleId);
 
 }

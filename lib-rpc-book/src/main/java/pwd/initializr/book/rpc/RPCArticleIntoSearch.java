@@ -2,6 +2,7 @@ package pwd.initializr.book.rpc;
 
 import io.swagger.annotations.ApiModelProperty;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,5 +30,5 @@ public class RPCArticleIntoSearch extends RPCBookIntoSearchBaseInfo {
   @ApiModelProperty(name = "bookId", value = "bookId", required = false, example = "0", dataType = "java.lang.Long")
   private Long bookId;
   @ApiModelProperty(name = "paragraphs", value = "paragraphs", required = false, example = "段落内容", dataType = "java.util.LinkedHashSet")
-  private LinkedHashSet<String> paragraphs;
+  private LinkedList<String> paragraphs;
 }

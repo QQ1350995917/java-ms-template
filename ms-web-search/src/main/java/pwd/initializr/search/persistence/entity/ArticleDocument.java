@@ -3,6 +3,7 @@ package pwd.initializr.search.persistence.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import java.util.Date;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -55,7 +56,7 @@ public class ArticleDocument extends MetadataDocument {
   @Field(type = FieldType.Text, analyzer = "ik_max_word", searchAnalyzer = "ik_max_word")
   private LinkedHashSet<String> labels;
   @Field(type = FieldType.Text, analyzer = "ik_max_word", searchAnalyzer = "ik_max_word")
-  private LinkedHashSet<String> paragraphs;
+  private LinkedList<String> paragraphs;
   @Field(type = FieldType.Keyword)
   private Integer status;
   @Field(type = FieldType.Text, analyzer = "ik_max_word", searchAnalyzer = "ik_max_word")
