@@ -42,4 +42,14 @@ public interface SearchClientService {
   Output<ObjectList<SearchResultBO>> search(@RequestParam("keyword") String keyword,
       @RequestParam("index") Integer index, @RequestParam("size") Integer size);
 
+  @GetMapping(value = "/api/robot/book/search/book", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = {
+      MediaType.APPLICATION_JSON_UTF8_VALUE})
+  Output<ObjectList<SearchResultBO>> searchArticle(@RequestParam("keyword") String keyword,
+      @RequestParam("index") Integer index, @RequestParam("size") Integer size);
+
+  @GetMapping(value = "/api/robot/book/search/article", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = {
+      MediaType.APPLICATION_JSON_UTF8_VALUE})
+  Output<ObjectList<SearchResultBO>> searchBook(@RequestParam("keyword") String keyword,
+      @RequestParam("index") Integer index, @RequestParam("size") Integer size);
+
 }

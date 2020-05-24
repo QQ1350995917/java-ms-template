@@ -1,14 +1,17 @@
 package pwd.initializr.book.api.user;
 
 import io.swagger.annotations.Api;
+import java.util.LinkedList;
+import java.util.List;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
-import pwd.initializr.book.api.admin.vo.SearchInput;
 import pwd.initializr.book.api.user.vo.ArticleVO;
 import pwd.initializr.book.business.user.ArticleService;
 import pwd.initializr.book.business.user.bo.ArticleBO;
 import pwd.initializr.common.web.api.user.UserController;
+import pwd.initializr.common.web.api.vo.PageInput;
+import pwd.initializr.common.web.business.bo.ObjectList;
 
 /**
  * pwd.initializr.book.api.user@ms-web-initializr
@@ -33,15 +36,34 @@ public class ArticleController extends UserController implements ArticleApi {
   private ArticleService articleService;
 
   @Override
-  public void fetchArticles(SearchInput input) {
-
-  }
-
-  @Override
   public void fetchArticle(Long articleId) {
     ArticleBO articleBO = articleService.findArticleById(articleId);
     ArticleVO articleVO = new ArticleVO();
     BeanUtils.copyProperties(articleBO, articleVO);
     super.outputData(articleVO);
+  }
+
+  @Override
+  public void fetchArticles(PageInput input) {
+    ObjectList<ArticleBO> articleBOObjectList = articleService
+        .listArticleByRange(input.getIndex(), input.getSize());
+
+    ObjectList<ArticleVO> result = new ObjectList<>();
+
+    if (articleBOObjectList != null) {
+      List<ArticleVO> resultVOS = new LinkedList<>();
+      articleBOObjectList.getElements().forEach(articleBO -> {
+        ArticleVO articleVO = new ArticleVO();
+        BeanUtils.copyProperties(articleBO, articleVO);
+        resultVOS.add(articleVO);
+      });
+
+      result.setTotal(articleBOObjectList.getTotal());
+      result.setPages(articleBOObjectList.getPages());
+      result.setIndex(articleBOObjectList.getIndex());
+      result.setSize(articleBOObjectList.getSize());
+      result.setElements(resultVOS);
+    }
+    super.outputData(result);
   }
 }

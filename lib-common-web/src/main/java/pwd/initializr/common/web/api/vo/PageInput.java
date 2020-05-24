@@ -28,8 +28,8 @@ import lombok.ToString;
 @ToString
 public class PageInput implements Serializable {
 
-  @ApiModelProperty(value = "当前页码")
-  private Long index = 0L;
-  @ApiModelProperty(value = "当前页面容量")
-  private Long size = 12L;
+  @ApiModelProperty(name = "index", value = "当前页码", required = false, example = "0")
+  private Integer index = 0;
+  @ApiModelProperty(name = "size", value = "当前页面容量", required = false, example = "12")
+  private Integer size = 12;
 }

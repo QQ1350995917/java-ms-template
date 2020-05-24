@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.common.web.api.robot.RobotController;
 import pwd.initializr.common.web.business.bo.ObjectList;
-import pwd.initializr.search.api.robot.vo.ArticleIntoSearchInputVO;
-import pwd.initializr.search.api.robot.vo.BookIntoSearchInputVO;
+import pwd.initializr.search.api.robot.vo.ArticleIntoSearchInput;
+import pwd.initializr.search.api.robot.vo.BookIntoSearchInput;
 import pwd.initializr.search.api.robot.vo.SearchInputVo;
 import pwd.initializr.search.api.robot.vo.SearchOutputVO;
 import pwd.initializr.search.business.robot.BookService;
@@ -49,7 +49,7 @@ public class BookController extends RobotController implements BookApi {
   @ApiOperation(value = "向ES添加/更新文章")
   @PostMapping(value = {"/article"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
-  public void postOrPutArticle(@RequestBody ArticleIntoSearchInputVO input) {
+  public void postOrPutArticle(@RequestBody ArticleIntoSearchInput input) {
     ArticleBO articleBO = new ArticleBO();
     BeanUtils.copyProperties(input, articleBO);
     bookService.postOrPutArticle(articleBO);
@@ -59,7 +59,7 @@ public class BookController extends RobotController implements BookApi {
   @ApiOperation(value = "向ES添加/更新图书")
   @PostMapping(value = {"/book"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
-  public void postOrPutBook(@RequestBody BookIntoSearchInputVO input) {
+  public void postOrPutBook(@RequestBody BookIntoSearchInput input) {
     BookBO bookBO = new BookBO();
     BeanUtils.copyProperties(input, bookBO);
     bookService.postOrPutBook(bookBO);
@@ -70,21 +70,40 @@ public class BookController extends RobotController implements BookApi {
   @GetMapping(value = {"/search"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
   public void search(SearchInputVo input) {
-    ObjectList<? extends RPCSearchOutput> search = bookService
-        .search(input.getKeyword(), input.getIndex(), input.getSize());
-    ObjectList<SearchOutputVO> result = new ObjectList<>();
-    result.setSize(search.getSize());
-    result.setIndex(search.getIndex());
-    result.setPages(search.getPages());
-    result.setTotal(search.getTotal());
-    List<SearchOutputVO> elements = new LinkedList<>();
-    search.getElements().forEach(articleBO -> {
-      SearchOutputVO searchOutputVO = new SearchOutputVO();
-      BeanUtils.copyProperties(articleBO, searchOutputVO);
-      elements.add(searchOutputVO);
-    });
-    result.setElements(elements);
-    outputData(search);
+    outputData(search0(bookService.search(input.getKeyword(), input.getIndex(), input.getSize())));
   }
 
+  @ApiOperation(value = "在ES中搜索图书")
+  @GetMapping(value = {"/search/book"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @Override
+  public void searchBook(SearchInputVo input) {
+    outputData(
+        search0(bookService.searchBook(input.getKeyword(), input.getIndex(), input.getSize())));
+  }
+
+  @ApiOperation(value = "在ES中搜索文章")
+  @GetMapping(value = {"/search/article"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @Override
+  public void searchArticle(SearchInputVo input) {
+    outputData(
+        search0(bookService.searchArticle(input.getKeyword(), input.getIndex(), input.getSize())));
+  }
+
+  private ObjectList<SearchOutputVO> search0(ObjectList<? extends RPCSearchOutput> search) {
+    ObjectList<SearchOutputVO> result = new ObjectList<>();
+    if (search != null) {
+      result.setSize(search.getSize());
+      result.setIndex(search.getIndex());
+      result.setPages(search.getPages());
+      result.setTotal(search.getTotal());
+      List<SearchOutputVO> elements = new LinkedList<>();
+      search.getElements().forEach(articleBO -> {
+        SearchOutputVO searchOutputVO = new SearchOutputVO();
+        BeanUtils.copyProperties(articleBO, searchOutputVO);
+        elements.add(searchOutputVO);
+      });
+      result.setElements(elements);
+    }
+    return result;
+  }
 }

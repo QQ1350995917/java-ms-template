@@ -2,6 +2,7 @@ package pwd.initializr.search.test.business;
 
 import java.util.Date;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -45,7 +46,7 @@ public class DocumentTest {
     LinkedHashSet<String> thumbs = new LinkedHashSet<>();
     thumbs.add("http://pic.pwd.com");
     articleDocument.setThumbs(thumbs);
-    LinkedHashSet<String> paragraphs = new LinkedHashSet<>();
+    LinkedList<String> paragraphs = new LinkedList<>();
     paragraphs.add("春江潮水连海平，海上明月共潮生。");
     paragraphs.add("滟滟随波千万里，何处春江无月明！");
     paragraphs.add("江流宛转绕芳甸，月照花林皆似霰；");

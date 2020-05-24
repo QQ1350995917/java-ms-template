@@ -1,7 +1,6 @@
 package pwd.initializr.book.rpc;
 
 import io.swagger.annotations.ApiModelProperty;
-import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

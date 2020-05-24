@@ -20,9 +20,13 @@ import pwd.initializr.search.business.robot.bo.SearchOutputBO;
 @Service
 public interface BookService {
 
-  BookBO postOrPutBook(BookBO bookBO);
-
   ArticleBO postOrPutArticle(ArticleBO articleBO);
 
-  ObjectList<SearchOutputBO> search(String keyword,Integer pageIndex,Integer pageSize);
+  BookBO postOrPutBook(BookBO bookBO);
+
+  ObjectList<SearchOutputBO> search(String keyword, Integer pageIndex, Integer pageSize);
+
+  ObjectList<SearchOutputBO> searchArticle(String keyword, Integer pageIndex, Integer pageSize);
+
+  ObjectList<SearchOutputBO> searchBook(String keyword, Integer pageIndex, Integer pageSize);
 }

@@ -3,23 +3,18 @@ package pwd.initializr.book.api.user;
 import io.swagger.annotations.Api;
 import java.util.LinkedList;
 import java.util.List;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestAttribute;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import pwd.initializr.book.api.admin.vo.SearchInput;
 import pwd.initializr.book.api.user.vo.BookTableAroundVO;
 import pwd.initializr.book.api.user.vo.BookTableVO;
 import pwd.initializr.book.api.user.vo.BookVO;
-import pwd.initializr.book.business.remote.SearchClientService;
 import pwd.initializr.book.business.user.BookService;
 import pwd.initializr.book.business.user.bo.ArticleAroundBO;
 import pwd.initializr.book.business.user.bo.ArticleBO;
 import pwd.initializr.book.business.user.bo.BookBO;
-import pwd.initializr.book.business.user.bo.SearchInputBO;
 import pwd.initializr.common.web.api.user.UserController;
+import pwd.initializr.common.web.api.vo.PageInput;
 import pwd.initializr.common.web.business.bo.ObjectList;
 
 /**
@@ -44,26 +39,13 @@ public class BookController extends UserController implements BookApi {
   @Autowired
   private BookService bookService;
 
-  @Autowired
-  private SearchClientService searchClientService;
-
-
   @Override
-  public void fetchBooksByRange(SearchInput input) {
-    SearchInput tempInput = new SearchInput();
-    if (input == null) {
-      tempInput = input;
-    }
+  public void fetchBooksByRange(PageInput input) {
+    ObjectList<BookBO> bookBOObjectList = bookService
+        .listBookByRange(input.getIndex(), input.getSize());
 
-    ObjectList<BookBO> bookBOObjectList;
     ObjectList<BookVO> result = new ObjectList<>();
-    if (StringUtils.isEmpty(tempInput.getKeyword())) {
-      bookBOObjectList = bookService.listBookByRange(tempInput.getIndex(), tempInput.getSize());
-    } else {
-      SearchInputBO searchInputBO = new SearchInputBO();
-      BeanUtils.copyProperties(tempInput,searchInputBO);
-      bookBOObjectList = bookService.searchBookByRange(searchInputBO);
-    }
+
     if (bookBOObjectList != null) {
       List<BookVO> resultVOS = new LinkedList<>();
       bookBOObjectList.getElements().forEach(bookBO -> {
@@ -71,6 +53,7 @@ public class BookController extends UserController implements BookApi {
         BeanUtils.copyProperties(bookBO, bookVO);
         resultVOS.add(bookVO);
       });
+
       result.setTotal(bookBOObjectList.getTotal());
       result.setPages(bookBOObjectList.getPages());
       result.setIndex(bookBOObjectList.getIndex());
@@ -90,14 +73,18 @@ public class BookController extends UserController implements BookApi {
 
   @Override
   public void fetchBookTables(Long bookId, Integer pageIndex, Integer pageSize) {
-    ObjectList<ArticleBO> articleBOObjectList = bookService.listBookTable(bookId,pageIndex,pageSize);
-    ObjectList<BookTableVO> bookTableVOObjectList = new ObjectList<>();
+    ObjectList<ArticleBO> articleBOObjectList = bookService
+        .listBookTable(bookId, pageIndex, pageSize);
+    ObjectList<BookTableVO> result = new ObjectList<>();
+    result.setSize(articleBOObjectList.getSize());
+    result.setTotal(articleBOObjectList.getTotal());
+    result.setIndex(articleBOObjectList.getIndex());
     for (ArticleBO articleBO : articleBOObjectList.getElements()) {
       BookTableVO bookTableVO = new BookTableVO();
       BeanUtils.copyProperties(articleBO, bookTableVO);
-      bookTableVOObjectList.getElements().add(bookTableVO);
+      result.getElements().add(bookTableVO);
     }
-    super.outputData(bookTableVOObjectList);
+    super.outputData(result);
   }
 
   @Override

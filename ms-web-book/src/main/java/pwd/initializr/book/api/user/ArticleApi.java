@@ -5,7 +5,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import pwd.initializr.book.api.admin.vo.SearchInput;
+import pwd.initializr.common.web.api.vo.PageInput;
 
 /**
  * pwd.initializr.book.api.user@ms-web-initializr
@@ -21,13 +21,13 @@ import pwd.initializr.book.api.admin.vo.SearchInput;
 @RequestMapping(value = "/api/user/article")
 public interface ArticleApi {
 
-    @ApiOperation(value = "文章清单")
-    @GetMapping(value = {
-        ""}, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    void fetchArticles(SearchInput input);
+  @ApiOperation(value = "文章详情")
+  @GetMapping(value = {
+      "/{articleId}"}, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  void fetchArticle(@PathVariable("articleId") Long articleId);
 
-    @ApiOperation(value = "文章详情")
-    @GetMapping(value = {
-        "/{articleId}"}, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    void fetchArticle(@PathVariable("articleId") Long articleId);
+  @ApiOperation(value = "文章清单")
+  @GetMapping(value = {
+      ""}, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  void fetchArticles(PageInput input);
 }

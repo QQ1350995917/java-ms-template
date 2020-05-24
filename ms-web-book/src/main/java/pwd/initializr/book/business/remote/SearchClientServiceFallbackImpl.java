@@ -34,7 +34,20 @@ public class SearchClientServiceFallbackImpl implements SearchClientService {
   }
 
   @Override
-  public Output<ObjectList<SearchResultBO>> search(String keyword, Integer index, Integer pageSize) {
+  public Output<ObjectList<SearchResultBO>> search(String keyword, Integer index,
+      Integer pageSize) {
+    return new Output<>();
+  }
+
+  @Override
+  public Output<ObjectList<SearchResultBO>> searchArticle(String keyword, Integer index,
+      Integer size) {
+    return new Output<>();
+  }
+
+  @Override
+  public Output<ObjectList<SearchResultBO>> searchBook(String keyword, Integer index,
+      Integer size) {
     return new Output<>();
   }
 }

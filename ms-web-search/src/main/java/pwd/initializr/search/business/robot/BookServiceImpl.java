@@ -61,19 +61,39 @@ public class BookServiceImpl implements BookService {
   private Integer KEY_WORLD_MAX_LENGTH = 12;
 
   @Override
-  public BookBO postOrPutBook(BookBO bookBO) {
-    BookBO save = bookRepository.save(bookBO);
-    return save;
-  }
-
-  @Override
   public ArticleBO postOrPutArticle(ArticleBO articleBO) {
     ArticleBO save = articleRepository.save(articleBO);
     return save;
   }
 
   @Override
+  public BookBO postOrPutBook(BookBO bookBO) {
+    BookBO save = bookRepository.save(bookBO);
+    return save;
+  }
+
+  @Override
   public ObjectList<SearchOutputBO> search(String keyword, Integer pageIndex, Integer pageSize) {
+    return this.search(keyword, pageIndex, pageSize, "book", "article");
+  }
+
+  @Override
+  public ObjectList<SearchOutputBO> searchArticle(String keyword, Integer pageIndex,
+      Integer pageSize) {
+    return this.search(keyword, pageIndex, pageSize, "article");
+  }
+
+  @Override
+  public ObjectList<SearchOutputBO> searchBook(String keyword, Integer pageIndex,
+      Integer pageSize) {
+    return this.search(keyword, pageIndex, pageSize, "book");
+  }
+
+  private ObjectList<SearchOutputBO> search(String keyword, Integer pageIndex, Integer pageSize,
+      String... indices) {
+    if (keyword == null) {
+      return null;
+    }
     if (keyword.length() > KEY_WORLD_MAX_LENGTH) {
       keyword = keyword.substring(0, KEY_WORLD_MAX_LENGTH);
     }
@@ -101,11 +121,10 @@ public class BookServiceImpl implements BookService {
     highlightBuilder.fragmentSize(80);
     //从第一个分片获取高亮片段
     highlightBuilder.numOfFragments(0);
-    FieldSortBuilder sort = SortBuilders.fieldSort("score").order(SortOrder.DESC);
-    ScoreSortBuilder scoreSortBuilder = new ScoreSortBuilder();
+    ScoreSortBuilder sort = SortBuilders.scoreSort().order(SortOrder.DESC);
     Client client = elasticsearchTemplate.getClient();
     SearchResponse searchResponse = client
-        .prepareSearch("book", "article")
+        .prepareSearch(indices)
         .setQuery(boolQuery)
         //根据查询相关度进行排序
         .addSort(sort)
@@ -158,10 +177,9 @@ public class BookServiceImpl implements BookService {
     }
 //    client.close();
     return searchResultBOObjectList;
-
   }
 
-  public void search2(String keyword, Integer pageIndex, Integer pageSize) {
+  private void search2(String keyword, Integer pageIndex, Integer pageSize) {
 
     NativeSearchQueryBuilder queryBuilder = new NativeSearchQueryBuilder();
     BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
@@ -179,7 +197,8 @@ public class BookServiceImpl implements BookService {
 
 //     withFilter过滤匹配上的 geoDistanceQuery距离搜索 location mapper字段名 point(double lat, double lon) lat维度 lon经度
 //    　　　　　distance(String distance, DistanceUnit unit) distance距离 unit单位
-    queryBuilder.withFilter(QueryBuilders.geoDistanceQuery("location").point(1, 1).distance("3", DistanceUnit.KILOMETERS));
+    queryBuilder.withFilter(QueryBuilders.geoDistanceQuery("location").point(1, 1)
+        .distance("3", DistanceUnit.KILOMETERS));
 //     withQuery 正常查询按命中率排序 rangeQuery(String name)区间搜索 name mapper你要搜索的字段 get大于等于 ge大于 lte小于等于 lt小于
     queryBuilder.withQuery(QueryBuilders.rangeQuery("price").gte(100).lte(500));
 //     withSort排序 fieldSort(String field) field排序的字段 order(SortOrder order)降序还是升序
@@ -187,18 +206,18 @@ public class BookServiceImpl implements BookService {
 //     分页  PageRequest of(int page, int size) 当前页 条数 es第一页是0不是1
     queryBuilder.withPageable(PageRequest.of(pageIndex, pageSize));
 //     结果
-     AggregatedPage<ArticleDocument> articleDocuments = elasticsearchTemplate
-         .queryForPage(queryBuilder.build(), ArticleDocument.class);
+    AggregatedPage<ArticleDocument> articleDocuments = elasticsearchTemplate
+        .queryForPage(queryBuilder.build(), ArticleDocument.class);
 
-     List<ArticleDocument> content = articleDocuments.getContent();
+    List<ArticleDocument> content = articleDocuments.getContent();
 
-     content.forEach(articleDocument -> {
-       ArticleBO articleBO = new ArticleBO();
-       BeanUtils.copyProperties(articleDocument, articleBO);
+    content.forEach(articleDocument -> {
+      ArticleBO articleBO = new ArticleBO();
+      BeanUtils.copyProperties(articleDocument, articleBO);
 //       articleBOS.add(articleBO);
-     });
-     long totalElements = articleDocuments.getTotalElements();
-     Integer totalPages = articleDocuments.getTotalPages();
+    });
+    long totalElements = articleDocuments.getTotalElements();
+    Integer totalPages = articleDocuments.getTotalPages();
 
 //     articleBOObjectList.setSize(pageSize.longValue());
 //     articleBOObjectList.setIndex(pageIndex.longValue());

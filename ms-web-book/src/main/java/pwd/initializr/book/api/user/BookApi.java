@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pwd.initializr.book.api.admin.vo.SearchInput;
+import pwd.initializr.common.web.api.vo.PageInput;
 
 /**
  * pwd.initializr.logger.api.user@ms-web-initializr
@@ -20,6 +21,12 @@ import pwd.initializr.book.api.admin.vo.SearchInput;
  */
 @RequestMapping(value = "/api/user/book")
 public interface BookApi {
+
+  @ApiOperation(value = "图书清单")
+  @GetMapping(value = {
+      ""}, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  void fetchBooksByRange(PageInput input);
+
 
   @ApiOperation(value = "图书详情")
   @GetMapping(value = {
@@ -38,10 +45,4 @@ public interface BookApi {
       "/{bookId}/{tableId}"}, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   void fetchBookTablesById(@PathVariable("bookId") Long bookId,
       @PathVariable("tableId") Long articleId);
-
-  @ApiOperation(value = "图书清单")
-  @GetMapping(value = {
-      ""}, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  void fetchBooksByRange(SearchInput input);
-
 }

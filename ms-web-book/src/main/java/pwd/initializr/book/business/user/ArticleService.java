@@ -1,7 +1,10 @@
 package pwd.initializr.book.business.user;
 
 import org.springframework.stereotype.Service;
+import pwd.initializr.book.business.remote.bo.SearchResultBO;
 import pwd.initializr.book.business.user.bo.ArticleBO;
+import pwd.initializr.book.business.user.bo.SearchInputBO;
+import pwd.initializr.common.web.business.bo.ObjectList;
 
 /**
  * pwd.initializr.book.business.user@ms-web-initializr
@@ -18,5 +21,9 @@ import pwd.initializr.book.business.user.bo.ArticleBO;
 public interface ArticleService {
 
   ArticleBO findArticleById(Long articleId);
+
+  ObjectList<ArticleBO> listArticleByRange(Integer index, Integer size);
+
+  ObjectList<SearchResultBO> searchArticleByRange(SearchInputBO searchInputBO);
 
 }
