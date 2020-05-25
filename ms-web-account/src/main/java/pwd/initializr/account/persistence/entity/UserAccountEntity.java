@@ -33,12 +33,13 @@ import lombok.ToString;
 @Data
 @TableName(value = "user_account")
 public class UserAccountEntity {
-  @TableId(value = "id",type = IdType.AUTO)
+
+  @TableId(value = "id", type = IdType.AUTO)
   private Long id;
   private Long userId;
   private String loginName;
   private String password;
-  @JSONField(serialzeFeatures= SerializerFeature.WriteEnumUsingToString)
+  @JSONField(serialzeFeatures = SerializerFeature.WriteEnumUsingToString)
   private UserAccountType type;
   private Integer status = 0;
   private Date createTime = new Date();

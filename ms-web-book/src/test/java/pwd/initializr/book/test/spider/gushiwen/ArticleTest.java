@@ -1,7 +1,6 @@
 package pwd.initializr.book.test.spider.gushiwen;
 
 import java.nio.charset.Charset;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -115,7 +114,7 @@ public class ArticleTest {
                   articleBO.getLabels().add(text);
                 }
 
-                articleService.createNewArticle(articleBO);
+                articleService.createArticle(articleBO);
                 System.out.println();
               }
             }

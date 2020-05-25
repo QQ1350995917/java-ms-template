@@ -4,8 +4,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import pwd.initializr.book.api.admin.vo.SearchInput;
-import pwd.initializr.book.api.user.vo.SearchInputVO;
+import pwd.initializr.book.api.user.vo.SearchInput;
 
 /**
  * pwd.initializr.book.api.user@ms-web-initializr
@@ -24,16 +23,16 @@ public interface SearchApi {
   @ApiOperation(value = "搜索图书/文章")
   @GetMapping(value = {
       ""}, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  void search(SearchInputVO input);
+  void search(SearchInput input);
 
   @ApiOperation(value = "搜索文章")
   @GetMapping(value = {
       "/article"}, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  void searchArticle(SearchInput input);
+  void searchArticle(pwd.initializr.book.api.admin.vo.SearchInput input);
 
   @ApiOperation(value = "搜索图书")
   @GetMapping(value = {
       "/book"}, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  void searchBook(SearchInput input);
+  void searchBook(pwd.initializr.book.api.admin.vo.SearchInput input);
 
 }

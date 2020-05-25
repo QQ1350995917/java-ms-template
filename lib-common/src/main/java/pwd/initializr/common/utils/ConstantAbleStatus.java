@@ -3,7 +3,7 @@ package pwd.initializr.common.utils;
 /**
  * pwd.initializr.common.utils@ms-web-initializr
  *
- * <h1>删除/未删除</h1>
+ * <h1>启用/禁用</h1>
  *
  * date 2020-05-25 15:57
  *
@@ -11,13 +11,13 @@ package pwd.initializr.common.utils;
  * @version 1.0.0
  * @since DistributionVersion
  */
-public enum ConstantDeleteStatus {
-    DELETED(-1),
-    EXISTING(1);
+public enum ConstantAbleStatus {
+    DISABLE(-1),
+    ENABLE(1);
 
     private int value;
 
-    ConstantDeleteStatus(int value) {
+    ConstantAbleStatus(int value) {
         this.value = value;
     }
 

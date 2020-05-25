@@ -1,5 +1,14 @@
 package pwd.initializr.account.api.admin.vo;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import javax.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
 /**
  * pwd.initializr.account.api.admin.vo@ms-web-initializr
  *
@@ -11,6 +20,31 @@ package pwd.initializr.account.api.admin.vo;
  * @version 1.0.0
  * @since DistributionVersion
  */
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString
+@ApiModel(value = "createAdminInput", description = "管理员创建请求参数")
 public class CreateAdminInput {
+
+  @ApiModelProperty(name = "loginName", value = "登录名称", required = true, example = "DingPengwei")
+  @NotNull(message = "0")
+  private String loginName;
+  @ApiModelProperty(name = "loginPassword", value = "登录密码", required = true, example = "DingPengwei")
+  @NotNull(message = "0")
+  private String loginPassword;
+  @ApiModelProperty(name = "name", value = "名称", required = true, example = "DingPengwei")
+  @NotNull(message = "0")
+  private String name;
+  @ApiModelProperty(name = "gender", value = "性别", required = true, example = "0")
+  @NotNull(message = "0")
+  private String gender;
+  @ApiModelProperty(name = "summary", value = "简介", required = true, example = "DingPengwei")
+  @NotNull(message = "0")
+  private String summary;
+  @ApiModelProperty(name = "level", value = "管理员等级", required = true, example = "0")
+  @NotNull(message = "0")
+  private String level;
 
 }

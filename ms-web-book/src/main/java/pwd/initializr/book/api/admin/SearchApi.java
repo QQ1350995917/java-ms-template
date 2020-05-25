@@ -5,7 +5,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pwd.initializr.book.api.admin.vo.SearchInput;
-import pwd.initializr.book.api.user.vo.SearchInputVO;
 
 /**
  * pwd.initializr.book.api.admin@ms-web-initializr
@@ -24,7 +23,7 @@ public interface SearchApi {
     @ApiOperation(value = "搜索图书/文章")
     @GetMapping(value = {
         ""}, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    void search(SearchInputVO input);
+    void search(SearchInput input);
 
     @ApiOperation(value = "搜索文章")
     @GetMapping(value = {

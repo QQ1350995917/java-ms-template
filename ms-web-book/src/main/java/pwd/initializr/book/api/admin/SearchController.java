@@ -1,13 +1,13 @@
 package pwd.initializr.book.api.admin;
 
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.book.api.admin.vo.SearchInput;
-import pwd.initializr.book.api.user.SearchApi;
-import pwd.initializr.book.api.user.vo.SearchInputVO;
 import pwd.initializr.book.business.remote.SearchClientService;
 import pwd.initializr.book.business.remote.bo.SearchResultBO;
-import pwd.initializr.common.web.api.user.UserController;
+import pwd.initializr.common.web.api.admin.AdminController;
 import pwd.initializr.common.web.api.vo.Output;
 import pwd.initializr.common.web.business.bo.ObjectList;
 
@@ -22,68 +22,74 @@ import pwd.initializr.common.web.business.bo.ObjectList;
  * @version 1.0.0
  * @since DistributionVersion
  */
-public class SearchController extends UserController implements SearchApi {
+@Api(
+    tags = "图书/文章信息搜索",
+    value = "adminSearchApi",
+    description = "图书/文章信息搜索API"
+)
+@RestController(value = "adminSearchApi")
+public class SearchController extends AdminController implements SearchApi {
 
-    @Autowired
-    private SearchClientService searchClientService;
+  @Autowired
+  private SearchClientService searchClientService;
 
-    @Override
-    public void search(SearchInputVO input) {
-        SearchInputVO tempSearchInput;
-        if (input == null) {
-            tempSearchInput = new SearchInputVO();
-        } else {
-            tempSearchInput = input;
-        }
-
-        Output<ObjectList<SearchResultBO>> objectListOutput = searchClientService
-            .search(tempSearchInput.getKeyword(), tempSearchInput.getIndex(),
-                tempSearchInput.getSize());
-
-        if (objectListOutput.getMeta().getCode() == HttpStatus.OK.value()) {
-            super.outputData(objectListOutput.getData());
-        } else {
-            super.outputData(objectListOutput.getData());
-        }
+  @Override
+  public void search(SearchInput input) {
+    SearchInput tempSearchInput;
+    if (input == null) {
+      tempSearchInput = new SearchInput();
+    } else {
+      tempSearchInput = input;
     }
 
-    @Override
-    public void searchArticle(SearchInput input) {
-        SearchInput tempSearchInput;
-        if (input == null) {
-            tempSearchInput = new SearchInput();
-        } else {
-            tempSearchInput = input;
-        }
+    Output<ObjectList<SearchResultBO>> objectListOutput = searchClientService
+        .search(tempSearchInput.getKeyword(), tempSearchInput.getIndex(),
+            tempSearchInput.getSize());
 
-        Output<ObjectList<SearchResultBO>> objectListOutput = searchClientService
-            .searchArticle(tempSearchInput.getKeyword(), tempSearchInput.getIndex(),
-                tempSearchInput.getSize());
+    if (objectListOutput.getMeta().getCode() == HttpStatus.OK.value()) {
+      super.outputData(objectListOutput.getData());
+    } else {
+      super.outputData(objectListOutput.getData());
+    }
+  }
 
-        if (objectListOutput.getMeta().getCode() == HttpStatus.OK.value()) {
-            super.outputData(objectListOutput.getData());
-        } else {
-            super.outputData(objectListOutput.getData());
-        }
+  @Override
+  public void searchArticle(SearchInput input) {
+    SearchInput tempSearchInput;
+    if (input == null) {
+      tempSearchInput = new SearchInput();
+    } else {
+      tempSearchInput = input;
     }
 
-    @Override
-    public void searchBook(SearchInput input) {
-        SearchInput tempSearchInput;
-        if (input == null) {
-            tempSearchInput = new SearchInput();
-        } else {
-            tempSearchInput = input;
-        }
+    Output<ObjectList<SearchResultBO>> objectListOutput = searchClientService
+        .searchArticle(tempSearchInput.getKeyword(), tempSearchInput.getIndex(),
+            tempSearchInput.getSize());
 
-        Output<ObjectList<SearchResultBO>> objectListOutput = searchClientService
-            .searchBook(tempSearchInput.getKeyword(), tempSearchInput.getIndex(),
-                tempSearchInput.getSize());
-
-        if (objectListOutput.getMeta().getCode() == HttpStatus.OK.value()) {
-            super.outputData(objectListOutput.getData());
-        } else {
-            super.outputData(objectListOutput.getData());
-        }
+    if (objectListOutput.getMeta().getCode() == HttpStatus.OK.value()) {
+      super.outputData(objectListOutput.getData());
+    } else {
+      super.outputData(objectListOutput.getData());
     }
+  }
+
+  @Override
+  public void searchBook(SearchInput input) {
+    SearchInput tempSearchInput;
+    if (input == null) {
+      tempSearchInput = new SearchInput();
+    } else {
+      tempSearchInput = input;
+    }
+
+    Output<ObjectList<SearchResultBO>> objectListOutput = searchClientService
+        .searchBook(tempSearchInput.getKeyword(), tempSearchInput.getIndex(),
+            tempSearchInput.getSize());
+
+    if (objectListOutput.getMeta().getCode() == HttpStatus.OK.value()) {
+      super.outputData(objectListOutput.getData());
+    } else {
+      super.outputData(objectListOutput.getData());
+    }
+  }
 }

@@ -1,14 +1,18 @@
-package pwd.initializr.account.business.admin.service;
+package pwd.initializr.account.business.admin;
 
 import java.util.List;
+import org.springframework.stereotype.Service;
+import pwd.initializr.account.business.admin.bo.AdminBO;
 import pwd.initializr.account.persistence.entity.AdminEntity;
+import pwd.initializr.common.web.business.bo.ObjectList;
 
 /**
- * (Admin)表服务接口
+ * (AdminBO)表服务接口
  *
  * @author makejava
  * @since 2020-04-25 20:16:10
  */
+@Service
 public interface AdminService {
 
   /**
@@ -17,15 +21,15 @@ public interface AdminService {
    * @param id 主键
    * @return 是否成功
    */
-  boolean deleteById(Integer id);
+  Integer deleteById(Integer id);
 
   /**
    * 新增数据
    *
-   * @param admin 实例对象
+   * @param adminBO 实例对象
    * @return 实例对象
    */
-  AdminEntity insert(AdminEntity admin);
+  AdminBO insert(AdminBO adminBO);
 
   /**
    * 查询多条数据
@@ -34,7 +38,7 @@ public interface AdminService {
    * @param limit 查询条数
    * @return 对象列表
    */
-  List<AdminEntity> queryAllByLimit(int offset, int limit);
+  ObjectList<AdminBO> queryAllByLimit(int offset, int limit);
 
   /**
    * 通过ID查询单条数据
@@ -42,14 +46,14 @@ public interface AdminService {
    * @param id 主键
    * @return 实例对象
    */
-  AdminEntity queryById(Integer id);
+  AdminBO queryById(Integer id);
 
   /**
    * 修改数据
    *
-   * @param admin 实例对象
+   * @param adminBO 实例对象
    * @return 实例对象
    */
-  AdminEntity update(AdminEntity admin);
+  Integer update(AdminBO adminBO);
 
 }

@@ -4,8 +4,7 @@ import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RestController;
-import pwd.initializr.book.api.admin.vo.SearchInput;
-import pwd.initializr.book.api.user.vo.SearchInputVO;
+import pwd.initializr.book.api.user.vo.SearchInput;
 import pwd.initializr.book.business.remote.SearchClientService;
 import pwd.initializr.book.business.remote.bo.SearchResultBO;
 import pwd.initializr.common.web.api.user.UserController;
@@ -35,10 +34,10 @@ public class SearchController extends UserController implements SearchApi {
   private SearchClientService searchClientService;
 
   @Override
-  public void search(SearchInputVO input) {
-    SearchInputVO tempSearchInput;
+  public void search(SearchInput input) {
+    SearchInput tempSearchInput;
     if (input == null) {
-      tempSearchInput = new SearchInputVO();
+      tempSearchInput = new SearchInput();
     } else {
       tempSearchInput = input;
     }
@@ -55,10 +54,10 @@ public class SearchController extends UserController implements SearchApi {
   }
 
   @Override
-  public void searchArticle(SearchInput input) {
-    SearchInput tempSearchInput;
+  public void searchArticle(pwd.initializr.book.api.admin.vo.SearchInput input) {
+    pwd.initializr.book.api.admin.vo.SearchInput tempSearchInput;
     if (input == null) {
-      tempSearchInput = new SearchInput();
+      tempSearchInput = new pwd.initializr.book.api.admin.vo.SearchInput();
     } else {
       tempSearchInput = input;
     }
@@ -75,10 +74,10 @@ public class SearchController extends UserController implements SearchApi {
   }
 
   @Override
-  public void searchBook(SearchInput input) {
-    SearchInput tempSearchInput;
+  public void searchBook(pwd.initializr.book.api.admin.vo.SearchInput input) {
+    pwd.initializr.book.api.admin.vo.SearchInput tempSearchInput;
     if (input == null) {
-      tempSearchInput = new SearchInput();
+      tempSearchInput = new pwd.initializr.book.api.admin.vo.SearchInput();
     } else {
       tempSearchInput = input;
     }

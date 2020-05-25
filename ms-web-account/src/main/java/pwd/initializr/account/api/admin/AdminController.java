@@ -2,15 +2,19 @@ package pwd.initializr.account.api.admin;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.account.api.admin.vo.CreateAdminInput;
+import pwd.initializr.account.business.admin.AdminService;
+import pwd.initializr.account.business.admin.bo.AdminBO;
+import pwd.initializr.common.web.business.bo.ObjectList;
 
 /**
  * pwd.initializr.account.api.admin@ms-web-initializr
@@ -33,18 +37,26 @@ import pwd.initializr.account.api.admin.vo.CreateAdminInput;
 public class AdminController extends pwd.initializr.common.web.api.admin.AdminController implements
     AdminApi {
 
+  @Autowired
+  private AdminService adminService;
+
   @ApiOperation(value = "管理员列表")
   @GetMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
   public void list() {
-
+    ObjectList<AdminBO> adminBOObjectList = adminService.queryAllByLimit(0, 12);
+    super.outputData(adminBOObjectList);
   }
 
   @ApiOperation(value = "创建管理员")
-  @PutMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @PostMapping(value = {
+      ""}, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
-  public void create(@RequestBody CreateAdminInput input) {
-
+  public void create(CreateAdminInput input) {
+    AdminBO adminBO = new AdminBO();
+    BeanUtils.copyProperties(input, adminBO);
+    AdminBO insert = adminService.insert(adminBO);
+    super.outputData(insert.getId());
   }
 
   @ApiOperation(value = "启用")

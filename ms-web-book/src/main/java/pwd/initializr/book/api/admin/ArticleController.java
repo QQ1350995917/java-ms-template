@@ -38,47 +38,47 @@ import pwd.initializr.common.web.api.admin.AdminController;
 @RequestMapping(value = "/api/admin/article")
 public class ArticleController extends AdminController implements ArticleApi {
 
-    @Autowired
-    private ArticleService articleService;
+  @Autowired
+  private ArticleService articleService;
 
-    @ApiOperation(value = "文章清单")
-    @GetMapping(value = {
-        ""}, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @Override
-    public void fetchArticlesByRange(@RequestParam SearchInput input) {
+  @ApiOperation(value = "文章清单")
+  @GetMapping(value = {
+      ""}, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @Override
+  public void fetchArticlesByRange(@RequestParam SearchInput input) {
 
-    }
+  }
 
-    @ApiOperation(value = "文章详情")
-    @GetMapping(value = {
-        "/{articleId}"}, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @Override
-    public void fetchArticleById(@PathVariable("articleId") Long articleId) {
+  @ApiOperation(value = "文章详情")
+  @GetMapping(value = {
+      "/{articleId}"}, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @Override
+  public void fetchArticleById(@PathVariable("articleId") Long articleId) {
 
-    }
+  }
 
-    @ApiOperation(value = "文章更新")
-    @PutMapping(value = {
-        "/{articleId}"}, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @Override
-    public void updateArticle(@PathVariable("articleId") Long articleId,
-        @RequestBody CreateArticleInput input) {
+  @ApiOperation(value = "文章更新")
+  @PutMapping(value = {
+      "/{articleId}"}, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @Override
+  public void updateArticle(@PathVariable("articleId") Long articleId,
+      @RequestBody CreateArticleInput input) {
 
-    }
+  }
 
-    @ApiOperation(value = "添加文章")
-    @PostMapping(value = {
-        ""}, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @Override
-    public void createArticle(@RequestBody CreateArticleInput input) {
+  @ApiOperation(value = "添加文章")
+  @PostMapping(value = {
+      ""}, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @Override
+  public void createArticle(@RequestBody CreateArticleInput input) {
 
-    }
+  }
 
-    @ApiOperation(value = "删除文章")
-    @DeleteMapping(value = {
-        ""}, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @Override
-    public void deleteArticles(@RequestBody Long[] articleIds) {
+  @ApiOperation(value = "删除文章")
+  @DeleteMapping(value = {
+      ""}, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @Override
+  public void deleteArticles(@RequestBody Long[] articleIds) {
 
-    }
+  }
 }

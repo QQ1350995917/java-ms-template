@@ -16,13 +16,13 @@ import pwd.initializr.book.api.admin.vo.SearchInput;
  */
 public interface ArticleApi {
 
-    void fetchArticlesByRange(SearchInput input);
+  void createArticle(CreateArticleInput input);
 
-    void fetchArticleById(Long articleId);
+  void deleteArticles(Long[] articleIds);
 
-    void updateArticle(Long articleId, CreateArticleInput input);
+  void fetchArticleById(Long articleId);
 
-    void createArticle(CreateArticleInput input);
+  void fetchArticlesByRange(SearchInput input);
 
-    void deleteArticles(Long[] articleIds);
+  void updateArticle(Long articleId, CreateArticleInput input);
 }

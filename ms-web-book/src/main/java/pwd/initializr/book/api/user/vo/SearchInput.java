@@ -23,6 +23,6 @@ import pwd.initializr.search.rpc.RPCSearchInput;
 @Setter
 @ToString
 @ApiModel(value = "bookVO", description = "图书VO属性")
-public class SearchInputVO extends RPCSearchInput {
+public class SearchInput extends RPCSearchInput {
 
 }

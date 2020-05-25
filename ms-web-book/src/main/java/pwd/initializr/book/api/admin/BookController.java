@@ -32,105 +32,105 @@ import pwd.initializr.common.web.business.bo.ObjectList;
  */
 @Api(
     tags = "图书信息",
-    value = "userBookApi",
+    value = "adminBookApi",
     description = "图书信息API"
 )
-@RestController(value = "userBookApi")
+@RestController(value = "adminBookApi")
 public class BookController extends AdminController implements BookApi {
 
-    @Autowired
-    private BookService bookService;
+  @Autowired
+  private BookService bookService;
 
-    @Override
-    public void fetchBooksByRange(PageInput input) {
-        ObjectList<BookBO> bookBOObjectList = bookService.listBook(input.getIndex(), input.getSize());
+  @Override
+  public void fetchBooksByRange(PageInput input) {
+    ObjectList<BookBO> bookBOObjectList = bookService.listBook(input.getIndex(), input.getSize());
 
-        ObjectList<BookVO> result = new ObjectList<>();
+    ObjectList<BookVO> result = new ObjectList<>();
 
-        if (bookBOObjectList != null) {
-            List<BookVO> resultVOS = new LinkedList<>();
-            bookBOObjectList.getElements().forEach(bookBO -> {
-                BookVO bookVO = new BookVO();
-                BeanUtils.copyProperties(bookBO, bookVO);
-                resultVOS.add(bookVO);
-            });
-
-            result.setTotal(bookBOObjectList.getTotal());
-            result.setPages(bookBOObjectList.getPages());
-            result.setIndex(bookBOObjectList.getIndex());
-            result.setSize(bookBOObjectList.getSize());
-            result.setElements(resultVOS);
-        }
-        super.outputData(result);
-    }
-
-    @Override
-    public void fetchBookById(Long bookId) {
-        BookBO bookBO = bookService.findBookById(bookId);
+    if (bookBOObjectList != null) {
+      List<BookVO> resultVOS = new LinkedList<>();
+      bookBOObjectList.getElements().forEach(bookBO -> {
         BookVO bookVO = new BookVO();
         BeanUtils.copyProperties(bookBO, bookVO);
-        super.outputData(bookVO);
+        resultVOS.add(bookVO);
+      });
+
+      result.setTotal(bookBOObjectList.getTotal());
+      result.setPages(bookBOObjectList.getPages());
+      result.setIndex(bookBOObjectList.getIndex());
+      result.setSize(bookBOObjectList.getSize());
+      result.setElements(resultVOS);
+    }
+    super.outputData(result);
+  }
+
+  @Override
+  public void fetchBookById(Long bookId) {
+    BookBO bookBO = bookService.findBookById(bookId);
+    BookVO bookVO = new BookVO();
+    BeanUtils.copyProperties(bookBO, bookVO);
+    super.outputData(bookVO);
+  }
+
+  @Override
+  public void fetchBookTables(Long bookId, Integer pageIndex, Integer pageSize) {
+    ObjectList<ArticleBO> articleBOObjectList = bookService
+        .listBookTable(bookId, pageIndex, pageSize);
+    ObjectList<BookTableVO> result = new ObjectList<>();
+    result.setSize(articleBOObjectList.getSize());
+    result.setTotal(articleBOObjectList.getTotal());
+    result.setIndex(articleBOObjectList.getIndex());
+    for (ArticleBO articleBO : articleBOObjectList.getElements()) {
+      BookTableVO bookTableVO = new BookTableVO();
+      BeanUtils.copyProperties(articleBO, bookTableVO);
+      result.getElements().add(bookTableVO);
+    }
+    super.outputData(result);
+  }
+
+  @Override
+  public void fetchBookTablesById(Long bookId, Long articleId) {
+    ArticleAroundBO articleAroundBO = bookService.listBookTableByAround(bookId, articleId);
+    ArticleBO pre = articleAroundBO.getPre();
+    ArticleBO next = articleAroundBO.getNext();
+
+    BookTableAroundVO bookTableAroundVO = new BookTableAroundVO();
+    if (pre != null) {
+      BookTableVO preBookTableVO = new BookTableVO();
+      BeanUtils.copyProperties(pre, preBookTableVO);
+      bookTableAroundVO.setPre(preBookTableVO);
     }
 
-    @Override
-    public void fetchBookTables(Long bookId, Integer pageIndex, Integer pageSize) {
-        ObjectList<ArticleBO> articleBOObjectList = bookService
-            .listBookTable(bookId, pageIndex, pageSize);
-        ObjectList<BookTableVO> result = new ObjectList<>();
-        result.setSize(articleBOObjectList.getSize());
-        result.setTotal(articleBOObjectList.getTotal());
-        result.setIndex(articleBOObjectList.getIndex());
-        for (ArticleBO articleBO : articleBOObjectList.getElements()) {
-            BookTableVO bookTableVO = new BookTableVO();
-            BeanUtils.copyProperties(articleBO, bookTableVO);
-            result.getElements().add(bookTableVO);
-        }
-        super.outputData(result);
+    if (next != null) {
+      BookTableVO nextBookTableVO = new BookTableVO();
+      BeanUtils.copyProperties(next, nextBookTableVO);
+      bookTableAroundVO.setNext(nextBookTableVO);
     }
 
-    @Override
-    public void fetchBookTablesById(Long bookId, Long articleId) {
-        ArticleAroundBO articleAroundBO = bookService.listBookTableByAround(bookId, articleId);
-        ArticleBO pre = articleAroundBO.getPre();
-        ArticleBO next = articleAroundBO.getNext();
+    super.outputData(bookTableAroundVO);
+  }
 
-        BookTableAroundVO bookTableAroundVO = new BookTableAroundVO();
-        if (pre != null) {
-            BookTableVO preBookTableVO = new BookTableVO();
-            BeanUtils.copyProperties(pre, preBookTableVO);
-            bookTableAroundVO.setPre(preBookTableVO);
-        }
+  @Override
+  public void createBook(CreateBookInput input) {
+    BookBO bookBO = new BookBO();
+    BeanUtils.copyProperties(input, bookBO);
+    BookBO newBook = bookService.createBook(bookBO);
+    super.outputData(newBook.getId());
+  }
 
-        if (next != null) {
-            BookTableVO nextBookTableVO = new BookTableVO();
-            BeanUtils.copyProperties(next, nextBookTableVO);
-            bookTableAroundVO.setNext(nextBookTableVO);
-        }
+  @Override
+  public void updateBook(Long bookId, CreateBookInput input) {
+    BookBO bookBO = new BookBO();
+    BeanUtils.copyProperties(input, bookBO);
+    bookBO.setId(bookId);
+    Long aLong = bookService.updateBook(bookBO);
+    super.outputData(aLong);
+  }
 
-        super.outputData(bookTableAroundVO);
-    }
-
-    @Override
-    public void createBook(CreateBookInput input) {
-        BookBO bookBO = new BookBO();
-        BeanUtils.copyProperties(input, bookBO);
-        BookBO newBook = bookService.createBook(bookBO);
-        super.outputData(newBook.getId());
-    }
-
-    @Override
-    public void updateBook(Long bookId, CreateBookInput input) {
-        BookBO bookBO = new BookBO();
-        BeanUtils.copyProperties(input, bookBO);
-        bookBO.setId(bookId);
-        Long aLong = bookService.updateBook(bookBO);
-        super.outputData(aLong);
-    }
-
-    @Override
-    public void deleteBooks(Long[] bookIds) {
-        Long aLong = bookService.deleteBookById(Arrays.asList(bookIds));
-        super.outputData(aLong);
-    }
+  @Override
+  public void deleteBooks(Long[] bookIds) {
+    Long aLong = bookService.deleteBookById(Arrays.asList(bookIds));
+    super.outputData(aLong);
+  }
 
 }

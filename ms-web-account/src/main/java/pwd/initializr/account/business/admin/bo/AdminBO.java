@@ -1,5 +1,11 @@
 package pwd.initializr.account.business.admin.bo;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+import pwd.initializr.account.persistence.entity.AdminEntity;
+
 /**
  * pwd.initializr.account.business.admin.bo@ms-web-initializr
  *
@@ -11,6 +17,10 @@ package pwd.initializr.account.business.admin.bo;
  * @version 1.0.0
  * @since DistributionVersion
  */
-public class Admin {
+@Getter
+@Setter
+@ToString
+@NoArgsConstructor
+public class AdminBO extends AdminEntity {
 
 }

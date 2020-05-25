@@ -17,7 +17,6 @@ import pwd.initializr.book.business.admin.BookService;
 import pwd.initializr.book.business.admin.bo.ArticleBO;
 import pwd.initializr.book.business.admin.bo.BookBO;
 import pwd.initializr.book.test.HttpClient;
-import pwd.initializr.common.utils.DateTimeUtil;
 
 /**
  * pwd.initializr.book.test.spider@ms-web-initializr
@@ -47,7 +46,7 @@ public class Novel {
     BookBO bookBO = new BookBO();
     bookBO.setTitle(title);
     bookBO.setCreateTime(new Date());
-    bookService.createNewBook(bookBO);
+    bookService.createBook(bookBO);
 
     Element body = document.body();
     Element dulist = body.getElementById("dulist");
@@ -80,8 +79,8 @@ public class Novel {
     articleBO.setBookId(bookId);
     articleBO.setTitle(title);
     articleBO.setParagraphs(ps);
-    articleBO.setStatus(-1);
-    articleService.createNewArticle(articleBO);
+    articleBO.setDelStatus(-1);
+    articleService.createArticle(articleBO);
   }
 
 
