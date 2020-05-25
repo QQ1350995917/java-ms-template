@@ -1,7 +1,9 @@
 package pwd.initializr.book.business.admin;
 
+import java.util.List;
 import org.springframework.stereotype.Service;
 import pwd.initializr.book.business.admin.bo.ArticleBO;
+import pwd.initializr.book.business.admin.bo.BookBO;
 import pwd.initializr.common.web.business.bo.ObjectList;
 
 
@@ -19,8 +21,14 @@ import pwd.initializr.common.web.business.bo.ObjectList;
 @Service
 public interface ArticleService {
 
-  ArticleBO createNewArticle(ArticleBO articleBO);
+  ArticleBO createArticle(ArticleBO articleBO);
 
-  ObjectList<ArticleBO> listArticleByBookId(Long bookId);
+  Long updateArticle(ArticleBO articleBO);
+
+  Long deleteArticleById(List<Long> articleIds);
+
+  ObjectList<ArticleBO> listArticle(Integer pageIndex, Integer pageSize);
+
+  ObjectList<ArticleBO> listArticle(Long bookId,Integer pageIndex, Integer pageSize);
 }
 

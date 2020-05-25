@@ -1,24 +1,23 @@
 package pwd.initializr.book.api.admin;
 
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import pwd.initializr.book.api.admin.vo.BookTableAroundVO;
+import pwd.initializr.book.api.admin.vo.BookTableVO;
+import pwd.initializr.book.api.admin.vo.BookVO;
 import pwd.initializr.book.api.admin.vo.CreateBookInput;
-import pwd.initializr.book.api.admin.vo.SearchInput;
 import pwd.initializr.book.business.admin.BookService;
+import pwd.initializr.book.business.admin.bo.ArticleAroundBO;
+import pwd.initializr.book.business.admin.bo.ArticleBO;
 import pwd.initializr.book.business.admin.bo.BookBO;
 import pwd.initializr.common.web.api.admin.AdminController;
+import pwd.initializr.common.web.api.vo.PageInput;
+import pwd.initializr.common.web.business.bo.ObjectList;
 
 /**
  * pwd.initializr.book.api.admin@ms-web-initializr
@@ -33,78 +32,105 @@ import pwd.initializr.common.web.api.admin.AdminController;
  */
 @Api(
     tags = "图书信息",
-    value = "adminBookApi",
+    value = "userBookApi",
     description = "图书信息API"
 )
-@RestController(value = "adminBookApi")
-@RequestMapping(value = "/api/admin/book")
+@RestController(value = "userBookApi")
 public class BookController extends AdminController implements BookApi {
 
     @Autowired
     private BookService bookService;
 
-
-    @ApiOperation(value = "图书清单")
-    @GetMapping(value = {
-        ""}, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @Override
-    public void fetchBooksByRange(@RequestParam SearchInput input) {
+    public void fetchBooksByRange(PageInput input) {
+        ObjectList<BookBO> bookBOObjectList = bookService.listBook(input.getIndex(), input.getSize());
 
+        ObjectList<BookVO> result = new ObjectList<>();
+
+        if (bookBOObjectList != null) {
+            List<BookVO> resultVOS = new LinkedList<>();
+            bookBOObjectList.getElements().forEach(bookBO -> {
+                BookVO bookVO = new BookVO();
+                BeanUtils.copyProperties(bookBO, bookVO);
+                resultVOS.add(bookVO);
+            });
+
+            result.setTotal(bookBOObjectList.getTotal());
+            result.setPages(bookBOObjectList.getPages());
+            result.setIndex(bookBOObjectList.getIndex());
+            result.setSize(bookBOObjectList.getSize());
+            result.setElements(resultVOS);
+        }
+        super.outputData(result);
     }
 
-    @ApiOperation(value = "图书详情")
-    @GetMapping(value = {
-        "/{bookId}"}, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @Override
-    public void fetchBookById(@PathVariable(name = "bookId", required = true) Long bookId) {
-
+    public void fetchBookById(Long bookId) {
+        BookBO bookBO = bookService.findBookById(bookId);
+        BookVO bookVO = new BookVO();
+        BeanUtils.copyProperties(bookBO, bookVO);
+        super.outputData(bookVO);
     }
 
-    @ApiOperation(value = "图书目录列表")
-    @GetMapping(value = {
-        "/{bookId}/{startId}/{pageSize}"}, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @Override
-    public void fetchBookTables(@PathVariable("bookId") Long bookId,
-        @PathVariable(value = "startId", required = false) Long startId,
-        @PathVariable(value = "pageSize", required = false) Long pageSize) {
-
+    public void fetchBookTables(Long bookId, Integer pageIndex, Integer pageSize) {
+        ObjectList<ArticleBO> articleBOObjectList = bookService
+            .listBookTable(bookId, pageIndex, pageSize);
+        ObjectList<BookTableVO> result = new ObjectList<>();
+        result.setSize(articleBOObjectList.getSize());
+        result.setTotal(articleBOObjectList.getTotal());
+        result.setIndex(articleBOObjectList.getIndex());
+        for (ArticleBO articleBO : articleBOObjectList.getElements()) {
+            BookTableVO bookTableVO = new BookTableVO();
+            BeanUtils.copyProperties(articleBO, bookTableVO);
+            result.getElements().add(bookTableVO);
+        }
+        super.outputData(result);
     }
 
-    @ApiOperation(value = "图书指定章节以及前后目录")
-    @GetMapping(value = {
-        "/{bookId}/{tableId}"}, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @Override
-    public void fetchBookTableById(@PathVariable("bookId") Long bookId,
-        @PathVariable("tableId") Long articleId) {
+    public void fetchBookTablesById(Long bookId, Long articleId) {
+        ArticleAroundBO articleAroundBO = bookService.listBookTableByAround(bookId, articleId);
+        ArticleBO pre = articleAroundBO.getPre();
+        ArticleBO next = articleAroundBO.getNext();
 
+        BookTableAroundVO bookTableAroundVO = new BookTableAroundVO();
+        if (pre != null) {
+            BookTableVO preBookTableVO = new BookTableVO();
+            BeanUtils.copyProperties(pre, preBookTableVO);
+            bookTableAroundVO.setPre(preBookTableVO);
+        }
+
+        if (next != null) {
+            BookTableVO nextBookTableVO = new BookTableVO();
+            BeanUtils.copyProperties(next, nextBookTableVO);
+            bookTableAroundVO.setNext(nextBookTableVO);
+        }
+
+        super.outputData(bookTableAroundVO);
     }
 
-
-    @ApiOperation(value = "图书更新")
-    @PutMapping(value = {
-        "/{bookId}"}, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @Override
-    public void updateBook(@PathVariable(name = "bookId", required = true) Long bookId,
-        @RequestBody CreateBookInput input) {
-
-    }
-
-    @ApiOperation(value = "添加图书")
-    @PostMapping(value = {
-        ""}, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @Override
-    public void createBook(@RequestBody CreateBookInput input) {
+    public void createBook(CreateBookInput input) {
         BookBO bookBO = new BookBO();
         BeanUtils.copyProperties(input, bookBO);
-        BookBO newBook = bookService.createNewBook(bookBO);
+        BookBO newBook = bookService.createBook(bookBO);
         super.outputData(newBook.getId());
     }
 
-    @ApiOperation(value = "删除图书")
-    @DeleteMapping(value = {
-        ""}, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @Override
-    public void deleteBooks(@RequestBody Long[] bookIds) {
-
+    public void updateBook(Long bookId, CreateBookInput input) {
+        BookBO bookBO = new BookBO();
+        BeanUtils.copyProperties(input, bookBO);
+        bookBO.setId(bookId);
+        Long aLong = bookService.updateBook(bookBO);
+        super.outputData(aLong);
     }
+
+    @Override
+    public void deleteBooks(Long[] bookIds) {
+        Long aLong = bookService.deleteBookById(Arrays.asList(bookIds));
+        super.outputData(aLong);
+    }
+
 }

@@ -1,5 +1,6 @@
 package pwd.initializr.book.persistence.entity;
 
+import java.util.LinkedHashSet;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,10 +29,16 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @Document(collection = "book")
 public class BookEntity extends BaseEntity {
 
-  @Field("isbn")
-  private String isbn;
-  @Field("thumbs")
-  private Set<String> thumbs;
-  @Field("publisher")
-  private String publisher;
+    /***
+     *0：纸质书
+     *1：电子书
+     */
+    @Field("type")
+    private Integer type;
+    @Field("isbn")
+    private String isbn;
+    @Field("thumbs")
+    private LinkedHashSet<String> thumbs;
+    @Field("publisher")
+    private String publisher;
 }

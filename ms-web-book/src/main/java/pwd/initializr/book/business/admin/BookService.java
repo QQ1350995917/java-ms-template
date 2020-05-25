@@ -1,7 +1,9 @@
 package pwd.initializr.book.business.admin;
 
-import java.util.Set;
+import java.util.List;
 import org.springframework.stereotype.Service;
+import pwd.initializr.book.business.admin.bo.ArticleAroundBO;
+import pwd.initializr.book.business.admin.bo.ArticleBO;
 import pwd.initializr.book.business.admin.bo.BookBO;
 import pwd.initializr.common.web.business.bo.ObjectList;
 
@@ -19,8 +21,18 @@ import pwd.initializr.common.web.business.bo.ObjectList;
 @Service
 public interface BookService {
 
-  BookBO createNewBook(BookBO bookBO);
+  BookBO createBook(BookBO bookBO);
 
-  ObjectList<BookBO> searchBookByRange(Set<String> words, Integer pageIndex, Integer pageSize);
+  Long updateBook(BookBO bookBO);
+
+  Long deleteBookById(List<Long> bookIds);
+
+  ObjectList<BookBO> listBook(Integer pageIndex, Integer pageSize);
+
+  BookBO findBookById(Long bookId);
+
+  ObjectList<ArticleBO> listBookTable(Long bookId, Integer index, Integer size);
+
+  ArticleAroundBO listBookTableByAround(Long bookId, Long tableId);
 
 }
