@@ -2,6 +2,7 @@ package pwd.initializr.common.web.api.vo;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import java.util.LinkedList;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,9 +30,17 @@ import lombok.ToString;
 public class PageOutput<T> extends PageInput {
 
   @ApiModelProperty(value = "数据")
-  private List<T> data;
+  private List<T> elements = new LinkedList<>();
   @ApiModelProperty(value = "总页码量")
   private Long pages;
   @ApiModelProperty(value = "总数据量")
   private Long total;
+
+  public Long getPages() {
+    if (getSize() != null && getSize() > 0) {
+      return this.pages = total % getSize() == 0 ? (total / getSize()) : (total / getSize() + 1);
+    } else {
+      return 0L;
+    }
+  }
 }

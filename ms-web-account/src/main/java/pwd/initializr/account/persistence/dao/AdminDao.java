@@ -1,8 +1,10 @@
 package pwd.initializr.account.persistence.dao;
 
-import pwd.initializr.account.persistence.entity.AdminEntity;
-import org.apache.ibatis.annotations.Param;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
+import org.apache.ibatis.annotations.Param;
+import pwd.initializr.account.persistence.entity.AdminEntity;
 
 /**
  * (AdminEntity)表数据库访问层
@@ -34,9 +36,16 @@ public interface AdminDao {
      * 通过实体作为筛选条件查询
      *
      * @param adminEntity 实例对象
+     * @param orderBys 排序字符串
+     * @param offset 分页
+     * @param pageSize 页面容量
      * @return 对象列表
      */
-    List<AdminEntity> queryAll(AdminEntity adminEntity);
+    List<AdminEntity> queryByCondition(@Param("adminEntity") AdminEntity adminEntity,
+        @Param("orderBys") LinkedHashSet<String> orderBys, @Param("offset") Integer offset,
+        @Param("pageSize") Integer pageSize);
+
+    Integer countAll(@Param("adminEntity") AdminEntity adminEntity);
 
     /**
      * 新增数据

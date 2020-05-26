@@ -3,18 +3,18 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="pwd.initializr.account.persistence.dao.AdminDao">
 
-  <resultMap type="pwd.initializr.account.persistence.entity.AdminEntity" id="adminMap">
-    <result property="id" column="id" jdbcType="INTEGER"/>
-    <result property="loginName" column="login_name" jdbcType="VARCHAR"/>
-    <result property="loginPassword" column="login_password" jdbcType="VARCHAR"/>
-    <result property="name" column="name" jdbcType="VARCHAR"/>
-    <result property="gender" column="gender" jdbcType="VARCHAR"/>
-    <result property="summary" column="summary" jdbcType="VARCHAR"/>
-    <result property="level" column="level" jdbcType="VARCHAR"/>
-    <result property="ableStatus" column="able_status" jdbcType="INTEGER"/>
-    <result property="delStatus" column="del_status" jdbcType="INTEGER"/>
-    <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
-    <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+  <resultMap id="adminMap" type="pwd.initializr.account.persistence.entity.AdminEntity">
+    <result column="id" jdbcType="INTEGER" property="id"/>
+    <result column="login_name" jdbcType="VARCHAR" property="loginName"/>
+    <result column="login_password" jdbcType="VARCHAR" property="loginPassword"/>
+    <result column="name" jdbcType="VARCHAR" property="name"/>
+    <result column="gender" jdbcType="INTEGER" property="gender"/>
+    <result column="summary" jdbcType="VARCHAR" property="summary"/>
+    <result column="level" jdbcType="INTEGER" property="level"/>
+    <result column="able_status" jdbcType="INTEGER" property="ableStatus"/>
+    <result column="del_status" jdbcType="INTEGER" property="delStatus"/>
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
   </resultMap>
 
   <!--查询单个-->
@@ -43,52 +43,68 @@
         limit #{offset}, #{limit}
     </select>
 
+
+  <sql id="listAndCountByCondition">
+    <if test="adminEntity.loginName != null and adminEntity.loginName != ''">
+      and adminEntity.login_name like CONCAT('%', #{adminEntity.loginName},'%')
+    </if>
+    <if test="adminEntity.name != null and adminEntity.name != ''">
+      and adminEntity.name like CONCAT('%', #{adminEntity.name},'%')
+    </if>
+    <if test="adminEntity.gender != null">
+      and adminEntity.gender = #{adminEntity.gender}
+    </if>
+    <if test="adminEntity.summary != null and adminEntity.summary != ''">
+      and adminEntity.summary like CONCAT('%',#{adminEntity.summary},'%')
+    </if>
+    <if test="adminEntity.level != null">
+      and adminEntity.level = #{adminEntity.level}
+    </if>
+    <if test="adminEntity.ableStatus != null">
+      and adminEntity.able_status = #{adminEntity.ableStatus}
+    </if>
+    <if test="adminEntity.delStatus != null">
+      and adminEntity.del_status = #{adminEntity.delStatus}
+    </if>
+    <if test="adminEntity.createTime != null">
+      and adminEntity.create_time = #{adminEntity.createTime}
+    </if>
+    <if test="adminEntity.updateTime != null">
+      and adminEntity.update_time = #{adminEntity.updateTime}
+    </if>
+  </sql>
+
   <!--通过实体作为筛选条件查询-->
-  <select id="queryAll" resultMap="adminMap">
+  <select id="queryByCondition" resultMap="adminMap">
     select
     id, login_name, login_password, name, gender, summary, level, able_status,del_status,
     create_time, update_time
     from initializr_account.admin
     <where>
-      <if test="id != null">
-        and id = #{id}
-      </if>
-      <if test="loginName != null and loginName != ''">
-        and login_name = #{loginName}
-      </if>
-      <if test="loginPassword != null and loginPassword != ''">
-        and login_password = #{loginPassword}
-      </if>
-      <if test="name != null and name != ''">
-        and name = #{name}
-      </if>
-      <if test="gender != null and gender != ''">
-        and gender = #{gender}
-      </if>
-      <if test="summary != null and summary != ''">
-        and summary = #{summary}
-      </if>
-      <if test="level != null and level != ''">
-        and level = #{level}
-      </if>
-      <if test="able_status != null">
-        and able_status = #{ableStatus}
-      </if>
-      <if test="del_status != null">
-        and del_status = #{delStatus}
-      </if>
-      <if test="createTime != null">
-        and create_time = #{createTime}
-      </if>
-      <if test="updateTime != null">
-        and update_time = #{updateTime}
-      </if>
+      <include refid="listAndCountByCondition"/>
+    </where>
+    <if test="orderBys != null">
+      order by
+      <foreach collection="orderBys" index="index" item="item" open="" separator="," close="">
+        ${item}
+      </foreach>
+    </if>
+    limit #{offset},#{pageSize}
+  </select>
+
+  <!--通过实体作为筛选条件查询-->
+  <select id="countAll" resultType="java.lang.Integer">
+    select count(*)
+    from initializr_account.admin
+    <where>
+      <include refid="listAndCountByCondition"/>
     </where>
   </select>
 
+
   <!--新增所有列-->
-  <insert id="insert" keyProperty="id" useGeneratedKeys="true" keyColumn="id"
-    parameterType="pwd.initializr.account.persistence.entity.AdminEntity">
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="pwd.initializr.account.persistence.entity.AdminEntity"
+    useGeneratedKeys="true">
         insert into
         initializr_account.admin
         (login_name, login_password, name, gender, summary, level, able_status, del_status, create_time, update_time)

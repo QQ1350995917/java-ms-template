@@ -3,6 +3,8 @@ package pwd.initializr.common.web.api.vo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,6 +30,8 @@ import lombok.ToString;
 @ToString
 public class PageInput implements Serializable {
 
+  @ApiModelProperty(name = "orderBys", value = "排序条件", required = false, example = "update_time desc")
+  private LinkedHashSet<String> orderBys;
   @ApiModelProperty(name = "index", value = "当前页码", required = false, example = "0")
   private Integer index = 0;
   @ApiModelProperty(name = "size", value = "当前页面容量", required = false, example = "12")

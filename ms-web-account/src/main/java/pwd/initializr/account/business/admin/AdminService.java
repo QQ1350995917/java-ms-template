@@ -1,6 +1,8 @@
 package pwd.initializr.account.business.admin;
 
+import java.util.LinkedHashSet;
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 import pwd.initializr.account.business.admin.bo.AdminBO;
 import pwd.initializr.account.persistence.entity.AdminEntity;
@@ -34,11 +36,9 @@ public interface AdminService {
   /**
    * 查询多条数据
    *
-   * @param offset 查询起始位置
-   * @param limit 查询条数
    * @return 对象列表
    */
-  ObjectList<AdminBO> queryAllByLimit(int offset, int limit);
+  ObjectList<AdminBO> queryByCondition(AdminBO adminBO, LinkedHashSet<String> orderBys, Integer pageIndex, Integer pageSize);
 
   /**
    * 通过ID查询单条数据

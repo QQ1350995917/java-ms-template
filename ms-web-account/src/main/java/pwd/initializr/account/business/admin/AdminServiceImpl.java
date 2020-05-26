@@ -1,6 +1,7 @@
 package pwd.initializr.account.business.admin;
 
 import java.util.Date;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.Resource;
@@ -60,22 +61,26 @@ public class AdminServiceImpl implements AdminService {
   /**
    * 查询多条数据
    *
-   * @param offset 查询起始位置
-   * @param limit 查询条数
    * @return 对象列表
    */
   @Override
-  public ObjectList<AdminBO> queryAllByLimit(int offset, int limit) {
-    List<AdminEntity> adminEntities = this.adminDao.queryAllByLimit(offset, limit);
+  public ObjectList<AdminBO> queryByCondition(AdminBO adminBO, LinkedHashSet<String> orderBys, Integer pageIndex, Integer pageSize) {
+    AdminEntity adminEntity = new AdminEntity();
+    BeanUtils.copyProperties(adminBO,adminEntity);
+    Integer countAll = this.adminDao.countAll(adminEntity);
+    List<AdminEntity> adminEntities = this.adminDao.queryByCondition(adminEntity,orderBys,pageIndex * pageSize, pageSize);
     List<AdminBO> adminBOS = new LinkedList<>();
-    adminEntities.forEach(adminEntity -> {
-      AdminBO adminBO = new AdminBO();
-      BeanUtils.copyProperties(adminEntity, adminBO);
-      adminBOS.add(adminBO);
+    adminEntities.forEach(adminEntity1 -> {
+      AdminBO adminBO1 = new AdminBO();
+      BeanUtils.copyProperties(adminEntity1, adminBO1);
+      adminBOS.add(adminBO1);
     });
 
     ObjectList<AdminBO> result = new ObjectList<>();
-
+    result.setElements(adminBOS);
+    result.setTotal(countAll.longValue());
+    result.setIndex(pageIndex.longValue());
+    result.setSize(pageSize.longValue());
     return result;
   }
 

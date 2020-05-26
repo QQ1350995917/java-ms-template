@@ -41,7 +41,7 @@ public class AdminEntity implements Serializable {
   /**
    * 性别
    */
-  private String gender;
+  private Integer gender;
   /**
    * 简介
    */
@@ -49,7 +49,7 @@ public class AdminEntity implements Serializable {
   /**
    * 等级；0运维，1超管，2普通
    */
-  private String level;
+  private Integer level;
 
   private Integer ableStatus;
 

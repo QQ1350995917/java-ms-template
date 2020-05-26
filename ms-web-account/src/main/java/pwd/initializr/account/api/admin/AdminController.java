@@ -2,6 +2,8 @@ package pwd.initializr.account.api.admin;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import java.util.LinkedList;
+import java.util.List;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -11,9 +13,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import pwd.initializr.account.api.admin.vo.AdminVO;
 import pwd.initializr.account.api.admin.vo.CreateAdminInput;
 import pwd.initializr.account.business.admin.AdminService;
 import pwd.initializr.account.business.admin.bo.AdminBO;
+import pwd.initializr.common.web.api.vo.PageInput;
+import pwd.initializr.common.web.api.vo.PageOutput;
 import pwd.initializr.common.web.business.bo.ObjectList;
 
 /**
@@ -43,9 +48,21 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
   @ApiOperation(value = "管理员列表")
   @GetMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
-  public void list() {
-    ObjectList<AdminBO> adminBOObjectList = adminService.queryAllByLimit(0, 12);
-    super.outputData(adminBOObjectList);
+  public void list(PageInput pageInput, AdminVO adminVO) {
+    AdminBO adminBO = new AdminBO();
+    BeanUtils.copyProperties(adminVO,adminBO);
+    ObjectList<AdminBO> adminBOObjectList = adminService.queryByCondition(adminBO,pageInput.getOrderBys(),pageInput.getIndex(), pageInput.getSize());
+    List<AdminVO> adminVOS = new LinkedList<>();
+    adminBOObjectList.getElements().forEach(adminBO1 -> {
+      AdminVO adminVO1 = new AdminVO();
+      BeanUtils.copyProperties(adminBO1,adminVO1);
+      adminVOS.add(adminVO1);
+    });
+    PageOutput<AdminVO> result = new PageOutput<>();
+    BeanUtils.copyProperties(pageInput,result);
+    result.setElements(adminVOS);
+    result.setTotal(adminBOObjectList.getTotal());
+    super.outputData(result);
   }
 
   @ApiOperation(value = "创建管理员")
@@ -57,6 +74,14 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
     BeanUtils.copyProperties(input, adminBO);
     AdminBO insert = adminService.insert(adminBO);
     super.outputData(insert.getId());
+  }
+
+  @ApiOperation(value = "修改管理员")
+  @PostMapping(value = {
+      ""}, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @Override
+  public void modify(Long id, CreateAdminInput input) {
+
   }
 
   @ApiOperation(value = "启用")

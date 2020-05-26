@@ -1,6 +1,8 @@
 package pwd.initializr.account.api.admin;
 
+import pwd.initializr.account.api.admin.vo.AdminVO;
 import pwd.initializr.account.api.admin.vo.CreateAdminInput;
+import pwd.initializr.common.web.api.vo.PageInput;
 
 /**
  * pwd.initializr.account.api.admin@ms-web-initializr
@@ -15,9 +17,11 @@ import pwd.initializr.account.api.admin.vo.CreateAdminInput;
  */
 public interface AdminApi {
 
-  void list();
+  void list(PageInput pageInput, AdminVO adminVO);
 
   void create(CreateAdminInput input);
+
+  void modify(Long id,CreateAdminInput input);
 
   void enable(Long id);
 

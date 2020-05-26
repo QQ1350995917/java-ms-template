@@ -39,12 +39,12 @@ public class CreateAdminInput {
   private String name;
   @ApiModelProperty(name = "gender", value = "性别", required = true, example = "0")
   @NotNull(message = "0")
-  private String gender;
+  private Integer gender;
   @ApiModelProperty(name = "summary", value = "简介", required = true, example = "DingPengwei")
   @NotNull(message = "0")
   private String summary;
   @ApiModelProperty(name = "level", value = "管理员等级", required = true, example = "0")
   @NotNull(message = "0")
-  private String level;
+  private Integer level;
 
 }
