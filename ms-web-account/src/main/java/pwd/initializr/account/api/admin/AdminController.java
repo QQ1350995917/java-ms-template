@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.account.api.admin.vo.AdminVO;
@@ -77,7 +78,7 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
   }
 
   @ApiOperation(value = "修改管理员")
-  @PostMapping(value = {
+  @PutMapping(value = {
       ""}, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
   public void modify(Long id, CreateAdminInput input) {
