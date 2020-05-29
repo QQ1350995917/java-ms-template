@@ -1,8 +1,6 @@
 package pwd.initializr.account.business.admin;
 
 import org.springframework.stereotype.Service;
-import pwd.initializr.account.business.admin.bo.User;
-import pwd.initializr.common.web.business.bo.ObjectList;
 
 /**
  * pwd.initializr.account.business.admin@ms-web-initializr
@@ -18,10 +16,10 @@ import pwd.initializr.common.web.business.bo.ObjectList;
 @Service
 public interface UserService {
 
-//  ObjectList<User> listUser();
+//  ObjectList<UserBO> listUser();
 //
-//  User findById(Long userId);
+//  UserBO findById(Long userId);
 //
-//  ObjectList<User> listUserById(String[] ids,Integer status);
+//  ObjectList<UserBO> listUserById(String[] ids,Integer status);
 
 }

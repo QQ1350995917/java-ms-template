@@ -5,7 +5,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import pwd.initializr.account.business.user.bo.User;
+import pwd.initializr.account.business.user.bo.UserBO;
 import pwd.initializr.account.rpc.RPCUserSession;
 import pwd.initializr.common.mw.redis.RedisClient;
 
@@ -37,10 +37,10 @@ public class SessionServiceImpl implements SessionService {
   }
 
   @Override
-  public User getSession(Long userId) {
+  public UserBO getSession(Long userId) {
     String key = StringUtils.join(new String[]{SESSION_PREFIX, userId.toString()});
     String session = redisClient.get(key);
-    return JSON.parseObject(session, User.class);
+    return JSON.parseObject(session, UserBO.class);
   }
 
   @Override

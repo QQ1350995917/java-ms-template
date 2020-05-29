@@ -1,6 +1,6 @@
 [submodule "static-web-adminEntity"]
 	path = static-web-adminEntity
 	url = https://github.com/QQ1350995917/static-web-adminEntity.git
-[submodule "static-web-user"]
-	path = static-web-user
-	url = https://github.com/QQ1350995917/static-web-user.git
+[submodule "static-web-userBO"]
+	path = static-web-userBO
+	url = https://github.com/QQ1350995917/static-web-userBO.git

@@ -18,8 +18,8 @@ import pwd.initializr.account.api.user.vo.LoginInput;
 import pwd.initializr.account.api.user.vo.LoginOutput;
 import pwd.initializr.account.business.user.SessionService;
 import pwd.initializr.account.business.user.UserAccountService;
-import pwd.initializr.account.business.user.bo.User;
-import pwd.initializr.account.business.user.bo.UserAccount;
+import pwd.initializr.account.business.user.bo.UserBO;
+import pwd.initializr.account.business.user.bo.UserAccountBO;
 import pwd.initializr.account.rpc.RPCToken;
 import pwd.initializr.account.rpc.RPCUserSession;
 import pwd.initializr.common.web.api.user.UserController;
@@ -58,7 +58,7 @@ public class SessionController extends UserController implements SessionApi {
     if ((getUid() != id) || id == 0) {
       outputException(400);
     } else {
-      User session = sessionService.getSession(id);
+      UserBO session = sessionService.getSession(id);
       if (session == null) {
         outputException(401);
       } else {
@@ -71,24 +71,24 @@ public class SessionController extends UserController implements SessionApi {
   @PutMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
   public void login(@RequestBody LoginInput input) {
-    UserAccount account = new UserAccount();
+    UserAccountBO account = new UserAccountBO();
     BeanUtils.copyProperties(input, account);
-    UserAccount accountByLoginNameAndPassword = userAccountService
+    UserAccountBO accountByLoginNameAndPassword = userAccountService
         .findAccountByLoginNameAndPassword(input.getLoginName(), input.getPassword());
-    User userByUserId = userAccountService
+    UserBO userByUserBOId = userAccountService
         .findUserByUserId(accountByLoginNameAndPassword.getUserId());
-    userByUserId.setAccounts(Arrays.asList(new UserAccount[]{accountByLoginNameAndPassword}));
+    userByUserBOId.setAccounts(Arrays.asList(new UserAccountBO[]{accountByLoginNameAndPassword}));
     if (accountByLoginNameAndPassword == null) {
       outputData(400);
     } else {
       RPCUserSession RPCUserSession = new RPCUserSession();
-      BeanUtils.copyProperties(userByUserId, RPCUserSession);
+      BeanUtils.copyProperties(userByUserBOId, RPCUserSession);
 
       String token = RPCToken.generateToken(RPCUserSession, ACCOUNT_SECRET);
       if (sessionService.getSession(accountByLoginNameAndPassword.getUserId()) == null) {
         sessionService.updateSession(RPCUserSession);
       }
-      outputData(new LoginOutput(userByUserId.getId(), token));
+      outputData(new LoginOutput(userByUserBOId.getId(), token));
     }
   }
 

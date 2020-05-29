@@ -20,11 +20,11 @@ public class UserServiceImpl implements UserService {
 //  private UserMapperBak userMapper;
 //
 //  @Override
-//  public ObjectList<User> listUser() {
+//  public ObjectList<UserBO> listUser() {
 //    List<UserEntity> userEntities = userMapper.listUser();
-//    ObjectList<User> result = new ObjectList<>();
+//    ObjectList<UserBO> result = new ObjectList<>();
 //    for (UserEntity userEntity : userEntities) {
-//      User user = new User();
+//      UserBO user = new UserBO();
 //      BeanUtils.copyProperties(userEntity,user);
 //      result.getElements().add(user);
 //    }
@@ -32,19 +32,19 @@ public class UserServiceImpl implements UserService {
 //  }
 //
 //  @Override
-//  public User findById(Long userId) {
+//  public UserBO findById(Long userId) {
 //    UserEntity userEntity = userMapper.findByUserId(userId);
-//    User user = new User();
+//    UserBO user = new UserBO();
 //    BeanUtils.copyProperties(userEntity,user);
 //    return user;
 //  }
 //
 //  @Override
-//  public ObjectList<User> listUserById(String[] ids, Integer status) {
+//  public ObjectList<UserBO> listUserById(String[] ids, Integer status) {
 //    List<UserEntity> userEntities = userMapper.listUser();
-//    ObjectList<User> result = new ObjectList<>();
+//    ObjectList<UserBO> result = new ObjectList<>();
 //    for (UserEntity userEntity : userEntities) {
-//      User user = new User();
+//      UserBO user = new UserBO();
 //      BeanUtils.copyProperties(userEntity,user);
 //      result.getElements().add(user);
 //    }

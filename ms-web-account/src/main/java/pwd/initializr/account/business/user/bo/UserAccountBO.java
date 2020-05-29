@@ -24,7 +24,7 @@ import pwd.initializr.account.persistence.entity.UserAccountType;
 @Setter
 @Getter
 @ToString
-public class UserAccount {
+public class UserAccountBO {
 
 
   private Date createTime = new Date();
@@ -36,11 +36,11 @@ public class UserAccount {
   private Date updateTime = new Date();
   private Long userId;
 
-  public UserAccount(String loginName, String password, UserAccountType type) {
+  public UserAccountBO(String loginName, String password, UserAccountType type) {
     this(null, loginName, password, type);
   }
 
-  public UserAccount(Long userId, String loginName, String password, UserAccountType type) {
+  public UserAccountBO(Long userId, String loginName, String password, UserAccountType type) {
     this.userId = userId;
     this.loginName = loginName;
     this.password = password;

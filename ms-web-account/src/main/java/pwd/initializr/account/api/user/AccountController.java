@@ -17,8 +17,8 @@ import pwd.initializr.account.api.user.vo.LoginOutput;
 import pwd.initializr.account.api.user.vo.SignUpByPhoneInput;
 import pwd.initializr.account.business.user.SessionService;
 import pwd.initializr.account.business.user.UserAccountService;
-import pwd.initializr.account.business.user.bo.User;
-import pwd.initializr.account.business.user.bo.UserAccount;
+import pwd.initializr.account.business.user.bo.UserBO;
+import pwd.initializr.account.business.user.bo.UserAccountBO;
 import pwd.initializr.account.persistence.entity.UserAccountType;
 import pwd.initializr.account.rpc.RPCToken;
 import pwd.initializr.account.rpc.RPCUserSession;
@@ -67,22 +67,22 @@ public class AccountController extends UserController implements AccountApi {
     match = true;
     if (match) {
       // TODO session设置，返回身份信息，跳转页面
-      User user = new User(input.getUsername(), input.getPhoneNumber());
-      UserAccount account = new UserAccount(input.getPhoneNumber(), null,
+      UserBO userBO = new UserBO(input.getUsername(), input.getPhoneNumber());
+      UserAccountBO account = new UserAccountBO(input.getPhoneNumber(), null,
           UserAccountType.ByPhoneNumber);
-      user.setAccounts(Arrays.asList(new UserAccount[]{account}));
+      userBO.setAccounts(Arrays.asList(new UserAccountBO[]{account}));
       // TODO 优化password业务
       String password = smsCode.getSmsCode();
-      User userAndAccount = userAccountService.createUserAndAccount(user);
+      UserBO userBOAndAccount = userAccountService.createUserAndAccount(userBO);
 
       RPCUserSession RPCUserSession = new RPCUserSession();
-      BeanUtils.copyProperties(userAndAccount, RPCUserSession);
+      BeanUtils.copyProperties(userBOAndAccount, RPCUserSession);
 
       sessionService.updateSession(RPCUserSession);
 
       String token = RPCToken.generateToken(RPCUserSession, ACCOUNT_SECRET);
       // TODO addCookie
-      super.outputData(new LoginOutput(user.getId(), token));
+      super.outputData(new LoginOutput(userBO.getId(), token));
     } else {
       super.outputException(401);
     }

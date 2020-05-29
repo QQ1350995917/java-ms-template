@@ -1,7 +1,7 @@
 package pwd.initializr.account.business.user;
 
-import pwd.initializr.account.business.user.bo.User;
-import pwd.initializr.account.business.user.bo.UserAccount;
+import pwd.initializr.account.business.user.bo.UserBO;
+import pwd.initializr.account.business.user.bo.UserAccountBO;
 import pwd.initializr.common.web.business.bo.ObjectList;
 
 /**
@@ -17,17 +17,17 @@ import pwd.initializr.common.web.business.bo.ObjectList;
  */
 public interface UserAccountService {
 
-  User createAccountForUser(User user);
+  UserBO createAccountForUser(UserBO userBO);
 
-  User createUserAndAccount(User user);
+  UserBO createUserAndAccount(UserBO userBO);
 
-  UserAccount findAccountByLoginNameAndPassword(String loginName, String password);
+  UserAccountBO findAccountByLoginNameAndPassword(String loginName, String password);
 
-  User findUserByUserId(Long id);
+  UserBO findUserByUserId(Long id);
 
-  ObjectList<User> listAccount(UserAccount userAccount, Integer offset, Integer size);
+  ObjectList<UserBO> listAccount(UserAccountBO userAccountBO, Integer offset, Integer size);
 
-  ObjectList<User> listAccountByUser(User user, Integer offset, Integer size);
+  ObjectList<UserBO> listAccountByUser(UserBO userBO, Integer offset, Integer size);
 
-  ObjectList<User> listUser(User user, Integer offset, Integer size);
+  ObjectList<UserBO> listUser(UserBO userBO, Integer offset, Integer size);
 }

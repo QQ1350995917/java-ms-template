@@ -9,8 +9,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pwd.initializr.account.business.user.bo.User;
-import pwd.initializr.account.business.user.bo.UserAccount;
+import pwd.initializr.account.business.user.bo.UserBO;
+import pwd.initializr.account.business.user.bo.UserAccountBO;
 import pwd.initializr.account.persistence.dao.UserAccountDao;
 import pwd.initializr.account.persistence.dao.UserDao;
 import pwd.initializr.account.persistence.entity.UserAccountEntity;
@@ -39,67 +39,67 @@ public class UserAccountServiceImpl implements UserAccountService {
 
   @Transactional
   @Override
-  public User createAccountForUser(User user) {
-    List<UserAccount> accounts = user.getAccounts();
-    UserAccount userAccount = accounts.get(0);
+  public UserBO createAccountForUser(UserBO userBO) {
+    List<UserAccountBO> accounts = userBO.getAccounts();
+    UserAccountBO userAccountBO = accounts.get(0);
     UserAccountEntity userAccountEntity = new UserAccountEntity();
-    BeanUtils.copyProperties(userAccount, userAccountEntity);
-    userAccountEntity.setUserId(user.getId());
+    BeanUtils.copyProperties(userAccountBO, userAccountEntity);
+    userAccountEntity.setUserId(userBO.getId());
     userAccountDao.insert(userAccountEntity);
-    BeanUtils.copyProperties(userAccountEntity, userAccount);
-    return user;
+    BeanUtils.copyProperties(userAccountEntity, userAccountBO);
+    return userBO;
   }
 
   @Transactional
   @Override
-  public User createUserAndAccount(User user) {
+  public UserBO createUserAndAccount(UserBO userBO) {
     UserEntity userEntity = new UserEntity();
-    BeanUtils.copyProperties(user, userEntity);
+    BeanUtils.copyProperties(userBO, userEntity);
     userDao.insert(userEntity);
 
-    UserAccount userAccount = user.getAccounts().get(0);
+    UserAccountBO userAccountBO = userBO.getAccounts().get(0);
     UserAccountEntity userAccountEntity = new UserAccountEntity();
-    BeanUtils.copyProperties(userAccount, userAccountEntity);
+    BeanUtils.copyProperties(userAccountBO, userAccountEntity);
     userAccountEntity.setUserId(userEntity.getId());
     userAccountDao.insert(userAccountEntity);
 
-    BeanUtils.copyProperties(userAccountEntity, userAccount);
-    BeanUtils.copyProperties(userEntity, user);
+    BeanUtils.copyProperties(userAccountEntity, userAccountBO);
+    BeanUtils.copyProperties(userEntity, userBO);
 
-    return user;
+    return userBO;
   }
 
   @Override
-  public UserAccount findAccountByLoginNameAndPassword(String loginName, String password) {
+  public UserAccountBO findAccountByLoginNameAndPassword(String loginName, String password) {
     QueryWrapper<UserAccountEntity> userAccountEntityQueryWrapper = new QueryWrapper<>();
     userAccountEntityQueryWrapper.lambda().eq(UserAccountEntity::getLoginName, loginName)
         .eq(UserAccountEntity::getPassword, password);
     UserAccountEntity userAccountEntity = userAccountDao.selectOne(userAccountEntityQueryWrapper);
-    UserAccount userAccount = new UserAccount();
-    BeanUtils.copyProperties(userAccountEntity, userAccount);
-    return userAccount;
+    UserAccountBO userAccountBO = new UserAccountBO();
+    BeanUtils.copyProperties(userAccountEntity, userAccountBO);
+    return userAccountBO;
   }
 
   @Override
-  public User findUserByUserId(Long id) {
+  public UserBO findUserByUserId(Long id) {
     UserEntity userEntity = userDao.selectById(id);
-    User user = new User();
-    BeanUtils.copyProperties(userEntity, user);
-    return user;
+    UserBO userBO = new UserBO();
+    BeanUtils.copyProperties(userEntity, userBO);
+    return userBO;
   }
 
   @Override
-  public ObjectList<User> listAccount(UserAccount userAccount, Integer offset, Integer size) {
+  public ObjectList<UserBO> listAccount(UserAccountBO userAccountBO, Integer offset, Integer size) {
     return null;
   }
 
   @Override
-  public ObjectList<User> listAccountByUser(User user, Integer offset, Integer size) {
+  public ObjectList<UserBO> listAccountByUser(UserBO userBO, Integer offset, Integer size) {
     return null;
   }
 
   @Override
-  public ObjectList<User> listUser(User user, Integer offset, Integer size) {
+  public ObjectList<UserBO> listUser(UserBO userBO, Integer offset, Integer size) {
     QueryWrapper<UserEntity> userEntityQueryWrapper = new QueryWrapper<>();
 
     IPage<UserEntity> userEntityIPage = userDao
@@ -107,14 +107,14 @@ public class UserAccountServiceImpl implements UserAccountService {
 
     List<UserEntity> userEntities = userEntityIPage.getRecords();
 
-    List<User> collect = userEntities.stream().map(userEntity -> {
-      User userItem = new User();
-      BeanUtils.copyProperties(userEntity, userItem);
-      return userItem;
+    List<UserBO> collect = userEntities.stream().map(userEntity -> {
+      UserBO userBOItem = new UserBO();
+      BeanUtils.copyProperties(userEntity, userBOItem);
+      return userBOItem;
     }).collect(Collectors
         .toList());
 
-    ObjectList<User> userObjectList = new ObjectList<>();
+    ObjectList<UserBO> userObjectList = new ObjectList<>();
     userObjectList.setTotal(userEntityIPage.getTotal());
     userObjectList.setPages(userEntityIPage.getPages());
     userObjectList.setIndex(userEntityIPage.getCurrent());

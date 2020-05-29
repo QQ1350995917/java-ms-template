@@ -24,7 +24,7 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class User {
+public class UserBO {
 
   private Long id;
   private String name;
@@ -33,9 +33,9 @@ public class User {
   private Date createTime = new Date();
   private Date updateTime = new Date();
 
-  private List<UserAccount> accounts;
+  private List<UserAccountBO> accounts;
 
-  public User(String name, String phoneNumber) {
+  public UserBO(String name, String phoneNumber) {
     this.name = name;
     this.phoneNumber = phoneNumber;
   }

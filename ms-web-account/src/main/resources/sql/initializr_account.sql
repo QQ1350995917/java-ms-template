@@ -86,10 +86,10 @@ CREATE TABLE `system`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Table structure for user
+-- Table structure for userBO
 -- ----------------------------
-DROP TABLE IF EXISTS `user`;
-CREATE TABLE `user`  (
+DROP TABLE IF EXISTS `userBO`;
+CREATE TABLE `userBO`  (
   `id` bigint(11) NOT NULL AUTO_INCREMENT COMMENT '用户ID，主键',
   `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '用户名',
   `phone_number` varchar(11) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '用户手机号码',

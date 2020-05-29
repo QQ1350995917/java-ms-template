@@ -10,9 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.account.business.admin.UserService;
-import pwd.initializr.account.business.admin.bo.User;
 import pwd.initializr.common.web.api.admin.AdminController;
-import pwd.initializr.common.web.business.bo.ObjectList;
 
 /**
  * pwd.initializr.account.api.admin@ms-web-initializr
@@ -41,7 +39,7 @@ public class UserController extends AdminController implements UserApi {
   @GetMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
   public void listUser() {
-//    ObjectList<User> userObjectList = userService.listUser();
+//    ObjectList<UserBO> userObjectList = userService.listUser();
 //    outputData(userObjectList);// TODO 转化为VO
   }
 
@@ -49,7 +47,7 @@ public class UserController extends AdminController implements UserApi {
   @GetMapping(value = {"/{id}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
   public void detailedUser(@PathVariable Long id) {
-//    User user = userService.findById(id);
+//    UserBO user = userService.findById(id);
 //    outputData(user);// TODO 转化为VO
   }
 

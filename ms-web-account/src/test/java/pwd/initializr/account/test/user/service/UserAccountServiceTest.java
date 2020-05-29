@@ -10,8 +10,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import pwd.initializr.account.AccountApplication;
 import pwd.initializr.account.business.user.UserAccountService;
-import pwd.initializr.account.business.user.bo.User;
-import pwd.initializr.account.business.user.bo.UserAccount;
+import pwd.initializr.account.business.user.bo.UserBO;
+import pwd.initializr.account.business.user.bo.UserAccountBO;
 import pwd.initializr.account.persistence.entity.UserAccountType;
 
 /**
@@ -36,20 +36,20 @@ public class UserAccountServiceTest {
   @Test
   public void testCreateUserAccount() {
     Stream.of(names).forEach(name -> {
-      User user = new User(name, "18511694468");
-      UserAccount account = new UserAccount(user.getId(), name, "123456",
+      UserBO userBO = new UserBO(name, "18511694468");
+      UserAccountBO account = new UserAccountBO(userBO.getId(), name, "123456",
           UserAccountType.ByPhoneNumber);
-      user.setAccounts(Arrays.asList(new UserAccount[]{account}));
-      User userAndAccount = userAccountService.createUserAndAccount(user);
-      Assert.assertNotNull(userAndAccount.getId());
-      Assert.assertNotNull(userAndAccount.getAccounts());
-      Assert.assertNotNull(userAndAccount.getAccounts().get(0).getId());
+      userBO.setAccounts(Arrays.asList(new UserAccountBO[]{account}));
+      UserBO userBOAndAccount = userAccountService.createUserAndAccount(userBO);
+      Assert.assertNotNull(userBOAndAccount.getId());
+      Assert.assertNotNull(userBOAndAccount.getAccounts());
+      Assert.assertNotNull(userBOAndAccount.getAccounts().get(0).getId());
     });
   }
 
   @Test
   public void testFindAccountByLoginNameAndPassword() {
-    UserAccount 吕布 = userAccountService.findAccountByLoginNameAndPassword("吕布", "123456");
+    UserAccountBO 吕布 = userAccountService.findAccountByLoginNameAndPassword("吕布", "123456");
     Assert.assertNotNull(吕布);
   }
 
@@ -59,11 +59,11 @@ public class UserAccountServiceTest {
 
     for (int i = 1694471; i < 6694468; i++) {
       String pre = "1851" + i;
-      User user = new User(pre, pre);
-      UserAccount account = new UserAccount(user.getId(), pre, "123456",
+      UserBO userBO = new UserBO(pre, pre);
+      UserAccountBO account = new UserAccountBO(userBO.getId(), pre, "123456",
           UserAccountType.ByPhoneNumber);
-      user.setAccounts(Arrays.asList(new UserAccount[]{account}));
-      userAccountService.createUserAndAccount(user);
+      userBO.setAccounts(Arrays.asList(new UserAccountBO[]{account}));
+      userAccountService.createUserAndAccount(userBO);
 
       if (i % 10000 == 0) {
         System.out.println(i);

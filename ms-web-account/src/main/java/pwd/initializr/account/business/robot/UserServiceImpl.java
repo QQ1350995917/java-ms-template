@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService {
 //    List<UserEntity> userEntities = userMapper.listUserByIds(userIds);
     List<User> users = new LinkedList<>();
 //    for (UserEntity userEntity : userEntities) {
-//      User user = new User();
+//      UserBO user = new UserBO();
 //      BeanUtils.copyProperties(userEntity, user);
 //      users.add(user);
 //    }
