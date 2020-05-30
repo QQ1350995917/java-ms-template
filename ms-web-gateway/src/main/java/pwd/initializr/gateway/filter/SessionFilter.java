@@ -16,8 +16,8 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
+import pwd.initializr.account.rpc.RPCSession;
 import pwd.initializr.account.rpc.RPCToken;
-import pwd.initializr.account.rpc.RPCUserSession;
 import pwd.initializr.common.mw.redis.RedisClient;
 import pwd.initializr.common.web.api.ApiConstant;
 import pwd.initializr.common.web.api.vo.Meta;
@@ -42,7 +42,9 @@ public class SessionFilter implements GlobalFilter, Ordered {
   @Value("${account_secret}")
   private String ACCOUNT_SECRET;
   @Value("${account_login_prefix}")
-  private String SESSION_PREFIX;
+  private String SESSION_PREFIX_USER;
+  @Value("${account_login_prefix_admin}")
+  private String SESSION_PREFIX_ADMIN;
   @Value("${filter_skip_all:true}")
   private Boolean filterSkipAll;
 
@@ -63,26 +65,36 @@ public class SessionFilter implements GlobalFilter, Ordered {
       // 白名单
       return chain.filter(exchange);
     }
+
+    String SESSION_PREFIX;
+    if (path.contains(KeyValueList.adminPath)) {
+      SESSION_PREFIX = SESSION_PREFIX_ADMIN;
+    } else {
+      SESSION_PREFIX = SESSION_PREFIX_USER;
+    }
+    // 1：获取header中的uid和token信息
     String uid = request.getHeaders().getFirst(ApiConstant.HTTP_HEADER_KEY_UID);
     String token = request.getHeaders().getFirst(ApiConstant.HTTP_HEADER_KEY_TOKEN);
     if (StringUtils.isEmpty(uid) || StringUtils.isEmpty(token)) {
       return buildSessionErrorMono(request, response, "请求参数错误");
     }
-
+    // 2：根据uid在redis中找到保存的用户信息字符串
     String key = StringUtils.join(new String[]{SESSION_PREFIX, uid});
     String userJson = redisClient.get(key);
     if (StringUtils.isEmpty(userJson)) {
       // Session 未获取到 超时或者未登录
       return buildSessionErrorMono(request, response, "未登录或登录超时");
     }
-
-    RPCUserSession RPCUserSession = JSON.parseObject(userJson, RPCUserSession.class);
+    // 3：反序列化用户信息字符串
+    RPCSession RPCSession = JSON.parseObject(userJson, RPCSession.class);
     try {
-      RPCToken.verifyToken(RPCUserSession, token, ACCOUNT_SECRET);
+      // 4：验请求携带的token信息
+      RPCToken.verifyToken(RPCSession, token, ACCOUNT_SECRET);
     } catch (Exception e) {
       // Session 获取到 验证失败
       return buildSessionErrorMono(request, response, "请求参数错误");
     }
+
 //  request.getHeaders().add(ApiConstant.HTTP_HEADER_KEY_UID, uid);
     ServerHttpRequest serverHttpRequest = exchange.getRequest().mutate()
         .header(ApiConstant.HTTP_HEADER_KEY_UID, new String[]{uid}).build();

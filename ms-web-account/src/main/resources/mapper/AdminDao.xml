@@ -35,6 +35,24 @@
         where id = #{id}
     </select>
 
+  <!--查询单个-->
+  <select id="queryByLoginNameAndLoginPassword" resultMap="adminMap">
+        select
+        id,
+        login_name,
+        login_password,
+        name,
+        gender,
+        summary,
+        level,
+        able_status,
+        del_status,
+        create_time,
+        update_time
+        from initializr_account.admin
+        where login_name = #{loginName} and login_password = #{loginPassword}
+    </select>
+
   <!--查询指定行数据-->
   <select id="queryAllByLimit" resultMap="adminMap">
         select
@@ -103,7 +121,8 @@
 
 
   <!--新增所有列-->
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="pwd.initializr.account.persistence.entity.AdminEntity"
+  <insert id="insert" keyColumn="id" keyProperty="id"
+    parameterType="pwd.initializr.account.persistence.entity.AdminEntity"
     useGeneratedKeys="true">
         insert into
         initializr_account.admin

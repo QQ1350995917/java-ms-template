@@ -22,7 +22,7 @@ import pwd.initializr.common.web.api.user.UserController;
     description = "信息API"
 )
 @RestController(value = "userSearchApi")
-@RequestMapping(value = "/api/user/search")
+@RequestMapping(value = "/api/search")
 public class SearchUserController extends UserController {
 
 }

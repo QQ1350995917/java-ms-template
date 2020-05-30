@@ -39,7 +39,7 @@ import pwd.initializr.typeface.business.bo.FontBO;
     description = "字体API"
 )
 @RestController(value = "fontApi")
-@RequestMapping(value = "/api/user/font")
+@RequestMapping(value = "/api/font")
 public class FontController extends UserController implements FontApi {
 
   @Autowired
@@ -62,7 +62,7 @@ public class FontController extends UserController implements FontApi {
         obj -> new FontVO(obj.getId(), obj.getTitle(), obj.getThumbUrl(), obj.getCreateTime(),
             obj.getUpdateTime()))
         .collect(Collectors.toList());
-    output.setData(collect);
+    output.setElements(collect);
     outputData(output);
   }
 

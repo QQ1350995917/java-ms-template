@@ -64,11 +64,13 @@ public class AdminServiceImpl implements AdminService {
    * @return 对象列表
    */
   @Override
-  public ObjectList<AdminBO> queryByCondition(AdminBO adminBO, LinkedHashSet<String> orderBys, Integer pageIndex, Integer pageSize) {
+  public ObjectList<AdminBO> queryByCondition(AdminBO adminBO, LinkedHashSet<String> orderBys,
+      Integer pageIndex, Integer pageSize) {
     AdminEntity adminEntity = new AdminEntity();
-    BeanUtils.copyProperties(adminBO,adminEntity);
+    BeanUtils.copyProperties(adminBO, adminEntity);
     Integer countAll = this.adminDao.countAll(adminEntity);
-    List<AdminEntity> adminEntities = this.adminDao.queryByCondition(adminEntity,orderBys,pageIndex * pageSize, pageSize);
+    List<AdminEntity> adminEntities = this.adminDao
+        .queryByCondition(adminEntity, orderBys, pageIndex * pageSize, pageSize);
     List<AdminBO> adminBOS = new LinkedList<>();
     adminEntities.forEach(adminEntity1 -> {
       AdminBO adminBO1 = new AdminBO();
@@ -93,6 +95,18 @@ public class AdminServiceImpl implements AdminService {
   @Override
   public AdminBO queryById(Integer id) {
     AdminEntity adminEntity = this.adminDao.queryById(id);
+    AdminBO adminBO = new AdminBO();
+    BeanUtils.copyProperties(adminEntity, adminBO);
+    return adminBO;
+  }
+
+  @Override
+  public AdminBO queryByLoginNameAndLoginPassword(String loginName, String loginPassword) {
+    AdminEntity adminEntity = this.adminDao
+        .queryByLoginNameAndLoginPassword(loginName, loginPassword);
+    if (adminEntity == null) {
+      return null;
+    }
     AdminBO adminBO = new AdminBO();
     BeanUtils.copyProperties(adminEntity, adminBO);
     return adminBO;

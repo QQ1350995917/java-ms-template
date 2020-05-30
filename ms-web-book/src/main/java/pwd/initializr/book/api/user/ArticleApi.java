@@ -18,7 +18,7 @@ import pwd.initializr.common.web.api.vo.PageInput;
  * @version 1.0.0
  * @since DistributionVersion
  */
-@RequestMapping(value = "/api/user/article")
+@RequestMapping(value = "/api/article")
 public interface ArticleApi {
 
   @ApiOperation(value = "文章详情")

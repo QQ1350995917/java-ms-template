@@ -40,7 +40,7 @@ import pwd.initializr.typeface.business.bo.PaintingBO;
     description = "我的图片API"
 )
 @RestController(value = "paintingApi")
-@RequestMapping(value = "/api/user/painting")
+@RequestMapping(value = "/api/painting")
 public class PaintingController extends UserController implements PaintingApi {
 
   @Autowired

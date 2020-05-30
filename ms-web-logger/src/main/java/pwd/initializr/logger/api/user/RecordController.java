@@ -28,7 +28,7 @@ import pwd.initializr.logger.api.user.vo.RecordInput;
     description = "日志提交API"
 )
 @RestController(value = "loggerCommitApi")
-@RequestMapping(value = "/api/user/logger")
+@RequestMapping(value = "/api/logger")
 public class RecordController extends UserController implements RecordApi {
 
   @ApiOperation(value = "日志提交")

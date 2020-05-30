@@ -1,8 +1,6 @@
 package pwd.initializr.account.business.admin;
 
 import java.util.LinkedHashSet;
-import java.util.List;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 import pwd.initializr.account.business.admin.bo.AdminBO;
 import pwd.initializr.account.persistence.entity.AdminEntity;
@@ -38,7 +36,8 @@ public interface AdminService {
    *
    * @return 对象列表
    */
-  ObjectList<AdminBO> queryByCondition(AdminBO adminBO, LinkedHashSet<String> orderBys, Integer pageIndex, Integer pageSize);
+  ObjectList<AdminBO> queryByCondition(AdminBO adminBO, LinkedHashSet<String> orderBys,
+      Integer pageIndex, Integer pageSize);
 
   /**
    * 通过ID查询单条数据
@@ -47,6 +46,8 @@ public interface AdminService {
    * @return 实例对象
    */
   AdminBO queryById(Integer id);
+
+  AdminBO queryByLoginNameAndLoginPassword(String loginName, String loginPassword);
 
   /**
    * 修改数据

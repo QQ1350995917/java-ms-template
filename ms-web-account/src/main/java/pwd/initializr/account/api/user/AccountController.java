@@ -17,11 +17,11 @@ import pwd.initializr.account.api.user.vo.LoginOutput;
 import pwd.initializr.account.api.user.vo.SignUpByPhoneInput;
 import pwd.initializr.account.business.user.SessionService;
 import pwd.initializr.account.business.user.UserAccountService;
-import pwd.initializr.account.business.user.bo.UserBO;
+import pwd.initializr.account.business.user.bo.SessionBO;
 import pwd.initializr.account.business.user.bo.UserAccountBO;
+import pwd.initializr.account.business.user.bo.UserBO;
 import pwd.initializr.account.persistence.entity.UserAccountType;
 import pwd.initializr.account.rpc.RPCToken;
-import pwd.initializr.account.rpc.RPCUserSession;
 import pwd.initializr.common.web.api.user.UserController;
 import pwd.initializr.common.web.api.vo.SMSCodeInput;
 import pwd.initializr.common.web.business.bo.SMSCode;
@@ -74,13 +74,12 @@ public class AccountController extends UserController implements AccountApi {
       // TODO 优化password业务
       String password = smsCode.getSmsCode();
       UserBO userBOAndAccount = userAccountService.createUserAndAccount(userBO);
+      SessionBO sessionBO = new SessionBO();
+      BeanUtils.copyProperties(userBOAndAccount, sessionBO);
 
-      RPCUserSession RPCUserSession = new RPCUserSession();
-      BeanUtils.copyProperties(userBOAndAccount, RPCUserSession);
+      sessionService.replaceSession(sessionBO);
 
-      sessionService.updateSession(RPCUserSession);
-
-      String token = RPCToken.generateToken(RPCUserSession, ACCOUNT_SECRET);
+      String token = RPCToken.generateToken(sessionBO, ACCOUNT_SECRET);
       // TODO addCookie
       super.outputData(new LoginOutput(userBO.getId(), token));
     } else {

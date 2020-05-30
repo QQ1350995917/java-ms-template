@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,10 +17,10 @@ import pwd.initializr.account.api.user.vo.LoginInput;
 import pwd.initializr.account.api.user.vo.LoginOutput;
 import pwd.initializr.account.business.user.SessionService;
 import pwd.initializr.account.business.user.UserAccountService;
-import pwd.initializr.account.business.user.bo.UserBO;
+import pwd.initializr.account.business.user.bo.SessionBO;
 import pwd.initializr.account.business.user.bo.UserAccountBO;
+import pwd.initializr.account.business.user.bo.UserBO;
 import pwd.initializr.account.rpc.RPCToken;
-import pwd.initializr.account.rpc.RPCUserSession;
 import pwd.initializr.common.web.api.user.UserController;
 
 /**
@@ -52,18 +51,14 @@ public class SessionController extends UserController implements SessionApi {
   private UserAccountService userAccountService;
 
   @ApiOperation(value = "信息查询")
-  @GetMapping(value = {"/{id}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @GetMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
-  public void info(@PathVariable("id") Long id) {
-    if ((getUid() != id) || id == 0) {
-      outputException(400);
+  public void getInfo() {
+    SessionBO session = sessionService.getSession(getUid());
+    if (session == null) {
+      outputException(401);
     } else {
-      UserBO session = sessionService.getSession(id);
-      if (session == null) {
-        outputException(401);
-      } else {
-        outputData(session); // TODO 转化为VO
-      }
+      outputData(session);
     }
   }
 
@@ -73,33 +68,29 @@ public class SessionController extends UserController implements SessionApi {
   public void login(@RequestBody LoginInput input) {
     UserAccountBO account = new UserAccountBO();
     BeanUtils.copyProperties(input, account);
-    UserAccountBO accountByLoginNameAndPassword = userAccountService
+    UserAccountBO loginUserAccountBo = userAccountService
         .findAccountByLoginNameAndPassword(input.getLoginName(), input.getPassword());
     UserBO userByUserBOId = userAccountService
-        .findUserByUserId(accountByLoginNameAndPassword.getUserId());
-    userByUserBOId.setAccounts(Arrays.asList(new UserAccountBO[]{accountByLoginNameAndPassword}));
-    if (accountByLoginNameAndPassword == null) {
+        .findUserByUserId(loginUserAccountBo.getUserId());
+    userByUserBOId.setAccounts(Arrays.asList(new UserAccountBO[]{loginUserAccountBo}));
+    if (loginUserAccountBo == null) {
       outputData(400);
     } else {
-      RPCUserSession RPCUserSession = new RPCUserSession();
-      BeanUtils.copyProperties(userByUserBOId, RPCUserSession);
-
-      String token = RPCToken.generateToken(RPCUserSession, ACCOUNT_SECRET);
-      if (sessionService.getSession(accountByLoginNameAndPassword.getUserId()) == null) {
-        sessionService.updateSession(RPCUserSession);
+      SessionBO sessionBO = new SessionBO();
+      BeanUtils.copyProperties(userByUserBOId, sessionBO);
+      String token = RPCToken.generateToken(sessionBO, ACCOUNT_SECRET);
+      if (sessionService.getSession(loginUserAccountBo.getUserId()) == null) {
+        sessionService.replaceSession(sessionBO);
       }
       outputData(new LoginOutput(userByUserBOId.getId(), token));
     }
   }
 
   @ApiOperation(value = "退出")
-  @DeleteMapping(value = {"/{id}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @DeleteMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
-  public void logout(@PathVariable("id") Long id) {
-    if ((getUid() != id) || id == 0) {
-      outputException(400);
-    }
-    sessionService.delSession(id);
+  public void logout() {
+    sessionService.delSession(getUid());
     outputData();
   }
 }

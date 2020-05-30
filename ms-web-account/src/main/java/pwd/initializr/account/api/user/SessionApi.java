@@ -15,10 +15,10 @@ import pwd.initializr.account.api.user.vo.LoginInput;
  */
 public interface SessionApi {
 
-  void info(Long id);
+  void getInfo();
 
   void login(LoginInput input);
 
-  void logout(Long id);
+  void logout();
 
 }

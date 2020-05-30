@@ -29,9 +29,9 @@ public class UserBO {
   private Long id;
   private String name;
   private String phoneNumber;
-  private Integer status = 0;
-  private Date createTime = new Date();
-  private Date updateTime = new Date();
+  private Integer status;
+  private Date createTime;
+  private Date updateTime;
 
   private List<UserAccountBO> accounts;
 

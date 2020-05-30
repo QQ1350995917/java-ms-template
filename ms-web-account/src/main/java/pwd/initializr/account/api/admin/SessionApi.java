@@ -15,9 +15,9 @@ import pwd.initializr.account.api.admin.vo.LoginInput;
  */
 public interface SessionApi {
 
-  void login(LoginInput input);
+  void getInfo();
 
-  void info();
+  void login(LoginInput input);
 
   void logout();
 }

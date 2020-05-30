@@ -17,7 +17,7 @@ import pwd.initializr.book.api.user.vo.SearchInput;
  * @version 1.0.0
  * @since DistributionVersion
  */
-@RequestMapping(value = "/api/user/search")
+@RequestMapping(value = "/api/search")
 public interface SearchApi {
 
   @ApiOperation(value = "搜索图书/文章")

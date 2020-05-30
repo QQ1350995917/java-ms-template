@@ -19,20 +19,27 @@ import org.springframework.stereotype.Component;
 @Component
 public class KeyValueList extends HashMap implements InitializingBean {
 
-  public static String adminLogin = "/account/api/admin/session";// 管理员登录页面
-  public static String adminPath = "/api/admin";// 管理员url中path特征
-  public static String userLogin = "/account/api/session";// 用户登录页面
+  private static final Map<String, String> withoutTokenUrl = new HashMap<>();
 
-  private static final Map<String,String> withoutTokenUrl = new HashMap<>();
+  /**
+   * 管理员url中path特征
+   */
+  public static String adminPath = "/api/admin";
+  /**
+   * 管理员登录页面
+   */
+  public static String adminLogin = "/account/api/admin/session";
+  /**
+   * 用户登录页面
+   */
+  public static String userLogin = "/account/api/session";
 
   static {
-    withoutTokenUrl.put("/account/api/admin/session","PUT");
-    withoutTokenUrl.put("/account/api/session","PUT");
-    withoutTokenUrl.put("/account/api/account/phone","PUT");
-    withoutTokenUrl.put("/account/api/admin/session/login","POST");
+    withoutTokenUrl.put("/account/api/admin/session", "PUT");
+    withoutTokenUrl.put("/account/api/session", "PUT");
   }
 
-  public static boolean skipToken(String path,String method){
+  public static boolean skipToken(String path, String method) {
     if (withoutTokenUrl.containsKey(path) && withoutTokenUrl.containsValue(method)) {
       return true;
     }

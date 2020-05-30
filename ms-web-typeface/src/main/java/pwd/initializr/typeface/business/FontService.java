@@ -18,8 +18,7 @@ import pwd.initializr.typeface.business.bo.FontBO;
 @Service
 public interface FontService {
 
-  ObjectList<FontBO> findByCondition(FontBO fontBO, Long pageIndex,
-      Long pageSize);
+  ObjectList<FontBO> findByCondition(FontBO fontBO, Integer pageIndex, Integer pageSize);
 
   FontBO findById(Long id);
 

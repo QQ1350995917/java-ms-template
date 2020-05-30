@@ -30,10 +30,10 @@ import lombok.ToString;
 @ApiModel(value = "loginInput", description = "管理员登录请求参数")
 public class LoginInput implements Serializable {
 
-  @ApiModelProperty(name = "name", value = "登录名称", required = true, example = "DingPengwei")
+  @ApiModelProperty(name = "loginName", value = "登录名称", required = true, example = "DingPengwei")
   @NotNull(message = "0")
   private String loginName;
-  @ApiModelProperty(name = "password", value = "登录密码", required = true, example = "123456")
+  @ApiModelProperty(name = "loginPassword", value = "登录密码", required = true, example = "123456")
   @NotNull(message = "0")
   private String loginPassword;
   @ApiModelProperty(name = "vCode", value = "图形验证码", required = false, example = "pwdxyz")

@@ -40,7 +40,7 @@ import pwd.initializr.storage.business.bo.StorageBO;
     description = "文件上传API"
 )
 @Controller(value = "uploadApiByUser")
-@RequestMapping(value = "/api/user/file")
+@RequestMapping(value = "/api/file")
 public class FileController extends UserController implements FileApi {
 
   @Value("${spring.minio.bucket_name}")
