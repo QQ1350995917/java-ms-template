@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -57,12 +56,16 @@ public class SessionController extends AdminController implements SessionApi {
   @Override
   public void getInfo() {
     SessionBO session = sessionService.getSession(getUid());
-    JSONObject content = new JSONObject();
-    content.put("roles", new String[]{"admin"});
-    content.put("introduction", "I am a super administrator");
-    content.put("avatar", "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif");
-    content.put("name", "Super Admin");
-    super.outputData(content);
+    if (session == null) {
+      super.outputException(401);
+    } else {
+      JSONObject content = new JSONObject();
+      content.put("roles", new String[]{"admin"});
+      content.put("introduction", "I am a super administrator");
+      content.put("avatar", "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif");
+      content.put("name", "Super Admin");
+      super.outputData(content);
+    }
   }
 
   @ApiOperation(value = "登录")

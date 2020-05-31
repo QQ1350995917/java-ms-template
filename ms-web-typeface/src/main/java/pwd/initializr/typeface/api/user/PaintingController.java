@@ -81,7 +81,7 @@ public class PaintingController extends UserController implements PaintingApi {
     paintingBO.setFontId(input.getFontId());
 
     ObjectList<PaintingBO> byCondition = paintingService
-        .findByCondition(paintingBO, input.getIndex(), input.getSize());
+        .findByCondition(paintingBO, input.getIndex().longValue(), input.getSize().longValue());
 
     PaintingListOutput<PaintingVO> output = new PaintingListOutput<PaintingVO>();
     BeanUtils.copyProperties(input, output);
@@ -96,7 +96,7 @@ public class PaintingController extends UserController implements PaintingApi {
                 obj.getImageUrl(), obj.getCreateTime()))
         .collect(Collectors.toList());
 
-    output.setData(collect);
+    output.setElements(collect);
     outputData(output);
   }
 

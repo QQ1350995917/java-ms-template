@@ -37,6 +37,7 @@ public class KeyValueList extends HashMap implements InitializingBean {
   static {
     withoutTokenUrl.put("/account/api/admin/session", "PUT");
     withoutTokenUrl.put("/account/api/session", "PUT");
+//    withoutTokenUrl.put("/book/api/book", "GET");
   }
 
   public static boolean skipToken(String path, String method) {

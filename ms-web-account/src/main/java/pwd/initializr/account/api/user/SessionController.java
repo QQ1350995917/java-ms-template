@@ -1,5 +1,6 @@
 package pwd.initializr.account.api.user;
 
+import com.alibaba.fastjson.JSONObject;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.util.Arrays;
@@ -56,9 +57,14 @@ public class SessionController extends UserController implements SessionApi {
   public void getInfo() {
     SessionBO session = sessionService.getSession(getUid());
     if (session == null) {
-      outputException(401);
+      super.outputException(401);
     } else {
-      outputData(session);
+      JSONObject content = new JSONObject();
+      content.put("roles", new String[]{"admin"});
+      content.put("introduction", "My Space");
+      content.put("avatar", "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif");
+      content.put("name", session.getLoginName());
+      super.outputData(content);
     }
   }
 
@@ -69,7 +75,7 @@ public class SessionController extends UserController implements SessionApi {
     UserAccountBO account = new UserAccountBO();
     BeanUtils.copyProperties(input, account);
     UserAccountBO loginUserAccountBo = userAccountService
-        .findAccountByLoginNameAndPassword(input.getLoginName(), input.getPassword());
+        .findAccountByLoginNameAndPassword(input.getLoginName(), input.getLoginPassword());
     UserBO userByUserBOId = userAccountService
         .findUserByUserId(loginUserAccountBo.getUserId());
     userByUserBOId.setAccounts(Arrays.asList(new UserAccountBO[]{loginUserAccountBo}));

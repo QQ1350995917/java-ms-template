@@ -31,8 +31,8 @@ public class FontServiceImpl implements FontService {
   private FontMapper fontMapper;
 
   @Override
-  public ObjectList<FontBO> findByCondition(FontBO fontBO, Long pageIndex,
-      Long pageSize) {
+  public ObjectList<FontBO> findByCondition(FontBO fontBO, Integer pageIndex,
+      Integer pageSize) {
     FontEntity fontEntity = new FontEntity();
     BeanUtils.copyProperties(fontBO, fontEntity);
 
@@ -48,7 +48,12 @@ public class FontServiceImpl implements FontService {
             obj.getThumbUrl(), obj.getStatus(), obj.getCreateTime(), obj.getUpdateTime()))
         .collect(Collectors.toList());
 
-    return new ObjectList<>(count.longValue(), pageIndex, pageSize, collect);
+    ObjectList<FontBO> fontBOObjectList = new ObjectList<>();
+    fontBOObjectList.setTotal(count.longValue());
+    fontBOObjectList.setIndex(pageIndex.longValue());
+    fontBOObjectList.setSize(pageSize.longValue());
+    fontBOObjectList.setElements(collect);
+    return fontBOObjectList;
   }
 
   @Override

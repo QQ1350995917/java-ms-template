@@ -46,10 +46,11 @@ public class SearchController extends UserController implements SearchApi {
         .search(tempSearchInput.getKeyword(), tempSearchInput.getIndex(),
             tempSearchInput.getSize());
 
-    if (objectListOutput.getMeta().getCode() == HttpStatus.OK.value()) {
+    if (objectListOutput.getMeta() != null && (objectListOutput.getMeta().getCode() == HttpStatus.OK
+        .value())) {
       super.outputData(objectListOutput.getData());
     } else {
-      super.outputData(objectListOutput.getData());
+      super.outputData();
     }
   }
 

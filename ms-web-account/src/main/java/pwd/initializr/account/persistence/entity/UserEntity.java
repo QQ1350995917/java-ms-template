@@ -1,8 +1,12 @@
 package pwd.initializr.account.persistence.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.util.Date;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -24,8 +28,11 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
+@Data
+@TableName(value = "user")
 public class UserEntity implements Serializable {
 
+  @TableId(value = "id", type = IdType.AUTO)
   private Long id;
   private String name;
   private String phoneNumber;

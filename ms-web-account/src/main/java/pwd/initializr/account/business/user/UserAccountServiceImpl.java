@@ -3,6 +3,7 @@ package pwd.initializr.account.business.user;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.BeanUtils;
@@ -55,12 +56,17 @@ public class UserAccountServiceImpl implements UserAccountService {
   public UserBO createUserAndAccount(UserBO userBO) {
     UserEntity userEntity = new UserEntity();
     BeanUtils.copyProperties(userBO, userEntity);
+    Date date = new Date();
+    userEntity.setCreateTime(date);
+    userEntity.setUpdateTime(date);
     userDao.insert(userEntity);
 
     UserAccountBO userAccountBO = userBO.getAccounts().get(0);
     UserAccountEntity userAccountEntity = new UserAccountEntity();
     BeanUtils.copyProperties(userAccountBO, userAccountEntity);
     userAccountEntity.setUserId(userEntity.getId());
+    userAccountEntity.setCreateTime(date);
+    userAccountEntity.setUpdateTime(date);
     userAccountDao.insert(userAccountEntity);
 
     BeanUtils.copyProperties(userAccountEntity, userAccountBO);

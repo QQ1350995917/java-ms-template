@@ -40,30 +40,6 @@ public class BookController extends UserController implements BookApi {
   private BookService bookService;
 
   @Override
-  public void fetchBooksByRange(PageInput input) {
-    ObjectList<BookBO> bookBOObjectList = bookService
-        .listBookByRange(input.getIndex(), input.getSize());
-
-    ObjectList<BookVO> result = new ObjectList<>();
-
-    if (bookBOObjectList != null) {
-      List<BookVO> resultVOS = new LinkedList<>();
-      bookBOObjectList.getElements().forEach(bookBO -> {
-        BookVO bookVO = new BookVO();
-        BeanUtils.copyProperties(bookBO, bookVO);
-        resultVOS.add(bookVO);
-      });
-
-      result.setTotal(bookBOObjectList.getTotal());
-      result.setPages(bookBOObjectList.getPages());
-      result.setIndex(bookBOObjectList.getIndex());
-      result.setSize(bookBOObjectList.getSize());
-      result.setElements(resultVOS);
-    }
-    super.outputData(result);
-  }
-
-  @Override
   public void fetchBookById(Long bookId) {
     BookBO bookBO = bookService.findBookById(bookId);
     BookVO bookVO = new BookVO();
@@ -107,6 +83,30 @@ public class BookController extends UserController implements BookApi {
     }
 
     super.outputData(bookTableAroundVO);
+  }
+
+  @Override
+  public void fetchBooksByRange(PageInput input) {
+    ObjectList<BookBO> bookBOObjectList = bookService
+        .listBookByRange(input.getIndex(), input.getSize());
+
+    ObjectList<BookVO> result = new ObjectList<>();
+
+    if (bookBOObjectList != null) {
+      List<BookVO> resultVOS = new LinkedList<>();
+      bookBOObjectList.getElements().forEach(bookBO -> {
+        BookVO bookVO = new BookVO();
+        BeanUtils.copyProperties(bookBO, bookVO);
+        resultVOS.add(bookVO);
+      });
+
+      result.setTotal(bookBOObjectList.getTotal());
+      result.setPages(bookBOObjectList.getPages());
+      result.setIndex(bookBOObjectList.getIndex());
+      result.setSize(bookBOObjectList.getSize());
+      result.setElements(resultVOS);
+    }
+    super.outputData(result);
   }
 }
 
