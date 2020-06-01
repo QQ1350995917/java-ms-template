@@ -8,6 +8,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
@@ -82,7 +83,7 @@ public class ArticleServiceImpl implements ArticleService {
   public ObjectList<ArticleBO> listArticle(Integer pageIndex, Integer pageSize) {
     Query query = new Query().with(PageRequest.of(pageIndex, pageSize));
     ObjectList<ArticleBO> result = this.listArticle(query);
-    result.setPages(pageIndex.longValue());
+    result.setIndex(pageIndex.longValue());
     result.setSize(pageSize.longValue());
     return result;
   }
@@ -91,12 +92,13 @@ public class ArticleServiceImpl implements ArticleService {
   public ObjectList<ArticleBO> listArticle(Long bookId, Integer pageIndex, Integer pageSize) {
     Query query = new Query().addCriteria(Criteria.where("book_id").is(bookId)).with(PageRequest.of(pageIndex, pageSize));
     ObjectList<ArticleBO> result = this.listArticle(query);
-    result.setPages(pageIndex.longValue());
+    result.setIndex(pageIndex.longValue());
     result.setSize(pageSize.longValue());
     return result;
   }
 
   private ObjectList<ArticleBO> listArticle(Query query) {
+    query.fields().exclude("paragraphs");
     List<ArticleEntity> articleEntities = mongoTemplate.find(query,ArticleEntity.class);
     long count = mongoTemplate.count(query, ArticleEntity.class);
     List<ArticleBO> articleBOs = new LinkedList<>();

@@ -2,6 +2,7 @@ package pwd.initializr.book.api.admin;
 
 import pwd.initializr.book.api.admin.vo.CreateArticleInput;
 import pwd.initializr.book.api.admin.vo.SearchInput;
+import pwd.initializr.common.web.api.vo.PageInput;
 
 /**
  * pwd.initializr.book.api.admin@ms-web-initializr
@@ -22,7 +23,7 @@ public interface ArticleApi {
 
   void fetchArticleById(Long articleId);
 
-  void fetchArticlesByRange(SearchInput input);
+  void fetchArticlesByRange(PageInput input);
 
   void updateArticle(Long articleId, CreateArticleInput input);
 }

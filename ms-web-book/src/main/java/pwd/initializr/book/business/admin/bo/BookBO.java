@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.springframework.data.mongodb.core.mapping.Field;
 
 /**
  * pwd.initializr.book.business.user.bo@ms-web-initializr
@@ -24,7 +23,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @Setter
 @Getter
 @ToString
-public class BookBO extends BaseBO{
+public class BookBO extends BaseBO {
 
   private Integer type;
   private String isbn;

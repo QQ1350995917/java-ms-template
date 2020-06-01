@@ -98,8 +98,8 @@ public class BookServiceImpl implements BookService {
     }
     result.setElements(bookBOS);
     result.setTotal(count);
-    result.setPages(pageIndex.longValue());
     result.setSize(pageSize.longValue());
+    result.setIndex(pageIndex.longValue());
     return result;
   }
 

@@ -34,7 +34,7 @@ public class ArticleVO implements Serializable {
 
     @ApiModelProperty(name = "id", value = "0", required = true, example = "9787229124410")
     @NotNull(message = "0")
-    private String id;
+    private Long id;
     @ApiModelProperty(name = "bookId", value = "0", required = false, example = "9787229124410")
     @NotNull(message = "0")
     private Long bookId;

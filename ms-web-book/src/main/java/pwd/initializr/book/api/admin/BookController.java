@@ -46,7 +46,6 @@ public class BookController extends AdminController implements BookApi {
     ObjectList<BookBO> bookBOObjectList = bookService.listBook(input.getIndex(), input.getSize());
 
     ObjectList<BookVO> result = new ObjectList<>();
-
     if (bookBOObjectList != null) {
       List<BookVO> resultVOS = new LinkedList<>();
       bookBOObjectList.getElements().forEach(bookBO -> {
@@ -54,7 +53,6 @@ public class BookController extends AdminController implements BookApi {
         BeanUtils.copyProperties(bookBO, bookVO);
         resultVOS.add(bookVO);
       });
-
       result.setTotal(bookBOObjectList.getTotal());
       result.setPages(bookBOObjectList.getPages());
       result.setIndex(bookBOObjectList.getIndex());
