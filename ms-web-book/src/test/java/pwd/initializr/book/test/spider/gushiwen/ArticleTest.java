@@ -2,8 +2,8 @@ package pwd.initializr.book.test.spider.gushiwen;
 
 import java.nio.charset.Charset;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
 import org.jsoup.Jsoup;
@@ -90,7 +90,7 @@ public class ArticleTest {
                 String authorNameDetail = sourceDetail.get(0).getElementsByTag("a").get(1).text();
                 articleBO.setAuthorName(authorNameDetail);
                 Element elementById = documentDetail.getElementById("contson" + id);
-                Set<String> graphs = new LinkedHashSet<>();
+                LinkedList<String> graphs = new LinkedList<>();
 
                 Elements pTag = elementById.getElementsByTag("p");
                 if (pTag == null) {
@@ -100,7 +100,7 @@ public class ArticleTest {
                     graphs.add(graph);
                   }
                 } else {
-                  for (int i=0;i<pTag.size();i++) {
+                  for (int i = 0; i < pTag.size(); i++) {
                     String graph = pTag.get(i).text().replace("　　", "").trim();
                     graphs.add(graph);
                   }

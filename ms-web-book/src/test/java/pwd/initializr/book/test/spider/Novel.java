@@ -2,6 +2,7 @@ package pwd.initializr.book.test.spider;
 
 import java.util.Date;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.Set;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -69,7 +70,7 @@ public class Novel {
     Element content = body.getElementById("tdcontent");
     Elements pTags = content.getElementsByTag("p");
 
-    Set<String> ps = new LinkedHashSet<>();
+    LinkedList<String> ps = new LinkedList<>();
     for (Element pTag : pTags) {
       String text = pTag.text();
       ps.add(text);

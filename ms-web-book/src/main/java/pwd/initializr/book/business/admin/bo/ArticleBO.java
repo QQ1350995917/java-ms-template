@@ -1,6 +1,6 @@
 package pwd.initializr.book.business.admin.bo;
 
-import java.util.Set;
+import java.util.LinkedList;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,6 +26,6 @@ import lombok.ToString;
 public class ArticleBO extends BaseBO {
 
   private Long bookId;
-  private Set<String> paragraphs;
+  private LinkedList<String> paragraphs;
   private String fromUrl;
 }

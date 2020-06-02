@@ -21,6 +21,8 @@ import pwd.initializr.common.web.business.bo.ObjectList;
 @Service
 public interface ArticleService {
 
+  ArticleBO findArticleById(Long articleId);
+
   ArticleBO createArticle(ArticleBO articleBO);
 
   Long updateArticle(ArticleBO articleBO);

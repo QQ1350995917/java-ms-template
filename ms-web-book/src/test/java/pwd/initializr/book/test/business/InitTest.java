@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
-import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import org.junit.Test;
@@ -33,17 +32,23 @@ public class InitTest {
   @Autowired
   private ArticleService articleService;
 
+  public static void main(String[] args) throws Exception {
+    InitTest initTest = new InitTest();
+    initTest.init();
+  }
+
   @Test
   public void init() throws Exception {
     Long bookId = 15L;
     String filePath = "/Users/pwd/Downloads/金庸小说全集三联版txt/雪山飞狐.txt";
-    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(filePath),Charset.forName("GB18030")));
+    BufferedReader bufferedReader = new BufferedReader(
+        new InputStreamReader(new FileInputStream(filePath), Charset.forName("GB18030")));
     String line;
     List<ArticleBO> articleEntities = new LinkedList<>();
     ArticleBO currentArticleEntity = new ArticleBO();
     currentArticleEntity.setBookId(bookId);
     currentArticleEntity.setTitle("序");
-    currentArticleEntity.setParagraphs(new LinkedHashSet<>());
+    currentArticleEntity.setParagraphs(new LinkedList<>());
     articleEntities.add(currentArticleEntity);
     List<String> titles = new LinkedList<>();
     titles.add("　　一");
@@ -56,12 +61,12 @@ public class InitTest {
     titles.add("　　八");
     titles.add("　　九");
     while ((line = bufferedReader.readLine()) != null) {
-      if (titles.contains(line)){
+      if (titles.contains(line)) {
         System.out.println(line);
         currentArticleEntity = new ArticleBO();
         currentArticleEntity.setBookId(bookId);
         currentArticleEntity.setTitle(line.trim());
-        currentArticleEntity.setParagraphs(new LinkedHashSet<>());
+        currentArticleEntity.setParagraphs(new LinkedList<>());
         articleEntities.add(currentArticleEntity);
       } else {
         currentArticleEntity.getParagraphs().add(line);
@@ -72,10 +77,5 @@ public class InitTest {
 //      articleService.createNewArticle(articleBO);
     }
     System.out.println("over");
-  }
-
-  public static void main(String[] args) throws Exception {
-    InitTest initTest = new InitTest();
-    initTest.init();
   }
 }

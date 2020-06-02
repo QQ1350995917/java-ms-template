@@ -4,6 +4,7 @@ import com.mongodb.client.result.UpdateResult;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import org.bson.Document;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -36,6 +37,16 @@ public class ArticleServiceImpl implements ArticleService {
   @Autowired
   private MongoTemplate mongoTemplate;
 
+  @Override
+  public ArticleBO findArticleById(Long articleId) {
+    Document queryObject = new Document();
+    queryObject.put("id", articleId);
+    Query query = new BasicQuery(queryObject);
+    ArticleEntity articleEntity = mongoTemplate.findOne(query, ArticleEntity.class);
+    ArticleBO articleBO = new ArticleBO();
+    BeanUtils.copyProperties(articleEntity, articleBO);
+    return articleBO;
+  }
 
   @Override
   public ArticleBO createArticle(ArticleBO articleBO) {

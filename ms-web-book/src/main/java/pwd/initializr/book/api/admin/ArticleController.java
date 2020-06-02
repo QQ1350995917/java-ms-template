@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -68,7 +69,10 @@ public class ArticleController extends AdminController implements ArticleApi {
       "/{articleId}"}, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
   public void fetchArticleById(@PathVariable("articleId") Long articleId) {
-
+    ArticleBO articleById = articleService.findArticleById(articleId);
+    ArticleVO articleVO = new ArticleVO();
+    BeanUtils.copyProperties(articleById,articleVO);
+    super.outputData(articleVO);
   }
 
   @ApiOperation(value = "文章清单")
