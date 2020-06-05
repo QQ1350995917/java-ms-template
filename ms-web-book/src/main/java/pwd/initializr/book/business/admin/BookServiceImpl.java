@@ -22,6 +22,8 @@ import pwd.initializr.book.business.admin.bo.BookBO;
 import pwd.initializr.book.persistence.entity.ArticleEntity;
 import pwd.initializr.book.persistence.entity.BookEntity;
 import pwd.initializr.common.utils.ConstantDeleteStatus;
+import pwd.initializr.common.utils.ConstantRecommendStatus;
+import pwd.initializr.common.utils.ConstantVisibilityStatus;
 import pwd.initializr.common.web.business.bo.ObjectList;
 
 /**
@@ -55,38 +57,33 @@ public class BookServiceImpl implements BookService {
   }
 
   @Override
-  public Long updateBook(BookBO bookBO) {
-    Query query = new Query().addCriteria(Criteria.where("id").is(bookBO.getId()));
-    Update update = new Update()
-      .set("title",bookBO.getTitle())
-      .set("sub_title",bookBO.getSubTitle())
-      .set("author_id",bookBO.getAuthorId())
-      .set("author_name",bookBO.getAuthorName())
-      .set("type",bookBO.getType())
-      .set("isbn",bookBO.getIsbn())
-      .set("thumbs",bookBO.getThumbs())
-      .set("summary",bookBO.getSummary())
-      .set("labels",bookBO.getLabels())
-      .set("publisher",bookBO.getPublisher())
-      .set("publication_time",bookBO.getPublicationTime())
-      .set("del_status",bookBO.getDelStatus())
-      .set("update_time",bookBO.getUpdateTime());
-
-    UpdateResult updateResult = mongoTemplate.updateFirst(query, update, BookEntity.class);
-    return updateResult.getModifiedCount();
+  public Integer deleteBooks(List<Long> bookIds) {
+    return update(bookIds, "del_status", ConstantDeleteStatus.DELETED.value());
   }
 
   @Override
-  public Long deleteBookById(List<Long> bookIds) {
-    Query query = new Query().addCriteria(Criteria.where("id").in(bookIds));
-    Update update = new Update().set("del_status",ConstantDeleteStatus.DELETED.value());
-    UpdateResult updateResult = mongoTemplate.updateFirst(query, update, BookEntity.class);
-    return updateResult.getModifiedCount();
+  public Integer deleteCancelBooks(List<Long> bookIds) {
+    return update(bookIds, "del_status", ConstantDeleteStatus.EXISTING.value());
+  }
+
+  @Override
+  public BookBO findBookById(Long bookId) {
+    BookEntity bookEntity = mongoTemplate
+        .findOne(Query.query(Criteria.where("id").is(bookId)), BookEntity.class);
+    if (bookEntity == null) {
+      return null;
+    }
+    BookBO bookBO = new BookBO();
+    BeanUtils.copyProperties(bookEntity, bookBO);
+    return bookBO;
   }
 
   @Override
   public ObjectList<BookBO> listBook(Integer pageIndex, Integer pageSize) {
-    Query query = new Query().with(PageRequest.of(pageIndex, pageSize));
+    Sort sort = new Sort(Direction.DESC, "update_time");
+    Query query = new Query()
+        .with(PageRequest.of(pageIndex, pageSize)).with(sort);
+
     List<BookEntity> bookEntities = mongoTemplate.find(query, BookEntity.class);
     long count = mongoTemplate.count(query, BookEntity.class);
     ObjectList<BookBO> result = new ObjectList<>();
@@ -101,19 +98,6 @@ public class BookServiceImpl implements BookService {
     result.setSize(pageSize.longValue());
     result.setIndex(pageIndex.longValue());
     return result;
-  }
-
-
-  @Override
-  public BookBO findBookById(Long bookId) {
-    BookEntity bookEntity = mongoTemplate
-        .findOne(Query.query(Criteria.where("id").is(bookId)), BookEntity.class);
-    if (bookEntity == null) {
-      return null;
-    }
-    BookBO bookBO = new BookBO();
-    BeanUtils.copyProperties(bookEntity, bookBO);
-    return bookBO;
   }
 
   @Override
@@ -136,7 +120,6 @@ public class BookServiceImpl implements BookService {
     result.setTotal(count);
     return result;
   }
-
 
   @Override
   public ArticleAroundBO listBookTableByAround(Long bookId, Long articleId) {
@@ -173,4 +156,56 @@ public class BookServiceImpl implements BookService {
 
     return result;
   }
+
+  @Override
+  public Integer recommendBooks(List<Long> bookIds) {
+    return update(bookIds, "recommend", ConstantRecommendStatus.RECOMMEND.value());
+  }
+
+  @Override
+  public Integer recommendCancelBooks(List<Long> bookIds) {
+    return update(bookIds, "recommend", ConstantRecommendStatus.NOT_RECOMMEND.value());
+  }
+
+  @Override
+  public Long updateBook(BookBO bookBO) {
+    Query query = new Query().addCriteria(Criteria.where("id").is(bookBO.getId()));
+    Update update = new Update()
+        .set("title", bookBO.getTitle())
+        .set("sub_title", bookBO.getSubTitle())
+        .set("author_id", bookBO.getAuthorId())
+        .set("author_name", bookBO.getAuthorName())
+        .set("type", bookBO.getType())
+        .set("isbn", bookBO.getIsbn())
+        .set("thumbs", bookBO.getThumbs())
+        .set("summary", bookBO.getSummary())
+        .set("labels", bookBO.getLabels())
+        .set("publisher", bookBO.getPublisher())
+        .set("publication_time", bookBO.getPublicationTime())
+        .set("del_status", bookBO.getDelStatus())
+        .set("visibility", bookBO.getVisibility())
+        .set("recommend", bookBO.getRecommend())
+        .set("update_time", bookBO.getUpdateTime());
+
+    UpdateResult updateResult = mongoTemplate.updateFirst(query, update, BookEntity.class);
+    return updateResult.getModifiedCount();
+  }
+
+  @Override
+  public Integer visibleBooks(List<Long> bookIds) {
+    return update(bookIds, "visibility", ConstantVisibilityStatus.VISIBILITY.value());
+  }
+
+  @Override
+  public Integer visibleCancelBooks(List<Long> bookIds) {
+    return update(bookIds, "visibility", ConstantVisibilityStatus.NOT_VISIBILITY.value());
+  }
+
+  private Integer update(List<Long> bookIds, String key, Integer value) {
+    Query query = new Query().addCriteria(Criteria.where("id").in(bookIds));
+    Update update = new Update().set(key, value);
+    UpdateResult updateResult = mongoTemplate.updateFirst(query, update, BookEntity.class);
+    return Long.valueOf(updateResult.getModifiedCount()).intValue();
+  }
+
 }

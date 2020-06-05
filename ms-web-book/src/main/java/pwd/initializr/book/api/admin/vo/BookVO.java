@@ -70,9 +70,15 @@ public class BookVO implements Serializable {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private String publicationTime;
-    @ApiModelProperty(name = "status", value = "状态", required = false, example = "0")
+    @ApiModelProperty(name = "delStatus", value = "删除状态", required = true, example = "0")
     @NotNull(message = "0")
-    private Integer status;
+    private Integer delStatus;
+    @ApiModelProperty(name = "visibility", value = "可见性", required = true, example = "0")
+    @NotNull(message = "0")
+    private Integer visibility;
+    @ApiModelProperty(name = "recommend", value = "推荐", required = true, example = "0")
+    @NotNull(message = "0")
+    private Integer recommend;
     @ApiModelProperty(name = "createTime", value = "创建时间", required = true, example = "0")
     @NotNull(message = "0")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")

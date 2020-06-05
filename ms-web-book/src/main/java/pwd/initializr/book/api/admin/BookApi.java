@@ -31,10 +31,15 @@ public interface BookApi {
       ""}, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   void createBook(CreateBookInput input);
 
-  @ApiOperation(value = "删除图书")
+  @ApiOperation(value = "图书删除")
   @DeleteMapping(value = {
-      ""}, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+      "/delete"}, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   void deleteBooks(@RequestBody Long[] bookIds);
+
+  @ApiOperation(value = "取消图书删除")
+  @PutMapping(value = {
+      "/delete/cancel"}, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  void deleteCancelBooks(@RequestBody Long[] bookIds);
 
   @ApiOperation(value = "图书详情")
   @GetMapping(value = {
@@ -59,8 +64,28 @@ public interface BookApi {
       ""}, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   void fetchBooksByRange(PageInput input);
 
+  @ApiOperation(value = "图书推荐")
+  @PutMapping(value = {
+      "/recommend"}, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  void recommendBooks(@RequestBody Long[] bookIds);
+
+  @ApiOperation(value = "取消图书推荐")
+  @DeleteMapping(value = {
+      "/recommend/cancel"}, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  void recommendCancelBooks(@RequestBody Long[] bookIds);
+
   @ApiOperation(value = "修改图书信息")
   @PutMapping(value = {
       "/{bookId}"}, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   void updateBook(@PathVariable("bookId") Long bookId, CreateBookInput input);
+
+  @ApiOperation(value = "图书可见")
+  @PutMapping(value = {
+      "/visible"}, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  void visibleBooks(@RequestBody Long[] bookIds);
+
+  @ApiOperation(value = "取消图书可见")
+  @DeleteMapping(value = {
+      "/visible/cancel"}, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  void visibleCancelBooks(@RequestBody Long[] bookIds);
 }

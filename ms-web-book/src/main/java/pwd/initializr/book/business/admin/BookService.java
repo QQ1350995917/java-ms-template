@@ -23,16 +23,26 @@ public interface BookService {
 
   BookBO createBook(BookBO bookBO);
 
-  Long updateBook(BookBO bookBO);
+  Integer deleteBooks(List<Long> bookIds);
 
-  Long deleteBookById(List<Long> bookIds);
-
-  ObjectList<BookBO> listBook(Integer pageIndex, Integer pageSize);
+  Integer deleteCancelBooks(List<Long> bookIds);
 
   BookBO findBookById(Long bookId);
+
+  ObjectList<BookBO> listBook(Integer pageIndex, Integer pageSize);
 
   ObjectList<ArticleBO> listBookTable(Long bookId, Integer index, Integer size);
 
   ArticleAroundBO listBookTableByAround(Long bookId, Long tableId);
+
+  Integer recommendBooks(List<Long> bookIds);
+
+  Integer recommendCancelBooks(List<Long> bookIds);
+
+  Long updateBook(BookBO bookBO);
+
+  Integer visibleBooks(List<Long> bookIds);
+
+  Integer visibleCancelBooks(List<Long> bookIds);
 
 }

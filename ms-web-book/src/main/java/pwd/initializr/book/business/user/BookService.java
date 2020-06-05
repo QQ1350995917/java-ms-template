@@ -22,7 +22,7 @@ import pwd.initializr.common.web.business.bo.ObjectList;
 @Service
 public interface BookService {
 
-    ObjectList<BookBO> listBookByRange(Integer index, Integer size);
+    ObjectList<BookBO> listRecommendBooks(Integer index, Integer size);
 
     BookBO findBookById(Long bookId);
 

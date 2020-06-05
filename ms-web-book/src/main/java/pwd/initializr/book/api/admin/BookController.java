@@ -42,24 +42,23 @@ public class BookController extends AdminController implements BookApi {
   private BookService bookService;
 
   @Override
-  public void fetchBooksByRange(PageInput input) {
-    ObjectList<BookBO> bookBOObjectList = bookService.listBook(input.getIndex(), input.getSize());
+  public void createBook(CreateBookInput input) {
+    BookBO bookBO = new BookBO();
+    BeanUtils.copyProperties(input, bookBO);
+    BookBO newBook = bookService.createBook(bookBO);
+    super.outputData(newBook.getId());
+  }
 
-    ObjectList<BookVO> result = new ObjectList<>();
-    if (bookBOObjectList != null) {
-      List<BookVO> resultVOS = new LinkedList<>();
-      bookBOObjectList.getElements().forEach(bookBO -> {
-        BookVO bookVO = new BookVO();
-        BeanUtils.copyProperties(bookBO, bookVO);
-        resultVOS.add(bookVO);
-      });
-      result.setTotal(bookBOObjectList.getTotal());
-      result.setPages(bookBOObjectList.getPages());
-      result.setIndex(bookBOObjectList.getIndex());
-      result.setSize(bookBOObjectList.getSize());
-      result.setElements(resultVOS);
-    }
-    super.outputData(result);
+  @Override
+  public void deleteBooks(Long[] bookIds) {
+    Integer integer = bookService.deleteBooks(Arrays.asList(bookIds));
+    super.outputData(integer);
+  }
+
+  @Override
+  public void deleteCancelBooks(Long[] bookIds) {
+    Integer integer = bookService.deleteCancelBooks(Arrays.asList(bookIds));
+    super.outputData(integer);
   }
 
   @Override
@@ -109,11 +108,36 @@ public class BookController extends AdminController implements BookApi {
   }
 
   @Override
-  public void createBook(CreateBookInput input) {
-    BookBO bookBO = new BookBO();
-    BeanUtils.copyProperties(input, bookBO);
-    BookBO newBook = bookService.createBook(bookBO);
-    super.outputData(newBook.getId());
+  public void fetchBooksByRange(PageInput input) {
+    ObjectList<BookBO> bookBOObjectList = bookService.listBook(input.getIndex(), input.getSize());
+
+    ObjectList<BookVO> result = new ObjectList<>();
+    if (bookBOObjectList != null) {
+      List<BookVO> resultVOS = new LinkedList<>();
+      bookBOObjectList.getElements().forEach(bookBO -> {
+        BookVO bookVO = new BookVO();
+        BeanUtils.copyProperties(bookBO, bookVO);
+        resultVOS.add(bookVO);
+      });
+      result.setTotal(bookBOObjectList.getTotal());
+      result.setPages(bookBOObjectList.getPages());
+      result.setIndex(bookBOObjectList.getIndex());
+      result.setSize(bookBOObjectList.getSize());
+      result.setElements(resultVOS);
+    }
+    super.outputData(result);
+  }
+
+  @Override
+  public void recommendBooks(Long[] bookIds) {
+    Integer integer = bookService.recommendBooks(Arrays.asList(bookIds));
+    super.outputData(integer);
+  }
+
+  @Override
+  public void recommendCancelBooks(Long[] bookIds) {
+    Integer integer = bookService.recommendCancelBooks(Arrays.asList(bookIds));
+    super.outputData(integer);
   }
 
   @Override
@@ -126,9 +150,14 @@ public class BookController extends AdminController implements BookApi {
   }
 
   @Override
-  public void deleteBooks(Long[] bookIds) {
-    Long aLong = bookService.deleteBookById(Arrays.asList(bookIds));
-    super.outputData(aLong);
+  public void visibleBooks(Long[] bookIds) {
+    Integer integer = bookService.visibleBooks(Arrays.asList(bookIds));
+    super.outputData(integer);
   }
 
+  @Override
+  public void visibleCancelBooks(Long[] bookIds) {
+    Integer integer = bookService.visibleCancelBooks(Arrays.asList(bookIds));
+    super.outputData(integer);
+  }
 }

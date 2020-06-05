@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.LinkedHashSet;
-import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -54,8 +53,24 @@ public class BaseEntity implements Serializable {
   @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
   private Date publicationTime = new Date();
+  /**
+   * 是否已经删除 1：没删除 -1：删除
+   */
   @Field("del_status")
   private Integer delStatus;
+  /**
+   * 是否可见 -1：不可见 1：可见
+   */
+  @Field("visibility")
+  private Integer visibility;
+  /**
+   * 是否被推荐到首页 -1：不推荐 1：推荐
+   */
+  @Field("recommend")
+  private Integer recommend;
+  /**
+   * 创建时间
+   */
   @Field("create_time")
   @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
@@ -64,4 +79,5 @@ public class BaseEntity implements Serializable {
   @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
   private Date updateTime = new Date();
+
 }

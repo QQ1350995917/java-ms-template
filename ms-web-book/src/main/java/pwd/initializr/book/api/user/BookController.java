@@ -86,12 +86,10 @@ public class BookController extends UserController implements BookApi {
   }
 
   @Override
-  public void fetchBooksByRange(PageInput input) {
+  public void fetchRecommendBooks(PageInput input) {
     ObjectList<BookBO> bookBOObjectList = bookService
-        .listBookByRange(input.getIndex(), input.getSize());
-
+        .listRecommendBooks(input.getIndex(), input.getSize());
     ObjectList<BookVO> result = new ObjectList<>();
-
     if (bookBOObjectList != null) {
       List<BookVO> resultVOS = new LinkedList<>();
       bookBOObjectList.getElements().forEach(bookBO -> {

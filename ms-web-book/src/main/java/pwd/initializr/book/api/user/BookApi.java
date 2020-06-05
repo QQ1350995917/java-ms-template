@@ -42,5 +42,5 @@ public interface BookApi {
   @ApiOperation(value = "图书清单")
   @GetMapping(value = {
       ""}, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  void fetchBooksByRange(PageInput input);
+  void fetchRecommendBooks(PageInput input);
 }

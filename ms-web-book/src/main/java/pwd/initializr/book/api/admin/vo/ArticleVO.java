@@ -12,6 +12,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
@@ -73,9 +74,15 @@ public class ArticleVO implements Serializable {
     @ApiModelProperty(name = "paragraphs", value = "0", required = false, example = "9787229124410")
     @NotNull(message = "0")
     private LinkedList<String> paragraphs;
-    @ApiModelProperty(name = "status", value = "状态", required = true, example = "0")
+    @ApiModelProperty(name = "delStatus", value = "删除状态", required = true, example = "0")
     @NotNull(message = "0")
-    private Integer status;
+    private Integer delStatus;
+    @ApiModelProperty(name = "visibility", value = "可见性", required = true, example = "0")
+    @NotNull(message = "0")
+    private Integer visibility;
+    @ApiModelProperty(name = "recommend", value = "推荐", required = true, example = "0")
+    @NotNull(message = "0")
+    private Integer recommend;
     @ApiModelProperty(name = "createTime", value = "创建时间", required = true, example = "0")
     @NotNull(message = "0")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")

@@ -2,20 +2,18 @@ package pwd.initializr.book.api.admin;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.book.api.admin.vo.ArticleVO;
 import pwd.initializr.book.api.admin.vo.CreateArticleInput;
@@ -48,36 +46,32 @@ public class ArticleController extends AdminController implements ArticleApi {
   @Autowired
   private ArticleService articleService;
 
-  @ApiOperation(value = "添加文章")
-  @PostMapping(value = {
-      ""}, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
   public void createArticle(@RequestBody CreateArticleInput input) {
 
   }
 
-  @ApiOperation(value = "删除文章")
-  @DeleteMapping(value = {
-      ""}, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
   public void deleteArticles(@RequestBody Long[] articleIds) {
-
+    Integer integer = articleService.deleteArticles(Arrays.asList(articleIds));
+    super.outputData(integer);
   }
 
-  @ApiOperation(value = "文章详情")
-  @GetMapping(value = {
-      "/{articleId}"}, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @Override
+  public void deleteCancelArticles(Long[] articleIds) {
+    Integer integer = articleService.deleteCancelArticles(Arrays.asList(articleIds));
+    super.outputData(integer);
+  }
+
+
   @Override
   public void fetchArticleById(@PathVariable("articleId") Long articleId) {
     ArticleBO articleById = articleService.findArticleById(articleId);
     ArticleVO articleVO = new ArticleVO();
-    BeanUtils.copyProperties(articleById,articleVO);
+    BeanUtils.copyProperties(articleById, articleVO);
     super.outputData(articleVO);
   }
 
-  @ApiOperation(value = "文章清单")
-  @GetMapping(value = {
-      ""}, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
   public void fetchArticlesByRange(PageInput input) {
     ObjectList<ArticleBO> articleBOObjectList = articleService
@@ -100,12 +94,32 @@ public class ArticleController extends AdminController implements ArticleApi {
     super.outputData(result);
   }
 
-  @ApiOperation(value = "文章更新")
-  @PutMapping(value = {
-      "/{articleId}"}, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @Override
+  public void recommendArticles(Long[] articleIds) {
+    Integer integer = articleService.recommendArticles(Arrays.asList(articleIds));
+    super.outputData(integer);
+  }
+
+  @Override
+  public void recommendCancelArticles(Long[] articleIds) {
+    Integer integer = articleService.recommendCancelArticles(Arrays.asList(articleIds));
+    super.outputData(integer);
+  }
+
   @Override
   public void updateArticle(@PathVariable("articleId") Long articleId,
       @RequestBody CreateArticleInput input) {
+  }
 
+  @Override
+  public void visibleArticles(Long[] articleIds) {
+    Integer integer = articleService.visibleArticles(Arrays.asList(articleIds));
+    super.outputData(integer);
+  }
+
+  @Override
+  public void visibleCancelArticles(Long[] articleIds) {
+    Integer integer = articleService.visibleCancelArticles(Arrays.asList(articleIds));
+    super.outputData(integer);
   }
 }
