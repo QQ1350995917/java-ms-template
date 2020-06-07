@@ -21,6 +21,7 @@ import pwd.initializr.book.business.admin.bo.ArticleBO;
 import pwd.initializr.book.business.admin.bo.BookBO;
 import pwd.initializr.book.persistence.entity.ArticleEntity;
 import pwd.initializr.book.persistence.entity.BookEntity;
+import pwd.initializr.book.persistence.entity.DocumentObjectUpdate;
 import pwd.initializr.common.utils.ConstantDeleteStatus;
 import pwd.initializr.common.utils.ConstantRecommendStatus;
 import pwd.initializr.common.utils.ConstantVisibilityStatus;
@@ -80,7 +81,7 @@ public class BookServiceImpl implements BookService {
 
   @Override
   public ObjectList<BookBO> listBook(Integer pageIndex, Integer pageSize) {
-    Sort sort = new Sort(Direction.DESC, "update_time");
+    Sort sort = new Sort(Direction.DESC, "id");
     Query query = new Query()
         .with(PageRequest.of(pageIndex, pageSize)).with(sort);
 
@@ -170,23 +171,9 @@ public class BookServiceImpl implements BookService {
   @Override
   public Long updateBook(BookBO bookBO) {
     Query query = new Query().addCriteria(Criteria.where("id").is(bookBO.getId()));
-    Update update = new Update()
-        .set("title", bookBO.getTitle())
-        .set("sub_title", bookBO.getSubTitle())
-        .set("author_id", bookBO.getAuthorId())
-        .set("author_name", bookBO.getAuthorName())
-        .set("type", bookBO.getType())
-        .set("isbn", bookBO.getIsbn())
-        .set("thumbs", bookBO.getThumbs())
-        .set("summary", bookBO.getSummary())
-        .set("labels", bookBO.getLabels())
-        .set("publisher", bookBO.getPublisher())
-        .set("publication_time", bookBO.getPublicationTime())
-        .set("del_status", bookBO.getDelStatus())
-        .set("visibility", bookBO.getVisibility())
-        .set("recommend", bookBO.getRecommend())
-        .set("update_time", bookBO.getUpdateTime());
-
+    BookEntity bookEntity = new BookEntity();
+    BeanUtils.copyProperties(bookBO,bookEntity);
+    Update update = DocumentObjectUpdate.getUpdate(bookEntity);
     UpdateResult updateResult = mongoTemplate.updateFirst(query, update, BookEntity.class);
     return updateResult.getModifiedCount();
   }

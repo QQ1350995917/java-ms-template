@@ -52,13 +52,13 @@ public class BookController extends AdminController implements BookApi {
   @Override
   public void deleteBooks(Long[] bookIds) {
     Integer integer = bookService.deleteBooks(Arrays.asList(bookIds));
-    super.outputData(integer);
+    super.outputData(integer.toString());
   }
 
   @Override
   public void deleteCancelBooks(Long[] bookIds) {
     Integer integer = bookService.deleteCancelBooks(Arrays.asList(bookIds));
-    super.outputData(integer);
+    super.outputData(integer.toString());
   }
 
   @Override
@@ -131,13 +131,13 @@ public class BookController extends AdminController implements BookApi {
   @Override
   public void recommendBooks(Long[] bookIds) {
     Integer integer = bookService.recommendBooks(Arrays.asList(bookIds));
-    super.outputData(integer);
+    super.outputData(integer.toString());
   }
 
   @Override
   public void recommendCancelBooks(Long[] bookIds) {
     Integer integer = bookService.recommendCancelBooks(Arrays.asList(bookIds));
-    super.outputData(integer);
+    super.outputData(integer.toString());
   }
 
   @Override
@@ -146,18 +146,18 @@ public class BookController extends AdminController implements BookApi {
     BeanUtils.copyProperties(input, bookBO);
     bookBO.setId(bookId);
     Long aLong = bookService.updateBook(bookBO);
-    super.outputData(aLong);
+    super.outputData(aLong.toString());
   }
 
   @Override
   public void visibleBooks(Long[] bookIds) {
     Integer integer = bookService.visibleBooks(Arrays.asList(bookIds));
-    super.outputData(integer);
+    super.outputData(integer.toString());
   }
 
   @Override
   public void visibleCancelBooks(Long[] bookIds) {
     Integer integer = bookService.visibleCancelBooks(Arrays.asList(bookIds));
-    super.outputData(integer);
+    super.outputData(integer.toString());
   }
 }

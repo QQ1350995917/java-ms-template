@@ -1,17 +1,12 @@
 package pwd.initializr.book.api.admin;
 
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,6 +14,7 @@ import pwd.initializr.book.api.admin.vo.ArticleVO;
 import pwd.initializr.book.api.admin.vo.CreateArticleInput;
 import pwd.initializr.book.business.admin.ArticleService;
 import pwd.initializr.book.business.admin.bo.ArticleBO;
+import pwd.initializr.book.business.admin.bo.BookBO;
 import pwd.initializr.common.web.api.admin.AdminController;
 import pwd.initializr.common.web.api.vo.PageInput;
 import pwd.initializr.common.web.business.bo.ObjectList;
@@ -48,19 +44,22 @@ public class ArticleController extends AdminController implements ArticleApi {
 
   @Override
   public void createArticle(@RequestBody CreateArticleInput input) {
-
+    ArticleBO articleBO = new ArticleBO();
+    BeanUtils.copyProperties(input, articleBO);
+    ArticleBO article = articleService.createArticle(articleBO);
+    super.outputData(article.getId());
   }
 
   @Override
   public void deleteArticles(@RequestBody Long[] articleIds) {
     Integer integer = articleService.deleteArticles(Arrays.asList(articleIds));
-    super.outputData(integer);
+    super.outputData(integer.toString());
   }
 
   @Override
   public void deleteCancelArticles(Long[] articleIds) {
     Integer integer = articleService.deleteCancelArticles(Arrays.asList(articleIds));
-    super.outputData(integer);
+    super.outputData(integer.toString());
   }
 
 
@@ -97,29 +96,34 @@ public class ArticleController extends AdminController implements ArticleApi {
   @Override
   public void recommendArticles(Long[] articleIds) {
     Integer integer = articleService.recommendArticles(Arrays.asList(articleIds));
-    super.outputData(integer);
+    super.outputData(integer.toString());
   }
 
   @Override
   public void recommendCancelArticles(Long[] articleIds) {
     Integer integer = articleService.recommendCancelArticles(Arrays.asList(articleIds));
-    super.outputData(integer);
+    super.outputData(integer.toString());
   }
 
   @Override
   public void updateArticle(@PathVariable("articleId") Long articleId,
       @RequestBody CreateArticleInput input) {
+    ArticleBO articleBO = new ArticleBO();
+    BeanUtils.copyProperties(input, articleBO);
+    articleBO.setId(articleId);
+    Long aLong = articleService.updateArticle(articleBO);
+    super.outputData(aLong.toString());
   }
 
   @Override
   public void visibleArticles(Long[] articleIds) {
     Integer integer = articleService.visibleArticles(Arrays.asList(articleIds));
-    super.outputData(integer);
+    super.outputData(integer.toString());
   }
 
   @Override
   public void visibleCancelArticles(Long[] articleIds) {
     Integer integer = articleService.visibleCancelArticles(Arrays.asList(articleIds));
-    super.outputData(integer);
+    super.outputData(integer.toString());
   }
 }

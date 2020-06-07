@@ -8,6 +8,8 @@ import org.bson.Document;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -16,6 +18,7 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 import pwd.initializr.book.business.admin.bo.ArticleBO;
 import pwd.initializr.book.persistence.entity.ArticleEntity;
+import pwd.initializr.book.persistence.entity.DocumentObjectUpdate;
 import pwd.initializr.common.utils.ConstantDeleteStatus;
 import pwd.initializr.common.utils.ConstantRecommendStatus;
 import pwd.initializr.common.utils.ConstantVisibilityStatus;
@@ -74,7 +77,7 @@ public class ArticleServiceImpl implements ArticleService {
 
   @Override
   public ObjectList<ArticleBO> listArticle(Integer pageIndex, Integer pageSize) {
-    Query query = new Query().with(PageRequest.of(pageIndex, pageSize));
+    Query query = new Query().with(PageRequest.of(pageIndex, pageSize)).with(Sort.by(Direction.DESC, "id"));
     ObjectList<ArticleBO> result = this.listArticle(query);
     result.setIndex(pageIndex.longValue());
     result.setSize(pageSize.longValue());
@@ -84,7 +87,7 @@ public class ArticleServiceImpl implements ArticleService {
   @Override
   public ObjectList<ArticleBO> listArticle(Long bookId, Integer pageIndex, Integer pageSize) {
     Query query = new Query().addCriteria(Criteria.where("book_id").is(bookId))
-        .with(PageRequest.of(pageIndex, pageSize));
+        .with(PageRequest.of(pageIndex, pageSize)).with(Sort.by(Direction.ASC, "id"));
     ObjectList<ArticleBO> result = this.listArticle(query);
     result.setIndex(pageIndex.longValue());
     result.setSize(pageSize.longValue());
@@ -104,23 +107,9 @@ public class ArticleServiceImpl implements ArticleService {
   @Override
   public Long updateArticle(ArticleBO articleBO) {
     Query query = new Query().addCriteria(Criteria.where("id").is(articleBO.getId()));
-    Update update = new Update()
-        .set("book_id", articleBO.getTitle())
-        .set("title", articleBO.getTitle())
-        .set("sub_title", articleBO.getSubTitle())
-        .set("author_id", articleBO.getAuthorId())
-        .set("author_name", articleBO.getAuthorName())
-        .set("summary", articleBO.getSummary())
-        .set("labels", articleBO.getLabels())
-        .set("paragraphs", articleBO.getParagraphs())
-        .set("from_url", articleBO.getFromUrl())
-        .set("publication_time", articleBO.getPublicationTime())
-        .set("del_status", articleBO.getDelStatus())
-        .set("del_status", articleBO.getDelStatus())
-        .set("visibility", articleBO.getVisibility())
-        .set("recommend", articleBO.getRecommend())
-        .set("update_time", articleBO.getUpdateTime());
-
+    ArticleEntity articleEntity = new ArticleEntity();
+    BeanUtils.copyProperties(articleBO,articleEntity);
+    Update update = DocumentObjectUpdate.getUpdate(articleEntity);
     UpdateResult updateResult = mongoTemplate.updateFirst(query, update, ArticleEntity.class);
     return updateResult.getModifiedCount();
   }

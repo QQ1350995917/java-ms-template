@@ -2,7 +2,6 @@ package pwd.initializr.book.api.admin;
 
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,18 +26,15 @@ import pwd.initializr.common.web.api.vo.PageInput;
 public interface BookApi {
 
   @ApiOperation(value = "录入图书信息")
-  @PostMapping(value = {
-      ""}, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  void createBook(CreateBookInput input);
+  @PostMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  void createBook(@RequestBody CreateBookInput input);
 
   @ApiOperation(value = "图书删除")
-  @DeleteMapping(value = {
-      "/delete"}, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @PutMapping(value = {"/delete"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   void deleteBooks(@RequestBody Long[] bookIds);
 
   @ApiOperation(value = "取消图书删除")
-  @PutMapping(value = {
-      "/delete/cancel"}, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @PutMapping(value = {"/delete/cancel"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   void deleteCancelBooks(@RequestBody Long[] bookIds);
 
   @ApiOperation(value = "图书详情")
@@ -65,27 +61,22 @@ public interface BookApi {
   void fetchBooksByRange(PageInput input);
 
   @ApiOperation(value = "图书推荐")
-  @PutMapping(value = {
-      "/recommend"}, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @PutMapping(value = {"/recommend"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   void recommendBooks(@RequestBody Long[] bookIds);
 
   @ApiOperation(value = "取消图书推荐")
-  @DeleteMapping(value = {
-      "/recommend/cancel"}, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @PutMapping(value = {"/recommend/cancel"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   void recommendCancelBooks(@RequestBody Long[] bookIds);
 
   @ApiOperation(value = "修改图书信息")
-  @PutMapping(value = {
-      "/{bookId}"}, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  void updateBook(@PathVariable("bookId") Long bookId, CreateBookInput input);
+  @PutMapping(value = {"/{bookId}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  void updateBook(@PathVariable("bookId") Long bookId, @RequestBody CreateBookInput input);
 
   @ApiOperation(value = "图书可见")
-  @PutMapping(value = {
-      "/visible"}, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @PutMapping(value = {"/visible"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   void visibleBooks(@RequestBody Long[] bookIds);
 
   @ApiOperation(value = "取消图书可见")
-  @DeleteMapping(value = {
-      "/visible/cancel"}, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @PutMapping(value = {"/visible/cancel"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   void visibleCancelBooks(@RequestBody Long[] bookIds);
 }

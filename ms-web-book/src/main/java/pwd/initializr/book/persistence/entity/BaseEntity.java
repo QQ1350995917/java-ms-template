@@ -52,7 +52,7 @@ public class BaseEntity implements Serializable {
   @Field("publication_time")
   @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-  private Date publicationTime = new Date();
+  private Date publicationTime;
   /**
    * 是否已经删除 1：没删除 -1：删除
    */
@@ -74,7 +74,7 @@ public class BaseEntity implements Serializable {
   @Field("create_time")
   @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-  private Date createTime = new Date();
+  private Date createTime;
   @Field("update_time")
   @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")

@@ -38,7 +38,7 @@ public class CreateBookInput implements Serializable {
   @ApiModelProperty(name = "isbn", value = "International Standard Book Number", required = false, example = "9787229124410")
   @NotNull(message = "0")
   private String isbn;
-  @ApiModelProperty(name = "title", value = "图书名称", required = true, example = "三体")
+  @ApiModelProperty(name = "title", value = "图书名称", required = false, example = "三体")
   @NotNull(message = "0")
   private String title;
   @ApiModelProperty(name = "subTitle", value = "图书副名称", required = false, example = "三体")
