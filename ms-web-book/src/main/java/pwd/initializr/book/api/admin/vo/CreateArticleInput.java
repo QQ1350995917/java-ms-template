@@ -30,7 +30,7 @@ public class CreateArticleInput extends CreateBookInput {
     @ApiModelProperty(name = "bookId", value = "0", required = false, example = "9787229124410")
     @NotNull(message = "0")
     private Long bookId;
-    @ApiModelProperty(name = "paragraphs", value = "0", required = false, example = "9787229124410")
+    @ApiModelProperty(name = "paragraphs", value = "0", required = false, example = "[\"paragraph1\",\"paragraph2\",\"paragraph3\"]")
     @NotNull(message = "0")
     private LinkedList<String> paragraphs;
 }
