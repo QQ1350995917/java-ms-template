@@ -12,8 +12,14 @@ package pwd.initializr.common.utils;
  * @since DistributionVersion
  */
 public enum ConstantDeleteStatus {
-    DELETED(-1),
-    EXISTING(1);
+    /**
+     * 已删除：标记为1
+     */
+    DELETED(1),
+    /**
+     * 未删除：标记为-1
+     */
+    EXISTING(-1);
 
     private int value;
 
