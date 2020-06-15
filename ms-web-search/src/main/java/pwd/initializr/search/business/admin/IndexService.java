@@ -1,4 +1,4 @@
-package pwd.initializr.search.business.robot;
+package pwd.initializr.search.business.admin;
 
 /**
  * pwd.initializr.search.business.robot@ms-web-initializr

@@ -1,4 +1,4 @@
-package pwd.initializr.search.business.robot;
+package pwd.initializr.search.business.admin;
 
 import java.io.IOException;
 import java.util.LinkedList;
@@ -10,8 +10,8 @@ import org.elasticsearch.common.xcontent.XContentFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.stereotype.Service;
-import pwd.initializr.search.business.robot.bo.MappingBO;
-import pwd.initializr.search.business.robot.bo.MappingFieldBO;
+import pwd.initializr.search.business.admin.bo.MappingBO;
+import pwd.initializr.search.business.admin.bo.MappingFieldBO;
 
 /**
  * pwd.initializr.search.business.robot@ms-web-initializr

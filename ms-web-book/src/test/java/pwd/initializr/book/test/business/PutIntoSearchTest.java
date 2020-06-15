@@ -1,11 +1,11 @@
 package pwd.initializr.book.test.business;
 
-import com.alibaba.fastjson.JSON;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -14,9 +14,9 @@ import pwd.initializr.book.BookApplication;
 import pwd.initializr.book.business.remote.SearchClientService;
 import pwd.initializr.book.persistence.entity.ArticleEntity;
 import pwd.initializr.book.persistence.entity.BookEntity;
-import pwd.initializr.book.rpc.RPCArticleIntoSearch;
-import pwd.initializr.book.rpc.RPCBookIntoSearch;
-import pwd.initializr.common.web.api.vo.Output;
+import pwd.initializr.search.rpc.RPCSearchHeadVO;
+import pwd.initializr.search.rpc.RPCSearchInitInput;
+import pwd.initializr.search.rpc.RPCSearchBodyVO;
 
 /**
  * pwd.initializr.book.test.business@ms-web-initializr
@@ -43,40 +43,60 @@ public class PutIntoSearchTest {
   public void copyArticle() {
     List<ArticleEntity> all = mongoTemplate.findAll(ArticleEntity.class);
     all.forEach(articleEntity -> {
-      RPCArticleIntoSearch RPCArticleIntoSearch = new RPCArticleIntoSearch();
-      BeanUtils.copyProperties(articleEntity, RPCArticleIntoSearch);
-      RPCArticleIntoSearch.setEsAppId("BOOK-ID");
-      RPCArticleIntoSearch.setEsAppName("BOOK");
-      RPCArticleIntoSearch.setEsSecretKey("SECRET-KEY");
-      RPCArticleIntoSearch.setEsVisibility("VISIBIE");
-      RPCArticleIntoSearch.setEsTitle(articleEntity.getTitle());
-      RPCArticleIntoSearch.setEsType("article");
-      RPCArticleIntoSearch.setEsLinkTo(
+      RPCSearchHeadVO rpcSearchHeadVO = new RPCSearchHeadVO();
+      rpcSearchHeadVO.setEsAppId("BOOK-ID");
+      rpcSearchHeadVO.setEsAppName("BOOK");
+      rpcSearchHeadVO.setEsSecretKey("SECRET-KEY");
+      rpcSearchHeadVO.setEsIndex("article");
+      List<RPCSearchBodyVO> rpcSearchBodyVOS = new LinkedList<>();
+      RPCSearchBodyVO rpcSearchBodyVO = new RPCSearchBodyVO();
+      rpcSearchBodyVO.setEsId("id");
+      rpcSearchBodyVO.setEsVisibility("VISIBIE");
+      rpcSearchBodyVO.setEsTitle(articleEntity.getTitle());
+      List<String> strings = Arrays.asList(new String[]{articleEntity.getSubTitle(),articleEntity.getAuthorName(),articleEntity.getSummary()});
+      articleEntity.getLabels().forEach(label -> strings.add(label));
+      articleEntity.getParagraphs().forEach(paragraph -> strings.add(paragraph));
+      rpcSearchBodyVO.setEsLinkTo(
           "http://0.0.0.0:8081/#/book/articleDetail?bookId=" + articleEntity.getBookId()
               + "&articleId=" + articleEntity.getId());
-      RPCArticleIntoSearch.setEsUpdateTime(new Date());
-      searchClientService.postOrPutArticle(RPCArticleIntoSearch);
+      rpcSearchBodyVO.setEsUpdateTime(new Date());
+      rpcSearchBodyVOS.add(rpcSearchBodyVO);
+      RPCSearchInitInput rpcSearchInitInput = new RPCSearchInitInput();
+      rpcSearchInitInput.setEsHead(rpcSearchHeadVO);
+      rpcSearchInitInput.setEsBody(rpcSearchBodyVOS);
+      searchClientService.postOrPut(rpcSearchInitInput);
     });
   }
 
   @Test
   public void copyBook() {
     List<BookEntity> all = mongoTemplate.findAll(BookEntity.class);
-
+    RPCSearchHeadVO rpcSearchHeadVO = new RPCSearchHeadVO();
+    rpcSearchHeadVO.setEsAppId("BOOK-ID");
+    rpcSearchHeadVO.setEsAppName("BOOK");
+    rpcSearchHeadVO.setEsSecretKey("SECRET-KEY");
+    rpcSearchHeadVO.setEsIndex("book");
+    List<RPCSearchBodyVO> rpcSearchBodyVOS = new LinkedList<>();
     all.forEach(bookEntity -> {
-      RPCBookIntoSearch RPCBookIntoSearch = new RPCBookIntoSearch();
-      BeanUtils.copyProperties(bookEntity, RPCBookIntoSearch);
-      RPCBookIntoSearch.setEsAppId("BOOK-ID");
-      RPCBookIntoSearch.setEsAppName("BOOK");
-      RPCBookIntoSearch.setEsSecretKey("SECRET-KEY");
-      RPCBookIntoSearch.setEsVisibility("VISIBIE");
-      RPCBookIntoSearch.setEsTitle(bookEntity.getTitle());
-      RPCBookIntoSearch.setEsType("book");
-      RPCBookIntoSearch.setEsLinkTo("http://0.0.0.0:8081/#/book/bookDetail?bookId=" + bookEntity.getId());
-      RPCBookIntoSearch.setEsUpdateTime(new Date());
-      String postOrPutBook = searchClientService.postOrPutBook(RPCBookIntoSearch);
-      Output output = JSON.parseObject(postOrPutBook, Output.class);
-      System.out.println(output);
+      RPCSearchBodyVO rpcSearchBodyVO = new RPCSearchBodyVO();
+      rpcSearchBodyVO.setEsId(bookEntity.getId().toString());
+      rpcSearchBodyVO.setEsVisibility("VISIBIE");
+      rpcSearchBodyVO.setEsTitle(bookEntity.getTitle());
+      List<String> strings = Arrays.asList(
+          new String[]{bookEntity.getSubTitle(), bookEntity.getPublisher(),
+              bookEntity.getSummary()});
+      bookEntity.getLabels().forEach(label -> strings.add(label));
+      rpcSearchBodyVO.setEsContent(strings);
+
+      rpcSearchBodyVO.setEsLinkTo(
+          "http://0.0.0.0:8081/#/book/articleDetail?bookId=" + bookEntity.getId()
+              + "&articleId=" + bookEntity.getId());
+      rpcSearchBodyVO.setEsUpdateTime(new Date());
+      rpcSearchBodyVOS.add(rpcSearchBodyVO);
     });
+    RPCSearchInitInput rpcSearchInitInput = new RPCSearchInitInput();
+    rpcSearchInitInput.setEsHead(rpcSearchHeadVO);
+    rpcSearchInitInput.setEsBody(rpcSearchBodyVOS);
+    searchClientService.postOrPut(rpcSearchInitInput);
   }
 }

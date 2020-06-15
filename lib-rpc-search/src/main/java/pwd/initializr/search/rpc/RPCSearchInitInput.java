@@ -2,8 +2,6 @@ package pwd.initializr.search.rpc;
 
 import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
-import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,17 +27,12 @@ import lombok.ToString;
 @ToString
 public class RPCSearchInitInput implements Serializable {
 
-  private static final long serialVersionUID = -1659590069838613585L;
+    private static final long serialVersionUID = -1659590069838613585L;
 
-  @ApiModelProperty(name = "esAppId", value = "esAppId", required = false, example = "esAppId", dataType = "java.lang.String")
-  private String esAppId;
-  @ApiModelProperty(name = "esAppName", value = "esAppName", required = false, example = "esAppName", dataType = "java.lang.String")
-  private String esAppName;
-  @ApiModelProperty(name = "esSecretKey", value = "esSecretKey", required = false, example = "esSecretKey", dataType = "java.lang.String")
-  private String esSecretKey;
-  @ApiModelProperty(name = "esIndex", value = "esIndex", required = false, example = "esIndex", dataType = "java.lang.String")
-  private String esIndex;
-  @ApiModelProperty(name = "esBody", value = "esBody", required = false, example = "esBody", dataType = "java.util.List")
-  private List<RPCSearchOutput> esBody;
+    @ApiModelProperty(name = "esHead", value = "esHead", required = false, example = "esHead", dataType = "java.lang.Object")
+    private RPCSearchHeadVO esHead;
+
+    @ApiModelProperty(name = "esBody", value = "esBody", required = false, example = "esBody", dataType = "java.util.List")
+    private List<RPCSearchBodyVO> esBody;
 
 }

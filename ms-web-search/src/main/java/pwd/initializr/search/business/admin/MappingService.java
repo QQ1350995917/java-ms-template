@@ -1,7 +1,7 @@
-package pwd.initializr.search.business.robot;
+package pwd.initializr.search.business.admin;
 
 import java.util.List;
-import pwd.initializr.search.business.robot.bo.MappingBO;
+import pwd.initializr.search.business.admin.bo.MappingBO;
 
 /**
  * pwd.initializr.search.business@ms-web-initializr

@@ -23,10 +23,6 @@ import pwd.initializr.search.rpc.RPCSearchInput;
 @ToString
 public class SearchInputBO extends RPCSearchInput {
 
-    public SearchInputBO(String keyword, Integer index, Integer size) {
-        super(keyword, index, size);
-    }
-
     @Override
     public Integer getIndex() {
         return super.getIndex() < 0 ? 0 : super.getIndex();

@@ -5,8 +5,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import pwd.initializr.search.business.robot.IndexService;
-import pwd.initializr.search.business.robot.MappingService;
+import pwd.initializr.search.business.admin.IndexService;
+import pwd.initializr.search.business.admin.MappingService;
 
 /**
  * pwd.initializr.search.test.business@ms-web-initializr

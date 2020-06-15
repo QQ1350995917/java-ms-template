@@ -1,13 +1,14 @@
 package pwd.initializr.book.business.remote;
 
 import com.alibaba.fastjson.JSON;
+import java.util.List;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestParam;
 import pwd.initializr.book.business.remote.bo.SearchResultBO;
-import pwd.initializr.book.rpc.RPCArticleIntoSearch;
-import pwd.initializr.book.rpc.RPCBookIntoSearch;
 import pwd.initializr.common.web.api.vo.Meta;
 import pwd.initializr.common.web.api.vo.Output;
 import pwd.initializr.common.web.business.bo.ObjectList;
+import pwd.initializr.search.rpc.RPCSearchInitInput;
 
 /**
  * pwd.initializr.book.business.admin@ms-web-initializr
@@ -23,31 +24,16 @@ import pwd.initializr.common.web.business.bo.ObjectList;
 @Component
 public class SearchClientServiceFallbackImpl implements SearchClientService {
 
-  @Override
-  public String postOrPutArticle(RPCArticleIntoSearch RPCArticleIntoSearch) {
-    return JSON.toJSONString(new Output(new Meta(504, "error")));
-  }
+    @Override
+    public String postOrPut(RPCSearchInitInput rpcSearchInitInput) {
+        return JSON.toJSONString(new Output(new Meta(504, "error")));
+    }
 
-  @Override
-  public String postOrPutBook(RPCBookIntoSearch RPCBookIntoSearch) {
-    return JSON.toJSONString(new Output(new Meta(504, "error")));
-  }
 
-  @Override
-  public Output<ObjectList<SearchResultBO>> search(String keyword, Integer index,
-      Integer pageSize) {
-    return new Output<>();
-  }
-
-  @Override
-  public Output<ObjectList<SearchResultBO>> searchArticle(String keyword, Integer index,
-      Integer size) {
-    return new Output<>();
-  }
-
-  @Override
-  public Output<ObjectList<SearchResultBO>> searchBook(String keyword, Integer index,
-      Integer size) {
-    return new Output<>();
-  }
+    @Override
+    public Output<ObjectList<SearchResultBO>> search(@RequestParam("indices") List<String> indices,
+        String keyword, Integer index,
+        Integer pageSize) {
+        return new Output<>();
+    }
 }

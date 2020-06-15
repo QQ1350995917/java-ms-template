@@ -1,5 +1,6 @@
 package pwd.initializr.book.business.user;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import org.bson.Document;
@@ -89,7 +90,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     Output<ObjectList<SearchResultBO>> objectListOutput = searchClientService
-        .searchArticle(tempSearchInputBO.getKeyword(), tempSearchInputBO.getIndex(),
+        .search(Arrays.asList(new String[]{"article"}),tempSearchInputBO.getKeyword(), tempSearchInputBO.getIndex(),
             tempSearchInputBO.getSize());
 
     if (objectListOutput.getMeta().getCode() == HttpStatus.OK.value()) {

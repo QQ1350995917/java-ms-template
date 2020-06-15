@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
@@ -27,22 +28,19 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 @Setter
 @Getter
 @ToString
+//@Document(indexName = "book", type = "book")
 public class MetadataDocument implements Serializable {
 
   private static final long serialVersionUID = 3025999016837937935L;
 
   @Field(type = FieldType.Keyword)
-  private String esAppId;
-  @Field(type = FieldType.Keyword)
-  private String esAppName;
-  @Field(type = FieldType.Keyword)
-  private String esSecretKey;
+  private String esId;
   @Field(type = FieldType.Keyword)
   private String esVisibility;
   @Field(type = FieldType.Text, analyzer = "ik_max_word", searchAnalyzer = "ik_max_word")
   private String esTitle;
-  @Field(type = FieldType.Keyword)
-  private String esType;
+  @Field(type = FieldType.Text, analyzer = "ik_max_word", searchAnalyzer = "ik_max_word")
+  private String esContent;
   @Field(type = FieldType.Keyword)
   private String esLinkTo;
   @Field(type = FieldType.Text, analyzer = "ik_max_word", searchAnalyzer = "ik_max_word")

@@ -1,6 +1,7 @@
 package pwd.initializr.book.api.user;
 
 import io.swagger.annotations.Api;
+import java.util.Arrays;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -43,7 +44,7 @@ public class SearchController extends UserController implements SearchApi {
     }
 
     Output<ObjectList<SearchResultBO>> objectListOutput = searchClientService
-        .search(tempSearchInput.getKeyword(), tempSearchInput.getIndex(),
+        .search(Arrays.asList(new String[]{"book","article"}),tempSearchInput.getKeyword(), tempSearchInput.getIndex(),
             tempSearchInput.getSize());
 
     if (objectListOutput.getMeta() != null && (objectListOutput.getMeta().getCode() == HttpStatus.OK
@@ -64,7 +65,7 @@ public class SearchController extends UserController implements SearchApi {
     }
 
     Output<ObjectList<SearchResultBO>> objectListOutput = searchClientService
-        .searchArticle(tempSearchInput.getKeyword(), tempSearchInput.getIndex(),
+        .search(Arrays.asList(new String[]{"article"}),tempSearchInput.getKeyword(), tempSearchInput.getIndex(),
             tempSearchInput.getSize());
 
     if (objectListOutput.getMeta().getCode() == HttpStatus.OK.value()) {
@@ -84,7 +85,7 @@ public class SearchController extends UserController implements SearchApi {
     }
 
     Output<ObjectList<SearchResultBO>> objectListOutput = searchClientService
-        .searchBook(tempSearchInput.getKeyword(), tempSearchInput.getIndex(),
+        .search(Arrays.asList(new String[]{"book"}),tempSearchInput.getKeyword(), tempSearchInput.getIndex(),
             tempSearchInput.getSize());
 
     if (objectListOutput.getMeta().getCode() == HttpStatus.OK.value()) {

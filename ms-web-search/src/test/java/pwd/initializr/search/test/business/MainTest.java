@@ -17,14 +17,6 @@ import pwd.initializr.search.api.robot.vo.DocumentIntoSearchInputVO;
 public class MainTest {
 
   public static void main(String[] args) {
-    DocumentIntoSearchInputVO bookInputVO = new DocumentIntoSearchInputVO();
-    bookInputVO.setId(123L);
-    bookInputVO.setTitle("xxxx");
 
-    DocumentIntoSearchInputVO bookInputVO1 = new DocumentIntoSearchInputVO();
-
-    BeanUtils.copyProperties(bookInputVO,bookInputVO1);
-
-    System.out.println();
   }
 }

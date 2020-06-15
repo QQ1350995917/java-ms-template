@@ -20,7 +20,6 @@
     <module>lib-etl-core-plugin</module>
     <module>lib-rpc-storage</module>
     <module>lib-rpc-account</module>
-    <module>lib-rpc-book</module>
     <module>lib-rpc-search</module>
     <module>ms-web-access</module>
     <module>ms-web-account</module>

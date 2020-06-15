@@ -16,11 +16,11 @@ import pwd.initializr.common.web.api.robot.RobotController;
 import pwd.initializr.common.web.business.bo.ObjectList;
 import pwd.initializr.search.api.robot.vo.DocumentIntoSearchInputVO;
 import pwd.initializr.search.api.robot.vo.SearchInputVo;
-import pwd.initializr.search.api.robot.vo.SearchOutputVO;
+import pwd.initializr.search.api.robot.vo.SearchBodyVOVO;
 import pwd.initializr.search.business.robot.DocumentService;
 import pwd.initializr.search.business.robot.bo.DocumentBO;
 import pwd.initializr.search.business.robot.bo.SearchInputBO;
-import pwd.initializr.search.rpc.RPCSearchOutput;
+import pwd.initializr.search.rpc.RPCSearchBodyVO;
 
 /**
  * pwd.initializr.search.api.robot@ms-web-initializr
@@ -51,7 +51,7 @@ public class DocumentController extends RobotController implements DocumentApi {
     public void postOrPut(@RequestBody DocumentIntoSearchInputVO input) {
         DocumentBO documentBO = new DocumentBO();
         BeanUtils.copyProperties(input.getEsBody().get(0), documentBO);
-        documentService.create(input.getEsIndex(), documentBO);
+        documentService.create(input.getEsHead().getEsIndex(), documentBO);
         outputData(200);
     }
 
@@ -65,16 +65,16 @@ public class DocumentController extends RobotController implements DocumentApi {
     }
 
 
-    private ObjectList<SearchOutputVO> search0(ObjectList<? extends RPCSearchOutput> search) {
-        ObjectList<SearchOutputVO> result = new ObjectList<>();
+    private ObjectList<SearchBodyVOVO> search0(ObjectList<? extends RPCSearchBodyVO> search) {
+        ObjectList<SearchBodyVOVO> result = new ObjectList<>();
         if (search != null) {
             result.setSize(search.getSize());
             result.setIndex(search.getIndex());
             result.setPages(search.getPages());
             result.setTotal(search.getTotal());
-            List<SearchOutputVO> elements = new LinkedList<>();
+            List<SearchBodyVOVO> elements = new LinkedList<>();
             search.getElements().forEach(articleBO -> {
-                SearchOutputVO searchOutputVO = new SearchOutputVO();
+                SearchBodyVOVO searchOutputVO = new SearchBodyVOVO();
                 BeanUtils.copyProperties(articleBO, searchOutputVO);
                 elements.add(searchOutputVO);
             });

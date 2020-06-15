@@ -1,9 +1,10 @@
-package pwd.initializr.search.business.robot;
+package pwd.initializr.search.business.admin;
 
 import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.stereotype.Service;
+import pwd.initializr.search.business.admin.IndexService;
 
 /**
  * pwd.initializr.search.business.robot@ms-web-initializr

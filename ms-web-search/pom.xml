@@ -32,7 +32,7 @@
     </dependency>
     <dependency>
       <groupId>pwd.initializr</groupId>
-      <artifactId>lib-rpc-book</artifactId>
+      <artifactId>lib-rpc-search</artifactId>
       <version>0.0.1-SNAPSHOT</version>
     </dependency>
   </dependencies>
