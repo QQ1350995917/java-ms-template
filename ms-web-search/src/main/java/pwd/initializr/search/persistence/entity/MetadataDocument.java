@@ -44,6 +44,6 @@ public class MetadataDocument implements Serializable {
   @Field(type = FieldType.Keyword)
   private String esLinkTo;
   @Field(type = FieldType.Text, analyzer = "ik_max_word", searchAnalyzer = "ik_max_word")
-  private Date esUpdateTime;
+  private String esUpdateTime;
 
 }

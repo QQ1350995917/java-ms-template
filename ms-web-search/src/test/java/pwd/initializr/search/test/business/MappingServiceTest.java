@@ -31,7 +31,10 @@ public class MappingServiceTest {
 
   @Test
   public void createMapping() {
-    String index = "book1";
+    String index = "book";
+    indexService.create(index);
+    mappingService.create(index, mappingService.getDefaultMapping());
+    index = "article";
     indexService.create(index);
     mappingService.create(index, mappingService.getDefaultMapping());
   }

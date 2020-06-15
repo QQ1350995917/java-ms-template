@@ -29,7 +29,7 @@ public class RPCSearchInput {
     private static final long serialVersionUID = -4291776028708567323L;
 
     @ApiModelProperty(name = "indices", value = "indices", required = false, example = "book,article", dataType = "java.util.List")
-    private List<String> indices ;
+    private List<String> indices;
     @ApiModelProperty(name = "keyword", value = "keyword", required = false, example = "万里江山", dataType = "java.lang.String")
     private String keyword;
     @ApiModelProperty(name = "index", value = "index", required = false, example = "0", dataType = "java.lang.Integer")

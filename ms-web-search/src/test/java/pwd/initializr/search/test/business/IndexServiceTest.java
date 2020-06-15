@@ -27,6 +27,6 @@ public class IndexServiceTest {
 
   @Test
   public void createIndex() {
-    indexService.create("book1");
+    indexService.create("book");
   }
 }

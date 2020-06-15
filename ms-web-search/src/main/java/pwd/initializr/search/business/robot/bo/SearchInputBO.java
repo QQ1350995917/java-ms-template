@@ -25,7 +25,7 @@ import lombok.ToString;
 @ToString
 public class SearchInputBO {
 
-    private List<String> indies;
+    private List<String> indices;
     private String keyword;
     private Integer index = 0;
     private Integer size = 12;
