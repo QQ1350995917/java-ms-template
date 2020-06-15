@@ -3,6 +3,7 @@ package pwd.initializr.search.rpc;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.LinkedList;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,10 +26,20 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class RPCSearchOutput extends RPCSearchMetadataInput {
+public class RPCSearchOutput implements Serializable {
 
-  private static final long serialVersionUID = -4291776028708567323L;
+    private static final long serialVersionUID = -1659590069838613585L;
 
-  @ApiModelProperty(name = "esSummary", value = "esSummary", required = false, example = "esSummary", dataType = "java.lang.String")
-  private String esSummary;
+    @ApiModelProperty(name = "esId", value = "esId", required = false, example = "esId", dataType = "java.lang.String")
+    private String esId;
+    @ApiModelProperty(name = "esVisibility", value = "esVisibility", required = false, example = "esVisibility", dataType = "java.lang.String")
+    private String esVisibility;
+    @ApiModelProperty(name = "esTitle", value = "esTitle", required = false, example = "esTitle", dataType = "java.lang.String")
+    private String esTitle;
+    @ApiModelProperty(name = "esContent", value = "esContent", required = false, example = "esContent", dataType = "java.util.List")
+    private LinkedList<String> esContent;
+    @ApiModelProperty(name = "esLinkTo", value = "esLinkTo", required = false, example = "esLinkTo", dataType = "java.lang.String")
+    private String esLinkTo;
+    @ApiModelProperty(name = "esUpdateTime", value = "esUpdateTime", required = false, example = "esUpdateTime", dataType = "java.lang.Date")
+    private Date esUpdateTime;
 }

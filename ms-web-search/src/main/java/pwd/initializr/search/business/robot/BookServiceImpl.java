@@ -159,11 +159,6 @@ public class BookServiceImpl implements BookService {
         String summary = stringBuilder.toString();
         SearchOutputBO searchResultBO = new SearchOutputBO();
         searchResultBO
-            .setEsType(source.get("esType") == null ? null : source.get("esType").toString());
-        searchResultBO
-            .setEsTitle(source.get("esTitle") == null ? null : source.get("esTitle").toString());
-        searchResultBO.setEsSummary(summary);
-        searchResultBO
             .setEsLinkTo(source.get("esLinkTo") == null ? null : source.get("esLinkTo").toString());
         searchResultBO.setEsUpdateTime(source.get("esUpdateTime") == null ? null
             : new Date(Long.valueOf(source.get("esUpdateTime").toString())));
@@ -179,50 +174,5 @@ public class BookServiceImpl implements BookService {
     return searchResultBOObjectList;
   }
 
-  private void search2(String keyword, Integer pageIndex, Integer pageSize) {
 
-    NativeSearchQueryBuilder queryBuilder = new NativeSearchQueryBuilder();
-    BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
-    queryBuilder.withQuery(boolQuery);
-    queryBuilder.withHighlightFields(
-        new HighlightBuilder.Field("title"),
-        new HighlightBuilder.Field("subTitle"),
-        new HighlightBuilder.Field("authorName"),
-        new HighlightBuilder.Field("summary"),
-        new HighlightBuilder.Field("labels"),
-        new HighlightBuilder.Field("paragraphs"),
-        new HighlightBuilder.Field("createTime"),
-        new HighlightBuilder.Field("updateTime")
-    );
-
-//     withFilter过滤匹配上的 geoDistanceQuery距离搜索 location mapper字段名 point(double lat, double lon) lat维度 lon经度
-//    　　　　　distance(String distance, DistanceUnit unit) distance距离 unit单位
-    queryBuilder.withFilter(QueryBuilders.geoDistanceQuery("location").point(1, 1)
-        .distance("3", DistanceUnit.KILOMETERS));
-//     withQuery 正常查询按命中率排序 rangeQuery(String name)区间搜索 name mapper你要搜索的字段 get大于等于 ge大于 lte小于等于 lt小于
-    queryBuilder.withQuery(QueryBuilders.rangeQuery("price").gte(100).lte(500));
-//     withSort排序 fieldSort(String field) field排序的字段 order(SortOrder order)降序还是升序
-    queryBuilder.withSort(SortBuilders.fieldSort("SystemSort").order(SortOrder.DESC));
-//     分页  PageRequest of(int page, int size) 当前页 条数 es第一页是0不是1
-    queryBuilder.withPageable(PageRequest.of(pageIndex, pageSize));
-//     结果
-    AggregatedPage<ArticleDocument> articleDocuments = elasticsearchTemplate
-        .queryForPage(queryBuilder.build(), ArticleDocument.class);
-
-    List<ArticleDocument> content = articleDocuments.getContent();
-
-    content.forEach(articleDocument -> {
-      ArticleBO articleBO = new ArticleBO();
-      BeanUtils.copyProperties(articleDocument, articleBO);
-//       articleBOS.add(articleBO);
-    });
-    long totalElements = articleDocuments.getTotalElements();
-    Integer totalPages = articleDocuments.getTotalPages();
-
-//     articleBOObjectList.setSize(pageSize.longValue());
-//     articleBOObjectList.setIndex(pageIndex.longValue());
-//     articleBOObjectList.setPages(totalPages.longValue());
-//     articleBOObjectList.setTotal(totalElements);
-//     articleBOObjectList.setElements(articleBOS);
-  }
 }

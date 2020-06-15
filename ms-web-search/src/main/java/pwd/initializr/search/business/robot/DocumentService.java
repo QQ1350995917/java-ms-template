@@ -1,6 +1,9 @@
 package pwd.initializr.search.business.robot;
 
+import pwd.initializr.common.web.business.bo.ObjectList;
 import pwd.initializr.search.business.robot.bo.DocumentBO;
+import pwd.initializr.search.business.robot.bo.SearchInputBO;
+import pwd.initializr.search.business.robot.bo.SearchOutputBO;
 
 /**
  * pwd.initializr.search.business@ms-web-initializr
@@ -16,4 +19,6 @@ import pwd.initializr.search.business.robot.bo.DocumentBO;
 public interface DocumentService {
 
   int create(String index, DocumentBO documentBO);
+
+  ObjectList<SearchOutputBO> search(SearchInputBO searchInputBO);
 }

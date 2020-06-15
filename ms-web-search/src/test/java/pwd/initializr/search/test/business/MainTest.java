@@ -1,7 +1,7 @@
 package pwd.initializr.search.test.business;
 
 import org.springframework.beans.BeanUtils;
-import pwd.initializr.search.api.robot.vo.BookIntoSearchInput;
+import pwd.initializr.search.api.robot.vo.DocumentIntoSearchInputVO;
 
 /**
  * pwd.initializr.search.test.business@ms-web-initializr
@@ -17,11 +17,11 @@ import pwd.initializr.search.api.robot.vo.BookIntoSearchInput;
 public class MainTest {
 
   public static void main(String[] args) {
-    BookIntoSearchInput bookInputVO = new BookIntoSearchInput();
+    DocumentIntoSearchInputVO bookInputVO = new DocumentIntoSearchInputVO();
     bookInputVO.setId(123L);
     bookInputVO.setTitle("xxxx");
 
-    BookIntoSearchInput bookInputVO1 = new BookIntoSearchInput();
+    DocumentIntoSearchInputVO bookInputVO1 = new DocumentIntoSearchInputVO();
 
     BeanUtils.copyProperties(bookInputVO,bookInputVO1);
 
