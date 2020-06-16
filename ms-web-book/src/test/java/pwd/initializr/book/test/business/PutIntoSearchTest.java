@@ -40,6 +40,13 @@ public class PutIntoSearchTest {
   @Autowired
   private SearchClientService searchClientService;
 
+
+  @Test
+  public void putBookAndArticleIntoSearch() {
+    putBookIntoSearch();
+    putArticleIntoSearch();
+  }
+
   @Test
   public void putArticleIntoSearch() {
     List<ArticleEntity> all = mongoTemplate.findAll(ArticleEntity.class);

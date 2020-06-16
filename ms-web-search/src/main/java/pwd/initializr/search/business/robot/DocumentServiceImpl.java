@@ -116,7 +116,7 @@ public class DocumentServiceImpl implements DocumentService {
         //避免分页之后相关性乱了
         .setTrackScores(true)
         .highlighter(getHighlightBuilder())
-        .setFrom(pageIndex)
+        .setFrom(pageIndex * pageSize)
         .setSize(pageSize)
         .execute()
         .actionGet();
@@ -129,13 +129,26 @@ public class DocumentServiceImpl implements DocumentService {
         Map<String, HighlightField> highlightFields = hit.getHighlightFields();
         Map<String, Object> source = hit.getSourceAsMap();
         LinkedList<String> esContent = new LinkedList<>();
-        HighlightField highlightField = highlightFields.get("esContent");
-        if (highlightField != null) {
-          Text[] fragments = highlightField.fragments();
+        HighlightField highlightESTitle = highlightFields.get("esTitle");
+        if (highlightESTitle != null) {
+          Text[] fragments = highlightESTitle.fragments();
+          StringBuilder esTitleFragmentsStringBuilder = new StringBuilder();
+          for (Text text : fragments) {
+            esTitleFragmentsStringBuilder.append(text);
+          }
+          if (esTitleFragmentsStringBuilder.length() > 0) {
+            source.put("esTitle",esTitleFragmentsStringBuilder.toString());
+          }
+        }
+
+        HighlightField highlightESContent = highlightFields.get("esContent");
+        if (highlightESContent != null) {
+          Text[] fragments = highlightESContent.fragments();
           for (Text text : fragments) {
             if (esContent.size() < 5) {
               esContent.add("#" + text + "#");
-              System.out.println("###" + text + "###");
+            } else {
+              break;
             }
           }
         }
@@ -171,11 +184,10 @@ public class DocumentServiceImpl implements DocumentService {
     //高亮设置
     highlightBuilder.preTags("<span style=\"color:red\">");
     highlightBuilder.postTags("</span>");
-    //下面这两项,如果你要高亮如文字内容等有很多字的字段,必须配置,不然会导致高亮不全,文章内容缺失等
     //最大高亮分片数
-    highlightBuilder.fragmentSize(80);
+//    highlightBuilder.fragmentSize(80);
     //从第一个分片获取高亮片段
-    highlightBuilder.numOfFragments(0);
+//    highlightBuilder.numOfFragments(0);
 //    highlightBuilder.noMatchSize(100);
     return highlightBuilder;
   }
