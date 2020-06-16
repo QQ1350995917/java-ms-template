@@ -146,7 +146,7 @@ public class DocumentServiceImpl implements DocumentService {
           Text[] fragments = highlightESContent.fragments();
           for (Text text : fragments) {
             if (esContent.size() < 5) {
-              esContent.add("#" + text + "#");
+              esContent.add("..." + text + "...");
             } else {
               break;
             }
