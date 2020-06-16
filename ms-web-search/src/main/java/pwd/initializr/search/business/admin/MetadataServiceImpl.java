@@ -18,6 +18,7 @@ import org.elasticsearch.common.xcontent.XContentFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.stereotype.Service;
+import pwd.initializr.common.web.business.bo.ObjectList;
 import pwd.initializr.search.business.admin.bo.IndexBO;
 import pwd.initializr.search.business.admin.bo.MappingBO;
 import pwd.initializr.search.business.admin.bo.MappingFieldBO;
@@ -40,7 +41,8 @@ public class MetadataServiceImpl implements MetadataService {
     private ElasticsearchTemplate elasticsearchTemplate;
 
     @Override
-    public IndexBO list() {
+    public ObjectList<IndexBO> list() {
+        ObjectList<IndexBO> indexBOObjectList = new ObjectList<>();
         GetIndexResponse getIndexResponse = elasticsearchTemplate.getClient().admin().indices()
             .prepareGetIndex().get();
         String[] indices = getIndexResponse.getIndices();
@@ -60,15 +62,33 @@ public class MetadataServiceImpl implements MetadataService {
             indexBO.setShards(settings.get(index).get("index.number_of_shards"));
             indexBO.setDate(settings.get(index).get("index.creation_date"));
             indexBO.setVersion(settings.get(index).get("index.version.created"));
-
-            Object properties = mappings.get(index).get(index).getSourceAsMap().get("properties");
-            if (properties != null && properties instanceof Map) {
-                Map<String,Object> propertiesMap = (Map<String,Object>) properties;
-
+            MappingMetaData mappingMetaData = mappings.get(index).get(index);
+            if (mappingMetaData != null) {
+                Object properties = mappingMetaData.getSourceAsMap().get("properties");
+                if (properties != null && properties instanceof Map) {
+                    Map<String,Object> propertiesMap = (Map<String,Object>) properties;
+                    List<MappingBO> mappingBOS = new LinkedList<>();
+                    propertiesMap.forEach((key,value) -> {
+                        Map<String, String> valueMap = (Map<String, String>) value;
+                        List<MappingFieldBO> mappingFieldBOS = new LinkedList<>();
+                        valueMap.forEach((fieldKey,fieldValue) ->{
+                            MappingFieldBO mappingFieldBO = new MappingFieldBO();
+                            mappingFieldBO.setName(fieldKey);
+                            mappingFieldBO.setValue(fieldValue);
+                            mappingFieldBOS.add(mappingFieldBO);
+                        });
+                        MappingBO mappingBO = new MappingBO();
+                        mappingBO.setName(key);
+                        mappingBO.setFields(mappingFieldBOS);
+                        mappingBOS.add(mappingBO);
+                    });
+                    indexBO.setProperties(mappingBOS);
+                }
             }
 
+            indexBOObjectList.getElements().add(indexBO);
         });
-        return new IndexBO();
+        return indexBOObjectList;
     }
 
     @Override
