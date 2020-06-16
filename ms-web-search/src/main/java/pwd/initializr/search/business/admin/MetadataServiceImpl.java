@@ -84,9 +84,8 @@ public class MetadataServiceImpl implements MetadataService {
                     });
                     indexBO.setProperties(mappingBOS);
                 }
+                indexBOObjectList.getElements().add(indexBO);
             }
-
-            indexBOObjectList.getElements().add(indexBO);
         });
         return indexBOObjectList;
     }
