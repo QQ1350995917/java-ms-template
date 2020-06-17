@@ -31,6 +31,8 @@ public class RPCSearchBodyVO implements Serializable {
 
   @ApiModelProperty(name = "esId", value = "esId", required = false, example = "esId", dataType = "java.lang.String")
   private String esId;
+  @ApiModelProperty(name = "esIndex", value = "esIndex", required = false, example = "esIndex", dataType = "java.lang.String")
+  private String esIndex;
   @ApiModelProperty(name = "esVisibility", value = "esVisibility", required = false, example = "esVisibility", dataType = "java.lang.String")
   private String esVisibility;
   @ApiModelProperty(name = "esTitle", value = "esTitle", required = false, example = "esTitle", dataType = "java.lang.String")

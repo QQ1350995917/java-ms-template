@@ -59,7 +59,7 @@ public class DocumentServiceImpl implements DocumentService {
     try {
       XContentBuilder builder = XContentFactory.jsonBuilder()
           .startObject()
-          .field("esId", documentBO.getEsId())
+//          .field("esId", documentBO.getEsId())
           .field("esVisibility", documentBO.getEsVisibility())
           .field("esTitle", documentBO.getEsTitle())
           .field("esContent", documentBO.getEsContent())
@@ -153,8 +153,9 @@ public class DocumentServiceImpl implements DocumentService {
           }
         }
         SearchBodyVOBO searchResultBO = new SearchBodyVOBO();
-        searchResultBO.setEsId(source.get("esId") == null ? null : source.get("esId").toString());
-        searchResultBO.setEsId(
+        searchResultBO.setEsIndex(hit.getIndex());
+        searchResultBO.setEsId(hit.getId());
+        searchResultBO.setEsVisibility(
             source.get("esVisibility") == null ? null : source.get("esVisibility").toString());
         searchResultBO
             .setEsTitle(source.get("esTitle") == null ? null : source.get("esTitle").toString());
