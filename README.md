@@ -17,3 +17,5 @@
 |schedule|11280|
 
 http://patorjk.com/software/taag/#p=display&f=Doh
+
+mvn clean package docker:build -Dmaven.test.skip=true -DpushImage

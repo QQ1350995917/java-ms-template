@@ -27,6 +27,7 @@
     </dependency>
   </dependencies>
 
+
   <build>
     <resources>
       <!--将resources下的配置文件拷贝到target/config目录下 -->
@@ -147,7 +148,9 @@
         <version>1.0.0</version>
         <configuration>
           <forceTags>true</forceTags>
-          <imageName>docker.initializr.pwd/${project.artifactId}</imageName>
+          <dockerDirectory>${project.basedir}/src/main/docker</dockerDirectory>
+          <imageName>localhost:5000/${project.artifactId}:${project.version}</imageName>
+          <dockerHost>http://localhost:2375</dockerHost>
           <dockerDirectory>src/main/docker</dockerDirectory>
           <resources>
             <resource>
@@ -155,8 +158,27 @@
               <directory>${project.build.directory}</directory>
               <include>${project.build.finalName}.jar</include>
             </resource>
+            <resource>
+              <targetPath>/</targetPath>
+              <directory>${project.build.directory}</directory>
+              <include>lib/</include>
+            </resource>
+            <resource>
+              <targetPath>/</targetPath>
+              <directory>${project.build.directory}</directory>
+              <include>config/</include>
+            </resource>
           </resources>
         </configuration>
+        <executions>
+          <execution>
+            <id>default</id>
+            <phase>install</phase>
+            <goals>
+              <goal>build</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
