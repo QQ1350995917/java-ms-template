@@ -12,30 +12,30 @@
   <artifactId>parent</artifactId>
   <packaging>pom</packaging>
   <modules>
-    <module>lib-common</module>
-    <module>lib-common-mw-minio</module>
-    <module>lib-common-mw-redis</module>
-    <module>lib-common-web</module>
-    <module>lib-etl-core</module>
-    <module>lib-etl-core-plugin</module>
-    <module>lib-rpc-storage</module>
-    <module>lib-rpc-account</module>
-    <module>lib-rpc-search</module>
-    <module>ms-web-access</module>
-    <module>ms-web-account</module>
-    <module>ms-web-book</module>
-    <module>ms-web-configure</module>
-    <module>ms-web-etl</module>
-    <module>ms-web-etl-plugin</module>
-    <module>ms-web-gateway</module>
-    <module>ms-web-logger</module>
-    <module>ms-web-monitor</module>
-    <module>ms-web-organization</module>
+    <!--<module>lib-common</module>-->
+    <!--<module>lib-common-mw-minio</module>-->
+    <!--<module>lib-common-mw-redis</module>-->
+    <!--<module>lib-common-web</module>-->
+    <!--<module>lib-etl-core</module>-->
+    <!--<module>lib-etl-core-plugin</module>-->
+    <!--<module>lib-rpc-storage</module>-->
+    <!--<module>lib-rpc-account</module>-->
+    <!--<module>lib-rpc-search</module>-->
+    <!--<module>ms-web-access</module>-->
+    <!--<module>ms-web-account</module>-->
+    <!--<module>ms-web-book</module>-->
+    <!--<module>ms-web-configure</module>-->
+    <!--<module>ms-web-etl</module>-->
+    <!--<module>ms-web-etl-plugin</module>-->
+    <!--<module>ms-web-gateway</module>-->
+    <!--<module>ms-web-logger</module>-->
+    <!--<module>ms-web-monitor</module>-->
+    <!--<module>ms-web-organization</module>-->
     <module>ms-web-registry</module>
     <!--<module>ms-web-schedule</module>-->
-    <module>ms-web-search</module>
-    <module>ms-web-storage</module>
-    <module>ms-web-typeface</module>
+    <!--<module>ms-web-search</module>-->
+    <!--<module>ms-web-storage</module>-->
+    <!--<module>ms-web-typeface</module>-->
     <!--<module>project-generator</module>-->
     <!--<module>widget-tool</module>-->
   </modules>
