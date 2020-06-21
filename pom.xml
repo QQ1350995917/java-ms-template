@@ -54,7 +54,7 @@
     <repository>
       <id>local-maven-releases-jenkins</id>
       <name>Local Maven Releases Jenkins</name>
-      <url>http://nexus:82/repository/maven-releases/</url>
+      <url>http://nexus:8081/repository/maven-releases/</url>
       <releases>
         <enabled>true</enabled>
       </releases>
