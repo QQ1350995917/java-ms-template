@@ -52,17 +52,17 @@
 
   <repositories>
     <repository>
-      <id>local-maven-releases</id>
-      <name>Local Maven Releases</name>
-      <url>http://localhost:82/repository/maven-releases/</url>
+      <id>local-maven-releases-jenkins</id>
+      <name>Local Maven Releases Jenkins</name>
+      <url>http://nexus:82/repository/maven-releases/</url>
       <releases>
         <enabled>true</enabled>
       </releases>
     </repository>
     <repository>
-      <id>local-maven-releases-jenkins</id>
-      <name>Local Maven Releases Jenkins</name>
-      <url>http://nexus:82/repository/maven-releases/</url>
+      <id>local-maven-releases</id>
+      <name>Local Maven Releases</name>
+      <url>http://localhost:82/repository/maven-releases/</url>
       <releases>
         <enabled>true</enabled>
       </releases>
