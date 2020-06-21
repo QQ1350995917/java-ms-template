@@ -36,8 +36,8 @@
     <module>ms-web-search</module>
     <module>ms-web-storage</module>
     <module>ms-web-typeface</module>
-    <module>project-generator</module>
-    <module>widget-tool</module>
+    <!--<module>project-generator</module>-->
+    <!--<module>widget-tool</module>-->
   </modules>
   <version>0.0.1-SNAPSHOT</version>
   <name>ms-web-initializr</name>
