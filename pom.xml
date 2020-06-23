@@ -56,7 +56,6 @@
     <docker.registry.push.image.tag>true</docker.registry.push.image.tag>
   </properties>
 
-
   <repositories>
     <repository>
       <id>local-maven-releases</id>
