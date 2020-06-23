@@ -49,7 +49,8 @@
     <java.version>1.8</java.version>
     <spring-cloud.version>Greenwich.SR3</spring-cloud.version>
     <docker-maven-plugin.version>1.2.0</docker-maven-plugin.version>
-    <docker.registry>192.168.50.27:84</docker.registry>
+    <!--<docker.registry>192.168.50.27:84</docker.registry>-->
+    <docker.registry>192.168.31.72:84</docker.registry>
   </properties>
 
   <repositories>
