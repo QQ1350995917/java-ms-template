@@ -48,26 +48,28 @@
   <properties>
     <java.version>1.8</java.version>
     <spring-cloud.version>Greenwich.SR3</spring-cloud.version>
+    <docker-maven-plugin.version>1.2.0</docker-maven-plugin.version>
+    <docker.registry>192.168.50.27:84</docker.registry>
   </properties>
 
-  <!--<repositories>-->
-    <!--<repository>-->
-      <!--<id>local-maven-releases-jenkins</id>-->
-      <!--<name>Local Maven Releases Jenkins</name>-->
-      <!--<url>http://nexus:8081/repository/maven-releases/</url>-->
-      <!--<releases>-->
-        <!--<enabled>true</enabled>-->
-      <!--</releases>-->
-    <!--</repository>-->
-    <!--<repository>-->
-      <!--<id>local-maven-releases</id>-->
-      <!--<name>Local Maven Releases</name>-->
-      <!--<url>http://localhost:82/repository/maven-releases/</url>-->
-      <!--<releases>-->
-        <!--<enabled>true</enabled>-->
-      <!--</releases>-->
-    <!--</repository>-->
-  <!--</repositories>-->
+  <repositories>
+    <repository>
+      <id>local-maven-releases-jenkins</id>
+      <name>Local Maven Releases Jenkins</name>
+      <url>http://nexus:8081/repository/maven-releases/</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+    </repository>
+    <repository>
+      <id>local-maven-releases</id>
+      <name>Local Maven Releases</name>
+      <url>http://localhost:82/repository/maven-releases/</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+    </repository>
+  </repositories>
 
   <dependencies>
     <dependency>
@@ -155,6 +157,14 @@
             </goals>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.19.1</version>
+        <configuration>
+          <skipTests>true</skipTests>    <!--默认关掉单元测试 -->
+        </configuration>
       </plugin>
     </plugins>
   </build>
