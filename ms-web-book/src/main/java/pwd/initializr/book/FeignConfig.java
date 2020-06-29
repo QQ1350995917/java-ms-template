@@ -1,13 +1,30 @@
 package pwd.initializr.book;
 
+import feign.Client;
 import feign.Feign;
 import feign.Logger;
+import feign.httpclient.ApacheHttpClient;
+import java.security.cert.CertificateException;
 import java.util.concurrent.TimeUnit;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import okhttp3.ConnectionPool;
+import org.apache.http.config.Registry;
+import org.apache.http.config.RegistryBuilder;
+import org.apache.http.conn.HttpClientConnectionManager;
+import org.apache.http.conn.socket.ConnectionSocketFactory;
+import org.apache.http.conn.socket.PlainConnectionSocketFactory;
+import org.apache.http.conn.ssl.NoopHostnameVerifier;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.cloud.openfeign.FeignAutoConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -43,6 +60,47 @@ public class FeignConfig {
         .retryOnConnectionFailure(true)
         .connectionPool(new ConnectionPool(10, 5L, TimeUnit.MINUTES))
         .build();
+  }
+
+  @Bean
+  public Client getClient() throws Exception {
+    SSLContext sslContext = SSLContext.getInstance("SSL");
+
+    final TrustManager[] trustAllCerts = new TrustManager[]{
+        new X509TrustManager() {
+          @Override
+          public void checkClientTrusted(java.security.cert.X509Certificate[] chain,
+              String authType) throws CertificateException {
+          }
+
+          @Override
+          public void checkServerTrusted(java.security.cert.X509Certificate[] chain,
+              String authType) throws CertificateException {
+          }
+
+          @Override
+          public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+            return new java.security.cert.X509Certificate[]{};
+          }
+        }
+    };
+
+    sslContext.init(null, trustAllCerts, null);
+
+    Registry<ConnectionSocketFactory> socketFactoryRegistry = RegistryBuilder.<ConnectionSocketFactory>create()
+        .register("http", PlainConnectionSocketFactory.INSTANCE)
+        // 正常的SSL连接会验证码所有证书信息
+        // .register("https", new SSLConnectionSocketFactory(sslcontext)).build();
+        //  只忽略域名验证码
+        .register("https",
+            new SSLConnectionSocketFactory(sslContext, NoopHostnameVerifier.INSTANCE)).build();
+
+    HttpClientConnectionManager connManager = new PoolingHttpClientConnectionManager(
+        socketFactoryRegistry);
+    CloseableHttpClient httpClient = HttpClients.custom().setConnectionManager(connManager)
+        .build();
+
+    return new ApacheHttpClient(httpClient);
   }
 
   @Bean
