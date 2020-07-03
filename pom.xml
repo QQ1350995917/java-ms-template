@@ -49,23 +49,15 @@
     <java.version>1.8</java.version>
     <spring-cloud.version>Greenwich.SR3</spring-cloud.version>
     <docker-maven-plugin.version>1.2.0</docker-maven-plugin.version>
-    <!--<docker.registry>192.168.50.27:84</docker.registry>-->
-    <docker.registry>192.168.31.72:84</docker.registry>
+    <docker.host>http://www.pwd.com:2375</docker.host>
+    <docker.registry>www.pwd.com:84</docker.registry>
   </properties>
 
   <repositories>
     <repository>
-      <id>local-maven-releases-jenkins</id>
-      <name>Local Maven Releases Jenkins</name>
-      <url>http://nexus:8081/repository/maven-releases/</url>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-    </repository>
-    <repository>
       <id>local-maven-releases</id>
       <name>Local Maven Releases</name>
-      <url>http://localhost:82/repository/maven-releases/</url>
+      <url>http://www.pwd.com:82/repository/maven-releases/</url>
       <releases>
         <enabled>true</enabled>
       </releases>
