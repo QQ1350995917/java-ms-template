@@ -140,7 +140,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
-        <version>3.0.1</version>
+        <version>3.2.1</version>
         <configuration>
           <attach>true</attach>
         </configuration>
@@ -148,7 +148,7 @@
           <execution>
             <phase>compile</phase>
             <goals>
-              <goal>jar</goal>
+              <!--<goal>jar</goal>-->
             </goals>
           </execution>
         </executions>
