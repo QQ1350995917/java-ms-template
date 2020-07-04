@@ -49,15 +49,17 @@
     <java.version>1.8</java.version>
     <spring-cloud.version>Greenwich.SR3</spring-cloud.version>
     <docker-maven-plugin.version>1.2.0</docker-maven-plugin.version>
-    <docker.host>http://www.pwd.com:2375</docker.host>
-    <docker.registry>www.pwd.com:84</docker.registry>
+    <cicd.host>192.168.31.18</cicd.host>
+    <docker.host>http://${cicd.host}:2375</docker.host>
+    <docker.registry>${cicd.host}:84</docker.registry>
   </properties>
+
 
   <repositories>
     <repository>
       <id>local-maven-releases</id>
       <name>Local Maven Releases</name>
-      <url>http://www.pwd.com:82/repository/maven-releases/</url>
+      <url>http://${cicd.host}:82/repository/maven-releases/</url>
       <releases>
         <enabled>true</enabled>
       </releases>
