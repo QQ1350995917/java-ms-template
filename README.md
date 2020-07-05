@@ -1,9 +1,9 @@
 # ms-web-initializr
 |业务|端口号|
 |---|---|
-|registry|11220|
+|configure|11220|
 |gateway|11221|
-|configure|11222|
+|registry|11222|
 |account|11230| 
 |article|11231| 
 |typeface|11232| 

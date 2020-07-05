@@ -2,7 +2,9 @@ package pwd.initializr.registry;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * pwd.initializr.registry@ms-web-initializr
@@ -17,8 +19,11 @@ import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
  */
 @SpringBootApplication
 @EnableEurekaServer
+@RestController
+@RefreshScope
 public class RegistryApplication {
-    public static void main(String[] args) {
-        SpringApplication.run(RegistryApplication.class, args);
-    }
+
+  public static void main(String[] args) {
+    SpringApplication.run(RegistryApplication.class, args);
+  }
 }
