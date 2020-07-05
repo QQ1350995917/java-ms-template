@@ -2,6 +2,7 @@ package pwd.initializr.configure;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.config.server.EnableConfigServer;
 
 /**
  * pwd.initializr.configuration@ms-web-initializr
@@ -15,6 +16,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @since DistributionVersion
  */
 @SpringBootApplication
+@EnableConfigServer
 public class ConfigurationApplication {
     public static void main(String[] args) {
         SpringApplication.run(ConfigurationApplication.class, args);
