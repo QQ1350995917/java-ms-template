@@ -1,7 +1,18 @@
 spring:
   profiles:
-    active: dev
+    active: native
 
+---
+spring:
+  profiles:
+    active: native
+  application:
+    name: config-server #名称
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: applicationd-dev.properties
 ---
 spring:
   profiles: prod
