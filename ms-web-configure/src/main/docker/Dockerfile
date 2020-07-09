@@ -10,5 +10,5 @@ ENV JAVA_OPTS=""
 ENV BOOTSTRAP=""
 ENV APPLICATION=""
 WORKDIR /
-ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar app.jar --spring.config.location=$APPLICATION --spring.cloud.bootstrap.location=$BOOTSTRAP"]
+ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar app.jar --spring.cloud.bootstrap.location=$BOOTSTRAP --spring.config.location=$APPLICATION"]
 EXPOSE 11220
