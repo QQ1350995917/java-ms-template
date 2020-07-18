@@ -41,53 +41,53 @@ import pwd.initializr.common.web.api.FullPathNameGenerator;
 @ComponentScan(nameGenerator = FullPathNameGenerator.class)
 @MapperScan("pwd.initializr.account.persistence")
 public class AccountApplication {
-    public static void main(String[] args) {
-        SpringApplication.run(AccountApplication.class, args);
-    }
 
+  private VCodeHelper vCodeHelper = new ArithmeticCode();
 
-    @GetMapping(value = "")
-    public String index0() {
-        return "this is account 0 index";
-    }
+  public static void main(String[] args) {
+    SpringApplication.run(AccountApplication.class, args);
+  }
 
-    @GetMapping(value = "/")
-    public String index1() {
-        return "this is account 1 index";
-    }
-
-    @GetMapping(value = "/account")
-    public String index2() {
-        return "this is account 2 index";
-    }
-
-    private VCodeHelper vCodeHelper = new ArithmeticCode();
-
-    @ApiOperation(value = "获取一个验证码")
-    @GetMapping(value = {"/vcode"}, produces = "application/json;charset=UTF-8")
-    public void applyVCode(HttpServletRequest request, HttpServletResponse response) {
-        response.setDateHeader("Expires", 0);
-        response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
-        response.addHeader("Cache-Control", "post-check=0, pre-check=0");
-        response.setHeader("Pragma", "no-cache");
-        response.setContentType("image/jpeg");
-        CodeMessage codeMessage = vCodeHelper.productMessage();
-        request.getSession().setAttribute(Constants.KAPTCHA_SESSION_KEY, codeMessage.getExpected());
-        BufferedImage bufferedImage = vCodeHelper.productImage(codeMessage.getPresented());
-        ServletOutputStream out = null;
+  @ApiOperation(value = "获取一个验证码")
+  @GetMapping(value = {"/vcode"}, produces = "application/json;charset=UTF-8")
+  public void applyVCode(HttpServletRequest request, HttpServletResponse response) {
+    response.setDateHeader("Expires", 0);
+    response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
+    response.addHeader("Cache-Control", "post-check=0, pre-check=0");
+    response.setHeader("Pragma", "no-cache");
+    response.setContentType("image/jpeg");
+    CodeMessage codeMessage = vCodeHelper.productMessage();
+    request.getSession().setAttribute(Constants.KAPTCHA_SESSION_KEY, codeMessage.getExpected());
+    BufferedImage bufferedImage = vCodeHelper.productImage(codeMessage.getPresented());
+    ServletOutputStream out = null;
+    try {
+      out = response.getOutputStream();
+      ImageIO.write(bufferedImage, "jpg", out);
+      out.flush();
+    } catch (IOException e) {
+    } finally {
+      if (out != null) {
         try {
-            out = response.getOutputStream();
-            ImageIO.write(bufferedImage, "jpg", out);
-            out.flush();
+          out.close();
         } catch (IOException e) {
-        } finally {
-            if (out != null) {
-                try {
-                    out.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+          e.printStackTrace();
         }
+      }
     }
+  }
+
+  @GetMapping(value = "")
+  public String index0() {
+    return "this is account 0 index";
+  }
+
+  @GetMapping(value = "/")
+  public String index1() {
+    return "this is account 1 index";
+  }
+
+  @GetMapping(value = "/account")
+  public String index2() {
+    return "this is account 2 index";
+  }
 }

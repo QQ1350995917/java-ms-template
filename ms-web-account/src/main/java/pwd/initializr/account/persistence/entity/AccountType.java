@@ -13,7 +13,7 @@ import com.baomidou.mybatisplus.annotation.EnumValue;
  * @version 1.0.0
  * @since DistributionVersion
  */
-public enum UserAccountType {
+public enum AccountType {
   ByAdmin(0, "管理员开通账户"),
   ByPhoneNumber(1, "手机号码注册账户") {
     @Override
@@ -27,7 +27,7 @@ public enum UserAccountType {
   @EnumValue
   Integer type;
 
-  UserAccountType(Integer type, String desc) {
+  AccountType(Integer type, String desc) {
     this.type = type;
     this.desc = desc;
   }

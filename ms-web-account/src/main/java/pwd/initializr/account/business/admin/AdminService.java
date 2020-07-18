@@ -3,7 +3,6 @@ package pwd.initializr.account.business.admin;
 import java.util.LinkedHashSet;
 import org.springframework.stereotype.Service;
 import pwd.initializr.account.business.admin.bo.AdminBO;
-import pwd.initializr.account.persistence.entity.AdminEntity;
 import pwd.initializr.common.web.business.bo.ObjectList;
 
 /**

@@ -6,7 +6,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.account.api.robot.vo.ListUserInput;
@@ -31,7 +30,9 @@ import pwd.initializr.account.business.robot.bo.User;
 )
 @RestController(value = "userInfoApi")
 @RequestMapping(value = "/api/robot/user")
-public class UserController extends pwd.initializr.common.web.api.user.UserController implements UserApi {
+public class UserController extends pwd.initializr.common.web.api.user.UserController implements
+    UserApi {
+
   @Autowired
   private UserService userService;
 

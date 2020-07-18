@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pwd.initializr.account.persistence.dao.AdminUserDao">
+
+  <resultMap id="AdminUserMap" type="pwd.initializr.account.persistence.entity.AdminUserEntity">
+    <result column="id" jdbcType="INTEGER" property="id"/>
+    <result column="pin" jdbcType="VARCHAR" property="pin"/>
+    <result column="name" jdbcType="VARCHAR" property="name"/>
+    <result column="gender" jdbcType="VARCHAR" property="gender"/>
+    <result column="emp_no" jdbcType="VARCHAR" property="empNo"/>
+    <result column="summary" jdbcType="VARCHAR" property="summary"/>
+    <result column="able" jdbcType="INTEGER" property="able"/>
+    <result column="del" jdbcType="INTEGER" property="del"/>
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+  </resultMap>
+
+  <!--查询单个-->
+  <select id="queryById" resultMap="AdminUserMap">
+        select
+          id, pin, name, gender, emp_no, summary, able, del, create_time, update_time
+        from initializr_account.admin_user
+        where id = #{id}
+    </select>
+
+  <!--查询指定行数据-->
+  <select id="queryAllByLimit" resultMap="AdminUserMap">
+        select
+          id, pin, name, gender, emp_no, summary, able, del, create_time, update_time
+        from initializr_account.admin_user
+        limit #{offset}, #{limit}
+    </select>
+
+  <!--通过实体作为筛选条件查询-->
+  <select id="queryAll" resultMap="AdminUserMap">
+    select
+    id, pin, name, gender, emp_no, summary, able, del, create_time, update_time
+    from initializr_account.admin_user
+    <where>
+      <if test="id != null">
+        and id = #{id}
+      </if>
+      <if test="pin != null and pin != ''">
+        and pin = #{pin}
+      </if>
+      <if test="name != null and name != ''">
+        and name = #{name}
+      </if>
+      <if test="gender != null and gender != ''">
+        and gender = #{gender}
+      </if>
+      <if test="empNo != null and empNo != ''">
+        and emp_no = #{empNo}
+      </if>
+      <if test="summary != null and summary != ''">
+        and summary = #{summary}
+      </if>
+      <if test="able != null">
+        and able = #{able}
+      </if>
+      <if test="del != null">
+        and del = #{del}
+      </if>
+      <if test="createTime != null">
+        and create_time = #{createTime}
+      </if>
+      <if test="updateTime != null">
+        and update_time = #{updateTime}
+      </if>
+    </where>
+  </select>
+
+  <!--新增所有列-->
+  <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into initializr_account.admin_user(pin, name, gender, emp_no, summary, able, del, create_time, update_time)
+        values (#{pin}, #{name}, #{gender}, #{empNo}, #{summary}, #{able}, #{del}, #{createTime}, #{updateTime})
+    </insert>
+
+  <!--通过主键修改数据-->
+  <update id="update">
+    update initializr_account.admin_user
+    <set>
+      <if test="pin != null and pin != ''">
+        pin = #{pin},
+      </if>
+      <if test="name != null and name != ''">
+        name = #{name},
+      </if>
+      <if test="gender != null and gender != ''">
+        gender = #{gender},
+      </if>
+      <if test="empNo != null and empNo != ''">
+        emp_no = #{empNo},
+      </if>
+      <if test="summary != null and summary != ''">
+        summary = #{summary},
+      </if>
+      <if test="able != null">
+        able = #{able},
+      </if>
+      <if test="del != null">
+        del = #{del},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+
+  <!--通过主键删除-->
+  <delete id="deleteById">
+        delete from initializr_account.admin_user where id = #{id}
+    </delete>
+
+</mapper>

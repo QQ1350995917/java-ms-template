@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import pwd.initializr.account.persistence.entity.UserAccountType;
+import pwd.initializr.account.persistence.entity.AccountType;
 
 /**
  * pwd.initializr.account.business.user.bo@ms-web-initializr
@@ -32,15 +32,15 @@ public class UserAccountBO {
   private String loginName;
   private String password;
   private Integer status = 0;
-  private UserAccountType type;
+  private AccountType type;
   private Date updateTime = new Date();
   private Long userId;
 
-  public UserAccountBO(String loginName, String password, UserAccountType type) {
+  public UserAccountBO(String loginName, String password, AccountType type) {
     this(null, loginName, password, type);
   }
 
-  public UserAccountBO(Long userId, String loginName, String password, UserAccountType type) {
+  public UserAccountBO(Long userId, String loginName, String password, AccountType type) {
     this.userId = userId;
     this.loginName = loginName;
     this.password = password;

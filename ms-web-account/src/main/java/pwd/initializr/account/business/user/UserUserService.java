@@ -1,16 +1,15 @@
 package pwd.initializr.account.business.user;
 
-
 import java.util.List;
-import pwd.initializr.account.persistence.entity.UserAccountEntity;
+import pwd.initializr.account.persistence.entity.UserUserEntity;
 
 /**
- * (UserAccountEntity)表服务接口
+ * (UserUserEntity)表服务接口
  *
  * @author makejava
- * @since 2020-07-18 22:35:18
+ * @since 2020-07-18 22:35:25
  */
-public interface UserAccountService {
+public interface UserUserService {
 
   /**
    * 通过主键删除数据
@@ -23,10 +22,10 @@ public interface UserAccountService {
   /**
    * 新增数据
    *
-   * @param userAccount 实例对象
+   * @param userUser 实例对象
    * @return 实例对象
    */
-  UserAccountEntity insert(UserAccountEntity userAccount);
+  UserUserEntity insert(UserUserEntity userUser);
 
   /**
    * 查询多条数据
@@ -35,7 +34,7 @@ public interface UserAccountService {
    * @param limit 查询条数
    * @return 对象列表
    */
-  List<UserAccountEntity> queryAllByLimit(int offset, int limit);
+  List<UserUserEntity> queryAllByLimit(int offset, int limit);
 
   /**
    * 通过ID查询单条数据
@@ -43,14 +42,14 @@ public interface UserAccountService {
    * @param id 主键
    * @return 实例对象
    */
-  UserAccountEntity queryById(Long id);
+  UserUserEntity queryById(Long id);
 
   /**
    * 修改数据
    *
-   * @param userAccount 实例对象
+   * @param userUser 实例对象
    * @return 实例对象
    */
-  UserAccountEntity update(UserAccountEntity userAccount);
+  UserUserEntity update(UserUserEntity userUser);
 
 }

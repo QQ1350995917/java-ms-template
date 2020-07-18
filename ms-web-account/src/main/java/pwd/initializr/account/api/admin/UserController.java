@@ -35,12 +35,11 @@ public class UserController extends AdminController implements UserApi {
   @Autowired
   private UserService userService;
 
-  @ApiOperation(value = "用户列表")
-  @GetMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @ApiOperation(value = "禁用用户")
+  @PatchMapping(value = {"/block/{id}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
-  public void listUser() {
-//    ObjectList<UserBO> userObjectList = userService.listUser();
-//    outputData(userObjectList);// TODO 转化为VO
+  public void blockUser(@PathVariable Long id) {
+
   }
 
   @ApiOperation(value = "用户详情")
@@ -51,11 +50,12 @@ public class UserController extends AdminController implements UserApi {
 //    outputData(user);// TODO 转化为VO
   }
 
-  @ApiOperation(value = "禁用用户")
-  @PatchMapping(value = {"/block/{id}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @ApiOperation(value = "用户列表")
+  @GetMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
-  public void blockUser(@PathVariable Long id) {
-
+  public void listUser() {
+//    ObjectList<UserBO> userObjectList = userService.listUser();
+//    outputData(userObjectList);// TODO 转化为VO
   }
 
   @ApiOperation(value = "启用用户")

@@ -20,7 +20,7 @@ import pwd.initializr.account.business.user.UserAccountService;
 import pwd.initializr.account.business.user.bo.SessionBO;
 import pwd.initializr.account.business.user.bo.UserAccountBO;
 import pwd.initializr.account.business.user.bo.UserBO;
-import pwd.initializr.account.persistence.entity.UserAccountType;
+import pwd.initializr.account.persistence.entity.AccountType;
 import pwd.initializr.account.rpc.RPCToken;
 import pwd.initializr.common.web.api.user.UserController;
 import pwd.initializr.common.web.api.vo.SMSCodeInput;
@@ -69,7 +69,7 @@ public class AccountController extends UserController implements AccountApi {
       // TODO session设置，返回身份信息，跳转页面
       UserBO userBO = new UserBO(input.getUsername(), input.getPhoneNumber());
       UserAccountBO account = new UserAccountBO(input.getPhoneNumber(), null,
-          UserAccountType.ByPhoneNumber);
+          AccountType.ByPhoneNumber);
       userBO.setAccounts(Arrays.asList(new UserAccountBO[]{account}));
       // TODO 优化password业务
       String password = smsCode.getSmsCode();

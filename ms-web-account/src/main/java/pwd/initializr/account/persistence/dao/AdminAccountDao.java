@@ -1,16 +1,17 @@
 package pwd.initializr.account.persistence.dao;
 
+
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
-import pwd.initializr.account.persistence.entity.UserAccountEntity;
+import pwd.initializr.account.persistence.entity.AdminAccountEntity;
 
 /**
- * (UserAccountEntity)表数据库访问层
+ * (AdminAccountEntity)表数据库访问层
  *
  * @author makejava
- * @since 2020-07-18 22:35:17
+ * @since 2020-07-18 22:19:55
  */
-public interface UserAccountDao {
+public interface AdminAccountDao {
 
   /**
    * 通过主键删除数据
@@ -23,18 +24,18 @@ public interface UserAccountDao {
   /**
    * 新增数据
    *
-   * @param userAccount 实例对象
+   * @param adminAccountEntity 实例对象
    * @return 影响行数
    */
-  int insert(UserAccountEntity userAccount);
+  int insert(AdminAccountEntity adminAccountEntity);
 
   /**
    * 通过实体作为筛选条件查询
    *
-   * @param userAccount 实例对象
+   * @param adminAccountEntity 实例对象
    * @return 对象列表
    */
-  List<UserAccountEntity> queryAll(UserAccountEntity userAccount);
+  List<AdminAccountEntity> queryAll(AdminAccountEntity adminAccountEntity);
 
   /**
    * 查询指定行数据
@@ -43,7 +44,7 @@ public interface UserAccountDao {
    * @param limit 查询条数
    * @return 对象列表
    */
-  List<UserAccountEntity> queryAllByLimit(@Param("offset") int offset, @Param("limit") int limit);
+  List<AdminAccountEntity> queryAllByLimit(@Param("offset") int offset, @Param("limit") int limit);
 
   /**
    * 通过ID查询单条数据
@@ -51,14 +52,14 @@ public interface UserAccountDao {
    * @param id 主键
    * @return 实例对象
    */
-  UserAccountEntity queryById(Long id);
+  AdminAccountEntity queryById(Long id);
 
   /**
    * 修改数据
    *
-   * @param userAccount 实例对象
+   * @param adminAccountEntity 实例对象
    * @return 影响行数
    */
-  int update(UserAccountEntity userAccount);
+  int update(AdminAccountEntity adminAccountEntity);
 
 }

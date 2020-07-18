@@ -9,31 +9,27 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * (AdminEntity)实体类
+ * (UserUserEntity)实体类
  *
  * @author makejava
- * @since 2020-04-25 16:18:28
+ * @since 2020-07-18 22:35:25
  */
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
 @Setter
+@Getter
 @ToString
-public class AdminEntity implements Serializable {
+public class UserUserEntity implements Serializable {
 
-  private static final long serialVersionUID = -54153826190401267L;
+  private static final long serialVersionUID = -41446625353827807L;
   /**
-   * 主键
+   * 自增主键
    */
   private Long id;
   /**
-   * 登录名
+   * 身份证号
    */
-  private String loginName;
-  /**
-   * 登录密码
-   */
-  private String loginPassword;
+  private String pin;
   /**
    * 姓名
    */
@@ -41,19 +37,23 @@ public class AdminEntity implements Serializable {
   /**
    * 性别
    */
-  private Integer gender;
+  private String gender;
+  /**
+   * 工号
+   */
+  private String empNo;
   /**
    * 简介
    */
   private String summary;
   /**
-   * 等级；0运维，1超管，2普通
+   * 可用性：0:不可用；1:可用
    */
-  private Integer level;
-
-  private Integer ableStatus;
-
-  private Integer delStatus;
+  private Integer able;
+  /**
+   * 状态：0:未删除；1:已删除
+   */
+  private Integer del;
   /**
    * 首次创建时间
    */
@@ -62,6 +62,4 @@ public class AdminEntity implements Serializable {
    * 最近更新时间
    */
   private Date updateTime;
-
-
 }

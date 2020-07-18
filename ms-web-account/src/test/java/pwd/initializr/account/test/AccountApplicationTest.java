@@ -1,10 +1,7 @@
 package pwd.initializr.account.test;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 import pwd.initializr.common.mw.redis.RedisClient;
 
 /**
@@ -23,15 +20,16 @@ import pwd.initializr.common.mw.redis.RedisClient;
 public class AccountApplicationTest {
 
 
-    @Test
-    public void contextLoads() {
-    }
-    @Autowired
-    private RedisClient redisClient;
+  @Autowired
+  private RedisClient redisClient;
 
-    @Test
-    public void testRedisClient(){
-        redisClient.set("pwd","xxx",0);
-    }
+  @Test
+  public void contextLoads() {
+  }
+
+  @Test
+  public void testRedisClient() {
+    redisClient.set("pwd", "xxx", 0);
+  }
 
 }

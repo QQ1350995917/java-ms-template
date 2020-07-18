@@ -17,14 +17,14 @@ import pwd.initializr.common.web.api.vo.PageInput;
  */
 public interface AdminApi {
 
-  void list(PageInput pageInput, AdminVO adminVO);
-
   void create(CreateAdminInput input);
 
-  void modify(Long id,CreateAdminInput input);
+  void disable(Long id);
 
   void enable(Long id);
 
-  void disable(Long id);
+  void list(PageInput pageInput, AdminVO adminVO);
+
+  void modify(Long id, CreateAdminInput input);
 
 }

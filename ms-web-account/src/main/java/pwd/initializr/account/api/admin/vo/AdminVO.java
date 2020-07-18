@@ -26,15 +26,15 @@ import lombok.ToString;
 @ToString
 public class AdminVO implements Serializable {
 
-    private Long id;
-    private String loginName;
-    private String loginPassword;
-    private String name;
-    private Integer gender;
-    private String summary;
-    private Integer level;
-    private Integer ableStatus;
-    private Integer delStatus;
-    private Date createTime;
-    private Date updateTime;
+  private Long id;
+  private String loginName;
+  private String loginPassword;
+  private String name;
+  private Integer gender;
+  private String summary;
+  private Integer level;
+  private Integer ableStatus;
+  private Integer delStatus;
+  private Date createTime;
+  private Date updateTime;
 }

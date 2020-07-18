@@ -9,19 +9,19 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * (UserAccountEntity)实体类
+ * (AdminAccountEntity)实体类
  *
  * @author makejava
- * @since 2020-07-18 22:35:15
+ * @since 2020-07-18 22:19:55
  */
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter
 @Getter
 @ToString
-public class UserAccountEntity implements Serializable {
+public class AdminAccountEntity implements Serializable {
 
-  private static final long serialVersionUID = -28712480483673161L;
+  private static final long serialVersionUID = 864136679056019403L;
   /**
    * 自增主键
    */
@@ -56,6 +56,5 @@ public class UserAccountEntity implements Serializable {
    * 最近更新时间
    */
   private Date updateTime;
-
 
 }

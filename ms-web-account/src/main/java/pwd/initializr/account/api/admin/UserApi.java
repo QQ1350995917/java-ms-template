@@ -13,11 +13,11 @@ package pwd.initializr.account.api.admin;
  */
 public interface UserApi {
 
-    void listUser();
+  void blockUser(Long id);
 
-    void detailedUser(Long id);
+  void detailedUser(Long id);
 
-    void blockUser(Long id);
+  void listUser();
 
-    void unblockUser(Long id);
+  void unblockUser(Long id);
 }

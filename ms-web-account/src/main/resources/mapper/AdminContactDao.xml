@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pwd.initializr.account.persistence.dao.AdminContactDao">
+
+  <resultMap id="AdminContactMap"
+    type="pwd.initializr.account.persistence.entity.AdminContactEntity">
+    <result column="id" jdbcType="INTEGER" property="id"/>
+    <result column="uid" jdbcType="INTEGER" property="uid"/>
+    <result column="type" jdbcType="INTEGER" property="type"/>
+    <result column="value" jdbcType="VARCHAR" property="value"/>
+    <result column="mark" jdbcType="VARCHAR" property="mark"/>
+    <result column="enable" jdbcType="INTEGER" property="enable"/>
+    <result column="del" jdbcType="INTEGER" property="del"/>
+    <result column="create_time" jdbcType="INTEGER" property="createTime"/>
+    <result column="update_time" jdbcType="INTEGER" property="updateTime"/>
+  </resultMap>
+
+  <!--查询单个-->
+  <select id="queryById" resultMap="AdminContactMap">
+        select
+          id, uid, type, value, mark, enable, del, create_time, update_time
+        from initializr_account.admin_contact
+        where id = #{id}
+    </select>
+
+  <!--查询指定行数据-->
+  <select id="queryAllByLimit" resultMap="AdminContactMap">
+        select
+          id, uid, type, value, mark, enable, del, create_time, update_time
+        from initializr_account.admin_contact
+        limit #{offset}, #{limit}
+    </select>
+
+  <!--通过实体作为筛选条件查询-->
+  <select id="queryAll" resultMap="AdminContactMap">
+    select
+    id, uid, type, value, mark, enable, del, create_time, update_time
+    from initializr_account.admin_contact
+    <where>
+      <if test="id != null">
+        and id = #{id}
+      </if>
+      <if test="uid != null">
+        and uid = #{uid}
+      </if>
+      <if test="type != null">
+        and type = #{type}
+      </if>
+      <if test="value != null and value != ''">
+        and value = #{value}
+      </if>
+      <if test="mark != null and mark != ''">
+        and mark = #{mark}
+      </if>
+      <if test="enable != null">
+        and enable = #{enable}
+      </if>
+      <if test="del != null">
+        and del = #{del}
+      </if>
+      <if test="createTime != null">
+        and create_time = #{createTime}
+      </if>
+      <if test="updateTime != null">
+        and update_time = #{updateTime}
+      </if>
+    </where>
+  </select>
+
+  <!--新增所有列-->
+  <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into initializr_account.admin_contact(uid, type, value, mark, enable, del, create_time, update_time)
+        values (#{uid}, #{type}, #{value}, #{mark}, #{enable}, #{del}, #{createTime}, #{updateTime})
+    </insert>
+
+  <!--通过主键修改数据-->
+  <update id="update">
+    update initializr_account.admin_contact
+    <set>
+      <if test="uid != null">
+        uid = #{uid},
+      </if>
+      <if test="type != null">
+        type = #{type},
+      </if>
+      <if test="value != null and value != ''">
+        value = #{value},
+      </if>
+      <if test="mark != null and mark != ''">
+        mark = #{mark},
+      </if>
+      <if test="enable != null">
+        enable = #{enable},
+      </if>
+      <if test="del != null">
+        del = #{del},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+
+  <!--通过主键删除-->
+  <delete id="deleteById">
+        delete from initializr_account.admin_contact where id = #{id}
+    </delete>
+
+</mapper>

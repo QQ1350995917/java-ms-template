@@ -9,8 +9,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import pwd.initializr.account.AccountApplication;
 import pwd.initializr.account.persistence.dao.UserAccountDao;
 import pwd.initializr.account.persistence.dao.UserDao;
+import pwd.initializr.account.persistence.entity.AccountType;
 import pwd.initializr.account.persistence.entity.UserAccountEntity;
-import pwd.initializr.account.persistence.entity.UserAccountType;
 import pwd.initializr.account.persistence.entity.UserEntity;
 
 /**
@@ -26,7 +26,7 @@ import pwd.initializr.account.persistence.entity.UserEntity;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {AccountApplication.class})
-public class UserAccountDaoTest {
+public class UserAccountEntityDaoTest {
 
   @Autowired
   private UserDao userDao;
@@ -42,7 +42,7 @@ public class UserAccountDaoTest {
     Assert.assertEquals(1, insertUser);
 
     UserAccountEntity account = new UserAccountEntity(user.getId(), "dingpengwei", "123456",
-        UserAccountType.ByPhoneNumber);
+        AccountType.ByPhoneNumber);
     int insertAccount = userAccountDao.insert(account);
     Assert.assertEquals(1, insertAccount);
 

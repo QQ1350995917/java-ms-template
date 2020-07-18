@@ -9,19 +9,19 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * (UserAccountEntity)实体类
+ * (AdminContactEntity)实体类
  *
  * @author makejava
- * @since 2020-07-18 22:35:15
+ * @since 2020-07-18 22:18:58
  */
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter
 @Getter
 @ToString
-public class UserAccountEntity implements Serializable {
+public class AdminContactEntity implements Serializable {
 
-  private static final long serialVersionUID = -28712480483673161L;
+  private static final long serialVersionUID = 607136915963364911L;
   /**
    * 自增主键
    */
@@ -30,16 +30,18 @@ public class UserAccountEntity implements Serializable {
    * 逻辑外键:admin_user.id
    */
   private Long uid;
-
-  private String loginName;
-
-  private String loginPwd;
-
-  private Date pwdTime;
   /**
-   * 1:授权账号；2：电话号码+短信验证码账号；3：电话号码+密码账号；4：邮箱账号+直接登录链接账号；5：邮箱账号+验证码账号；6：邮箱账号+密码账号；7：微信认证账号；8：微博认证账号；9：QQ账号；
+   * 1:电话号码；2：地址；3：邮箱；4：微信；5：微博；6：QQ；
    */
   private Integer type;
+  /**
+   * Type字段对应的值
+   */
+  private String value;
+  /**
+   * 描述
+   */
+  private String mark;
   /**
    * 可用状态：0:不可用；1:可用
    */
@@ -56,6 +58,5 @@ public class UserAccountEntity implements Serializable {
    * 最近更新时间
    */
   private Date updateTime;
-
 
 }
