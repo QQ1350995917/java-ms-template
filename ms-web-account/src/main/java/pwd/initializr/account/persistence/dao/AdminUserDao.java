@@ -13,12 +13,29 @@ import pwd.initializr.account.persistence.entity.AdminUserEntity;
 public interface AdminUserDao {
 
   /**
+   * 通过实体作为筛选条件查询
+   *
+   * @param adminUserEntity 实例对象
+   * @return 行数
+   */
+  List<AdminUserEntity> countAllByCondition(
+      @Param("adminUserEntity") AdminUserEntity adminUserEntity);
+
+  /**
    * 通过主键删除数据
    *
    * @param id 主键
    * @return 影响行数
    */
   int deleteById(Long id);
+
+  /**
+   * 通过ID查询单条数据
+   *
+   * @param ids 主键
+   * @return 实例对象
+   */
+  AdminUserEntity deleteByIds(List<Long> ids);
 
   /**
    * 新增数据
@@ -32,18 +49,13 @@ public interface AdminUserDao {
    * 通过实体作为筛选条件查询
    *
    * @param adminUserEntity 实例对象
-   * @return 对象列表
-   */
-  List<AdminUserEntity> queryAll(AdminUserEntity adminUserEntity);
-
-  /**
-   * 查询指定行数据
-   *
    * @param offset 查询起始位置
    * @param limit 查询条数
    * @return 对象列表
    */
-  List<AdminUserEntity> queryAllByLimit(@Param("offset") int offset, @Param("limit") int limit);
+  List<AdminUserEntity> queryAllByCondition(
+      @Param("adminUserEntity") AdminUserEntity adminUserEntity,
+      @Param("offset") int offset, @Param("limit") int limit);
 
   /**
    * 通过ID查询单条数据

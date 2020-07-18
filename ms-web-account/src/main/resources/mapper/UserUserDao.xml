@@ -24,52 +24,57 @@
         where id = #{id}
     </select>
 
+
   <!--查询指定行数据-->
-  <select id="queryAllByLimit" resultMap="UserUserMap">
-        select
-          id, pin, name, gender, emp_no, summary, able, del, create_time, update_time
-        from initializr_account.user_user
-        limit #{offset}, #{limit}
-    </select>
+  <select id="countAllByCondition" resultMap="UserUserMap">
+    select count(*) from initializr_account.user_user
+    <include refid="countAndQueryAllByCondition"></include>
+  </select>
 
   <!--通过实体作为筛选条件查询-->
-  <select id="queryAll" resultMap="UserUserMap">
+  <select id="queryAllByCondition" resultMap="UserUserMap">
     select
     id, pin, name, gender, emp_no, summary, able, del, create_time, update_time
     from initializr_account.user_user
+    <include refid="countAndQueryAllByCondition"></include>
+    limit #{offset}, #{limit}
+  </select>
+
+  <!-- 统计和查询条件 -->
+  <sql id="countAndQueryAllByCondition">
     <where>
-      <if test="id != null">
-        and id = #{id}
+      <if test="userUserEntity.id != null">
+        and id = #{userUserEntity.id}
       </if>
-      <if test="pin != null and pin != ''">
-        and pin = #{pin}
+      <if test="userUserEntity.pin != null and userUserEntity.pin != ''">
+        and pin = #{userUserEntity.pin}
       </if>
-      <if test="name != null and name != ''">
-        and name = #{name}
+      <if test="userUserEntity.name != null and userUserEntity.name != ''">
+        and name = #{userUserEntity.name}
       </if>
-      <if test="gender != null and gender != ''">
-        and gender = #{gender}
+      <if test="userUserEntity.gender != null and userUserEntity.gender != ''">
+        and gender = #{userUserEntity.gender}
       </if>
-      <if test="empNo != null and empNo != ''">
-        and emp_no = #{empNo}
+      <if test="userUserEntity.empNo != null and userUserEntity.empNo != ''">
+        and emp_no = #{userUserEntity.empNo}
       </if>
-      <if test="summary != null and summary != ''">
-        and summary = #{summary}
+      <if test="userUserEntity.summary != null and userUserEntity.summary != ''">
+        and summary = #{userUserEntity.summary}
       </if>
-      <if test="able != null">
-        and able = #{able}
+      <if test="userUserEntity.able != null">
+        and able = #{userUserEntity.able}
       </if>
-      <if test="del != null">
-        and del = #{del}
+      <if test="userUserEntity.del != null">
+        and del = #{userUserEntity.del}
       </if>
-      <if test="createTime != null">
-        and create_time = #{createTime}
+      <if test="userUserEntity.createTime != null">
+        and create_time = #{userUserEntity.createTime}
       </if>
-      <if test="updateTime != null">
-        and update_time = #{updateTime}
+      <if test="userUserEntity.updateTime != null">
+        and update_time = #{userUserEntity.updateTime}
       </if>
     </where>
-  </select>
+  </sql>
 
   <!--新增所有列-->
   <insert id="insert" keyProperty="id" useGeneratedKeys="true">
@@ -114,7 +119,15 @@
 
   <!--通过主键删除-->
   <delete id="deleteById">
-        delete from initializr_account.user_user where id = #{id}
-    </delete>
+    update initializr_account.user_user set del = 1, update_time = now() where id = #{id}
+  </delete>
+
+  <!--通过主键删除-->
+  <delete id="deleteByIds">
+    update initializr_account.user_user set del = 1, update_time = now() where id in
+    <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
+      #{id}
+    </foreach>
+  </delete>
 
 </mapper>
