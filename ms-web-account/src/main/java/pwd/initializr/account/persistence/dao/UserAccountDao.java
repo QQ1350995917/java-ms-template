@@ -13,12 +13,29 @@ import pwd.initializr.account.persistence.entity.UserAccountEntity;
 public interface UserAccountDao {
 
   /**
+   * 通过实体作为筛选条件查询
+   *
+   * @param userAccountEntity 实例对象
+   * @return 对象列表
+   */
+  List<UserAccountEntity> countAllByCondition(
+      @Param("userAccountEntity") UserAccountEntity userAccountEntity);
+
+  /**
    * 通过主键删除数据
    *
    * @param id 主键
    * @return 影响行数
    */
   int deleteById(Long id);
+
+  /**
+   * 通过主键删除数据
+   *
+   * @param ids 主键
+   * @return 影响行数
+   */
+  int deleteByIds(List<Long> ids);
 
   /**
    * 新增数据
@@ -31,19 +48,22 @@ public interface UserAccountDao {
   /**
    * 通过实体作为筛选条件查询
    *
-   * @param userAccount 实例对象
-   * @return 对象列表
-   */
-  List<UserAccountEntity> queryAll(UserAccountEntity userAccount);
-
-  /**
-   * 查询指定行数据
-   *
+   * @param userAccountEntity 实例对象
    * @param offset 查询起始位置
    * @param limit 查询条数
    * @return 对象列表
    */
-  List<UserAccountEntity> queryAllByLimit(@Param("offset") int offset, @Param("limit") int limit);
+  List<UserAccountEntity> queryAllByCondition(
+      @Param("userAccountEntity") UserAccountEntity userAccountEntity, @Param("offset") int offset,
+      @Param("limit") int limit);
+
+  /**
+   * 通过实体作为筛选条件查询
+   *
+   * @param uid 用户ID
+   * @return 对象列表
+   */
+  List<UserAccountEntity> queryAllByUid(@Param("uid") Long uid);
 
   /**
    * 通过ID查询单条数据

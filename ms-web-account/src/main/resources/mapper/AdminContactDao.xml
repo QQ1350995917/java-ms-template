@@ -25,48 +25,58 @@
     </select>
 
   <!--查询指定行数据-->
-  <select id="queryAllByLimit" resultMap="AdminContactMap">
-        select
-          id, uid, type, value, mark, enable, del, create_time, update_time
-        from initializr_account.admin_contact
-        limit #{offset}, #{limit}
-    </select>
+  <select id="countAllByCondition" resultMap="AdminContactMap">
+    select count(*) from initializr_account.admin_contact
+    <include refid="countAndQueryAllByCondition"></include>
+  </select>
 
   <!--通过实体作为筛选条件查询-->
-  <select id="queryAll" resultMap="AdminContactMap">
+  <select id="queryAllByCondition" resultMap="AdminContactMap">
     select
     id, uid, type, value, mark, enable, del, create_time, update_time
     from initializr_account.admin_contact
+    <include refid="countAndQueryAllByCondition"></include>
+    limit #{offset}, #{limit}
+  </select>
+
+  <select id="queryAllByUid" resultMap="AdminContactMap">
+    select
+    id, uid, type, value, mark, enable, del, create_time, update_time
+    from initializr_account.admin_contact
+    where uId = #{uid}
+  </select>
+
+  <sql id="countAndQueryAllByCondition">
     <where>
-      <if test="id != null">
-        and id = #{id}
+      <if test="adminContactEntity.id != null">
+        and id = #{adminContactEntity.id}
       </if>
-      <if test="uid != null">
-        and uid = #{uid}
+      <if test="adminContactEntity.uid != null">
+        and uid = #{adminContactEntity.uid}
       </if>
-      <if test="type != null">
-        and type = #{type}
+      <if test="adminContactEntity.type != null">
+        and type = #{adminContactEntity.type}
       </if>
-      <if test="value != null and value != ''">
-        and value = #{value}
+      <if test="adminContactEntity.value != null and adminContactEntity.value != ''">
+        and value = #{adminContactEntity.value}
       </if>
-      <if test="mark != null and mark != ''">
-        and mark = #{mark}
+      <if test="adminContactEntity.mark != null and adminContactEntity.mark != ''">
+        and mark = #{adminContactEntity.mark}
       </if>
-      <if test="enable != null">
-        and enable = #{enable}
+      <if test="adminContactEntity.enable != null">
+        and enable = #{adminContactEntity.enable}
       </if>
-      <if test="del != null">
-        and del = #{del}
+      <if test="adminContactEntity.del != null">
+        and del = #{adminContactEntity.del}
       </if>
-      <if test="createTime != null">
-        and create_time = #{createTime}
+      <if test="adminContactEntity.createTime != null">
+        and create_time = #{adminContactEntity.createTime}
       </if>
-      <if test="updateTime != null">
-        and update_time = #{updateTime}
+      <if test="adminContactEntity.updateTime != null">
+        and update_time = #{adminContactEntity.updateTime}
       </if>
     </where>
-  </select>
+  </sql>
 
   <!--新增所有列-->
   <insert id="insert" keyProperty="id" useGeneratedKeys="true">
@@ -108,7 +118,14 @@
 
   <!--通过主键删除-->
   <delete id="deleteById">
-        delete from initializr_account.admin_contact where id = #{id}
-    </delete>
+    update initializr_account.admin_contact set del = 1, update_time = now() where id = #{id}
+  </delete>
 
+  <!--通过主键删除-->
+  <delete id="deleteByIds">
+    update initializr_account.admin_contact set del = 1, update_time = now() where id in
+    <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
+      #{id}
+    </foreach>
+  </delete>
 </mapper>
