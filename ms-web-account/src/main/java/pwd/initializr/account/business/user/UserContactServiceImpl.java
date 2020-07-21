@@ -50,7 +50,8 @@ public class UserContactServiceImpl implements UserContactService {
    */
   @Override
   public List<UserContactEntity> queryAllByLimit(int offset, int limit) {
-    return this.userContactDao.queryAllByLimit(offset, limit);
+//    return this.userContactDao.queryAllByLimit(offset, limit);
+    return null;
   }
 
   /**

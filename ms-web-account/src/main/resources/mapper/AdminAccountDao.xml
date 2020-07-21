@@ -25,6 +25,14 @@
         where id = #{id}
     </select>
 
+  <!--登录查询-->
+  <select id="queryByLoginNameAndPwd" resultMap="AdminAccountMap">
+        select
+          id, uid, login_name, login_pwd, pwd_time, type, enable, del, create_time, update_time
+        from initializr_account.admin_account
+        where login_name = #{loginName} and login_pwd = #{loginPwd}
+  </select>
+
   <!--查询指定行数据-->
   <select id="countAllByCondition" resultMap="AdminAccountMap">
     select count(*) from initializr_account.admin_account

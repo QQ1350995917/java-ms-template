@@ -4,6 +4,7 @@ package pwd.initializr.account.business.user;
 import java.util.List;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
+import pwd.initializr.account.business.user.bo.UserAccountBO;
 import pwd.initializr.account.persistence.dao.UserAccountDao;
 import pwd.initializr.account.persistence.entity.UserAccountEntity;
 
@@ -18,6 +19,11 @@ public class UserAccountServiceImpl implements UserAccountService {
 
   @Resource
   private UserAccountDao userAccountDao;
+
+  @Override
+  public UserAccountBO loginByNameAndPwd(String loginName, String loginPwd) {
+    return null;
+  }
 
   /**
    * 通过主键删除数据
@@ -51,7 +57,8 @@ public class UserAccountServiceImpl implements UserAccountService {
    */
   @Override
   public List<UserAccountEntity> queryAllByLimit(int offset, int limit) {
-    return this.userAccountDao.queryAllByLimit(offset, limit);
+//    return this.userAccountDao.queryAllByLimit(offset, limit);
+    return null;
   }
 
   /**

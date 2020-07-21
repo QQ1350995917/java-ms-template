@@ -51,7 +51,8 @@ public class AdminUserServiceImpl implements AdminUserService {
    */
   @Override
   public List<AdminUserEntity> queryAllByLimit(int offset, int limit) {
-    return this.adminUserDao.queryAllByLimit(offset, limit);
+//    return this.adminUserDao.queryAllByLimit(offset, limit);
+    return null;
   }
 
   /**

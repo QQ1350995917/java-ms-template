@@ -50,7 +50,8 @@ public class AdminContactServiceImpl implements AdminContactService {
    */
   @Override
   public List<AdminContactEntity> queryAllByLimit(int offset, int limit) {
-    return this.adminContactDao.queryAllByLimit(offset, limit);
+//    return this.adminContactDao.queryAllByLimit(offset, limit);
+    return null;
   }
 
   /**

@@ -50,7 +50,8 @@ public class UserUserServiceImpl implements UserUserService {
    */
   @Override
   public List<UserUserEntity> queryAllByLimit(int offset, int limit) {
-    return this.userUserDao.queryAllByLimit(offset, limit);
+//    return this.userUserDao.queryAllByLimit(offset, limit);
+    return null;
   }
 
   /**

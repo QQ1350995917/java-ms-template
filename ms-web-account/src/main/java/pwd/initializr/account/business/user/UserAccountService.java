@@ -2,6 +2,8 @@ package pwd.initializr.account.business.user;
 
 
 import java.util.List;
+import pwd.initializr.account.business.admin.bo.AdminUserBO;
+import pwd.initializr.account.business.user.bo.UserAccountBO;
 import pwd.initializr.account.persistence.entity.UserAccountEntity;
 
 /**
@@ -11,6 +13,19 @@ import pwd.initializr.account.persistence.entity.UserAccountEntity;
  * @since 2020-07-18 22:35:18
  */
 public interface UserAccountService {
+
+  /**
+   * <h2>用户登录</h2>
+   * date 2020-07-21 22:08
+   *
+   * @param loginName 登录名
+   * @param loginPwd 登录密码
+   * @return pwd.initializr.account.business.admin.bo.AdminUserBO
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  UserAccountBO loginByNameAndPwd(String loginName, String loginPwd);
+
 
   /**
    * 通过主键删除数据

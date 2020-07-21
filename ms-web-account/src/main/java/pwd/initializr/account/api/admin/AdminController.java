@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.account.api.admin.vo.AdminVO;
 import pwd.initializr.account.api.admin.vo.CreateAdminInput;
 import pwd.initializr.account.business.admin.AdminService;
-import pwd.initializr.account.business.admin.bo.AdminBO;
+import pwd.initializr.account.business.admin.bo.AdminUserBO;
 import pwd.initializr.common.web.api.vo.PageInput;
 import pwd.initializr.common.web.api.vo.PageOutput;
 import pwd.initializr.common.web.business.bo.ObjectList;
@@ -51,9 +51,9 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
       ""}, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
   public void create(CreateAdminInput input) {
-    AdminBO adminBO = new AdminBO();
-    BeanUtils.copyProperties(input, adminBO);
-    AdminBO insert = adminService.insert(adminBO);
+    AdminUserBO adminUserBO = new AdminUserBO();
+    BeanUtils.copyProperties(input, adminUserBO);
+    AdminUserBO insert = adminService.insert(adminUserBO);
     super.outputData(insert.getId());
   }
 
@@ -75,15 +75,15 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
   @GetMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
   public void list(PageInput pageInput, AdminVO adminVO) {
-    AdminBO adminBO = new AdminBO();
-    BeanUtils.copyProperties(adminVO, adminBO);
-    ObjectList<AdminBO> adminBOObjectList = adminService
-        .queryByCondition(adminBO, pageInput.getOrderBys(), pageInput.getIndex(),
+    AdminUserBO adminUserBO = new AdminUserBO();
+    BeanUtils.copyProperties(adminVO, adminUserBO);
+    ObjectList<AdminUserBO> adminBOObjectList = adminService
+        .queryByCondition(adminUserBO, pageInput.getOrderBys(), pageInput.getIndex(),
             pageInput.getSize());
     List<AdminVO> adminVOS = new LinkedList<>();
-    adminBOObjectList.getElements().forEach(adminBO1 -> {
+    adminBOObjectList.getElements().forEach(adminUserBO1 -> {
       AdminVO adminVO1 = new AdminVO();
-      BeanUtils.copyProperties(adminBO1, adminVO1);
+      BeanUtils.copyProperties(adminUserBO1, adminVO1);
       adminVOS.add(adminVO1);
     });
     PageOutput<AdminVO> result = new PageOutput<>();

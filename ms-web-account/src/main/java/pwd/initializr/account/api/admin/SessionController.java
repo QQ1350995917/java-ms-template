@@ -16,7 +16,7 @@ import pwd.initializr.account.api.admin.vo.LoginInput;
 import pwd.initializr.account.api.admin.vo.LoginOutput;
 import pwd.initializr.account.business.admin.AdminService;
 import pwd.initializr.account.business.admin.SessionService;
-import pwd.initializr.account.business.admin.bo.AdminBO;
+import pwd.initializr.account.business.admin.bo.AdminUserBO;
 import pwd.initializr.account.business.admin.bo.SessionBO;
 import pwd.initializr.account.rpc.RPCToken;
 import pwd.initializr.common.web.api.admin.AdminController;
@@ -72,19 +72,19 @@ public class SessionController extends AdminController implements SessionApi {
   @PutMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
   public void login(@RequestBody LoginInput input) {
-    AdminBO loginAdminBO = adminService
-        .queryByLoginNameAndLoginPassword(input.getLoginName(), input.getLoginPassword());
-    if (loginAdminBO == null) {
-      super.outputData(401);
-    } else {
-      SessionBO sessionBO = new SessionBO(loginAdminBO.getId(), loginAdminBO.getLoginName(),
-          loginAdminBO.getLoginName());
-      String token = RPCToken.generateToken(sessionBO, ACCOUNT_SECRET);
-      if (sessionService.getSession(loginAdminBO.getId()) == null) {
-        sessionService.replaceSession(sessionBO);
-      }
-      super.outputData(new LoginOutput(loginAdminBO.getId(), token));
-    }
+//    AdminUserBO loginAdminUserBO = adminService
+//        .queryByLoginNameAndLoginPassword(input.getLoginName(), input.getLoginPassword());
+//    if (loginAdminUserBO == null) {
+//      super.outputData(401);
+//    } else {
+//      SessionBO sessionBO = new SessionBO(loginAdminUserBO.getId(), loginAdminUserBO.getLoginName(),
+//          loginAdminUserBO.getLoginName());
+//      String token = RPCToken.generateToken(sessionBO, ACCOUNT_SECRET);
+//      if (sessionService.getSession(loginAdminUserBO.getId()) == null) {
+//        sessionService.replaceSession(sessionBO);
+//      }
+//      super.outputData(new LoginOutput(loginAdminUserBO.getId(), token));
+//    }
   }
 
   @ApiOperation(value = "退出")

@@ -2,9 +2,14 @@ package pwd.initializr.account.business.admin;
 
 import java.util.List;
 import javax.annotation.Resource;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
+import pwd.initializr.account.business.admin.bo.AdminAccountBO;
 import pwd.initializr.account.persistence.dao.AdminAccountDao;
 import pwd.initializr.account.persistence.entity.AdminAccountEntity;
+import pwd.initializr.common.utils.Cryptographer;
+import pwd.initializr.common.web.persistence.entity.EntityEnable;
 
 /**
  * (AdminAccountEntity)表服务实现类
@@ -17,6 +22,24 @@ public class AdminAccountServiceImpl implements AdminAccountService {
 
   @Resource
   private AdminAccountDao adminAccountDao;
+
+  @Override
+  public AdminAccountBO loginByNameAndPwd(String loginName, String loginPwd) {
+    Assert.notNull(loginName, "Login name should not be empty");
+    Assert.notNull(loginName, "Login password should not be empty");
+    // fixme:优化加密
+    String encrypt = Cryptographer.encrypt(loginPwd, loginName);
+    AdminAccountEntity adminAccountEntity = adminAccountDao
+        .queryByLoginNameAndPwd(loginName, encrypt);
+    Assert.notNull(adminAccountEntity, "The user does not exist");
+    if (adminAccountEntity.getEnable() == EntityEnable.ENABLE.getNumber()) {
+      // TODO:存放session信息和在线用户信息
+    }
+    AdminAccountBO adminAccountBO = new AdminAccountBO();
+    BeanUtils.copyProperties(adminAccountEntity,adminAccountBO);
+    return adminAccountBO;
+  }
+
 
   /**
    * 通过主键删除数据
@@ -50,7 +73,8 @@ public class AdminAccountServiceImpl implements AdminAccountService {
    */
   @Override
   public List<AdminAccountEntity> queryAllByLimit(int offset, int limit) {
-    return this.adminAccountDao.queryAllByLimit(offset, limit);
+    //return this.adminAccountDao.queryAllByLimit(offset, limit);
+    return null;
   }
 
   /**

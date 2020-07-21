@@ -1,21 +1,12 @@
 package pwd.initializr.account.business.admin;
 
-import java.util.Date;
 import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
-import javax.annotation.Resource;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
-import pwd.initializr.account.business.admin.bo.AdminBO;
-import pwd.initializr.account.persistence.dao.AdminDao;
-import pwd.initializr.account.persistence.entity.AdminEntity;
-import pwd.initializr.common.utils.ConstantAbleStatus;
-import pwd.initializr.common.utils.ConstantDeleteStatus;
+import pwd.initializr.account.business.admin.bo.AdminUserBO;
 import pwd.initializr.common.web.business.bo.ObjectList;
 
 /**
- * (AdminBO)表服务实现类
+ * (AdminUserBO)表服务实现类
  *
  * @author makejava
  * @since 2020-04-25 20:16:11
@@ -23,8 +14,8 @@ import pwd.initializr.common.web.business.bo.ObjectList;
 @Service("adminService")
 public class AdminServiceImpl implements AdminService {
 
-  @Resource
-  private AdminDao adminDao;
+//  @Resource
+//  private AdminDao adminDao;
 
   /**
    * 通过主键删除数据
@@ -34,28 +25,30 @@ public class AdminServiceImpl implements AdminService {
    */
   @Override
   public Integer deleteById(Integer id) {
-    return this.adminDao.deleteById(id);
+//    return this.adminDao.deleteById(id);
+    return null;
   }
 
   /**
    * 新增数据
    *
-   * @param adminBO 实例对象
+   * @param adminUserBO 实例对象
    * @return 实例对象
    */
   @Override
-  public AdminBO insert(AdminBO adminBO) {
-    AdminEntity adminEntity = new AdminEntity();
-    BeanUtils.copyProperties(adminBO, adminEntity);
-    Date initDate = new Date();
-    adminEntity.setAbleStatus(ConstantAbleStatus.DISABLE.value());
-    adminEntity.setDelStatus(ConstantDeleteStatus.EXISTING.value());
-    adminEntity.setCreateTime(initDate);
-    adminEntity.setUpdateTime(initDate);
-    this.adminDao.insert(adminEntity);
-    AdminBO result = new AdminBO();
-    BeanUtils.copyProperties(adminEntity, result);
-    return result;
+  public AdminUserBO insert(AdminUserBO adminUserBO) {
+//    AdminEntity adminEntity = new AdminEntity();
+//    BeanUtils.copyProperties(adminUserBO, adminEntity);
+//    Date initDate = new Date();
+//    adminEntity.setAbleStatus(ConstantAbleStatus.DISABLE.value());
+//    adminEntity.setDelStatus(ConstantDeleteStatus.EXISTING.value());
+//    adminEntity.setCreateTime(initDate);
+//    adminEntity.setUpdateTime(initDate);
+//    this.adminDao.insert(adminEntity);
+//    AdminUserBO result = new AdminUserBO();
+//    BeanUtils.copyProperties(adminEntity, result);
+//    return result;
+    return null;
   }
 
   /**
@@ -64,26 +57,29 @@ public class AdminServiceImpl implements AdminService {
    * @return 对象列表
    */
   @Override
-  public ObjectList<AdminBO> queryByCondition(AdminBO adminBO, LinkedHashSet<String> orderBys,
+  public ObjectList<AdminUserBO> queryByCondition(AdminUserBO adminUserBO,
+      LinkedHashSet<String> orderBys,
       Integer pageIndex, Integer pageSize) {
-    AdminEntity adminEntity = new AdminEntity();
-    BeanUtils.copyProperties(adminBO, adminEntity);
-    Integer countAll = this.adminDao.countAll(adminEntity);
-    List<AdminEntity> adminEntities = this.adminDao
-        .queryByCondition(adminEntity, orderBys, pageIndex * pageSize, pageSize);
-    List<AdminBO> adminBOS = new LinkedList<>();
-    adminEntities.forEach(adminEntity1 -> {
-      AdminBO adminBO1 = new AdminBO();
-      BeanUtils.copyProperties(adminEntity1, adminBO1);
-      adminBOS.add(adminBO1);
-    });
+//    AdminEntity adminEntity = new AdminEntity();
+//    BeanUtils.copyProperties(adminUserBO, adminEntity);
+//    Integer countAll = this.adminDao.countAll(adminEntity);
+//    List<AdminEntity> adminEntities = this.adminDao
+//        .queryByCondition(adminEntity, orderBys, pageIndex * pageSize, pageSize);
+//    List<AdminUserBO> adminUserBOS = new LinkedList<>();
+//    adminEntities.forEach(adminEntity1 -> {
+//      AdminUserBO adminUserBO1 = new AdminUserBO();
+//      BeanUtils.copyProperties(adminEntity1, adminUserBO1);
+//      adminUserBOS.add(adminUserBO1);
+//    });
+//
+//    ObjectList<AdminUserBO> result = new ObjectList<>();
+//    result.setElements(adminUserBOS);
+//    result.setTotal(countAll.longValue());
+//    result.setIndex(pageIndex.longValue());
+//    result.setSize(pageSize.longValue());
+//    return result;
 
-    ObjectList<AdminBO> result = new ObjectList<>();
-    result.setElements(adminBOS);
-    result.setTotal(countAll.longValue());
-    result.setIndex(pageIndex.longValue());
-    result.setSize(pageSize.longValue());
-    return result;
+    return null;
   }
 
   /**
@@ -93,24 +89,24 @@ public class AdminServiceImpl implements AdminService {
    * @return 实例对象
    */
   @Override
-  public AdminBO queryById(Integer id) {
-    AdminEntity adminEntity = this.adminDao.queryById(id);
-    AdminBO adminBO = new AdminBO();
-    BeanUtils.copyProperties(adminEntity, adminBO);
-    return adminBO;
+  public AdminUserBO queryById(Integer id) {
+//    AdminEntity adminEntity = this.adminDao.queryById(id);
+    AdminUserBO adminUserBO = new AdminUserBO();
+//    BeanUtils.copyProperties(adminEntity, adminUserBO);
+    return adminUserBO;
   }
 
-  @Override
-  public AdminBO queryByLoginNameAndLoginPassword(String loginName, String loginPassword) {
-    AdminEntity adminEntity = this.adminDao
-        .queryByLoginNameAndLoginPassword(loginName, loginPassword);
-    if (adminEntity == null) {
-      return null;
-    }
-    AdminBO adminBO = new AdminBO();
-    BeanUtils.copyProperties(adminEntity, adminBO);
-    return adminBO;
-  }
+//  @Override
+//  public AdminUserBO queryByLoginNameAndLoginPassword(String loginName, String loginPassword) {
+//    AdminEntity adminEntity = this.adminDao
+//        .queryByLoginNameAndLoginPassword(loginName, loginPassword);
+//    if (adminEntity == null) {
+//      return null;
+//    }
+//    AdminUserBO adminUserBO = new AdminUserBO();
+//    BeanUtils.copyProperties(adminEntity, adminUserBO);
+//    return adminUserBO;
+//  }
 
   /**
    * 修改数据
@@ -119,7 +115,8 @@ public class AdminServiceImpl implements AdminService {
    * @return 实例对象
    */
   @Override
-  public Integer update(AdminBO admin) {
-    return this.adminDao.update(admin);
+  public Integer update(AdminUserBO admin) {
+//    return this.adminDao.update(admin);
+    return null;
   }
 }

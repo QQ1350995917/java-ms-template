@@ -72,24 +72,24 @@ public class SessionController extends UserController implements SessionApi {
   @PutMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
   public void login(@RequestBody LoginInput input) {
-    UserAccountBO account = new UserAccountBO();
-    BeanUtils.copyProperties(input, account);
-    UserAccountBO loginUserAccountBo = userAccountService
-        .findAccountByLoginNameAndPassword(input.getLoginName(), input.getLoginPassword());
-    UserBO userByUserBOId = userAccountService
-        .findUserByUserId(loginUserAccountBo.getUserId());
-    userByUserBOId.setAccounts(Arrays.asList(new UserAccountBO[]{loginUserAccountBo}));
-    if (loginUserAccountBo == null) {
-      outputData(400);
-    } else {
-      SessionBO sessionBO = new SessionBO();
-      BeanUtils.copyProperties(userByUserBOId, sessionBO);
-      String token = RPCToken.generateToken(sessionBO, ACCOUNT_SECRET);
-      if (sessionService.getSession(loginUserAccountBo.getUserId()) == null) {
-        sessionService.replaceSession(sessionBO);
-      }
-      outputData(new LoginOutput(userByUserBOId.getId(), token));
-    }
+//    UserAccountBO account = new UserAccountBO();
+//    BeanUtils.copyProperties(input, account);
+//    UserAccountBO loginUserAccountBo = userAccountService
+//        .findAccountByLoginNameAndPassword(input.getLoginName(), input.getLoginPassword());
+//    UserBO userByUserBOId = userAccountService
+//        .findUserByUserId(loginUserAccountBo.getUserId());
+//    userByUserBOId.setAccounts(Arrays.asList(new UserAccountBO[]{loginUserAccountBo}));
+//    if (loginUserAccountBo == null) {
+//      outputData(400);
+//    } else {
+//      SessionBO sessionBO = new SessionBO();
+//      BeanUtils.copyProperties(userByUserBOId, sessionBO);
+//      String token = RPCToken.generateToken(sessionBO, ACCOUNT_SECRET);
+//      if (sessionService.getSession(loginUserAccountBo.getUserId()) == null) {
+//        sessionService.replaceSession(sessionBO);
+//      }
+//      outputData(new LoginOutput(userByUserBOId.getId(), token));
+//    }
   }
 
   @ApiOperation(value = "退出")

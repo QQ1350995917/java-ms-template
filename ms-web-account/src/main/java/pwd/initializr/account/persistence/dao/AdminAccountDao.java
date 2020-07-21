@@ -2,7 +2,9 @@ package pwd.initializr.account.persistence.dao;
 
 
 import java.util.List;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Component;
 import pwd.initializr.account.persistence.entity.AdminAccountEntity;
 
 /**
@@ -11,6 +13,7 @@ import pwd.initializr.account.persistence.entity.AdminAccountEntity;
  * @author makejava
  * @since 2020-07-18 22:19:55
  */
+@Mapper
 public interface AdminAccountDao {
 
   /**
@@ -73,6 +76,15 @@ public interface AdminAccountDao {
    * @return 实例对象
    */
   AdminAccountEntity queryById(Long id);
+
+  /**
+   * 登录查询：通过登录名和密码查询单条数据
+   *
+   * @param loginName 登录账号
+   * @param loginPwd 登录密码
+   * @return 实例对象
+   */
+  AdminAccountEntity queryByLoginNameAndPwd(@Param("loginName") String loginName,@Param("loginPwd") String loginPwd);
 
   /**
    * 修改数据

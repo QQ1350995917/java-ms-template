@@ -2,11 +2,11 @@ package pwd.initializr.account.business.admin;
 
 import java.util.LinkedHashSet;
 import org.springframework.stereotype.Service;
-import pwd.initializr.account.business.admin.bo.AdminBO;
+import pwd.initializr.account.business.admin.bo.AdminUserBO;
 import pwd.initializr.common.web.business.bo.ObjectList;
 
 /**
- * (AdminBO)表服务接口
+ * (AdminUserBO)表服务接口
  *
  * @author makejava
  * @since 2020-04-25 20:16:10
@@ -25,17 +25,17 @@ public interface AdminService {
   /**
    * 新增数据
    *
-   * @param adminBO 实例对象
+   * @param adminUserBO 实例对象
    * @return 实例对象
    */
-  AdminBO insert(AdminBO adminBO);
+  AdminUserBO insert(AdminUserBO adminUserBO);
 
   /**
    * 查询多条数据
    *
    * @return 对象列表
    */
-  ObjectList<AdminBO> queryByCondition(AdminBO adminBO, LinkedHashSet<String> orderBys,
+  ObjectList<AdminUserBO> queryByCondition(AdminUserBO adminUserBO, LinkedHashSet<String> orderBys,
       Integer pageIndex, Integer pageSize);
 
   /**
@@ -44,16 +44,14 @@ public interface AdminService {
    * @param id 主键
    * @return 实例对象
    */
-  AdminBO queryById(Integer id);
-
-  AdminBO queryByLoginNameAndLoginPassword(String loginName, String loginPassword);
+  AdminUserBO queryById(Integer id);
 
   /**
    * 修改数据
    *
-   * @param adminBO 实例对象
+   * @param adminUserBO 实例对象
    * @return 实例对象
    */
-  Integer update(AdminBO adminBO);
+  Integer update(AdminUserBO adminUserBO);
 
 }

@@ -73,7 +73,8 @@ public class AccountController extends UserController implements AccountApi {
       userBO.setAccounts(Arrays.asList(new UserAccountBO[]{account}));
       // TODO 优化password业务
       String password = smsCode.getSmsCode();
-      UserBO userBOAndAccount = userAccountService.createUserAndAccount(userBO);
+//      UserBO userBOAndAccount = userAccountService.createUserAndAccount(userBO);
+      UserBO userBOAndAccount = null;
       SessionBO sessionBO = new SessionBO();
       BeanUtils.copyProperties(userBOAndAccount, sessionBO);
 
