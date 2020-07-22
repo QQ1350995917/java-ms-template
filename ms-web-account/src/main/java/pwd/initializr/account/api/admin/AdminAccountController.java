@@ -20,12 +20,9 @@ import org.springframework.web.bind.annotation.RestController;
     value = "adminAccountManageApi",
     description = "[创建管理员，管理员列表，管理员启用，管理员禁用]"
 )
-@RestController(value = "admin")
+@RestController(value = "adminAccount")
 @RequestMapping(value = "/api/admin/account")
 public class AdminAccountController implements AdminAccountApi {
-    @Override
-    public void loginByNameAndPwd(String loginName, String loginPwd) {
 
-    }
 
 }

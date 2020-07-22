@@ -19,7 +19,6 @@ import lombok.ToString;
  * @since DistributionVersion
  */
 @AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
 @ToString
