@@ -76,6 +76,7 @@ public class SessionController extends AdminController implements SessionApi {
   @Override
   public void loginInitializr() {
     String cookieValue = null;
+    Boolean captchaRequired = false;
     // 识别访问是否携带cookie
     Cookie[] cookies = getRequest().getCookies();
     if (cookies != null) {
@@ -86,10 +87,9 @@ public class SessionController extends AdminController implements SessionApi {
       }
     }
 
-    boolean captchaRequired = false;
+    // 初次访问或者再次访问的时候cookie已经过期,此时需要生成新的cookie
     if (cookieValue == null
         || sessionService.queryCookie(new SessionCookieBO(cookieValue, null)) == null) {
-      // 初次访问或者再次访问的时候cookie已经过期,此时需要生成新的cookie
       SessionCookieBO sessionCookieBO = sessionService.produceCookie();
       if (sessionCookieBO != null) {
         cookieValue = sessionCookieBO.getCookie();
@@ -103,6 +103,7 @@ public class SessionController extends AdminController implements SessionApi {
       // 生成新的cookie失败
       outputException(500);
     } else {
+      // 生成新的cookie成，并设置是否需要图形验证码
       SessionCookieOutput loginCookieOutput = new SessionCookieOutput();
       loginCookieOutput.setCookie(cookieValue);
       loginCookieOutput.setExpires(cookieExpiresSeconds);
