@@ -97,9 +97,9 @@ public class AdminServiceImpl implements AdminService {
   }
 
 //  @Override
-//  public AdminUserBO queryByLoginNameAndLoginPassword(String loginName, String loginPassword) {
+//  public AdminUserBO queryByLoginNameAndLoginPassword(String loginName, String loginPwd) {
 //    AdminEntity adminEntity = this.adminDao
-//        .queryByLoginNameAndLoginPassword(loginName, loginPassword);
+//        .queryByLoginNameAndLoginPassword(loginName, loginPwd);
 //    if (adminEntity == null) {
 //      return null;
 //    }

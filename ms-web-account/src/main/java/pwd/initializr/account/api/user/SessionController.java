@@ -75,7 +75,7 @@ public class SessionController extends UserController implements SessionApi {
 //    UserAccountBO account = new UserAccountBO();
 //    BeanUtils.copyProperties(input, account);
 //    UserAccountBO loginUserAccountBo = userAccountService
-//        .findAccountByLoginNameAndPassword(input.getLoginName(), input.getLoginPassword());
+//        .findAccountByLoginNameAndPassword(input.getLoginName(), input.getLoginPwd());
 //    UserBO userByUserBOId = userAccountService
 //        .findUserByUserId(loginUserAccountBo.getUserId());
 //    userByUserBOId.setAccounts(Arrays.asList(new UserAccountBO[]{loginUserAccountBo}));

@@ -2,6 +2,7 @@ package pwd.initializr.account.api.admin.vo;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import java.io.Serializable;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,12 +27,12 @@ import lombok.ToString;
 @Setter
 @ToString
 @ApiModel(value = "createAdminInput", description = "管理员创建请求参数")
-public class CreateAdminInput {
+public class CreateAdminInput implements Serializable {
 
   @ApiModelProperty(name = "loginName", value = "登录名称", required = true, example = "DingPengwei")
   @NotNull(message = "0")
   private String loginName;
-  @ApiModelProperty(name = "loginPassword", value = "登录密码", required = true, example = "DingPengwei")
+  @ApiModelProperty(name = "loginPwd", value = "登录密码", required = true, example = "DingPengwei")
   @NotNull(message = "0")
   private String loginPassword;
   @ApiModelProperty(name = "name", value = "名称", required = true, example = "DingPengwei")

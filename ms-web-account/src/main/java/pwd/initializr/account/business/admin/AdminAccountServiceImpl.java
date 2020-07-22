@@ -23,23 +23,6 @@ public class AdminAccountServiceImpl implements AdminAccountService {
   @Resource
   private AdminAccountDao adminAccountDao;
 
-  @Override
-  public AdminAccountBO loginByNameAndPwd(String loginName, String loginPwd) {
-    Assert.notNull(loginName, "Login name should not be empty");
-    Assert.notNull(loginName, "Login password should not be empty");
-    // fixme:优化加密
-    String encrypt = Cryptographer.encrypt(loginPwd, loginName);
-    AdminAccountEntity adminAccountEntity = adminAccountDao
-        .queryByLoginNameAndPwd(loginName, encrypt);
-    Assert.notNull(adminAccountEntity, "The user does not exist");
-    if (adminAccountEntity.getEnable() == EntityEnable.ENABLE.getNumber()) {
-      // TODO:存放session信息和在线用户信息
-    }
-    AdminAccountBO adminAccountBO = new AdminAccountBO();
-    BeanUtils.copyProperties(adminAccountEntity,adminAccountBO);
-    return adminAccountBO;
-  }
-
 
   /**
    * 通过主键删除数据

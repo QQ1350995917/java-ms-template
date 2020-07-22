@@ -33,9 +33,9 @@ public class LoginInput implements Serializable {
   @ApiModelProperty(name = "loginName", value = "登录名称", required = true, example = "DingPengwei")
   @NotNull(message = "0")
   private String loginName;
-  @ApiModelProperty(name = "loginPassword", value = "登录密码", required = true, example = "123456")
+  @ApiModelProperty(name = "loginPwd", value = "登录密码", required = true, example = "123456")
   @NotNull(message = "0")
-  private String loginPassword;
+  private String loginPwd;
   @ApiModelProperty(name = "vCode", value = "图形验证码", required = false, example = "pwdxyz")
   @Null(message = "0")
   private String vCode;

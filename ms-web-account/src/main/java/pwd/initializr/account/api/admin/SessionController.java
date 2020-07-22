@@ -9,16 +9,12 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.account.api.admin.vo.LoginInput;
-import pwd.initializr.account.api.admin.vo.LoginOutput;
 import pwd.initializr.account.business.admin.AdminService;
 import pwd.initializr.account.business.admin.SessionService;
-import pwd.initializr.account.business.admin.bo.AdminUserBO;
 import pwd.initializr.account.business.admin.bo.SessionBO;
-import pwd.initializr.account.rpc.RPCToken;
 import pwd.initializr.common.web.api.admin.AdminController;
 
 /**
@@ -50,11 +46,26 @@ public class SessionController extends AdminController implements SessionApi {
   @Autowired
   private SessionService sessionService;
 
+  @Override
+  public void loginInitializr() {
+
+  }
+
+  @Override
+  public void loginByNameAndPwd(LoginInput input) {
+
+  }
+
+  @Override
+  public void loginCaptchaRefresh(String cookie) {
+
+  }
+
 
   @ApiOperation(value = "信息查询")
   @GetMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
-  public void getInfo() {
+  public void querySessionInfo() {
     SessionBO session = sessionService.getSession(getUid());
     if (session == null) {
       super.outputException(401);
@@ -70,10 +81,9 @@ public class SessionController extends AdminController implements SessionApi {
 
   @ApiOperation(value = "登录")
   @PutMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  @Override
-  public void login(@RequestBody LoginInput input) {
+  public void login() {
 //    AdminUserBO loginAdminUserBO = adminService
-//        .queryByLoginNameAndLoginPassword(input.getLoginName(), input.getLoginPassword());
+//        .queryByLoginNameAndLoginPassword(input.getLoginName(), input.getLoginPwd());
 //    if (loginAdminUserBO == null) {
 //      super.outputData(401);
 //    } else {
@@ -91,6 +101,6 @@ public class SessionController extends AdminController implements SessionApi {
   @DeleteMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
   public void logout() {
-    sessionService.delSession(getUid());
+    sessionService.deleteSession(getUid());
   }
 }
