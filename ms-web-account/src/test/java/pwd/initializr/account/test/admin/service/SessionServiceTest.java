@@ -9,7 +9,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import pwd.initializr.account.AccountApplication;
 import pwd.initializr.account.business.admin.SessionService;
 import pwd.initializr.account.business.admin.bo.AdminAccountBO;
-import pwd.initializr.account.business.admin.bo.LoginCookieBO;
+import pwd.initializr.account.business.admin.bo.SessionCookieBO;
 
 /**
  * pwd.initializr.account.test.admin.service@ms-web-initializr
@@ -31,10 +31,9 @@ public class SessionServiceTest {
 
   @Test
   public void testCheckCookie() {
-    LoginCookieBO loginCookieBO = new LoginCookieBO(
-        "1595428898246:042ad7e9-d6c1-492a-9eae-4ee365de573b", null);
-    Boolean aBoolean = sessionService.checkCookie(loginCookieBO);
-    Assert.assertTrue(aBoolean);
+    SessionCookieBO sessionCookieBO = new SessionCookieBO(
+        "1595428898246:042ad7e9-d6c1-492a-9eae-4ee365de573b",null);
+    Assert.assertNotNull(sessionService.queryCookie(sessionCookieBO));
   }
 
   @Test
@@ -45,8 +44,8 @@ public class SessionServiceTest {
 
   @Test
   public void testProduceCookie() {
-    LoginCookieBO loginCookieBO = sessionService.produceCookie();
-    Assert.assertNotNull(loginCookieBO);
+    SessionCookieBO sessionCookieBO = sessionService.produceCookie();
+    Assert.assertNotNull(sessionCookieBO);
   }
 
 

@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import pwd.initializr.account.business.admin.bo.LoginCookieBO;
+import pwd.initializr.account.business.admin.bo.SessionCookieBO;
 
 /**
  * pwd.initializr.account.api.admin.vo@ms-web-initializr
@@ -24,6 +24,8 @@ import pwd.initializr.account.business.admin.bo.LoginCookieBO;
 @Getter
 @Setter
 @ToString
-public class LoginCookieVO extends LoginCookieBO {
+public class SessionCookieOutput extends SessionCookieBO {
 
+  private Integer expires;
+  private Boolean captchaRequired;
 }

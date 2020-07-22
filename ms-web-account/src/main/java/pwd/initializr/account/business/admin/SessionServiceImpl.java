@@ -10,9 +10,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import pwd.initializr.account.business.admin.bo.AdminAccountBO;
-import pwd.initializr.account.business.admin.bo.LoginCaptchaBO;
-import pwd.initializr.account.business.admin.bo.LoginCookieBO;
 import pwd.initializr.account.business.admin.bo.SessionBO;
+import pwd.initializr.account.business.admin.bo.SessionCaptchaBO;
+import pwd.initializr.account.business.admin.bo.SessionCookieBO;
 import pwd.initializr.account.persistence.dao.AdminAccountDao;
 import pwd.initializr.account.persistence.entity.AdminAccountEntity;
 import pwd.initializr.common.mw.redis.RedisClient;
@@ -36,11 +36,9 @@ public class SessionServiceImpl implements SessionService {
   @Value("${account_login_prefix_admin:sso_identify_admin}")
   private String SESSION_PREFIX;
 
-  @Value("${account.session.admin.cookie.initializr.salt}")
+  @Value("${account.admin.cookie.initializr.salt}")
   private String cookieSalt;
-  @Value("${account.session.admin.cookie.expires.seconds}")
-  private Integer cookieExpiresSeconds;
-  @Value("${account.session.admin.cookie.redis.key.prefix}")
+  @Value("${account.admin.cookie.redis.key.prefix}")
   private String cookieRedisKeyPrefix;
 
   @Autowired
@@ -49,34 +47,6 @@ public class SessionServiceImpl implements SessionService {
   @Resource
   private AdminAccountDao adminAccountDao;
 
-  @Override
-  public Boolean checkCaptcha(LoginCookieBO loginCookieBO, LoginCaptchaBO loginCaptchaBO) {
-    return null;
-  }
-
-  @Override
-  public Boolean checkCookie(LoginCookieBO loginCookieBO) {
-    Assert.notNull(loginCookieBO, "loginCookieBO should not be null");
-    Assert.notNull(loginCookieBO.getCookie(), "loginCookieBO.cookie should not be empty");
-    String clearTextCookie = null;
-    try {
-      clearTextCookie = Cryptographer.decrypt(loginCookieBO.getCookie(), cookieSalt);
-    } catch (Exception e) {
-      // TODO 不应该吃掉异常
-      e.printStackTrace();
-    }
-
-    // TODO 优化redis延期方式
-    String cookieUseTimes = redisClient.get(cookieRedisKeyPrefix + clearTextCookie);
-    if (cookieUseTimes == null) {
-      return false;
-    } else {
-      redisClient.del(cookieRedisKeyPrefix + clearTextCookie);
-      redisClient
-          .setex(cookieRedisKeyPrefix + clearTextCookie, cookieExpiresSeconds, cookieUseTimes);
-      return true;
-    }
-  }
 
   @Override
   public AdminAccountBO createSessionByNameAndPwd(String loginName, String loginPwd) {
@@ -105,18 +75,33 @@ public class SessionServiceImpl implements SessionService {
   }
 
   @Override
+  public Boolean deleteCookie(SessionCookieBO sessionCookieBO) {
+    Assert.notNull(sessionCookieBO, "sessionCookieBO should not be null");
+    Assert.notNull(sessionCookieBO.getCookie(), "sessionCookieBO.cookie should not be empty");
+    String clearTextCookie = null;
+    try {
+      clearTextCookie = Cryptographer.decrypt(sessionCookieBO.getCookie(), cookieSalt);
+    } catch (Exception e) {
+      // TODO 不应该吃掉异常
+      e.printStackTrace();
+    }
+    redisClient.del(cookieRedisKeyPrefix + clearTextCookie);
+    return true;
+  }
+
+  @Override
   public Boolean deleteSession(Long adminUserId) {
     String key = StringUtils.join(new String[]{SESSION_PREFIX, adminUserId.toString()});
     return redisClient.del(key) == 1;
   }
 
   @Override
-  public LoginCaptchaBO produceCaptcha(LoginCookieBO loginCookieBO) {
+  public SessionCaptchaBO produceCaptcha(SessionCaptchaBO sessionCaptchaBO) {
     return null;
   }
 
   @Override
-  public LoginCookieBO produceCookie() {
+  public SessionCookieBO produceCookie() {
     long currentTimeMillis = System.currentTimeMillis();
     String uuid = UUID.randomUUID().toString();
     String clearTextCookie = currentTimeMillis + ":" + uuid;
@@ -128,8 +113,33 @@ public class SessionServiceImpl implements SessionService {
       e.printStackTrace();
     }
     redisClient
-        .setex(cookieRedisKeyPrefix + clearTextCookie, cookieExpiresSeconds, "0");
-    return new LoginCookieBO(encryptTextCookie, cookieExpiresSeconds);
+        .set(cookieRedisKeyPrefix + clearTextCookie, "0");
+    return new SessionCookieBO(encryptTextCookie, 0);
+  }
+
+  @Override
+  public SessionCaptchaBO queryCaptcha(SessionCookieBO sessionCookieBO,
+      SessionCaptchaBO sessionCaptchaBO) {
+    return null;
+  }
+
+  @Override
+  public SessionCookieBO queryCookie(SessionCookieBO sessionCookieBO) {
+    Assert.notNull(sessionCookieBO, "sessionCookieBO should not be null");
+    Assert.notNull(sessionCookieBO.getCookie(), "sessionCookieBO.cookie should not be empty");
+    String clearTextCookie = null;
+    try {
+      clearTextCookie = Cryptographer.decrypt(sessionCookieBO.getCookie(), cookieSalt);
+    } catch (Exception e) {
+      // TODO 不应该吃掉异常
+      e.printStackTrace();
+    }
+    String timeOfCookie = redisClient.get(cookieRedisKeyPrefix + clearTextCookie);
+    if (timeOfCookie != null) {
+      return new SessionCookieBO(clearTextCookie, Integer.parseInt(timeOfCookie));
+    } else {
+      return null;
+    }
   }
 
   @Override

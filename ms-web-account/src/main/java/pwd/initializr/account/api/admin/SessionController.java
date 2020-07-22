@@ -2,7 +2,7 @@ package pwd.initializr.account.api.admin;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.BeanUtils;
+import javax.servlet.http.Cookie;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pwd.initializr.account.api.admin.vo.LoginCookieVO;
 import pwd.initializr.account.api.admin.vo.LoginInput;
+import pwd.initializr.account.api.admin.vo.SessionCookieOutput;
 import pwd.initializr.account.business.admin.AdminService;
 import pwd.initializr.account.business.admin.SessionService;
-import pwd.initializr.account.business.admin.bo.LoginCookieBO;
+import pwd.initializr.account.business.admin.bo.SessionCookieBO;
 import pwd.initializr.common.web.api.admin.AdminController;
 
 /**
@@ -41,11 +41,19 @@ public class SessionController extends AdminController implements SessionApi {
   @Value("${account_secret}")
   private String ACCOUNT_SECRET;
 
+  @Value("${account.admin.cookie.expires.seconds}")
+  private Integer cookieExpiresSeconds;
+
+  @Value("${account.admin.cookie.captcha.threshold}")
+  private Integer cookieCaptchaThreshold;
+
+
   @Autowired
   private AdminService adminService;
 
   @Autowired
   private SessionService sessionService;
+
 
   @ApiOperation(value = "登录")
   @PutMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -67,13 +75,39 @@ public class SessionController extends AdminController implements SessionApi {
 
   @Override
   public void loginInitializr() {
-    LoginCookieBO loginCookieBO = sessionService.produceCookie();
-    if (loginCookieBO == null) {
+    String cookieValue = null;
+    // 识别访问是否携带cookie
+    Cookie[] cookies = getRequest().getCookies();
+    if (cookies != null) {
+      for (Cookie cookie : cookies) {
+        if (cookie.getName().equals("cookie")) {
+          cookieValue = cookie.getValue();
+        }
+      }
+    }
+
+    boolean captchaRequired = false;
+    if (cookieValue == null
+        || sessionService.queryCookie(new SessionCookieBO(cookieValue, null)) == null) {
+      // 初次访问或者再次访问的时候cookie已经过期,此时需要生成新的cookie
+      SessionCookieBO sessionCookieBO = sessionService.produceCookie();
+      if (sessionCookieBO != null) {
+        cookieValue = sessionCookieBO.getCookie();
+        if (sessionCookieBO.getTimes() >= cookieCaptchaThreshold) {
+          captchaRequired = true;
+        }
+      }
+    }
+
+    if (cookieValue == null) {
+      // 生成新的cookie失败
       outputException(500);
     } else {
-      LoginCookieVO loginCookieVO = new LoginCookieVO();
-      BeanUtils.copyProperties(loginCookieBO, loginCookieVO);
-      outputData(loginCookieVO);
+      SessionCookieOutput loginCookieOutput = new SessionCookieOutput();
+      loginCookieOutput.setCookie(cookieValue);
+      loginCookieOutput.setExpires(cookieExpiresSeconds);
+      loginCookieOutput.setCaptchaRequired(captchaRequired);
+      outputData(loginCookieOutput);
     }
   }
 

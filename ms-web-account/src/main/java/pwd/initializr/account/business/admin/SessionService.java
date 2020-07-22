@@ -1,9 +1,9 @@
 package pwd.initializr.account.business.admin;
 
 import pwd.initializr.account.business.admin.bo.AdminAccountBO;
-import pwd.initializr.account.business.admin.bo.LoginCaptchaBO;
-import pwd.initializr.account.business.admin.bo.LoginCookieBO;
 import pwd.initializr.account.business.admin.bo.SessionBO;
+import pwd.initializr.account.business.admin.bo.SessionCaptchaBO;
+import pwd.initializr.account.business.admin.bo.SessionCookieBO;
 
 /**
  * pwd.initializr.account.business.admin@ms-web-initializr
@@ -17,32 +17,6 @@ import pwd.initializr.account.business.admin.bo.SessionBO;
  * @since DistributionVersion
  */
 public interface SessionService {
-
-  /**
-   * <h2>图形验证码校验接口：管理员登录识别的图验证码校验</h2>
-   * <p>1：校验cookie对应的验证码识别结果是否正确</p>
-   * date 2020-07-22 16:12
-   *
-   * @param loginCookieBO 预登录生成的cookie对象
-   * @param loginCaptchaBO 登录识别后的验证码对象
-   * @return java.lang.Boolean
-   * @author DingPengwei[www.dingpengwei@foxmail.com]
-   * @since DistributionVersion
-   */
-  Boolean checkCaptcha(LoginCookieBO loginCookieBO, LoginCaptchaBO loginCaptchaBO);
-
-  /**
-   * <h2>cookie校验接口：管理员登录验证前调用</h2>
-   * <p>1：校验cookie是否过期，未过期，这个对该cookie的有效期进行延时</p>
-   * <p>1：校验cookie是否过期，已过期，直接返回</p>
-   * date 2020-07-22 14:52
-   *
-   * @param loginCookieBO cookie信息
-   * @return java.lang.Boolean
-   * @author DingPengwei[www.dingpengwei@foxmail.com]
-   * @since DistributionVersion
-   */
-  Boolean checkCookie(LoginCookieBO loginCookieBO);
 
   /**
    * <h2>session创建接口：管理员通过账号密码登录</h2>
@@ -74,6 +48,17 @@ public interface SessionService {
   AdminAccountBO createSessionByPhoneNumberAndSmsCode(String phoneNumber, String smsCode);
 
   /**
+   * <h2>cookie删除接口，根据cookie删除redis中的cookie信息</h2>
+   * date 2020-07-22 23:14
+   *
+   * @param sessionCookieBO 登录前生成的cookie对象
+   * @return java.lang.Boolean
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  Boolean deleteCookie(SessionCookieBO sessionCookieBO);
+
+  /**
    * <h2>session删除接口，根据用户ID删除session信息，等同于退出登录</h2>
    * <p>1：在redis中删除session信息</p>
    * date 2020-07-22 16:33
@@ -92,12 +77,12 @@ public interface SessionService {
    * <p>3：把生成的图形验证码进行存储</p>
    * date 2020-07-22 16:11
    *
-   * @param loginCookieBO 预登录生成的cookie对象
-   * @return pwd.initializr.account.business.admin.bo.LoginCaptchaBO
+   * @param sessionCaptchaBO 预登录生成的图形验证码对象
+   * @return pwd.initializr.account.business.admin.bo.SessionCaptchaBO
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  LoginCaptchaBO produceCaptcha(LoginCookieBO loginCookieBO);
+  SessionCaptchaBO produceCaptcha(SessionCaptchaBO sessionCaptchaBO);
 
   /**
    * <h2>cookie生成接口：管理员登录前调用</h2>
@@ -105,11 +90,35 @@ public interface SessionService {
    * <p>2：把cookie存入redis，并设置过期时间，设置该cookie登录次数为0</p>
    * date 2020-07-22 14:33
    *
-   * @return pwd.initializr.account.business.admin.bo.LoginCookieBO
+   * @return pwd.initializr.account.business.admin.bo.SessionCookieBO
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  LoginCookieBO produceCookie();
+  SessionCookieBO produceCookie();
+
+  /**
+   * <h2>图形验证码校验接口：管理员登录识别的图验证码校验</h2>
+   * <p>1：校验cookie对应的验证码识别结果是否正确</p>
+   * date 2020-07-22 16:12
+   *
+   * @param sessionCookieBO 预登录生成的cookie对象
+   * @param sessionCaptchaBO 登录识别后的验证码对象
+   * @return pwd.initializr.account.business.admin.bo.SessionCaptchaBO
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  SessionCaptchaBO queryCaptcha(SessionCookieBO sessionCookieBO, SessionCaptchaBO sessionCaptchaBO);
+
+  /**
+   * <h2>cookie查询接口，管理员尝试登录次数</h2>
+   * date 2020-07-22 23:42
+   *
+   * @param sessionCookieBO cookie对象
+   * @return pwd.initializr.account.business.admin.bo.SessionCookieBO
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  SessionCookieBO queryCookie(SessionCookieBO sessionCookieBO);
 
   /**
    * <h2>session查询接口，根据用户ID查询session信息</h2>
