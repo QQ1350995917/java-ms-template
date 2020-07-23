@@ -14,7 +14,7 @@ import java.util.Random;
  * @version 1.0.0
  * @since DistributionVersion
  */
-public class ArithmeticCode extends VCodeHelper {
+public class CaptchaArithmeticCode extends CaptchaHelper {
 
   @Override
   protected String getOriginCode() {
@@ -51,8 +51,6 @@ public class ArithmeticCode extends VCodeHelper {
     //图片显示的算术文字
     String expression = num1 + "" + operator + "" + num2 + "= ?";
     return new CodeMessage(expression, String.valueOf(result));
-
-
   }
 
   @Override

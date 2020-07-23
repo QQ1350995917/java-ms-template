@@ -13,7 +13,7 @@ import java.awt.image.BufferedImage;
  * @version 1.0.0
  * @since DistributionVersion
  */
-public class StringCode extends VCodeHelper {
+public class StringCode extends CaptchaHelper {
 
   private final String originCode = "abcdefghigklmnopqrstuvwxyzZXCVBNMASDFGHJKLQWERTYUIOP0123456789";
 

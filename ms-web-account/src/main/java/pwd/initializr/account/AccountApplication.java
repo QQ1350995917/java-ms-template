@@ -17,9 +17,9 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pwd.initializr.common.vcode.ArithmeticCode;
+import pwd.initializr.common.vcode.CaptchaArithmeticCode;
 import pwd.initializr.common.vcode.CodeMessage;
-import pwd.initializr.common.vcode.VCodeHelper;
+import pwd.initializr.common.vcode.CaptchaHelper;
 import pwd.initializr.common.web.api.FullPathNameGenerator;
 
 /**
@@ -42,7 +42,7 @@ import pwd.initializr.common.web.api.FullPathNameGenerator;
 @MapperScan("pwd.initializr.account.persistence")
 public class AccountApplication {
 
-  private VCodeHelper vCodeHelper = new ArithmeticCode();
+  private CaptchaHelper captchaHelper = new CaptchaArithmeticCode();
 
   public static void main(String[] args) {
     SpringApplication.run(AccountApplication.class, args);
@@ -56,9 +56,9 @@ public class AccountApplication {
     response.addHeader("Cache-Control", "post-check=0, pre-check=0");
     response.setHeader("Pragma", "no-cache");
     response.setContentType("image/jpeg");
-    CodeMessage codeMessage = vCodeHelper.productMessage();
+    CodeMessage codeMessage = captchaHelper.productMessage();
     request.getSession().setAttribute(Constants.KAPTCHA_SESSION_KEY, codeMessage.getExpected());
-    BufferedImage bufferedImage = vCodeHelper.productImage(codeMessage.getPresented());
+    BufferedImage bufferedImage = captchaHelper.productImage(codeMessage.getPresented());
     ServletOutputStream out = null;
     try {
       out = response.getOutputStream();

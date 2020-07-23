@@ -17,7 +17,7 @@ import java.util.Random;
  * @version 1.0.0
  * @since DistributionVersion
  */
-public abstract class VCodeHelper {
+public abstract class CaptchaHelper {
 
     int width = 300;
     int height = 60;

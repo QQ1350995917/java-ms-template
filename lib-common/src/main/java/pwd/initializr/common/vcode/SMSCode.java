@@ -13,7 +13,7 @@ import java.awt.image.BufferedImage;
  * @version 1.0.0
  * @since DistributionVersion
  */
-public class SMSCode extends VCodeHelper {
+public class SMSCode extends CaptchaHelper {
 
   private final String originCode = "0123456789";
 

@@ -11,6 +11,7 @@ package pwd.initializr.common.utils;
  * @version 1.0.0
  * @since DistributionVersion
  */
+@Deprecated
 public enum ConstantAbleStatus {
     DISABLE(-1),
     ENABLE(1);

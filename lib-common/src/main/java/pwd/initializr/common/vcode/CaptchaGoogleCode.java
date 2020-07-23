@@ -16,7 +16,7 @@ import java.util.Properties;
  * @version 1.0.0
  * @since DistributionVersion
  */
-public class GoogleCode extends VCodeHelper {
+public class CaptchaGoogleCode extends CaptchaHelper {
     private final String originCode = "abcdefghigklmnopqrstuvwxyzZXCVBNMASDFGHJKLQWERTYUIOP0123456789";
 
     @Override

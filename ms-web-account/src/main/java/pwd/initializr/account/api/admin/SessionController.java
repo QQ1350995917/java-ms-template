@@ -3,6 +3,7 @@ package pwd.initializr.account.api.admin;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import javax.servlet.http.Cookie;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
@@ -12,9 +13,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.account.api.admin.vo.LoginInput;
+import pwd.initializr.account.api.admin.vo.SessionCaptchaOutput;
 import pwd.initializr.account.api.admin.vo.SessionCookieOutput;
 import pwd.initializr.account.business.admin.AdminService;
 import pwd.initializr.account.business.admin.SessionService;
+import pwd.initializr.account.business.admin.bo.SessionCaptchaBO;
 import pwd.initializr.account.business.admin.bo.SessionCookieBO;
 import pwd.initializr.common.web.api.admin.AdminController;
 
@@ -89,7 +92,8 @@ public class SessionController extends AdminController implements SessionApi {
 
     // 初次访问或者再次访问的时候cookie已经过期,此时需要生成新的cookie
     if (cookieValue == null
-        || sessionService.queryCookie(new SessionCookieBO(cookieValue, null)) == null) {
+        || sessionService.queryCookie(new SessionCookieBO(cookieValue
+    )) == null) {
       SessionCookieBO sessionCookieBO = sessionService.produceCookie();
       if (sessionCookieBO != null) {
         cookieValue = sessionCookieBO.getCookie();
@@ -119,7 +123,20 @@ public class SessionController extends AdminController implements SessionApi {
 
   @Override
   public void loginCaptchaRefresh(String cookie) {
-
+    if (cookie != null
+        && sessionService.queryCookie(new SessionCookieBO(cookie)) != null) {
+      SessionCaptchaBO sessionCaptchaBO = sessionService
+          .produceCaptcha(new SessionCookieBO(cookie));
+      if (sessionCaptchaBO == null) {
+        outputException(500);
+      } else {
+        SessionCaptchaOutput sessionCaptchaOutput = new SessionCaptchaOutput();
+        BeanUtils.copyProperties(sessionCaptchaBO,sessionCaptchaOutput);
+        outputData(sessionCaptchaOutput);
+      }
+    } else {
+      outputException(401);
+    }
   }
 
   @ApiOperation(value = "信息查询")

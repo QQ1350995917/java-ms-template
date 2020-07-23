@@ -77,12 +77,12 @@ public interface SessionService {
    * <p>3：把生成的图形验证码进行存储</p>
    * date 2020-07-22 16:11
    *
-   * @param sessionCaptchaBO 预登录生成的图形验证码对象
+   * @param sessionCookieBO 预登录生成的cookie对象
    * @return pwd.initializr.account.business.admin.bo.SessionCaptchaBO
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  SessionCaptchaBO produceCaptcha(SessionCaptchaBO sessionCaptchaBO);
+  SessionCaptchaBO produceCaptcha(SessionCookieBO sessionCookieBO);
 
   /**
    * <h2>cookie生成接口：管理员登录前调用</h2>

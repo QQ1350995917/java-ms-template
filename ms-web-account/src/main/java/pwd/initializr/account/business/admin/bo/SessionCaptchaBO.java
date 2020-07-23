@@ -27,11 +27,16 @@ public class SessionCaptchaBO {
     /**
      * 图形验证码图片的地址
      */
-    String url;
+    private String url;
 
     /**
      * 用户填写的结果
      */
-    String result;
+    private String result;
+
+    /**
+     * 过期时间（单位秒）
+     */
+    private Integer expires;
 
 }

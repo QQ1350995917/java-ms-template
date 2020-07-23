@@ -11,6 +11,7 @@ package pwd.initializr.common.utils;
  * @version 1.0.0
  * @since DistributionVersion
  */
+@Deprecated
 public enum ConstantDeleteStatus {
     /**
      * 已删除：标记为1

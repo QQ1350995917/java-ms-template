@@ -24,6 +24,19 @@ import lombok.ToString;
 @ToString
 public class SessionCookieBO {
 
+
+  /**
+   * cookie码
+   */
   private String cookie;
+
+
+  /**
+   * 已经尝试登录次数
+   */
   private Integer times;
+
+  public SessionCookieBO(String cookie) {
+    this.cookie = cookie;
+  }
 }

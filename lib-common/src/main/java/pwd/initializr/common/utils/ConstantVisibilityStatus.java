@@ -11,6 +11,7 @@ package pwd.initializr.common.utils;
  * @version 1.0.0
  * @since DistributionVersion
  */
+@Deprecated
 public enum ConstantVisibilityStatus {
   VISIBILITY(1),
   NOT_VISIBILITY(-1);

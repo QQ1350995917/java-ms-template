@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import pwd.initializr.common.mw.redis.RedisClient;
 import pwd.initializr.common.utils.VerifyUtil;
-import pwd.initializr.common.vcode.VCodeHelper;
+import pwd.initializr.common.vcode.CaptchaHelper;
 import pwd.initializr.common.web.api.ApiConstant;
 import pwd.initializr.common.web.business.bo.SMSCode;
 
@@ -37,8 +37,8 @@ public class SMSCodeServiceImpl implements SMSCodeService {
     String smsCode = redisClient.get(ApiConstant.REDIS_KEY_PHONE_SMS_CODE_PREFIX + phoneNumber);
     // 找到就返回，找不到就生成新的
     if (StringUtils.isEmpty(smsCode)) {
-      VCodeHelper vCodeHelper = new pwd.initializr.common.vcode.SMSCode();
-      smsCode = vCodeHelper.productMessage().getPresented();
+      CaptchaHelper captchaHelper = new pwd.initializr.common.vcode.SMSCode();
+      smsCode = captchaHelper.productMessage().getPresented();
       // 放入redis，并设置过期时间
       redisClient.setex(ApiConstant.REDIS_KEY_PHONE_SMS_CODE_PREFIX + phoneNumber, 60 * 5,
           smsCode);
