@@ -144,4 +144,18 @@ public interface SessionService {
      * @since DistributionVersion
      */
     Boolean updateSession(SessionBO sessionBO);
+
+    /**
+     * <h2>cookie更新接口，更新cookie对应的登录错误次数</h2>
+     * date 2020-07-23 23:08
+     *
+     * @param sessionCookieBO cookie对象
+     * @return pwd.initializr.account.business.admin.bo.SessionCookieBO 更新后的cookie对象
+     * @author DingPengwei[www.dingpengwei@foxmail.com]
+     * @since DistributionVersion
+     */
+    SessionCookieBO updateCookie(SessionCookieBO sessionCookieBO);
+
+
+
 }

@@ -1,10 +1,8 @@
 package pwd.initializr.account.api.admin;
 
-import com.netflix.ribbon.proxy.annotation.Http.Header;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import javax.servlet.http.Cookie;
-import jdk.nashorn.internal.objects.annotations.Getter;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,14 +10,14 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.account.api.admin.vo.LoginInput;
 import pwd.initializr.account.api.admin.vo.SessionCaptchaOutput;
-import pwd.initializr.account.api.admin.vo.SessionCookieOutput;
+import pwd.initializr.account.api.admin.vo.SessionTokenOutput;
 import pwd.initializr.account.business.admin.AdminService;
 import pwd.initializr.account.business.admin.SessionService;
+import pwd.initializr.account.business.admin.bo.AdminAccountBO;
 import pwd.initializr.account.business.admin.bo.SessionCaptchaBO;
 import pwd.initializr.account.business.admin.bo.SessionCookieBO;
 import pwd.initializr.common.web.api.admin.AdminController;
@@ -28,7 +26,7 @@ import pwd.initializr.common.web.api.admin.AdminController;
  * pwd.initializr.account.api.admin@ms-web-initializr
  *
  * <h1>控制层逻辑：管理员session生命周期接口</h1>
- * <p>fixme: 逻辑漏洞，无法拦截机器登录情况，执行方式为：刷新页面（生成新的cookie）-> 执行登录（新的cookie无需图形验证码）</p>
+ * <p>fixme: 逻辑漏洞，无法拦截机器登录情况，执行方式为：刷新页面（生成新的token）-> 执行登录（新的token无需图形验证码）</p>
  * date 2019-10-25 20:18
  *
  * @author DingPengwei[dingpengwei@foxmail.com]
@@ -61,8 +59,8 @@ public class SessionController extends AdminController implements SessionApi {
   private SessionService sessionService;
 
 
-  @ApiOperation(value = "登录")
-  @PutMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+//  @ApiOperation(value = "登录")
+//  @PutMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   public void login() {
 //    AdminUserBO loginAdminUserBO = adminService
 //        .queryByLoginNameAndLoginPassword(input.getLoginName(), input.getLoginPwd());
@@ -71,64 +69,83 @@ public class SessionController extends AdminController implements SessionApi {
 //    } else {
 //      SessionBO sessionBO = new SessionBO(loginAdminUserBO.getId(), loginAdminUserBO.getLoginName(),
 //          loginAdminUserBO.getLoginName());
-//      String token = RPCToken.generateToken(sessionBO, ACCOUNT_SECRET);
+//      String cookie = RPCToken.generateToken(sessionBO, ACCOUNT_SECRET);
 //      if (sessionService.getSession(loginAdminUserBO.getId()) == null) {
 //        sessionService.replaceSession(sessionBO);
 //      }
-//      super.outputData(new LoginOutput(loginAdminUserBO.getId(), token));
+//      super.outputData(new LoginOutput(loginAdminUserBO.getId(), cookie));
 //    }
   }
 
-  @ApiOperation(value = "登录前页面初始化")
+  @ApiOperation(value = "登录页面初始化")
   @GetMapping(value = {"/init"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
   public void loginInitializr() {
-    String cookieValue = null;
+    String cookie = getToken();
     Boolean captchaRequired = false;
-    // 识别访问是否携带cookie
-    Cookie[] cookies = getRequest().getCookies();
-    if (cookies != null) {
-      for (Cookie cookie : cookies) {
-        if (cookie.getName().equals("cookie")) {
-          cookieValue = cookie.getValue();
-        }
-      }
+    SessionCookieBO sessionCookieBO = null;
+    // 初次访问没有携带cookie，需要生成新的cookie
+    if (cookie == null) {
+      sessionCookieBO = sessionService.createCookie();
+    } else {
+      sessionCookieBO = sessionService.queryCookie(new SessionCookieBO(cookie));
     }
-
-    // 初次访问或者再次访问的时候cookie已经过期,此时需要生成新的cookie
-    if (cookieValue == null
-        || sessionService.queryCookie(new SessionCookieBO(cookieValue
-    )) == null) {
-      SessionCookieBO sessionCookieBO = sessionService.createCookie();
-      if (sessionCookieBO != null) {
-        cookieValue = sessionCookieBO.getCookie();
-        if (sessionCookieBO.getTimes() >= cookieCaptchaThreshold) {
-          captchaRequired = true;
-        }
-      }
+    if (sessionCookieBO == null) {
+        // cookie 比较旧，得更新
+        outputException(401);
+        return;
     }
-
-    if (cookieValue == null) {
+    cookie = sessionCookieBO.getCookie();
+    if (cookie == null) {
       // 生成新的cookie失败
       outputException(500);
-    } else {
-      // 生成新的cookie成，并设置是否需要图形验证码
-      SessionCookieOutput loginCookieOutput = new SessionCookieOutput();
-      loginCookieOutput.setCookie(cookieValue);
-      loginCookieOutput.setExpires(cookieExpiresSeconds);
-      loginCookieOutput.setCaptchaRequired(captchaRequired);
-      // TODO 登录方式列表
-      outputData(loginCookieOutput);
+      return;
     }
+    if (sessionCookieBO.getTimes() >= cookieCaptchaThreshold) {
+        captchaRequired = true;
+    }
+    // 生成新的cookie成，并设置是否需要图形验证码
+    SessionTokenOutput loginCookieOutput = new SessionTokenOutput();
+    loginCookieOutput.setCookie(cookie);
+    loginCookieOutput.setExpires(cookieExpiresSeconds);
+    loginCookieOutput.setCaptchaRequired(captchaRequired);
+    // TODO 登录方式列表
+    outputData(loginCookieOutput);
   }
 
+  @ApiOperation(value = "登录")
+  @PutMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
   public void loginByNameAndPwd(LoginInput input) {
-
+    String cookie = getToken();
+    if (StringUtils.isBlank(cookie)) {
+      outputException(401);
+      return;
+    }
+    if (input == null || StringUtils.isBlank(input.getLoginName()) || StringUtils.isBlank(input.getLoginName())) {
+      outputException(401);
+      return;
+    }
+    SessionCookieBO sessionCookieBO = sessionService.queryCookie(new SessionCookieBO(cookie));
+    if (sessionCookieBO == null) {
+      outputException(401);
+      return;
+    }
+    AdminAccountBO sessionByNameAndPwd = sessionService
+        .createSessionByNameAndPwd(input.getLoginName(), input.getLoginPwd());
+    if (sessionByNameAndPwd == null) { sessionCookieBO = sessionService.updateCookie(new SessionCookieBO(cookie));
+      if (sessionCookieBO.getTimes() >= cookieCaptchaThreshold){
+        // TODO 如何响应是否需要验证码
+      }
+      outputException(401);
+      return;
+    }
+    sessionService.deleteCookie(new SessionCookieBO(cookie));
   }
 
   @Override
-  public void loginCaptchaRefresh(String cookie) {
+  public void loginCaptchaRefresh() {
+    String cookie = getToken();
     if (cookie != null
         && sessionService.queryCookie(new SessionCookieBO(cookie)) != null) {
       SessionCaptchaBO sessionCaptchaBO = sessionService.createCaptcha(new SessionCookieBO(cookie));

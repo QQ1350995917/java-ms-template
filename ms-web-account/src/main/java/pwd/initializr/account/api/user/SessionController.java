@@ -84,11 +84,11 @@ public class SessionController extends UserController implements SessionApi {
 //    } else {
 //      SessionBO sessionBO = new SessionBO();
 //      BeanUtils.copyProperties(userByUserBOId, sessionBO);
-//      String token = RPCToken.generateToken(sessionBO, ACCOUNT_SECRET);
+//      String cookie = RPCToken.generateToken(sessionBO, ACCOUNT_SECRET);
 //      if (sessionService.getSession(loginUserAccountBo.getUserId()) == null) {
 //        sessionService.replaceSession(sessionBO);
 //      }
-//      outputData(new LoginOutput(userByUserBOId.getId(), token));
+//      outputData(new LoginOutput(userByUserBOId.getId(), cookie));
 //    }
   }
 

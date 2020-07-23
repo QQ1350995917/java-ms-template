@@ -61,9 +61,12 @@ public class ApiController {
     return Long.parseLong(uid);
   }
 
+  public static String getToken() {
+    return getRequest().getHeader(ApiConstant.HTTP_HEADER_KEY_TOKEN);
+  }
+
   public static String getClientOS() {
-    String os = getRequest().getHeader(ApiConstant.HTTP_HEADER_KEY_OS);
-    return os;
+    return getRequest().getHeader(ApiConstant.HTTP_HEADER_KEY_OS);
   }
 
   public static HttpServletResponse getResponse() {

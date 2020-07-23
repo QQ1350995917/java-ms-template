@@ -68,7 +68,9 @@ public class SessionServiceImpl implements SessionService {
         }
         AdminAccountEntity adminAccountEntity = adminAccountDao
             .queryByLoginNameAndPwd(loginName, encrypt);
-        Assert.notNull(adminAccountEntity, "The user does not exist");
+        if (adminAccountEntity == null) {
+         return null;
+        }
         if (adminAccountEntity.getEnable() == EntityEnable.ENABLE.getNumber()) {
             // TODO:存放session信息和在线用户信息
         }
@@ -183,6 +185,23 @@ public class SessionServiceImpl implements SessionService {
         } else {
             return false;
         }
+    }
+
+    @Override
+    public SessionCookieBO updateCookie(SessionCookieBO sessionCookieBO) {
+        String clearTextCookie = null;
+        try {
+            clearTextCookie = Cryptographer.decrypt(sessionCookieBO.getCookie(), cookieSalt);
+        } catch (Exception e) {
+            // TODO 不应该吃掉异常
+            e.printStackTrace();
+        }
+        String times = redisClient.hget(getCookieKeyInRedis(clearTextCookie), "times");
+        int i = Integer.parseInt(times) + 1;
+        redisClient
+            .hset(getCookieKeyInRedis(clearTextCookie), "times",String.valueOf(i));
+        sessionCookieBO.setTimes(i);
+        return sessionCookieBO;
     }
 
     private String getCookieKeyInRedis(String cookie) {

@@ -32,7 +32,7 @@ public class LoginOutput {
   @NotNull(message = "0")
   private Long uid;
 
-  @ApiModelProperty(name = "token", value = "登录令牌", required = true, example = "DingPengwei")
+  @ApiModelProperty(name = "cookie", value = "登录令牌", required = true, example = "DingPengwei")
   @NotNull(message = "0")
   private String token;
 }
