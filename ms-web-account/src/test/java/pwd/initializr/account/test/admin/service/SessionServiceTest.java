@@ -9,6 +9,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import pwd.initializr.account.AccountApplication;
 import pwd.initializr.account.business.admin.SessionService;
 import pwd.initializr.account.business.admin.bo.AdminAccountBO;
+import pwd.initializr.account.business.admin.bo.SessionCaptchaBO;
 import pwd.initializr.account.business.admin.bo.SessionCookieBO;
 
 /**
@@ -26,27 +27,34 @@ import pwd.initializr.account.business.admin.bo.SessionCookieBO;
 @SpringBootTest(classes = {AccountApplication.class})
 public class SessionServiceTest {
 
-  @Autowired
-  private SessionService sessionService;
+    @Autowired
+    private SessionService sessionService;
 
-  @Test
-  public void testCheckCookie() {
-    SessionCookieBO sessionCookieBO = new SessionCookieBO(
-        "1595428898246:042ad7e9-d6c1-492a-9eae-4ee365de573b",null);
-    Assert.assertNotNull(sessionService.queryCookie(sessionCookieBO));
-  }
+    @Test
+    public void testQueryCookie() {
+        SessionCookieBO sessionCookieBO = new SessionCookieBO(
+            "1595428898246:042ad7e9-d6c1-492a-9eae-4ee365de573b");
+        Assert.assertNotNull(sessionService.queryCookie(sessionCookieBO));
+    }
 
-  @Test
-  public void testCreateSessionByNameAndPwd() {
-    AdminAccountBO sessionByNameAndPwd = sessionService.createSessionByNameAndPwd("pwd", "pwd");
-    Assert.assertNotNull(sessionByNameAndPwd);
-  }
+    @Test
+    public void testCreateSessionByNameAndPwd() {
+        AdminAccountBO sessionByNameAndPwd = sessionService.createSessionByNameAndPwd("pwd", "pwd");
+        Assert.assertNotNull(sessionByNameAndPwd);
+    }
 
-  @Test
-  public void testProduceCookie() {
-    SessionCookieBO sessionCookieBO = sessionService.produceCookie();
-    Assert.assertNotNull(sessionCookieBO);
-  }
+    @Test
+    public void testCreateCookie() {
+        SessionCookieBO sessionCookieBO = sessionService.createCookie();
+        Assert.assertNotNull(sessionCookieBO);
+    }
+
+    @Test
+    public void testCreateCaptcha() {
+        SessionCookieBO sessionCookieBO = sessionService.createCookie();
+        SessionCaptchaBO captcha = sessionService.createCaptcha(sessionCookieBO);
+        Assert.assertNotNull(captcha);
+    }
 
 
 }

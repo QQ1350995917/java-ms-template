@@ -1,8 +1,10 @@
 package pwd.initializr.account.api.admin;
 
+import com.netflix.ribbon.proxy.annotation.Http.Header;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import javax.servlet.http.Cookie;
+import jdk.nashorn.internal.objects.annotations.Getter;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.account.api.admin.vo.LoginInput;
@@ -76,6 +79,8 @@ public class SessionController extends AdminController implements SessionApi {
 //    }
   }
 
+  @ApiOperation(value = "登录前页面初始化")
+  @GetMapping(value = {"/init"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
   public void loginInitializr() {
     String cookieValue = null;
@@ -94,7 +99,7 @@ public class SessionController extends AdminController implements SessionApi {
     if (cookieValue == null
         || sessionService.queryCookie(new SessionCookieBO(cookieValue
     )) == null) {
-      SessionCookieBO sessionCookieBO = sessionService.produceCookie();
+      SessionCookieBO sessionCookieBO = sessionService.createCookie();
       if (sessionCookieBO != null) {
         cookieValue = sessionCookieBO.getCookie();
         if (sessionCookieBO.getTimes() >= cookieCaptchaThreshold) {
@@ -112,6 +117,7 @@ public class SessionController extends AdminController implements SessionApi {
       loginCookieOutput.setCookie(cookieValue);
       loginCookieOutput.setExpires(cookieExpiresSeconds);
       loginCookieOutput.setCaptchaRequired(captchaRequired);
+      // TODO 登录方式列表
       outputData(loginCookieOutput);
     }
   }
@@ -125,8 +131,7 @@ public class SessionController extends AdminController implements SessionApi {
   public void loginCaptchaRefresh(String cookie) {
     if (cookie != null
         && sessionService.queryCookie(new SessionCookieBO(cookie)) != null) {
-      SessionCaptchaBO sessionCaptchaBO = sessionService
-          .produceCaptcha(new SessionCookieBO(cookie));
+      SessionCaptchaBO sessionCaptchaBO = sessionService.createCaptcha(new SessionCookieBO(cookie));
       if (sessionCaptchaBO == null) {
         outputException(500);
       } else {

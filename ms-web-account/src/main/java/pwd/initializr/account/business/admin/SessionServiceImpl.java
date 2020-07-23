@@ -2,8 +2,11 @@ package pwd.initializr.account.business.admin;
 
 import com.alibaba.fastjson.JSON;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.UUID;
 import javax.annotation.Resource;
+import javax.imageio.ImageIO;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +21,11 @@ import pwd.initializr.account.persistence.dao.AdminAccountDao;
 import pwd.initializr.account.persistence.entity.AdminAccountEntity;
 import pwd.initializr.common.mw.redis.RedisClient;
 import pwd.initializr.common.utils.Cryptographer;
-import pwd.initializr.common.utils.ImageUtil;
 import pwd.initializr.common.vcode.CaptchaArithmeticCode;
 import pwd.initializr.common.vcode.CaptchaHelper;
 import pwd.initializr.common.vcode.CodeMessage;
 import pwd.initializr.common.web.persistence.entity.EntityEnable;
+import sun.misc.BASE64Encoder;
 
 /**
  * pwd.initializr.account.business.admin@ms-web-initializr
@@ -102,19 +105,29 @@ public class SessionServiceImpl implements SessionService {
     }
 
     @Override
-    public SessionCaptchaBO produceCaptcha(SessionCookieBO sessionCookieBO) {
+    public SessionCaptchaBO createCaptcha(SessionCookieBO sessionCookieBO) {
         // TODO 生成验证码的逻辑用着不舒服
         CaptchaHelper captchaHelper = new CaptchaArithmeticCode();
         CodeMessage codeMessage = captchaHelper.productMessage();
-        redisClient.hset(getCookieKeyInRedis(sessionCookieBO.getCookie()),"captcha",codeMessage.getExpected());
+        redisClient.hset(getCookieKeyInRedis(sessionCookieBO.getCookie()), "captcha",
+            codeMessage.getExpected());
         String presented = codeMessage.getPresented();
         BufferedImage bufferedImage = captchaHelper.productImage(presented);
-
-        return new SessionCaptchaBO();
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        try {
+            ImageIO.write(bufferedImage, "png", byteArrayOutputStream);
+        } catch (IOException e) {
+            // TODO 不应该吃掉异常
+            e.printStackTrace();
+        }
+        String encode = new BASE64Encoder().encode(byteArrayOutputStream.toByteArray());
+        SessionCaptchaBO sessionCaptchaBO = new SessionCaptchaBO();
+        sessionCaptchaBO.setBase64(encode);
+        return sessionCaptchaBO;
     }
 
     @Override
-    public SessionCookieBO produceCookie() {
+    public SessionCookieBO createCookie() {
         long currentTimeMillis = System.currentTimeMillis();
         String uuid = UUID.randomUUID().toString();
         String clearTextCookie = currentTimeMillis + ":" + uuid;
@@ -126,7 +139,7 @@ public class SessionServiceImpl implements SessionService {
             e.printStackTrace();
         }
         redisClient
-            .hset(getCookieKeyInRedis(clearTextCookie),"times", "0");
+            .hset(getCookieKeyInRedis(clearTextCookie), "times", "0");
         return new SessionCookieBO(encryptTextCookie, 0);
     }
 
@@ -147,7 +160,7 @@ public class SessionServiceImpl implements SessionService {
             // TODO 不应该吃掉异常
             e.printStackTrace();
         }
-        String timesOfCookie = redisClient.hget(getCookieKeyInRedis(clearTextCookie),"times");
+        String timesOfCookie = redisClient.hget(getCookieKeyInRedis(clearTextCookie), "times");
         if (timesOfCookie != null) {
             return new SessionCookieBO(clearTextCookie, Integer.parseInt(timesOfCookie));
         } else {

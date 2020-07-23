@@ -19,7 +19,6 @@ import pwd.initializr.account.business.admin.bo.SessionCaptchaBO;
  * @since DistributionVersion
  */
 @AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
 @ToString

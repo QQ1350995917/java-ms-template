@@ -30,6 +30,11 @@ public class SessionCaptchaBO {
     private String url;
 
     /**
+     * 图形验证码的base64编码
+     */
+    private String base64;
+
+    /**
      * 用户填写的结果
      */
     private String result;
