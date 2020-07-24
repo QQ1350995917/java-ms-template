@@ -102,6 +102,11 @@ public class ApiController {
     Output<Object> objectOutput = new Output<>(meta, null);
     this.finalOutput(JSON.toJSONString(objectOutput));
   }
+  public <T> void outputException(int code, T t) {
+    Meta meta = new Meta(code, code + "");
+    Output<Object> objectOutput = new Output<>(meta, t);
+    this.finalOutput(JSON.toJSONString(objectOutput));
+  }
 
   public <T> void outputException(Meta meta, T t) {
     Output<Object> objectOutput = new Output<>(meta, t);

@@ -16,13 +16,18 @@ import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.account.api.admin.vo.LoginFailOutput;
 import pwd.initializr.account.api.admin.vo.LoginFailOutput.FailType;
 import pwd.initializr.account.api.admin.vo.LoginInput;
+import pwd.initializr.account.api.admin.vo.LoginOutput;
 import pwd.initializr.account.api.admin.vo.SessionCaptchaOutput;
 import pwd.initializr.account.api.admin.vo.SessionTokenOutput;
-import pwd.initializr.account.business.admin.AdminService;
+import pwd.initializr.account.business.admin.AdminAccountService;
+import pwd.initializr.account.business.admin.AdminUserService;
 import pwd.initializr.account.business.admin.SessionService;
 import pwd.initializr.account.business.admin.bo.AdminAccountBO;
+import pwd.initializr.account.business.admin.bo.SessionBO;
 import pwd.initializr.account.business.admin.bo.SessionCaptchaBO;
 import pwd.initializr.account.business.admin.bo.SessionCookieBO;
+import pwd.initializr.account.persistence.entity.AdminUserEntity;
+import pwd.initializr.account.rpc.RPCToken;
 import pwd.initializr.common.web.api.admin.AdminController;
 
 /**
@@ -45,144 +50,163 @@ import pwd.initializr.common.web.api.admin.AdminController;
 @RequestMapping(value = "/api/admin/session")
 public class SessionController extends AdminController implements SessionApi {
 
-  @Value("${account_secret}")
-  private String ACCOUNT_SECRET;
+    @Value("${account_secret}")
+    private String ACCOUNT_SECRET;
 
-  @Value("${account.admin.cookie.expires.seconds}")
-  private Integer cookieExpiresSeconds;
+    @Value("${account.admin.cookie.expires.seconds}")
+    private Integer cookieExpiresSeconds;
 
-  @Value("${account.admin.cookie.captcha.threshold}")
-  private Integer cookieCaptchaThreshold;
+    @Value("${account.admin.cookie.captcha.threshold}")
+    private Integer cookieCaptchaThreshold;
 
+    @Value("${account.admin.session.secret}")
+    private String sessionSecret;
 
-  @Autowired
-  private AdminService adminService;
+    @Autowired
+    private SessionService sessionService;
 
-  @Autowired
-  private SessionService sessionService;
+    @Autowired
+    private AdminAccountService adminAccountService;
 
+    @Autowired
+    private AdminUserService adminUserService;
 
-  @ApiOperation(value = "登录页面初始化")
-  @GetMapping(value = {"/init"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  @Override
-  public void loginInitializr(@RequestHeader(value = "x-token",required = false) String token) {
-    String cookie = getToken();
-    Boolean captchaRequired = false;
-    SessionCookieBO sessionCookieBO = null;
-    // 初次访问没有携带cookie，需要生成新的cookie
-    if (StringUtils.isBlank(cookie)) {
-      sessionCookieBO = sessionService.createCookie();
-    } else {
-      sessionCookieBO = sessionService.queryCookie(new SessionCookieBO(cookie));
-    }
-    if (sessionCookieBO == null) {
-        // cookie 比较旧，得更新
-        outputException(401);
-        return;
-    }
-    cookie = sessionCookieBO.getCookie();
-    if (cookie == null) {
-      // 生成新的cookie失败
-      outputException(500);
-      return;
-    }
-    if (sessionCookieBO.getTimes() >= cookieCaptchaThreshold) {
-        captchaRequired = true;
-    }
-    // 生成新的cookie成，并设置是否需要图形验证码
-    SessionTokenOutput loginCookieOutput = new SessionTokenOutput();
-    loginCookieOutput.setCookie(cookie);
-    loginCookieOutput.setExpires(cookieExpiresSeconds);
-    loginCookieOutput.setCaptchaRequired(captchaRequired);
-    // TODO 登录方式列表
-    outputData(loginCookieOutput);
-  }
-
-  @ApiOperation(value = "登录")
-  @PutMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  @Override
-  public void loginByNameAndPwd(LoginInput input) {
-    String cookie = getToken();
-    if (StringUtils.isBlank(cookie)) {
-      // cookie 不能为空
-      outputException(401);
-      return;
-    }
-    if (input == null || StringUtils.isBlank(input.getLoginName()) || StringUtils.isBlank(input.getLoginName())) {
-      // 输入不能为空
-      outputException(401);
-      return;
-    }
-    SessionCookieBO sessionCookieBO = sessionService.queryCookie(new SessionCookieBO(cookie));
-    if (sessionCookieBO == null) {
-      // sessionCookie 过期
-      outputException(401);
-      return;
-    }
-    if (sessionCookieBO.getTimes() >= cookieCaptchaThreshold){
-      // 需要校验验证码
-      if (StringUtils.isBlank(input.getCaptcha())){
-        // 识别输入的验证码为空
-        outputException(401);
-        return;
-      }
-      if (!input.getCaptcha().equals(sessionCookieBO.getCaptcha())){
-        // 验证码错误
-        outputException(401);
-        return;
-      }
+    @ApiOperation(value = "登录页面初始化")
+    @GetMapping(value = {"/init"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @Override
+    public void loginInitializr(@RequestHeader(value = "x-token", required = false) String token) {
+        String cookie = getToken();
+        Boolean captchaRequired = false;
+        SessionCookieBO sessionCookieBO = null;
+        // 初次访问没有携带cookie，需要生成新的cookie
+        if (StringUtils.isBlank(cookie)) {
+            sessionCookieBO = sessionService.createCookie();
+        } else {
+            sessionCookieBO = sessionService.queryCookie(new SessionCookieBO(cookie));
+        }
+        if (sessionCookieBO == null) {
+            // cookie 比较旧，得更新
+            outputException(401);
+            return;
+        }
+        cookie = sessionCookieBO.getCookie();
+        if (cookie == null) {
+            // 生成新的cookie失败
+            outputException(500);
+            return;
+        }
+        if (sessionCookieBO.getTimes() >= cookieCaptchaThreshold) {
+            captchaRequired = true;
+        }
+        // 生成新的cookie成，并设置是否需要图形验证码
+        SessionTokenOutput loginCookieOutput = new SessionTokenOutput();
+        loginCookieOutput.setCookie(cookie);
+        loginCookieOutput.setExpires(cookieExpiresSeconds);
+        loginCookieOutput.setCaptchaRequired(captchaRequired);
+        // TODO 登录方式列表
+        outputData(loginCookieOutput);
     }
 
-    AdminAccountBO sessionByNameAndPwd = sessionService
-        .createSessionByNameAndPwd(input.getLoginName(), input.getLoginPwd());
-    if (sessionByNameAndPwd == null) {
-      // 登录失败，更新错误登录次数
-      sessionCookieBO = sessionService.updateCookieTimes(new SessionCookieBO(cookie));
-      if (sessionCookieBO.getTimes() >= cookieCaptchaThreshold){
+    @ApiOperation(value = "登录")
+    @PutMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @Override
+    public void loginByNameAndPwd(LoginInput input) {
+        String cookie = getToken();
+        if (StringUtils.isBlank(cookie)) {
+            // cookie 不能为空
+            outputException(401);
+            return;
+        }
+        if (input == null || StringUtils.isBlank(input.getLoginName()) || StringUtils
+            .isBlank(input.getLoginName())) {
+            // 输入不能为空
+            outputException(401);
+            return;
+        }
+        SessionCookieBO sessionCookieBO = sessionService.queryCookie(new SessionCookieBO(cookie));
+        if (sessionCookieBO == null) {
+            // sessionCookie 过期
+            outputException(401);
+            return;
+        }
+        if (sessionCookieBO.getTimes() >= cookieCaptchaThreshold) {
+            // 需要校验验证码
+            if (StringUtils.isBlank(input.getCaptcha())) {
+                // 识别输入的验证码为空
+                outputException(401);
+                return;
+            }
+            if (!input.getCaptcha().equals(sessionCookieBO.getCaptcha())) {
+                // 验证码错误
+                outputException(401);
+                return;
+            }
+        }
 
-      }
-      outputException(401);
-      return;
-    }
-    sessionService.deleteCookie(new SessionCookieBO(cookie));
-    // TODO 返回session信息
-  }
+        AdminAccountBO accountByNameAndPwd = adminAccountService
+            .queryByNameAndPwd(input.getLoginName(), input.getLoginPwd());
+        if (accountByNameAndPwd == null) {
+            // 登录失败，更新错误登录次数
+            sessionCookieBO = sessionService.updateCookieTimes(new SessionCookieBO(cookie));
+            if (sessionCookieBO.getTimes() >= cookieCaptchaThreshold) {
+                outputException(401, new LoginFailOutput(FailType.CaptchaISNull));
+            } else {
+                outputException(401, new LoginFailOutput(FailType.ParamsISError));
+            }
+            return;
+        }
+        sessionService.deleteCookie(new SessionCookieBO(cookie));
+        // 生成session信息
+        AdminUserEntity adminUserEntity = adminUserService.queryById(accountByNameAndPwd.getUid());
+        if (adminUserEntity == null) {
+            outputException(500);
+            return;
+        }
 
-  @ApiOperation(value = "获取验证码")
-  @GetMapping(value = {"/captcha"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  @Override
-  public void loginCaptchaRefresh() {
-    String cookie = getToken();
-    if (StringUtils.isBlank(cookie)) {
-      // 参数不合规
-      outputException(401);
-      return;
-    }
-    SessionCookieBO sessionCookieBO = sessionService.queryCookie(new SessionCookieBO(cookie));
-    if (sessionCookieBO == null) {
-      // cookie 过期
-      outputException(401);
-      return;
-    }
-    if (sessionCookieBO.getTimes() < cookieCaptchaThreshold){
-      // 无需验证码
-      outputException(401);
-      return;
-    }
-    SessionCaptchaBO sessionCaptchaBO = sessionService.createCaptcha(sessionCookieBO);
-    if (sessionCaptchaBO == null) {
-      outputException(500);
-      return;
-    }
-    SessionCaptchaOutput sessionCaptchaOutput = new SessionCaptchaOutput();
-    BeanUtils.copyProperties(sessionCaptchaBO,sessionCaptchaOutput);
-    outputData(sessionCaptchaOutput);
-  }
+        SessionBO sessionBO = new SessionBO(adminUserEntity.getId(), adminUserEntity.getName(),
+            accountByNameAndPwd.getId(), accountByNameAndPwd.getLoginName(),
+            System.currentTimeMillis());
+        String token = RPCToken.generateToken(sessionBO, sessionSecret);
+        sessionService.createSession(token,sessionBO);
 
-  @ApiOperation(value = "信息查询")
-  @GetMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  @Override
-  public void querySessionInfo() {
+        outputData(new LoginOutput(sessionBO.getUid(),token));
+    }
+
+    @ApiOperation(value = "获取验证码")
+    @GetMapping(value = {"/captcha"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @Override
+    public void loginCaptchaRefresh() {
+        String cookie = getToken();
+        if (StringUtils.isBlank(cookie)) {
+            // 参数不合规
+            outputException(401);
+            return;
+        }
+        SessionCookieBO sessionCookieBO = sessionService.queryCookie(new SessionCookieBO(cookie));
+        if (sessionCookieBO == null) {
+            // cookie 过期
+            outputException(401);
+            return;
+        }
+        if (sessionCookieBO.getTimes() < cookieCaptchaThreshold) {
+            // 无需验证码
+            outputException(401);
+            return;
+        }
+        SessionCaptchaBO sessionCaptchaBO = sessionService.createCaptcha(sessionCookieBO);
+        if (sessionCaptchaBO == null) {
+            outputException(500);
+            return;
+        }
+        SessionCaptchaOutput sessionCaptchaOutput = new SessionCaptchaOutput();
+        BeanUtils.copyProperties(sessionCaptchaBO, sessionCaptchaOutput);
+        outputData(sessionCaptchaOutput);
+    }
+
+    @ApiOperation(value = "信息查询")
+    @GetMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @Override
+    public void querySessionInfo() {
 //    SessionBO session = sessionService.getSession(getUid());
 //    if (session == null) {
 //      super.outputException(401);
@@ -194,12 +218,12 @@ public class SessionController extends AdminController implements SessionApi {
 //      content.put("name", "Super Admin");
 //      super.outputData(content);
 //    }
-  }
+    }
 
-  @ApiOperation(value = "退出")
-  @DeleteMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  @Override
-  public void logout() {
-    sessionService.deleteSession(getUid());
-  }
+    @ApiOperation(value = "退出")
+    @DeleteMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @Override
+    public void logout() {
+        sessionService.deleteSession(getUid());
+    }
 }

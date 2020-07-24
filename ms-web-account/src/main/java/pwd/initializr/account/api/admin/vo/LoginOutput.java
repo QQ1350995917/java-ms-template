@@ -28,11 +28,13 @@ import lombok.ToString;
 @ApiModel(value = "loginOutput", description = "管理员登录响应参数")
 public class LoginOutput {
 
-  @ApiModelProperty(name = "uid", value = "登录ID", required = true, example = "123456")
+  @ApiModelProperty(name = "uid", value = "登录ID", required = true, example = "0")
   @NotNull(message = "0")
   private Long uid;
 
-  @ApiModelProperty(name = "cookie", value = "登录令牌", required = true, example = "DingPengwei")
+  @ApiModelProperty(name = "token", value = "登录令牌", required = true, example = "token")
   @NotNull(message = "0")
   private String token;
+
+
 }

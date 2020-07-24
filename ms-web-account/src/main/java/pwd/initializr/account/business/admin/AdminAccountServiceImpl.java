@@ -23,6 +23,33 @@ public class AdminAccountServiceImpl implements AdminAccountService {
   @Resource
   private AdminAccountDao adminAccountDao;
 
+  @Override
+  public AdminAccountBO queryByNameAndPwd(String loginName, String loginPwd) {
+    Assert.notNull(loginName, "Login name should not be empty");
+    Assert.notNull(loginName, "Login password should not be empty");
+    String encrypt = null;
+    try {
+      encrypt = Cryptographer.encrypt(loginPwd, loginName);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    AdminAccountEntity adminAccountEntity = adminAccountDao
+        .queryByLoginNameAndPwd(loginName, encrypt);
+    if (adminAccountEntity == null) {
+      return null;
+    }
+    if (adminAccountEntity.getEnable() == EntityEnable.ENABLE.getNumber()) {
+      // TODO:存放session信息和在线用户信息
+    }
+    AdminAccountBO adminAccountBO = new AdminAccountBO();
+    BeanUtils.copyProperties(adminAccountEntity, adminAccountBO);
+    return adminAccountBO;
+  }
+
+  @Override
+  public AdminAccountBO queryByPhoneNumberAndSmsCode(String phoneNumber, String smsCode) {
+    return null;
+  }
 
   /**
    * 通过主键删除数据

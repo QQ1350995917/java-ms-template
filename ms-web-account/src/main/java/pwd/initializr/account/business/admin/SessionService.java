@@ -27,25 +27,13 @@ public interface SessionService {
      * <p>5：返回账号对象</p>
      * date 2020-07-21 22:14
      *
-     * @param loginName 登录名
-     * @param loginPwd 登录密码
+     * @param token token字符串
+     * @param sessionBO sessionBo对象
      * @return pwd.initializr.account.business.admin.bo.AdminAccountBO
      * @author DingPengwei[www.dingpengwei@foxmail.com]
      * @since DistributionVersion
      */
-    AdminAccountBO createSessionByNameAndPwd(String loginName, String loginPwd);
-
-    /**
-     * <h2>TODO session创建接口：管理员通过手机号和短信验证码登录</h2>
-     * date 2020-07-22 16:28
-     *
-     * @param phoneNumber 手机号码
-     * @param smsCode 短信验证码
-     * @return pwd.initializr.account.business.admin.bo.AdminAccountBO
-     * @author DingPengwei[www.dingpengwei@foxmail.com]
-     * @since DistributionVersion
-     */
-    AdminAccountBO createSessionByPhoneNumberAndSmsCode(String phoneNumber, String smsCode);
+    void createSession(String token,SessionBO sessionBO);
 
     /**
      * <h2>cookie删除接口，根据cookie删除redis中的cookie信息</h2>
@@ -117,7 +105,7 @@ public interface SessionService {
      * @author DingPengwei[www.dingpengwei@foxmail.com]
      * @since DistributionVersion
      */
-    SessionBO querySession(Long adminUserId);
+    SessionBO querySession(String token,Long uid);
 
     /**
      * <h2>session更新接口，根据用户ID更新session信息</h2>

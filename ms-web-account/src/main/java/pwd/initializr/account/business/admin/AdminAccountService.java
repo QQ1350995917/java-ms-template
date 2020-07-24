@@ -14,6 +14,37 @@ import pwd.initializr.account.persistence.entity.AdminAccountEntity;
 public interface AdminAccountService {
 
   /**
+   * <h2>session创建接口：管理员通过账号密码登录</h2>
+   * <p>1：使用既定的加密方式对密码进行加密</p>
+   * <p>2：使用登录名和加密的密码进行查找</p>
+   * <p>3：找不到对应的账号则抛出异常</p>
+   * <p>4：判断对应的账号的可用状态，可用则生成响应的session和个人信息保存在redis，不可用则跳过</p>
+   * <p>5：返回账号对象</p>
+   * date 2020-07-21 22:14
+   *
+   * @param loginName 登录名
+   * @param loginPwd 登录密码
+   * @return pwd.initializr.account.business.admin.bo.AdminAccountBO
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  AdminAccountBO queryByNameAndPwd(String loginName, String loginPwd);
+
+
+  /**
+   * <h2>TODO session创建接口：管理员通过手机号和短信验证码登录</h2>
+   * date 2020-07-22 16:28
+   *
+   * @param phoneNumber 手机号码
+   * @param smsCode 短信验证码
+   * @return pwd.initializr.account.business.admin.bo.AdminAccountBO
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  AdminAccountBO queryByPhoneNumberAndSmsCode(String phoneNumber, String smsCode);
+
+
+  /**
    * 通过主键删除数据
    *
    * @param id 主键

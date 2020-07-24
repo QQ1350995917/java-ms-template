@@ -23,7 +23,8 @@ import pwd.initializr.account.rpc.RPCSession;
 @ToString
 public class SessionBO extends RPCSession {
 
-  public SessionBO(Long id, String loginName, String phoneNumber) {
-    super(id, loginName, phoneNumber);
+  public SessionBO(Long uid, String uName, Long accountId, String accountName,
+      Long timestamp) {
+    super(uid, uName, accountId, accountName, timestamp);
   }
 }

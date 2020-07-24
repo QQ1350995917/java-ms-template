@@ -48,6 +48,8 @@ public class SessionServiceImpl implements SessionService {
     private String cookieSalt;
     @Value("${account.admin.cookie.redis.key.prefix}")
     private String cookieRedisKeyPrefix;
+    @Value("${account.admin.session.redis.key.prefix}")
+    private String sessionRedisKeyPrefix;
 
     @Autowired
     private RedisClient redisClient;
@@ -57,31 +59,9 @@ public class SessionServiceImpl implements SessionService {
 
 
     @Override
-    public AdminAccountBO createSessionByNameAndPwd(String loginName, String loginPwd) {
-        Assert.notNull(loginName, "Login name should not be empty");
-        Assert.notNull(loginName, "Login password should not be empty");
-        String encrypt = null;
-        try {
-            encrypt = Cryptographer.encrypt(loginPwd, loginName);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        AdminAccountEntity adminAccountEntity = adminAccountDao
-            .queryByLoginNameAndPwd(loginName, encrypt);
-        if (adminAccountEntity == null) {
-         return null;
-        }
-        if (adminAccountEntity.getEnable() == EntityEnable.ENABLE.getNumber()) {
-            // TODO:存放session信息和在线用户信息
-        }
-        AdminAccountBO adminAccountBO = new AdminAccountBO();
-        BeanUtils.copyProperties(adminAccountEntity, adminAccountBO);
-        return adminAccountBO;
-    }
-
-    @Override
-    public AdminAccountBO createSessionByPhoneNumberAndSmsCode(String phoneNumber, String smsCode) {
-        return null;
+    public void createSession(String token,SessionBO sessionBO) {
+        String sessionKeyInRedis = getSessionKeyInRedis(token, sessionBO.getUid());
+        redisClient.set(sessionKeyInRedis,JSON.toJSONString(sessionBO));
     }
 
     @Override
@@ -165,8 +145,8 @@ public class SessionServiceImpl implements SessionService {
     }
 
     @Override
-    public SessionBO querySession(Long adminUserId) {
-        String key = StringUtils.join(new String[]{SESSION_PREFIX, adminUserId.toString()});
+    public SessionBO querySession(String token,Long uid) {
+        String key = getSessionKeyInRedis(token,uid);
         String session = redisClient.get(key);
         return JSON.parseObject(session, SessionBO.class);
     }
@@ -200,5 +180,9 @@ public class SessionServiceImpl implements SessionService {
 
     private String getCookieKeyInRedis(String cookie) {
         return StringUtils.join(new String[]{cookieRedisKeyPrefix, cookie}, ":");
+    }
+
+    private String getSessionKeyInRedis(String session,Long uid) {
+        return StringUtils.join(new String[]{cookieRedisKeyPrefix,uid + "", session}, ":");
     }
 }
