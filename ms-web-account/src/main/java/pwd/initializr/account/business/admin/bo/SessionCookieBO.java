@@ -34,7 +34,21 @@ public class SessionCookieBO {
      */
     private Integer times;
 
+    /**
+     * 期望验证码值
+     */
+    private String captcha;
+
+
     public SessionCookieBO(String cookie) {
         this.cookie = cookie;
     }
+
+
+    public SessionCookieBO(String cookie,Integer times) {
+        this.cookie = cookie;
+        this.times = times;
+    }
+
+
 }

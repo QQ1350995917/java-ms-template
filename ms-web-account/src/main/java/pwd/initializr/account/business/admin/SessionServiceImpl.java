@@ -103,7 +103,6 @@ public class SessionServiceImpl implements SessionService {
     public Boolean deleteSession(Long adminUserId) {
         String key = StringUtils.join(new String[]{SESSION_PREFIX, adminUserId.toString()});
         return redisClient.del(key) == 1;
-
     }
 
     @Override
@@ -122,7 +121,7 @@ public class SessionServiceImpl implements SessionService {
             // TODO 不应该吃掉异常
             e.printStackTrace();
         }
-        String encode = new BASE64Encoder().encode(byteArrayOutputStream.toByteArray());
+        String encode = new BASE64Encoder().encode(byteArrayOutputStream.toByteArray()).replaceAll("\r|\n", "");;
         SessionCaptchaBO sessionCaptchaBO = new SessionCaptchaBO();
         sessionCaptchaBO.setBase64(encode);
         return sessionCaptchaBO;
@@ -146,12 +145,6 @@ public class SessionServiceImpl implements SessionService {
     }
 
     @Override
-    public SessionCaptchaBO queryCaptcha(SessionCookieBO sessionCookieBO,
-        SessionCaptchaBO sessionCaptchaBO) {
-        return null;
-    }
-
-    @Override
     public SessionCookieBO queryCookie(SessionCookieBO sessionCookieBO) {
         Assert.notNull(sessionCookieBO, "sessionCookieBO should not be null");
         Assert.notNull(sessionCookieBO.getCookie(), "sessionCookieBO.cookie should not be empty");
@@ -163,8 +156,9 @@ public class SessionServiceImpl implements SessionService {
             e.printStackTrace();
         }
         String timesOfCookie = redisClient.hget(getCookieKeyInRedis(clearTextCookie), "times");
+        String captchaOfCookie = redisClient.hget(getCookieKeyInRedis(clearTextCookie), "captcha");
         if (timesOfCookie != null) {
-            return new SessionCookieBO(clearTextCookie, Integer.parseInt(timesOfCookie));
+            return new SessionCookieBO(clearTextCookie, Integer.parseInt(timesOfCookie),captchaOfCookie);
         } else {
             return null;
         }
@@ -188,7 +182,7 @@ public class SessionServiceImpl implements SessionService {
     }
 
     @Override
-    public SessionCookieBO updateCookie(SessionCookieBO sessionCookieBO) {
+    public SessionCookieBO updateCookieTimes(SessionCookieBO sessionCookieBO) {
         String clearTextCookie = null;
         try {
             clearTextCookie = Cryptographer.decrypt(sessionCookieBO.getCookie(), cookieSalt);

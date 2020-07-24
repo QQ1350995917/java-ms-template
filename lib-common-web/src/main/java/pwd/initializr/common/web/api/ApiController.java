@@ -103,6 +103,12 @@ public class ApiController {
     this.finalOutput(JSON.toJSONString(objectOutput));
   }
 
+  public <T> void outputException(Meta meta, T t) {
+    Output<Object> objectOutput = new Output<>(meta, t);
+    this.finalOutput(JSON.toJSONString(objectOutput));
+  }
+
+
   public void outputException(int code) {
     String message = ApiProperties.apiBundles.get(getLocal()).getString(code + "");
     Meta meta = new Meta(code, message);

@@ -25,7 +25,32 @@ import lombok.ToString;
 @ToString
 public class RPCSession implements Serializable {
 
+  /**
+   * 用户ID
+   */
+  private Long uid;
+  /**
+   * 用户名
+   */
+  private String uName;
+
+  /**
+   * 登录的账号ID
+   */
+  private Long accountId;
+  /**
+   * 登录账号名
+   */
+  private String accountName;
+  /**
+   * session 创建的时间戳
+   */
+  private Long timestamp;
+
+  @Deprecated
   private Long id;
+  @Deprecated
   private String loginName;
+  @Deprecated
   private String phoneNumber;
 }

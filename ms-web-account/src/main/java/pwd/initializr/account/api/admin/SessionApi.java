@@ -1,5 +1,6 @@
 package pwd.initializr.account.api.admin;
 
+import org.springframework.web.bind.annotation.RequestHeader;
 import pwd.initializr.account.api.admin.vo.LoginInput;
 
 /**
@@ -26,7 +27,7 @@ public interface SessionApi {
      * @author DingPengwei[www.dingpengwei@foxmail.com]
      * @since DistributionVersion
      */
-    void loginInitializr();
+    void loginInitializr(String token);
 
     /**
      * <h2>用户账号登录接口</h2>

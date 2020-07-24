@@ -97,20 +97,6 @@ public interface SessionService {
     SessionCookieBO createCookie();
 
     /**
-     * <h2>图形验证码校验接口：管理员登录识别的图验证码校验</h2>
-     * <p>1：校验cookie对应的验证码识别结果是否正确</p>
-     * date 2020-07-22 16:12
-     *
-     * @param sessionCookieBO 预登录生成的cookie对象
-     * @param sessionCaptchaBO 登录识别后的验证码对象
-     * @return pwd.initializr.account.business.admin.bo.SessionCaptchaBO
-     * @author DingPengwei[www.dingpengwei@foxmail.com]
-     * @since DistributionVersion
-     */
-    SessionCaptchaBO queryCaptcha(SessionCookieBO sessionCookieBO,
-        SessionCaptchaBO sessionCaptchaBO);
-
-    /**
      * <h2>cookie查询接口，管理员尝试登录次数</h2>
      * date 2020-07-22 23:42
      *
@@ -154,7 +140,7 @@ public interface SessionService {
      * @author DingPengwei[www.dingpengwei@foxmail.com]
      * @since DistributionVersion
      */
-    SessionCookieBO updateCookie(SessionCookieBO sessionCookieBO);
+    SessionCookieBO updateCookieTimes(SessionCookieBO sessionCookieBO);
 
 
 

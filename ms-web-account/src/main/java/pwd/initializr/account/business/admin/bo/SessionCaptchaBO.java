@@ -25,11 +25,6 @@ import lombok.ToString;
 @ToString
 public class SessionCaptchaBO {
     /**
-     * 图形验证码图片的地址
-     */
-    private String url;
-
-    /**
      * 图形验证码的base64编码
      */
     private String base64;
