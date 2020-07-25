@@ -1,6 +1,7 @@
 package pwd.initializr.account.business.admin;
 
 import java.util.List;
+import pwd.initializr.account.business.admin.bo.AdminUserBO;
 import pwd.initializr.account.persistence.entity.AdminUserEntity;
 
 /**
@@ -22,10 +23,10 @@ public interface AdminUserService {
   /**
    * 新增数据
    *
-   * @param adminUser 实例对象
+   * @param adminUserBO 实例对象
    * @return 实例对象
    */
-  AdminUserEntity insert(AdminUserEntity adminUser);
+  AdminUserBO insert(AdminUserBO adminUserBO);
 
   /**
    * 查询多条数据

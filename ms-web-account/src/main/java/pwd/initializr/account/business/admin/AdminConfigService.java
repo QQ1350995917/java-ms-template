@@ -1,6 +1,7 @@
 package pwd.initializr.account.business.admin;
 
 import java.util.List;
+import pwd.initializr.account.business.admin.bo.AdminConfigBO;
 import pwd.initializr.account.persistence.entity.AdminConfigEntity;
 
 /**
@@ -22,10 +23,10 @@ public interface AdminConfigService {
   /**
    * 新增数据
    *
-   * @param adminConfig 实例对象
+   * @param adminConfigBO 实例对象
    * @return 实例对象
    */
-  AdminConfigEntity insert(AdminConfigEntity adminConfig);
+  AdminConfigBO insert(AdminConfigBO adminConfigBO);
 
   /**
    * 查询多条数据
@@ -34,7 +35,7 @@ public interface AdminConfigService {
    * @param limit 查询条数
    * @return 对象列表
    */
-  List<AdminConfigEntity> queryAllByLimit(int offset, int limit);
+  List<AdminConfigBO> queryAllByLimit(int offset, int limit);
 
   /**
    * 通过ID查询单条数据
@@ -42,7 +43,7 @@ public interface AdminConfigService {
    * @param id 主键
    * @return 实例对象
    */
-  AdminConfigEntity queryById(Long id);
+  AdminConfigBO queryById(Long id);
 
   /**
    * <h2>通过业务可以查询单挑数据</h2>
@@ -53,14 +54,14 @@ public interface AdminConfigService {
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  AdminConfigEntity queryByKey(String key);
+  AdminConfigBO queryByKey(String key);
 
   /**
    * 修改数据
    *
-   * @param adminConfig 实例对象
+   * @param adminConfigBO 实例对象
    * @return 实例对象
    */
-  AdminConfigEntity update(AdminConfigEntity adminConfig);
+  AdminConfigBO update(AdminConfigBO adminConfigBO);
 
 }

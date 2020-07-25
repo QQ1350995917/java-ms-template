@@ -21,13 +21,13 @@ public class RPCToken {
 
   public static String generateToken(RPCSession user, String secret) {
     String realSecret = getRealSecret(user, secret);
-    String token = JWT.create().withAudience(String.valueOf(user.getId()))
+    String token = JWT.create().withAudience(String.valueOf(user.getUid()))
         .sign(Algorithm.HMAC256(realSecret));
     return token;
   }
 
   private static String getRealSecret(RPCSession user, String secret) {
-    return StringUtils.join(new String[]{secret, "-", user.getId().toString()});
+    return StringUtils.join(new String[]{secret, "-", user.getUid().toString()});
   }
 
   public static void verifyToken(RPCSession user, String token, String secret) {

@@ -1,16 +1,16 @@
 package pwd.initializr.account;
 
-import java.util.Date;
 import javax.annotation.PostConstruct;
-import javax.swing.text.html.parser.Entity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import pwd.initializr.account.business.admin.AdminAccountService;
 import pwd.initializr.account.business.admin.AdminConfigService;
 import pwd.initializr.account.business.admin.AdminUserService;
-import pwd.initializr.account.persistence.entity.AdminConfigEntity;
-import pwd.initializr.account.persistence.entity.AdminUserEntity;
+import pwd.initializr.account.business.admin.bo.AdminAccountBO;
+import pwd.initializr.account.business.admin.bo.AdminConfigBO;
+import pwd.initializr.account.business.admin.bo.AdminUserBO;
 import pwd.initializr.common.web.persistence.entity.EntityDel;
 import pwd.initializr.common.web.persistence.entity.EntityEnable;
 
@@ -33,32 +33,44 @@ public class AccountApplicationInitializr {
 
     @Autowired
     private AdminConfigService adminConfigService;
-
     @Autowired
     private AdminUserService adminUserService;
+    @Autowired
+    private AdminAccountService adminAccountService;
 
     @PostConstruct
-    @Transactional
+    @Transactional(rollbackFor = RuntimeException.class)
     public void initializr() {
-        AdminConfigEntity adminConfigEntity = adminConfigService.queryByKey(INITIALIZED_FLAG);
-        if (adminConfigEntity == null || "false".equals(adminConfigEntity.getValue())) {
+        AdminConfigBO adminConfigBO = adminConfigService.queryByKey(INITIALIZED_FLAG);
+        if (adminConfigBO == null || "false".equals(adminConfigBO.getValue())) {
             // TODO 执行初始化（加强判断机制，防止误操作）
+
             // TODO 删除配置表 -> 新增配置表
+            adminConfigBO = new AdminConfigBO();
+            adminConfigBO.setKey(INITIALIZED_FLAG);
+            adminConfigBO.setValue("true");
+            adminConfigBO.setSummary("标识是否对系统进行业务初始化操作，二次启动以此判断是否初始化数据（true：已初始化，false：未初始化）");
+            adminConfigBO.setAble(EntityEnable.ENABLE.getNumber());
+            adminConfigBO.setDel(EntityDel.NO.getNumber());
 
-            adminConfigEntity = new AdminConfigEntity();
-            adminConfigEntity.setKey(INITIALIZED_FLAG);
-            adminConfigEntity.setValue("true");
-            adminConfigEntity.setSummary("标识是否对系统进行业务初始化操作，二次启动以此判断是否初始化数据（true：已初始化，false：未初始化）");
-            adminConfigEntity.setAble(EntityEnable.ENABLE.getNumber());
-            adminConfigEntity.setDel(EntityDel.NO.getNumber());
-            adminConfigEntity.setCreateTime(new Date());
-            adminConfigEntity.setUpdateTime(new Date());
-
-            adminConfigService.insert(adminConfigEntity);
+            adminConfigService.insert(adminConfigBO);
 
             // TODO 删除用户表 -> 新增用户表
+            AdminUserBO adminUserBO = new AdminUserBO();
+            adminUserBO.setPin("superAdmin");
+            adminUserBO.setName("superAdmin");
+            adminUserBO.setGender("1");
+            adminUserBO.setAble(EntityEnable.ENABLE.getNumber());
+            adminUserBO.setDel(EntityDel.NO.getNumber());
+            AdminUserBO adminUserBOResult = adminUserService.insert(adminUserBO);
 
-            AdminUserEntity adminUserEntity = new AdminUserEntity();
+            AdminAccountBO adminAccountBO = new AdminAccountBO();
+            adminAccountBO.setUid(adminUserBOResult.getId());
+            adminAccountBO.setLoginName("pwd");
+            adminAccountBO.setLoginPwd("pwd");
+            adminAccountBO.setEnable(EntityEnable.ENABLE.getNumber());
+            adminAccountBO.setDel(EntityDel.NO.getNumber());
+            adminAccountService.insert(adminAccountBO);
 
         }
     }

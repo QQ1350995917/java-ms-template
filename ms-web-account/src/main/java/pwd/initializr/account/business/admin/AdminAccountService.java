@@ -55,10 +55,10 @@ public interface AdminAccountService {
   /**
    * 新增数据
    *
-   * @param adminAccount 实例对象
+   * @param adminAccountBO 实例对象
    * @return 实例对象
    */
-  AdminAccountEntity insert(AdminAccountEntity adminAccount);
+  AdminAccountBO insert(AdminAccountBO adminAccountBO);
 
 
   /**

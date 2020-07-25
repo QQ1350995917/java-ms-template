@@ -1,8 +1,11 @@
 package pwd.initializr.account.business.admin;
 
+import java.util.Date;
 import java.util.List;
 import javax.annotation.Resource;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import pwd.initializr.account.business.admin.bo.AdminConfigBO;
 import pwd.initializr.account.persistence.dao.AdminConfigDao;
 import pwd.initializr.account.persistence.entity.AdminConfigEntity;
 
@@ -32,13 +35,19 @@ public class AdminConfigServiceImpl implements AdminConfigService {
   /**
    * 新增数据
    *
-   * @param adminConfig 实例对象
+   * @param adminConfigBO 实例对象
    * @return 实例对象
    */
   @Override
-  public AdminConfigEntity insert(AdminConfigEntity adminConfig) {
-    this.adminConfigDao.insert(adminConfig);
-    return adminConfig;
+  public AdminConfigBO insert(AdminConfigBO adminConfigBO) {
+    AdminConfigEntity adminConfigEntity = new AdminConfigEntity();
+    BeanUtils.copyProperties(adminConfigBO,adminConfigEntity);
+    adminConfigEntity.setCreateTime(new Date());
+    adminConfigEntity.setUpdateTime(new Date());
+    this.adminConfigDao.insert(adminConfigEntity);
+    AdminConfigBO adminConfigBOResult = new AdminConfigBO();
+    BeanUtils.copyProperties(adminConfigEntity,adminConfigBOResult);
+    return adminConfigBOResult;
   }
 
   /**
@@ -49,8 +58,17 @@ public class AdminConfigServiceImpl implements AdminConfigService {
    * @return 对象列表
    */
   @Override
-  public List<AdminConfigEntity> queryAllByLimit(int offset, int limit) {
-    return this.adminConfigDao.queryAllByLimit(offset, limit);
+  public List<AdminConfigBO> queryAllByLimit(int offset, int limit) {
+
+    List<AdminConfigEntity> adminConfigEntities = this.adminConfigDao
+        .queryAllByLimit(offset, limit);
+
+    for (AdminConfigEntity adminConfigEntity : adminConfigEntities) {
+
+
+    }
+
+    return null;
   }
 
   /**
@@ -60,24 +78,30 @@ public class AdminConfigServiceImpl implements AdminConfigService {
    * @return 实例对象
    */
   @Override
-  public AdminConfigEntity queryById(Long id) {
-    return this.adminConfigDao.queryById(id);
+  public AdminConfigBO queryById(Long id) {
+    return null;
   }
 
   @Override
-  public AdminConfigEntity queryByKey(String key) {
-    return this.adminConfigDao.queryByKey(key);
+  public AdminConfigBO queryByKey(String key) {
+    AdminConfigEntity adminConfigEntity = this.adminConfigDao.queryByKey(key);
+    if (adminConfigEntity == null) {
+      return null;
+    }
+    AdminConfigBO adminConfigBO = new AdminConfigBO();
+    BeanUtils.copyProperties(adminConfigEntity,adminConfigBO);
+    return adminConfigBO;
   }
 
   /**
    * 修改数据
    *
-   * @param adminConfig 实例对象
+   * @param adminConfigBO 实例对象
    * @return 实例对象
    */
   @Override
-  public AdminConfigEntity update(AdminConfigEntity adminConfig) {
-    this.adminConfigDao.update(adminConfig);
-    return this.queryById(adminConfig.getId());
+  public AdminConfigBO update(AdminConfigBO adminConfigBO) {
+    this.adminConfigDao.update(adminConfigBO);
+    return this.queryById(adminConfigBO.getId());
   }
 }

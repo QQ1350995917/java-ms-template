@@ -158,7 +158,7 @@ public class SessionController extends AdminController implements SessionApi {
             }
             return;
         }
-        sessionService.deleteCookie(cookie);
+
         // 生成session信息
         AdminUserEntity adminUserEntity = adminUserService.queryById(accountByNameAndPwd.getUid());
         if (adminUserEntity == null) {
@@ -171,7 +171,7 @@ public class SessionController extends AdminController implements SessionApi {
             System.currentTimeMillis());
         String token = RPCToken.generateToken(sessionBO, sessionSecret);
         sessionService.createSession(token, sessionBO);
-
+        sessionService.deleteCookie(cookie);
         outputData(new LoginOutput(sessionBO.getUid(), token));
     }
 

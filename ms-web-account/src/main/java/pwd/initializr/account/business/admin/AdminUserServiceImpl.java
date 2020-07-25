@@ -1,9 +1,12 @@
 package pwd.initializr.account.business.admin;
 
 
+import java.util.Date;
 import java.util.List;
 import javax.annotation.Resource;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import pwd.initializr.account.business.admin.bo.AdminUserBO;
 import pwd.initializr.account.persistence.dao.AdminUserDao;
 import pwd.initializr.account.persistence.entity.AdminUserEntity;
 
@@ -33,13 +36,19 @@ public class AdminUserServiceImpl implements AdminUserService {
   /**
    * 新增数据
    *
-   * @param adminUser 实例对象
+   * @param adminUserBO 实例对象
    * @return 实例对象
    */
   @Override
-  public AdminUserEntity insert(AdminUserEntity adminUser) {
-    this.adminUserDao.insert(adminUser);
-    return adminUser;
+  public AdminUserBO insert(AdminUserBO adminUserBO) {
+    AdminUserEntity adminUserEntity = new AdminUserEntity();
+    BeanUtils.copyProperties(adminUserBO,adminUserEntity);
+    adminUserEntity.setCreateTime(new Date());
+    adminUserEntity.setUpdateTime(new Date());
+    this.adminUserDao.insert(adminUserEntity);
+    AdminUserBO adminUserBOResult = new AdminUserBO();
+    BeanUtils.copyProperties(adminUserEntity,adminUserBOResult);
+    return adminUserBOResult;
   }
 
   /**

@@ -1,5 +1,6 @@
 package pwd.initializr.account.business.admin;
 
+import java.util.Date;
 import java.util.List;
 import javax.annotation.Resource;
 import org.springframework.beans.BeanUtils;
@@ -65,13 +66,21 @@ public class AdminAccountServiceImpl implements AdminAccountService {
   /**
    * 新增数据
    *
-   * @param adminAccount 实例对象
+   * @param adminAccountBO 实例对象
    * @return 实例对象
    */
   @Override
-  public AdminAccountEntity insert(AdminAccountEntity adminAccount) {
-    this.adminAccountDao.insert(adminAccount);
-    return adminAccount;
+  public AdminAccountBO insert(AdminAccountBO adminAccountBO) {
+    AdminAccountEntity adminAccountEntity = new AdminAccountEntity();
+    BeanUtils.copyProperties(adminAccountBO,adminAccountEntity);
+    adminAccountEntity.setPwdTime(new Date());
+    adminAccountEntity.setType(1);
+    adminAccountEntity.setCreateTime(new Date());
+    adminAccountEntity.setUpdateTime(new Date());
+    this.adminAccountDao.insert(adminAccountEntity);
+    AdminAccountBO adminAccountBOResult = new AdminAccountBO();
+    BeanUtils.copyProperties(adminAccountEntity,adminAccountBO);
+    return adminAccountBOResult;
   }
 
   /**

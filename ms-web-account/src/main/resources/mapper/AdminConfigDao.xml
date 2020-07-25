@@ -102,6 +102,6 @@
   <!--通过主键删除-->
   <delete id="deleteById">
         delete from initializr_account.admin_config where id = #{id}
-    </delete>
+  </delete>
 
 </mapper>
