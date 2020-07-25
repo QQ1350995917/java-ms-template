@@ -23,7 +23,8 @@ create table admin_config
 	id bigint(11) auto_increment comment '自增主键'
 		primary key,
 	`key` varchar(45) not null comment '配置key',
-	value text not null comment '配置value',
+	value text not null comment '配置value',、
+  `summary` varchar(128) COLLATE utf8_bin NOT NULL COMMENT '描述',
 	able int default '0' not null comment '可用状态：0:不可用；1:可用',
 	del int default '0' not null comment '删除状态：0:未删除；1:已删除',
 	create_time datetime not null comment '数据创建时间',
@@ -89,6 +90,7 @@ create table user_config
 		primary key,
 	`key` varchar(45) not null comment '配置key',
 	value text not null comment '配置value',
+  `summary` varchar(128) COLLATE utf8_bin NOT NULL COMMENT '描述',
 	able int default '0' not null comment '可用状态：0:不可用；1:可用',
 	del int default '0' not null comment '删除状态：0:未删除；1:已删除',
 	create_time datetime not null comment '数据创建时间',

@@ -1,5 +1,6 @@
 package pwd.initializr.account.api.admin;
 
+import com.alibaba.fastjson.JSONObject;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang.StringUtils;
@@ -10,11 +11,11 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.account.api.admin.vo.LoginFailOutput;
-import pwd.initializr.account.api.admin.vo.LoginFailOutput.FailType;
 import pwd.initializr.account.api.admin.vo.LoginInput;
 import pwd.initializr.account.api.admin.vo.LoginOutput;
 import pwd.initializr.account.api.admin.vo.SessionCaptchaOutput;
@@ -80,20 +81,20 @@ public class SessionController extends AdminController implements SessionApi {
         SessionCookieBO sessionCookieBO = null;
         // 初次访问没有携带cookie，需要生成新的cookie
         if (StringUtils.isBlank(cookie)) {
-            sessionCookieBO = sessionService.createCookie();
+            cookie = sessionService.createCookie();
+            if (cookie == null) {
+                // 生成新的cookie失败
+                outputException(500);
+                return;
+            }
+            sessionCookieBO = new SessionCookieBO(0,null);
         } else {
-            sessionCookieBO = sessionService.queryCookie(new SessionCookieBO(cookie));
-        }
-        if (sessionCookieBO == null) {
-            // cookie 比较旧，得更新
-            outputException(401);
-            return;
-        }
-        cookie = sessionCookieBO.getCookie();
-        if (cookie == null) {
-            // 生成新的cookie失败
-            outputException(500);
-            return;
+            sessionCookieBO = sessionService.queryCookie(cookie);
+            if (sessionCookieBO == null) {
+                // cookie 比较旧，得更新
+                outputException(401,LoginFailOutput.CookieISExpires);
+                return;
+            }
         }
         if (sessionCookieBO.getTimes() >= cookieCaptchaThreshold) {
             captchaRequired = true;
@@ -110,35 +111,35 @@ public class SessionController extends AdminController implements SessionApi {
     @ApiOperation(value = "登录")
     @PutMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @Override
-    public void loginByNameAndPwd(LoginInput input) {
+    public void loginByNameAndPwd(@RequestBody LoginInput input) {
         String cookie = getToken();
         if (StringUtils.isBlank(cookie)) {
             // cookie 不能为空
-            outputException(401);
+            outputException(401,LoginFailOutput.CookieISNull);
             return;
         }
         if (input == null || StringUtils.isBlank(input.getLoginName()) || StringUtils
             .isBlank(input.getLoginName())) {
             // 输入不能为空
-            outputException(401);
+            outputException(401,LoginFailOutput.ParamsISNull);
             return;
         }
-        SessionCookieBO sessionCookieBO = sessionService.queryCookie(new SessionCookieBO(cookie));
+        SessionCookieBO sessionCookieBO = sessionService.queryCookie(cookie);
         if (sessionCookieBO == null) {
             // sessionCookie 过期
-            outputException(401);
+            outputException(401,(Object) LoginFailOutput.CookieISExpires);
             return;
         }
         if (sessionCookieBO.getTimes() >= cookieCaptchaThreshold) {
             // 需要校验验证码
             if (StringUtils.isBlank(input.getCaptcha())) {
                 // 识别输入的验证码为空
-                outputException(401);
+                outputException(401,LoginFailOutput.CaptchaISNull);
                 return;
             }
             if (!input.getCaptcha().equals(sessionCookieBO.getCaptcha())) {
                 // 验证码错误
-                outputException(401);
+                outputException(401,LoginFailOutput.CaptchaISError);
                 return;
             }
         }
@@ -147,15 +148,16 @@ public class SessionController extends AdminController implements SessionApi {
             .queryByNameAndPwd(input.getLoginName(), input.getLoginPwd());
         if (accountByNameAndPwd == null) {
             // 登录失败，更新错误登录次数
-            sessionCookieBO = sessionService.updateCookieTimes(new SessionCookieBO(cookie));
+            sessionCookieBO.setTimes(sessionCookieBO.getTimes() +1);
+            sessionService.updateCookie(cookie,sessionCookieBO);
             if (sessionCookieBO.getTimes() >= cookieCaptchaThreshold) {
-                outputException(401, new LoginFailOutput(FailType.CaptchaISNull));
+                outputException(401, LoginFailOutput.CaptchaISNull);
             } else {
-                outputException(401, new LoginFailOutput(FailType.ParamsISError));
+                outputException(401, LoginFailOutput.ParamsISError);
             }
             return;
         }
-        sessionService.deleteCookie(new SessionCookieBO(cookie));
+        sessionService.deleteCookie(cookie);
         // 生成session信息
         AdminUserEntity adminUserEntity = adminUserService.queryById(accountByNameAndPwd.getUid());
         if (adminUserEntity == null) {
@@ -167,9 +169,9 @@ public class SessionController extends AdminController implements SessionApi {
             accountByNameAndPwd.getId(), accountByNameAndPwd.getLoginName(),
             System.currentTimeMillis());
         String token = RPCToken.generateToken(sessionBO, sessionSecret);
-        sessionService.createSession(token,sessionBO);
+        sessionService.createSession(token, sessionBO);
 
-        outputData(new LoginOutput(sessionBO.getUid(),token));
+        outputData(new LoginOutput(sessionBO.getUid(), token));
     }
 
     @ApiOperation(value = "获取验证码")
@@ -182,7 +184,7 @@ public class SessionController extends AdminController implements SessionApi {
             outputException(401);
             return;
         }
-        SessionCookieBO sessionCookieBO = sessionService.queryCookie(new SessionCookieBO(cookie));
+        SessionCookieBO sessionCookieBO = sessionService.queryCookie(cookie);
         if (sessionCookieBO == null) {
             // cookie 过期
             outputException(401);
@@ -193,7 +195,7 @@ public class SessionController extends AdminController implements SessionApi {
             outputException(401);
             return;
         }
-        SessionCaptchaBO sessionCaptchaBO = sessionService.createCaptcha(sessionCookieBO);
+        SessionCaptchaBO sessionCaptchaBO = sessionService.createCaptcha(cookie);
         if (sessionCaptchaBO == null) {
             outputException(500);
             return;
@@ -203,27 +205,33 @@ public class SessionController extends AdminController implements SessionApi {
         outputData(sessionCaptchaOutput);
     }
 
-    @ApiOperation(value = "信息查询")
+    @ApiOperation(value = "登录信息查询")
     @GetMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @Override
     public void querySessionInfo() {
-//    SessionBO session = sessionService.getSession(getUid());
-//    if (session == null) {
-//      super.outputException(401);
-//    } else {
-//      JSONObject content = new JSONObject();
-//      content.put("roles", new String[]{"admin"});
-//      content.put("introduction", "I am a super administrator");
-//      content.put("avatar", "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif");
-//      content.put("name", "Super Admin");
-//      super.outputData(content);
-//    }
+        SessionBO session = sessionService.querySession(getUid());
+        if (session == null) {
+            super.outputException(401);
+            return;
+        } else {
+            JSONObject content = new JSONObject();
+            content.put("roles", new String[]{"admin"});
+            content.put("introduction", "I am a super administrator");
+            content.put("avatar",
+                "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif");
+            content.put("name", "Super Admin");
+            super.outputData(content);
+        }
     }
 
     @ApiOperation(value = "退出")
     @DeleteMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @Override
     public void logout() {
-        sessionService.deleteSession(getUid());
+        if (sessionService.deleteSession(getUid())) {
+            outputData(200);
+        } else {
+            outputException(500);
+        }
     }
 }

@@ -23,8 +23,12 @@ import pwd.initializr.account.business.admin.bo.SessionCookieBO;
 @Getter
 @Setter
 @ToString
-public class SessionTokenOutput extends SessionCookieBO {
+public class SessionTokenOutput {
 
+  /**
+   * cookie
+   */
+  private String cookie;
   /**
    * 过期时间（单位秒）
    */

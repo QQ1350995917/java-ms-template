@@ -12,7 +12,7 @@ import lombok.ToString;
 /**
  * pwd.initializr.account.api.admin.vo@ms-web-initializr
  *
- * <h1>TODO what you want to do?</h1>
+ * <h1>VO数据模型：管理员登录成功响应参数</h1>
  *
  * date 2019-11-02 09:20
  *

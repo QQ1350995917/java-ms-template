@@ -9,6 +9,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
@@ -17,6 +18,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import pwd.initializr.account.business.user.SessionService;
 import pwd.initializr.common.vcode.CaptchaArithmeticCode;
 import pwd.initializr.common.vcode.CodeMessage;
 import pwd.initializr.common.vcode.CaptchaHelper;
@@ -49,8 +51,9 @@ public class AccountApplication {
   }
 
   @ApiOperation(value = "获取一个验证码")
-  @GetMapping(value = {"/vcode"}, produces = "application/json;charset=UTF-8")
+  @GetMapping(value = {"/captcha"}, produces = "application/json;charset=UTF-8")
   public void applyVCode(HttpServletRequest request, HttpServletResponse response) {
+
     response.setDateHeader("Expires", 0);
     response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
     response.addHeader("Cache-Control", "post-check=0, pre-check=0");

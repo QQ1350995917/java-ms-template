@@ -44,7 +44,7 @@ public interface SessionService {
      * @author DingPengwei[www.dingpengwei@foxmail.com]
      * @since DistributionVersion
      */
-    Boolean deleteCookie(SessionCookieBO sessionCookieBO);
+    Boolean deleteCookie(String cookie);
 
     /**
      * <h2>session删除接口，根据用户ID删除session信息，等同于退出登录</h2>
@@ -70,7 +70,7 @@ public interface SessionService {
      * @author DingPengwei[www.dingpengwei@foxmail.com]
      * @since DistributionVersion
      */
-    SessionCaptchaBO createCaptcha(SessionCookieBO sessionCookieBO);
+    SessionCaptchaBO createCaptcha(String cookie);
 
     /**
      * <h2>cookie生成接口：管理员登录前调用</h2>
@@ -82,30 +82,30 @@ public interface SessionService {
      * @author DingPengwei[www.dingpengwei@foxmail.com]
      * @since DistributionVersion
      */
-    SessionCookieBO createCookie();
+    String createCookie();
 
     /**
      * <h2>cookie查询接口，管理员尝试登录次数</h2>
      * date 2020-07-22 23:42
      *
-     * @param sessionCookieBO cookie对象
+     * @param cookie cookie
      * @return pwd.initializr.account.business.admin.bo.SessionCookieBO
      * @author DingPengwei[www.dingpengwei@foxmail.com]
      * @since DistributionVersion
      */
-    SessionCookieBO queryCookie(SessionCookieBO sessionCookieBO);
+    SessionCookieBO queryCookie(String cookie);
 
     /**
      * <h2>session查询接口，根据用户ID查询session信息</h2>
      * <p>1：在redis中查询session信息</p>
      * date 2020-07-22 16:33
      *
-     * @param adminUserId 管理员用户ID
+     * @param uid 管理员用户ID
      * @return pwd.initializr.account.business.admin.bo.SessionBO
      * @author DingPengwei[www.dingpengwei@foxmail.com]
      * @since DistributionVersion
      */
-    SessionBO querySession(String token,Long uid);
+    SessionBO querySession(Long uid);
 
     /**
      * <h2>session更新接口，根据用户ID更新session信息</h2>
@@ -128,7 +128,7 @@ public interface SessionService {
      * @author DingPengwei[www.dingpengwei@foxmail.com]
      * @since DistributionVersion
      */
-    SessionCookieBO updateCookieTimes(SessionCookieBO sessionCookieBO);
+    void updateCookie(String cookie,SessionCookieBO sessionCookieBO);
 
 
 

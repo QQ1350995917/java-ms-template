@@ -20,7 +20,7 @@ import org.springframework.util.Assert;
  */
 public class Cryptographer {
 
-  public static String decrypt(String cipherText, String salt) throws Exception {
+  public static String decrypt(String cipherText, String salt) {
     Assert.notNull(cipherText, "cipherText should not be empty");
     Assert.notNull(salt, "salt should not be empty");
 //    KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
@@ -35,7 +35,7 @@ public class Cryptographer {
     return cipherText;
   }
 
-  public static String encrypt(String clearText, String salt) throws Exception {
+  public static String encrypt(String clearText, String salt) {
     Assert.notNull(clearText, "clearText should not be empty");
     Assert.notNull(salt, "salt should not be empty");
 //    KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");

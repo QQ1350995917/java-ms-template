@@ -35,6 +35,10 @@ public class UserConfigEntity implements Serializable {
    */
   private String value;
   /**
+   * 配置简介
+   */
+  private String summary;
+  /**
    * 可用状态：0:不可用；1:可用
    */
   private Integer able;
