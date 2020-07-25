@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.account.api.admin.vo.LoginFailOutput;
+import pwd.initializr.account.api.admin.vo.LoginFailOutput.FailType;
 import pwd.initializr.account.api.admin.vo.LoginInput;
 import pwd.initializr.account.api.admin.vo.LoginOutput;
 import pwd.initializr.account.api.admin.vo.SessionCaptchaOutput;
@@ -92,7 +93,7 @@ public class SessionController extends AdminController implements SessionApi {
             sessionCookieBO = sessionService.queryCookie(cookie);
             if (sessionCookieBO == null) {
                 // cookie 比较旧，得更新
-                outputException(401,LoginFailOutput.CookieISExpires);
+                outputException(401,new LoginFailOutput(FailType.CookieISExpires));
                 return;
             }
         }
@@ -115,31 +116,31 @@ public class SessionController extends AdminController implements SessionApi {
         String cookie = getToken();
         if (StringUtils.isBlank(cookie)) {
             // cookie 不能为空
-            outputException(401,LoginFailOutput.CookieISNull);
+            outputException(401,new LoginFailOutput(FailType.CookieISNull));
             return;
         }
         if (input == null || StringUtils.isBlank(input.getLoginName()) || StringUtils
             .isBlank(input.getLoginName())) {
             // 输入不能为空
-            outputException(401,LoginFailOutput.ParamsISNull);
+            outputException(401,new LoginFailOutput(FailType.ParamsISNull));
             return;
         }
         SessionCookieBO sessionCookieBO = sessionService.queryCookie(cookie);
         if (sessionCookieBO == null) {
             // sessionCookie 过期
-            outputException(401,(Object) LoginFailOutput.CookieISExpires);
+            outputException(401,(Object) new LoginFailOutput(FailType.CookieISExpires));
             return;
         }
         if (sessionCookieBO.getTimes() >= cookieCaptchaThreshold) {
             // 需要校验验证码
             if (StringUtils.isBlank(input.getCaptcha())) {
                 // 识别输入的验证码为空
-                outputException(401,LoginFailOutput.CaptchaISNull);
+                outputException(401,new LoginFailOutput(FailType.CaptchaISNull));
                 return;
             }
             if (!input.getCaptcha().equals(sessionCookieBO.getCaptcha())) {
                 // 验证码错误
-                outputException(401,LoginFailOutput.CaptchaISError);
+                outputException(401,new LoginFailOutput(FailType.CaptchaISError));
                 return;
             }
         }
@@ -151,9 +152,9 @@ public class SessionController extends AdminController implements SessionApi {
             sessionCookieBO.setTimes(sessionCookieBO.getTimes() +1);
             sessionService.updateCookie(cookie,sessionCookieBO);
             if (sessionCookieBO.getTimes() >= cookieCaptchaThreshold) {
-                outputException(401, LoginFailOutput.CaptchaISNull);
+                outputException(401, new LoginFailOutput(FailType.CaptchaISNull));
             } else {
-                outputException(401, LoginFailOutput.ParamsISError);
+                outputException(401, new LoginFailOutput(FailType.ParamsISError));
             }
             return;
         }

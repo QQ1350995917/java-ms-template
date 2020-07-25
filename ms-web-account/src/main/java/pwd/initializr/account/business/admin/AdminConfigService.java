@@ -45,6 +45,17 @@ public interface AdminConfigService {
   AdminConfigEntity queryById(Long id);
 
   /**
+   * <h2>通过业务可以查询单挑数据</h2>
+   * date 2020-07-25 15:50
+   *
+   * @param key 唯一业务主键
+   * @return pwd.initializr.account.persistence.entity.AdminConfigEntity
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  AdminConfigEntity queryByKey(String key);
+
+  /**
    * 修改数据
    *
    * @param adminConfig 实例对象

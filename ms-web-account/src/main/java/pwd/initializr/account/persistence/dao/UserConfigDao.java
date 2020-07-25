@@ -2,6 +2,7 @@ package pwd.initializr.account.persistence.dao;
 
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import pwd.initializr.account.persistence.entity.AdminConfigEntity;
 import pwd.initializr.account.persistence.entity.UserConfigEntity;
 
 /**
@@ -52,6 +53,17 @@ public interface UserConfigDao {
    * @return 实例对象
    */
   UserConfigEntity queryById(Long id);
+
+  /**
+   * <h2>根据业务key查询单条数据</h2>
+   * date 2020-07-25 15:52
+   *
+   * @param key 业务key
+   * @return pwd.initializr.account.persistence.entity.UserConfigEntity
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  UserConfigEntity queryByKey(String key);
 
   /**
    * 修改数据

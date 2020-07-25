@@ -1,5 +1,9 @@
 package pwd.initializr.common.web.persistence.entity;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
 /**
  * pwd.initializr.common.web.persistence.entity@ms-web-initializr
  *
@@ -11,6 +15,19 @@ package pwd.initializr.common.web.persistence.entity;
  * @version 1.0.0
  * @since DistributionVersion
  */
-public enum EntityDel {
 
+@NoArgsConstructor
+@Getter
+@ToString
+public enum EntityDel {
+    NO(0, "no", "未删除"), YES(1, "yes", "已删除");
+
+    private int number;
+    private String enus;
+    private String zhcn;
+    EntityDel(int number, String enus, String zhcn) {
+        this.number = number;
+        this.enus = enus;
+        this.zhcn = zhcn;
+    }
 }

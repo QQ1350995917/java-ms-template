@@ -7,6 +7,7 @@
     <result column="id" jdbcType="INTEGER" property="id"/>
     <result column="key" jdbcType="VARCHAR" property="key"/>
     <result column="value" jdbcType="VARCHAR" property="value"/>
+    <result column="summary" jdbcType="VARCHAR" property="summary"/>
     <result column="able" jdbcType="INTEGER" property="able"/>
     <result column="del" jdbcType="INTEGER" property="del"/>
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
@@ -16,15 +17,22 @@
   <!--查询单个-->
   <select id="queryById" resultMap="AdminConfigMap">
         select
-          id, key, value, able, del, create_time, update_time
+          id, `key`, `value`,summary, able, del, create_time, update_time
         from initializr_account.admin_config
         where id = #{id}
+    </select>
+  <!--查询单个-->
+  <select id="queryByKey" resultMap="AdminConfigMap">
+        select
+          id, `key`, `value`,summary, able, del, create_time, update_time
+        from initializr_account.admin_config
+        where `key` = #{key}
     </select>
 
   <!--查询指定行数据-->
   <select id="queryAllByLimit" resultMap="AdminConfigMap">
         select
-          id, key, value, able, del, create_time, update_time
+          id, `key`, `value`,summary, able, del, create_time, update_time
         from initializr_account.admin_config
         limit #{offset}, #{limit}
     </select>
@@ -32,17 +40,17 @@
   <!--通过实体作为筛选条件查询-->
   <select id="queryAll" resultMap="AdminConfigMap">
     select
-    id, key, value, able, del, create_time, update_time
+    id, `key`, `value`,summary, able, del, create_time, update_time
     from initializr_account.admin_config
     <where>
       <if test="id != null">
         and id = #{id}
       </if>
       <if test="key != null and key != ''">
-        and key = #{key}
+        and `key` = #{key}
       </if>
       <if test="value != null and value != ''">
-        and value = #{value}
+        and `value` = #{value}
       </if>
       <if test="able != null">
         and able = #{able}
@@ -61,8 +69,8 @@
 
   <!--新增所有列-->
   <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into initializr_account.admin_config(key, value, able, del, create_time, update_time)
-        values (#{key}, #{value}, #{able}, #{del}, #{createTime}, #{updateTime})
+        insert into initializr_account.admin_config(`key`, `value`,summary, able, del, create_time, update_time)
+        values (#{key}, #{value}, #{summary}, #{able}, #{del}, #{createTime}, #{updateTime})
     </insert>
 
   <!--通过主键修改数据-->
@@ -70,10 +78,10 @@
     update initializr_account.admin_config
     <set>
       <if test="key != null and key != ''">
-        key = #{key},
+        `key` = #{key},
       </if>
       <if test="value != null and value != ''">
-        value = #{value},
+        `value` = #{value},
       </if>
       <if test="able != null">
         able = #{able},

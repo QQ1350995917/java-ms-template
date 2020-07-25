@@ -55,7 +55,7 @@ public class SessionServiceImpl implements SessionService {
     @Override
     public void createSession(String token, SessionBO sessionBO) {
         String sessionKeyInRedis = getSessionKeyInRedis(sessionBO.getUid());
-        redisClient.set(sessionKeyInRedis, JSON.toJSONString(sessionBO));
+        redisClient.setex(sessionKeyInRedis, JSON.toJSONString(sessionBO),sessionInRedisExpiresSeconds);
     }
 
     @Override

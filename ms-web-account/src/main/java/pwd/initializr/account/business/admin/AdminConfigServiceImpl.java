@@ -64,6 +64,11 @@ public class AdminConfigServiceImpl implements AdminConfigService {
     return this.adminConfigDao.queryById(id);
   }
 
+  @Override
+  public AdminConfigEntity queryByKey(String key) {
+    return this.adminConfigDao.queryByKey(key);
+  }
+
   /**
    * 修改数据
    *
