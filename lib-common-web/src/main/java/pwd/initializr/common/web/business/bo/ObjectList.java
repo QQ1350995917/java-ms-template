@@ -58,4 +58,8 @@ public class ObjectList<T> {
       return 0L;
     }
   }
+
+  private void setPages(Long pages) {
+    this.pages = pages;
+  }
 }

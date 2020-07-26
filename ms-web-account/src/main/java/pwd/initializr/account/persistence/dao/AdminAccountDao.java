@@ -4,7 +4,6 @@ package pwd.initializr.account.persistence.dao;
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Component;
 import pwd.initializr.account.persistence.entity.AdminAccountEntity;
 
 /**
@@ -17,21 +16,56 @@ import pwd.initializr.account.persistence.entity.AdminAccountEntity;
 public interface AdminAccountDao {
 
   /**
+   * <h2>通过ID启用/禁用数据</h2>
+   * date 2020-07-27 00:01
+   *
+   * @param id 主键
+   * @return java.lang.Integer
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  Integer ableById(Long id);
+
+  /**
+   * <h2>通过ID启用/禁用数据</h2>
+   * date 2020-07-27 00:01
+   *
+   * @param ids 主键集合
+   * @return java.lang.Integer
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  Integer ableByIds(List<Long> ids);
+
+  /**
+   * <h2>通过用户ID启用/禁用数据</h2>
+   * date 2020-07-27 00:06
+   *
+   * @param id 用户ID
+   * @return java.lang.Integer
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  Integer ableByUserId(Long id);
+
+  /**
+   * <h2>通过用户ID启用/禁用数据</h2>
+   * date 2020-07-27 00:06
+   *
+   * @param ids 用户ID集合
+   * @return java.lang.Integer
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  Integer ableByUserIds(List<Long> ids);
+
+  /**
    * 查询指定行数据
    *
    * @param adminAccountEntity 实例对象
    * @return 对象列表
    */
-  List<AdminAccountEntity> countAllByCondition(
-      @Param("adminAccountEntity") AdminAccountEntity adminAccountEntity);
-
-  /**
-   * 通过主键删除数据
-   *
-   * @param ids 主键
-   * @return 影响行数
-   */
-  int deleteByIds(List<Long> ids);
+  Long countAllByCondition(@Param("adminAccountEntity") AdminAccountEntity adminAccountEntity);
 
   /**
    * 通过主键删除数据
@@ -40,6 +74,28 @@ public interface AdminAccountDao {
    * @return 影响行数
    */
   int deleteById(Long id);
+
+  /**
+   * <h2>通过用户外键删除数据</h2>
+   * date 2020-07-26 23:41
+   *
+   * @param userId 用户外键集
+   * @return int
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  int deleteByUserId(Long userId);
+
+  /**
+   * <h2>通过用户外键删除数据</h2>
+   * date 2020-07-26 23:41
+   *
+   * @param userIds 用户外键集合
+   * @return int
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  int deleteByUserIds(List<Long> userIds);
 
   /**
    * 新增数据
@@ -59,7 +115,7 @@ public interface AdminAccountDao {
    */
   List<AdminAccountEntity> queryAllByCondition(
       @Param("adminAccountEntity") AdminAccountEntity adminAccountEntity,
-      @Param("offset") int offset, @Param("limit") int limit);
+      @Param("offset") Long offset, @Param("limit") Long limit);
 
   /**
    * 查询指定行数据
@@ -84,7 +140,8 @@ public interface AdminAccountDao {
    * @param loginPwd 登录密码
    * @return 实例对象
    */
-  AdminAccountEntity queryByLoginNameAndPwd(@Param("loginName") String loginName,@Param("loginPwd") String loginPwd);
+  AdminAccountEntity queryByLoginNameAndPwd(@Param("loginName") String loginName,
+      @Param("loginPwd") String loginPwd);
 
   /**
    * 修改数据

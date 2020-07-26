@@ -13,13 +13,34 @@ import pwd.initializr.account.persistence.entity.AdminUserEntity;
 public interface AdminUserDao {
 
   /**
-   * 通过实体作为筛选条件查询
+   * <h2>通过ID启用/禁用数据</h2>
+   * date 2020-07-27 00:01
+   *
+   * @param id 主键
+   * @return java.lang.Integer
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  Integer ableById(Long id);
+
+  /**
+   * <h2>通过ID启用/禁用数据</h2>
+   * date 2020-07-27 00:01
+   *
+   * @param ids 主键集合
+   * @return java.lang.Integer
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  Integer ableByIds(List<Long> ids);
+
+  /**
+   * 通过实体作为筛选条件统计数量
    *
    * @param adminUserEntity 实例对象
-   * @return 行数
+   * @return 统计数量
    */
-  List<AdminUserEntity> countAllByCondition(
-      @Param("adminUserEntity") AdminUserEntity adminUserEntity);
+  Long countAllByCondition(@Param("adminUserEntity") AdminUserEntity adminUserEntity);
 
   /**
    * 通过主键删除数据
@@ -27,15 +48,18 @@ public interface AdminUserDao {
    * @param id 主键
    * @return 影响行数
    */
-  int deleteById(Long id);
+  Integer deleteById(Long id);
 
   /**
-   * 通过ID查询单条数据
+   * <h2>通过ID删除数据</h2>
+   * date 2020-07-26 23:50
    *
-   * @param ids 主键
-   * @return 实例对象
+   * @param ids id集合
+   * @return java.lang.Integer
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
    */
-  AdminUserEntity deleteByIds(List<Long> ids);
+  Integer deleteByIds(List<Long> ids);
 
   /**
    * 新增数据
@@ -43,7 +67,7 @@ public interface AdminUserDao {
    * @param adminUserEntity 实例对象
    * @return 影响行数
    */
-  int insert(AdminUserEntity adminUserEntity);
+  Integer insert(AdminUserEntity adminUserEntity);
 
   /**
    * 通过实体作为筛选条件查询
@@ -55,7 +79,7 @@ public interface AdminUserDao {
    */
   List<AdminUserEntity> queryAllByCondition(
       @Param("adminUserEntity") AdminUserEntity adminUserEntity,
-      @Param("offset") int offset, @Param("limit") int limit);
+      @Param("offset") Long offset, @Param("limit") Long limit);
 
   /**
    * 通过ID查询单条数据
@@ -71,6 +95,6 @@ public interface AdminUserDao {
    * @param adminUserEntity 实例对象
    * @return 影响行数
    */
-  int update(AdminUserEntity adminUserEntity);
+  Integer update(AdminUserEntity adminUserEntity);
 
 }

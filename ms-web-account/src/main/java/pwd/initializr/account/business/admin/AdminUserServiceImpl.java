@@ -1,6 +1,5 @@
 package pwd.initializr.account.business.admin;
 
-
 import java.util.Date;
 import java.util.List;
 import javax.annotation.Resource;
@@ -9,6 +8,7 @@ import org.springframework.stereotype.Service;
 import pwd.initializr.account.business.admin.bo.AdminUserBO;
 import pwd.initializr.account.persistence.dao.AdminUserDao;
 import pwd.initializr.account.persistence.entity.AdminUserEntity;
+import pwd.initializr.common.web.business.bo.ObjectList;
 
 /**
  * (AdminUserEntity)表服务实现类
@@ -16,7 +16,7 @@ import pwd.initializr.account.persistence.entity.AdminUserEntity;
  * @author makejava
  * @since 2020-07-18 22:12:59
  */
-@Service("adminUserService")
+@Service("adminUserServiceImpl")
 public class AdminUserServiceImpl implements AdminUserService {
 
   @Resource
@@ -33,6 +33,11 @@ public class AdminUserServiceImpl implements AdminUserService {
     return this.adminUserDao.deleteById(id) > 0;
   }
 
+  @Override
+  public boolean deleteById(List<Long> ids) {
+    return this.adminUserDao.deleteByIds(ids) > 0;
+  }
+
   /**
    * 新增数据
    *
@@ -42,26 +47,39 @@ public class AdminUserServiceImpl implements AdminUserService {
   @Override
   public AdminUserBO insert(AdminUserBO adminUserBO) {
     AdminUserEntity adminUserEntity = new AdminUserEntity();
-    BeanUtils.copyProperties(adminUserBO,adminUserEntity);
+    BeanUtils.copyProperties(adminUserBO, adminUserEntity);
     adminUserEntity.setCreateTime(new Date());
     adminUserEntity.setUpdateTime(new Date());
     this.adminUserDao.insert(adminUserEntity);
     AdminUserBO adminUserBOResult = new AdminUserBO();
-    BeanUtils.copyProperties(adminUserEntity,adminUserBOResult);
+    BeanUtils.copyProperties(adminUserEntity, adminUserBOResult);
     return adminUserBOResult;
   }
 
-  /**
-   * 查询多条数据
-   *
-   * @param offset 查询起始位置
-   * @param limit 查询条数
-   * @return 对象列表
-   */
   @Override
-  public List<AdminUserEntity> queryAllByLimit(int offset, int limit) {
-//    return this.adminUserDao.queryAllByLimit(offset, limit);
-    return null;
+  public ObjectList<AdminUserBO> queryAllByCondition(AdminUserBO adminUserBO, Long pageIndex,
+      Long pageSize) {
+    ObjectList<AdminUserBO> result = new ObjectList<>();
+    AdminUserEntity queryCondition = new AdminUserEntity();
+    BeanUtils.copyProperties(adminUserBO, queryCondition);
+    Long total = this.adminUserDao.countAllByCondition(queryCondition);
+    if (total == null || total < 1) {
+      return result;
+    }
+    List<AdminUserEntity> adminUserEntities = this.adminUserDao
+        .queryAllByCondition(queryCondition, pageIndex * pageSize, pageSize);
+    if (adminUserEntities == null) {
+      return null;
+    }
+    adminUserEntities.forEach(adminUserEntity -> {
+      AdminUserBO resultItem = new AdminUserBO();
+      BeanUtils.copyProperties(adminUserEntity, resultItem);
+      result.getElements().add(resultItem);
+    });
+    result.setIndex(pageIndex);
+    result.setSize(pageSize);
+    result.setTotal(total);
+    return result;
   }
 
   /**
@@ -71,19 +89,24 @@ public class AdminUserServiceImpl implements AdminUserService {
    * @return 实例对象
    */
   @Override
-  public AdminUserEntity queryById(Long id) {
-    return this.adminUserDao.queryById(id);
+  public AdminUserBO queryById(Long id) {
+    AdminUserEntity adminUserEntity = this.adminUserDao.queryById(id);
+    if (adminUserEntity == null) {
+      return null;
+    }
+    AdminUserBO adminUserBO = new AdminUserBO();
+    BeanUtils.copyProperties(adminUserEntity, adminUserBO);
+    return adminUserBO;
   }
 
   /**
    * 修改数据
    *
-   * @param adminUser 实例对象
+   * @param adminUserBO 实例对象
    * @return 实例对象
    */
   @Override
-  public AdminUserEntity update(AdminUserEntity adminUser) {
-    this.adminUserDao.update(adminUser);
-    return this.queryById(adminUser.getId());
+  public Integer update(AdminUserBO adminUserBO) {
+    return this.adminUserDao.update(adminUserBO);
   }
 }

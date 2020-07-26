@@ -1,6 +1,11 @@
 package pwd.initializr.account.persistence.entity;
 
 import com.baomidou.mybatisplus.annotation.EnumValue;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
  * pwd.initializr.account.rpc@ms-web-initializr
@@ -13,6 +18,10 @@ import com.baomidou.mybatisplus.annotation.EnumValue;
  * @version 1.0.0
  * @since DistributionVersion
  */
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@ToString
 public enum AccountType {
   ByAdmin(0, "管理员开通账户"),
   ByPhoneNumber(1, "手机号码注册账户") {
@@ -30,14 +39,6 @@ public enum AccountType {
   AccountType(Integer type, String desc) {
     this.type = type;
     this.desc = desc;
-  }
-
-  public String getDesc() {
-    return desc;
-  }
-
-  public Integer getType() {
-    return type;
   }
 
   public boolean isAdmin() {

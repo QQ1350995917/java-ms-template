@@ -1,8 +1,9 @@
 package pwd.initializr.account.business.admin;
 
 import java.util.List;
+import org.springframework.stereotype.Service;
 import pwd.initializr.account.business.admin.bo.AdminUserBO;
-import pwd.initializr.account.persistence.entity.AdminUserEntity;
+import pwd.initializr.common.web.business.bo.ObjectList;
 
 /**
  * (AdminUserEntity)表服务接口
@@ -10,6 +11,7 @@ import pwd.initializr.account.persistence.entity.AdminUserEntity;
  * @author makejava
  * @since 2020-07-18 22:12:54
  */
+@Service
 public interface AdminUserService {
 
   /**
@@ -21,21 +23,39 @@ public interface AdminUserService {
   boolean deleteById(Long id);
 
   /**
-   * 新增数据
+   * <h2>通过主键删除数据</h2>
+   * date 2020-07-26 23:50
    *
-   * @param adminUserBO 实例对象
-   * @return 实例对象
+   * @return boolean
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  boolean deleteById(List<Long> ids);
+
+  /**
+   * <h2>新增数据:同时新增账号</h2>
+   * date 2020-07-26 22:34
+   *
+   * @param adminUserBO 用户实例
+   * @return pwd.initializr.account.business.admin.bo.AdminUserBO
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
    */
   AdminUserBO insert(AdminUserBO adminUserBO);
 
   /**
-   * 查询多条数据
+   * <h2>根据条件查询多条数据</h2>
+   * date 2020-07-26 21:08
    *
-   * @param offset 查询起始位置
-   * @param limit 查询条数
-   * @return 对象列表
+   * @param adminUserBO 查询条件
+   * @param pageIndex 页码
+   * @param pageSize 页面容量
+   * @return pwd.initializr.common.web.business.bo.ObjectList<pwd.initializr.account.persistence.entity.AdminUserEntity>
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
    */
-  List<AdminUserEntity> queryAllByLimit(int offset, int limit);
+  ObjectList<AdminUserBO> queryAllByCondition(AdminUserBO adminUserBO, Long pageIndex,
+      Long pageSize);
 
   /**
    * 通过ID查询单条数据
@@ -43,16 +63,15 @@ public interface AdminUserService {
    * @param id 主键
    * @return 实例对象
    */
-  AdminUserEntity queryById(Long id);
+  AdminUserBO queryById(Long id);
 
   /**
    * 修改数据
    *
-   * @param adminUser 实例对象
+   * @param adminUserBO 实例对象
    * @return 实例对象
    */
-  AdminUserEntity update(AdminUserEntity adminUser);
-
+  Integer update(AdminUserBO adminUserBO);
 
 
 }

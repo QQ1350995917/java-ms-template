@@ -3,7 +3,7 @@ package pwd.initializr.account.business.admin;
 
 import java.util.List;
 import pwd.initializr.account.business.admin.bo.AdminAccountBO;
-import pwd.initializr.account.persistence.entity.AdminAccountEntity;
+import pwd.initializr.common.web.business.bo.ObjectList;
 
 /**
  * (AdminAccountEntityEntity)表服务接口
@@ -12,6 +12,66 @@ import pwd.initializr.account.persistence.entity.AdminAccountEntity;
  * @since 2020-07-18 22:19:55
  */
 public interface AdminAccountService {
+
+  /**
+   * 通过主键删除数据
+   *
+   * @param id 主键
+   * @return 是否成功
+   */
+  boolean deleteById(Long id);
+
+  /**
+   * <h2>根据用户ID删除数据</h2>
+   * date 2020-07-26 23:31
+   *
+   * @param userId 用户ID
+   * @return boolean
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  boolean deleteByUserId(Long userId);
+
+  /**
+   * <h2>根据用户ID删除数据</h2>
+   * date 2020-07-26 23:43
+   *
+   * @param userIds 用户ID集合
+   * @return boolean
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  boolean deleteByUserId(List<Long> userIds);
+
+  /**
+   * 新增数据
+   *
+   * @param adminAccountBO 实例对象
+   * @return 实例对象
+   */
+  AdminAccountBO insert(AdminAccountBO adminAccountBO);
+
+  /**
+   * <h2>根据条件查询多条数据</h2>
+   * date 2020-07-26 21:31
+   *
+   * @param adminAccountBO 查询条件
+   * @param pageIndex 页码
+   * @param pageSize 页面容量
+   * @return @return pwd.initializr.common.web.business.bo.ObjectList<pwd.initializr.account.business.admin.bo.AdminAccountBO>
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  ObjectList<AdminAccountBO> queryAllByCondition(AdminAccountBO adminAccountBO, Long pageIndex,
+      Long pageSize);
+
+  /**
+   * 通过ID查询单条数据
+   *
+   * @param id 主键
+   * @return 实例对象
+   */
+  AdminAccountBO queryById(Long id);
 
   /**
    * <h2>session创建接口：管理员通过账号密码登录</h2>
@@ -30,7 +90,6 @@ public interface AdminAccountService {
    */
   AdminAccountBO queryByNameAndPwd(String loginName, String loginPwd);
 
-
   /**
    * <h2>TODO session创建接口：管理员通过手机号和短信验证码登录</h2>
    * date 2020-07-22 16:28
@@ -43,47 +102,12 @@ public interface AdminAccountService {
    */
   AdminAccountBO queryByPhoneNumberAndSmsCode(String phoneNumber, String smsCode);
 
-
   /**
-   * 通过主键删除数据
-   *
-   * @param id 主键
-   * @return 是否成功
-   */
-  boolean deleteById(Long id);
-
-  /**
-   * 新增数据
+   * 修改数据
    *
    * @param adminAccountBO 实例对象
    * @return 实例对象
    */
-  AdminAccountBO insert(AdminAccountBO adminAccountBO);
-
-
-  /**
-   * 查询多条数据
-   *
-   * @param offset 查询起始位置
-   * @param limit 查询条数
-   * @return 对象列表
-   */
-  List<AdminAccountEntity> queryAllByLimit(int offset, int limit);
-
-  /**
-   * 通过ID查询单条数据
-   *
-   * @param id 主键
-   * @return 实例对象
-   */
-  AdminAccountEntity queryById(Long id);
-
-  /**
-   * 修改数据
-   *
-   * @param adminAccount 实例对象
-   * @return 实例对象
-   */
-  AdminAccountEntity update(AdminAccountEntity adminAccount);
+  Integer update(AdminAccountBO adminAccountBO);
 
 }

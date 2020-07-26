@@ -9,8 +9,9 @@ import org.springframework.util.Assert;
 import pwd.initializr.account.business.admin.bo.AdminAccountBO;
 import pwd.initializr.account.persistence.dao.AdminAccountDao;
 import pwd.initializr.account.persistence.entity.AdminAccountEntity;
+import pwd.initializr.account.persistence.entity.AdminAccountType;
 import pwd.initializr.common.utils.Cryptographer;
-import pwd.initializr.common.web.persistence.entity.EntityEnable;
+import pwd.initializr.common.web.business.bo.ObjectList;
 
 /**
  * (AdminAccountEntity)表服务实现类
@@ -23,6 +24,90 @@ public class AdminAccountServiceImpl implements AdminAccountService {
 
   @Resource
   private AdminAccountDao adminAccountDao;
+
+  /**
+   * 通过主键删除数据
+   *
+   * @param id 主键
+   * @return 是否成功
+   */
+  @Override
+  public boolean deleteById(Long id) {
+    return this.adminAccountDao.deleteById(id) > 0;
+  }
+
+  @Override
+  public boolean deleteByUserId(Long userId) {
+    return this.adminAccountDao.deleteByUserId(userId) > 0;
+  }
+
+  @Override
+  public boolean deleteByUserId(List<Long> userIds) {
+    return this.adminAccountDao.deleteByUserIds(userIds) > 0;
+  }
+
+  /**
+   * 新增数据
+   *
+   * @param adminAccountBO 实例对象
+   * @return 实例对象
+   */
+  @Override
+  public AdminAccountBO insert(AdminAccountBO adminAccountBO) {
+    AdminAccountEntity adminAccountEntity = new AdminAccountEntity();
+    BeanUtils.copyProperties(adminAccountBO, adminAccountEntity);
+    adminAccountEntity.setPwdTime(new Date());
+    adminAccountEntity.setType(AdminAccountType.GRANT.getNumber());
+    adminAccountEntity.setCreateTime(new Date());
+    adminAccountEntity.setUpdateTime(new Date());
+    this.adminAccountDao.insert(adminAccountEntity);
+    AdminAccountBO adminAccountBOResult = new AdminAccountBO();
+    BeanUtils.copyProperties(adminAccountEntity, adminAccountBO);
+    return adminAccountBOResult;
+  }
+
+  @Override
+  public ObjectList<AdminAccountBO> queryAllByCondition(AdminAccountBO adminAccountBO,
+      Long pageIndex, Long pageSize) {
+    ObjectList<AdminAccountBO> result = new ObjectList<>();
+    AdminAccountEntity queryCondition = new AdminAccountEntity();
+    BeanUtils.copyProperties(adminAccountBO, queryCondition);
+    Long total = this.adminAccountDao.countAllByCondition(queryCondition);
+    if (total == null || total < 1) {
+      return result;
+    }
+    List<AdminAccountEntity> adminAccountEntities = this.adminAccountDao
+        .queryAllByCondition(queryCondition, pageIndex * pageSize, pageSize);
+    if (adminAccountEntities == null) {
+      return null;
+    }
+    adminAccountEntities.forEach(adminAccountEntity -> {
+      AdminAccountBO resultItem = new AdminAccountBO();
+      BeanUtils.copyProperties(adminAccountEntity, resultItem);
+      result.getElements().add(resultItem);
+    });
+    result.setIndex(pageIndex);
+    result.setSize(pageSize);
+    result.setTotal(total);
+    return result;
+  }
+
+  /**
+   * 通过ID查询单条数据
+   *
+   * @param id 主键
+   * @return 实例对象
+   */
+  @Override
+  public AdminAccountBO queryById(Long id) {
+    AdminAccountEntity adminAccountEntity = this.adminAccountDao.queryById(id);
+    if (adminAccountEntity == null) {
+      return null;
+    }
+    AdminAccountBO adminAccountBO = new AdminAccountBO();
+    BeanUtils.copyProperties(adminAccountEntity, adminAccountBO);
+    return adminAccountBO;
+  }
 
   @Override
   public AdminAccountBO queryByNameAndPwd(String loginName, String loginPwd) {
@@ -39,9 +124,6 @@ public class AdminAccountServiceImpl implements AdminAccountService {
     if (adminAccountEntity == null) {
       return null;
     }
-    if (adminAccountEntity.getEnable() == EntityEnable.ENABLE.getNumber()) {
-      // TODO:存放session信息和在线用户信息
-    }
     AdminAccountBO adminAccountBO = new AdminAccountBO();
     BeanUtils.copyProperties(adminAccountEntity, adminAccountBO);
     return adminAccountBO;
@@ -53,69 +135,13 @@ public class AdminAccountServiceImpl implements AdminAccountService {
   }
 
   /**
-   * 通过主键删除数据
-   *
-   * @param id 主键
-   * @return 是否成功
-   */
-  @Override
-  public boolean deleteById(Long id) {
-    return this.adminAccountDao.deleteById(id) > 0;
-  }
-
-  /**
-   * 新增数据
+   * 修改数据
    *
    * @param adminAccountBO 实例对象
    * @return 实例对象
    */
   @Override
-  public AdminAccountBO insert(AdminAccountBO adminAccountBO) {
-    AdminAccountEntity adminAccountEntity = new AdminAccountEntity();
-    BeanUtils.copyProperties(adminAccountBO,adminAccountEntity);
-    adminAccountEntity.setPwdTime(new Date());
-    adminAccountEntity.setType(1);
-    adminAccountEntity.setCreateTime(new Date());
-    adminAccountEntity.setUpdateTime(new Date());
-    this.adminAccountDao.insert(adminAccountEntity);
-    AdminAccountBO adminAccountBOResult = new AdminAccountBO();
-    BeanUtils.copyProperties(adminAccountEntity,adminAccountBO);
-    return adminAccountBOResult;
-  }
-
-  /**
-   * 查询多条数据
-   *
-   * @param offset 查询起始位置
-   * @param limit 查询条数
-   * @return 对象列表
-   */
-  @Override
-  public List<AdminAccountEntity> queryAllByLimit(int offset, int limit) {
-    //return this.adminAccountDao.queryAllByLimit(offset, limit);
-    return null;
-  }
-
-  /**
-   * 通过ID查询单条数据
-   *
-   * @param id 主键
-   * @return 实例对象
-   */
-  @Override
-  public AdminAccountEntity queryById(Long id) {
-    return this.adminAccountDao.queryById(id);
-  }
-
-  /**
-   * 修改数据
-   *
-   * @param adminAccount 实例对象
-   * @return 实例对象
-   */
-  @Override
-  public AdminAccountEntity update(AdminAccountEntity adminAccount) {
-    this.adminAccountDao.update(adminAccount);
-    return this.queryById(adminAccount.getId());
+  public Integer update(AdminAccountBO adminAccountBO) {
+    return this.adminAccountDao.update(adminAccountBO);
   }
 }

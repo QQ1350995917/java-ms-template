@@ -1,15 +1,16 @@
-package pwd.initializr.common.web.persistence.entity;
+package pwd.initializr.account.persistence.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 /**
- * pwd.initializr.common.web.persistence.entity@ms-web-initializr
+ * pwd.initializr.account.persistence.entity@ms-web-initializr
  *
- * <h1>TODO what you want to do?</h1>
+ * <h1>枚举类：账号类型</h1>
  *
- * date 2020-07-21 22:36
+ * date 2020-07-26 22:39
  *
  * @author DingPengwei[www.dingpengwei@foxmail.com]
  * @version 1.0.0
@@ -18,16 +19,15 @@ import lombok.ToString;
 @NoArgsConstructor
 @Getter
 @ToString
-public enum EntityEnable {
-  DISABLE(0, "disable", "禁用"), ENABLE(1, "enable", "启用");
+public enum AdminAccountType {
+  GRANT(1, "grant", "授权账号");
 
   private int number;
   private String enus;
   private String zhcn;
-  EntityEnable(int number, String enus, String zhcn) {
+  AdminAccountType(int number, String enus, String zhcn) {
     this.number = number;
     this.enus = enus;
     this.zhcn = zhcn;
   }
-
 }
