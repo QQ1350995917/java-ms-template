@@ -1,6 +1,7 @@
 package pwd.initializr.account.business.admin;
 
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.Resource;
 import org.springframework.beans.BeanUtils;
@@ -90,6 +91,21 @@ public class AdminAccountServiceImpl implements AdminAccountService {
     result.setSize(pageSize);
     result.setTotal(total);
     return result;
+  }
+
+  @Override
+  public List<AdminAccountBO> queryByUserId(Long userId) {
+    List<AdminAccountEntity> adminAccountEntities = this.adminAccountDao.queryAllByUid(userId);
+    if (adminAccountEntities == null) {
+      return null;
+    }
+    LinkedList<AdminAccountBO> adminAccountBOS = new LinkedList<>();
+    adminAccountEntities.forEach(adminAccountEntity -> {
+      AdminAccountBO adminAccountBO = new AdminAccountBO();
+      BeanUtils.copyProperties(adminAccountEntity,adminAccountBO);
+      adminAccountBOS.add(adminAccountBO);
+    });
+    return adminAccountBOS;
   }
 
   /**

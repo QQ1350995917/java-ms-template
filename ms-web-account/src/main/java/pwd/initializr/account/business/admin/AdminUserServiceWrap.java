@@ -24,11 +24,11 @@ public interface AdminUserServiceWrap {
    *
    * @param userId 用户ID
    * @param entityAble 禁用/启用
-   * @return boolean
+   * @return Boolean
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  boolean ableByUserId(Long userId, EntityAble entityAble);
+  Boolean ableByUserId(Long userId, EntityAble entityAble);
 
   /**
    * <h2>禁用/启用用户，同时禁用/启用其下所有账户</h2>
@@ -36,31 +36,31 @@ public interface AdminUserServiceWrap {
    *
    * @param userIds 用户ID
    * @param entityAble 禁用/启用
-   * @return boolean
+   * @return Boolean
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  boolean ableByUserId(List<Long> userIds, EntityAble entityAble);
+  Boolean ableByUserId(List<Long> userIds, EntityAble entityAble);
 
   /**
    * <h2>删除用户，同时删除其下所有账户</h2>
    * date 2020-07-26 23:24
    *
-   * @return boolean
+   * @return Boolean
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  boolean deleteByUserId(Long userId);
+  Boolean deleteByUserId(Long userId);
 
   /**
    * <h2>删除用户，同时删除其下所有账户</h2>
    * date 2020-07-26 23:49
    *
-   * @return boolean
+   * @return Boolean
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  boolean deleteByUserId(List<Long> userIds);
+  Boolean deleteByUserId(List<Long> userIds);
 
   /**
    * <h2>创建用户，同时创建账户</h2>

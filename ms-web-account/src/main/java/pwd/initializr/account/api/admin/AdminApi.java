@@ -1,13 +1,15 @@
 package pwd.initializr.account.api.admin;
 
-import pwd.initializr.account.api.admin.vo.AdminVO;
+import java.util.List;
+import pwd.initializr.account.api.admin.vo.AdminAccountInput;
+import pwd.initializr.account.api.admin.vo.AdminUserInput;
 import pwd.initializr.account.api.admin.vo.CreateAdminInput;
 import pwd.initializr.common.web.api.vo.PageInput;
 
 /**
  * pwd.initializr.account.api.admin@ms-web-initializr
  *
- * <h1>TODO what you want to do?</h1>
+ * <h1>控制层接口：管理员信息</h1>
  *
  * date 2019-10-26 8:13
  *
@@ -19,14 +21,24 @@ public interface AdminApi {
 
   void create(CreateAdminInput input);
 
-  void disable(Long id);
+  void disableUser(List<Long> ids);
 
-  void enable(Long id);
+  void enableUser(List<Long> ids);
 
-  void list(PageInput pageInput, AdminVO adminVO);
+  void disableAccount(List<Long> ids);
 
+  void enableAccount(List<Long> ids);
 
+  void delUser(List<Long> ids);
 
-  void modify(Long id, CreateAdminInput input);
+  void delAccount(List<Long> ids);
+
+  void listUser(PageInput pageInput, AdminUserInput input);
+
+  void listAccount(Long userId,AdminAccountInput input);
+
+  void updateUser(Long id, AdminUserInput input);
+
+  void updateAccount(Long id, AdminAccountInput input);
 
 }

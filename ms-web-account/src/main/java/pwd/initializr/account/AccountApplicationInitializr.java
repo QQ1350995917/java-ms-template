@@ -57,8 +57,8 @@ public class AccountApplicationInitializr {
 
             // TODO 删除用户表 -> 新增用户表
             AdminUserBO adminUserBO = new AdminUserBO();
-            adminUserBO.setPin("superAdmin");
-            adminUserBO.setName("superAdmin");
+            adminUserBO.setPin("0");
+            adminUserBO.setName("LuoGuanZhong");
             adminUserBO.setGender("1");
             adminUserBO.setAble(EntityAble.ENABLE.getNumber());
             adminUserBO.setDel(EntityDel.NO.getNumber());
@@ -66,8 +66,8 @@ public class AccountApplicationInitializr {
 
             AdminAccountBO adminAccountBO = new AdminAccountBO();
             adminAccountBO.setUid(adminUserBOResult.getId());
-            adminAccountBO.setLoginName("pwd");
-            adminAccountBO.setLoginPwd("pwd");
+            adminAccountBO.setLoginName("luoguanzhong");
+            adminAccountBO.setLoginPwd("luoguanzhong");
             adminAccountBO.setEnable(EntityAble.ENABLE.getNumber());
             adminAccountBO.setDel(EntityDel.NO.getNumber());
             adminAccountService.insert(adminAccountBO);

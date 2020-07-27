@@ -1,9 +1,14 @@
 package pwd.initializr.account.api.admin;
 
+import java.util.List;
+import pwd.initializr.account.api.admin.vo.UserAccountInput;
+import pwd.initializr.account.api.admin.vo.UserUserInput;
+import pwd.initializr.common.web.api.vo.PageInput;
+
 /**
  * pwd.initializr.account.api.admin@ms-web-initializr
  *
- * <h1>TODO what you want to do?</h1>
+ * <h1>控制层接口：用户信息</h1>
  *
  * date 2019-09-15 09:03
  *
@@ -13,11 +18,24 @@ package pwd.initializr.account.api.admin;
  */
 public interface UserApi {
 
-  void blockUser(Long id);
+    void disableUser(List<Long> ids);
 
-  void detailedUser(Long id);
+    void enableUser(List<Long> ids);
 
-  void listUser();
+    void disableAccount(List<Long> ids);
 
-  void unblockUser(Long id);
+    void enableAccount(List<Long> ids);
+
+    void delUser(List<Long> ids);
+
+    void delAccount(List<Long> ids);
+
+    void listUser(PageInput pageInput, UserUserInput input);
+
+    void listAccount(Long userId, UserAccountInput input);
+
+    void updateUser(Long id, UserUserInput input);
+
+    void updateAccount(Long id, UserAccountInput input);
+
 }

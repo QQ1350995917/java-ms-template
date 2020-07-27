@@ -43,4 +43,8 @@ public class PageOutput<T> extends PageInput {
       return 0L;
     }
   }
+
+  private void setPages(Long pages){
+    this.pages = pages;
+  }
 }

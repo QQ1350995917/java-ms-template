@@ -9,7 +9,7 @@ import lombok.ToString;
 /**
  * pwd.initializr.account.business.admin.bo@ms-web-initializr
  *
- * <h1>TODO what you want to do?</h1>
+ * <h1>服务层逻辑对象封装：管理员会话前cookie信息</h1>
  *
  * date 2020-07-22 14:46
  *

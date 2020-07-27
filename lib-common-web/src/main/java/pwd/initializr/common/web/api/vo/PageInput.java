@@ -29,11 +29,8 @@ import lombok.ToString;
 @Setter
 @ToString
 public class PageInput implements Serializable {
-
-  @ApiModelProperty(name = "orderBys", value = "排序条件", required = false, example = "update_time desc")
-  private LinkedHashSet<String> orderBys;
   @ApiModelProperty(name = "index", value = "当前页码", required = false, example = "0")
-  private Integer index = 0;
+  private Long index = 0L;
   @ApiModelProperty(name = "size", value = "当前页面容量", required = false, example = "12")
-  private Integer size = 12;
+  private Long size = 12L;
 }

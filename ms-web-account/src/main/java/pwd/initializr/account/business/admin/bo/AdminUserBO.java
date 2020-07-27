@@ -9,7 +9,7 @@ import pwd.initializr.account.persistence.entity.AdminUserEntity;
 /**
  * pwd.initializr.account.business.admin.bo@ms-web-initializr
  *
- * <h1>TODO what you want to do?</h1>
+ * <h1>服务层逻辑对象封装：管理员信息</h1>
  *
  * date 2019-11-04 18:42
  *

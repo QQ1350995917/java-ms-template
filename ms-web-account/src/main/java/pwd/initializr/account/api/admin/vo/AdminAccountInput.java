@@ -13,9 +13,9 @@ import lombok.ToString;
 /**
  * pwd.initializr.account.api.admin.vo@ms-web-initializr
  *
- * <h1>TODO what you want to do?</h1>
+ * <h1>请求参数：管理员账户参数</h1>
  *
- * date 2019-11-04 22:48
+ * date 2020-07-27 15:56
  *
  * @author DingPengwei[dingpengwei@foxmail.com]
  * @version 1.0.0
@@ -26,12 +26,12 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-@ApiModel(value = "createAdminInput", description = "管理员创建请求参数")
-public class CreateAdminInput implements Serializable {
-  @ApiModelProperty(name = "user", value = "用户信息", required = true)
-  @NotNull(message = "0")
-  private AdminUserInput user;
-  @ApiModelProperty(name = "account", value = "账号信息", required = true)
-  @NotNull(message = "0")
-  private AdminAccountInput account;
+@ApiModel(value = "adminAccountInput", description = "管理员账户参数")
+public class AdminAccountInput implements Serializable {
+    @ApiModelProperty(name = "loginName", value = "登录名称", required = true, example = "pwd")
+    @NotNull(message = "0")
+    private String loginName;
+    @ApiModelProperty(name = "loginPwd", value = "登录密码", required = true, example = "pwd")
+    @NotNull(message = "0")
+    private String loginPwd;
 }
