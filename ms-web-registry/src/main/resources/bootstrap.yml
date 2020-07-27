@@ -1,23 +1,23 @@
-spring:
-  profiles:
-    active: remote-dev
----
-spring:
-  profiles: remote-dev
-  application:
-    name: registry
-  cloud:
-    config:
-      uri: http://localhost:11220
-      label: master
-      profile: dev
----
-spring:
-  profiles: remote-prod
-  application:
-    name: registry
-  cloud:
-    config:
-      uri: http://localhost:11220
-      label: master
-      profile: prod
+#spring:
+#  profiles:
+#    active: remote-dev
+#---
+#spring:
+#  profiles: remote-dev
+#  application:
+#    name: registry
+#  cloud:
+#    config:
+#      uri: http://localhost:11220
+#      label: master
+#      profile: dev
+#---
+#spring:
+#  profiles: remote-prod
+#  application:
+#    name: registry
+#  cloud:
+#    config:
+#      uri: http://localhost:11220
+#      label: master
+#      profile: prod
