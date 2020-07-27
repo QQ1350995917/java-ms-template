@@ -25,7 +25,7 @@
     </select>
 
   <!--通过实体作为筛选条件查询-->
-  <select id="countAllByCondition" resultMap="UserAccountMap">
+  <select id="countAllByCondition" resultType="java.lang.Long">
     select count(*) from initializr_account.user_account
     <include refid="countAndQueryAllByCondition"></include>
     limit #{offset}, #{limit}

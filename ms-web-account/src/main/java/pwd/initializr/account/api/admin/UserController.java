@@ -3,7 +3,6 @@ package pwd.initializr.account.api.admin;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,22 +14,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import pwd.initializr.account.api.admin.vo.AdminAccountInput;
-import pwd.initializr.account.api.admin.vo.AdminAccountOutput;
-import pwd.initializr.account.api.admin.vo.AdminUserInput;
-import pwd.initializr.account.api.admin.vo.AdminUserOutput;
 import pwd.initializr.account.api.admin.vo.UserAccountInput;
 import pwd.initializr.account.api.admin.vo.UserUserInput;
-import pwd.initializr.account.business.admin.UserService;
-import pwd.initializr.account.business.admin.bo.AdminAccountBO;
-import pwd.initializr.account.business.admin.bo.AdminUserBO;
 import pwd.initializr.account.business.user.UserAccountService;
 import pwd.initializr.account.business.user.UserUserService;
 import pwd.initializr.common.web.api.admin.AdminController;
 import pwd.initializr.common.web.api.vo.PageInput;
-import pwd.initializr.common.web.api.vo.PageOutput;
-import pwd.initializr.common.web.business.bo.ObjectList;
-import pwd.initializr.common.web.persistence.entity.EntityAble;
 
 /**
  * pwd.initializr.account.api.admin@ms-web-initializr
@@ -46,7 +35,7 @@ import pwd.initializr.common.web.persistence.entity.EntityAble;
 @Api(
     tags = "系统用户管理",
     value = "userManageApi",
-    description = "[用户列表，用户详情，禁用用户，启用用户]"
+    description = "[用户/账户列表，用户/账户详情，用户/账户禁用/启用，用户/账户删除]"
 )
 @RestController(value = "userManageApi")
 @RequestMapping(value = "/api/admin/user")

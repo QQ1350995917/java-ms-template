@@ -13,13 +13,15 @@ import pwd.initializr.account.persistence.entity.UserAccountEntity;
 public interface UserAccountDao {
 
   /**
-   * 通过实体作为筛选条件查询
+   * <h2>通过实体作为筛选条件统计</h2>
+   * date 2020-07-27 22:07
    *
    * @param userAccountEntity 实例对象
-   * @return 对象列表
+   * @return java.lang.Long
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
    */
-  List<UserAccountEntity> countAllByCondition(
-      @Param("userAccountEntity") UserAccountEntity userAccountEntity);
+  Long countAllByCondition(@Param("userAccountEntity") UserAccountEntity userAccountEntity);
 
   /**
    * 通过主键删除数据

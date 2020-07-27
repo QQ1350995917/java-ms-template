@@ -43,9 +43,9 @@ import pwd.initializr.common.web.persistence.entity.EntityAble;
  * @since DistributionVersion
  */
 @Api(
-    tags = "管理员管理",
+    tags = "人员管理",
     value = "adminManageApi",
-    description = "[创建管理员，管理员列表，管理员启用，管理员禁用]"
+    description = "[创建管理员/账号，人员/账号列表，人员/账号启/禁用，人员/账号删除]"
 )
 @RestController(value = "admin")
 @RequestMapping(value = "/api/admin/admin")

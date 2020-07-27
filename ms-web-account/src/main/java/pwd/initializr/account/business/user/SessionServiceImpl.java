@@ -1,17 +1,14 @@
 package pwd.initializr.account.business.user;
 
-import com.alibaba.fastjson.JSON;
-import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import pwd.initializr.account.business.user.bo.SessionBO;
-import pwd.initializr.common.mw.redis.RedisClient;
+import pwd.initializr.account.business.user.bo.SessionCaptchaBO;
+import pwd.initializr.account.business.user.bo.SessionCookieBO;
 
 /**
  * pwd.initializr.account.business.user@ms-web-initializr
  *
- * <h1>TODO what you want to do?</h1>
+ * <h1>服务层逻辑：用户登录系统</h1>
  *
  * date 2019-11-04 15:43
  *
@@ -22,32 +19,48 @@ import pwd.initializr.common.mw.redis.RedisClient;
 @Service
 public class SessionServiceImpl implements SessionService {
 
-  @Value("${account_login_prefix:sso_identify_}")
-  private String SESSION_PREFIX;
-
-  @Autowired
-  private RedisClient redisClient;
-
   @Override
-  public Long delSession(Long userId) {
-    String key = StringUtils.join(new String[]{SESSION_PREFIX, userId.toString()});
-    return redisClient.del(key);
+  public SessionCaptchaBO createCaptcha(String cookie) {
+    return null;
   }
 
   @Override
-  public SessionBO getSession(Long userId) {
-    String key = StringUtils.join(new String[]{SESSION_PREFIX, userId.toString()});
-    String session = redisClient.get(key);
-    return JSON.parseObject(session, SessionBO.class);
+  public String createCookie() {
+    return null;
   }
 
   @Override
-  public Long replaceSession(SessionBO user) {
-    String key = StringUtils.join(new String[]{SESSION_PREFIX, user.getId().toString()});
-    if (!"0".equals(redisClient.set(key, JSON.toJSONString(user)))) {
-      return 1L;
-    } else {
-      return 0L;
-    }
+  public void createSession(String token, SessionBO sessionBO) {
+
+  }
+
+  @Override
+  public Boolean deleteCookie(String cookie) {
+    return null;
+  }
+
+  @Override
+  public Boolean deleteSession(Long userId) {
+    return null;
+  }
+
+  @Override
+  public SessionCookieBO queryCookie(String cookie) {
+    return null;
+  }
+
+  @Override
+  public SessionBO querySession(Long uid) {
+    return null;
+  }
+
+  @Override
+  public void updateCookie(String cookie, SessionCookieBO sessionCookieBO) {
+
+  }
+
+  @Override
+  public Boolean updateSession(SessionBO sessionBO) {
+    return null;
   }
 }

@@ -46,7 +46,7 @@ import pwd.initializr.common.web.api.admin.AdminController;
 @Api(
     tags = "会话管理",
     value = "adminSessionManageApi",
-    description = "[管理员登录，登录信息，管理员退出]"
+    description = "[登录，信息查询，退出]"
 )
 @RestController(value = "adminSessionApi")
 @RequestMapping(value = "/api/admin/session")
