@@ -22,7 +22,7 @@ public interface UserUserDao {
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  Integer ableById(Long id,int able);
+  Integer ableById(Long id, int able);
 
   /**
    * <h2>通过ID启用/禁用数据</h2>
@@ -33,7 +33,7 @@ public interface UserUserDao {
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  Integer ableByIds(List<Long> ids,int able);
+  Integer ableByIds(List<Long> ids, int able);
 
   /**
    * 通过实体作为筛选条件查询

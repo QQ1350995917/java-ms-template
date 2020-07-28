@@ -24,12 +24,12 @@ import lombok.ToString;
 @ToString
 public class SessionCookieBO {
 
-    /**
-     * 已经尝试登录次数
-     */
-    private Integer times;
-    /**
-     * 期望验证码值
-     */
-    private String captcha;
+  /**
+   * 已经尝试登录次数
+   */
+  private Integer times;
+  /**
+   * 期望验证码值
+   */
+  private String captcha;
 }

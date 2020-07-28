@@ -144,7 +144,7 @@
   <!--通过用户外键删除-->
   <update id="deleteByUserIds">
     update initializr_account.admin_account set del = 1, update_time = now() where uid where id in
-    <foreach collection="userIds" item="userId" index="index" open="(" close=")" separator=",">
+    <foreach close=")" collection="userIds" index="index" item="userId" open="(" separator=",">
       #{userId}
     </foreach>
   </update>
@@ -157,7 +157,7 @@
   <!--通过主键启禁-->
   <update id="ableByIds">
     update initializr_account.admin_account set enable = #{able}, update_time = now() where id in
-    <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
+    <foreach close=")" collection="ids" index="index" item="id" open="(" separator=",">
       #{id}
     </foreach>
   </update>
@@ -169,8 +169,9 @@
 
   <!--通过用户外键启禁-->
   <update id="ableByUserIds">
-    update initializr_account.admin_account set enable = #{able}, update_time = now() where uid where id in
-    <foreach collection="userIds" item="userId" index="index" open="(" close=")" separator=",">
+    update initializr_account.admin_account set enable = #{able}, update_time = now() where uid
+    where id in
+    <foreach close=")" collection="userIds" index="index" item="userId" open="(" separator=",">
       #{userId}
     </foreach>
   </update>

@@ -32,122 +32,125 @@ import sun.misc.BASE64Encoder;
  * @version 1.0.0
  * @since DistributionVersion
  */
-@Service("sessionService")
+@Service("adminSessionService")
 public class SessionServiceImpl implements SessionService {
 
-    @Value("${account_login_prefix_admin:sso_identify_admin}")
-    private String SESSION_PREFIX;
+  @Value("${account_login_prefix_admin:sso_identify_admin}")
+  private String SESSION_PREFIX;
 
-    @Value("${account.admin.cookie.initializr.salt}")
-    private String cookieSalt;
-    @Value("${account.admin.cookie.redis.key.prefix}")
-    private String cookieInRedisPrefix;
-    @Value("${account.admin.cookie.expires.seconds}")
-    private Integer cookieInRedisExpiresSeconds;
-    @Value("${account.admin.session.redis.key.prefix}")
-    private String sessionInRedisPrefix;
-    @Value("${account.admin.session.expires.seconds}")
-    private Integer sessionInRedisExpiresSeconds;
+  @Value("${account.admin.cookie.initializr.salt}")
+  private String cookieSalt;
+  @Value("${account.admin.cookie.redis.key.prefix}")
+  private String cookieInRedisPrefix;
+  @Value("${account.admin.cookie.expires.seconds}")
+  private Integer cookieInRedisExpiresSeconds;
+  @Value("${account.admin.session.redis.key.prefix}")
+  private String sessionInRedisPrefix;
+  @Value("${account.admin.session.expires.seconds}")
+  private Integer sessionInRedisExpiresSeconds;
 
-    @Autowired
-    private RedisClient redisClient;
+  @Autowired
+  private RedisClient redisClient;
 
-    @Override
-    public void createSession(String token, SessionBO sessionBO) {
-        String sessionKeyInRedis = getSessionKeyInRedis(sessionBO.getUid());
-        redisClient.setex(sessionKeyInRedis, JSON.toJSONString(sessionBO),sessionInRedisExpiresSeconds);
+  @Override
+  public SessionCaptchaBO createCaptcha(String cookie) {
+    // TODO 生成验证码的逻辑用着不舒服
+    CaptchaHelper captchaHelper = new CaptchaArithmeticCode();
+    CodeMessage codeMessage = captchaHelper.productMessage();
+    // 更新redis中的sessionCookie对象
+    SessionCookieBO sessionCookieBO = queryCookie(cookie);
+    sessionCookieBO.setCaptcha(codeMessage.getExpected());
+    updateCookie(cookie, sessionCookieBO);
+    // 输出sessionCookie对象
+    String presented = codeMessage.getPresented();
+    BufferedImage bufferedImage = captchaHelper.productImage(presented);
+    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+    try {
+      ImageIO.write(bufferedImage, "png", byteArrayOutputStream);
+    } catch (IOException e) {
+      // TODO 不应该吃掉异常
+      e.printStackTrace();
     }
+    String encode = new BASE64Encoder().encode(byteArrayOutputStream.toByteArray())
+        .replaceAll("\r|\n", "");
+    SessionCaptchaBO sessionCaptchaBO = new SessionCaptchaBO();
+    sessionCaptchaBO.setBase64(encode);
+    return sessionCaptchaBO;
+  }
 
-    @Override
-    public Boolean deleteCookie(String cookie) {
-        Assert.notNull(cookie, "sessionCookieBO.cookie should not be empty");
-        String clearTextCookie = Cryptographer.decrypt(cookie, cookieSalt);
-        redisClient.del(getCookieKeyInRedis(clearTextCookie));
-        return true;
-    }
+  @Override
+  public String createCookie() {
+    long currentTimeMillis = System.currentTimeMillis();
+    String uuid = UUID.randomUUID().toString();
+    String clearTextCookie = currentTimeMillis + ":" + uuid;
+    String encryptTextCookie = Cryptographer.encrypt(clearTextCookie, cookieSalt);
+    SessionCookieBO sessionCookieBO = new SessionCookieBO(0, null);
+    redisClient.setex(getCookieKeyInRedis(clearTextCookie), JSON.toJSONString(sessionCookieBO),
+        cookieInRedisExpiresSeconds);
+    return encryptTextCookie;
+  }
 
-    @Override
-    public Boolean deleteSession(Long uid) {
-        String key = getSessionKeyInRedis(uid);
-        return redisClient.del(key) == 1;
-    }
+  @Override
+  public void createSession(String token, SessionBO sessionBO) {
+    String sessionKeyInRedis = getSessionKeyInRedis(sessionBO.getUid());
+    redisClient
+        .setex(sessionKeyInRedis, JSON.toJSONString(sessionBO), sessionInRedisExpiresSeconds);
+  }
 
-    @Override
-    public SessionCaptchaBO createCaptcha(String cookie) {
-        // TODO 生成验证码的逻辑用着不舒服
-        CaptchaHelper captchaHelper = new CaptchaArithmeticCode();
-        CodeMessage codeMessage = captchaHelper.productMessage();
-        // 更新redis中的sessionCookie对象
-        SessionCookieBO sessionCookieBO = queryCookie(cookie);
-        sessionCookieBO.setCaptcha(codeMessage.getExpected());
-        updateCookie(cookie,sessionCookieBO);
-        // 输出sessionCookie对象
-        String presented = codeMessage.getPresented();
-        BufferedImage bufferedImage = captchaHelper.productImage(presented);
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        try {
-            ImageIO.write(bufferedImage, "png", byteArrayOutputStream);
-        } catch (IOException e) {
-            // TODO 不应该吃掉异常
-            e.printStackTrace();
-        }
-        String encode = new BASE64Encoder().encode(byteArrayOutputStream.toByteArray())
-            .replaceAll("\r|\n", "");
-        SessionCaptchaBO sessionCaptchaBO = new SessionCaptchaBO();
-        sessionCaptchaBO.setBase64(encode);
-        return sessionCaptchaBO;
-    }
+  @Override
+  public Boolean deleteCookie(String cookie) {
+    Assert.notNull(cookie, "sessionCookieBO.cookie should not be empty");
+    String clearTextCookie = Cryptographer.decrypt(cookie, cookieSalt);
+    redisClient.del(getCookieKeyInRedis(clearTextCookie));
+    return true;
+  }
 
-    @Override
-    public String createCookie() {
-        long currentTimeMillis = System.currentTimeMillis();
-        String uuid = UUID.randomUUID().toString();
-        String clearTextCookie = currentTimeMillis + ":" + uuid;
-        String encryptTextCookie = Cryptographer.encrypt(clearTextCookie, cookieSalt);
-        SessionCookieBO sessionCookieBO = new SessionCookieBO(0,null);
-        redisClient.setex(getCookieKeyInRedis(clearTextCookie), JSON.toJSONString(sessionCookieBO),cookieInRedisExpiresSeconds);
-        return encryptTextCookie;
-    }
+  @Override
+  public Boolean deleteSession(Long uid) {
+    String key = getSessionKeyInRedis(uid);
+    return redisClient.del(key) == 1;
+  }
 
-    @Override
-    public SessionCookieBO queryCookie(String cookie) {
-        Assert.notNull(cookie, "cookie should not be empty");
-        String clearTextCookie = Cryptographer.decrypt(cookie, cookieSalt);
-        String sessionCookieJson = redisClient.get(getCookieKeyInRedis(clearTextCookie));
-        if (StringUtils.isBlank(sessionCookieJson)) {
-            return null;
-        }
-        return JSON.parseObject(sessionCookieJson, SessionCookieBO.class);
+  @Override
+  public SessionCookieBO queryCookie(String cookie) {
+    Assert.notNull(cookie, "cookie should not be empty");
+    String clearTextCookie = Cryptographer.decrypt(cookie, cookieSalt);
+    String sessionCookieJson = redisClient.get(getCookieKeyInRedis(clearTextCookie));
+    if (StringUtils.isBlank(sessionCookieJson)) {
+      return null;
     }
+    return JSON.parseObject(sessionCookieJson, SessionCookieBO.class);
+  }
 
-    @Override
-    public SessionBO querySession(Long uid) {
-        String key = getSessionKeyInRedis(uid);
-        String session = redisClient.get(key);
-        return JSON.parseObject(session, SessionBO.class);
-    }
+  @Override
+  public SessionBO querySession(Long uid) {
+    String key = getSessionKeyInRedis(uid);
+    String session = redisClient.get(key);
+    return JSON.parseObject(session, SessionBO.class);
+  }
 
-    @Override
-    public Boolean updateSession(SessionBO sessionBO) {
-        String key = StringUtils.join(new String[]{SESSION_PREFIX, sessionBO.getId().toString()});
-        if (!"0".equals(redisClient.set(key, JSON.toJSONString(sessionBO)))) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+  @Override
+  public void updateCookie(String cookie, SessionCookieBO sessionCookieBO) {
+    String clearTextCookie = Cryptographer.decrypt(cookie, cookieSalt);
+    redisClient.set(getCookieKeyInRedis(clearTextCookie), JSON.toJSONString(sessionCookieBO),
+        cookieInRedisExpiresSeconds);
+  }
 
-    @Override
-    public void updateCookie(String cookie,SessionCookieBO sessionCookieBO) {
-        String clearTextCookie = Cryptographer.decrypt(cookie, cookieSalt);
-        redisClient.set(getCookieKeyInRedis(clearTextCookie), JSON.toJSONString(sessionCookieBO),cookieInRedisExpiresSeconds);
+  @Override
+  public Boolean updateSession(SessionBO sessionBO) {
+    String key = StringUtils.join(new String[]{SESSION_PREFIX, sessionBO.getId().toString()});
+    if (!"0".equals(redisClient.set(key, JSON.toJSONString(sessionBO)))) {
+      return true;
+    } else {
+      return false;
     }
+  }
 
-    private String getCookieKeyInRedis(String cookie) {
-        return StringUtils.join(new String[]{cookieInRedisPrefix, cookie}, ":");
-    }
+  private String getCookieKeyInRedis(String cookie) {
+    return StringUtils.join(new String[]{cookieInRedisPrefix, cookie}, ":");
+  }
 
-    private String getSessionKeyInRedis(Long uid) {
-        return StringUtils.join(new String[]{cookieInRedisPrefix, uid.toString()}, ":");
-    }
+  private String getSessionKeyInRedis(Long uid) {
+    return StringUtils.join(new String[]{cookieInRedisPrefix, uid.toString()}, ":");
+  }
 }

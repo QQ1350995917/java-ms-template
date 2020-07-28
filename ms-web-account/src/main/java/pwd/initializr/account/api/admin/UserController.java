@@ -6,7 +6,6 @@ import java.util.List;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -59,33 +58,10 @@ public class UserController extends AdminController implements UserApi {
   @Autowired
   private UserUserServiceWrap userUserServiceWrap;
 
-  @ApiOperation(value = "禁用用户，同时禁用其下所有账户")
-  @PatchMapping(value = {"/user/disable"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @ApiOperation(value = "删除账户，最后一个可用账户不可被删除")
+  @DeleteMapping(value = {"/account"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
-  public void disableUser(@RequestBody List<Long> ids) {
-    Boolean result = userUserServiceWrap.ableByUserId(ids, EntityAble.DISABLE);
-    outputData(result);
-  }
-
-  @ApiOperation(value = "启用用户，同时启用其下所有账户")
-  @PatchMapping(value = {"/user/enable"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  @Override
-  public void enableUser(@RequestBody List<Long> ids) {
-    Boolean result = userUserServiceWrap.ableByUserId(ids, EntityAble.ENABLE);
-    outputData(result);
-  }
-
-  @ApiOperation(value = "禁用账户，最后一个可用账户不可被禁用")
-  @PatchMapping(value = {"/account/disable"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  @Override
-  public void disableAccount(@RequestBody List<Long> ids) {
-
-  }
-
-  @ApiOperation(value = "启用账户")
-  @PatchMapping(value = {"/account/enable"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  @Override
-  public void enableAccount(@RequestBody List<Long> ids) {
+  public void delAccount(@RequestBody List<Long> ids) {
 
   }
 
@@ -97,11 +73,50 @@ public class UserController extends AdminController implements UserApi {
     outputData(result);
   }
 
-  @ApiOperation(value = "删除账户，最后一个可用账户不可被删除")
-  @DeleteMapping(value = {"/account"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @ApiOperation(value = "禁用账户，最后一个可用账户不可被禁用")
+  @PatchMapping(value = {"/account/disable"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
-  public void delAccount(@RequestBody List<Long> ids) {
+  public void disableAccount(@RequestBody List<Long> ids) {
 
+  }
+
+  @ApiOperation(value = "禁用用户，同时禁用其下所有账户")
+  @PatchMapping(value = {"/user/disable"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @Override
+  public void disableUser(@RequestBody List<Long> ids) {
+    Boolean result = userUserServiceWrap.ableByUserId(ids, EntityAble.DISABLE);
+    outputData(result);
+  }
+
+  @ApiOperation(value = "启用账户")
+  @PatchMapping(value = {"/account/enable"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @Override
+  public void enableAccount(@RequestBody List<Long> ids) {
+
+  }
+
+  @ApiOperation(value = "启用用户，同时启用其下所有账户")
+  @PatchMapping(value = {"/user/enable"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @Override
+  public void enableUser(@RequestBody List<Long> ids) {
+    Boolean result = userUserServiceWrap.ableByUserId(ids, EntityAble.ENABLE);
+    outputData(result);
+  }
+
+  @ApiOperation(value = "根据用户查询账户信息")
+  @GetMapping(value = {"/account/{uid}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @Override
+  public void listAccount(@PathVariable("uid") Long userId,
+      @RequestParam UserAccountInput input) {
+    PageOutput<UserAccountOutput> responseData = new PageOutput<>();
+    ObjectList<UserAccountBO> queryResult = userAccountService
+        .queryAllByUserId(userId);
+    queryResult.getElements().forEach(element -> {
+      UserAccountOutput userAccountOutput = new UserAccountOutput();
+      BeanUtils.copyProperties(element, userAccountOutput);
+      responseData.getElements().add(userAccountOutput);
+    });
+    outputData(responseData);
   }
 
   @ApiOperation(value = "根据条件分页查询用户信息")
@@ -114,28 +129,12 @@ public class UserController extends AdminController implements UserApi {
         .queryAllByCondition(userUserBO, pageInput.getIndex(), pageInput.getSize());
     queryResult.getElements().forEach(element -> {
       UserUserOutput userUserOutput = new UserUserOutput();
-      BeanUtils.copyProperties(element,userUserOutput);
+      BeanUtils.copyProperties(element, userUserOutput);
       responseData.getElements().add(userUserOutput);
     });
     responseData.setSize(queryResult.getSize());
     responseData.setIndex(queryResult.getIndex());
     responseData.setTotal(queryResult.getTotal());
     outputData(responseData);
-  }
-
-  @ApiOperation(value = "根据用户查询账户信息")
-  @GetMapping(value = {"/account/{uid}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  @Override
-  public void listAccount(@PathVariable("uid") Long userId,
-      @RequestParam UserAccountInput input) {
-      PageOutput<UserAccountOutput> responseData = new PageOutput<>();
-      ObjectList<UserAccountBO> queryResult = userAccountService
-          .queryAllByUserId(userId);
-      queryResult.getElements().forEach(element -> {
-          UserAccountOutput userAccountOutput = new UserAccountOutput();
-          BeanUtils.copyProperties(element,userAccountOutput);
-          responseData.getElements().add(userAccountOutput);
-      });
-      outputData(responseData);
   }
 }

@@ -21,24 +21,24 @@ public interface AdminApi {
 
   void create(CreateAdminInput input);
 
-  void disableUser(List<Long> ids);
-
-  void enableUser(List<Long> ids);
-
-  void disableAccount(List<Long> ids);
-
-  void enableAccount(List<Long> ids);
+  void delAccount(List<Long> ids);
 
   void delUser(List<Long> ids);
 
-  void delAccount(List<Long> ids);
+  void disableAccount(List<Long> ids);
+
+  void disableUser(List<Long> ids);
+
+  void enableAccount(List<Long> ids);
+
+  void enableUser(List<Long> ids);
+
+  void listAccount(Long userId, AdminAccountInput input);
 
   void listUser(PageInput pageInput, AdminUserInput input);
 
-  void listAccount(Long userId,AdminAccountInput input);
+  void updateAccount(Long id, AdminAccountInput input);
 
   void updateUser(Long id, AdminUserInput input);
-
-  void updateAccount(Long id, AdminAccountInput input);
 
 }

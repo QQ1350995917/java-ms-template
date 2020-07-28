@@ -2,7 +2,6 @@ package pwd.initializr.account.business.admin;
 
 import java.util.List;
 import pwd.initializr.account.business.admin.bo.AdminConfigBO;
-import pwd.initializr.account.persistence.entity.AdminConfigEntity;
 
 /**
  * (AdminConfigEntity)表服务接口

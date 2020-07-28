@@ -67,22 +67,22 @@ public class AccountController extends UserController implements AccountApi {
     match = true;
     if (match) {
       // TODO session设置，返回身份信息，跳转页面
-      UserBO userBO = new UserBO(input.getUsername(), input.getPhoneNumber());
-      UserAccountBO account = new UserAccountBO(input.getPhoneNumber(), null,
-          AccountType.ByPhoneNumber);
-      userBO.setAccounts(Arrays.asList(new UserAccountBO[]{account}));
-      // TODO 优化password业务
-      String password = smsCode.getSmsCode();
+//      UserBO userBO = new UserBO(input.getUsername(), input.getPhoneNumber());
+//      UserAccountBO account = new UserAccountBO(input.getPhoneNumber(), null,
+//          AccountType.ByPhoneNumber);
+//      userBO.setAccounts(Arrays.asList(new UserAccountBO[]{account}));
+//      // TODO 优化password业务
+//      String password = smsCode.getSmsCode();
 //      UserBO userBOAndAccount = userAccountService.createUserAndAccount(userBO);
-      UserBO userBOAndAccount = null;
-      SessionBO sessionBO = new SessionBO();
-      BeanUtils.copyProperties(userBOAndAccount, sessionBO);
-
-      sessionService.replaceSession(sessionBO);
-
-      String token = RPCToken.generateToken(sessionBO, ACCOUNT_SECRET);
-      // TODO addCookie
-      super.outputData(new LoginOutput(userBO.getId(), token));
+//      UserBO userBOAndAccount = null;
+//      SessionBO sessionBO = new SessionBO();
+//      BeanUtils.copyProperties(userBOAndAccount, sessionBO);
+//
+//      sessionService.replaceSession(sessionBO);
+//
+//      String token = RPCToken.generateToken(sessionBO, ACCOUNT_SECRET);
+//      // TODO addCookie
+//      super.outputData(new LoginOutput(userBO.getId(), token));
     } else {
       super.outputException(401);
     }

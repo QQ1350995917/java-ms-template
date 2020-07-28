@@ -2,7 +2,6 @@ package pwd.initializr.account.business.user;
 
 
 import java.util.List;
-import org.springframework.stereotype.Service;
 import pwd.initializr.account.business.user.bo.UserAccountBO;
 import pwd.initializr.common.web.business.bo.ObjectList;
 import pwd.initializr.common.web.persistence.entity.EntityAble;
@@ -71,18 +70,6 @@ public interface UserAccountService {
   UserAccountBO insert(UserAccountBO userAccountBO);
 
   /**
-   * <h2>用户登录</h2>
-   * date 2020-07-21 22:08
-   *
-   * @param loginName 登录名
-   * @param loginPwd 登录密码
-   * @return pwd.initializr.account.business.admin.bo.AdminUserBO
-   * @author DingPengwei[www.dingpengwei@foxmail.com]
-   * @since DistributionVersion
-   */
-  UserAccountBO queryByNameAndPwd(String loginName, String loginPwd);
-
-  /**
    * 查询多条数据
    *
    * @param pageIndex 查询起始位置
@@ -101,6 +88,18 @@ public interface UserAccountService {
    * @return 实例对象
    */
   UserAccountBO queryById(Long id);
+
+  /**
+   * <h2>用户登录</h2>
+   * date 2020-07-21 22:08
+   *
+   * @param loginName 登录名
+   * @param loginPwd 登录密码
+   * @return pwd.initializr.account.business.admin.bo.AdminUserBO
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  UserAccountBO queryByNameAndPwd(String loginName, String loginPwd);
 
   /**
    * 修改数据

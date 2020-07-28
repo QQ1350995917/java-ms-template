@@ -9,7 +9,6 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.mybatis.spring.annotation.MapperScan;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
@@ -18,10 +17,9 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pwd.initializr.account.business.user.SessionService;
 import pwd.initializr.common.vcode.CaptchaArithmeticCode;
-import pwd.initializr.common.vcode.CodeMessage;
 import pwd.initializr.common.vcode.CaptchaHelper;
+import pwd.initializr.common.vcode.CodeMessage;
 import pwd.initializr.common.web.api.FullPathNameGenerator;
 
 /**

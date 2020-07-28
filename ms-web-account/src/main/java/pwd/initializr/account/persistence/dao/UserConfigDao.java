@@ -2,7 +2,6 @@ package pwd.initializr.account.persistence.dao;
 
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
-import pwd.initializr.account.persistence.entity.AdminConfigEntity;
 import pwd.initializr.account.persistence.entity.UserConfigEntity;
 
 /**

@@ -18,8 +18,8 @@ import pwd.initializr.account.api.admin.vo.LoginFailOutput;
  */
 public class Test {
 
-    public static void main(String[] args) {
-        String jsonString = JSON.toJSONString(new LoginFailOutput(CaptchaISError));
-        System.out.println(jsonString);
-    }
+  public static void main(String[] args) {
+    String jsonString = JSON.toJSONString(new LoginFailOutput(CaptchaISError));
+    System.out.println(jsonString);
+  }
 }

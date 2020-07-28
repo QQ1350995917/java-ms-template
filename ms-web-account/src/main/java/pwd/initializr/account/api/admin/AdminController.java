@@ -52,117 +52,117 @@ import pwd.initializr.common.web.persistence.entity.EntityAble;
 public class AdminController extends pwd.initializr.common.web.api.admin.AdminController implements
     AdminApi {
 
-    @Autowired
-    private AdminUserServiceWrap adminUserServiceWrap;
-    @Autowired
-    private AdminUserService adminUserService;
-    @Autowired
-    private AdminAccountService adminAccountService;
+  @Autowired
+  private AdminUserServiceWrap adminUserServiceWrap;
+  @Autowired
+  private AdminUserService adminUserService;
+  @Autowired
+  private AdminAccountService adminAccountService;
 
-    @ApiOperation(value = "创建管理员用户信息以及账户信息")
-    @PostMapping(value = {
-        ""}, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @Override
-    public void create(CreateAdminInput input) {
-        AdminUserBO adminUserBO = new AdminUserBO();
-        AdminAccountBO adminAccountBO = new AdminAccountBO();
-        BeanUtils.copyProperties(input.getUser(), adminUserBO);
-        BeanUtils.copyProperties(input.getAccount(), adminAccountBO);
-        AdminUserBO userBO = adminUserServiceWrap.insert(adminUserBO, adminAccountBO);
-        super.outputData(userBO.getId());
-    }
+  @ApiOperation(value = "创建管理员用户信息以及账户信息")
+  @PostMapping(value = {
+      ""}, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @Override
+  public void create(CreateAdminInput input) {
+    AdminUserBO adminUserBO = new AdminUserBO();
+    AdminAccountBO adminAccountBO = new AdminAccountBO();
+    BeanUtils.copyProperties(input.getUser(), adminUserBO);
+    BeanUtils.copyProperties(input.getAccount(), adminAccountBO);
+    AdminUserBO userBO = adminUserServiceWrap.insert(adminUserBO, adminAccountBO);
+    super.outputData(userBO.getId());
+  }
 
-    @ApiOperation(value = "禁用用户，同时禁用其下所有账户")
-    @PatchMapping(value = {"/user/disable"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @Override
-    public void disableUser(@RequestBody List<Long> ids) {
-        Boolean able = adminUserServiceWrap.ableByUserId(ids, EntityAble.DISABLE);
-        outputData(able);
-    }
+  @ApiOperation(value = "删除账户，最后一个可用账户不可被删除")
+  @DeleteMapping(value = {"/account"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @Override
+  public void delAccount(@RequestBody List<Long> ids) {
 
-    @ApiOperation(value = "启用用户，同时启用其下所有账户")
-    @PatchMapping(value = {"/user/enable"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @Override
-    public void enableUser(@RequestBody List<Long> ids) {
-        Boolean able = adminUserServiceWrap.ableByUserId(ids, EntityAble.ENABLE);
-        outputData(able);
-    }
+  }
 
-    @ApiOperation(value = "禁用账户，最后一个可用账户不可被禁用")
-    @PatchMapping(value = {"/account/disable"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @Override
-    public void disableAccount(@RequestBody List<Long> ids) {
+  @ApiOperation(value = "删除用户，同时删除其下所有账户")
+  @DeleteMapping(value = {"/user"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @Override
+  public void delUser(@RequestBody List<Long> ids) {
+    Boolean del = adminUserServiceWrap.deleteByUserId(ids);
+    outputData(del);
+  }
 
-    }
+  @ApiOperation(value = "禁用账户，最后一个可用账户不可被禁用")
+  @PatchMapping(value = {"/account/disable"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @Override
+  public void disableAccount(@RequestBody List<Long> ids) {
 
-    @ApiOperation(value = "启用账户")
-    @PatchMapping(value = {"/account/enable"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @Override
-    public void enableAccount(@RequestBody List<Long> ids) {
+  }
 
-    }
+  @ApiOperation(value = "禁用用户，同时禁用其下所有账户")
+  @PatchMapping(value = {"/user/disable"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @Override
+  public void disableUser(@RequestBody List<Long> ids) {
+    Boolean able = adminUserServiceWrap.ableByUserId(ids, EntityAble.DISABLE);
+    outputData(able);
+  }
 
-    @ApiOperation(value = "删除用户，同时删除其下所有账户")
-    @DeleteMapping(value = {"/user"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @Override
-    public void delUser(@RequestBody List<Long> ids) {
-        Boolean del = adminUserServiceWrap.deleteByUserId(ids);
-        outputData(del);
-    }
+  @ApiOperation(value = "启用账户")
+  @PatchMapping(value = {"/account/enable"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @Override
+  public void enableAccount(@RequestBody List<Long> ids) {
 
-    @ApiOperation(value = "删除账户，最后一个可用账户不可被删除")
-    @DeleteMapping(value = {"/account"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @Override
-    public void delAccount(@RequestBody List<Long> ids) {
+  }
 
-    }
+  @ApiOperation(value = "启用用户，同时启用其下所有账户")
+  @PatchMapping(value = {"/user/enable"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @Override
+  public void enableUser(@RequestBody List<Long> ids) {
+    Boolean able = adminUserServiceWrap.ableByUserId(ids, EntityAble.ENABLE);
+    outputData(able);
+  }
 
-    @ApiOperation(value = "根据条件分页查询用户信息")
-    @GetMapping(value = {"/user"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @Override
-    public void listUser(@RequestParam PageInput pageInput, @RequestParam AdminUserInput input) {
-        AdminUserBO queryCondition = new AdminUserBO();
-        ObjectList<AdminUserBO> adminUserBOObjectList = adminUserService
-            .queryAllByCondition(queryCondition, pageInput.getIndex(), pageInput.getSize());
-        PageOutput<AdminUserOutput> result = new PageOutput<>();
-        adminUserBOObjectList.getElements().forEach(adminUserBO -> {
-            AdminUserOutput adminUserOutput = new AdminUserOutput();
-            BeanUtils.copyProperties(adminUserBO, adminUserOutput);
-            result.getElements().add(adminUserOutput);
-        });
-        result.setTotal(adminUserBOObjectList.getTotal());
-        result.setIndex(adminUserBOObjectList.getIndex());
-        result.setSize(adminUserBOObjectList.getSize());
-        outputData(result);
-    }
+  @ApiOperation(value = "根据用户查询账户信息")
+  @GetMapping(value = {"/account/{uid}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @Override
+  public void listAccount(@PathVariable("uid") Long userId,
+      @RequestParam AdminAccountInput input) {
+    AdminAccountBO queryCondition = new AdminAccountBO();
+    List<AdminAccountBO> adminAccountBOS = adminAccountService.queryByUserId(userId);
+    PageOutput<AdminAccountOutput> result = new PageOutput<>();
+    adminAccountBOS.forEach(adminAccountBO -> {
+      AdminAccountOutput adminAccountOutput = new AdminAccountOutput();
+      BeanUtils.copyProperties(adminAccountBO, adminAccountOutput);
+      result.getElements().add(adminAccountOutput);
+    });
+    outputData(result);
+  }
 
-    @ApiOperation(value = "根据用户查询账户信息")
-    @GetMapping(value = {"/account/{uid}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @Override
-    public void listAccount(@PathVariable("uid") Long userId,
-        @RequestParam AdminAccountInput input) {
-        AdminAccountBO queryCondition = new AdminAccountBO();
-        List<AdminAccountBO> adminAccountBOS = adminAccountService.queryByUserId(userId);
-        PageOutput<AdminAccountOutput> result = new PageOutput<>();
-        adminAccountBOS.forEach(adminAccountBO -> {
-            AdminAccountOutput adminAccountOutput = new AdminAccountOutput();
-            BeanUtils.copyProperties(adminAccountBO, adminAccountOutput);
-            result.getElements().add(adminAccountOutput);
-        });
-        outputData(result);
-    }
+  @ApiOperation(value = "根据条件分页查询用户信息")
+  @GetMapping(value = {"/user"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @Override
+  public void listUser(@RequestParam PageInput pageInput, @RequestParam AdminUserInput input) {
+    AdminUserBO queryCondition = new AdminUserBO();
+    ObjectList<AdminUserBO> adminUserBOObjectList = adminUserService
+        .queryAllByCondition(queryCondition, pageInput.getIndex(), pageInput.getSize());
+    PageOutput<AdminUserOutput> result = new PageOutput<>();
+    adminUserBOObjectList.getElements().forEach(adminUserBO -> {
+      AdminUserOutput adminUserOutput = new AdminUserOutput();
+      BeanUtils.copyProperties(adminUserBO, adminUserOutput);
+      result.getElements().add(adminUserOutput);
+    });
+    result.setTotal(adminUserBOObjectList.getTotal());
+    result.setIndex(adminUserBOObjectList.getIndex());
+    result.setSize(adminUserBOObjectList.getSize());
+    outputData(result);
+  }
 
-    @ApiOperation(value = "更新用户信息")
-    @PutMapping(value = {"/user/{uid}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @Override
-    public void updateUser(@PathVariable("uid") Long id, @RequestBody AdminUserInput input) {
+  @ApiOperation(value = "更新账户信息")
+  @PutMapping(value = {"/account/{id}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @Override
+  public void updateAccount(@PathVariable("id") Long id, AdminAccountInput input) {
 
-    }
+  }
 
-    @ApiOperation(value = "更新账户信息")
-    @PutMapping(value = {"/account/{id}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @Override
-    public void updateAccount(@PathVariable("id") Long id, AdminAccountInput input) {
+  @ApiOperation(value = "更新用户信息")
+  @PutMapping(value = {"/user/{uid}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @Override
+  public void updateUser(@PathVariable("uid") Long id, @RequestBody AdminUserInput input) {
 
-    }
+  }
 }

@@ -12,7 +12,7 @@ import pwd.initializr.account.persistence.entity.UserConfigEntity;
  * @author makejava
  * @since 2020-07-18 22:35:24
  */
-@Service("userConfigService")
+@Service("configService")
 public class UserConfigServiceImpl implements UserConfigService {
 
   @Resource

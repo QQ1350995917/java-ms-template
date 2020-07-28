@@ -1,17 +1,11 @@
 package pwd.initializr.account.test.admin.service;
 
-import org.junit.Assert;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import pwd.initializr.account.AccountApplication;
 import pwd.initializr.account.business.admin.SessionService;
-import pwd.initializr.account.business.admin.bo.AdminAccountBO;
-import pwd.initializr.account.business.admin.bo.SessionBO;
-import pwd.initializr.account.business.admin.bo.SessionCaptchaBO;
-import pwd.initializr.account.business.admin.bo.SessionCookieBO;
 
 /**
  * pwd.initializr.account.test.admin.service@ms-web-initializr
@@ -28,7 +22,7 @@ import pwd.initializr.account.business.admin.bo.SessionCookieBO;
 @SpringBootTest(classes = {AccountApplication.class})
 public class SessionServiceTest {
 
-    @Autowired
-    private SessionService sessionService;
+  @Autowired
+  private SessionService sessionService;
 
 }

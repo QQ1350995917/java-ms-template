@@ -28,10 +28,11 @@ import lombok.ToString;
 @ToString
 @ApiModel(value = "adminAccountInput", description = "管理员账户参数")
 public class AdminAccountInput implements Serializable {
-    @ApiModelProperty(name = "loginName", value = "登录名称", required = true, example = "pwd")
-    @NotNull(message = "0")
-    private String loginName;
-    @ApiModelProperty(name = "loginPwd", value = "登录密码", required = true, example = "pwd")
-    @NotNull(message = "0")
-    private String loginPwd;
+
+  @ApiModelProperty(name = "loginName", value = "登录名称", required = true, example = "pwd")
+  @NotNull(message = "0")
+  private String loginName;
+  @ApiModelProperty(name = "loginPwd", value = "登录密码", required = true, example = "pwd")
+  @NotNull(message = "0")
+  private String loginPwd;
 }

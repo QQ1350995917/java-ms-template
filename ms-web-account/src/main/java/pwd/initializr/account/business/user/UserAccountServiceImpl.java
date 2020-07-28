@@ -19,7 +19,7 @@ import pwd.initializr.common.web.persistence.entity.EntityAble;
  * @author makejava
  * @since 2020-07-18 22:35:19
  */
-@Service("userAccountService")
+@Service("accountService")
 public class UserAccountServiceImpl implements UserAccountService {
 
   @Resource
@@ -28,19 +28,19 @@ public class UserAccountServiceImpl implements UserAccountService {
 
   @Override
   public Boolean ableById(List<Long> ids, EntityAble able) {
-    userAccountDao.ableByIds(ids,able.getNumber());
+    userAccountDao.ableByIds(ids, able.getNumber());
     return true;
   }
 
   @Override
   public Boolean ableByUserId(List<Long> userIds, EntityAble able) {
-    userAccountDao.ableByUserIds(userIds,able.getNumber());
+    userAccountDao.ableByUserIds(userIds, able.getNumber());
     return true;
   }
 
   @Override
   public Boolean ableByUserId(Long userId, EntityAble able) {
-    userAccountDao.ableById(userId,able.getNumber());
+    userAccountDao.ableById(userId, able.getNumber());
     return true;
   }
 
@@ -59,7 +59,7 @@ public class UserAccountServiceImpl implements UserAccountService {
   @Override
   public UserAccountBO insert(UserAccountBO userAccountBO) {
     UserAccountEntity userAccountEntity = new UserAccountEntity();
-    BeanUtils.copyProperties(userAccountBO,userAccountEntity);
+    BeanUtils.copyProperties(userAccountBO, userAccountEntity);
     userAccountEntity.setPwdTime(new Date());
     userAccountEntity.setType(AdminAccountType.PHONE_PWD.getNumber());
     userAccountEntity.setCreateTime(new Date());
@@ -67,7 +67,7 @@ public class UserAccountServiceImpl implements UserAccountService {
     userAccountDao.insert(userAccountEntity);
 
     UserAccountBO result = new UserAccountBO();
-    BeanUtils.copyProperties(userAccountEntity,result);
+    BeanUtils.copyProperties(userAccountEntity, result);
     return result;
   }
 
@@ -84,19 +84,10 @@ public class UserAccountServiceImpl implements UserAccountService {
         .queryAllByCondition(userAccountEntity, pageIndex * pageSize, pageSize);
     for (UserAccountEntity accountEntity : queryResult) {
       UserAccountBO resultItem = new UserAccountBO();
-      BeanUtils.copyProperties(accountEntity,resultData);
+      BeanUtils.copyProperties(accountEntity, resultData);
       resultData.getElements().add(resultItem);
     }
     return resultData;
-  }
-
-  @Override
-  public UserAccountBO queryByNameAndPwd(String loginName, String loginPwd) {
-    UserAccountEntity userAccountEntity = userAccountDao
-        .queryByLoginNameAndPwd(loginName, loginPwd);
-    UserAccountBO userAccountBO = new UserAccountBO();
-    BeanUtils.copyProperties(userAccountEntity,userAccountBO);
-    return userAccountBO;
   }
 
   @Override
@@ -105,7 +96,7 @@ public class UserAccountServiceImpl implements UserAccountService {
     List<UserAccountEntity> userAccountEntities = userAccountDao.queryAllByUid(userId);
     for (UserAccountEntity userAccountEntity : userAccountEntities) {
       UserAccountBO userAccountBO = new UserAccountBO();
-      BeanUtils.copyProperties(userAccountEntity,userAccountBO);
+      BeanUtils.copyProperties(userAccountEntity, userAccountBO);
       resultData.getElements().add(userAccountBO);
     }
     return resultData;
@@ -115,14 +106,23 @@ public class UserAccountServiceImpl implements UserAccountService {
   public UserAccountBO queryById(Long id) {
     UserAccountEntity userAccountEntity = userAccountDao.queryById(id);
     UserAccountBO userAccountBO = new UserAccountBO();
-    BeanUtils.copyProperties(userAccountEntity,userAccountBO);
+    BeanUtils.copyProperties(userAccountEntity, userAccountBO);
+    return userAccountBO;
+  }
+
+  @Override
+  public UserAccountBO queryByNameAndPwd(String loginName, String loginPwd) {
+    UserAccountEntity userAccountEntity = userAccountDao
+        .queryByLoginNameAndPwd(loginName, loginPwd);
+    UserAccountBO userAccountBO = new UserAccountBO();
+    BeanUtils.copyProperties(userAccountEntity, userAccountBO);
     return userAccountBO;
   }
 
   @Override
   public Integer update(UserAccountBO userAccountBO) {
     UserAccountEntity userAccountEntity = new UserAccountEntity();
-    BeanUtils.copyProperties(userAccountBO,userAccountEntity);
+    BeanUtils.copyProperties(userAccountBO, userAccountEntity);
     return userAccountDao.update(userAccountEntity);
   }
 }

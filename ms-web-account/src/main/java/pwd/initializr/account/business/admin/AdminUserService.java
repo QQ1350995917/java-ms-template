@@ -1,7 +1,6 @@
 package pwd.initializr.account.business.admin;
 
 import java.util.List;
-import org.springframework.stereotype.Service;
 import pwd.initializr.account.business.admin.bo.AdminUserBO;
 import pwd.initializr.common.web.business.bo.ObjectList;
 import pwd.initializr.common.web.persistence.entity.EntityAble;
@@ -18,7 +17,6 @@ public interface AdminUserService {
    * <h2>通过主键启用/禁用账户</h2>
    * date 2020-07-28 16:09
    *
-   * @param ids
    * @return java.lang.Boolean
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion

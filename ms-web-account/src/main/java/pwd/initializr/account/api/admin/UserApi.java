@@ -18,20 +18,20 @@ import pwd.initializr.common.web.api.vo.PageInput;
  */
 public interface UserApi {
 
-    void disableUser(List<Long> ids);
+  void delAccount(List<Long> ids);
 
-    void enableUser(List<Long> ids);
+  void delUser(List<Long> ids);
 
-    void disableAccount(List<Long> ids);
+  void disableAccount(List<Long> ids);
 
-    void enableAccount(List<Long> ids);
+  void disableUser(List<Long> ids);
 
-    void delUser(List<Long> ids);
+  void enableAccount(List<Long> ids);
 
-    void delAccount(List<Long> ids);
+  void enableUser(List<Long> ids);
 
-    void listUser(PageInput pageInput, UserUserInput input);
+  void listAccount(Long userId, UserAccountInput input);
 
-    void listAccount(Long userId, UserAccountInput input);
+  void listUser(PageInput pageInput, UserUserInput input);
 
 }

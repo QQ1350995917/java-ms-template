@@ -19,53 +19,53 @@ import pwd.initializr.common.web.persistence.entity.EntityAble;
  * @version 1.0.0
  * @since DistributionVersion
  */
-@Service("userUserServiceWrap")
+@Service("userServiceWrap")
 public class UserUserServiceWrapImpl implements UserUserServiceWrap {
 
-    @Autowired
-    private UserAccountService userAccountService;
+  @Autowired
+  private UserAccountService userAccountService;
 
-    @Autowired
-    private UserUserService userUserService;
+  @Autowired
+  private UserUserService userUserService;
 
-    @Override
-    @Transactional(rollbackFor = RuntimeException.class)
-    public Boolean ableByUserId(Long userId, EntityAble entityAble) {
-        userAccountService.ableByUserId(userId, entityAble);
-        userUserService.ableById(userId, entityAble);
-        return true;
-    }
+  @Override
+  @Transactional(rollbackFor = RuntimeException.class)
+  public Boolean ableByUserId(Long userId, EntityAble entityAble) {
+    userAccountService.ableByUserId(userId, entityAble);
+    userUserService.ableById(userId, entityAble);
+    return true;
+  }
 
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public Boolean ableByUserId(List<Long> userIds, EntityAble entityAble) {
-        userAccountService.ableByUserId(userIds, entityAble);
-        userUserService.ableById(userIds, entityAble);
-        return true;
-    }
+  @Override
+  @Transactional(rollbackFor = Exception.class)
+  public Boolean ableByUserId(List<Long> userIds, EntityAble entityAble) {
+    userAccountService.ableByUserId(userIds, entityAble);
+    userUserService.ableById(userIds, entityAble);
+    return true;
+  }
 
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public Boolean deleteByUserId(Long userId) {
-        userAccountService.deleteById(userId);
-        userUserService.deleteById(userId);
-        return true;
-    }
+  @Override
+  @Transactional(rollbackFor = Exception.class)
+  public Boolean deleteByUserId(Long userId) {
+    userAccountService.deleteById(userId);
+    userUserService.deleteById(userId);
+    return true;
+  }
 
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public Boolean deleteByUserId(List<Long> userIds) {
-        userAccountService.deleteById(userIds);
-        userUserService.deleteById(userIds);
-        return true;
-    }
+  @Override
+  @Transactional(rollbackFor = Exception.class)
+  public Boolean deleteByUserId(List<Long> userIds) {
+    userAccountService.deleteById(userIds);
+    userUserService.deleteById(userIds);
+    return true;
+  }
 
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public UserUserBO insert(UserUserBO userUserBO, UserAccountBO userAccountBO) {
-        UserUserBO result = userUserService.insert(userUserBO);
-        userAccountBO.setUid(result.getId());
-        userAccountService.insert(userAccountBO);
-        return result;
-    }
+  @Override
+  @Transactional(rollbackFor = Exception.class)
+  public UserUserBO insert(UserUserBO userUserBO, UserAccountBO userAccountBO) {
+    UserUserBO result = userUserService.insert(userUserBO);
+    userAccountBO.setUid(result.getId());
+    userAccountService.insert(userAccountBO);
+    return result;
+  }
 }

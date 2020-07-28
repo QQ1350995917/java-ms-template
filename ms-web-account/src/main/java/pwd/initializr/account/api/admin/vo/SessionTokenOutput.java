@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import pwd.initializr.account.business.admin.bo.SessionCookieBO;
 
 /**
  * pwd.initializr.account.api.admin.vo@ms-web-initializr

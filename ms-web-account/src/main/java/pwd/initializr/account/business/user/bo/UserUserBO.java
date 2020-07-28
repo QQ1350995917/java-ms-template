@@ -19,7 +19,6 @@ import pwd.initializr.account.persistence.entity.UserUserEntity;
  * @since DistributionVersion
  */
 @NoArgsConstructor
-@AllArgsConstructor
 @Setter
 @Getter
 @ToString

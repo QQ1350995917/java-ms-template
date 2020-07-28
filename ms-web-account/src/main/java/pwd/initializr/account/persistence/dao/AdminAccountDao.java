@@ -24,7 +24,7 @@ public interface AdminAccountDao {
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  Integer ableById(Long id,int able);
+  Integer ableById(Long id, int able);
 
   /**
    * <h2>通过ID启用/禁用数据</h2>
@@ -35,7 +35,7 @@ public interface AdminAccountDao {
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  Integer ableByIds(List<Long> ids,int able);
+  Integer ableByIds(List<Long> ids, int able);
 
   /**
    * <h2>通过用户ID启用/禁用数据</h2>
@@ -57,7 +57,7 @@ public interface AdminAccountDao {
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  Integer ableByUserIds(List<Long> ids,int able);
+  Integer ableByUserIds(List<Long> ids, int able);
 
   /**
    * 查询指定行数据

@@ -41,12 +41,12 @@ public class AdminConfigServiceImpl implements AdminConfigService {
   @Override
   public AdminConfigBO insert(AdminConfigBO adminConfigBO) {
     AdminConfigEntity adminConfigEntity = new AdminConfigEntity();
-    BeanUtils.copyProperties(adminConfigBO,adminConfigEntity);
+    BeanUtils.copyProperties(adminConfigBO, adminConfigEntity);
     adminConfigEntity.setCreateTime(new Date());
     adminConfigEntity.setUpdateTime(new Date());
     this.adminConfigDao.insert(adminConfigEntity);
     AdminConfigBO adminConfigBOResult = new AdminConfigBO();
-    BeanUtils.copyProperties(adminConfigEntity,adminConfigBOResult);
+    BeanUtils.copyProperties(adminConfigEntity, adminConfigBOResult);
     return adminConfigBOResult;
   }
 
@@ -64,7 +64,6 @@ public class AdminConfigServiceImpl implements AdminConfigService {
         .queryAllByLimit(offset, limit);
 
     for (AdminConfigEntity adminConfigEntity : adminConfigEntities) {
-
 
     }
 
@@ -89,7 +88,7 @@ public class AdminConfigServiceImpl implements AdminConfigService {
       return null;
     }
     AdminConfigBO adminConfigBO = new AdminConfigBO();
-    BeanUtils.copyProperties(adminConfigEntity,adminConfigBO);
+    BeanUtils.copyProperties(adminConfigEntity, adminConfigBO);
     return adminConfigBO;
   }
 

@@ -12,7 +12,7 @@ import pwd.initializr.account.persistence.entity.UserContactEntity;
  * @author makejava
  * @since 2020-07-18 22:35:25
  */
-@Service("userContactService")
+@Service("contactService")
 public class UserContactServiceImpl implements UserContactService {
 
   @Resource

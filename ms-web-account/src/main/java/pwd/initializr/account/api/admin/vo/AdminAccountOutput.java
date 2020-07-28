@@ -26,8 +26,9 @@ import lombok.ToString;
 @ToString
 @ApiModel(value = "adminAccountInput", description = "管理员账户响应参数")
 public class AdminAccountOutput extends AdminAccountInput {
-    private Long id;
-    private Integer able;
-    private Data createTime;
-    private Data updateTime;
+
+  private Long id;
+  private Integer able;
+  private Data createTime;
+  private Data updateTime;
 }

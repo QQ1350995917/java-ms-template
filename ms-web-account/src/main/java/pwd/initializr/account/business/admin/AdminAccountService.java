@@ -18,7 +18,6 @@ public interface AdminAccountService {
    * <h2>通过主键启用/禁用账户</h2>
    * date 2020-07-28 16:09
    *
-   * @param ids
    * @return java.lang.Boolean
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
@@ -98,17 +97,6 @@ public interface AdminAccountService {
   AdminAccountBO queryById(Long id);
 
   /**
-   * <h2>通过用户ID查询数据</h2>
-   * date 2020-07-27 13:58
-   *
-   * @param userId 用户ID
-   * @return java.util.List<pwd.initializr.account.business.admin.bo.AdminAccountBO>
-   * @author DingPengwei[www.dingpengwei@foxmail.com]
-   * @since DistributionVersion
-   */
-  List<AdminAccountBO> queryByUserId(Long userId);
-
-  /**
    * <h2>session创建接口：管理员通过账号密码登录</h2>
    * <p>1：使用既定的加密方式对密码进行加密</p>
    * <p>2：使用登录名和加密的密码进行查找</p>
@@ -136,6 +124,17 @@ public interface AdminAccountService {
    * @since DistributionVersion
    */
   AdminAccountBO queryByPhoneNumberAndSmsCode(String phoneNumber, String smsCode);
+
+  /**
+   * <h2>通过用户ID查询数据</h2>
+   * date 2020-07-27 13:58
+   *
+   * @param userId 用户ID
+   * @return java.util.List<pwd.initializr.account.business.admin.bo.AdminAccountBO>
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  List<AdminAccountBO> queryByUserId(Long userId);
 
   /**
    * 修改数据

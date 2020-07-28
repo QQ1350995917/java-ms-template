@@ -23,19 +23,20 @@ import lombok.ToString;
 @Setter
 @ToString
 public class SessionCaptchaBO {
-    /**
-     * 图形验证码的base64编码
-     */
-    private String base64;
 
-    /**
-     * 用户填写的结果
-     */
-    private String result;
+  /**
+   * 图形验证码的base64编码
+   */
+  private String base64;
 
-    /**
-     * 过期时间（单位秒）
-     */
-    private Integer expires;
+  /**
+   * 用户填写的结果
+   */
+  private String result;
+
+  /**
+   * 过期时间（单位秒）
+   */
+  private Integer expires;
 
 }

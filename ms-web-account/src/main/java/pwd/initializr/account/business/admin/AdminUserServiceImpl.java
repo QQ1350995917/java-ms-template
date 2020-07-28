@@ -25,7 +25,7 @@ public class AdminUserServiceImpl implements AdminUserService {
 
   @Override
   public Boolean ableById(List<Long> ids, EntityAble able) {
-    adminUserDao.ableByIds(ids,able.getNumber());
+    adminUserDao.ableByIds(ids, able.getNumber());
     return true;
   }
 

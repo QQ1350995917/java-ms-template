@@ -1,6 +1,5 @@
 package pwd.initializr.account.persistence.entity;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -27,6 +26,7 @@ public enum AdminAccountType {
   private int number;
   private String enus;
   private String zhcn;
+
   AdminAccountType(int number, String enus, String zhcn) {
     this.number = number;
     this.enus = enus;

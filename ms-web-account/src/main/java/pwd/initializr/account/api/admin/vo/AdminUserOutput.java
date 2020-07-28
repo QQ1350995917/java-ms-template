@@ -26,8 +26,9 @@ import lombok.ToString;
 @ToString
 @ApiModel(value = "adminUserOutput", description = "管理员用户接口响应参数")
 public class AdminUserOutput extends AdminUserInput {
-    private Long id;
-    private Integer able;
-    private Data createTime;
-    private Data updateTime;
+
+  private Long id;
+  private Integer able;
+  private Data createTime;
+  private Data updateTime;
 }
