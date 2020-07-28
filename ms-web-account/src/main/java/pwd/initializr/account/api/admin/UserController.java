@@ -3,23 +3,32 @@ package pwd.initializr.account.api.admin;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.account.api.admin.vo.UserAccountInput;
+import pwd.initializr.account.api.admin.vo.UserAccountOutput;
 import pwd.initializr.account.api.admin.vo.UserUserInput;
+import pwd.initializr.account.api.admin.vo.UserUserOutput;
 import pwd.initializr.account.business.user.UserAccountService;
 import pwd.initializr.account.business.user.UserUserService;
+import pwd.initializr.account.business.user.UserUserServiceWrap;
+import pwd.initializr.account.business.user.bo.UserAccountBO;
+import pwd.initializr.account.business.user.bo.UserUserBO;
 import pwd.initializr.common.web.api.admin.AdminController;
 import pwd.initializr.common.web.api.vo.PageInput;
+import pwd.initializr.common.web.api.vo.PageOutput;
+import pwd.initializr.common.web.business.bo.ObjectList;
+import pwd.initializr.common.web.persistence.entity.EntityAble;
 
 /**
  * pwd.initializr.account.api.admin@ms-web-initializr
@@ -47,18 +56,23 @@ public class UserController extends AdminController implements UserApi {
   @Autowired
   private UserUserService userUserService;
 
+  @Autowired
+  private UserUserServiceWrap userUserServiceWrap;
+
   @ApiOperation(value = "禁用用户，同时禁用其下所有账户")
   @PatchMapping(value = {"/user/disable"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
   public void disableUser(@RequestBody List<Long> ids) {
-
+    Boolean result = userUserServiceWrap.ableByUserId(ids, EntityAble.DISABLE);
+    outputData(result);
   }
 
   @ApiOperation(value = "启用用户，同时启用其下所有账户")
   @PatchMapping(value = {"/user/enable"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
   public void enableUser(@RequestBody List<Long> ids) {
-
+    Boolean result = userUserServiceWrap.ableByUserId(ids, EntityAble.ENABLE);
+    outputData(result);
   }
 
   @ApiOperation(value = "禁用账户，最后一个可用账户不可被禁用")
@@ -79,7 +93,8 @@ public class UserController extends AdminController implements UserApi {
   @DeleteMapping(value = {"/user"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
   public void delUser(@RequestBody List<Long> ids) {
-
+    Boolean result = userUserServiceWrap.deleteByUserId(ids);
+    outputData(result);
   }
 
   @ApiOperation(value = "删除账户，最后一个可用账户不可被删除")
@@ -93,7 +108,19 @@ public class UserController extends AdminController implements UserApi {
   @GetMapping(value = {"/user"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
   public void listUser(@RequestParam PageInput pageInput, @RequestParam UserUserInput input) {
-
+    PageOutput<UserUserOutput> responseData = new PageOutput<>();
+    UserUserBO userUserBO = new UserUserBO();
+    ObjectList<UserUserBO> queryResult = userUserService
+        .queryAllByCondition(userUserBO, pageInput.getIndex(), pageInput.getSize());
+    queryResult.getElements().forEach(element -> {
+      UserUserOutput userUserOutput = new UserUserOutput();
+      BeanUtils.copyProperties(element,userUserOutput);
+      responseData.getElements().add(userUserOutput);
+    });
+    responseData.setSize(queryResult.getSize());
+    responseData.setIndex(queryResult.getIndex());
+    responseData.setTotal(queryResult.getTotal());
+    outputData(responseData);
   }
 
   @ApiOperation(value = "根据用户查询账户信息")
@@ -101,20 +128,14 @@ public class UserController extends AdminController implements UserApi {
   @Override
   public void listAccount(@PathVariable("uid") Long userId,
       @RequestParam UserAccountInput input) {
-
-  }
-
-  @ApiOperation(value = "更新用户信息")
-  @PutMapping(value = {"/user/{uid}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  @Override
-  public void updateUser(@PathVariable("uid") Long id, @RequestBody UserUserInput input) {
-
-  }
-
-  @ApiOperation(value = "更新账户信息")
-  @PutMapping(value = {"/account/{id}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  @Override
-  public void updateAccount(@PathVariable("id") Long id, UserAccountInput input) {
-
+      PageOutput<UserAccountOutput> responseData = new PageOutput<>();
+      ObjectList<UserAccountBO> queryResult = userAccountService
+          .queryAllByUserId(userId);
+      queryResult.getElements().forEach(element -> {
+          UserAccountOutput userAccountOutput = new UserAccountOutput();
+          BeanUtils.copyProperties(element,userAccountOutput);
+          responseData.getElements().add(userAccountOutput);
+      });
+      outputData(responseData);
   }
 }

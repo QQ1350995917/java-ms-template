@@ -9,6 +9,7 @@ import pwd.initializr.account.business.admin.bo.AdminUserBO;
 import pwd.initializr.account.persistence.dao.AdminUserDao;
 import pwd.initializr.account.persistence.entity.AdminUserEntity;
 import pwd.initializr.common.web.business.bo.ObjectList;
+import pwd.initializr.common.web.persistence.entity.EntityAble;
 
 /**
  * (AdminUserEntity)表服务实现类
@@ -21,6 +22,12 @@ public class AdminUserServiceImpl implements AdminUserService {
 
   @Resource
   private AdminUserDao adminUserDao;
+
+  @Override
+  public Boolean ableById(List<Long> ids, EntityAble able) {
+    adminUserDao.ableByIds(ids,able.getNumber());
+    return true;
+  }
 
   /**
    * 通过主键删除数据

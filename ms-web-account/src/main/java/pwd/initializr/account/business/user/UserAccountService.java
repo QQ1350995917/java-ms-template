@@ -1,8 +1,11 @@
 package pwd.initializr.account.business.user;
 
 
+import java.util.List;
+import org.springframework.stereotype.Service;
 import pwd.initializr.account.business.user.bo.UserAccountBO;
 import pwd.initializr.common.web.business.bo.ObjectList;
+import pwd.initializr.common.web.persistence.entity.EntityAble;
 
 /**
  * (UserAccountEntity)表服务接口
@@ -12,13 +15,52 @@ import pwd.initializr.common.web.business.bo.ObjectList;
  */
 public interface UserAccountService {
 
+
+  /**
+   * <h2>通过主键启用/禁用账户</h2>
+   * date 2020-07-28 16:09
+   *
+   * @param ids 主键
+   * @return java.lang.Boolean
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  Boolean ableById(List<Long> ids, EntityAble able);
+
+
+  /**
+   * <h2>通过外键启用/禁用账户</h2>
+   * date 2020-07-28 16:09
+   *
+   * @param userIds 用户外键
+   * @return java.lang.Boolean
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  Boolean ableByUserId(List<Long> userIds, EntityAble able);
+
+  /**
+   * <h2>通过外键启用/禁用账户</h2>
+   * date 2020-07-28 16:21
+   *
+   * @param userId 用户外键
+   * @param able 启用/禁用
+   * @return java.lang.Boolean
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  Boolean ableByUserId(Long userId, EntityAble able);
+
+
   /**
    * 通过主键删除数据
    *
    * @param id 主键
    * @return 是否成功
    */
-  boolean deleteById(Long id);
+  Boolean deleteById(Long id);
+
+  Boolean deleteById(List<Long> ids);
 
   /**
    * 新增数据
@@ -43,12 +85,12 @@ public interface UserAccountService {
   /**
    * 查询多条数据
    *
-   * @param offset 查询起始位置
-   * @param limit 查询条数
+   * @param pageIndex 查询起始位置
+   * @param pageSize 查询条数
    * @return 对象列表
    */
-  ObjectList<UserAccountBO> queryAllByCondition(UserAccountBO userAccountBO, Long offset,
-      Long limit);
+  ObjectList<UserAccountBO> queryAllByCondition(UserAccountBO userAccountBO, Long pageIndex,
+      Long pageSize);
 
   ObjectList<UserAccountBO> queryAllByUserId(Long userId);
 
@@ -66,6 +108,6 @@ public interface UserAccountService {
    * @param userAccountBO 实例对象
    * @return 实例对象
    */
-  UserAccountBO update(UserAccountBO userAccountBO);
+  Integer update(UserAccountBO userAccountBO);
 
 }

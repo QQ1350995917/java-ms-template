@@ -26,7 +26,7 @@
 
 
   <!--查询指定行数据-->
-  <select id="countAllByCondition" resultMap="UserUserMap">
+  <select id="countAllByCondition" resultType="java.lang.Long">
     select count(*) from initializr_account.user_user
     <include refid="countAndQueryAllByCondition"></include>
   </select>
@@ -129,5 +129,19 @@
       #{id}
     </foreach>
   </delete>
+
+  <!--通过主键启禁-->
+  <update id="ableById">
+    update initializr_account.user_user set enable = #{able}, update_time = now() where id = #{id}
+  </update>
+
+  <!--通过主键启禁-->
+  <update id="ableByIds">
+    update initializr_account.user_user set enable = #{able}, update_time = now() where id in
+    <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
+      #{id}
+    </foreach>
+  </update>
+
 
 </mapper>

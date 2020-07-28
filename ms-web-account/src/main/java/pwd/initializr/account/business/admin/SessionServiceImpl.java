@@ -32,7 +32,7 @@ import sun.misc.BASE64Encoder;
  * @version 1.0.0
  * @since DistributionVersion
  */
-@Service
+@Service("sessionService")
 public class SessionServiceImpl implements SessionService {
 
     @Value("${account_login_prefix_admin:sso_identify_admin}")

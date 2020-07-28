@@ -16,7 +16,7 @@ import pwd.initializr.account.business.user.bo.SessionCookieBO;
  * @version 1.0.0
  * @since DistributionVersion
  */
-@Service
+@Service("sessionService")
 public class SessionServiceImpl implements SessionService {
 
   @Override

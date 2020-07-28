@@ -34,8 +34,4 @@ public interface UserApi {
 
     void listAccount(Long userId, UserAccountInput input);
 
-    void updateUser(Long id, UserUserInput input);
-
-    void updateAccount(Long id, UserAccountInput input);
-
 }

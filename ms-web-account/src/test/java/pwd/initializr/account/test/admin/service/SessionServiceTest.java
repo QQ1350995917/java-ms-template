@@ -31,23 +31,4 @@ public class SessionServiceTest {
     @Autowired
     private SessionService sessionService;
 
-    @Test
-    public void testQueryCookie() {
-        Assert.assertNotNull(sessionService.queryCookie("cookie"));
-    }
-
-    @Test
-    public void testCreateSession() {
-        sessionService.createSession("",new SessionBO());
-    }
-
-    @Test
-    public void testCreateCookie() {
-    }
-
-    @Test
-    public void testCreateCaptcha() {
-    }
-
-
 }

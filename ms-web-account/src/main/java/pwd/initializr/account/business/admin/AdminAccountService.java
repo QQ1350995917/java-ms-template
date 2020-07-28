@@ -4,6 +4,7 @@ package pwd.initializr.account.business.admin;
 import java.util.List;
 import pwd.initializr.account.business.admin.bo.AdminAccountBO;
 import pwd.initializr.common.web.business.bo.ObjectList;
+import pwd.initializr.common.web.persistence.entity.EntityAble;
 
 /**
  * (AdminAccountEntityEntity)表服务接口
@@ -14,34 +15,57 @@ import pwd.initializr.common.web.business.bo.ObjectList;
 public interface AdminAccountService {
 
   /**
+   * <h2>通过主键启用/禁用账户</h2>
+   * date 2020-07-28 16:09
+   *
+   * @param ids
+   * @return java.lang.Boolean
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  Boolean ableByIds(List<Long> ids, EntityAble able);
+
+
+  /**
+   * <h2>通过主键启用/禁用账户</h2>
+   * date 2020-07-28 16:09
+   *
+   * @param userIds 用户外键
+   * @return java.lang.Boolean
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  Boolean ableByUserIds(List<Long> userIds, EntityAble able);
+
+  /**
    * 通过主键删除数据
    *
    * @param id 主键
    * @return 是否成功
    */
-  boolean deleteById(Long id);
+  Boolean deleteById(Long id);
 
   /**
    * <h2>根据用户ID删除数据</h2>
    * date 2020-07-26 23:31
    *
    * @param userId 用户ID
-   * @return boolean
+   * @return Boolean
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  boolean deleteByUserId(Long userId);
+  Boolean deleteByUserId(Long userId);
 
   /**
    * <h2>根据用户ID删除数据</h2>
    * date 2020-07-26 23:43
    *
    * @param userIds 用户ID集合
-   * @return boolean
+   * @return Boolean
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  boolean deleteByUserId(List<Long> userIds);
+  Boolean deleteByUserId(List<Long> userIds);
 
   /**
    * 新增数据

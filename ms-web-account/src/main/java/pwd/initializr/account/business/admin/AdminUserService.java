@@ -4,6 +4,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import pwd.initializr.account.business.admin.bo.AdminUserBO;
 import pwd.initializr.common.web.business.bo.ObjectList;
+import pwd.initializr.common.web.persistence.entity.EntityAble;
 
 /**
  * (AdminUserEntity)表服务接口
@@ -11,8 +12,19 @@ import pwd.initializr.common.web.business.bo.ObjectList;
  * @author makejava
  * @since 2020-07-18 22:12:54
  */
-@Service
 public interface AdminUserService {
+
+  /**
+   * <h2>通过主键启用/禁用账户</h2>
+   * date 2020-07-28 16:09
+   *
+   * @param ids
+   * @return java.lang.Boolean
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  Boolean ableById(List<Long> ids, EntityAble able);
+
 
   /**
    * 通过主键删除数据

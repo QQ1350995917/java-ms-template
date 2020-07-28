@@ -24,6 +24,14 @@
         where id = #{id}
     </select>
 
+  <!--登录查询-->
+  <select id="queryByLoginNameAndPwd" resultMap="UserAccountMap">
+        select
+          id, uid, login_name, login_pwd, pwd_time, type, enable, del, create_time, update_time
+        from initializr_account.user_account
+        where login_name = #{loginName} and login_pwd = #{loginPwd}
+  </select>
+
   <!--通过实体作为筛选条件查询-->
   <select id="countAllByCondition" resultType="java.lang.Long">
     select count(*) from initializr_account.user_account
@@ -135,5 +143,34 @@
       #{id}
     </foreach>
   </delete>
+
+
+  <!--通过主键启禁-->
+  <update id="ableById">
+    update initializr_account.user_account set enable = #{able}, update_time = now() where id = #{id}
+  </update>
+
+  <!--通过主键启禁-->
+  <update id="ableByIds">
+    update initializr_account.user_account set enable = #{able}, update_time = now() where id in
+    <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
+      #{id}
+    </foreach>
+  </update>
+
+  <!--通过用户外键启禁-->
+  <update id="ableByUserId">
+    update initializr_account.user_account set enable = #{able}, update_time = now() where uid = #{userId}
+  </update>
+
+  <!--通过用户外键启禁-->
+  <update id="ableByUserIds">
+    update initializr_account.user_account set enable = #{able}, update_time = now() where uid where id in
+    <foreach collection="userIds" item="userId" index="index" open="(" close=")" separator=",">
+      #{userId}
+    </foreach>
+  </update>
+
+
 
 </mapper>
