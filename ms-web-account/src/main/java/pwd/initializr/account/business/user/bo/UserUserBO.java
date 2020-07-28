@@ -1,5 +1,12 @@
 package pwd.initializr.account.business.user.bo;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+import pwd.initializr.account.persistence.entity.UserUserEntity;
+
 /**
  * pwd.initializr.account.business.user.bo@ms-web-initializr
  *
@@ -11,6 +18,11 @@ package pwd.initializr.account.business.user.bo;
  * @version 1.0.0
  * @since DistributionVersion
  */
-public class UserUserBO {
+@NoArgsConstructor
+@AllArgsConstructor
+@Setter
+@Getter
+@ToString
+public class UserUserBO extends UserUserEntity {
 
 }

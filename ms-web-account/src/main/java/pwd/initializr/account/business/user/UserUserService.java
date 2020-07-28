@@ -1,7 +1,7 @@
 package pwd.initializr.account.business.user;
 
-import java.util.List;
-import pwd.initializr.account.persistence.entity.UserUserEntity;
+import pwd.initializr.account.business.user.bo.UserUserBO;
+import pwd.initializr.common.web.business.bo.ObjectList;
 
 /**
  * (UserUserEntity)表服务接口
@@ -22,10 +22,10 @@ public interface UserUserService {
   /**
    * 新增数据
    *
-   * @param userUser 实例对象
+   * @param userUserBO 实例对象
    * @return 实例对象
    */
-  UserUserEntity insert(UserUserEntity userUser);
+  UserUserBO insert(UserUserBO userUserBO);
 
   /**
    * 查询多条数据
@@ -34,7 +34,7 @@ public interface UserUserService {
    * @param limit 查询条数
    * @return 对象列表
    */
-  List<UserUserEntity> queryAllByLimit(int offset, int limit);
+  ObjectList<UserUserBO> queryAllByCondition(UserUserBO userUserBO, Long offset, Long limit);
 
   /**
    * 通过ID查询单条数据
@@ -42,14 +42,14 @@ public interface UserUserService {
    * @param id 主键
    * @return 实例对象
    */
-  UserUserEntity queryById(Long id);
+  UserUserBO queryById(Long id);
 
   /**
    * 修改数据
    *
-   * @param userUser 实例对象
+   * @param userUserBO 实例对象
    * @return 实例对象
    */
-  UserUserEntity update(UserUserEntity userUser);
+  UserUserBO update(UserUserBO userUserBO);
 
 }

@@ -25,6 +25,7 @@ import pwd.initializr.account.business.admin.AdminAccountService;
 import pwd.initializr.account.business.admin.AdminUserService;
 import pwd.initializr.account.business.admin.SessionService;
 import pwd.initializr.account.business.admin.bo.AdminAccountBO;
+import pwd.initializr.account.business.admin.bo.AdminUserBO;
 import pwd.initializr.account.business.admin.bo.SessionBO;
 import pwd.initializr.account.business.admin.bo.SessionCaptchaBO;
 import pwd.initializr.account.business.admin.bo.SessionCookieBO;
@@ -124,13 +125,13 @@ public class SessionController extends AdminController implements SessionApi {
     }
 
     // 生成session信息
-    AdminUserEntity adminUserEntity = adminUserService.queryById(accountByNameAndPwd.getUid());
-    if (adminUserEntity == null) {
+    AdminUserBO adminUserBO = adminUserService.queryById(accountByNameAndPwd.getUid());
+    if (adminUserBO == null) {
       outputException(500);
       return;
     }
 
-    SessionBO sessionBO = new SessionBO(adminUserEntity.getId(), adminUserEntity.getName(),
+    SessionBO sessionBO = new SessionBO(adminUserBO.getId(), adminUserBO.getName(),
         accountByNameAndPwd.getId(), accountByNameAndPwd.getLoginName(),
         System.currentTimeMillis());
     String token = RPCToken.generateToken(sessionBO, sessionSecret);

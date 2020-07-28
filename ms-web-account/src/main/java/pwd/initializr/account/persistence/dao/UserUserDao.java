@@ -53,7 +53,7 @@ public interface UserUserDao {
    * @return 对象列表
    */
   List<UserUserEntity> queryAllByCondition(@Param("userUserEntity") UserUserEntity userUserEntity,
-      @Param("offset") int offset, @Param("limit") int limit);
+      @Param("offset") Long offset, @Param("limit") Long limit);
 
   /**
    * 通过ID查询单条数据

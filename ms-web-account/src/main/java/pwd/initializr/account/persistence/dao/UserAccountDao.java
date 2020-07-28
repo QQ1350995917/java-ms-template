@@ -56,8 +56,8 @@ public interface UserAccountDao {
    * @return 对象列表
    */
   List<UserAccountEntity> queryAllByCondition(
-      @Param("userAccountEntity") UserAccountEntity userAccountEntity, @Param("offset") int offset,
-      @Param("limit") int limit);
+      @Param("userAccountEntity") UserAccountEntity userAccountEntity, @Param("offset") Long offset,
+      @Param("limit") Long limit);
 
   /**
    * 通过实体作为筛选条件查询

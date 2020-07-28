@@ -1,12 +1,11 @@
 package pwd.initializr.account.business.user.bo;
 
-import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import pwd.initializr.account.persistence.entity.AccountType;
+import pwd.initializr.account.persistence.entity.UserAccountEntity;
 
 /**
  * pwd.initializr.account.business.user.bo@ms-web-initializr
@@ -24,26 +23,6 @@ import pwd.initializr.account.persistence.entity.AccountType;
 @Setter
 @Getter
 @ToString
-public class UserAccountBO {
+public class UserAccountBO extends UserAccountEntity {
 
-
-  private Date createTime = new Date();
-  private Long id;
-  private String loginName;
-  private String password;
-  private Integer status = 0;
-  private AccountType type;
-  private Date updateTime = new Date();
-  private Long userId;
-
-  public UserAccountBO(String loginName, String password, AccountType type) {
-    this(null, loginName, password, type);
-  }
-
-  public UserAccountBO(Long userId, String loginName, String password, AccountType type) {
-    this.userId = userId;
-    this.loginName = loginName;
-    this.password = password;
-    this.type = type;
-  }
 }

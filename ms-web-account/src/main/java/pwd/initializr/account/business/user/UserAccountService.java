@@ -1,9 +1,8 @@
 package pwd.initializr.account.business.user;
 
 
-import java.util.List;
 import pwd.initializr.account.business.user.bo.UserAccountBO;
-import pwd.initializr.account.persistence.entity.UserAccountEntity;
+import pwd.initializr.common.web.business.bo.ObjectList;
 
 /**
  * (UserAccountEntity)表服务接口
@@ -24,10 +23,10 @@ public interface UserAccountService {
   /**
    * 新增数据
    *
-   * @param userAccount 实例对象
+   * @param userAccountBO 实例对象
    * @return 实例对象
    */
-  UserAccountEntity insert(UserAccountEntity userAccount);
+  UserAccountBO insert(UserAccountBO userAccountBO);
 
   /**
    * <h2>用户登录</h2>
@@ -39,7 +38,7 @@ public interface UserAccountService {
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  UserAccountBO loginByNameAndPwd(String loginName, String loginPwd);
+  UserAccountBO queryByNameAndPwd(String loginName, String loginPwd);
 
   /**
    * 查询多条数据
@@ -48,7 +47,10 @@ public interface UserAccountService {
    * @param limit 查询条数
    * @return 对象列表
    */
-  List<UserAccountEntity> queryAllByLimit(int offset, int limit);
+  ObjectList<UserAccountBO> queryAllByCondition(UserAccountBO userAccountBO, Long offset,
+      Long limit);
+
+  ObjectList<UserAccountBO> queryAllByUserId(Long userId);
 
   /**
    * 通过ID查询单条数据
@@ -56,14 +58,14 @@ public interface UserAccountService {
    * @param id 主键
    * @return 实例对象
    */
-  UserAccountEntity queryById(Long id);
+  UserAccountBO queryById(Long id);
 
   /**
    * 修改数据
    *
-   * @param userAccount 实例对象
+   * @param userAccountBO 实例对象
    * @return 实例对象
    */
-  UserAccountEntity update(UserAccountEntity userAccount);
+  UserAccountBO update(UserAccountBO userAccountBO);
 
 }
