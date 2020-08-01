@@ -1,7 +1,6 @@
 package pwd.initializr.account.api.user;
 
-import pwd.initializr.account.api.user.vo.SignUpByPhoneInput;
-import pwd.initializr.common.web.api.vo.SMSCodeInput;
+import pwd.initializr.account.api.user.vo.SignUpByNamePwdInput;
 
 /**
  * pwd.initializr.account.api.user@ms-web-initializr
@@ -16,8 +15,7 @@ import pwd.initializr.common.web.api.vo.SMSCodeInput;
  */
 public interface AccountApi {
 
-  void createByPhone(SignUpByPhoneInput input);
+  void createByNameAndPwd(SignUpByNamePwdInput input);
 
-  void getSMSCode(SMSCodeInput input);
-
+  void get(String string);
 }

@@ -2,6 +2,7 @@ package pwd.initializr.common.web.api;
 
 import javax.validation.Validation;
 import javax.validation.ValidatorFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -19,11 +20,53 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 @Order(0)
+@Slf4j
 public class ApiInputValidateAspect {
 
   private static HibernateValidatorConfiguration configuration = Validation
       .byProvider(HibernateValidator.class).configure();
   private static ValidatorFactory factory = configuration.failFast(true).buildValidatorFactory();
+
+  @Pointcut(""
+      + "execution(* pwd.initializr.*.api..*.*(..)) && "
+      + "!execution(* pwd.initializr.*.api.test.TestController.*(..)) && "
+      + "("
+      + "@annotation(org.springframework.web.bind.annotation.RequestMapping) || "
+      + "@annotation(org.springframework.web.bind.annotation.GetMapping) ||"
+      + "@annotation(org.springframework.web.bind.annotation.PostMapping) ||"
+      + "@annotation(org.springframework.web.bind.annotation.PutMapping) ||"
+      + "@annotation(org.springframework.web.bind.annotation.PatchMapping) ||"
+      + "@annotation(org.springframework.web.bind.annotation.PathVariable)"
+      + ")")
+  public void apiInputPointcut() {
+  }
+
+  @Around("apiInputPointcut()")
+  public void validateParam(ProceedingJoinPoint pjp) {
+//    ApiController target = (ApiController) pjp.getTarget();
+//    Object[] params = pjp.getArgs();
+//    try {
+//      if (params.length != 0 && params[0] != null) {
+//        String errorCode = valid(params[0]);
+//        if (errorCode == null) {
+//          pjp.proceed();
+//        } else {
+//          target.outputException(400);
+////          String errorMessage = ApplicationProperties.apiBundles.get(target.getLocal())
+////              .getString(errorCode);
+////          log.info(
+////              "invalidParams[" + errorMessage + "]:" + JSON.toJSONString(params) + " ");
+//          System.out.println();
+//        }
+//      } else {
+//        target.outputException(400);
+//      }
+//    } catch (Throwable th) {
+//      target.outputException(500);
+//      log.info(
+//          "invalidParams[unknown]:" + th.getMessage(), th);
+//    }
+  }
 
   /**
    * 基于hibernate的参数校验
@@ -41,36 +84,6 @@ public class ApiInputValidateAspect {
 //            return errorMessage;
 //        }
     return null;
-  }
-
-  @Pointcut("execution(* pwd.initializr.*.api..*.*(..)) && !execution(* pwd.initializr.*.api.test.TestController.*(..)) && @annotation(org.springframework.web.bind.annotation.RequestMapping)")
-  public void apiInputPointcut() {
-  }
-
-  @Around("apiInputPointcut()")
-  public void validateParam(ProceedingJoinPoint pjp) {
-//        ApiController target = (ApiController) pjp.getTarget();
-//        Object[] params = pjp.getArgs();
-//        try {
-//            if (params.length != 0 && params[0] != null) {
-//                String errorCode = valid(params[0]);
-//                if (errorCode == null) {
-//                    pjp.proceed();
-//                } else {
-//                    target.outputException(400);
-//                    String errorMessage = ApplicationProperties.apiBundles.get(target.getLocal())
-//                        .getString(errorCode);
-//                    LOGGER.info(
-//                        "invalidParams[" + errorMessage + "]:" + JSON.toJSONString(params) + " ");
-//                }
-//            } else {
-//                target.outputException(400);
-//            }
-//        } catch (Throwable th) {
-//            target.outputException(500);
-//            LOGGER.info(
-//                "invalidParams[unknown]:" + th.getMessage(), th);
-//        }
   }
 
 }

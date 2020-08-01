@@ -21,21 +21,21 @@
     <module>lib-rpc-storage</module>
     <module>lib-rpc-account</module>
     <module>lib-rpc-search</module>
-    <module>ms-web-access</module>
+    <!--<module>ms-web-access</module>-->
     <module>ms-web-account</module>
-    <module>ms-web-book</module>
-    <module>ms-web-configure</module>
-    <module>ms-web-etl</module>
-    <module>ms-web-etl-plugin</module>
-    <module>ms-web-gateway</module>
-    <module>ms-web-logger</module>
-    <module>ms-web-monitor</module>
-    <module>ms-web-organization</module>
-    <module>ms-web-registry</module>
+    <!--<module>ms-web-book</module>-->
+    <!--<module>ms-web-configure</module>-->
+    <!--<module>ms-web-etl</module>-->
+    <!--<module>ms-web-etl-plugin</module>-->
+    <!--<module>ms-web-gateway</module>-->
+    <!--<module>ms-web-logger</module>-->
+    <!--<module>ms-web-monitor</module>-->
+    <!--<module>ms-web-organization</module>-->
+    <!--<module>ms-web-registry</module>-->
     <!--<module>ms-web-schedule</module>-->
-    <module>ms-web-search</module>
-    <module>ms-web-storage</module>
-    <module>ms-web-typeface</module>
+    <!--<module>ms-web-search</module>-->
+    <!--<module>ms-web-storage</module>-->
+    <!--<module>ms-web-typeface</module>-->
     <!--<module>project-generator</module>-->
     <!--<module>widget-tool</module>-->
   </modules>
@@ -57,16 +57,16 @@
     <docker.registry.push.image.tag>true</docker.registry.push.image.tag>
   </properties>
 
-  <repositories>
-    <repository>
-      <id>local-maven-releases</id>
-      <name>Local Maven Releases</name>
-      <url>http://${cicd.host}:82/repository/maven-releases/</url>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-    </repository>
-  </repositories>
+  <!--<repositories>-->
+    <!--<repository>-->
+      <!--<id>local-maven-releases</id>-->
+      <!--<name>Local Maven Releases</name>-->
+      <!--<url>http://${cicd.host}:82/repository/maven-releases/</url>-->
+      <!--<releases>-->
+        <!--<enabled>true</enabled>-->
+      <!--</releases>-->
+    <!--</repository>-->
+  <!--</repositories>-->
 
   <dependencies>
     <dependency>

@@ -1,7 +1,7 @@
 package pwd.initializr.common.web.api.vo;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import pwd.initializr.common.web.exception.BaseException;
+import pwd.initializr.common.web.api.BaseException;
 
 /**
  * pwd.initializr.common.web.api@ms-web-initializr

@@ -7,15 +7,11 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import pwd.initializr.common.utils.GzipUtil;
 import pwd.initializr.common.utils.StringUtil;
-import pwd.initializr.common.utils.VerifyUtil;
 import pwd.initializr.common.web.api.vo.Meta;
 import pwd.initializr.common.web.api.vo.Output;
-import pwd.initializr.common.web.business.SMSCodeService;
-import pwd.initializr.common.web.exception.BaseException;
 
 /**
  * pwd.initializr.common.web.api@ms-web-initializr
@@ -29,28 +25,22 @@ import pwd.initializr.common.web.exception.BaseException;
  * @author DingPengwei[www.dingpengwei@foxmail.com]
  * @version 1.0.0
  * @since DistributionVersion
-*/
+ */
 @Slf4j
 public class ApiController {
 
   public static ThreadLocal<HttpServletRequest> requestLocal = new ThreadLocal();
   public static ThreadLocal<HttpServletResponse> responseLocal = new ThreadLocal();
 
-  @Autowired
-  protected SMSCodeService smsCodeService;
 
   protected String local = "en";
 
-  public static void setRequestLocal(HttpServletRequest httpServletRequest) {
-    requestLocal.set(httpServletRequest);
+  public static String getClientOS() {
+    return getRequest().getHeader(ApiConstant.HTTP_HEADER_KEY_OS);
   }
 
-  public static void setResponseLocal(HttpServletResponse httpServletResponse) {
-    responseLocal.set(httpServletResponse);
-  }
-
-  public static HttpServletRequest getRequest() {
-    return requestLocal.get();
+  public static String getToken() {
+    return getRequest().getHeader(ApiConstant.HTTP_HEADER_KEY_TOKEN);
   }
 
   public static Long getUid() {
@@ -61,64 +51,8 @@ public class ApiController {
     return Long.parseLong(uid);
   }
 
-  public static String getToken() {
-    return getRequest().getHeader(ApiConstant.HTTP_HEADER_KEY_TOKEN);
-  }
-
-  public static String getClientOS() {
-    return getRequest().getHeader(ApiConstant.HTTP_HEADER_KEY_OS);
-  }
-
-  public static HttpServletResponse getResponse() {
-    return responseLocal.get();
-  }
-
-  public String getLocal() {
-    return local == null ? "en" : local;
-  }
-
-  @ModelAttribute
-  public void setReqAndRes(HttpServletRequest request, HttpServletResponse response) {
-    setRequestLocal(request);
-    setResponseLocal(response);
-  }
-
-  public <T extends ApiController> void outputExceptionToLog(Class<T> clazz, Exception e,
-      Object... input) {
-    if (e instanceof BaseException) {
-      // 如果是baseException，是手动抛出，不需要告警，只打印info日志
-      log.info(String
-          .format("IntervalServerError:className:%s，requestParams:%s，", clazz.getName(),
-              JSONObject.toJSONString(input)), e);
-    } else {
-      log.error(String
-          .format("IntervalServerError:className:%s，requestParams:%s，", clazz.getName(),
-              JSONObject.toJSONString(input)), e);
-    }
-  }
-
-  public void outputException(int code, String message) {
-    Meta meta = new Meta(code, message);
-    Output<Object> objectOutput = new Output<>(meta, null);
-    this.finalOutput(JSON.toJSONString(objectOutput));
-  }
-  public <T> void outputException(int code, T t) {
-    Meta meta = new Meta(code, code + "");
-    Output<Object> objectOutput = new Output<>(meta, t);
-    this.finalOutput(JSON.toJSONString(objectOutput));
-  }
-
-  public <T> void outputException(Meta meta, T t) {
-    Output<Object> objectOutput = new Output<>(meta, t);
-    this.finalOutput(JSON.toJSONString(objectOutput));
-  }
-
-
-  public void outputException(int code) {
-    String message = ApiProperties.apiBundles.get(getLocal()).getString(code + "");
-    Meta meta = new Meta(code, message);
-    Output<Object> objectOutput = new Output<>(meta, null);
-    this.finalOutput(JSON.toJSONString(objectOutput));
+  public static HttpServletRequest getRequest() {
+    return requestLocal.get();
   }
 
   public void outputData() {
@@ -133,11 +67,6 @@ public class ApiController {
     this.finalOutput(JSON.toJSONString(objectOutput));
   }
 
-  public <T> void outputData(Meta meta, T t) {
-    Output<Object> objectOutput = new Output<>(meta, t);
-    this.finalOutput(JSON.toJSONString(objectOutput));
-  }
-
   public <T> void outputData(Meta meta) {
     Output<Object> objectOutput = new Output<>(meta, null);
     this.finalOutput(JSON.toJSONString(objectOutput));
@@ -145,6 +74,17 @@ public class ApiController {
 
   public <T> void outputData(T t) {
     this.outputData(new Meta(), t);
+  }
+
+  public <T> void outputData(Meta meta, T t) {
+    Output<Object> objectOutput = new Output<>(meta, t);
+    this.finalOutput(JSON.toJSONString(objectOutput));
+  }
+
+  public void outputException(int code, String message) {
+    Meta meta = new Meta(code, message);
+    Output<Object> objectOutput = new Output<>(meta, null);
+    this.finalOutput(JSON.toJSONString(objectOutput));
   }
 
   private void finalOutput(String data) {
@@ -174,6 +114,10 @@ public class ApiController {
     }
   }
 
+  public static HttpServletResponse getResponse() {
+    return responseLocal.get();
+  }
+
   private byte[] compressData(String data) {
     byte[] bytes = null;
 
@@ -186,17 +130,53 @@ public class ApiController {
     return bytes;
   }
 
-
-  protected void verifyManual(String identify) {
-
+  public <T> void outputException(int code, T t) {
+    Meta meta = new Meta(code, code + "");
+    Output<Object> objectOutput = new Output<>(meta, t);
+    this.finalOutput(JSON.toJSONString(objectOutput));
   }
 
-  protected void verifyPhone(String phoneNumber) {
-    if (VerifyUtil.phoneNumber(phoneNumber)) {
-      smsCodeService.productSMSCode(phoneNumber);
-      outputData();
+  public <T> void outputException(Meta meta, T t) {
+    Output<Object> objectOutput = new Output<>(meta, t);
+    this.finalOutput(JSON.toJSONString(objectOutput));
+  }
+
+  public void outputException(int code) {
+    String message = ApiProperties.apiBundles.get(getLocal()).getString(code + "");
+    Meta meta = new Meta(code, message);
+    Output<Object> objectOutput = new Output<>(meta, null);
+    this.finalOutput(JSON.toJSONString(objectOutput));
+  }
+
+  public String getLocal() {
+    return local == null ? "en" : local;
+  }
+
+  public <T extends ApiController> void outputExceptionToLog(Class<T> clazz, Exception e,
+      Object... input) {
+    if (e instanceof BaseException) {
+      // 如果是baseException，是手动抛出，不需要告警，只打印info日志
+      log.info(String
+          .format("IntervalServerError:className:%s，requestParams:%s，", clazz.getName(),
+              JSONObject.toJSONString(input)), e);
     } else {
-      outputException(400);
+      log.error(String
+          .format("IntervalServerError:className:%s，requestParams:%s，", clazz.getName(),
+              JSONObject.toJSONString(input)), e);
     }
+  }
+
+  @ModelAttribute
+  public void setReqAndRes(HttpServletRequest request, HttpServletResponse response) {
+    setRequestLocal(request);
+    setResponseLocal(response);
+  }
+
+  public static void setRequestLocal(HttpServletRequest httpServletRequest) {
+    requestLocal.set(httpServletRequest);
+  }
+
+  public static void setResponseLocal(HttpServletResponse httpServletResponse) {
+    responseLocal.set(httpServletResponse);
   }
 }

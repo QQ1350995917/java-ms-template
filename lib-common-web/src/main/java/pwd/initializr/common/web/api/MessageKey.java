@@ -1,4 +1,4 @@
-package pwd.initializr.common.web.exception;
+package pwd.initializr.common.web.api;
 
 /**
  * pwd.initializr.common.web.exception@ms-web-initializr

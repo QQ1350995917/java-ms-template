@@ -2,29 +2,21 @@ package pwd.initializr.account.api.user;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import java.util.Arrays;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import pwd.initializr.account.api.user.vo.LoginOutput;
-import pwd.initializr.account.api.user.vo.SignUpByPhoneInput;
+import pwd.initializr.account.api.user.vo.SignUpByNamePwdInput;
 import pwd.initializr.account.business.user.SessionService;
 import pwd.initializr.account.business.user.UserAccountService;
-import pwd.initializr.account.business.user.bo.SessionBO;
-import pwd.initializr.account.business.user.bo.UserAccountBO;
-import pwd.initializr.account.business.user.bo.UserBO;
-import pwd.initializr.account.persistence.entity.AccountType;
-import pwd.initializr.account.rpc.RPCToken;
 import pwd.initializr.common.web.api.user.UserController;
-import pwd.initializr.common.web.api.vo.SMSCodeInput;
-import pwd.initializr.common.web.business.bo.SMSCode;
 
 /**
  * pwd.initializr.account.api.user@ms-web-initializr
@@ -47,52 +39,33 @@ import pwd.initializr.common.web.business.bo.SMSCode;
 @Slf4j
 public class AccountController extends UserController implements AccountApi {
 
-  @Value("${account_secret}")
-  private String ACCOUNT_SECRET;
-
   @Autowired
   private SessionService sessionService;
 
   @Autowired
   private UserAccountService userAccountService;
 
-  @ApiOperation(value = "手机号注册账号")
-  @PutMapping(value = {"/phone"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @ApiOperation(value = "通过用户名和密码注册注册账号")
+  @PutMapping(value = {"/primeval"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
-  public void createByPhone(@RequestBody SignUpByPhoneInput input) {
-    SMSCode smsCode = new SMSCode();
-    BeanUtils.copyProperties(input, smsCode);
-    Boolean match = smsCodeService.matchOnce(smsCode);
-    // TODO 对接短信后删除 或者修改为插件形式
-    match = true;
-    if (match) {
-      // TODO session设置，返回身份信息，跳转页面
-//      UserBO userBO = new UserBO(input.getUsername(), input.getPhoneNumber());
-//      UserAccountBO account = new UserAccountBO(input.getPhoneNumber(), null,
-//          AccountType.ByPhoneNumber);
-//      userBO.setAccounts(Arrays.asList(new UserAccountBO[]{account}));
-//      // TODO 优化password业务
-//      String password = smsCode.getSmsCode();
-//      UserBO userBOAndAccount = userAccountService.createUserAndAccount(userBO);
-//      UserBO userBOAndAccount = null;
-//      SessionBO sessionBO = new SessionBO();
-//      BeanUtils.copyProperties(userBOAndAccount, sessionBO);
-//
-//      sessionService.replaceSession(sessionBO);
-//
-//      String token = RPCToken.generateToken(sessionBO, ACCOUNT_SECRET);
-//      // TODO addCookie
-//      super.outputData(new LoginOutput(userBO.getId(), token));
-    } else {
-      super.outputException(401);
-    }
+  public void createByNameAndPwd(@NotNull SignUpByNamePwdInput input) {
+    System.out.println();
   }
 
-  @ApiOperation(value = "手机号验证码")
-  @GetMapping(value = {"/phone/code"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @ApiOperation(value = "test")
+  @GetMapping(value = {"/test"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
-  public void getSMSCode(SMSCodeInput input) {
-    super.verifyPhone(input.getPhoneNumber());
+  public void get(
+      @NotBlank(message = "参数不能为空") @RequestParam(value = "test", required = false) String string) {
+
   }
 
+
+  @ApiOperation(value = "test2")
+  @RequestMapping(value = {
+      "/test2"}, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  public void get2(
+      @NotBlank(message = "参数不能为空") @RequestParam(value = "test", required = false) String string) {
+
+  }
 }

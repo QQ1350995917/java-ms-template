@@ -2,8 +2,12 @@ package pwd.initializr.common.web.api;
 
 import java.util.ArrayList;
 import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.builders.PathSelectors;
@@ -15,7 +19,6 @@ import springfox.documentation.service.Parameter;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger.web.UiConfigurationBuilder;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
  * pwd.initializr.common.web.api@ms-web-initializr
@@ -28,25 +31,21 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  * @version 1.0.0
  * @since DistributionVersion
  */
-@Configuration
-@EnableSwagger2
-public class ApiSwagger2 {
+public abstract class ApiSwagger2 {
 
   @Bean
-  public UiConfigurationBuilder uiConfig() {
-    return UiConfigurationBuilder.builder();
-  }
-
-  // @Bean
-  public Docket createTestApi() {
-    return new Docket(DocumentationType.SWAGGER_12)
-        .groupName("Test")
-        .apiInfo(apiInfo("TestApi", "TestApi"))
+  public Docket createAdminApi() {
+    Customer customer = adminApiCustomer();
+    return new Docket(DocumentationType.SWAGGER_2)
+        .groupName(customer.getGroupName())
+        .apiInfo(apiInfo(customer.getInfoTitle(), customer.getInfoDesc()))
         .select()
-        .apis(RequestHandlerSelectors.basePackage("pwd.common.api.test"))
+        .apis(RequestHandlerSelectors.basePackage(customer.getBasePackage()))
         .paths(PathSelectors.any())
         .build().globalOperationParameters(buildGlobalOperationParameters());
   }
+
+  protected abstract Customer adminApiCustomer();
 
   protected ApiInfo apiInfo(String title, String description) {
     return new ApiInfoBuilder()
@@ -57,7 +56,6 @@ public class ApiSwagger2 {
         .contact(new Contact("DingPengwei", "", "www.dingpengwei@foxmail"))
         .build();
   }
-
 
   protected List<Parameter> buildGlobalOperationParameters() {
     List<Parameter> globalOperationParameters = new ArrayList<>();
@@ -86,6 +84,50 @@ public class ApiSwagger2 {
         .parameterType("header")
         .required(true).build());
     return globalOperationParameters;
+  }
+
+  @Bean
+  public Docket createRobotApi() {
+    Customer customer = robotApiCustomer();
+    return new Docket(DocumentationType.SWAGGER_2)
+        .groupName(customer.getGroupName())
+        .apiInfo(apiInfo(customer.getInfoTitle(), customer.getInfoDesc()))
+        .select()
+        .apis(RequestHandlerSelectors.basePackage(customer.getBasePackage()))
+        .paths(PathSelectors.any())
+        .build().globalOperationParameters(buildGlobalOperationParameters());
+  }
+
+  protected abstract Customer robotApiCustomer();
+
+  @Bean
+  public Docket createUserApi() {
+    Customer customer = userApiCustomer();
+    return new Docket(DocumentationType.SWAGGER_2)
+        .groupName(customer.getGroupName())
+        .apiInfo(apiInfo(customer.getInfoTitle(), customer.getInfoDesc()))
+        .select()
+        .apis(RequestHandlerSelectors.basePackage(customer.getBasePackage()))
+        .paths(PathSelectors.any())
+        .build().globalOperationParameters(buildGlobalOperationParameters());
+  }
+
+  protected abstract Customer userApiCustomer();
+
+  @Bean
+  public abstract UiConfigurationBuilder uiConfig();
+
+  @AllArgsConstructor
+  @NoArgsConstructor
+  @Getter
+  @Setter
+  @ToString
+  protected class Customer {
+
+    private String groupName;
+    private String infoTitle;
+    private String infoDesc;
+    private String basePackage;
   }
 
 }

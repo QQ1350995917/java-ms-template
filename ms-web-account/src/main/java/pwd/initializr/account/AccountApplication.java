@@ -1,6 +1,5 @@
 package pwd.initializr.account;
 
-import com.google.code.kaptcha.Constants;
 import io.swagger.annotations.ApiOperation;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.common.vcode.CaptchaArithmeticCode;
 import pwd.initializr.common.vcode.CaptchaHelper;
 import pwd.initializr.common.vcode.CodeMessage;
-import pwd.initializr.common.web.api.FullPathNameGenerator;
 
 /**
  * pwd.initializr.account@ms-web-initializr
@@ -34,11 +32,11 @@ import pwd.initializr.common.web.api.FullPathNameGenerator;
  * @since DistributionVersion
  */
 @SpringBootApplication
-@EnableEurekaClient
-@EnableDiscoveryClient
+//@EnableEurekaClient
+//@EnableDiscoveryClient
 @RestController
 @EnableTransactionManagement
-@ComponentScan(nameGenerator = FullPathNameGenerator.class)
+@ComponentScan(basePackages = {"pwd.initializr.common.web","pwd.initializr.account"})
 @MapperScan("pwd.initializr.account.persistence")
 public class AccountApplication {
 
@@ -58,7 +56,7 @@ public class AccountApplication {
     response.setHeader("Pragma", "no-cache");
     response.setContentType("image/jpeg");
     CodeMessage codeMessage = captchaHelper.productMessage();
-    request.getSession().setAttribute(Constants.KAPTCHA_SESSION_KEY, codeMessage.getExpected());
+//    request.getSession().setAttribute(Constants.KAPTCHA_SESSION_KEY, codeMessage.getExpected());
     BufferedImage bufferedImage = captchaHelper.productImage(codeMessage.getPresented());
     ServletOutputStream out = null;
     try {
