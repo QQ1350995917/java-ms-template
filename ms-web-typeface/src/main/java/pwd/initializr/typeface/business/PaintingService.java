@@ -2,7 +2,7 @@ package pwd.initializr.typeface.business;
 
 import java.util.List;
 import org.springframework.stereotype.Service;
-import pwd.initializr.common.web.business.bo.ObjectList;
+import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.typeface.business.bo.PaintingBO;
 
 /**
@@ -23,7 +23,7 @@ public interface PaintingService {
 
   Integer deleteByIds(List<Long> ids);
 
-  ObjectList<PaintingBO> findByCondition(PaintingBO paintingBO, Long pageIndex,
+  PageableQueryResult<PaintingBO> findByCondition(PaintingBO paintingBO, Long pageIndex,
       Long pageSize);
 
   PaintingBO findById(Long id);

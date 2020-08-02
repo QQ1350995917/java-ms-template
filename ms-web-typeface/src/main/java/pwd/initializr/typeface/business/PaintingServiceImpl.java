@@ -25,7 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import pwd.initializr.common.web.api.vo.Output;
-import pwd.initializr.common.web.business.bo.ObjectList;
+import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.storage.rpc.RPCUploadOutput;
 import pwd.initializr.typeface.business.bo.FontBO;
 import pwd.initializr.typeface.business.bo.PaintingBO;
@@ -141,7 +141,7 @@ public class PaintingServiceImpl implements PaintingService {
   }
 
   @Override
-  public ObjectList<PaintingBO> findByCondition(PaintingBO paintingBO, Long pageIndex,
+  public PageableQueryResult<PaintingBO> findByCondition(PaintingBO paintingBO, Long pageIndex,
       Long pageSize) {
     PaintingEntity paintingEntity = new PaintingEntity();
     BeanUtils.copyProperties(paintingBO, paintingEntity);
@@ -159,7 +159,7 @@ public class PaintingServiceImpl implements PaintingService {
             obj.getUpdateTime()))
         .collect(Collectors.toList());
 
-    return new ObjectList<>(count, pageIndex, pageSize, collect);
+    return new PageableQueryResult<>(count, pageIndex, pageSize, collect);
   }
 
   @Override

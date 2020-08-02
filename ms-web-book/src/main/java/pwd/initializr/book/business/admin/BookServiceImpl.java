@@ -25,7 +25,7 @@ import pwd.initializr.book.persistence.entity.DocumentObjectUpdate;
 import pwd.initializr.common.utils.ConstantDeleteStatus;
 import pwd.initializr.common.utils.ConstantRecommendStatus;
 import pwd.initializr.common.utils.ConstantVisibilityStatus;
-import pwd.initializr.common.web.business.bo.ObjectList;
+import pwd.initializr.common.web.business.bo.PageableQueryResult;
 
 /**
  * pwd.initializr.book.business.admin@ms-web-initializr
@@ -80,14 +80,14 @@ public class BookServiceImpl implements BookService {
   }
 
   @Override
-  public ObjectList<BookBO> listBook(Integer pageIndex, Integer pageSize) {
+  public PageableQueryResult<BookBO> listBook(Integer pageIndex, Integer pageSize) {
     Sort sort = new Sort(Direction.DESC, "id");
     Query query = new Query()
         .with(PageRequest.of(pageIndex, pageSize)).with(sort);
 
     List<BookEntity> bookEntities = mongoTemplate.find(query, BookEntity.class);
     long count = mongoTemplate.count(query, BookEntity.class);
-    ObjectList<BookBO> result = new ObjectList<>();
+    PageableQueryResult<BookBO> result = new PageableQueryResult<>();
     List<BookBO> bookBOS = new LinkedList<>();
     for (BookEntity bookEntity : bookEntities) {
       BookBO bookBO = new BookBO();
@@ -102,7 +102,7 @@ public class BookServiceImpl implements BookService {
   }
 
   @Override
-  public ObjectList<ArticleBO> listBookTable(Long bookId, Integer index, Integer size) {
+  public PageableQueryResult<ArticleBO> listBookTable(Long bookId, Integer index, Integer size) {
     Query query = new Query(Criteria.where("bookId").is(bookId))
         .with(PageRequest.of(index, size)).with(Sort.by(Direction.ASC, "id"));
     query.fields().include("id").include("bookId").include("title").include("subTitle");
@@ -114,7 +114,7 @@ public class BookServiceImpl implements BookService {
       BeanUtils.copyProperties(articleEntity, articleBO);
       articleBOS.add(articleBO);
     });
-    ObjectList<ArticleBO> result = new ObjectList<>();
+    PageableQueryResult<ArticleBO> result = new PageableQueryResult<>();
     result.setElements(articleBOS);
     result.setIndex(index.longValue());
     result.setSize(size.longValue());

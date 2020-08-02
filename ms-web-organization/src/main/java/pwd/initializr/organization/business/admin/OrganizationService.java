@@ -1,6 +1,6 @@
 package pwd.initializr.organization.business.admin;
 
-import pwd.initializr.common.web.business.bo.ObjectList;
+import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.organization.business.user.bo.Organization;
 
 /**
@@ -45,11 +45,11 @@ public interface OrganizationService {
    *
    * @param pid 上级组织
    * @param status 组织状态
-   * @return pwd.initializr.common.web.business.bo.ObjectList<pwd.initializr.organization.business.user.bo.Organization>
+   * @return pwd.initializr.common.web.business.bo.PageableQueryResult<pwd.initializr.organization.business.user.bo.Organization>
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  ObjectList<Organization> listByPidAndStatus(Long pid, Integer status);
+  PageableQueryResult<Organization> listByPidAndStatus(Long pid, Integer status);
 
 
   /**
@@ -57,11 +57,11 @@ public interface OrganizationService {
    * date 2019-11-03 21:36
    *
    * @param status 组织状态
-   * @return pwd.initializr.common.web.business.bo.ObjectList<pwd.initializr.organization.business.user.bo.Organization>
+   * @return pwd.initializr.common.web.business.bo.PageableQueryResult<pwd.initializr.organization.business.user.bo.Organization>
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  ObjectList<Organization> listByStatus(Integer status);
+  PageableQueryResult<Organization> listByStatus(Integer status);
 
   /**
    * <h2>更新根节点组织的信息</h2>

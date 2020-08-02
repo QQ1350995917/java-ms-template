@@ -1,12 +1,10 @@
 package pwd.initializr.book.business.user;
 
 import org.springframework.stereotype.Service;
-import pwd.initializr.book.business.remote.bo.SearchResultBO;
 import pwd.initializr.book.business.user.bo.ArticleAroundBO;
 import pwd.initializr.book.business.user.bo.ArticleBO;
 import pwd.initializr.book.business.user.bo.BookBO;
-import pwd.initializr.book.business.user.bo.SearchInputBO;
-import pwd.initializr.common.web.business.bo.ObjectList;
+import pwd.initializr.common.web.business.bo.PageableQueryResult;
 
 /**
  * pwd.initializr.book.business.admin@ms-web-initializr
@@ -22,11 +20,11 @@ import pwd.initializr.common.web.business.bo.ObjectList;
 @Service
 public interface BookService {
 
-    ObjectList<BookBO> listRecommendBooks(Integer index, Integer size);
+    PageableQueryResult<BookBO> listRecommendBooks(Integer index, Integer size);
 
     BookBO findBookById(Long bookId);
 
-    ObjectList<ArticleBO> listBookTable(Long bookId, Integer index, Integer size);
+    PageableQueryResult<ArticleBO> listBookTable(Long bookId, Integer index, Integer size);
 
     ArticleAroundBO listBookTableByAround(Long bookId, Long tableId);
 

@@ -26,7 +26,7 @@ import pwd.initializr.account.business.user.bo.UserUserBO;
 import pwd.initializr.common.web.api.admin.AdminController;
 import pwd.initializr.common.web.api.vo.PageInput;
 import pwd.initializr.common.web.api.vo.PageOutput;
-import pwd.initializr.common.web.business.bo.ObjectList;
+import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.common.web.persistence.entity.EntityAble;
 
 /**
@@ -109,7 +109,7 @@ public class UserController extends AdminController implements UserApi {
   public void listAccount(@PathVariable("uid") Long userId,
       @RequestParam UserAccountInput input) {
     PageOutput<UserAccountOutput> responseData = new PageOutput<>();
-    ObjectList<UserAccountBO> queryResult = userAccountService
+    PageableQueryResult<UserAccountBO> queryResult = userAccountService
         .queryAllByUserId(userId);
     queryResult.getElements().forEach(element -> {
       UserAccountOutput userAccountOutput = new UserAccountOutput();
@@ -125,7 +125,7 @@ public class UserController extends AdminController implements UserApi {
   public void listUser(@RequestParam PageInput pageInput, @RequestParam UserUserInput input) {
     PageOutput<UserUserOutput> responseData = new PageOutput<>();
     UserUserBO userUserBO = new UserUserBO();
-    ObjectList<UserUserBO> queryResult = userUserService
+    PageableQueryResult<UserUserBO> queryResult = userUserService
         .queryAllByCondition(userUserBO, pageInput.getIndex(), pageInput.getSize());
     queryResult.getElements().forEach(element -> {
       UserUserOutput userUserOutput = new UserUserOutput();

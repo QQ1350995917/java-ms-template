@@ -4,7 +4,7 @@ import java.util.List;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pwd.initializr.common.web.business.bo.ObjectList;
+import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.organization.business.user.bo.OrganizationMemberDeal;
 import pwd.initializr.organization.persistence.dao.OrganizationMemberDealEntity;
 import pwd.initializr.organization.persistence.mapper.OrganizationMemberDealMapper;
@@ -65,10 +65,10 @@ public class OrganizationMemberDealServiceImpl implements OrganizationMemberDeal
 
 
   @Override
-  public ObjectList<OrganizationMemberDeal> listByOrgId(Long orgId, Integer type) {
+  public PageableQueryResult<OrganizationMemberDeal> listByOrgId(Long orgId, Integer type) {
     List<OrganizationMemberDealEntity> organizationMemberDealEntities = organizationMemberDealMapper
         .listByOrgId(orgId, type);
-    ObjectList<OrganizationMemberDeal> result = new ObjectList<>();
+    PageableQueryResult<OrganizationMemberDeal> result = new PageableQueryResult<>();
     for (OrganizationMemberDealEntity organizationMemberDealEntity : organizationMemberDealEntities) {
       OrganizationMemberDeal organizationMemberDeal = new OrganizationMemberDeal();
       BeanUtils.copyProperties(organizationMemberDealEntity, organizationMemberDeal);
@@ -79,10 +79,10 @@ public class OrganizationMemberDealServiceImpl implements OrganizationMemberDeal
 
 
   @Override
-  public ObjectList<OrganizationMemberDeal> listByUserId(Long userId, Integer type) {
+  public PageableQueryResult<OrganizationMemberDeal> listByUserId(Long userId, Integer type) {
     List<OrganizationMemberDealEntity> organizationMemberDealEntities = organizationMemberDealMapper
         .listByUserId(userId, type);
-    ObjectList<OrganizationMemberDeal> result = new ObjectList<>();
+    PageableQueryResult<OrganizationMemberDeal> result = new PageableQueryResult<>();
     for (OrganizationMemberDealEntity organizationMemberDealEntity : organizationMemberDealEntities) {
       OrganizationMemberDeal organizationMemberDeal = new OrganizationMemberDeal();
       BeanUtils.copyProperties(organizationMemberDealEntity, organizationMemberDeal);

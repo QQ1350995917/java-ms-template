@@ -2,7 +2,6 @@ package pwd.initializr.typeface.api.user;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.BeanUtils;
@@ -16,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.common.web.api.user.UserController;
-import pwd.initializr.common.web.business.bo.ObjectList;
+import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.typeface.api.user.vo.PaintingListInput;
 import pwd.initializr.typeface.api.user.vo.PaintingListOutput;
 import pwd.initializr.typeface.api.user.vo.PaintingVO;
@@ -80,7 +79,7 @@ public class PaintingController extends UserController implements PaintingApi {
     paintingBO.setContent(input.getContent());
     paintingBO.setFontId(input.getFontId());
 
-    ObjectList<PaintingBO> byCondition = paintingService
+    PageableQueryResult<PaintingBO> byCondition = paintingService
         .findByCondition(paintingBO, input.getIndex().longValue(), input.getSize().longValue());
 
     PaintingListOutput<PaintingVO> output = new PaintingListOutput<PaintingVO>();

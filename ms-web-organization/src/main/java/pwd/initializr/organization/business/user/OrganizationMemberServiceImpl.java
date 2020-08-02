@@ -4,7 +4,7 @@ import java.util.List;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pwd.initializr.common.web.business.bo.ObjectList;
+import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.organization.business.user.bo.OrganizationMember;
 import pwd.initializr.organization.persistence.dao.OrganizationMemberEntity;
 import pwd.initializr.organization.persistence.mapper.OrganizationMemberMapper;
@@ -37,8 +37,8 @@ public class OrganizationMemberServiceImpl implements OrganizationMemberService 
 
 
   @Override
-  public ObjectList<OrganizationMember> findMyCreation(Long memId, Integer status) {
-    ObjectList<OrganizationMember> result = new ObjectList<>();
+  public PageableQueryResult<OrganizationMember> findMyCreation(Long memId, Integer status) {
+    PageableQueryResult<OrganizationMember> result = new PageableQueryResult<>();
     List<OrganizationMemberEntity> userOrgEntities = organizationMemberMapper
         .findMyCreation(memId, status);
     for (OrganizationMemberEntity userOrgEntity : userOrgEntities) {
@@ -51,8 +51,8 @@ public class OrganizationMemberServiceImpl implements OrganizationMemberService 
 
 
   @Override
-  public ObjectList<OrganizationMember> findMyJoined(Long memId, java.lang.Integer status) {
-    ObjectList<OrganizationMember> result = new ObjectList<>();
+  public PageableQueryResult<OrganizationMember> findMyJoined(Long memId, java.lang.Integer status) {
+    PageableQueryResult<OrganizationMember> result = new PageableQueryResult<>();
     List<OrganizationMemberEntity> userOrgEntities = organizationMemberMapper
         .findMyJoined(memId, status);
     for (OrganizationMemberEntity userOrgEntity : userOrgEntities) {
@@ -74,8 +74,8 @@ public class OrganizationMemberServiceImpl implements OrganizationMemberService 
 
 
   @Override
-  public ObjectList<OrganizationMember> listByOrgId(Long orgId, Integer status) {
-    ObjectList<OrganizationMember> result = new ObjectList<>();
+  public PageableQueryResult<OrganizationMember> listByOrgId(Long orgId, Integer status) {
+    PageableQueryResult<OrganizationMember> result = new PageableQueryResult<>();
     List<OrganizationMemberEntity> userOrgEntities = organizationMemberMapper
         .listMemInOrgByOrgId(orgId, status);
     for (OrganizationMemberEntity userOrgEntity : userOrgEntities) {

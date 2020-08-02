@@ -1,6 +1,6 @@
 package pwd.initializr.organization.business.user;
 
-import pwd.initializr.common.web.business.bo.ObjectList;
+import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.organization.business.user.bo.OrganizationMemberDeal;
 
 /**
@@ -22,9 +22,9 @@ public interface OrganizationMemberDealService {
 
   OrganizationMemberDeal findOneByOrgIdUserIdType(Long orgId, Long userId, Integer type);
 
-  ObjectList<OrganizationMemberDeal> listByOrgId(Long orgId, Integer type);
+  PageableQueryResult<OrganizationMemberDeal> listByOrgId(Long orgId, Integer type);
 
-  ObjectList<OrganizationMemberDeal> listByUserId(Long userId, Integer type);
+  PageableQueryResult<OrganizationMemberDeal> listByUserId(Long userId, Integer type);
 
   void updateCounterById(Long orgId, Long userId, Integer type);
 

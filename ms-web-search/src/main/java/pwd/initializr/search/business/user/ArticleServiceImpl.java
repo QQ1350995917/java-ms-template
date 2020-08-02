@@ -3,9 +3,9 @@ package pwd.initializr.search.business.user;
 import java.util.LinkedList;
 import java.util.List;
 import org.springframework.stereotype.Service;
+import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.search.business.user.bo.ArticleAroundBO;
 import pwd.initializr.search.business.user.bo.ArticleBO;
-import pwd.initializr.common.web.business.bo.ObjectList;
 
 /**
  * pwd.initializr.book.business.user@ms-web-initializr
@@ -23,8 +23,8 @@ public class ArticleServiceImpl implements ArticleService {
 
 
   @Override
-  public ObjectList<ArticleBO> listTablesInBook(Long bookId) {
-    ObjectList<ArticleBO> result = new ObjectList<>();
+  public PageableQueryResult<ArticleBO> listTablesInBook(Long bookId) {
+    PageableQueryResult<ArticleBO> result = new PageableQueryResult<>();
     List<ArticleBO> articleBOS = new LinkedList<>();
     result.setElements(articleBOS);
     return result;

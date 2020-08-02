@@ -4,7 +4,7 @@ import java.util.List;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pwd.initializr.common.web.business.bo.ObjectList;
+import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.organization.business.admin.bo.OrganizationProgress;
 import pwd.initializr.organization.persistence.dao.ConstantStatus;
 import pwd.initializr.organization.persistence.dao.OrganizationEntity;
@@ -33,10 +33,10 @@ public class OrganizationProgressServiceImpl implements OrganizationProgressServ
   private OrganizationService organizationService;
 
   @Override
-  public ObjectList<OrganizationProgress> listReviewByOrgId(Long orgId, Integer status) {
+  public PageableQueryResult<OrganizationProgress> listReviewByOrgId(Long orgId, Integer status) {
     List<OrganizationReviewEntity> organizationProgressEntities = organizationProgressMapper
         .listByOrgId(orgId, status);
-    ObjectList<OrganizationProgress> result = new ObjectList<>();
+    PageableQueryResult<OrganizationProgress> result = new PageableQueryResult<>();
     for (OrganizationReviewEntity organizationProgressEntity : organizationProgressEntities) {
       OrganizationProgress organizationProgress = new OrganizationProgress();
       BeanUtils.copyProperties(organizationProgressEntity, organizationProgress);

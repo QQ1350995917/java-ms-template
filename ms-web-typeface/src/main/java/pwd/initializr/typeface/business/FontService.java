@@ -1,7 +1,7 @@
 package pwd.initializr.typeface.business;
 
 import org.springframework.stereotype.Service;
-import pwd.initializr.common.web.business.bo.ObjectList;
+import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.typeface.business.bo.FontBO;
 
 /**
@@ -18,7 +18,7 @@ import pwd.initializr.typeface.business.bo.FontBO;
 @Service
 public interface FontService {
 
-  ObjectList<FontBO> findByCondition(FontBO fontBO, Integer pageIndex, Integer pageSize);
+  PageableQueryResult<FontBO> findByCondition(FontBO fontBO, Integer pageIndex, Integer pageSize);
 
   FontBO findById(Long id);
 

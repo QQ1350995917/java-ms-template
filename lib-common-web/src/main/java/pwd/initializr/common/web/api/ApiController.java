@@ -17,6 +17,7 @@ import pwd.initializr.common.web.api.vo.Output;
 /**
  * pwd.initializr.common.web.api@ms-web-initializr
  *
+ * <h1>统一API声明</h1>
  * <P>API请求/响应框架</P>
  * <P>识别API请求头信息。</P>
  * <P>处理API响应输出。</P>

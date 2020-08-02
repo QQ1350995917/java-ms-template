@@ -1,12 +1,10 @@
 package pwd.initializr.search.api.admin;
 
-import java.util.Optional;
-import org.elasticsearch.cluster.metadata.MetaDataMappingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.common.web.api.robot.RobotController;
-import pwd.initializr.common.web.business.bo.ObjectList;
+import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.search.business.admin.MetadataService;
 import pwd.initializr.search.business.admin.bo.IndexBO;
 
@@ -30,7 +28,7 @@ public class MetadataController extends RobotController implements MetadataApi {
 
     @Override
     public void listIndices() {
-        ObjectList<IndexBO> list = metadataService.list();
+        PageableQueryResult<IndexBO> list = metadataService.list();
         super.outputData(list);
     }
 

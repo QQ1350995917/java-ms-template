@@ -2,7 +2,7 @@ package pwd.initializr.account.business.admin;
 
 import java.util.List;
 import pwd.initializr.account.business.admin.bo.AdminUserBO;
-import pwd.initializr.common.web.business.bo.ObjectList;
+import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.common.web.persistence.entity.EntityAble;
 
 /**
@@ -60,11 +60,11 @@ public interface AdminUserService {
    * @param adminUserBO 查询条件
    * @param pageIndex 页码
    * @param pageSize 页面容量
-   * @return pwd.initializr.common.web.business.bo.ObjectList<pwd.initializr.account.persistence.entity.AdminUserEntity>
+   * @return pwd.initializr.common.web.business.bo.PageableQueryResult<pwd.initializr.account.persistence.entity.AdminUserEntity>
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  ObjectList<AdminUserBO> queryAllByCondition(AdminUserBO adminUserBO, Long pageIndex,
+  PageableQueryResult<AdminUserBO> queryAllByCondition(AdminUserBO adminUserBO, Long pageIndex,
       Long pageSize);
 
   /**

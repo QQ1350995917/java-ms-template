@@ -3,7 +3,7 @@ package pwd.initializr.search.business.user;
 import java.util.LinkedList;
 import java.util.List;
 import org.springframework.stereotype.Service;
-import pwd.initializr.common.web.business.bo.ObjectList;
+import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.search.business.user.bo.BookBO;
 
 /**
@@ -21,8 +21,8 @@ import pwd.initializr.search.business.user.bo.BookBO;
 public class BookServiceImpl implements BookService {
 
   @Override
-  public ObjectList<BookBO> listBookByRange(Long userId) {
-    ObjectList<BookBO> result = new ObjectList<>();
+  public PageableQueryResult<BookBO> listBookByRange(Long userId) {
+    PageableQueryResult<BookBO> result = new PageableQueryResult<>();
     List<BookBO> bookBOS = new LinkedList<>();
     result.setElements(bookBOS);
     return result;

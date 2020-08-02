@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 import pwd.initializr.book.business.remote.bo.SearchResultBO;
 import pwd.initializr.book.business.user.bo.ArticleBO;
 import pwd.initializr.book.business.user.bo.SearchInputBO;
-import pwd.initializr.common.web.business.bo.ObjectList;
+import pwd.initializr.common.web.business.bo.PageableQueryResult;
 
 /**
  * pwd.initializr.book.business.user@ms-web-initializr
@@ -22,8 +22,8 @@ public interface ArticleService {
 
   ArticleBO findArticleById(Long articleId);
 
-  ObjectList<ArticleBO> listArticleByRange(Integer index, Integer size);
+  PageableQueryResult<ArticleBO> listArticleByRange(Integer index, Integer size);
 
-  ObjectList<SearchResultBO> searchArticleByRange(SearchInputBO searchInputBO);
+  PageableQueryResult<SearchResultBO> searchArticleByRange(SearchInputBO searchInputBO);
 
 }

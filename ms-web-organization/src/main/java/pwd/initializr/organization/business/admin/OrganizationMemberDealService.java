@@ -1,7 +1,7 @@
 package pwd.initializr.organization.business.admin;
 
 import org.springframework.stereotype.Service;
-import pwd.initializr.common.web.business.bo.ObjectList;
+import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.organization.business.admin.bo.OrganizationMemberDeal;
 
 /**
@@ -18,7 +18,7 @@ import pwd.initializr.organization.business.admin.bo.OrganizationMemberDeal;
 @Service
 public interface OrganizationMemberDealService {
 
-  ObjectList<OrganizationMemberDeal> listByOrgId(Long orgId, Integer type);
+  PageableQueryResult<OrganizationMemberDeal> listByOrgId(Long orgId, Integer type);
 
-  ObjectList<OrganizationMemberDeal> listByUserId(Long userId, Integer type);
+  PageableQueryResult<OrganizationMemberDeal> listByUserId(Long userId, Integer type);
 }

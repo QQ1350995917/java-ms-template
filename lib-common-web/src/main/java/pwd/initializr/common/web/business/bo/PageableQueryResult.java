@@ -11,7 +11,7 @@ import lombok.ToString;
 /**
  * pwd.initializr.common.web.business.bo@ms-web-initializr
  *
- * <h1>TODO what you want to do?</h1>
+ * <h1>统一业务层分页查询结果结构声明</h1>
  *
  * date 2019-09-14 15:26
  *
@@ -24,7 +24,7 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class ObjectList<T> {
+public class PageableQueryResult<T> {
 
   private List<T> elements = new LinkedList<>();
   /**
@@ -44,7 +44,7 @@ public class ObjectList<T> {
    */
   private Long total;
 
-  public ObjectList(Long total, Long index, Long size, List<T> elements) {
+  public PageableQueryResult(Long total, Long index, Long size, List<T> elements) {
     this.total = total;
     this.index = index;
     this.size = size;
@@ -59,6 +59,15 @@ public class ObjectList<T> {
     }
   }
 
+  /**
+   * <h2>禁止对总页数进行设置，总页数由页面容量和总量计算得出</h2>
+   * date 2020-08-02 23:01
+   *
+   * @param pages 总页数
+   * @return void
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
   private void setPages(Long pages) {
     this.pages = pages;
   }

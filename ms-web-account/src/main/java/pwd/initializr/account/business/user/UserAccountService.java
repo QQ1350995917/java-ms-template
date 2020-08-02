@@ -3,7 +3,7 @@ package pwd.initializr.account.business.user;
 
 import java.util.List;
 import pwd.initializr.account.business.user.bo.UserAccountBO;
-import pwd.initializr.common.web.business.bo.ObjectList;
+import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.common.web.persistence.entity.EntityAble;
 
 /**
@@ -76,10 +76,10 @@ public interface UserAccountService {
    * @param pageSize 查询条数
    * @return 对象列表
    */
-  ObjectList<UserAccountBO> queryAllByCondition(UserAccountBO userAccountBO, Long pageIndex,
+  PageableQueryResult<UserAccountBO> queryAllByCondition(UserAccountBO userAccountBO, Long pageIndex,
       Long pageSize);
 
-  ObjectList<UserAccountBO> queryAllByUserId(Long userId);
+  PageableQueryResult<UserAccountBO> queryAllByUserId(Long userId);
 
   /**
    * 通过ID查询单条数据

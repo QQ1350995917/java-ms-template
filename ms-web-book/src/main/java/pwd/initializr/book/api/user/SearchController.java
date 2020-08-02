@@ -10,7 +10,7 @@ import pwd.initializr.book.business.remote.SearchClientService;
 import pwd.initializr.book.business.remote.bo.SearchResultBO;
 import pwd.initializr.common.web.api.user.UserController;
 import pwd.initializr.common.web.api.vo.Output;
-import pwd.initializr.common.web.business.bo.ObjectList;
+import pwd.initializr.common.web.business.bo.PageableQueryResult;
 
 /**
  * pwd.initializr.book.api.user@ms-web-initializr
@@ -43,7 +43,7 @@ public class SearchController extends UserController implements SearchApi {
       tempSearchInput = input;
     }
 
-    Output<ObjectList<SearchResultBO>> objectListOutput = searchClientService
+    Output<PageableQueryResult<SearchResultBO>> objectListOutput = searchClientService
         .search(Arrays.asList(new String[]{"book","article"}),tempSearchInput.getKeyword(), tempSearchInput.getIndex(),
             tempSearchInput.getSize());
 
@@ -64,7 +64,7 @@ public class SearchController extends UserController implements SearchApi {
       tempSearchInput = input;
     }
 
-    Output<ObjectList<SearchResultBO>> objectListOutput = searchClientService
+    Output<PageableQueryResult<SearchResultBO>> objectListOutput = searchClientService
         .search(Arrays.asList(new String[]{"article"}),tempSearchInput.getKeyword(), tempSearchInput.getIndex(),
             tempSearchInput.getSize());
 
@@ -84,7 +84,7 @@ public class SearchController extends UserController implements SearchApi {
       tempSearchInput = input;
     }
 
-    Output<ObjectList<SearchResultBO>> objectListOutput = searchClientService
+    Output<PageableQueryResult<SearchResultBO>> objectListOutput = searchClientService
         .search(Arrays.asList(new String[]{"book"}),tempSearchInput.getKeyword(), tempSearchInput.getIndex(),
             tempSearchInput.getSize());
 

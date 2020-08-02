@@ -11,7 +11,7 @@ import pwd.initializr.book.business.user.ArticleService;
 import pwd.initializr.book.business.user.bo.ArticleBO;
 import pwd.initializr.common.web.api.user.UserController;
 import pwd.initializr.common.web.api.vo.PageInput;
-import pwd.initializr.common.web.business.bo.ObjectList;
+import pwd.initializr.common.web.business.bo.PageableQueryResult;
 
 /**
  * pwd.initializr.book.api.user@ms-web-initializr
@@ -45,23 +45,23 @@ public class ArticleController extends UserController implements ArticleApi {
 
   @Override
   public void fetchArticles(PageInput input) {
-    ObjectList<ArticleBO> articleBOObjectList = articleService
+    PageableQueryResult<ArticleBO> articleBOPageableQueryResult = articleService
         .listArticleByRange(input.getIndex(), input.getSize());
 
-    ObjectList<ArticleVO> result = new ObjectList<>();
+    PageableQueryResult<ArticleVO> result = new PageableQueryResult<>();
 
-    if (articleBOObjectList != null) {
+    if (articleBOPageableQueryResult != null) {
       List<ArticleVO> resultVOS = new LinkedList<>();
-      articleBOObjectList.getElements().forEach(articleBO -> {
+      articleBOPageableQueryResult.getElements().forEach(articleBO -> {
         ArticleVO articleVO = new ArticleVO();
         BeanUtils.copyProperties(articleBO, articleVO);
         resultVOS.add(articleVO);
       });
 
-      result.setTotal(articleBOObjectList.getTotal());
-      result.setPages(articleBOObjectList.getPages());
-      result.setIndex(articleBOObjectList.getIndex());
-      result.setSize(articleBOObjectList.getSize());
+      result.setTotal(articleBOPageableQueryResult.getTotal());
+      result.setPages(articleBOPageableQueryResult.getPages());
+      result.setIndex(articleBOPageableQueryResult.getIndex());
+      result.setSize(articleBOPageableQueryResult.getSize());
       result.setElements(resultVOS);
     }
     super.outputData(result);

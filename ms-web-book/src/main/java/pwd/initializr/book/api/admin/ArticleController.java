@@ -14,10 +14,9 @@ import pwd.initializr.book.api.admin.vo.ArticleVO;
 import pwd.initializr.book.api.admin.vo.CreateArticleInput;
 import pwd.initializr.book.business.admin.ArticleService;
 import pwd.initializr.book.business.admin.bo.ArticleBO;
-import pwd.initializr.book.business.admin.bo.BookBO;
 import pwd.initializr.common.web.api.admin.AdminController;
 import pwd.initializr.common.web.api.vo.PageInput;
-import pwd.initializr.common.web.business.bo.ObjectList;
+import pwd.initializr.common.web.business.bo.PageableQueryResult;
 
 /**
  * pwd.initializr.book.api.admin@ms-web-initializr
@@ -73,21 +72,21 @@ public class ArticleController extends AdminController implements ArticleApi {
 
   @Override
   public void fetchArticlesByRange(PageInput input) {
-    ObjectList<ArticleBO> articleBOObjectList = articleService
+    PageableQueryResult<ArticleBO> articleBOPageableQueryResult = articleService
         .listArticle(input.getIndex(), input.getSize());
 
-    ObjectList<ArticleVO> result = new ObjectList<>();
-    if (articleBOObjectList != null) {
+    PageableQueryResult<ArticleVO> result = new PageableQueryResult<>();
+    if (articleBOPageableQueryResult != null) {
       List<ArticleVO> resultVOS = new LinkedList<>();
-      articleBOObjectList.getElements().forEach(articleBO -> {
+      articleBOPageableQueryResult.getElements().forEach(articleBO -> {
         ArticleVO articleVO = new ArticleVO();
         BeanUtils.copyProperties(articleBO, articleVO);
         resultVOS.add(articleVO);
       });
-      result.setTotal(articleBOObjectList.getTotal());
-      result.setPages(articleBOObjectList.getPages());
-      result.setIndex(articleBOObjectList.getIndex());
-      result.setSize(articleBOObjectList.getSize());
+      result.setTotal(articleBOPageableQueryResult.getTotal());
+      result.setPages(articleBOPageableQueryResult.getPages());
+      result.setIndex(articleBOPageableQueryResult.getIndex());
+      result.setSize(articleBOPageableQueryResult.getSize());
       result.setElements(resultVOS);
     }
     super.outputData(result);

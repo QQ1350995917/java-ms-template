@@ -4,10 +4,9 @@ import java.util.List;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pwd.initializr.common.web.business.bo.ObjectList;
+import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.organization.business.user.bo.Organization;
 import pwd.initializr.organization.persistence.dao.OrganizationEntity;
-import pwd.initializr.organization.persistence.dao.OrganizationEntity.Progress;
 import pwd.initializr.organization.persistence.mapper.OrganizationMapper;
 
 /**
@@ -54,8 +53,8 @@ public class OrganizationServiceImpl implements OrganizationService {
 
 
   @Override
-  public ObjectList<Organization> listByPidAndStatus(Long pid, Integer status) {
-    ObjectList<Organization> result = new ObjectList<>();
+  public PageableQueryResult<Organization> listByPidAndStatus(Long pid, Integer status) {
+    PageableQueryResult<Organization> result = new PageableQueryResult<>();
     List<OrganizationEntity> organizationEntities = organizationMapper
         .listByPidAndStatus(pid, status);
     for (OrganizationEntity organizationEntity : organizationEntities) {
@@ -68,8 +67,8 @@ public class OrganizationServiceImpl implements OrganizationService {
 
 
   @Override
-  public ObjectList<Organization> listByStatus(Integer status) {
-    ObjectList<Organization> result = new ObjectList<>();
+  public PageableQueryResult<Organization> listByStatus(Integer status) {
+    PageableQueryResult<Organization> result = new PageableQueryResult<>();
     List<OrganizationEntity> organizationEntities = organizationMapper
         .listByStatus(status);
     for (OrganizationEntity organizationEntity : organizationEntities) {

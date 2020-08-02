@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import pwd.initializr.common.web.api.user.UserController;
-import pwd.initializr.common.web.business.bo.ObjectList;
+import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.storage.api.user.vo.DownloadInput;
 import pwd.initializr.storage.api.user.vo.ListInput;
 import pwd.initializr.storage.business.QueryService;
@@ -152,7 +152,7 @@ public class FileController extends UserController implements FileApi {
   @GetMapping(value = {"/list"})
   @Override
   public void list(ListInput input) {
-    ObjectList<StorageBO> storageObjectList = queryService.listFile();
-    super.outputData(storageObjectList);
+    PageableQueryResult<StorageBO> storagePageableQueryResult = queryService.listFile();
+    super.outputData(storagePageableQueryResult);
   }
 }

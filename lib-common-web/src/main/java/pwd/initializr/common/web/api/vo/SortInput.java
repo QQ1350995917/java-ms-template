@@ -2,6 +2,7 @@ package pwd.initializr.common.web.api.vo;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,7 +12,7 @@ import org.apache.commons.lang.StringUtils;
 /**
  * pwd.initializr.common.web.api.vo@ms-web-initializr
  *
- * <h1>TODO what you want to do?</h1>
+ * <h1>API统一排序查询输入结构声明</h1>
  *
  * date 2020-07-27 16:31
  *
@@ -24,11 +25,11 @@ import org.apache.commons.lang.StringUtils;
 @NoArgsConstructor
 @Setter
 @ToString
-public class SortInput {
+public class SortInput implements Serializable {
 
-    @ApiModelProperty(name = "key", value = "排序字段", required = false, example = "0")
+    @ApiModelProperty(name = "key", value = "排序标记", required = false, example = "0")
     private String key;
-    @ApiModelProperty(name = "value", value = "[desc|asc]", required = false, example = "0")
+    @ApiModelProperty(name = "value", value = "[desc|asc]", required = false, example = "desc")
     private String value;
 
     @Override

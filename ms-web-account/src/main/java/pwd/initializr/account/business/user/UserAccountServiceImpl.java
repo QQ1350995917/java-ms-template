@@ -10,7 +10,7 @@ import pwd.initializr.account.business.user.bo.UserAccountBO;
 import pwd.initializr.account.persistence.dao.UserAccountDao;
 import pwd.initializr.account.persistence.entity.AdminAccountType;
 import pwd.initializr.account.persistence.entity.UserAccountEntity;
-import pwd.initializr.common.web.business.bo.ObjectList;
+import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.common.web.persistence.entity.EntityAble;
 
 /**
@@ -72,9 +72,9 @@ public class UserAccountServiceImpl implements UserAccountService {
   }
 
   @Override
-  public ObjectList<UserAccountBO> queryAllByCondition(UserAccountBO userAccountBO, Long pageIndex,
+  public PageableQueryResult<UserAccountBO> queryAllByCondition(UserAccountBO userAccountBO, Long pageIndex,
       Long pageSize) {
-    ObjectList<UserAccountBO> resultData = new ObjectList<>();
+    PageableQueryResult<UserAccountBO> resultData = new PageableQueryResult<>();
     UserAccountEntity userAccountEntity = new UserAccountEntity();
     Long total = userAccountDao.countAllByCondition(userAccountEntity);
     if (total < 1) {
@@ -91,8 +91,8 @@ public class UserAccountServiceImpl implements UserAccountService {
   }
 
   @Override
-  public ObjectList<UserAccountBO> queryAllByUserId(Long userId) {
-    ObjectList<UserAccountBO> resultData = new ObjectList<>();
+  public PageableQueryResult<UserAccountBO> queryAllByUserId(Long userId) {
+    PageableQueryResult<UserAccountBO> resultData = new PageableQueryResult<>();
     List<UserAccountEntity> userAccountEntities = userAccountDao.queryAllByUid(userId);
     for (UserAccountEntity userAccountEntity : userAccountEntities) {
       UserAccountBO userAccountBO = new UserAccountBO();

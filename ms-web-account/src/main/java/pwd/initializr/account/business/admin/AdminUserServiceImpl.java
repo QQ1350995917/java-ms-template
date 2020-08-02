@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import pwd.initializr.account.business.admin.bo.AdminUserBO;
 import pwd.initializr.account.persistence.dao.AdminUserDao;
 import pwd.initializr.account.persistence.entity.AdminUserEntity;
-import pwd.initializr.common.web.business.bo.ObjectList;
+import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.common.web.persistence.entity.EntityAble;
 
 /**
@@ -64,9 +64,9 @@ public class AdminUserServiceImpl implements AdminUserService {
   }
 
   @Override
-  public ObjectList<AdminUserBO> queryAllByCondition(AdminUserBO adminUserBO, Long pageIndex,
+  public PageableQueryResult<AdminUserBO> queryAllByCondition(AdminUserBO adminUserBO, Long pageIndex,
       Long pageSize) {
-    ObjectList<AdminUserBO> result = new ObjectList<>();
+    PageableQueryResult<AdminUserBO> result = new PageableQueryResult<>();
     AdminUserEntity queryCondition = new AdminUserEntity();
     BeanUtils.copyProperties(adminUserBO, queryCondition);
     Long total = this.adminUserDao.countAllByCondition(queryCondition);

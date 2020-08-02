@@ -1,6 +1,6 @@
 package pwd.initializr.organization.business.user;
 
-import pwd.initializr.common.web.business.bo.ObjectList;
+import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.organization.business.user.bo.OrganizationMember;
 
 /**
@@ -38,7 +38,7 @@ public interface OrganizationMemberService {
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  ObjectList<OrganizationMember> findMyCreation(Long memId, Integer status);
+  PageableQueryResult<OrganizationMember> findMyCreation(Long memId, Integer status);
 
 
   /**
@@ -47,11 +47,11 @@ public interface OrganizationMemberService {
    *
    * @param memId 成员ID
    * @param status 成员状态
-   * @return pwd.initializr.common.web.business.bo.ObjectList<pwd.initializr.organization.business.user.bo.OrganizationMember>
+   * @return pwd.initializr.common.web.business.bo.PageableQueryResult<pwd.initializr.organization.business.user.bo.OrganizationMember>
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  ObjectList<OrganizationMember> findMyJoined(Long memId, Integer status);
+  PageableQueryResult<OrganizationMember> findMyJoined(Long memId, Integer status);
 
 
   /**
@@ -73,11 +73,11 @@ public interface OrganizationMemberService {
    *
    * @param orgId 组织ID
    * @param status 成员状态
-   * @return pwd.initializr.common.web.business.bo.ObjectList<pwd.initializr.organization.business.user.bo.OrganizationMember>
+   * @return pwd.initializr.common.web.business.bo.PageableQueryResult<pwd.initializr.organization.business.user.bo.OrganizationMember>
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  ObjectList<OrganizationMember> listByOrgId(Long orgId, Integer status);
+  PageableQueryResult<OrganizationMember> listByOrgId(Long orgId, Integer status);
 
 
   /**

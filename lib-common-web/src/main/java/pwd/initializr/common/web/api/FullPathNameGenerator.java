@@ -10,7 +10,7 @@ import org.springframework.util.StringUtils;
 /**
  * pwd.initializr.account@ms-web-initializr
  *
- * <h1>TODO what you want to do?</h1>
+ * <h1>使用全路径声明标记对象</h1>
  *
  * date 2019-10-12 19:01
  *

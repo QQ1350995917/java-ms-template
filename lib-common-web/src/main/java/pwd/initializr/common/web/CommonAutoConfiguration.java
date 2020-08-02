@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration;
 /**
  * pwd.initializr.common.web@ms-web-initializr
  *
- * <h1>TODO what you want to do?</h1>
+ * <h1>TODO 待删除，删除后尝试启动应用，看是否有异常</h1>
  *
  * date 2020-08-01 22:44
  *

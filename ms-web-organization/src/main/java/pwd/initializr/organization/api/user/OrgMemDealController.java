@@ -3,7 +3,6 @@ package pwd.initializr.organization.api.user;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import javax.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +11,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.common.web.api.user.UserController;
-import pwd.initializr.common.web.business.bo.ObjectList;
+import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.organization.business.user.OrganizationMemberDealService;
 import pwd.initializr.organization.business.user.OrganizationMemberService;
 import pwd.initializr.organization.business.user.bo.OrganizationMember;
@@ -46,7 +45,7 @@ public class OrgMemDealController extends UserController implements OrgMemDealAp
   @PutMapping(value = {"/invite/{userId}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
   public void invite(@PathVariable("userId") Long userId) {
-    ObjectList<OrganizationMember> myCreation = organizationMemberService
+    PageableQueryResult<OrganizationMember> myCreation = organizationMemberService
         .findMyCreation(getUid(), null);
     if (myCreation == null || myCreation.getElements() == null || myCreation.getElements().size() < 1) {
       outputData(400);
@@ -79,9 +78,9 @@ public class OrgMemDealController extends UserController implements OrgMemDealAp
   @Override
   public void invitation(@PathVariable(value = "orgId") Long orgId,
       @PathVariable(value = "type") Integer type) {
-    ObjectList<OrganizationMemberDeal> organizationMemberDealObjectList = organizationMemberDealService
+    PageableQueryResult<OrganizationMemberDeal> organizationMemberDealPageableQueryResult = organizationMemberDealService
         .listByOrgId(orgId, type);
-    outputData(organizationMemberDealObjectList);
+    outputData(organizationMemberDealPageableQueryResult);
   }
 
   @ApiImplicitParams({
@@ -116,9 +115,9 @@ public class OrgMemDealController extends UserController implements OrgMemDealAp
   @Override
   public void application(@PathVariable(value = "orgId") Long userId,
       @PathVariable(value = "type") Integer type) {
-    ObjectList<OrganizationMemberDeal> organizationMemberDealObjectList = organizationMemberDealService
+    PageableQueryResult<OrganizationMemberDeal> organizationMemberDealPageableQueryResult = organizationMemberDealService
         .listByUserId(userId, type);
-    outputData(organizationMemberDealObjectList);
+    outputData(organizationMemberDealPageableQueryResult);
   }
 
   @ApiOperation(value = "成为组织成员")
@@ -129,7 +128,7 @@ public class OrgMemDealController extends UserController implements OrgMemDealAp
     if (oneById.getType() == 0) {
       // 组织同意申请
       // TODO 找到当前用户所创建的组织的id比对
-      ObjectList<OrganizationMember> myCreation = organizationMemberService
+      PageableQueryResult<OrganizationMember> myCreation = organizationMemberService
           .findMyCreation(1L, null);
       if (myCreation == null || myCreation.getElements() == null
           || myCreation.getElements().size() == 0) {

@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import pwd.initializr.book.business.admin.bo.ArticleAroundBO;
 import pwd.initializr.book.business.admin.bo.ArticleBO;
 import pwd.initializr.book.business.admin.bo.BookBO;
-import pwd.initializr.common.web.business.bo.ObjectList;
+import pwd.initializr.common.web.business.bo.PageableQueryResult;
 
 /**
  * pwd.initializr.book.business.admin@ms-web-initializr
@@ -29,9 +29,9 @@ public interface BookService {
 
   BookBO findBookById(Long bookId);
 
-  ObjectList<BookBO> listBook(Integer pageIndex, Integer pageSize);
+  PageableQueryResult<BookBO> listBook(Integer pageIndex, Integer pageSize);
 
-  ObjectList<ArticleBO> listBookTable(Long bookId, Integer index, Integer size);
+  PageableQueryResult<ArticleBO> listBookTable(Long bookId, Integer index, Integer size);
 
   ArticleAroundBO listBookTableByAround(Long bookId, Long tableId);
 

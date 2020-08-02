@@ -21,7 +21,7 @@ import pwd.initializr.book.business.user.bo.ArticleBO;
 import pwd.initializr.book.business.user.bo.SearchInputBO;
 import pwd.initializr.book.persistence.entity.ArticleEntity;
 import pwd.initializr.common.web.api.vo.Output;
-import pwd.initializr.common.web.business.bo.ObjectList;
+import pwd.initializr.common.web.business.bo.PageableQueryResult;
 
 /**
  * pwd.initializr.book.business.user@ms-web-initializr
@@ -58,7 +58,7 @@ public class ArticleServiceImpl implements ArticleService {
   }
 
   @Override
-  public ObjectList<ArticleBO> listArticleByRange(Integer index, Integer size) {
+  public PageableQueryResult<ArticleBO> listArticleByRange(Integer index, Integer size) {
     Pageable pageable = PageRequest.of(index, size);
     Sort sort = new Sort(Direction.DESC, "update_time");
     Query query = new Query(
@@ -74,14 +74,14 @@ public class ArticleServiceImpl implements ArticleService {
       BeanUtils.copyProperties(articleEntity, articleBO);
       articleBOS.add(articleBO);
     });
-    ObjectList<ArticleBO> result = new ObjectList<>();
+    PageableQueryResult<ArticleBO> result = new PageableQueryResult<>();
     result.setElements(articleBOS);
     result.setTotal(count);
     return result;
   }
 
   @Override
-  public ObjectList<SearchResultBO> searchArticleByRange(SearchInputBO searchInputBO) {
+  public PageableQueryResult<SearchResultBO> searchArticleByRange(SearchInputBO searchInputBO) {
     SearchInputBO tempSearchInputBO;
     if (searchInputBO == null) {
       tempSearchInputBO = new SearchInputBO();
@@ -89,7 +89,7 @@ public class ArticleServiceImpl implements ArticleService {
       tempSearchInputBO = searchInputBO;
     }
 
-    Output<ObjectList<SearchResultBO>> objectListOutput = searchClientService
+    Output<PageableQueryResult<SearchResultBO>> objectListOutput = searchClientService
         .search(Arrays.asList(new String[]{"article"}),tempSearchInputBO.getKeyword(), tempSearchInputBO.getIndex(),
             tempSearchInputBO.getSize());
 

@@ -22,7 +22,7 @@ import pwd.initializr.book.persistence.entity.DocumentObjectUpdate;
 import pwd.initializr.common.utils.ConstantDeleteStatus;
 import pwd.initializr.common.utils.ConstantRecommendStatus;
 import pwd.initializr.common.utils.ConstantVisibilityStatus;
-import pwd.initializr.common.web.business.bo.ObjectList;
+import pwd.initializr.common.web.business.bo.PageableQueryResult;
 
 /**
  * pwd.initializr.book.business.admin@ms-web-initializr
@@ -76,19 +76,19 @@ public class ArticleServiceImpl implements ArticleService {
   }
 
   @Override
-  public ObjectList<ArticleBO> listArticle(Integer pageIndex, Integer pageSize) {
+  public PageableQueryResult<ArticleBO> listArticle(Integer pageIndex, Integer pageSize) {
     Query query = new Query().with(PageRequest.of(pageIndex, pageSize)).with(Sort.by(Direction.DESC, "id"));
-    ObjectList<ArticleBO> result = this.listArticle(query);
+    PageableQueryResult<ArticleBO> result = this.listArticle(query);
     result.setIndex(pageIndex.longValue());
     result.setSize(pageSize.longValue());
     return result;
   }
 
   @Override
-  public ObjectList<ArticleBO> listArticle(Long bookId, Integer pageIndex, Integer pageSize) {
+  public PageableQueryResult<ArticleBO> listArticle(Long bookId, Integer pageIndex, Integer pageSize) {
     Query query = new Query().addCriteria(Criteria.where("book_id").is(bookId))
         .with(PageRequest.of(pageIndex, pageSize)).with(Sort.by(Direction.ASC, "id"));
-    ObjectList<ArticleBO> result = this.listArticle(query);
+    PageableQueryResult<ArticleBO> result = this.listArticle(query);
     result.setIndex(pageIndex.longValue());
     result.setSize(pageSize.longValue());
     return result;
@@ -124,7 +124,7 @@ public class ArticleServiceImpl implements ArticleService {
     return update(articleIds, "visibility", ConstantVisibilityStatus.NOT_VISIBILITY.value());
   }
 
-  private ObjectList<ArticleBO> listArticle(Query query) {
+  private PageableQueryResult<ArticleBO> listArticle(Query query) {
     query.fields().exclude("paragraphs");
     List<ArticleEntity> articleEntities = mongoTemplate.find(query, ArticleEntity.class);
     long count = mongoTemplate.count(query, ArticleEntity.class);
@@ -134,7 +134,7 @@ public class ArticleServiceImpl implements ArticleService {
       BeanUtils.copyProperties(articleEntity, articleBO);
       articleBOs.add(articleBO);
     }
-    ObjectList<ArticleBO> result = new ObjectList<>();
+    PageableQueryResult<ArticleBO> result = new PageableQueryResult<>();
     result.setElements(articleBOs);
     result.setTotal(count);
     return result;

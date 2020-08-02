@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import pwd.initializr.common.mw.minio.MinIOClient;
-import pwd.initializr.common.web.business.bo.ObjectList;
+import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.storage.business.bo.StorageBO;
 import pwd.initializr.storage.persistence.dao.StorageEntity;
 
@@ -33,9 +33,9 @@ public class QueryServiceImpl implements QueryService {
   private MinIOClient minIOClient;
 
   @Override
-  public ObjectList<StorageBO> listFile() {
+  public PageableQueryResult<StorageBO> listFile() {
     List<StorageEntity> findAll = mongoTemplate.findAll(StorageEntity.class);
-    ObjectList<StorageBO> result = new ObjectList<>();
+    PageableQueryResult<StorageBO> result = new PageableQueryResult<>();
     List<StorageBO> resultElements = result.getElements();
     for (StorageEntity storageEntity : findAll) {
       StorageBO storageBO = new StorageBO();

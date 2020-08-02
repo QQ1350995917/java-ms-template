@@ -17,7 +17,7 @@ import pwd.initializr.book.business.admin.bo.ArticleBO;
 import pwd.initializr.book.business.admin.bo.BookBO;
 import pwd.initializr.common.web.api.admin.AdminController;
 import pwd.initializr.common.web.api.vo.PageInput;
-import pwd.initializr.common.web.business.bo.ObjectList;
+import pwd.initializr.common.web.business.bo.PageableQueryResult;
 
 /**
  * pwd.initializr.book.api.admin@ms-web-initializr
@@ -71,13 +71,13 @@ public class BookController extends AdminController implements BookApi {
 
   @Override
   public void fetchBookTables(Long bookId, Integer pageIndex, Integer pageSize) {
-    ObjectList<ArticleBO> articleBOObjectList = bookService
+    PageableQueryResult<ArticleBO> articleBOPageableQueryResult = bookService
         .listBookTable(bookId, pageIndex, pageSize);
-    ObjectList<BookTableVO> result = new ObjectList<>();
-    result.setSize(articleBOObjectList.getSize());
-    result.setTotal(articleBOObjectList.getTotal());
-    result.setIndex(articleBOObjectList.getIndex());
-    for (ArticleBO articleBO : articleBOObjectList.getElements()) {
+    PageableQueryResult<BookTableVO> result = new PageableQueryResult<>();
+    result.setSize(articleBOPageableQueryResult.getSize());
+    result.setTotal(articleBOPageableQueryResult.getTotal());
+    result.setIndex(articleBOPageableQueryResult.getIndex());
+    for (ArticleBO articleBO : articleBOPageableQueryResult.getElements()) {
       BookTableVO bookTableVO = new BookTableVO();
       BeanUtils.copyProperties(articleBO, bookTableVO);
       result.getElements().add(bookTableVO);
@@ -109,20 +109,20 @@ public class BookController extends AdminController implements BookApi {
 
   @Override
   public void fetchBooksByRange(PageInput input) {
-    ObjectList<BookBO> bookBOObjectList = bookService.listBook(input.getIndex(), input.getSize());
+    PageableQueryResult<BookBO> bookBOPageableQueryResult = bookService.listBook(input.getIndex(), input.getSize());
 
-    ObjectList<BookVO> result = new ObjectList<>();
-    if (bookBOObjectList != null) {
+    PageableQueryResult<BookVO> result = new PageableQueryResult<>();
+    if (bookBOPageableQueryResult != null) {
       List<BookVO> resultVOS = new LinkedList<>();
-      bookBOObjectList.getElements().forEach(bookBO -> {
+      bookBOPageableQueryResult.getElements().forEach(bookBO -> {
         BookVO bookVO = new BookVO();
         BeanUtils.copyProperties(bookBO, bookVO);
         resultVOS.add(bookVO);
       });
-      result.setTotal(bookBOObjectList.getTotal());
-      result.setPages(bookBOObjectList.getPages());
-      result.setIndex(bookBOObjectList.getIndex());
-      result.setSize(bookBOObjectList.getSize());
+      result.setTotal(bookBOPageableQueryResult.getTotal());
+      result.setPages(bookBOPageableQueryResult.getPages());
+      result.setIndex(bookBOPageableQueryResult.getIndex());
+      result.setSize(bookBOPageableQueryResult.getSize());
       result.setElements(resultVOS);
     }
     super.outputData(result);

@@ -9,7 +9,7 @@ import lombok.ToString;
 /**
  * pwd.initializr.common.web.business.bo@ms-web-initializr
  *
- * <h1>TODO what you want to do?</h1>
+ * <h1>统一业务层埋点数据结构声明</h1>
  *
  * date 2019-09-19 14:57
  *

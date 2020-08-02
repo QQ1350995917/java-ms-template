@@ -1,9 +1,9 @@
 package pwd.initializr.search.business.user;
 
 import org.springframework.stereotype.Service;
+import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.search.business.user.bo.ArticleAroundBO;
 import pwd.initializr.search.business.user.bo.ArticleBO;
-import pwd.initializr.common.web.business.bo.ObjectList;
 
 /**
  * pwd.initializr.book.business.user@ms-web-initializr
@@ -19,7 +19,7 @@ import pwd.initializr.common.web.business.bo.ObjectList;
 @Service
 public interface ArticleService {
 
-  ObjectList<ArticleBO> listTablesInBook(Long bookId);
+  PageableQueryResult<ArticleBO> listTablesInBook(Long bookId);
 
   ArticleAroundBO listTablesAroundInBook(Long bookId, Long tableId);
 

@@ -1,7 +1,7 @@
 package pwd.initializr.search.business.admin;
 
 import java.util.List;
-import pwd.initializr.common.web.business.bo.ObjectList;
+import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.search.business.admin.bo.IndexBO;
 import pwd.initializr.search.business.admin.bo.MappingBO;
 
@@ -18,7 +18,7 @@ import pwd.initializr.search.business.admin.bo.MappingBO;
  */
 public interface MetadataService {
 
-    ObjectList<IndexBO> list();
+    PageableQueryResult<IndexBO> list();
 
     boolean create(String index);
 

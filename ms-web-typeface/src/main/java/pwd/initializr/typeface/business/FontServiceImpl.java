@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pwd.initializr.common.web.business.bo.ObjectList;
+import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.typeface.business.bo.FontBO;
 import pwd.initializr.typeface.persistence.dao.FontMapper;
 import pwd.initializr.typeface.persistence.entity.FontEntity;
@@ -31,7 +31,7 @@ public class FontServiceImpl implements FontService {
   private FontMapper fontMapper;
 
   @Override
-  public ObjectList<FontBO> findByCondition(FontBO fontBO, Integer pageIndex,
+  public PageableQueryResult<FontBO> findByCondition(FontBO fontBO, Integer pageIndex,
       Integer pageSize) {
     FontEntity fontEntity = new FontEntity();
     BeanUtils.copyProperties(fontBO, fontEntity);
@@ -48,12 +48,12 @@ public class FontServiceImpl implements FontService {
             obj.getThumbUrl(), obj.getStatus(), obj.getCreateTime(), obj.getUpdateTime()))
         .collect(Collectors.toList());
 
-    ObjectList<FontBO> fontBOObjectList = new ObjectList<>();
-    fontBOObjectList.setTotal(count.longValue());
-    fontBOObjectList.setIndex(pageIndex.longValue());
-    fontBOObjectList.setSize(pageSize.longValue());
-    fontBOObjectList.setElements(collect);
-    return fontBOObjectList;
+    PageableQueryResult<FontBO> fontBOPageableQueryResult = new PageableQueryResult<>();
+    fontBOPageableQueryResult.setTotal(count.longValue());
+    fontBOPageableQueryResult.setIndex(pageIndex.longValue());
+    fontBOPageableQueryResult.setSize(pageSize.longValue());
+    fontBOPageableQueryResult.setElements(collect);
+    return fontBOPageableQueryResult;
   }
 
   @Override

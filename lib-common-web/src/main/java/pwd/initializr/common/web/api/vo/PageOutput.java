@@ -13,7 +13,7 @@ import lombok.ToString;
 /**
  * pwd.initializr.common.web.api.vo@ms-web-initializr
  *
- * <h1>TODO what you want to do?</h1>
+ * <h1>API统一分页查询输出结构声明</h1>
  *
  * date 2020-03-29 23:38
  *

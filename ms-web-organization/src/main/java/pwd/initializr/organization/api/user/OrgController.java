@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.common.web.api.user.UserController;
-import pwd.initializr.common.web.business.bo.ObjectList;
+import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.organization.api.user.vo.CreateOrgInput;
 import pwd.initializr.organization.api.user.vo.CreateOrgOutput;
 import pwd.initializr.organization.api.user.vo.ListMineOrgOutput;
@@ -54,20 +54,20 @@ public class OrgController extends UserController implements OrgApi {
   @GetMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
   public void listOrgByMemId() {
-    ObjectList<OrganizationMember> organizationMemberObjectList = organizationMemberService
+    PageableQueryResult<OrganizationMember> organizationMemberPageableQueryResult = organizationMemberService
         .findMyJoined(getUid(), null);
     List<Long> orgIds = new ArrayList<>();
-    for (OrganizationMember element : organizationMemberObjectList.getElements()) {
+    for (OrganizationMember element : organizationMemberPageableQueryResult.getElements()) {
       orgIds.add(element.getOrgId());
     }
-    ObjectList<Organization> organizationObjectList = organizationService
+    PageableQueryResult<Organization> organizationPageableQueryResult = organizationService
         .listById(orgIds.toArray(new Long[]{}), null);
     Map<Long, Organization> temp = new HashMap<>();
-    for (Organization organization : organizationObjectList.getElements()) {
+    for (Organization organization : organizationPageableQueryResult.getElements()) {
       temp.put(organization.getId(), organization);
     }
-    ObjectList<ListMineOrgOutput> result = new ObjectList<>();
-    for (OrganizationMember organizationMember : organizationMemberObjectList.getElements()) {
+    PageableQueryResult<ListMineOrgOutput> result = new PageableQueryResult<>();
+    for (OrganizationMember organizationMember : organizationMemberPageableQueryResult.getElements()) {
       ListMineOrgOutput listMineOrgOutput = new ListMineOrgOutput();
       BeanUtils.copyProperties(temp.get(organizationMember.getOrgId()), listMineOrgOutput);
       listMineOrgOutput.setMyLevel(organizationMember.getLevel());
@@ -82,14 +82,14 @@ public class OrgController extends UserController implements OrgApi {
   @PostMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
   public void create(@RequestBody CreateOrgInput input) {
-    ObjectList<OrganizationMember> myCreation = organizationMemberService
+    PageableQueryResult<OrganizationMember> myCreation = organizationMemberService
         .findMyCreation(getUid(), null);
     if (myCreation != null && myCreation.getElements() != null
         && myCreation.getElements().size() > 0) {
       // 已经创建过一个组织
       outputData(400);
     } else {
-      ObjectList<OrganizationMember> myJoined = organizationMemberService
+      PageableQueryResult<OrganizationMember> myJoined = organizationMemberService
           .findMyJoined(getUid(), null);
       if (myJoined != null && myJoined.getElements() != null
           && myJoined.getElements().size() > 0) {

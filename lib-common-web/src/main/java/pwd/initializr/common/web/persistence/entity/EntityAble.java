@@ -7,7 +7,7 @@ import lombok.ToString;
 /**
  * pwd.initializr.common.web.persistence.entity@ms-web-initializr
  *
- * <h1>TODO what you want to do?</h1>
+ * <h1>统一持久层数据可用性结构声明</h1>
  *
  * date 2020-07-21 22:36
  *

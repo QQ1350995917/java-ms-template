@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import pwd.initializr.book.business.remote.bo.SearchResultBO;
 import pwd.initializr.common.web.api.vo.Meta;
 import pwd.initializr.common.web.api.vo.Output;
-import pwd.initializr.common.web.business.bo.ObjectList;
+import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.search.rpc.RPCSearchInitInput;
 
 /**
@@ -31,7 +31,7 @@ public class SearchClientServiceFallbackImpl implements SearchClientService {
 
 
     @Override
-    public Output<ObjectList<SearchResultBO>> search(@RequestParam("indices") List<String> indices,
+    public Output<PageableQueryResult<SearchResultBO>> search(@RequestParam("indices") List<String> indices,
         String keyword, Integer index,
         Integer pageSize) {
         return new Output<>();

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.common.web.api.user.UserController;
-import pwd.initializr.common.web.business.bo.ObjectList;
+import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.organization.business.user.OrganizationMemberInfoService;
 import pwd.initializr.organization.business.user.OrganizationMemberService;
 import pwd.initializr.organization.business.user.bo.OrganizationMember;
@@ -47,10 +47,10 @@ public class OrgMemController extends UserController implements OrgMemApi {
   @GetMapping(value = {"/{orgId}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
   public void listOrgMem(@PathVariable("orgId") Long orgId) {
-    ObjectList<OrganizationMember> organizationMemberObjectList = organizationMemberService
+    PageableQueryResult<OrganizationMember> organizationMemberPageableQueryResult = organizationMemberService
         .listByOrgId(orgId, null);// TODO 支持状态
     List<Long> memIds = new LinkedList<>();
-    for (OrganizationMember element : organizationMemberObjectList.getElements()) {
+    for (OrganizationMember element : organizationMemberPageableQueryResult.getElements()) {
       memIds.add(element.getMemId());
     }
     List<OrganizationMemberInfo> organizationMemberInfos = organizationMemberInfoService

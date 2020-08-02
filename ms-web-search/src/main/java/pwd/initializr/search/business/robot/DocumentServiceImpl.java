@@ -29,7 +29,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.stereotype.Service;
-import pwd.initializr.common.web.business.bo.ObjectList;
+import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.search.business.robot.bo.DocumentBO;
 import pwd.initializr.search.business.robot.bo.SearchBodyVOBO;
 import pwd.initializr.search.business.robot.bo.SearchInputBO;
@@ -83,7 +83,7 @@ public class DocumentServiceImpl implements DocumentService {
 
 
   @Override
-  public ObjectList<SearchBodyVOBO> search(SearchInputBO searchInputBO) {
+  public PageableQueryResult<SearchBodyVOBO> search(SearchInputBO searchInputBO) {
     String keyword = searchInputBO.getKeyword();
     if (keyword == null) {
       return null;
@@ -104,7 +104,7 @@ public class DocumentServiceImpl implements DocumentService {
         searchInputBO.getIndices().toArray(new String[]{}));
   }
 
-  private ObjectList<SearchBodyVOBO> search(QueryBuilder query, Integer pageIndex,
+  private PageableQueryResult<SearchBodyVOBO> search(QueryBuilder query, Integer pageIndex,
       Integer pageSize,
       String... indices) {
     Client client = elasticsearchTemplate.getClient();
@@ -121,7 +121,7 @@ public class DocumentServiceImpl implements DocumentService {
         .execute()
         .actionGet();
 
-    ObjectList<SearchBodyVOBO> searchResultBOObjectList = new ObjectList<>();
+    PageableQueryResult<SearchBodyVOBO> searchResultBOPageableQueryResult = new PageableQueryResult<>();
 
     if (searchResponse.status() == RestStatus.OK) {
       SearchHits searchHits = searchResponse.getHits();
@@ -164,15 +164,15 @@ public class DocumentServiceImpl implements DocumentService {
             .setEsLinkTo(source.get("esLinkTo") == null ? null : source.get("esLinkTo").toString());
         searchResultBO.setEsUpdateTime(source.get("esUpdateTime") == null ? null
             : source.get("esUpdateTime").toString());
-        searchResultBOObjectList.getElements().add(searchResultBO);
+        searchResultBOPageableQueryResult.getElements().add(searchResultBO);
       }
-      searchResultBOObjectList.setIndex(pageIndex.longValue());
-      searchResultBOObjectList.setSize(pageSize.longValue());
-      searchResultBOObjectList.setTotal(searchHits.getTotalHits());
+      searchResultBOPageableQueryResult.setIndex(pageIndex.longValue());
+      searchResultBOPageableQueryResult.setSize(pageSize.longValue());
+      searchResultBOPageableQueryResult.setTotal(searchHits.getTotalHits());
     } else {
       System.out.println(searchResponse.status());
     }
-    return searchResultBOObjectList;
+    return searchResultBOPageableQueryResult;
   }
 
   private HighlightBuilder getHighlightBuilder() {

@@ -9,7 +9,6 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 import org.elasticsearch.action.admin.indices.get.GetIndexResponse;
 import org.elasticsearch.action.admin.indices.mapping.put.PutMappingResponse;
-import org.elasticsearch.cluster.metadata.AliasMetaData;
 import org.elasticsearch.cluster.metadata.MappingMetaData;
 import org.elasticsearch.common.collect.ImmutableOpenMap;
 import org.elasticsearch.common.settings.Settings;
@@ -18,7 +17,7 @@ import org.elasticsearch.common.xcontent.XContentFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.stereotype.Service;
-import pwd.initializr.common.web.business.bo.ObjectList;
+import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.search.business.admin.bo.IndexBO;
 import pwd.initializr.search.business.admin.bo.MappingBO;
 import pwd.initializr.search.business.admin.bo.MappingFieldBO;
@@ -41,8 +40,8 @@ public class MetadataServiceImpl implements MetadataService {
     private ElasticsearchTemplate elasticsearchTemplate;
 
     @Override
-    public ObjectList<IndexBO> list() {
-        ObjectList<IndexBO> indexBOObjectList = new ObjectList<>();
+    public PageableQueryResult<IndexBO> list() {
+        PageableQueryResult<IndexBO> indexBOPageableQueryResult = new PageableQueryResult<>();
         GetIndexResponse getIndexResponse = elasticsearchTemplate.getClient().admin().indices()
             .prepareGetIndex().get();
         String[] indices = getIndexResponse.getIndices();
@@ -84,10 +83,10 @@ public class MetadataServiceImpl implements MetadataService {
                     });
                     indexBO.setProperties(mappingBOS);
                 }
-                indexBOObjectList.getElements().add(indexBO);
+                indexBOPageableQueryResult.getElements().add(indexBO);
             }
         });
-        return indexBOObjectList;
+        return indexBOPageableQueryResult;
     }
 
     @Override

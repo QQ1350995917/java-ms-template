@@ -1,9 +1,8 @@
 package pwd.initializr.organization.business.admin;
 
-import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pwd.initializr.common.web.business.bo.ObjectList;
+import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.organization.business.admin.bo.OrganizationProgress;
 import pwd.initializr.organization.persistence.dao.OrganizationEntity.Progress;
 
@@ -22,7 +21,7 @@ import pwd.initializr.organization.persistence.dao.OrganizationEntity.Progress;
 public interface OrganizationProgressService {
 
 
-  ObjectList<OrganizationProgress> listReviewByOrgId(Long orgId, Integer status);
+  PageableQueryResult<OrganizationProgress> listReviewByOrgId(Long orgId, Integer status);
 
   Progress[] listReviewOption();
 

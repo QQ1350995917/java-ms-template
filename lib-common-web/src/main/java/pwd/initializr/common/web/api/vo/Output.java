@@ -1,12 +1,13 @@
 package pwd.initializr.common.web.api.vo;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import java.io.Serializable;
 import pwd.initializr.common.web.api.BaseException;
 
 /**
  * pwd.initializr.common.web.api@ms-web-initializr
  *
- * <h1>TODO what you want to do?</h1>
+ * <h1>API统一输出结构声明</h1>
  *
  * date 2019-09-14 15:23
  *
@@ -15,7 +16,7 @@ import pwd.initializr.common.web.api.BaseException;
  * @since DistributionVersion
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class Output<T> {
+public class Output<T> implements Serializable {
 
   private T data;
 

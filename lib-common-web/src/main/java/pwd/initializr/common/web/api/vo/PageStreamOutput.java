@@ -2,7 +2,8 @@ package pwd.initializr.common.web.api.vo;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import javax.validation.constraints.NotNull;
+import java.util.LinkedList;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,23 +13,23 @@ import lombok.ToString;
 /**
  * pwd.initializr.common.web.api.vo@ms-web-initializr
  *
- * <h1>TODO what you want to do?</h1>
+ * <h1>API统一流式分页查询输出结构声明</h1>
  *
- * date 2019-09-23 19:22
+ * date 2020-08-02 22:49
  *
- * @author DingPengwei[dingpengwei@foxmail.com]
+ * @author DingPengwei[www.dingpengwei@foxmail.com]
  * @version 1.0.0
  * @since DistributionVersion
  */
+@ApiModel
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @ToString
-@ApiModel(value = "SMSCodeByPhoneNumber", description = "获取手机验证码")
-public class SMSCodeInput {
+public class PageStreamOutput<T> extends PageStreamInput {
 
-  @ApiModelProperty(name = "phoneNumber", value = "手机号码", required = true, example = "18511694468")
-  @NotNull(message = "0")
-  private String phoneNumber;
+  @ApiModelProperty(value = "数据")
+  private List<T> elements = new LinkedList<>();
+
 }

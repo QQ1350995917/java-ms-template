@@ -6,13 +6,12 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.common.web.api.admin.AdminController;
-import pwd.initializr.common.web.business.bo.ObjectList;
+import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.organization.api.admin.vo.OrgReviewInput;
 import pwd.initializr.organization.api.admin.vo.OrgReviewOutput;
 import pwd.initializr.organization.business.admin.OrganizationProgressService;
@@ -45,9 +44,9 @@ public class OrgReviewController extends AdminController implements OrgReviewApi
   @GetMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
   public void listReview(Long orgId) {
-    ObjectList<OrganizationProgress> organizationProgressObjectList = organizationProgressService
+    PageableQueryResult<OrganizationProgress> organizationProgressPageableQueryResult = organizationProgressService
         .listReviewByOrgId(orgId, null);
-    outputData(organizationProgressObjectList);
+    outputData(organizationProgressPageableQueryResult);
   }
 
   @ApiOperation(value = "可选状态列表")

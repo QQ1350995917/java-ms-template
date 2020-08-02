@@ -1,10 +1,9 @@
 package pwd.initializr.organization.business.user;
 
 import org.springframework.transaction.annotation.Transactional;
-import pwd.initializr.common.web.business.bo.ObjectList;
+import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.organization.business.user.bo.Organization;
 import pwd.initializr.organization.business.user.bo.OrganizationMember;
-import pwd.initializr.organization.business.user.bo.OrganizationProgress;
 
 /**
  * pwd.initializr.account.business.user@ms-web-initializr
@@ -39,11 +38,11 @@ public interface OrganizationService {
    *
    * @param orgIds 组织ID集合
    * @param status 组织状态
-   * @return pwd.initializr.common.web.business.bo.ObjectList<pwd.initializr.organization.business.user.bo.Organization>
+   * @return pwd.initializr.common.web.business.bo.PageableQueryResult<pwd.initializr.organization.business.user.bo.Organization>
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  ObjectList<Organization> listById(Long[] orgIds, Integer status);
+  PageableQueryResult<Organization> listById(Long[] orgIds, Integer status);
 
 
   /**
@@ -52,11 +51,11 @@ public interface OrganizationService {
    *
    * @param pid 上级组织ID
    * @param status 子组织状态
-   * @return pwd.initializr.common.web.business.bo.ObjectList<pwd.initializr.organization.business.user.bo.Organization>
+   * @return pwd.initializr.common.web.business.bo.PageableQueryResult<pwd.initializr.organization.business.user.bo.Organization>
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  ObjectList<Organization> listByPid(Long pid, Integer status);
+  PageableQueryResult<Organization> listByPid(Long pid, Integer status);
 
 
   /**

@@ -2,7 +2,7 @@ package pwd.initializr.search.business.user;
 
 import org.springframework.stereotype.Service;
 import pwd.initializr.search.business.user.bo.BookBO;
-import pwd.initializr.common.web.business.bo.ObjectList;
+import pwd.initializr.common.web.business.bo.PageableQueryResult;
 
 /**
  * pwd.initializr.book.business.admin@ms-web-initializr
@@ -18,7 +18,7 @@ import pwd.initializr.common.web.business.bo.ObjectList;
 @Service
 public interface BookService {
 
-  ObjectList<BookBO> listBookByRange(Long userId);
+  PageableQueryResult<BookBO> listBookByRange(Long userId);
 
   BookBO findBookById(Long bookId);
 

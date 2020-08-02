@@ -9,13 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestAttribute;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.common.web.api.user.UserController;
-import pwd.initializr.common.web.business.bo.ObjectList;
+import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.typeface.api.user.vo.FontListInput;
 import pwd.initializr.typeface.api.user.vo.FontListOutput;
 import pwd.initializr.typeface.api.user.vo.FontVO;
@@ -51,7 +48,7 @@ public class FontController extends UserController implements FontApi {
   public void listFont(FontListInput input) {
     FontBO fontBO = new FontBO();
     fontBO.setTitle(input.getTitle());
-    ObjectList<FontBO> byCondition = fontService
+    PageableQueryResult<FontBO> byCondition = fontService
         .findByCondition(fontBO, input.getIndex(), input.getSize());
     FontListOutput<FontVO> output = new FontListOutput<FontVO>();
     BeanUtils.copyProperties(input, output);

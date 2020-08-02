@@ -3,7 +3,7 @@ package pwd.initializr.book.business.admin;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import pwd.initializr.book.business.admin.bo.ArticleBO;
-import pwd.initializr.common.web.business.bo.ObjectList;
+import pwd.initializr.common.web.business.bo.PageableQueryResult;
 
 
 /**
@@ -28,9 +28,9 @@ public interface ArticleService {
 
   ArticleBO findArticleById(Long articleId);
 
-  ObjectList<ArticleBO> listArticle(Integer pageIndex, Integer pageSize);
+  PageableQueryResult<ArticleBO> listArticle(Integer pageIndex, Integer pageSize);
 
-  ObjectList<ArticleBO> listArticle(Long bookId, Integer pageIndex, Integer pageSize);
+  PageableQueryResult<ArticleBO> listArticle(Long bookId, Integer pageIndex, Integer pageSize);
 
   Integer recommendArticles(List<Long> articleIds);
 

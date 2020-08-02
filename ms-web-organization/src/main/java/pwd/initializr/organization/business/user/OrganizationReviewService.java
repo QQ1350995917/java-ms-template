@@ -2,8 +2,7 @@ package pwd.initializr.organization.business.user;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pwd.initializr.common.web.business.bo.ObjectList;
-import pwd.initializr.organization.business.user.bo.Organization;
+import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.organization.business.user.bo.OrganizationProgress;
 
 /**
@@ -26,11 +25,11 @@ public interface OrganizationReviewService {
    *
    * @param orgId 组织ID
    * @param status 组织状态
-   * @return pwd.initializr.common.web.business.bo.ObjectList<pwd.initializr.organization.business.user.bo.OrganizationProgress>
+   * @return pwd.initializr.common.web.business.bo.PageableQueryResult<pwd.initializr.organization.business.user.bo.OrganizationProgress>
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  ObjectList<OrganizationProgress> listReviewPending(Long orgId,Integer status);
+  PageableQueryResult<OrganizationProgress> listReviewPending(Long orgId,Integer status);
 
   /**
    * <h2>提交审核组织</h2>

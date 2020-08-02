@@ -28,7 +28,7 @@ import pwd.initializr.account.business.admin.bo.AdminAccountBO;
 import pwd.initializr.account.business.admin.bo.AdminUserBO;
 import pwd.initializr.common.web.api.vo.PageInput;
 import pwd.initializr.common.web.api.vo.PageOutput;
-import pwd.initializr.common.web.business.bo.ObjectList;
+import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.common.web.persistence.entity.EntityAble;
 
 /**
@@ -138,17 +138,17 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
   @Override
   public void listUser(@RequestParam PageInput pageInput, @RequestParam AdminUserInput input) {
     AdminUserBO queryCondition = new AdminUserBO();
-    ObjectList<AdminUserBO> adminUserBOObjectList = adminUserService
+    PageableQueryResult<AdminUserBO> adminUserBOPageableQueryResult = adminUserService
         .queryAllByCondition(queryCondition, pageInput.getIndex(), pageInput.getSize());
     PageOutput<AdminUserOutput> result = new PageOutput<>();
-    adminUserBOObjectList.getElements().forEach(adminUserBO -> {
+    adminUserBOPageableQueryResult.getElements().forEach(adminUserBO -> {
       AdminUserOutput adminUserOutput = new AdminUserOutput();
       BeanUtils.copyProperties(adminUserBO, adminUserOutput);
       result.getElements().add(adminUserOutput);
     });
-    result.setTotal(adminUserBOObjectList.getTotal());
-    result.setIndex(adminUserBOObjectList.getIndex());
-    result.setSize(adminUserBOObjectList.getSize());
+    result.setTotal(adminUserBOPageableQueryResult.getTotal());
+    result.setIndex(adminUserBOPageableQueryResult.getIndex());
+    result.setSize(adminUserBOPageableQueryResult.getSize());
     outputData(result);
   }
 

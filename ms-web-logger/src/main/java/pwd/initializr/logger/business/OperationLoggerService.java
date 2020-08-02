@@ -1,6 +1,6 @@
 package pwd.initializr.logger.business;
 
-import pwd.initializr.common.web.business.bo.ObjectList;
+import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.logger.business.bo.OperationLogger;
 
 /**
@@ -18,12 +18,12 @@ public interface OperationLoggerService {
 
   OperationLogger save(OperationLogger operationLogger);
 
-  ObjectList<OperationLogger> list(Integer pageSize, Long lastId);
+  PageableQueryResult<OperationLogger> list(Integer pageSize, Long lastId);
 
-  ObjectList<OperationLogger> list(Integer pageSize, Long lastId, String keyWord);
+  PageableQueryResult<OperationLogger> list(Integer pageSize, Long lastId, String keyWord);
 
-  ObjectList<OperationLogger> listByUserId(Long userId, Integer pageSize, Long lastId);
+  PageableQueryResult<OperationLogger> listByUserId(Long userId, Integer pageSize, Long lastId);
 
-  ObjectList<OperationLogger> listByUserId(Long userId, Integer pageSize, Long lastId,
+  PageableQueryResult<OperationLogger> listByUserId(Long userId, Integer pageSize, Long lastId,
       String keyWord);
 }

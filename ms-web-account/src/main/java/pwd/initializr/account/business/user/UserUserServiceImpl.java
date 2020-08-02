@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import pwd.initializr.account.business.user.bo.UserUserBO;
 import pwd.initializr.account.persistence.dao.UserUserDao;
 import pwd.initializr.account.persistence.entity.UserUserEntity;
-import pwd.initializr.common.web.business.bo.ObjectList;
+import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.common.web.persistence.entity.EntityAble;
 
 /**
@@ -49,9 +49,9 @@ public class UserUserServiceImpl implements UserUserService {
   }
 
   @Override
-  public ObjectList<UserUserBO> queryAllByCondition(UserUserBO userUserBO, Long pageIndex,
+  public PageableQueryResult<UserUserBO> queryAllByCondition(UserUserBO userUserBO, Long pageIndex,
       Long pageSize) {
-    ObjectList<UserUserBO> resultData = new ObjectList<>();
+    PageableQueryResult<UserUserBO> resultData = new PageableQueryResult<>();
     UserUserEntity queryCondition = new UserUserEntity();
     BeanUtils.copyProperties(userUserBO, queryCondition);
     Long queryCount = userUserDao.countAllByCondition(queryCondition);

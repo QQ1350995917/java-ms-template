@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.common.web.api.admin.AdminController;
-import pwd.initializr.common.web.business.bo.ObjectList;
+import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.organization.business.admin.OrganizationMemberDealService;
 import pwd.initializr.organization.business.admin.bo.OrganizationMemberDeal;
 
@@ -42,9 +42,9 @@ public class OrgMemDealController extends AdminController implements OrgMemDealA
   @Override
   public void invitation(@PathVariable(value = "orgId") Long orgId,
       @PathVariable(value = "type") Integer type) {
-    ObjectList<OrganizationMemberDeal> organizationMemberDealObjectList = organizationMemberDealService
+    PageableQueryResult<OrganizationMemberDeal> organizationMemberDealPageableQueryResult = organizationMemberDealService
         .listByOrgId(orgId, type);
-    outputData(organizationMemberDealObjectList);
+    outputData(organizationMemberDealPageableQueryResult);
   }
 
 
@@ -58,8 +58,8 @@ public class OrgMemDealController extends AdminController implements OrgMemDealA
   @Override
   public void application(@PathVariable(value = "userId") Long userId,
       @PathVariable(value = "type") Integer type) {
-    ObjectList<OrganizationMemberDeal> organizationMemberDealObjectList = organizationMemberDealService
+    PageableQueryResult<OrganizationMemberDeal> organizationMemberDealPageableQueryResult = organizationMemberDealService
         .listByUserId(userId, type);
-    outputData(organizationMemberDealObjectList);
+    outputData(organizationMemberDealPageableQueryResult);
   }
 }

@@ -1,7 +1,7 @@
 package pwd.initializr.storage.business;
 
 import java.io.InputStream;
-import pwd.initializr.common.web.business.bo.ObjectList;
+import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.storage.business.bo.StorageBO;
 
 /**
@@ -17,7 +17,7 @@ import pwd.initializr.storage.business.bo.StorageBO;
  */
 public interface QueryService {
 
-  ObjectList<StorageBO> listFile();
+  PageableQueryResult<StorageBO> listFile();
 
   StorageBO findOneByUrl(String url);
 

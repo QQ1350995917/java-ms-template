@@ -12,7 +12,7 @@ import pwd.initializr.account.persistence.dao.AdminAccountDao;
 import pwd.initializr.account.persistence.entity.AdminAccountEntity;
 import pwd.initializr.account.persistence.entity.AdminAccountType;
 import pwd.initializr.common.utils.Cryptographer;
-import pwd.initializr.common.web.business.bo.ObjectList;
+import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.common.web.persistence.entity.EntityAble;
 
 /**
@@ -81,9 +81,9 @@ public class AdminAccountServiceImpl implements AdminAccountService {
   }
 
   @Override
-  public ObjectList<AdminAccountBO> queryAllByCondition(AdminAccountBO adminAccountBO,
+  public PageableQueryResult<AdminAccountBO> queryAllByCondition(AdminAccountBO adminAccountBO,
       Long pageIndex, Long pageSize) {
-    ObjectList<AdminAccountBO> result = new ObjectList<>();
+    PageableQueryResult<AdminAccountBO> result = new PageableQueryResult<>();
     AdminAccountEntity queryCondition = new AdminAccountEntity();
     BeanUtils.copyProperties(adminAccountBO, queryCondition);
     Long total = this.adminAccountDao.countAllByCondition(queryCondition);

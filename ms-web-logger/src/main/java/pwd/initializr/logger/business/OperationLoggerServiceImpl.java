@@ -3,7 +3,7 @@ package pwd.initializr.logger.business;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
-import pwd.initializr.common.web.business.bo.ObjectList;
+import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.logger.business.bo.OperationLogger;
 
 /**
@@ -30,22 +30,22 @@ public class OperationLoggerServiceImpl implements OperationLoggerService {
   }
 
   @Override
-  public ObjectList<OperationLogger> list(Integer pageSize, Long lastId) {
+  public PageableQueryResult<OperationLogger> list(Integer pageSize, Long lastId) {
     return null;
   }
 
   @Override
-  public ObjectList<OperationLogger> list(Integer pageSize, Long lastId, String keyWord) {
+  public PageableQueryResult<OperationLogger> list(Integer pageSize, Long lastId, String keyWord) {
     return null;
   }
 
   @Override
-  public ObjectList<OperationLogger> listByUserId(Long userId, Integer pageSize, Long lastId) {
+  public PageableQueryResult<OperationLogger> listByUserId(Long userId, Integer pageSize, Long lastId) {
     return null;
   }
 
   @Override
-  public ObjectList<OperationLogger> listByUserId(Long userId, Integer pageSize, Long lastId,
+  public PageableQueryResult<OperationLogger> listByUserId(Long userId, Integer pageSize, Long lastId,
       String keyWord) {
     return null;
   }

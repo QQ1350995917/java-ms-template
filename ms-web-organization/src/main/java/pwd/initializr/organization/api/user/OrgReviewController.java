@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.common.web.api.user.UserController;
-import pwd.initializr.common.web.business.bo.ObjectList;
+import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.organization.api.user.vo.ReviewPendingInput;
 import pwd.initializr.organization.api.user.vo.ReviewPendingOutput;
 import pwd.initializr.organization.business.user.OrganizationReviewService;
@@ -47,10 +47,10 @@ public class OrgReviewController extends UserController implements OrgReviewApi 
   @GetMapping(value = {"/{orgId}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
   public void listReviewPending(@PathVariable("orgId") Long orgId) {
-    ObjectList<OrganizationProgress> organizationProgressObjectList = organizationProgressService
+    PageableQueryResult<OrganizationProgress> organizationProgressPageableQueryResult = organizationProgressService
         .listReviewPending(orgId, null);
     List<ReviewPendingOutput> result = new LinkedList<>();
-    for (OrganizationProgress organizationProgress : organizationProgressObjectList.getElements()) {
+    for (OrganizationProgress organizationProgress : organizationProgressPageableQueryResult.getElements()) {
       ReviewPendingOutput reviewPendingOutput = new ReviewPendingOutput();
       BeanUtils.copyProperties(organizationProgress, reviewPendingOutput);
       result.add(reviewPendingOutput);

@@ -1,6 +1,6 @@
 package pwd.initializr.search.business.robot;
 
-import pwd.initializr.common.web.business.bo.ObjectList;
+import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.search.business.robot.bo.DocumentBO;
 import pwd.initializr.search.business.robot.bo.SearchInputBO;
 import pwd.initializr.search.business.robot.bo.SearchBodyVOBO;
@@ -20,5 +20,5 @@ public interface DocumentService {
 
   int create(String index, DocumentBO documentBO);
 
-  ObjectList<SearchBodyVOBO> search(SearchInputBO searchInputBO);
+  PageableQueryResult<SearchBodyVOBO> search(SearchInputBO searchInputBO);
 }

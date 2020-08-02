@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.common.web.api.robot.RobotController;
-import pwd.initializr.common.web.business.bo.ObjectList;
+import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.search.api.robot.vo.DocumentIntoSearchInputVO;
 import pwd.initializr.search.api.robot.vo.SearchBodyVOVO;
 import pwd.initializr.search.api.robot.vo.SearchInputVo;
@@ -73,8 +73,8 @@ public class DocumentController extends RobotController implements DocumentApi {
   }
 
 
-  private ObjectList<SearchBodyVOVO> search0(ObjectList<? extends RPCSearchBodyVO> search) {
-    ObjectList<SearchBodyVOVO> result = new ObjectList<>();
+  private PageableQueryResult<SearchBodyVOVO> search0(PageableQueryResult<? extends RPCSearchBodyVO> search) {
+    PageableQueryResult<SearchBodyVOVO> result = new PageableQueryResult<>();
     if (search != null) {
       result.setSize(search.getSize());
       result.setIndex(search.getIndex());
