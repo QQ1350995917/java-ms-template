@@ -1,21 +1,17 @@
 package pwd.initializr.account.api.user;
 
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.account.api.user.vo.SignUpByNamePwdInput;
-import pwd.initializr.account.business.user.SessionService;
-import pwd.initializr.account.business.user.UserAccountService;
 import pwd.initializr.common.web.api.user.UserController;
 
 /**
@@ -39,33 +35,17 @@ import pwd.initializr.common.web.api.user.UserController;
 @Slf4j
 public class AccountController extends UserController implements AccountApi {
 
-  @Autowired
-  private SessionService sessionService;
-
-  @Autowired
-  private UserAccountService userAccountService;
-
-  @ApiOperation(value = "通过用户名和密码注册注册账号")
-  @PutMapping(value = {"/primeval"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
-  public void createByNameAndPwd(@NotNull SignUpByNamePwdInput input) {
+  public void createByNameAndPwd(
+      @RequestBody @Validated @ApiParam(required = true) SignUpByNamePwdInput input) {
     System.out.println();
   }
 
-  @ApiOperation(value = "test")
-  @GetMapping(value = {"/test"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
   public void get(
-      @NotBlank(message = "参数不能为空") @RequestParam(value = "test", required = false) String string) {
-
+      @NotBlank(message = "参数不能为空") @RequestParam(value = "name", required = false) String name,
+      @Max(value = 9, message = "不能大于9岁") @Min(value = 7, message = "不能小于7岁") @RequestParam(value = "age", required = false) Integer age) {
+    System.out.println();
   }
 
-
-  @ApiOperation(value = "test2")
-  @RequestMapping(value = {
-      "/test2"}, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  public void get2(
-      @NotBlank(message = "参数不能为空") @RequestParam(value = "test", required = false) String string) {
-
-  }
 }

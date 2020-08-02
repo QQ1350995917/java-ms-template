@@ -23,7 +23,7 @@ import springfox.documentation.swagger.web.UiConfigurationBuilder;
 /**
  * pwd.initializr.common.web.api@ms-web-initializr
  *
- * <h1>TODO what you want to do?</h1>
+ * <h1>通用API文档设置</h1>
  *
  * date 2019-09-14 15:24
  *

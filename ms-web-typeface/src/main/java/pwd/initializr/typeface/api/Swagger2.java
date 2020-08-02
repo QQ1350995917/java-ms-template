@@ -1,13 +1,9 @@
 package pwd.initializr.typeface.api;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import pwd.initializr.common.web.api.ApiSwagger2;
-import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger.web.UiConfigurationBuilder;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
@@ -26,25 +22,25 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @ComponentScan(basePackages = "pwd.initializr.typeface.api")
 public class Swagger2 extends ApiSwagger2 {
 
-  @Bean
-  public Docket createAdminApi() {
-    return new Docket(DocumentationType.SWAGGER_2)
-        .groupName("AdminApi")
-        .apiInfo(apiInfo("AdminApi", "管理接口"))
-        .select()
-        .apis(RequestHandlerSelectors.basePackage("pwd.initializr.typeface.api.admin"))
-        .paths(PathSelectors.any())
-        .build().globalOperationParameters(buildGlobalOperationParameters());
+  final String appName = "typeface";
+
+  @Override
+  protected Customer adminApiCustomer() {
+    return new Customer("AdminApi", "AdminApi", "管理接口", "pwd.initializr." + appName + ".api.admin");
   }
 
-  @Bean
-  public Docket createUserApi() {
-    return new Docket(DocumentationType.SWAGGER_2)
-        .groupName("UserApi")
-        .apiInfo(apiInfo("UserApi", "用户接口"))
-        .select()
-        .apis(RequestHandlerSelectors.basePackage("pwd.initializr.typeface.api.user"))
-        .paths(PathSelectors.any())
-        .build().globalOperationParameters(buildGlobalOperationParameters());
+  @Override
+  protected Customer robotApiCustomer() {
+    return new Customer("RobotApi", "RobotApi", "机器接口", "pwd.initializr." + appName + ".api.robot");
+  }
+
+  @Override
+  protected Customer userApiCustomer() {
+    return new Customer("UserApi", "UserApi", "用户接口", "pwd.initializr." + appName + ".api.user");
+  }
+
+  @Override
+  public UiConfigurationBuilder uiConfig() {
+    return UiConfigurationBuilder.builder();
   }
 }

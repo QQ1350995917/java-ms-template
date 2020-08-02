@@ -22,7 +22,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @ComponentScan(basePackages = "pwd.initializr.account.api")
 public class Swagger2 extends ApiSwagger2 {
 
-
   @Override
   protected Customer adminApiCustomer() {
     return new Customer("AdminApi", "AdminApi", "管理接口", "pwd.initializr.account.api.admin");

@@ -7,6 +7,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import pwd.initializr.common.utils.GzipUtil;
 import pwd.initializr.common.utils.StringUtil;
@@ -27,6 +28,7 @@ import pwd.initializr.common.web.api.vo.Output;
  * @since DistributionVersion
  */
 @Slf4j
+@Validated
 public class ApiController {
 
   public static ThreadLocal<HttpServletRequest> requestLocal = new ThreadLocal();
@@ -37,6 +39,10 @@ public class ApiController {
 
   public static String getClientOS() {
     return getRequest().getHeader(ApiConstant.HTTP_HEADER_KEY_OS);
+  }
+
+  public static HttpServletRequest getRequest() {
+    return requestLocal.get();
   }
 
   public static String getToken() {
@@ -51,38 +57,8 @@ public class ApiController {
     return Long.parseLong(uid);
   }
 
-  public static HttpServletRequest getRequest() {
-    return requestLocal.get();
-  }
-
   public void outputData() {
     Meta meta = new Meta();
-    Output<Object> objectOutput = new Output<>(meta, null);
-    this.finalOutput(JSON.toJSONString(objectOutput));
-  }
-
-  public void outputData(Integer code) {
-    Meta meta = new Meta(code);
-    Output<Object> objectOutput = new Output<>(meta, null);
-    this.finalOutput(JSON.toJSONString(objectOutput));
-  }
-
-  public <T> void outputData(Meta meta) {
-    Output<Object> objectOutput = new Output<>(meta, null);
-    this.finalOutput(JSON.toJSONString(objectOutput));
-  }
-
-  public <T> void outputData(T t) {
-    this.outputData(new Meta(), t);
-  }
-
-  public <T> void outputData(Meta meta, T t) {
-    Output<Object> objectOutput = new Output<>(meta, t);
-    this.finalOutput(JSON.toJSONString(objectOutput));
-  }
-
-  public void outputException(int code, String message) {
-    Meta meta = new Meta(code, message);
     Output<Object> objectOutput = new Output<>(meta, null);
     this.finalOutput(JSON.toJSONString(objectOutput));
   }
@@ -128,6 +104,32 @@ public class ApiController {
     }
 
     return bytes;
+  }
+
+  public void outputData(Integer code) {
+    Meta meta = new Meta(code);
+    Output<Object> objectOutput = new Output<>(meta, null);
+    this.finalOutput(JSON.toJSONString(objectOutput));
+  }
+
+  public <T> void outputData(Meta meta) {
+    Output<Object> objectOutput = new Output<>(meta, null);
+    this.finalOutput(JSON.toJSONString(objectOutput));
+  }
+
+  public <T> void outputData(T t) {
+    this.outputData(new Meta(), t);
+  }
+
+  public <T> void outputData(Meta meta, T t) {
+    Output<Object> objectOutput = new Output<>(meta, t);
+    this.finalOutput(JSON.toJSONString(objectOutput));
+  }
+
+  public void outputException(int code, String message) {
+    Meta meta = new Meta(code, message);
+    Output<Object> objectOutput = new Output<>(meta, null);
+    this.finalOutput(JSON.toJSONString(objectOutput));
   }
 
   public <T> void outputException(int code, T t) {

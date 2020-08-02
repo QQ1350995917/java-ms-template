@@ -1,13 +1,9 @@
 package pwd.initializr.search.api;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import pwd.initializr.common.web.api.ApiSwagger2;
-import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger.web.UiConfigurationBuilder;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
@@ -26,36 +22,25 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @ComponentScan(basePackages = "pwd.initializr.search.api")
 public class Swagger2 extends ApiSwagger2 {
 
-    @Bean
-    public Docket createUserApi() {
-        return new Docket(DocumentationType.SWAGGER_2)
-            .groupName("UserApi")
-            .apiInfo(apiInfo("UserApi", "用户接口"))
-            .select()
-            .apis(RequestHandlerSelectors.basePackage("pwd.initializr.search.api.user"))
-            .paths(PathSelectors.any())
-            .build().globalOperationParameters(buildGlobalOperationParameters());
-    }
+  final String appName = "search";
 
-    @Bean
-    public Docket createRobotApi() {
-        return new Docket(DocumentationType.SWAGGER_2)
-            .groupName("RobotApi")
-            .apiInfo(apiInfo("RobotApi", "Robot接口"))
-            .select()
-            .apis(RequestHandlerSelectors.basePackage("pwd.initializr.search.api.robot"))
-            .paths(PathSelectors.any())
-            .build().globalOperationParameters(buildGlobalOperationParameters());
-    }
+  @Override
+  protected Customer adminApiCustomer() {
+    return new Customer("AdminApi", "AdminApi", "管理接口", "pwd.initializr." + appName + ".api.admin");
+  }
 
-    @Bean
-    public Docket createAdminApi() {
-        return new Docket(DocumentationType.SWAGGER_2)
-            .groupName("AdminApi")
-            .apiInfo(apiInfo("AdminApi", "管理接口"))
-            .select()
-            .apis(RequestHandlerSelectors.basePackage("pwd.initializr.search.api.admin"))
-            .paths(PathSelectors.any())
-            .build().globalOperationParameters(buildGlobalOperationParameters());
-    }
+  @Override
+  protected Customer robotApiCustomer() {
+    return new Customer("RobotApi", "RobotApi", "机器接口", "pwd.initializr." + appName + ".api.robot");
+  }
+
+  @Override
+  protected Customer userApiCustomer() {
+    return new Customer("UserApi", "UserApi", "用户接口", "pwd.initializr." + appName + ".api.user");
+  }
+
+  @Override
+  public UiConfigurationBuilder uiConfig() {
+    return UiConfigurationBuilder.builder();
+  }
 }

@@ -1,5 +1,6 @@
 package pwd.initializr.common.web.api.user;
 
+import org.springframework.validation.annotation.Validated;
 import pwd.initializr.common.web.api.ApiController;
 
 /**
