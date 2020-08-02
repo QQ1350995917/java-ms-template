@@ -13,6 +13,7 @@ package pwd.initializr.common.web.api;
  */
 public interface ApiConstant {
 
+  String HTTP_HEADER_KEY_AID = "x-aid";
   String HTTP_HEADER_KEY_OS = "x-os";
   String HTTP_HEADER_KEY_SERVICE_VERSION = "x-vc";
   String HTTP_HEADER_KEY_TOKEN = "x-token";

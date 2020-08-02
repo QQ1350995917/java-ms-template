@@ -38,6 +38,14 @@ public class ApiController {
 
   protected String local = "en";
 
+  public static Long getAid() {
+    String aid = getRequest().getHeader(ApiConstant.HTTP_HEADER_KEY_AID);
+    if (aid == null || aid.trim().equals("")) {
+      return null;
+    }
+    return Long.parseLong(aid);
+  }
+
   public static String getClientOS() {
     return getRequest().getHeader(ApiConstant.HTTP_HEADER_KEY_OS);
   }

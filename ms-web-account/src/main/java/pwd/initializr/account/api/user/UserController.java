@@ -1,6 +1,7 @@
 package pwd.initializr.account.api.user;
 
 import io.swagger.annotations.Api;
+import javax.validation.constraints.NotNull;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.account.api.user.vo.UserUpdateInput;
@@ -32,7 +33,7 @@ public class UserController extends pwd.initializr.common.web.api.user.UserContr
   }
 
   @Override
-  public void updateUser(UserUpdateInput input) {
+  public void updateUser(@NotNull(message = "参数不能为空") UserUpdateInput input) {
 
   }
 }

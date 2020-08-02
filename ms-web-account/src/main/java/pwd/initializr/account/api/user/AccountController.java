@@ -1,15 +1,12 @@
 package pwd.initializr.account.api.user;
 
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiParam;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.account.api.user.vo.SignUpByNamePwdInput;
 import pwd.initializr.common.web.api.user.UserController;
@@ -36,16 +33,36 @@ import pwd.initializr.common.web.api.user.UserController;
 public class AccountController extends UserController implements AccountApi {
 
   @Override
-  public void createByNameAndPwd(
-      @RequestBody @Validated @ApiParam(required = true) SignUpByNamePwdInput input) {
-    System.out.println();
+  public void createByNameAndPwd(@NotNull(message = "参数不能为空") SignUpByNamePwdInput input) {
+
   }
 
   @Override
-  public void get(
-      @NotBlank(message = "参数不能为空") @RequestParam(value = "name", required = false) String name,
-      @Max(value = 9, message = "不能大于9岁") @Min(value = 7, message = "不能小于7岁") @RequestParam(value = "age", required = false) Integer age) {
-    System.out.println();
+  public void deleteById(
+      @NotNull(message = "参数不能为空") @Min(value = 1, message = "参数不能小于1") Long id) {
+
   }
 
+  @Override
+  public void disableById(
+      @NotNull(message = "参数不能为空") @Min(value = 1, message = "参数不能小于1") Long id) {
+
+  }
+
+  @Override
+  public void enableById(
+      @NotNull(message = "参数不能为空") @Min(value = 1, message = "参数不能小于1") Long id) {
+
+  }
+
+  @Override
+  public void findByUserId() {
+
+  }
+
+  @Override
+  public void usabilityCheck(
+      @NotBlank(message = "参数不能为空") @Size(min = 6, max = 18, message = "账号长度必须在[6,18]之间") String loginName) {
+
+  }
 }

@@ -49,7 +49,7 @@ public class ApiInputValidate {
       for (FieldError fieldError : bindingResult.getFieldErrors()) {
         String field = fieldError.getField();
         String msg = fieldError.getDefaultMessage();
-        message = String.format("%s:%s ", field, msg);
+        message = String.format("%s:%s", field, msg);
         break;
       }
     } else {
