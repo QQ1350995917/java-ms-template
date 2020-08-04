@@ -1,9 +1,6 @@
 package pwd.initializr.account.business.user;
 
 import org.springframework.stereotype.Service;
-import pwd.initializr.account.business.user.bo.SessionBO;
-import pwd.initializr.account.business.user.bo.SessionCaptchaBO;
-import pwd.initializr.account.business.user.bo.SessionCookieBO;
 
 /**
  * pwd.initializr.account.business.user@ms-web-initializr

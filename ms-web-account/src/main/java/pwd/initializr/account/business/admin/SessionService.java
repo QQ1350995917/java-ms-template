@@ -1,8 +1,8 @@
 package pwd.initializr.account.business.admin;
 
-import pwd.initializr.account.business.admin.bo.SessionBO;
-import pwd.initializr.account.business.admin.bo.SessionCaptchaBO;
-import pwd.initializr.account.business.admin.bo.SessionCookieBO;
+import pwd.initializr.account.business.common.bo.SessionBO;
+import pwd.initializr.account.business.common.bo.SessionCaptchaBO;
+import pwd.initializr.account.business.common.bo.SessionCookieBO;
 
 /**
  * pwd.initializr.account.business.admin@ms-web-initializr
@@ -25,7 +25,7 @@ public interface SessionService {
    * date 2020-07-22 16:11
    *
    * @param cookie 预登录生成的cookie
-   * @return pwd.initializr.account.business.admin.bo.SessionCaptchaBO
+   * @return pwd.initializr.account.business.common.bo.SessionCaptchaBO
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
@@ -37,7 +37,7 @@ public interface SessionService {
    * <p>2：把cookie存入redis，并设置过期时间，设置该cookie登录次数为0</p>
    * date 2020-07-22 14:33
    *
-   * @return pwd.initializr.account.business.admin.bo.SessionCookieBO
+   * @return pwd.initializr.account.business.common.bo.SessionCookieBO
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
@@ -88,7 +88,7 @@ public interface SessionService {
    * date 2020-07-22 23:42
    *
    * @param cookie cookie
-   * @return pwd.initializr.account.business.admin.bo.SessionCookieBO
+   * @return pwd.initializr.account.business.common.bo.SessionCookieBO
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
@@ -100,7 +100,7 @@ public interface SessionService {
    * date 2020-07-22 16:33
    *
    * @param uid 管理员用户ID
-   * @return pwd.initializr.account.business.admin.bo.SessionBO
+   * @return pwd.initializr.account.business.common.bo.SessionBO
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
@@ -111,7 +111,7 @@ public interface SessionService {
    * date 2020-07-23 23:08
    *
    * @param sessionCookieBO cookie对象
-   * @return pwd.initializr.account.business.admin.bo.SessionCookieBO 更新后的cookie对象
+   * @return pwd.initializr.account.business.common.bo.SessionCookieBO 更新后的cookie对象
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */

@@ -12,6 +12,7 @@ import pwd.initializr.account.persistence.entity.AdminAccountType;
 import pwd.initializr.account.persistence.entity.UserAccountEntity;
 import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.common.web.persistence.entity.EntityAble;
+import pwd.initializr.common.web.persistence.entity.EntityDel;
 
 /**
  * (UserAccountEntity)表服务实现类
@@ -61,7 +62,8 @@ public class UserAccountServiceImpl implements UserAccountService {
     UserAccountEntity userAccountEntity = new UserAccountEntity();
     BeanUtils.copyProperties(userAccountBO, userAccountEntity);
     userAccountEntity.setPwdTime(new Date());
-    userAccountEntity.setType(AdminAccountType.PHONE_PWD.getNumber());
+    userAccountEntity.setEnable(EntityAble.ENABLE.getNumber());
+    userAccountEntity.setDel(EntityDel.YES.getNumber());
     userAccountEntity.setCreateTime(new Date());
     userAccountEntity.setUpdateTime(new Date());
     userAccountDao.insert(userAccountEntity);

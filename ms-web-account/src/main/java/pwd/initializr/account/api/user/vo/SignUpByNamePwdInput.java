@@ -13,7 +13,7 @@ import lombok.ToString;
 /**
  * pwd.initializr.account.api.user.vo@ms-web-initializr
  *
- * <h1>TODO what you want to do?</h1>
+ * <h1>使用账号密码注册结构声明</h1>
  *
  * date 2019-09-14 21:30
  *
@@ -26,7 +26,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-@ApiModel(value = "signUpByPhoneNumber", description = "使用账号密码注册")
+@ApiModel(value = "signUpByNamePwd", description = "使用账号密码注册")
 public class SignUpByNamePwdInput {
 
   @ApiModelProperty(name = "loginName", value = "账号", required = true, example = "18511694468")

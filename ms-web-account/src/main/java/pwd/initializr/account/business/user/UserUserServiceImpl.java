@@ -1,5 +1,6 @@
 package pwd.initializr.account.business.user;
 
+import java.util.Date;
 import java.util.List;
 import javax.annotation.Resource;
 import org.springframework.beans.BeanUtils;
@@ -9,6 +10,7 @@ import pwd.initializr.account.persistence.dao.UserUserDao;
 import pwd.initializr.account.persistence.entity.UserUserEntity;
 import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.common.web.persistence.entity.EntityAble;
+import pwd.initializr.common.web.persistence.entity.EntityDel;
 
 /**
  * (UserUserEntity)表服务实现类
@@ -45,7 +47,16 @@ public class UserUserServiceImpl implements UserUserService {
 
   @Override
   public UserUserBO insert(UserUserBO userUserBO) {
-    return null;
+    UserUserEntity userUserEntity = new UserUserEntity();
+    BeanUtils.copyProperties(userUserBO, userUserEntity);
+    userUserEntity.setAble(EntityAble.ENABLE.getNumber());
+    userUserEntity.setDel(EntityDel.NO.getNumber());
+    userUserEntity.setCreateTime(new Date());
+    userUserEntity.setUpdateTime(new Date());
+    this.userUserDao.insert(userUserEntity);
+    UserUserBO userUserBOResult = new UserUserBO();
+    BeanUtils.copyProperties(userUserEntity, userUserBOResult);
+    return userUserBOResult;
   }
 
   @Override

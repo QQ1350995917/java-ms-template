@@ -1,8 +1,8 @@
 package pwd.initializr.account.business.user;
 
-import pwd.initializr.account.business.user.bo.SessionBO;
-import pwd.initializr.account.business.user.bo.SessionCaptchaBO;
-import pwd.initializr.account.business.user.bo.SessionCookieBO;
+import pwd.initializr.account.business.common.bo.SessionBO;
+import pwd.initializr.account.business.common.bo.SessionCaptchaBO;
+import pwd.initializr.account.business.common.bo.SessionCookieBO;
 
 /**
  * pwd.initializr.account.business.user@ms-web-initializr

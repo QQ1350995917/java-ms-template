@@ -26,9 +26,9 @@ import pwd.initializr.account.business.admin.AdminUserService;
 import pwd.initializr.account.business.admin.SessionService;
 import pwd.initializr.account.business.admin.bo.AdminAccountBO;
 import pwd.initializr.account.business.admin.bo.AdminUserBO;
-import pwd.initializr.account.business.admin.bo.SessionBO;
-import pwd.initializr.account.business.admin.bo.SessionCaptchaBO;
-import pwd.initializr.account.business.admin.bo.SessionCookieBO;
+import pwd.initializr.account.business.common.bo.SessionBO;
+import pwd.initializr.account.business.common.bo.SessionCaptchaBO;
+import pwd.initializr.account.business.common.bo.SessionCookieBO;
 import pwd.initializr.account.rpc.RPCToken;
 import pwd.initializr.common.web.api.admin.AdminController;
 

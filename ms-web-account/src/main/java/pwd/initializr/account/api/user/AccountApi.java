@@ -14,12 +14,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import pwd.initializr.account.api.user.vo.SignUpByNamePwdInput;
 
 /**
  * pwd.initializr.account.api.user@ms-web-initializr
  *
- * <h1>用户账号接口</h1>
+ * <h1>控制层接口：账号信息</h1>
  *
  * date 2019-09-14 21:17
  *
@@ -28,6 +29,32 @@ import pwd.initializr.account.api.user.vo.SignUpByNamePwdInput;
  * @since DistributionVersion
  */
 public interface AccountApi {
+
+    /**
+     * <h2>初始化登录环境</h2>
+     * date 2020-08-04 10:12
+     *
+     * @param token 已有的token信息
+     * @return void
+     * @author DingPengwei[www.dingpengwei@foxmail.com]
+     * @since DistributionVersion
+     */
+    @ApiOperation(value = "初始化登录环境")
+    @GetMapping(value = {"/init"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    void createInitializr(@RequestHeader(value = "x-token", required = false) String token);
+
+    /**
+     * <h2>刷新注册验证码</h2>
+     * date 2020-08-04 10:13
+     *
+     * @return void
+     * @author DingPengwei[www.dingpengwei@foxmail.com]
+     * @since DistributionVersion
+     */
+    @ApiOperation(value = "验证码刷新")
+    @GetMapping(value = {"/captcha"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    void loginCaptchaRefresh();
+
 
   /**
    * <h2>通过账号和密码注册新账号</h2>

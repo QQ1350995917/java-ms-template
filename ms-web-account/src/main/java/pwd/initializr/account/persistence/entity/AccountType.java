@@ -23,13 +23,14 @@ import lombok.ToString;
 @ToString
 public enum AccountType {
   ByAdmin(0, "管理员开通账户"),
-  ByPhoneNumber(1, "手机号码注册账户") {
+  ByNamePwd(1,"账号密码"),
+  ByPhoneNumber(2, "手机号码注册账户") {
     @Override
     public boolean isAdmin() {
       return super.isAdmin();
     }
   },
-  ByEmail(2, "邮箱注册账户");
+  ByEmail(3, "邮箱注册账户");
 
   String desc;
   @EnumValue
