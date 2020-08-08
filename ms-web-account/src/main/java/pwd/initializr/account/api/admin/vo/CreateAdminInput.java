@@ -3,6 +3,7 @@ package pwd.initializr.account.api.admin.vo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,9 +31,11 @@ import lombok.ToString;
 public class CreateAdminInput implements Serializable {
 
   @ApiModelProperty(name = "user", value = "用户信息", required = true)
-  @NotNull(message = "0")
+  @Valid
+  @NotNull(message = "用户信息不能为空")
   private AdminUserInput user;
   @ApiModelProperty(name = "account", value = "账号信息", required = true)
-  @NotNull(message = "0")
+  @Valid
+  @NotNull(message = "账户信息并不能为空")
   private AdminAccountInput account;
 }

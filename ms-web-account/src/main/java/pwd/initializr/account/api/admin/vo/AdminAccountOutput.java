@@ -24,7 +24,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-@ApiModel(value = "adminAccountInput", description = "管理员账户响应参数")
+@ApiModel(value = "adminAccountOutput", description = "管理员账户响应参数")
 public class AdminAccountOutput extends AdminAccountInput {
 
   private Long id;

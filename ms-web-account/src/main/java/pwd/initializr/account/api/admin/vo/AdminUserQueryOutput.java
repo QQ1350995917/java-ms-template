@@ -1,7 +1,6 @@
 package pwd.initializr.account.api.admin.vo;
 
 import io.swagger.annotations.ApiModel;
-import javax.xml.crypto.Data;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,22 +12,17 @@ import lombok.ToString;
  *
  * <h1>请求参数：用户响应参数</h1>
  *
- * date 2020-07-27 16:39
+ * date 2020-08-08 20:28
  *
- * @author DingPengwei[dingpengwei@foxmail.com]
+ * @author DingPengwei[www.dingpengwei@foxmail.com]
  * @version 1.0.0
  * @since DistributionVersion
  */
 @AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
 @ToString
-@ApiModel(value = "adminUserOutput", description = "管理员用户接口响应参数")
-public class AdminUserOutput extends AdminUserInput {
+@ApiModel(value = "adminUserQueryOutput", description = "管理员用户查询接口响应参数")
+public class AdminUserQueryOutput extends AdminUserOutput {
 
-  private Long id;
-  private Integer able;
-  private Data createTime;
-  private Data updateTime;
 }
