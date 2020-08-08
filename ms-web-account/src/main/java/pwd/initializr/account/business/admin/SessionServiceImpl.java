@@ -146,11 +146,11 @@ public class SessionServiceImpl implements SessionService {
     }
   }
 
-  private String getCookieKeyInRedis(String cookie) {
-    return StringUtils.join(new String[]{cookieInRedisPrefix, cookie}, ":");
+  private String getSessionKeyInRedis(Long uid) {
+    return StringUtils.join(new String[]{sessionInRedisPrefix, uid.toString()}, ":");
   }
 
-  private String getSessionKeyInRedis(Long uid) {
-    return StringUtils.join(new String[]{cookieInRedisPrefix, uid.toString()}, ":");
+  private String getCookieKeyInRedis(String cookie) {
+    return StringUtils.join(new String[]{cookieInRedisPrefix, cookie}, ":");
   }
 }

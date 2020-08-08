@@ -24,9 +24,8 @@ public class AdminUserServiceImpl implements AdminUserService {
   private AdminUserDao adminUserDao;
 
   @Override
-  public Boolean ableById(List<Long> ids, EntityAble able) {
-    adminUserDao.ableByIds(ids, able.getNumber());
-    return true;
+  public Integer ableById(List<Long> ids, EntityAble able) {
+    return adminUserDao.ableByIds(ids, able.getNumber());
   }
 
   /**
@@ -36,13 +35,13 @@ public class AdminUserServiceImpl implements AdminUserService {
    * @return 是否成功
    */
   @Override
-  public boolean deleteById(Long id) {
-    return this.adminUserDao.deleteById(id) > 0;
+  public Integer deleteById(Long id) {
+    return this.adminUserDao.deleteById(id);
   }
 
   @Override
-  public boolean deleteById(List<Long> ids) {
-    return this.adminUserDao.deleteByIds(ids) > 0;
+  public Integer deleteById(List<Long> ids) {
+    return this.adminUserDao.deleteByIds(ids);
   }
 
   /**

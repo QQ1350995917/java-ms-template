@@ -28,15 +28,13 @@ public class AdminAccountServiceImpl implements AdminAccountService {
   private AdminAccountDao adminAccountDao;
 
   @Override
-  public Boolean ableByIds(List<Long> ids, EntityAble able) {
-    adminAccountDao.ableByIds(ids, able.getNumber());
-    return true;
+  public Integer ableByIds(List<Long> ids, EntityAble able) {
+    return adminAccountDao.ableByIds(ids, able.getNumber());
   }
 
   @Override
-  public Boolean ableByUserIds(List<Long> userIds, EntityAble able) {
-    adminAccountDao.ableByUserIds(userIds, able.getNumber());
-    return true;
+  public Integer ableByUserIds(List<Long> userIds, EntityAble able) {
+    return adminAccountDao.ableByUserIds(userIds, able.getNumber());
   }
 
   /**
@@ -46,18 +44,18 @@ public class AdminAccountServiceImpl implements AdminAccountService {
    * @return 是否成功
    */
   @Override
-  public Boolean deleteById(Long id) {
-    return this.adminAccountDao.deleteById(id) > 0;
+  public Integer deleteById(Long id) {
+    return this.adminAccountDao.deleteById(id);
   }
 
   @Override
-  public Boolean deleteByUserId(Long userId) {
-    return this.adminAccountDao.deleteByUserId(userId) > 0;
+  public Integer deleteByUserId(Long userId) {
+    return this.adminAccountDao.deleteByUserId(userId);
   }
 
   @Override
-  public Boolean deleteByUserId(List<Long> userIds) {
-    return this.adminAccountDao.deleteByUserIds(userIds) > 0;
+  public Integer deleteByUserId(List<Long> userIds) {
+    return this.adminAccountDao.deleteByUserIds(userIds);
   }
 
   /**
@@ -145,6 +143,7 @@ public class AdminAccountServiceImpl implements AdminAccountService {
 
   @Override
   public AdminAccountBO queryByPhoneNumberAndSmsCode(String phoneNumber, String smsCode) {
+    // TODO
     return null;
   }
 

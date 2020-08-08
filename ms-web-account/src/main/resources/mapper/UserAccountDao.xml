@@ -90,6 +90,11 @@
     </where>
   </sql>
 
+  <select id="existName" resultMap="UserAccountMap">
+    SELECT login_name from user_account WHERE login_name = #{loginName} AND del = 0
+  </select>
+
+
   <!--新增所有列-->
   <insert id="insert" keyProperty="id" useGeneratedKeys="true">
         insert into initializr_account.user_account(uid, login_name, login_pwd, pwd_time, type, enable, del, create_time, update_time)

@@ -19,22 +19,22 @@ public interface UserUserService {
    * date 2020-07-28 16:09
    *
    * @param ids 主键
-   * @return java.lang.Boolean
+   * @return java.lang.Integer
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  Boolean ableById(List<Long> ids, EntityAble able);
+  Integer ableById(List<Long> ids, EntityAble able);
 
   /**
    * <h2>通过主键启用/禁用账户</h2>
    * date 2020-07-28 16:24
    *
    * @param id 主键
-   * @return java.lang.Boolean
+   * @return java.lang.Integer
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  Boolean ableById(Long id, EntityAble able);
+  Integer ableById(Long id, EntityAble able);
 
   /**
    * 通过主键删除数据
@@ -42,9 +42,9 @@ public interface UserUserService {
    * @param id 主键
    * @return 是否成功
    */
-  boolean deleteById(Long id);
+  Integer deleteById(Long id);
 
-  boolean deleteById(List<Long> ids);
+  Integer deleteById(List<Long> ids);
 
   /**
    * 新增数据

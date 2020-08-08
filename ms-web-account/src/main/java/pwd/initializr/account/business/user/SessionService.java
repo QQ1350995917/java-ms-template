@@ -69,7 +69,7 @@ public interface SessionService {
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  Boolean deleteCookie(String cookie);
+  Integer deleteCookie(String cookie);
 
   /**
    * <h2>session删除接口，根据用户ID删除session信息，等同于退出登录</h2>
@@ -81,7 +81,7 @@ public interface SessionService {
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  Boolean deleteSession(Long userId);
+  Integer deleteSession(Long userId);
 
   /**
    * <h2>cookie查询接口，用户尝试登录次数</h2>
@@ -127,6 +127,6 @@ public interface SessionService {
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  Boolean updateSession(SessionBO sessionBO);
+  Integer updateSession(SessionBO sessionBO);
 
 }

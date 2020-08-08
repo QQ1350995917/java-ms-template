@@ -24,7 +24,7 @@ public interface UserAccountService {
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  Boolean ableById(List<Long> ids, EntityAble able);
+  Integer ableById(List<Long> ids, EntityAble able);
 
 
   /**
@@ -36,7 +36,7 @@ public interface UserAccountService {
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  Boolean ableByUserId(List<Long> userIds, EntityAble able);
+  Integer ableByUserId(List<Long> userIds, EntityAble able);
 
   /**
    * <h2>通过外键启用/禁用账户</h2>
@@ -48,7 +48,7 @@ public interface UserAccountService {
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  Boolean ableByUserId(Long userId, EntityAble able);
+  Integer ableByUserId(Long userId, EntityAble able);
 
 
   /**
@@ -57,9 +57,20 @@ public interface UserAccountService {
    * @param id 主键
    * @return 是否成功
    */
-  Boolean deleteById(Long id);
+  Integer deleteById(Long id);
 
-  Boolean deleteById(List<Long> ids);
+  Integer deleteById(List<Long> ids);
+
+  /**
+   * <h2>检查账号名是否存在</h2>
+   * date 2020-08-08 11:07
+   *
+   * @param loginName 账号名
+   * @return java.lang.Boolean
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  Boolean existLoginName(String loginName);
 
   /**
    * 新增数据
@@ -76,9 +87,19 @@ public interface UserAccountService {
    * @param pageSize 查询条数
    * @return 对象列表
    */
-  PageableQueryResult<UserAccountBO> queryAllByCondition(UserAccountBO userAccountBO, Long pageIndex,
+  PageableQueryResult<UserAccountBO> queryAllByCondition(UserAccountBO userAccountBO,
+      Long pageIndex,
       Long pageSize);
 
+  /**
+   * <h2>通过用户ID查询账号信息</h2>
+   * date 2020-08-08 12:50
+   *
+   * @param userId 用户ID
+   * @return pwd.initializr.common.web.business.bo.PageableQueryResult<pwd.initializr.account.business.user.bo.UserAccountBO>
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
   PageableQueryResult<UserAccountBO> queryAllByUserId(Long userId);
 
   /**

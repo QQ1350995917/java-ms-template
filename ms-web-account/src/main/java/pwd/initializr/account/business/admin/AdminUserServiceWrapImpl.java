@@ -30,25 +30,29 @@ public class AdminUserServiceWrapImpl implements AdminUserServiceWrap {
 
   @Override
   @Transactional(rollbackFor = Exception.class)
-  public Boolean ableByUserId(Long userId, EntityAble entityAble) {
-    return false;
+  public Integer ableByUserId(Long userId, EntityAble entityAble) {
+    return 0;
   }
 
   @Override
   @Transactional(rollbackFor = Exception.class)
-  public Boolean ableByUserId(List<Long> userIds, EntityAble entityAble) {
-    return false;
+  public Integer ableByUserId(List<Long> userIds, EntityAble entityAble) {
+    return 0;
   }
 
   @Override
   @Transactional(rollbackFor = Exception.class)
-  public Boolean deleteByUserId(Long userId) {
-    return adminUserService.deleteById(userId) && adminAccountService.deleteByUserId(userId);
+  public Integer deleteByUserId(Long userId) {
+    Integer integer = adminUserService.deleteById(userId);
+    adminAccountService.deleteByUserId(userId);
+    return integer;
   }
 
   @Override
-  public Boolean deleteByUserId(List<Long> userIds) {
-    return adminUserService.deleteById(userIds) && adminAccountService.deleteByUserId(userIds);
+  public Integer deleteByUserId(List<Long> userIds) {
+    Integer integer = adminUserService.deleteById(userIds);
+    adminAccountService.deleteByUserId(userIds);
+    return integer;
   }
 
   @Override

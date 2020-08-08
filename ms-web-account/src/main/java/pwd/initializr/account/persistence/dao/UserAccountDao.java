@@ -85,6 +85,13 @@ public interface UserAccountDao {
   int deleteByIds(List<Long> ids);
 
   /**
+   * 检查账户名是否存在
+   * @param loginName 账户名
+   * @return
+   */
+  UserAccountEntity existName(String loginName);
+
+  /**
    * 新增数据
    *
    * @param userAccount 实例对象

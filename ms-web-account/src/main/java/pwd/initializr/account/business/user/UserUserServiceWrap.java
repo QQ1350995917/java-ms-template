@@ -28,7 +28,7 @@ public interface UserUserServiceWrap {
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  Boolean ableByUserId(Long userId, EntityAble entityAble);
+  Integer ableByUserId(Long userId, EntityAble entityAble);
 
   /**
    * <h2>禁用/启用用户，同时禁用/启用其下所有账户</h2>

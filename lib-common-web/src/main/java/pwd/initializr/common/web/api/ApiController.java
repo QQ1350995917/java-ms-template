@@ -46,12 +46,12 @@ public class ApiController {
     return Long.parseLong(aid);
   }
 
-  public static String getClientOS() {
-    return getRequest().getHeader(ApiConstant.HTTP_HEADER_KEY_OS);
-  }
-
   public static HttpServletRequest getRequest() {
     return requestLocal.get();
+  }
+
+  public static String getClientOS() {
+    return getRequest().getHeader(ApiConstant.HTTP_HEADER_KEY_OS);
   }
 
   public static String getToken() {
@@ -118,6 +118,12 @@ public class ApiController {
   public void outputData(Integer code) {
     Meta meta = new Meta(code);
     Output<Object> objectOutput = new Output<>(meta, null);
+    this.finalOutput(JSON.toJSONString(objectOutput));
+  }
+
+  public <T> void outputData(Integer code, T data) {
+    Meta meta = new Meta(code);
+    Output<Object> objectOutput = new Output<>(meta, data);
     this.finalOutput(JSON.toJSONString(objectOutput));
   }
 

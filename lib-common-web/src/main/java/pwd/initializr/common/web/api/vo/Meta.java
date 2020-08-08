@@ -31,6 +31,10 @@ public class Meta implements Serializable {
   @ApiModelProperty(value = "提示信息", required = true)
   private String message = "ok";
 
+  @NotBlank(message = "400")
+  @ApiModelProperty(value = "响应时间戳", required = true)
+  private Long timestamp = System.currentTimeMillis();
+
 
   public Meta() {
     super();

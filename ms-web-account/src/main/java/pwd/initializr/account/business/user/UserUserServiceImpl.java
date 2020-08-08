@@ -25,24 +25,23 @@ public class UserUserServiceImpl implements UserUserService {
   private UserUserDao userUserDao;
 
   @Override
-  public Boolean ableById(List<Long> ids, EntityAble able) {
+  public Integer ableById(List<Long> ids, EntityAble able) {
     return null;
   }
 
   @Override
-  public Boolean ableById(Long id, EntityAble able) {
+  public Integer ableById(Long id, EntityAble able) {
     return null;
   }
 
   @Override
-  public boolean deleteById(Long id) {
-    userUserDao.deleteById(id);
-    return true;
+  public Integer deleteById(Long id) {
+    return userUserDao.deleteById(id);
   }
 
   @Override
-  public boolean deleteById(List<Long> ids) {
-    return false;
+  public Integer deleteById(List<Long> ids) {
+    return 0;
   }
 
   @Override

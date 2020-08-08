@@ -25,8 +25,8 @@ public class UserConfigServiceImpl implements UserConfigService {
    * @return 是否成功
    */
   @Override
-  public boolean deleteById(Long id) {
-    return this.userConfigDao.deleteById(id) > 0;
+  public Integer deleteById(Long id) {
+    return this.userConfigDao.deleteById(id);
   }
 
   /**

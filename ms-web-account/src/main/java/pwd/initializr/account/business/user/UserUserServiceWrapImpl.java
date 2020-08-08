@@ -30,10 +30,10 @@ public class UserUserServiceWrapImpl implements UserUserServiceWrap {
 
   @Override
   @Transactional(rollbackFor = RuntimeException.class)
-  public Boolean ableByUserId(Long userId, EntityAble entityAble) {
-    userAccountService.ableByUserId(userId, entityAble);
+  public Integer ableByUserId(Long userId, EntityAble entityAble) {
+    Integer integer = userAccountService.ableByUserId(userId, entityAble);
     userUserService.ableById(userId, entityAble);
-    return true;
+    return integer;
   }
 
   @Override

@@ -83,7 +83,7 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
   @DeleteMapping(value = {"/user"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
   public void delUser(@RequestBody List<Long> ids) {
-    Boolean del = adminUserServiceWrap.deleteByUserId(ids);
+    Integer del = adminUserServiceWrap.deleteByUserId(ids);
     outputData(del);
   }
 
@@ -98,7 +98,7 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
   @PatchMapping(value = {"/user/disable"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
   public void disableUser(@RequestBody List<Long> ids) {
-    Boolean able = adminUserServiceWrap.ableByUserId(ids, EntityAble.DISABLE);
+    Integer able = adminUserServiceWrap.ableByUserId(ids, EntityAble.DISABLE);
     outputData(able);
   }
 
@@ -113,7 +113,7 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
   @PatchMapping(value = {"/user/enable"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
   public void enableUser(@RequestBody List<Long> ids) {
-    Boolean able = adminUserServiceWrap.ableByUserId(ids, EntityAble.ENABLE);
+    Integer able = adminUserServiceWrap.ableByUserId(ids, EntityAble.ENABLE);
     outputData(able);
   }
 

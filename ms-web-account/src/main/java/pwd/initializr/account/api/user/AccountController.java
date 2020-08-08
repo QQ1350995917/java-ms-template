@@ -1,6 +1,8 @@
 package pwd.initializr.account.api.user;
 
 import io.swagger.annotations.Api;
+import java.util.Arrays;
+import java.util.List;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -12,11 +14,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import pwd.initializr.account.api.admin.vo.LoginOutput;
+import pwd.initializr.account.api.admin.vo.UserAccountOutput;
 import pwd.initializr.account.api.user.vo.SessionCaptchaOutput;
 import pwd.initializr.account.api.user.vo.SessionTokenOutput;
 import pwd.initializr.account.api.user.vo.SignUpByNamePwdInput;
 import pwd.initializr.account.api.user.vo.SignUpFailOutput;
 import pwd.initializr.account.api.user.vo.SignUpFailOutput.FailType;
+import pwd.initializr.account.business.common.bo.SessionBO;
 import pwd.initializr.account.business.common.bo.SessionCaptchaBO;
 import pwd.initializr.account.business.common.bo.SessionCookieBO;
 import pwd.initializr.account.business.user.SessionService;
@@ -25,7 +30,12 @@ import pwd.initializr.account.business.user.UserUserServiceWrap;
 import pwd.initializr.account.business.user.bo.UserAccountBO;
 import pwd.initializr.account.business.user.bo.UserUserBO;
 import pwd.initializr.account.persistence.entity.AccountType;
+import pwd.initializr.account.rpc.RPCToken;
 import pwd.initializr.common.web.api.user.UserController;
+import pwd.initializr.common.web.api.vo.Meta;
+import pwd.initializr.common.web.api.vo.PageOutput;
+import pwd.initializr.common.web.business.bo.PageableQueryResult;
+import pwd.initializr.common.web.persistence.entity.EntityAble;
 
 /**
  * pwd.initializr.account.api.user@ms-web-initializr
@@ -54,6 +64,9 @@ public class AccountController extends UserController implements AccountApi {
   @Value("${account.user.cookie.captcha.threshold}")
   private Integer cookieCaptchaThreshold;
 
+  @Value("${account.user.session.secret}")
+  private String sessionSecret;
+
 
   @Autowired
   private UserAccountService userAccountService;
@@ -67,7 +80,8 @@ public class AccountController extends UserController implements AccountApi {
   @Override
   public void createInitializr(String token) {
     String cookie = getToken();
-    Boolean captchaRequired = false;
+    // TODO 配置化
+    Boolean captchaRequired = true;
     SessionCookieBO sessionCookieBO = null;
     // 初次访问没有携带cookie，需要生成新的cookie
     if (StringUtils.isBlank(cookie)) {
@@ -131,44 +145,81 @@ public class AccountController extends UserController implements AccountApi {
   public void createByNameAndPwd(@NotNull(message = "参数不能为空") SignUpByNamePwdInput input) {
     // TODO 校验验证码
 
-    // TODO 校验账号可用性
-
+    if (userAccountService.existLoginName(input.getLoginName())) {
+      // 账号已被占用
+      outputException(401);
+      return;
+    }
 
     UserUserBO userUserBO = new UserUserBO();
-
     UserAccountBO userAccountBO = new UserAccountBO();
     userAccountBO.setType(AccountType.ByNamePwd.getType());
-    UserUserBO insert = userUserServiceWrap.insert(userUserBO, userAccountBO);
+    UserUserBO insertedUserUserBO = userUserServiceWrap.insert(userUserBO, userAccountBO);
+    if (insertedUserUserBO == null) {
+      // 账号创建失败
+      outputException(500);
+      return;
+    }
 
-
+    // 账号创建完成后自动登录
+    SessionBO sessionBO = new SessionBO(userUserBO.getId(), userUserBO.getName(),
+        userAccountBO.getId(), userAccountBO.getLoginName(),
+        System.currentTimeMillis());
+    String token = RPCToken.generateToken(sessionBO, sessionSecret);
+    sessionService.createSession(token, sessionBO);
+    outputData(new LoginOutput(sessionBO.getUid(), token));
   }
 
   @Override
   public void deleteById(
       @NotNull(message = "参数不能为空") @Min(value = 1, message = "参数不能小于1") Long id) {
-
+    // TODO 检查是否是自己的账号
+    Integer result = userAccountService.deleteById(id);
+    outputData(new Meta(), result);
   }
 
   @Override
   public void disableById(
       @NotNull(message = "参数不能为空") @Min(value = 1, message = "参数不能小于1") Long id) {
-
+    // TODO 检查是否是自己的账号
+    Integer result = userAccountService.ableById(Arrays.asList(id), EntityAble.DISABLE);
+    outputData(new Meta(), result);
   }
 
   @Override
   public void enableById(
       @NotNull(message = "参数不能为空") @Min(value = 1, message = "参数不能小于1") Long id) {
-
+    // TODO 检查是否是自己的账号
+    Integer result = userAccountService.ableById(Arrays.asList(id), EntityAble.ENABLE);
+    outputData(new Meta(), result);
   }
 
   @Override
   public void findByUserId() {
-
+    Long userId = getUid();
+    PageableQueryResult<UserAccountBO> userAccountBOPageableQueryResult = userAccountService
+        .queryAllByUserId(userId);
+    PageOutput<UserAccountOutput> userAccountOutputPageOutput = new PageOutput<>();
+    userAccountOutputPageOutput.setTotal(userAccountBOPageableQueryResult.getTotal());
+    userAccountOutputPageOutput.setIndex(userAccountBOPageableQueryResult.getIndex());
+    userAccountOutputPageOutput.setSize(userAccountBOPageableQueryResult.getSize());
+    List<UserAccountBO> elements = userAccountBOPageableQueryResult.getElements();
+    elements.forEach(userAccountBO -> {
+      UserAccountOutput userAccountOutput = new UserAccountOutput();
+      BeanUtils.copyProperties(userAccountBO, userAccountOutput);
+      userAccountOutputPageOutput.getElements().add(userAccountOutput);
+    });
+    outputData(userAccountOutputPageOutput);
   }
 
   @Override
   public void usabilityCheck(
       @NotBlank(message = "参数不能为空") @Size(min = 6, max = 18, message = "账号长度必须在[6,18]之间") String loginName) {
-
+    if (userAccountService.existLoginName(loginName)) {
+      // 账号已被占用
+      outputException(401);
+      return;
+    }
+    outputData(loginName);
   }
 }

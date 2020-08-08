@@ -25,8 +25,8 @@ public class AdminContactServiceImpl implements AdminContactService {
    * @return 是否成功
    */
   @Override
-  public boolean deleteById(Long id) {
-    return this.adminContactDao.deleteById(id) > 0;
+  public Integer deleteById(Long id) {
+    return this.adminContactDao.deleteById(id);
   }
 
   /**

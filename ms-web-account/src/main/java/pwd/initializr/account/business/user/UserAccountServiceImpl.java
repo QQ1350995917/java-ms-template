@@ -8,7 +8,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import pwd.initializr.account.business.user.bo.UserAccountBO;
 import pwd.initializr.account.persistence.dao.UserAccountDao;
-import pwd.initializr.account.persistence.entity.AdminAccountType;
 import pwd.initializr.account.persistence.entity.UserAccountEntity;
 import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.common.web.persistence.entity.EntityAble;
@@ -28,33 +27,33 @@ public class UserAccountServiceImpl implements UserAccountService {
 
 
   @Override
-  public Boolean ableById(List<Long> ids, EntityAble able) {
-    userAccountDao.ableByIds(ids, able.getNumber());
-    return true;
+  public Integer ableById(List<Long> ids, EntityAble able) {
+    return userAccountDao.ableByIds(ids, able.getNumber());
   }
 
   @Override
-  public Boolean ableByUserId(List<Long> userIds, EntityAble able) {
-    userAccountDao.ableByUserIds(userIds, able.getNumber());
-    return true;
+  public Integer ableByUserId(List<Long> userIds, EntityAble able) {
+    return userAccountDao.ableByUserIds(userIds, able.getNumber());
   }
 
   @Override
-  public Boolean ableByUserId(Long userId, EntityAble able) {
-    userAccountDao.ableById(userId, able.getNumber());
-    return true;
+  public Integer ableByUserId(Long userId, EntityAble able) {
+    return userAccountDao.ableById(userId, able.getNumber());
   }
 
   @Override
-  public Boolean deleteById(Long id) {
-    userAccountDao.deleteById(id);
-    return true;
+  public Integer deleteById(Long id) {
+    return userAccountDao.deleteById(id);
   }
 
   @Override
-  public Boolean deleteById(List<Long> ids) {
-    userAccountDao.deleteByIds(ids);
-    return true;
+  public Integer deleteById(List<Long> ids) {
+    return userAccountDao.deleteByIds(ids);
+  }
+
+  @Override
+  public Boolean existLoginName(String loginName) {
+    return userAccountDao.existName(loginName) == null;
   }
 
   @Override
@@ -74,7 +73,8 @@ public class UserAccountServiceImpl implements UserAccountService {
   }
 
   @Override
-  public PageableQueryResult<UserAccountBO> queryAllByCondition(UserAccountBO userAccountBO, Long pageIndex,
+  public PageableQueryResult<UserAccountBO> queryAllByCondition(UserAccountBO userAccountBO,
+      Long pageIndex,
       Long pageSize) {
     PageableQueryResult<UserAccountBO> resultData = new PageableQueryResult<>();
     UserAccountEntity userAccountEntity = new UserAccountEntity();
@@ -96,6 +96,9 @@ public class UserAccountServiceImpl implements UserAccountService {
   public PageableQueryResult<UserAccountBO> queryAllByUserId(Long userId) {
     PageableQueryResult<UserAccountBO> resultData = new PageableQueryResult<>();
     List<UserAccountEntity> userAccountEntities = userAccountDao.queryAllByUid(userId);
+    resultData.setTotal(Long.valueOf(userAccountEntities.size()));
+    resultData.setIndex(0L);
+    resultData.setSize(Long.valueOf(userAccountEntities.size()));
     for (UserAccountEntity userAccountEntity : userAccountEntities) {
       UserAccountBO userAccountBO = new UserAccountBO();
       BeanUtils.copyProperties(userAccountEntity, userAccountBO);

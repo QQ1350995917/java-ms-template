@@ -24,6 +24,7 @@ import pwd.initializr.account.business.user.UserUserServiceWrap;
 import pwd.initializr.account.business.user.bo.UserAccountBO;
 import pwd.initializr.account.business.user.bo.UserUserBO;
 import pwd.initializr.common.web.api.admin.AdminController;
+import pwd.initializr.common.web.api.vo.Meta;
 import pwd.initializr.common.web.api.vo.PageInput;
 import pwd.initializr.common.web.api.vo.PageOutput;
 import pwd.initializr.common.web.business.bo.PageableQueryResult;
@@ -62,7 +63,9 @@ public class UserController extends AdminController implements UserApi {
   @DeleteMapping(value = {"/account"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
   public void delAccount(@RequestBody List<Long> ids) {
-
+    // TODO 检查是否是最后一个账户
+    Integer integer = userAccountService.deleteById(ids);
+    outputData(new Meta(), integer);
   }
 
   @ApiOperation(value = "删除用户，同时删除其下所有账户")
@@ -77,7 +80,9 @@ public class UserController extends AdminController implements UserApi {
   @PatchMapping(value = {"/account/disable"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
   public void disableAccount(@RequestBody List<Long> ids) {
-
+    // TODO 检查是否是最后一个账户
+    Integer integer = userAccountService.ableById(ids,EntityAble.DISABLE);
+    outputData(new Meta(), integer);
   }
 
   @ApiOperation(value = "禁用用户，同时禁用其下所有账户")
@@ -92,7 +97,8 @@ public class UserController extends AdminController implements UserApi {
   @PatchMapping(value = {"/account/enable"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
   public void enableAccount(@RequestBody List<Long> ids) {
-
+    Integer integer = userAccountService.ableById(ids,EntityAble.ENABLE);
+    outputData(new Meta(), integer);
   }
 
   @ApiOperation(value = "启用用户，同时启用其下所有账户")

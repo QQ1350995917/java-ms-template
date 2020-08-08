@@ -28,8 +28,8 @@ public class AdminConfigServiceImpl implements AdminConfigService {
    * @return 是否成功
    */
   @Override
-  public boolean deleteById(Long id) {
-    return this.adminConfigDao.deleteById(id) > 0;
+  public Integer deleteById(Long id) {
+    return this.adminConfigDao.deleteById(id);
   }
 
   /**

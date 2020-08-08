@@ -21,7 +21,7 @@ public interface AdminUserService {
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  Boolean ableById(List<Long> ids, EntityAble able);
+  Integer ableById(List<Long> ids, EntityAble able);
 
 
   /**
@@ -30,7 +30,7 @@ public interface AdminUserService {
    * @param id 主键
    * @return 是否成功
    */
-  boolean deleteById(Long id);
+  Integer deleteById(Long id);
 
   /**
    * <h2>通过主键删除数据</h2>
@@ -40,7 +40,7 @@ public interface AdminUserService {
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  boolean deleteById(List<Long> ids);
+  Integer deleteById(List<Long> ids);
 
   /**
    * <h2>新增数据:同时新增账号</h2>

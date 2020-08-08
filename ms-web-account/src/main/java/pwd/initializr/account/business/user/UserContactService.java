@@ -17,7 +17,7 @@ public interface UserContactService {
    * @param id 主键
    * @return 是否成功
    */
-  boolean deleteById(Long id);
+  Integer deleteById(Long id);
 
   /**
    * 新增数据

@@ -18,11 +18,11 @@ public interface AdminAccountService {
    * <h2>通过主键启用/禁用账户</h2>
    * date 2020-07-28 16:09
    *
-   * @return java.lang.Boolean
+   * @return java.lang.Integer
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  Boolean ableByIds(List<Long> ids, EntityAble able);
+  Integer ableByIds(List<Long> ids, EntityAble able);
 
 
   /**
@@ -30,11 +30,11 @@ public interface AdminAccountService {
    * date 2020-07-28 16:09
    *
    * @param userIds 用户外键
-   * @return java.lang.Boolean
+   * @return java.lang.Integer
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  Boolean ableByUserIds(List<Long> userIds, EntityAble able);
+  Integer ableByUserIds(List<Long> userIds, EntityAble able);
 
   /**
    * 通过主键删除数据
@@ -42,29 +42,29 @@ public interface AdminAccountService {
    * @param id 主键
    * @return 是否成功
    */
-  Boolean deleteById(Long id);
+  Integer deleteById(Long id);
 
   /**
    * <h2>根据用户ID删除数据</h2>
    * date 2020-07-26 23:31
    *
    * @param userId 用户ID
-   * @return Boolean
+   * @return Integer
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  Boolean deleteByUserId(Long userId);
+  Integer deleteByUserId(Long userId);
 
   /**
    * <h2>根据用户ID删除数据</h2>
    * date 2020-07-26 23:43
    *
    * @param userIds 用户ID集合
-   * @return Boolean
+   * @return Integer
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  Boolean deleteByUserId(List<Long> userIds);
+  Integer deleteByUserId(List<Long> userIds);
 
   /**
    * 新增数据
