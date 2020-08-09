@@ -1,17 +1,14 @@
 package pwd.initializr.account.api.admin;
 
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,9 +23,8 @@ import pwd.initializr.account.business.admin.AdminUserService;
 import pwd.initializr.account.business.admin.AdminUserServiceWrap;
 import pwd.initializr.account.business.admin.bo.AdminAccountBO;
 import pwd.initializr.account.business.admin.bo.AdminUserBO;
-import pwd.initializr.common.web.api.vo.PageInput;
+import pwd.initializr.common.web.api.vo.Meta;
 import pwd.initializr.common.web.api.vo.PageOutput;
-import pwd.initializr.common.web.api.vo.SortInput;
 import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.common.web.persistence.entity.EntityAble;
 
@@ -121,44 +117,40 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
   }
 
   @Override
-  public void listUser(PageInput input) {
-
+  public void listUser(AdminUserQueryInput input) {
+    // TODO 查询条件参数没有应用
+    AdminUserBO queryCondition = new AdminUserBO();
+    PageableQueryResult<AdminUserBO> adminUserBOPageableQueryResult = adminUserService
+        .queryAllByCondition(queryCondition, input.getPage().getIndex(), input.getPage().getSize());
+    PageOutput<AdminUserOutput> result = new PageOutput<>();
+    adminUserBOPageableQueryResult.getElements().forEach(adminUserBO -> {
+      AdminUserOutput adminUserOutput = new AdminUserOutput();
+      BeanUtils.copyProperties(adminUserBO, adminUserOutput);
+      result.getElements().add(adminUserOutput);
+    });
+    result.setTotal(adminUserBOPageableQueryResult.getTotal());
+    result.setIndex(adminUserBOPageableQueryResult.getIndex());
+    result.setSize(adminUserBOPageableQueryResult.getSize());
+    outputData(result);
   }
 
-  @Override
-  public void listUserForTest(PageInput input) {
 
-  }
-
-  //  @Override
-//  public void listUser(AdminUserQueryInput input) {
-//    // TODO 查询条件参数没有应用
-//    AdminUserBO queryCondition = new AdminUserBO();
-//    PageableQueryResult<AdminUserBO> adminUserBOPageableQueryResult = adminUserService
-//        .queryAllByCondition(queryCondition, input.getIndex(), input.getSize());
-//    PageOutput<AdminUserOutput> result = new PageOutput<>();
-//    adminUserBOPageableQueryResult.getElements().forEach(adminUserBO -> {
-//      AdminUserOutput adminUserOutput = new AdminUserOutput();
-//      BeanUtils.copyProperties(adminUserBO, adminUserOutput);
-//      result.getElements().add(adminUserOutput);
-//    });
-//    result.setTotal(adminUserBOPageableQueryResult.getTotal());
-//    result.setIndex(adminUserBOPageableQueryResult.getIndex());
-//    result.setSize(adminUserBOPageableQueryResult.getSize());
-//    outputData(result);
-//  }
-
-  @ApiOperation(value = "更新账户信息")
-  @PutMapping(value = {"/account/{id}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
   public void updateAccount(@PathVariable("id") Long id, @RequestBody AdminAccountInput input) {
-
+    AdminAccountBO adminAccountBO = new AdminAccountBO();
+    adminAccountBO.setId(id);
+    adminAccountBO.setLoginPwd(input.getLoginPwd());
+    Integer update = adminAccountService.update(adminAccountBO);
+    outputData(new Meta(),update);
   }
 
-  @ApiOperation(value = "更新用户信息")
-  @PutMapping(value = {"/user/{uid}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+
   @Override
   public void updateUser(@PathVariable("uid") Long id, @RequestBody AdminUserInput input) {
-
+    AdminUserBO adminUserBO = new AdminUserBO();
+    BeanUtils.copyProperties(input,adminUserBO);
+    adminUserBO.setId(id);
+    Integer update = adminUserService.update(adminUserBO);
+    outputData(new Meta(),update);
   }
 }

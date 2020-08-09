@@ -26,12 +26,12 @@ import lombok.ToString;
 @ToString
 public class ScopeInput<T> implements Serializable {
 
-  @ApiModelProperty(name = "key", value = "指定查询字段", required = false, example = "0")
-  private String key;
-  @ApiModelProperty(name = "value", value = "指定查询目标", required = false, example = "0")
-  private T value;
-  @ApiModelProperty(name = "hit", value = "指定查询方式[E:精确,L:模糊,S:范围]", required = false, example = "0")
-  private String hit;
+  @ApiModelProperty(name = "fieldName", value = "指定查询字段", required = false, example = "fieldName")
+  private String fieldName;
+  @ApiModelProperty(name = "fieldValue", value = "指定查询目标", required = false, example = "fieldValue")
+  private T fieldValue;
+  @ApiModelProperty(name = "hit", value = "指定查询方式[E:精确,AL:前后模糊,LL:左模糊,RL:右模糊,S:范围]", required = false, example = "RL")
+  private String hit = "RL";
   @ApiModelProperty(name = "start", value = "范围查询起始值，区间包含", required = false, example = "0")
   private T start;
   @ApiModelProperty(name = "end", value = "范围查询结束值，区间包含", required = false, example = "0")

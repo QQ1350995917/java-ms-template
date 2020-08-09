@@ -29,7 +29,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class PageInput<T> implements Serializable {
+public class PageInput implements Serializable {
 
   @ApiModelProperty(name = "index", value = "当前页码", required = false, example = "0")
   @Min(value = 0)
@@ -38,10 +38,7 @@ public class PageInput<T> implements Serializable {
   @Min(value = 1)
   @Max(value = 100)
   private Long size = 12L;
-  @ApiModelProperty(name = "scope", value = "指定查询范围", required = false, example = "")
-  private LinkedList<ScopeInput<T>> scopes;
-  @ApiModelProperty(name = "sort", value = "指定排序条件", required = false, example = "")
-  private LinkedList<SortInput> sorts;
+
 
 
 }

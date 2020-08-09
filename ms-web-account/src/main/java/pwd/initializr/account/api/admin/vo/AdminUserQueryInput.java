@@ -3,6 +3,8 @@ package pwd.initializr.account.api.admin.vo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
+import java.util.Date;
+import java.util.LinkedList;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,6 +13,9 @@ import lombok.ToString;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import pwd.initializr.common.web.api.vo.PageInput;
+import pwd.initializr.common.web.api.vo.ScopeInput;
+import pwd.initializr.common.web.api.vo.SortInput;
+import sun.jvm.hotspot.debugger.Page;
 
 /**
  * pwd.initializr.account.api.admin.vo@ms-web-initializr
@@ -41,4 +46,14 @@ public class AdminUserQueryInput implements Serializable {
   private String empNo;
   @ApiModelProperty(name = "level", value = "管理员等级", required = false, example = "1")
   private Integer level;
+  @ApiModelProperty(name = "createTime", value = "创建时间", required = false, example = "2020-08-09 15:55:35")
+  private Date createTime;
+
+
+  @ApiModelProperty(name = "scope", value = "指定查询范围", required = false, example = "")
+  private LinkedList<ScopeInput<String>> scopes;
+  @ApiModelProperty(name = "sort", value = "指定排序条件", required = false, example = "")
+  private LinkedList<SortInput> sorts;
+  @ApiModelProperty(name = "page", value = "指定分页条件", required = false, example = "")
+  private PageInput page;
 }

@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import pwd.initializr.account.api.admin.vo.AdminAccountInput;
 import pwd.initializr.account.api.admin.vo.AdminUserInput;
+import pwd.initializr.account.api.admin.vo.AdminUserQueryInput;
 import pwd.initializr.account.api.admin.vo.CreateAdminInput;
-import pwd.initializr.common.web.api.vo.PageInput;
 
 /**
  * pwd.initializr.account.api.admin@ms-web-initializr
@@ -84,17 +84,18 @@ public interface AdminApi {
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  @ApiOperation(value = "根据条件分页查询用户信息")
-  @GetMapping(value = {"/user"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  void listUser(@RequestParam PageInput<String> input);
-
-
   @ApiOperation(value = "根据条件分页查询用户信息-数据模型测试接口")
-  @PostMapping(value = {"/user"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  void listUserForTest(@RequestBody PageInput<String> input);
+  @GetMapping(value = {"/user"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  void listUser(@RequestBody AdminUserQueryInput input);
 
-  void updateAccount(Long id, AdminAccountInput input);
+  @ApiOperation(value = "更新账户信息")
+  @PutMapping(value = {"/account/{id}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  void updateAccount(@PathVariable("id") @Valid @NotNull(message = "参数不能为空") Long id,
+      @RequestBody @Valid @NotNull(message = "参数不能为空") AdminAccountInput input);
 
-  void updateUser(Long id, AdminUserInput input);
+  @ApiOperation(value = "更新用户信息")
+  @PutMapping(value = {"/user/{uid}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  void updateUser(@PathVariable("uid") @Valid @NotNull(message = "参数不能为空") Long id,
+      @RequestBody @Valid @NotNull(message = "参数不能为空") AdminUserInput input);
 
 }
