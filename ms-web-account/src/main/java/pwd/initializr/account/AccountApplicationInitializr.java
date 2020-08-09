@@ -68,7 +68,7 @@ public class AccountApplicationInitializr {
       adminAccountBO.setUid(adminUserBOResult.getId());
       adminAccountBO.setLoginName("luoguanzhong");
       adminAccountBO.setLoginPwd("luoguanzhong");
-      adminAccountBO.setEnable(EntityAble.ENABLE.getNumber());
+      adminAccountBO.setAble(EntityAble.ENABLE.getNumber());
       adminAccountBO.setDel(EntityDel.NO.getNumber());
       adminAccountService.insert(adminAccountBO);
 

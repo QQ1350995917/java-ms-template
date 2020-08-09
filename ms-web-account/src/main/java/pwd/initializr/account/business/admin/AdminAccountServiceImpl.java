@@ -14,6 +14,7 @@ import pwd.initializr.account.persistence.entity.AdminAccountType;
 import pwd.initializr.common.utils.Cryptographer;
 import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.common.web.persistence.entity.EntityAble;
+import pwd.initializr.common.web.persistence.entity.EntityDel;
 
 /**
  * (AdminAccountEntity)表服务实现类
@@ -68,6 +69,8 @@ public class AdminAccountServiceImpl implements AdminAccountService {
   public AdminAccountBO insert(AdminAccountBO adminAccountBO) {
     AdminAccountEntity adminAccountEntity = new AdminAccountEntity();
     BeanUtils.copyProperties(adminAccountBO, adminAccountEntity);
+    adminAccountEntity.setAble(EntityAble.DISABLE.getNumber());
+    adminAccountEntity.setDel(EntityDel.NO.getNumber());
     adminAccountEntity.setPwdTime(new Date());
     adminAccountEntity.setType(AdminAccountType.GRANT.getNumber());
     adminAccountEntity.setCreateTime(new Date());

@@ -43,7 +43,7 @@ public class UserAccountEntity implements Serializable {
   /**
    * 可用状态：0:不可用；1:可用
    */
-  private Integer enable;
+  private Integer able;
   /**
    * 删除状态：0:未删除；1:已删除
    */

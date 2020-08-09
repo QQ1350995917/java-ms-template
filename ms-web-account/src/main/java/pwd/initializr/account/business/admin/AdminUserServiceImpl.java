@@ -10,6 +10,7 @@ import pwd.initializr.account.persistence.dao.AdminUserDao;
 import pwd.initializr.account.persistence.entity.AdminUserEntity;
 import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.common.web.persistence.entity.EntityAble;
+import pwd.initializr.common.web.persistence.entity.EntityDel;
 
 /**
  * (AdminUserEntity)表服务实现类
@@ -54,6 +55,8 @@ public class AdminUserServiceImpl implements AdminUserService {
   public AdminUserBO insert(AdminUserBO adminUserBO) {
     AdminUserEntity adminUserEntity = new AdminUserEntity();
     BeanUtils.copyProperties(adminUserBO, adminUserEntity);
+    adminUserEntity.setAble(EntityAble.DISABLE.getNumber());
+    adminUserEntity.setDel(EntityDel.NO.getNumber());
     adminUserEntity.setCreateTime(new Date());
     adminUserEntity.setUpdateTime(new Date());
     this.adminUserDao.insert(adminUserEntity);

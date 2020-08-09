@@ -10,7 +10,7 @@
     <result column="login_pwd" jdbcType="VARCHAR" property="loginPwd"/>
     <result column="pwd_time" jdbcType="TIMESTAMP" property="pwdTime"/>
     <result column="type" jdbcType="INTEGER" property="type"/>
-    <result column="enable" jdbcType="INTEGER" property="enable"/>
+    <result column="able" jdbcType="INTEGER" property="able"/>
     <result column="del" jdbcType="INTEGER" property="del"/>
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
@@ -19,7 +19,7 @@
   <!--查询单个-->
   <select id="queryById" resultMap="UserAccountMap">
         select
-          id, uid, login_name, login_pwd, pwd_time, type, enable, del, create_time, update_time
+          id, uid, login_name, login_pwd, pwd_time, type, able, del, create_time, update_time
         from initializr_account.user_account
         where id = #{id}
     </select>
@@ -27,7 +27,7 @@
   <!--登录查询-->
   <select id="queryByLoginNameAndPwd" resultMap="UserAccountMap">
         select
-          id, uid, login_name, login_pwd, pwd_time, type, enable, del, create_time, update_time
+          id, uid, login_name, login_pwd, pwd_time, type, able, del, create_time, update_time
         from initializr_account.user_account
         where login_name = #{loginName} and login_pwd = #{loginPwd}
   </select>
@@ -42,7 +42,7 @@
   <!--通过实体作为筛选条件查询-->
   <select id="queryAllByCondition" resultMap="UserAccountMap">
     select
-    id, uid, login_name, login_pwd, pwd_time, type, enable, del, create_time, update_time
+    id, uid, login_name, login_pwd, pwd_time, type, able, del, create_time, update_time
     from initializr_account.user_account
     <include refid="countAndQueryAllByCondition"></include>
     limit #{offset}, #{limit}
@@ -50,7 +50,7 @@
 
   <select id="queryAllByUid" resultMap="UserAccountMap">
     select
-    id, uid, login_name, login_pwd, pwd_time, type, enable, del, create_time, update_time
+    id, uid, login_name, login_pwd, pwd_time, type, able, del, create_time, update_time
     from initializr_account.user_account
     where uId = #{uid}
   </select>
@@ -75,8 +75,8 @@
       <if test="userAccountEntity.type != null">
         and type = #{userAccountEntity.type}
       </if>
-      <if test="userAccountEntity.enable != null">
-        and enable = #{userAccountEntity.enable}
+      <if test="userAccountEntity.able != null">
+        and able = #{userAccountEntity.able}
       </if>
       <if test="userAccountEntity.del != null">
         and del = #{userAccountEntity.del}
@@ -97,8 +97,8 @@
 
   <!--新增所有列-->
   <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into initializr_account.user_account(uid, login_name, login_pwd, pwd_time, type, enable, del, create_time, update_time)
-        values (#{uid}, #{loginName}, #{loginPwd}, #{pwdTime}, #{type}, #{enable}, #{del}, #{createTime}, #{updateTime})
+        insert into initializr_account.user_account(uid, login_name, login_pwd, pwd_time, type, able, del, create_time, update_time)
+        values (#{uid}, #{loginName}, #{loginPwd}, #{pwdTime}, #{type}, #{able}, #{del}, #{createTime}, #{updateTime})
     </insert>
 
   <!--通过主键修改数据-->
@@ -120,8 +120,8 @@
       <if test="type != null">
         type = #{type},
       </if>
-      <if test="enable != null">
-        enable = #{enable},
+      <if test="able != null">
+        able = #{able},
       </if>
       <if test="del != null">
         del = #{del},
@@ -152,12 +152,12 @@
 
   <!--通过主键启禁-->
   <update id="ableById">
-    update initializr_account.user_account set enable = #{able}, update_time = now() where id = #{id}
+    update initializr_account.user_account set able = #{able}, update_time = now() where id = #{id}
   </update>
 
   <!--通过主键启禁-->
   <update id="ableByIds">
-    update initializr_account.user_account set enable = #{able}, update_time = now() where id in
+    update initializr_account.user_account set able = #{able}, update_time = now() where id in
     <foreach close=")" collection="ids" index="index" item="id" open="(" separator=",">
       #{id}
     </foreach>
@@ -165,12 +165,12 @@
 
   <!--通过用户外键启禁-->
   <update id="ableByUserId">
-    update initializr_account.user_account set enable = #{able}, update_time = now() where uid = #{userId}
+    update initializr_account.user_account set able = #{able}, update_time = now() where uid = #{userId}
   </update>
 
   <!--通过用户外键启禁-->
   <update id="ableByUserIds">
-    update initializr_account.user_account set enable = #{able}, update_time = now() where uid where
+    update initializr_account.user_account set able = #{able}, update_time = now() where uid where
     id in
     <foreach close=")" collection="userIds" index="index" item="userId" open="(" separator=",">
       #{userId}

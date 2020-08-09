@@ -9,7 +9,7 @@
     <result column="type" jdbcType="INTEGER" property="type"/>
     <result column="value" jdbcType="VARCHAR" property="value"/>
     <result column="mark" jdbcType="VARCHAR" property="mark"/>
-    <result column="enable" jdbcType="INTEGER" property="enable"/>
+    <result column="able" jdbcType="INTEGER" property="able"/>
     <result column="del" jdbcType="INTEGER" property="del"/>
     <result column="create_time" jdbcType="INTEGER" property="createTime"/>
     <result column="update_time" jdbcType="INTEGER" property="updateTime"/>
@@ -18,7 +18,7 @@
   <!--查询单个-->
   <select id="queryById" resultMap="UserContactMap">
         select
-          id, uid, type, value, mark, enable, del, create_time, update_time
+          id, uid, type, value, mark, able, del, create_time, update_time
         from initializr_account.user_contact
         where id = #{id}
     </select>
@@ -32,7 +32,7 @@
   <!--通过实体作为筛选条件查询-->
   <select id="queryAllByCondition" resultMap="UserContactMap">
     select
-    id, uid, type, value, mark, enable, del, create_time, update_time
+    id, uid, type, value, mark, able, del, create_time, update_time
     from initializr_account.user_contact
     <include refid="countAndQueryAllByCondition"></include>
     limit #{offset}, #{limit}
@@ -40,7 +40,7 @@
 
   <select id="queryAllByUid" resultMap="UserContactMap">
     select
-    id, uid, type, value, mark, enable, del, create_time, update_time
+    id, uid, type, value, mark, able, del, create_time, update_time
     from initializr_account.user_contact
     where uId = #{uid}
   </select>
@@ -62,8 +62,8 @@
       <if test="adminContactEntity.mark != null and adminContactEntity.mark != ''">
         and mark = #{adminContactEntity.mark}
       </if>
-      <if test="adminContactEntity.enable != null">
-        and enable = #{adminContactEntity.enable}
+      <if test="adminContactEntity.able != null">
+        and able = #{adminContactEntity.able}
       </if>
       <if test="adminContactEntity.del != null">
         and del = #{adminContactEntity.del}
@@ -79,8 +79,8 @@
 
   <!--新增所有列-->
   <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into initializr_account.user_contact(uid, type, value, mark, enable, del, create_time, update_time)
-        values (#{uid}, #{type}, #{value}, #{mark}, #{enable}, #{del}, #{createTime}, #{updateTime})
+        insert into initializr_account.user_contact(uid, type, value, mark, able, del, create_time, update_time)
+        values (#{uid}, #{type}, #{value}, #{mark}, #{able}, #{del}, #{createTime}, #{updateTime})
     </insert>
 
   <!--通过主键修改数据-->
@@ -99,8 +99,8 @@
       <if test="mark != null and mark != ''">
         mark = #{mark},
       </if>
-      <if test="enable != null">
-        enable = #{enable},
+      <if test="able != null">
+        able = #{able},
       </if>
       <if test="del != null">
         del = #{del},

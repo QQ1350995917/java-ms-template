@@ -61,7 +61,7 @@ public class UserAccountServiceImpl implements UserAccountService {
     UserAccountEntity userAccountEntity = new UserAccountEntity();
     BeanUtils.copyProperties(userAccountBO, userAccountEntity);
     userAccountEntity.setPwdTime(new Date());
-    userAccountEntity.setEnable(EntityAble.ENABLE.getNumber());
+    userAccountEntity.setAble(EntityAble.ENABLE.getNumber());
     userAccountEntity.setDel(EntityDel.YES.getNumber());
     userAccountEntity.setCreateTime(new Date());
     userAccountEntity.setUpdateTime(new Date());

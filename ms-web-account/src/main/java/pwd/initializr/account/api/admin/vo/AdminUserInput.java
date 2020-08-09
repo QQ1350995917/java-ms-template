@@ -36,11 +36,11 @@ public class AdminUserInput implements Serializable {
   private String pin;
   @ApiModelProperty(name = "name", value = "姓名", required = true, example = "曹操")
   @NotNull(message = "姓名不能为空")
-  @Length(min = 3, max = 20, message = "姓名长度应是[3,20]位")
+  @Length(min = 2, max = 20, message = "姓名长度应是[2,20]位")
   private String name;
   @ApiModelProperty(name = "gender", value = "性别", required = true, example = "1")
   @NotNull(message = "性别不能为空")
-  private Integer gender;
+  private String gender;
   @ApiModelProperty(name = "empNo", value = "工号", required = false, example = "010-000")
   @Length(min = 6, max = 8, message = "工号长度应是[6,8]位")
   private String empNo;

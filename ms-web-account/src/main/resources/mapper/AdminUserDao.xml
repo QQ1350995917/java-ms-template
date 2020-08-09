@@ -131,12 +131,12 @@
 
   <!--通过主键启禁-->
   <update id="ableById">
-    update initializr_account.admin_user set enable = #{able}, update_time = now() where id = #{id}
+    update initializr_account.admin_user set able = #{able}, update_time = now() where id = #{id}
   </update>
 
   <!--通过主键启禁-->
   <update id="ableByIds">
-    update initializr_account.admin_user set enable = #{able}, update_time = now() where id in
+    update initializr_account.admin_user set able = #{able}, update_time = now() where id in
     <foreach close=")" collection="ids" index="index" item="id" open="(" separator=",">
       #{id}
     </foreach>
