@@ -1,4 +1,4 @@
-package pwd.initializr.account.test.admin.service;
+package pwd.initializr.account.test.business.admin;
 
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -1,4 +1,4 @@
-package pwd.initializr.account.test.admin.service;
+package pwd.initializr.account.test.business.admin;
 
 /**
  * pwd.initializr.account.test.admin.service@ms-web-initializr

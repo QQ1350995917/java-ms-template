@@ -1,5 +1,6 @@
 package pwd.initializr.account.api.admin;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import javax.validation.Valid;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.account.api.admin.vo.AdminAccountInput;
 import pwd.initializr.account.api.admin.vo.AdminUserInput;
 import pwd.initializr.account.api.admin.vo.AdminUserQueryInput;
@@ -29,6 +32,13 @@ import pwd.initializr.account.api.admin.vo.CreateAdminInput;
  * @version 1.0.0
  * @since DistributionVersion
  */
+@Api(
+    tags = "人员管理",
+    value = "adminManageApi",
+    description = "[创建管理员/账号，人员/账号列表，人员/账号启/禁用，人员/账号删除]"
+)
+@RestController(value = "admin")
+@RequestMapping(value = "/api/admin/admin")
 public interface AdminApi {
 
   @ApiOperation(value = "创建管理员用户信息以及账户信息")

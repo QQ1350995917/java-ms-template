@@ -46,7 +46,6 @@ import pwd.initializr.common.web.persistence.entity.EntityAble;
 )
 @RestController(value = "admin")
 @RequestMapping(value = "/api/admin/admin")
-@Validated
 public class AdminController extends pwd.initializr.common.web.api.admin.AdminController implements
     AdminApi {
 
