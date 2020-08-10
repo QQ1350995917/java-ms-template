@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pwd.initializr.common.web.persistence.entity.ScopeEntity">
+
+  <!-- 实体数据查询条件 -->
+  <sql id="entityQueryScope">
+    <if test="scopes != null and scopes.size > 0">
+      <where>
+        <foreach close="" collection="scopes" index="index" item="scope" open="" separator=" and ">
+          <if test='scope.hit == "EM"'>
+            ${scope.fieldName} = #{scope.fieldValue}
+          </if>
+          <if test='scope.hit == "ENM"'>
+            ${scope.fieldName} != #{scope.fieldValue}
+          </if>
+          <if test='scope.hit == "AL"'>
+            ${scope.fieldName} like CONCAT('%',#{scope.fieldValue},'%')
+          </if>
+          <if test='scope.hit == "LL"'>
+            ${scope.fieldName} like CONCAT('%',#{scope.fieldValue})
+          </if>
+          <if test='scope.hit == "RL"'>
+            ${scope.fieldName} like CONCAT(#{scope.fieldValue},'%')
+          </if>
+          <if test='scope.hit == "SM"'>
+            <if
+              test='scope.start != null and scope.start != "" and scope.end != null and scope.end != ""'>
+              ${scope.fieldName} <![CDATA[ >= ]]> #{scope.start}
+              AND
+              ${scope.fieldName} <![CDATA[ <= ]]> #{scope.end}
+            </if>
+            <if
+              test='scope.start != null and scope.start != "" and (scope.end == null or scope.end == "")'>
+              ${scope.fieldName} <![CDATA[ >= ]]> #{scope.start}
+            </if>
+            <if
+              test='(scope.start == null or scope.start == "") and scope.end != null and scope.end != ""'>
+              ${scope.fieldName} <![CDATA[ <= ]]> #{scope.end}
+            </if>
+          </if>
+        </foreach>
+      </where>
+    </if>
+  </sql>
+
+</mapper>

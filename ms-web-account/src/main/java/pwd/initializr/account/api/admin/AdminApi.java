@@ -1,7 +1,10 @@
 package pwd.initializr.account.api.admin;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import java.util.LinkedHashSet;
 import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -9,17 +12,23 @@ import javax.validation.constraints.Size;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.account.api.admin.vo.AdminAccountInput;
 import pwd.initializr.account.api.admin.vo.AdminUserInput;
 import pwd.initializr.account.api.admin.vo.AdminUserQueryInput;
 import pwd.initializr.account.api.admin.vo.CreateAdminInput;
+import pwd.initializr.common.web.api.vo.PageInput;
+import pwd.initializr.common.web.api.vo.ScopeInput;
+import pwd.initializr.common.web.api.vo.SortInput;
+import pwd.initializr.common.web.persistence.entity.ScopeEntity;
 
 /**
  * pwd.initializr.account.api.admin@ms-web-initializr
@@ -89,14 +98,20 @@ public interface AdminApi {
    * <h2>根据分页信息以及分页条件查找用户</h2>
    * date 2020-08-08 19:43
    *
-   * @param input 查询参数
+   * @param scopes 查询参数
+   * @param sorts 排序信息
+   * @param page 分页信息
    * @return void
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
   @ApiOperation(value = "根据条件分页查询用户信息-数据模型测试接口")
   @GetMapping(value = {"/user"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  void listUser(@RequestBody AdminUserQueryInput input);
+  @ApiImplicitParams({ @ApiImplicitParam(name = "scopes", value = "查询条件", paramType = "query", allowMultiple = true, dataType = "scopeInput")})
+  void listUser(
+      @RequestParam(value = "scopes",required = false) LinkedHashSet<ScopeInput> scopes,
+      @RequestParam(value = "sorts",required = false) LinkedHashSet<SortInput> sorts,
+      @RequestParam(value = "page",required = false) PageInput page);
 
   @ApiOperation(value = "更新账户信息")
   @PutMapping(value = {"/account/{id}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

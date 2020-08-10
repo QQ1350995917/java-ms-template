@@ -1,5 +1,6 @@
 package pwd.initializr.account.test.persistence;
 
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import org.junit.Assert;
@@ -35,7 +36,7 @@ public class AdminUserDaoTest {
 
     @Test
     public void testQueryAllByScope() {
-        LinkedList<ScopeEntity> scopeEntities = new LinkedList<>();
+        LinkedHashSet<ScopeEntity> scopeEntities = new LinkedHashSet<>();
         ScopeEntity scopeEntityName = new ScopeEntity();
         scopeEntityName.setHit(EntityScopeHit.LIKE.getHit());
         scopeEntityName.setFieldName("name");
@@ -64,17 +65,17 @@ public class AdminUserDaoTest {
         scopeEntityCreateTime.setHit(EntityScopeHit.SCOPE.getHit());
         scopeEntityCreateTime.setFieldName("create_time");
         scopeEntityCreateTime.setStart("2020-07-25");
-        scopeEntityCreateTime.setEnd("2020-07-26");
+        scopeEntityCreateTime.setEnd("2020-07-29");
         scopeEntities.add(scopeEntityCreateTime);
 
-        LinkedList<SortEntity> sortEntities = new LinkedList<>();
+        LinkedHashSet<SortEntity> sortEntities = new LinkedHashSet<>();
         SortEntity sortEntity = new SortEntity();
         sortEntity.setFieldName("create_time");
         sortEntity.setSort(EntitySort.DESC.getSort());
         sortEntities.add(sortEntity);
 
         List<AdminUserEntity> adminUserEntities = adminUserDao
-            .queryAllByScope(scopeEntities, sortEntities, 0L, 100L);
+            .queryAllByCondition(scopeEntities, sortEntities, 0L, 100L);
         Assert.assertEquals(1, adminUserEntities.size());
     }
 }

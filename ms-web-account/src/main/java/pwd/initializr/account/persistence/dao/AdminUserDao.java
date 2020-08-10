@@ -1,5 +1,7 @@
 package pwd.initializr.account.persistence.dao;
 
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import pwd.initializr.account.persistence.entity.AdminUserEntity;
@@ -39,10 +41,10 @@ public interface AdminUserDao {
   /**
    * 通过实体作为筛选条件统计数量
    *
-   * @param adminUserEntity 实例对象
+   * @param scopes 查询条件
    * @return 统计数量
    */
-  Long countAllByCondition(@Param("adminUserEntity") AdminUserEntity adminUserEntity);
+  Long countAllByCondition(@Param("scopes") LinkedHashSet<? extends ScopeEntity> scopes);
 
   /**
    * 通过主键删除数据
@@ -71,20 +73,18 @@ public interface AdminUserDao {
    */
   Integer insert(AdminUserEntity adminUserEntity);
 
-  List<AdminUserEntity> queryAllByScope(
-      @Param("scopes") List<ScopeEntity> scopes, @Param("sorts") List<SortEntity> sorts,
-      @Param("offset") Long offset, @Param("limit") Long limit);
-
   /**
    * 通过实体作为筛选条件查询
    *
-   * @param adminUserEntity 实例对象
+   * @param scopes 查询条件
+   * @param sorts 排序条件
    * @param offset 查询起始位置
    * @param limit 查询条数
    * @return 对象列表
    */
   List<AdminUserEntity> queryAllByCondition(
-      @Param("adminUserEntity") AdminUserEntity adminUserEntity,
+      @Param("scopes") LinkedHashSet<? extends ScopeEntity> scopes,
+      @Param("sorts") LinkedHashSet<? extends SortEntity> sorts,
       @Param("offset") Long offset, @Param("limit") Long limit);
 
   /**

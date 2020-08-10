@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pwd.initializr.common.web.persistence.entity.SortEntity">
+  <!-- 实体数据排序条件 -->
+  <sql id="entityQuerySort">
+    <if test="sorts != null and sorts.size > 0">
+      order by
+      <foreach close="" collection="sorts" index="index" item="sort" open="" separator=",">
+        ${sort.fieldName} ${sort.sort}
+      </foreach>
+    </if>
+    <if test="sorts == null or sorts.size &lt; 1">
+      order by id desc
+    </if>
+  </sql>
+</mapper>

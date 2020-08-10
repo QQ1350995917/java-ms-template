@@ -1,6 +1,8 @@
 package pwd.initializr.account.business.admin;
 
 import java.util.Date;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.Resource;
 import org.springframework.beans.BeanUtils;
@@ -9,6 +11,8 @@ import pwd.initializr.account.business.admin.bo.AdminUserBO;
 import pwd.initializr.account.persistence.dao.AdminUserDao;
 import pwd.initializr.account.persistence.entity.AdminUserEntity;
 import pwd.initializr.common.web.business.bo.PageableQueryResult;
+import pwd.initializr.common.web.business.bo.ScopeBO;
+import pwd.initializr.common.web.business.bo.SortBO;
 import pwd.initializr.common.web.persistence.entity.EntityAble;
 import pwd.initializr.common.web.persistence.entity.EntityDel;
 
@@ -66,17 +70,15 @@ public class AdminUserServiceImpl implements AdminUserService {
   }
 
   @Override
-  public PageableQueryResult<AdminUserBO> queryAllByCondition(AdminUserBO adminUserBO, Long pageIndex,
-      Long pageSize) {
+  public PageableQueryResult<AdminUserBO> queryAllByCondition(LinkedHashSet<ScopeBO> scopeBOS,
+      LinkedHashSet<SortBO> sortBOS, Long pageIndex, Long pageSize) {
     PageableQueryResult<AdminUserBO> result = new PageableQueryResult<>();
-    AdminUserEntity queryCondition = new AdminUserEntity();
-    BeanUtils.copyProperties(adminUserBO, queryCondition);
-    Long total = this.adminUserDao.countAllByCondition(queryCondition);
+    Long total = this.adminUserDao.countAllByCondition(scopeBOS);
     if (total == null || total < 1) {
       return result;
     }
     List<AdminUserEntity> adminUserEntities = this.adminUserDao
-        .queryAllByCondition(queryCondition, pageIndex * pageSize, pageSize);
+        .queryAllByCondition(scopeBOS, sortBOS, pageIndex * pageSize, pageSize);
     if (adminUserEntities == null) {
       return null;
     }
@@ -118,4 +120,5 @@ public class AdminUserServiceImpl implements AdminUserService {
   public Integer update(AdminUserBO adminUserBO) {
     return this.adminUserDao.update(adminUserBO);
   }
+
 }

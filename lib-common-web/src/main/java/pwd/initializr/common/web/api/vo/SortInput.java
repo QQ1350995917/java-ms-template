@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.apache.commons.lang.StringUtils;
+import pwd.initializr.common.web.persistence.entity.EntitySort;
 
 /**
  * pwd.initializr.common.web.api.vo@ms-web-initializr
@@ -25,16 +26,17 @@ import org.apache.commons.lang.StringUtils;
 @NoArgsConstructor
 @Setter
 @ToString
+
 public class SortInput implements Serializable {
 
-    @ApiModelProperty(name = "key", value = "排序标记", required = false, example = "0")
-    private String key;
+    @ApiModelProperty(name = "fieldName", value = "排序字段", required = false, example = "id")
+    private String fieldName;
     @ApiModelProperty(name = "value", value = "[desc|asc]", required = false, example = "desc")
-    private String value;
+    private String sort;
 
     @Override
     public int hashCode() {
-        return key.hashCode();
+        return fieldName.hashCode();
     }
 
     @Override
@@ -50,7 +52,7 @@ public class SortInput implements Serializable {
         if (sortInput.getKey() == null) {
             return false;
         }
-        if (!sortInput.getKey().equals(key)) {
+        if (!sortInput.getKey().equals(fieldName)) {
             return false;
         }
 
@@ -58,10 +60,10 @@ public class SortInput implements Serializable {
     }
 
     public String getKey() {
-        return StringUtils.isBlank(key) ? "id" : key;
+        return StringUtils.isBlank(fieldName) ? "id" : fieldName;
     }
 
     public String getValue() {
-        return StringUtils.isBlank(value) ? "desc" : value;
+        return StringUtils.isBlank(sort) ? "desc" : sort;
     }
 }

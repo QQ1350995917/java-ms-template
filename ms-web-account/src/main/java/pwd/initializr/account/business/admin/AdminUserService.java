@@ -1,8 +1,12 @@
 package pwd.initializr.account.business.admin;
 
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
 import pwd.initializr.account.business.admin.bo.AdminUserBO;
 import pwd.initializr.common.web.business.bo.PageableQueryResult;
+import pwd.initializr.common.web.business.bo.ScopeBO;
+import pwd.initializr.common.web.business.bo.SortBO;
 import pwd.initializr.common.web.persistence.entity.EntityAble;
 
 /**
@@ -57,14 +61,16 @@ public interface AdminUserService {
    * <h2>根据条件查询多条数据</h2>
    * date 2020-07-26 21:08
    *
-   * @param adminUserBO 查询条件
+   * @param scopeBOS 查询条件
+   * @param sortBOS 排序条件
    * @param pageIndex 页码
    * @param pageSize 页面容量
    * @return pwd.initializr.common.web.business.bo.PageableQueryResult<pwd.initializr.account.persistence.entity.AdminUserEntity>
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  PageableQueryResult<AdminUserBO> queryAllByCondition(AdminUserBO adminUserBO, Long pageIndex,
+  PageableQueryResult<AdminUserBO> queryAllByCondition(LinkedHashSet<ScopeBO> scopeBOS,
+      LinkedHashSet<SortBO> sortBOS, Long pageIndex,
       Long pageSize);
 
   /**

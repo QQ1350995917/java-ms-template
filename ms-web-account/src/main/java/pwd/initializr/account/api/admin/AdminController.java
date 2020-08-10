@@ -1,6 +1,7 @@
 package pwd.initializr.account.api.admin;
 
 import io.swagger.annotations.Api;
+import java.util.LinkedHashSet;
 import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -24,7 +25,10 @@ import pwd.initializr.account.business.admin.AdminUserServiceWrap;
 import pwd.initializr.account.business.admin.bo.AdminAccountBO;
 import pwd.initializr.account.business.admin.bo.AdminUserBO;
 import pwd.initializr.common.web.api.vo.Meta;
+import pwd.initializr.common.web.api.vo.PageInput;
 import pwd.initializr.common.web.api.vo.PageOutput;
+import pwd.initializr.common.web.api.vo.ScopeInput;
+import pwd.initializr.common.web.api.vo.SortInput;
 import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.common.web.persistence.entity.EntityAble;
 
@@ -116,23 +120,24 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
   }
 
   @Override
-  public void listUser(AdminUserQueryInput input) {
+  public void listUser(LinkedHashSet<ScopeInput> scopes, LinkedHashSet<SortInput> sorts,
+      PageInput page) {
+    AdminUserQueryInput queryInput = new AdminUserQueryInput();
     // TODO 查询条件参数没有应用
-    AdminUserBO queryCondition = new AdminUserBO();
-    PageableQueryResult<AdminUserBO> adminUserBOPageableQueryResult = adminUserService
-        .queryAllByCondition(queryCondition, input.getPage().getIndex(), input.getPage().getSize());
-    PageOutput<AdminUserOutput> result = new PageOutput<>();
-    adminUserBOPageableQueryResult.getElements().forEach(adminUserBO -> {
-      AdminUserOutput adminUserOutput = new AdminUserOutput();
-      BeanUtils.copyProperties(adminUserBO, adminUserOutput);
-      result.getElements().add(adminUserOutput);
-    });
-    result.setTotal(adminUserBOPageableQueryResult.getTotal());
-    result.setIndex(adminUserBOPageableQueryResult.getIndex());
-    result.setSize(adminUserBOPageableQueryResult.getSize());
-    outputData(result);
+//    AdminUserBO queryCondition = new AdminUserBO();
+//    PageableQueryResult<AdminUserBO> adminUserBOPageableQueryResult = adminUserService
+//        .queryAllByCondition(scopes, sorts,page.getIndex(), page.getSize());
+//    PageOutput<AdminUserOutput> result = new PageOutput<>();
+//    adminUserBOPageableQueryResult.getElements().forEach(adminUserBO -> {
+//      AdminUserOutput adminUserOutput = new AdminUserOutput();
+//      BeanUtils.copyProperties(adminUserBO, adminUserOutput);
+//      result.getElements().add(adminUserOutput);
+//    });
+//    result.setTotal(adminUserBOPageableQueryResult.getTotal());
+//    result.setIndex(adminUserBOPageableQueryResult.getIndex());
+//    result.setSize(adminUserBOPageableQueryResult.getSize());
+//    outputData(result);
   }
-
 
   @Override
   public void updateAccount(@PathVariable("id") Long id, @RequestBody AdminAccountInput input) {
