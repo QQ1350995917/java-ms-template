@@ -30,6 +30,63 @@
     <include refid="countAndQueryAllByCondition"></include>
   </select>
 
+
+  <!--通过实体作为筛选条件查询-->
+  <select id="queryAllByScope" resultMap="AdminUserMap">
+    select
+    id, pin, name, gender, emp_no, summary, able, del, create_time, update_time
+    from initializr_account.admin_user
+    <if test="scopes != null and scopes.size > 0">
+      <where>
+        <foreach close="" collection="scopes" index="index" item="scope" open="" separator=" and ">
+          <if test='scope.hit == "EM"'>
+            ${scope.fieldName} = #{scope.fieldValue}
+          </if>
+          <if test='scope.hit == "ENM"'>
+            ${scope.fieldName} != #{scope.fieldValue}
+          </if>
+          <if test='scope.hit == "AL"'>
+            ${scope.fieldName} like CONCAT('%',#{scope.fieldValue},'%')
+          </if>
+          <if test='scope.hit == "LL"'>
+            ${scope.fieldName} like CONCAT('%',#{scope.fieldValue})
+          </if>
+          <if test='scope.hit == "RL"'>
+            ${scope.fieldName} like CONCAT(#{scope.fieldValue},'%')
+          </if>
+          <if test='scope.hit == "SM"'>
+            <if
+              test='scope.start != null and scope.start != "" and scope.end != null and scope.end != ""'>
+              ${scope.fieldName} <![CDATA[ >= ]]> #{scope.start}
+              AND
+              ${scope.fieldName} <![CDATA[ <= ]]> #{scope.end}
+            </if>
+            <if
+              test='scope.start != null and scope.start != "" and (scope.end == null or scope.end == "")'>
+              ${scope.fieldName} <![CDATA[ >= ]]> #{scope.start}
+            </if>
+            <if
+              test='(scope.start == null or scope.start == "") and scope.end != null and scope.end != ""'>
+              ${scope.fieldName} <![CDATA[ <= ]]> #{scope.end}
+            </if>
+          </if>
+        </foreach>
+      </where>
+    </if>
+
+    <if test="sorts != null and sorts.size > 0">
+      order by
+      <foreach close="" collection="sorts" index="index" item="sort" open="" separator=",">
+        ${sort.fieldName} ${sort.sort}
+      </foreach>
+    </if>
+    <if test="sorts == null or sorts.size &lt; 1">
+      order by id desc
+    </if>
+
+    limit #{offset}, #{limit}
+  </select>
+
   <!--通过实体作为筛选条件查询-->
   <select id="queryAllByCondition" resultMap="AdminUserMap">
     select

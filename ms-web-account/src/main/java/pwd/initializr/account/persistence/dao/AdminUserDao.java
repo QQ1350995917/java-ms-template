@@ -3,6 +3,8 @@ package pwd.initializr.account.persistence.dao;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import pwd.initializr.account.persistence.entity.AdminUserEntity;
+import pwd.initializr.common.web.persistence.entity.ScopeEntity;
+import pwd.initializr.common.web.persistence.entity.SortEntity;
 
 /**
  * (AdminUserEntity)表数据库访问层
@@ -68,6 +70,10 @@ public interface AdminUserDao {
    * @return 影响行数
    */
   Integer insert(AdminUserEntity adminUserEntity);
+
+  List<AdminUserEntity> queryAllByScope(
+      @Param("scopes") List<ScopeEntity> scopes, @Param("sorts") List<SortEntity> sorts,
+      @Param("offset") Long offset, @Param("limit") Long limit);
 
   /**
    * 通过实体作为筛选条件查询

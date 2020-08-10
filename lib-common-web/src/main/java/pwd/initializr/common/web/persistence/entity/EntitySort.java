@@ -7,26 +7,29 @@ import lombok.ToString;
 /**
  * pwd.initializr.common.web.persistence.entity@ms-web-initializr
  *
- * <h1>统一持久层数据删除状态结构声明</h1>
+ * <h1>TODO what you want to do?</h1>
  *
- * date 2020-07-21 22:37
+ * date 2020-08-10 17:47
  *
- * @author DingPengwei[www.dingpengwei@foxmail.com]
+ * @author DingPengwei[dingpengwei@foxmail.com]
  * @version 1.0.0
  * @since DistributionVersion
  */
 @NoArgsConstructor
 @Getter
 @ToString
-public enum EntityDel {
-    NO(0, "no", "未删除"), YES(1, "yes", "已删除");
+public enum EntitySort {
+    DESC("DESC", "DESC", "降序"),
+    ASC("ASC", "ASC", "升序");
 
-    private int number;
+    private String sort;
     private String enus;
     private String zhcn;
-    EntityDel(int number, String enus, String zhcn) {
-        this.number = number;
+
+    EntitySort(String sort, String enus, String zhcn) {
+        this.sort = sort;
         this.enus = enus;
         this.zhcn = zhcn;
     }
+
 }
