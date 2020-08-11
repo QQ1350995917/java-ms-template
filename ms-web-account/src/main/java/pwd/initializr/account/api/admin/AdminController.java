@@ -1,6 +1,9 @@
 package pwd.initializr.account.api.admin;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import io.swagger.annotations.Api;
+import java.lang.reflect.Method;
 import java.util.LinkedHashSet;
 import java.util.List;
 import javax.validation.Valid;
@@ -8,7 +11,9 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.MethodParameter;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,6 +35,8 @@ import pwd.initializr.common.web.api.vo.PageOutput;
 import pwd.initializr.common.web.api.vo.ScopeInput;
 import pwd.initializr.common.web.api.vo.SortInput;
 import pwd.initializr.common.web.business.bo.PageableQueryResult;
+import pwd.initializr.common.web.business.bo.ScopeBO;
+import pwd.initializr.common.web.business.bo.SortBO;
 import pwd.initializr.common.web.persistence.entity.EntityAble;
 
 /**
@@ -105,6 +112,41 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
     outputData(able);
   }
 
+  @Override
+  public void listUser(String scopes, String sorts, String page) {
+    LinkedHashSet<ScopeInput> scopeInputs = null;
+    LinkedHashSet<SortInput> sortInputs = null;
+    PageInput pageInput = null;
+    try {
+      scopeInputs = JSON.parseObject(scopes, new TypeReference<LinkedHashSet<ScopeInput>>() {});
+      sortInputs = JSON.parseObject(sorts, new TypeReference<LinkedHashSet<SortInput>>() {});
+      pageInput = JSON.parseObject(page, PageInput.class);
+    } catch (Exception e) {
+      throw new RuntimeException("参数格式错误");
+    }
+    if (pageInput == null) {
+      pageInput = new PageInput();
+    }
+
+    // TODO 查询条件参数没有应用
+    LinkedHashSet<ScopeBO> scopeBOS = new LinkedHashSet<>();
+
+    LinkedHashSet<SortBO> sortBOS = new LinkedHashSet<>();
+
+    PageableQueryResult<AdminUserBO> adminUserBOPageableQueryResult = adminUserService
+        .queryAllByCondition(scopeBOS, sortBOS,pageInput.getIndex(), pageInput.getSize());
+    PageOutput<AdminUserOutput> result = new PageOutput<>();
+    adminUserBOPageableQueryResult.getElements().forEach(adminUserBO -> {
+      AdminUserOutput adminUserOutput = new AdminUserOutput();
+      BeanUtils.copyProperties(adminUserBO, adminUserOutput);
+      result.getElements().add(adminUserOutput);
+    });
+    result.setTotal(adminUserBOPageableQueryResult.getTotal());
+    result.setIndex(adminUserBOPageableQueryResult.getIndex());
+    result.setSize(adminUserBOPageableQueryResult.getSize());
+    outputData(result);
+
+  }
 
   @Override
   public void listAccount(@PathVariable("uid") Long userId) {
@@ -117,26 +159,6 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
       result.getElements().add(adminAccountOutput);
     });
     outputData(result);
-  }
-
-  @Override
-  public void listUser(LinkedHashSet<ScopeInput> scopes, LinkedHashSet<SortInput> sorts,
-      PageInput page) {
-    AdminUserQueryInput queryInput = new AdminUserQueryInput();
-    // TODO 查询条件参数没有应用
-//    AdminUserBO queryCondition = new AdminUserBO();
-//    PageableQueryResult<AdminUserBO> adminUserBOPageableQueryResult = adminUserService
-//        .queryAllByCondition(scopes, sorts,page.getIndex(), page.getSize());
-//    PageOutput<AdminUserOutput> result = new PageOutput<>();
-//    adminUserBOPageableQueryResult.getElements().forEach(adminUserBO -> {
-//      AdminUserOutput adminUserOutput = new AdminUserOutput();
-//      BeanUtils.copyProperties(adminUserBO, adminUserOutput);
-//      result.getElements().add(adminUserOutput);
-//    });
-//    result.setTotal(adminUserBOPageableQueryResult.getTotal());
-//    result.setIndex(adminUserBOPageableQueryResult.getIndex());
-//    result.setSize(adminUserBOPageableQueryResult.getSize());
-//    outputData(result);
   }
 
   @Override

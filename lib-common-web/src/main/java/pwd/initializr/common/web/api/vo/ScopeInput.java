@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
@@ -21,6 +22,7 @@ import lombok.ToString;
  */
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
 @Setter
 @ToString
 @ApiModel(value = "scopeInput", description = "条件查询输入")
@@ -47,15 +49,15 @@ public class ScopeInput implements Serializable {
     if (obj == null) {
       return false;
     }
-    if (!(obj instanceof SortInput)) {
+    if (!(obj instanceof ScopeInput)) {
       return false;
     }
 
-    SortInput sortInput = (SortInput) obj;
-    if (sortInput.getKey() == null) {
+    ScopeInput scopeInput = (ScopeInput) obj;
+    if (scopeInput.getFieldName() == null) {
       return false;
     }
-    if (!sortInput.getKey().equals(fieldName)) {
+    if (!scopeInput.getFieldName().equals(fieldName)) {
       return false;
     }
 

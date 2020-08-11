@@ -29,7 +29,7 @@ import pwd.initializr.common.web.persistence.entity.EntitySort;
 
 public class SortInput implements Serializable {
 
-    @ApiModelProperty(name = "fieldName", value = "排序字段", required = false, example = "id")
+    @ApiModelProperty(name = "fieldName", value = "指定排序字段", required = false, example = "id")
     private String fieldName;
     @ApiModelProperty(name = "value", value = "[desc|asc]", required = false, example = "desc")
     private String sort;
@@ -49,21 +49,21 @@ public class SortInput implements Serializable {
         }
 
         SortInput sortInput = (SortInput) obj;
-        if (sortInput.getKey() == null) {
+        if (sortInput.getFieldName() == null) {
             return false;
         }
-        if (!sortInput.getKey().equals(fieldName)) {
+        if (!sortInput.getSort().equals(fieldName)) {
             return false;
         }
 
         return true;
     }
 
-    public String getKey() {
+    public String getFieldName() {
         return StringUtils.isBlank(fieldName) ? "id" : fieldName;
     }
 
-    public String getValue() {
+    public String getSort() {
         return StringUtils.isBlank(sort) ? "desc" : sort;
     }
 }

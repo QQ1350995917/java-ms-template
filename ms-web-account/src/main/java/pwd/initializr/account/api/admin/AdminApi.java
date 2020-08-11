@@ -1,11 +1,8 @@
 package pwd.initializr.account.api.admin;
 
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import java.util.LinkedHashSet;
 import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -13,7 +10,6 @@ import javax.validation.constraints.Size;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,12 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.account.api.admin.vo.AdminAccountInput;
 import pwd.initializr.account.api.admin.vo.AdminUserInput;
-import pwd.initializr.account.api.admin.vo.AdminUserQueryInput;
 import pwd.initializr.account.api.admin.vo.CreateAdminInput;
-import pwd.initializr.common.web.api.vo.PageInput;
-import pwd.initializr.common.web.api.vo.ScopeInput;
-import pwd.initializr.common.web.api.vo.SortInput;
-import pwd.initializr.common.web.persistence.entity.ScopeEntity;
 
 /**
  * pwd.initializr.account.api.admin@ms-web-initializr
@@ -108,15 +99,10 @@ public interface AdminApi {
    */
   @ApiOperation(value = "根据条件分页查询用户信息")
   @GetMapping(value = {"/user"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-//  @ApiImplicitParams(value = {
-//      @ApiImplicitParam(name = "scopes", value = "查询条件", paramType = "query", allowMultiple = true, dataType = "scopeInput"),
-//      @ApiImplicitParam(name = "sorts", value = "排序条件", paramType = "query", allowMultiple = true, dataType = "sortInput"),
-//      @ApiImplicitParam(name = "page", value = "分页条件", paramType = "query", allowMultiple = false, dataType = "pageInput")
-//  })
   void listUser(
-      @ApiParam(allowMultiple = true,type = "scopeInput") @RequestParam(value = "scopes",required = false) LinkedHashSet<ScopeInput> scopes,
-      @ApiParam(allowMultiple = true,type = "sortInput") @RequestParam(value = "sorts",required = false) LinkedHashSet<SortInput> sorts,
-      @ApiParam(allowMultiple = false,type = "page") @RequestParam(value = "page",required = false) PageInput page);
+      @ApiParam(name = "scopes", value = "[{\"hit\":\"指定查询方式[E:精确,AL:前后模糊,LL:左模糊,RL:右模糊,S:范围]\",\"fieldName\":\"指定查询字段\",\"fieldValue\":\"指定查询目标\",\"start\":\"范围查询起始值，区间包含\",\"end\":\"范围查询结束值，区间包含\"}]") @RequestParam(value = "scopes", required = false) String scopes,
+      @ApiParam(name = "sorts", value = "[{\"fieldName\":\"指定排序字段\",\"sort\":\"[desc|asc]\"}]") @RequestParam(value = "sorts", required = false) String sorts,
+      @ApiParam(name = "page", value = "{\"index\":0,\"size\":12}") @RequestParam(value = "page", required = false) String page);
 
   @ApiOperation(value = "更新账户信息")
   @PutMapping(value = {"/account/{id}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
