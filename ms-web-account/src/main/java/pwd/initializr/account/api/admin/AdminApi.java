@@ -4,6 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import java.util.LinkedHashSet;
 import java.util.List;
 import javax.validation.Valid;
@@ -105,13 +106,17 @@ public interface AdminApi {
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  @ApiOperation(value = "根据条件分页查询用户信息-数据模型测试接口")
+  @ApiOperation(value = "根据条件分页查询用户信息")
   @GetMapping(value = {"/user"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  @ApiImplicitParams({ @ApiImplicitParam(name = "scopes", value = "查询条件", paramType = "query", allowMultiple = true, dataType = "scopeInput")})
+//  @ApiImplicitParams(value = {
+//      @ApiImplicitParam(name = "scopes", value = "查询条件", paramType = "query", allowMultiple = true, dataType = "scopeInput"),
+//      @ApiImplicitParam(name = "sorts", value = "排序条件", paramType = "query", allowMultiple = true, dataType = "sortInput"),
+//      @ApiImplicitParam(name = "page", value = "分页条件", paramType = "query", allowMultiple = false, dataType = "pageInput")
+//  })
   void listUser(
-      @RequestParam(value = "scopes",required = false) LinkedHashSet<ScopeInput> scopes,
-      @RequestParam(value = "sorts",required = false) LinkedHashSet<SortInput> sorts,
-      @RequestParam(value = "page",required = false) PageInput page);
+      @ApiParam(allowMultiple = true,type = "scopeInput") @RequestParam(value = "scopes",required = false) LinkedHashSet<ScopeInput> scopes,
+      @ApiParam(allowMultiple = true,type = "sortInput") @RequestParam(value = "sorts",required = false) LinkedHashSet<SortInput> sorts,
+      @ApiParam(allowMultiple = false,type = "page") @RequestParam(value = "page",required = false) PageInput page);
 
   @ApiOperation(value = "更新账户信息")
   @PutMapping(value = {"/account/{id}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
