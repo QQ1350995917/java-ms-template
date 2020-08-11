@@ -1,5 +1,17 @@
 package pwd.initializr.account.api.admin;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.account.api.admin.vo.LoginInput;
 
 /**
@@ -13,6 +25,13 @@ import pwd.initializr.account.api.admin.vo.LoginInput;
  * @version 1.0.0
  * @since DistributionVersion
  */
+@Api(
+    tags = "会话管理",
+    value = "adminSessionManageApi",
+    description = "[登录，信息查询，退出]"
+)
+@RestController(value = "adminSessionApi")
+@RequestMapping(value = "/api/admin/session")
 public interface SessionApi {
 
   /**
@@ -31,7 +50,9 @@ public interface SessionApi {
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  void loginByNameAndPwd(LoginInput input);
+  @ApiOperation(value = "登录")
+  @PutMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  void loginByNameAndPwd(@RequestBody @Valid @NotNull(message = "参数不能为空") LoginInput input);
 
   /**
    * <h2>用户登录验证码刷新</h2>
@@ -43,6 +64,8 @@ public interface SessionApi {
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
+  @ApiOperation(value = "获取验证码")
+  @GetMapping(value = {"/captcha"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   void loginCaptchaRefresh();
 
   /**
@@ -56,16 +79,20 @@ public interface SessionApi {
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  void loginInitializr(String token);
+  @ApiOperation(value = "登录页面初始化")
+  @GetMapping(value = {"/init"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  void loginInitializr(@RequestHeader(value = "x-token", required = false) String token);
 
   /**
-   * <h2>TODO what you want to do</h2>
+   * <h2>退出登录</h2>
    * date 2020-07-22 15:09
    *
    * @return void
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
+  @ApiOperation(value = "退出")
+  @DeleteMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   void logout();
 
   /**
@@ -76,5 +103,7 @@ public interface SessionApi {
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
+  @ApiOperation(value = "登录信息查询")
+  @GetMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   void querySessionInfo();
 }

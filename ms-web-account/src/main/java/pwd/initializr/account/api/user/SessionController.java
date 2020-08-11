@@ -3,6 +3,8 @@ package pwd.initializr.account.api.user;
 import com.alibaba.fastjson.JSONObject;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +37,7 @@ import pwd.initializr.common.web.api.user.UserController;
 /**
  * pwd.initializr.account.api.user@ms-web-initializr
  *
- * <h1>TODO what you want to do?</h1>
+ * <h1>控制层接口：session信息</h1>
  *
  * date 2019-11-02 21:59
  *
@@ -74,10 +76,8 @@ public class SessionController extends UserController implements SessionApi {
   @Autowired
   private UserUserService userUserService;
 
-  @ApiOperation(value = "登录")
-  @PutMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
-  public void loginByNameAndPwd(@RequestBody LoginInput input) {
+  public void loginByNameAndPwd(@Valid @NotNull(message = "参数不能为空") LoginInput input) {
     String cookie = getToken();
     if (StringUtils.isBlank(cookie)) {
       // cookie 不能为空
@@ -140,8 +140,7 @@ public class SessionController extends UserController implements SessionApi {
     outputData(new LoginOutput(sessionBO.getUid(), token));
   }
 
-  @ApiOperation(value = "获取验证码")
-  @GetMapping(value = {"/captcha"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+
   @Override
   public void loginCaptchaRefresh() {
     String cookie = getToken();
@@ -171,10 +170,8 @@ public class SessionController extends UserController implements SessionApi {
     outputData(sessionCaptchaOutput);
   }
 
-  @ApiOperation(value = "登录页面初始化")
-  @GetMapping(value = {"/init"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
-  public void loginInitializr(@RequestHeader(value = "x-token", required = false) String token) {
+  public void loginInitializr(String token) {
     String cookie = getToken();
     Boolean captchaRequired = false;
     SessionCookieBO sessionCookieBO = null;
@@ -207,8 +204,6 @@ public class SessionController extends UserController implements SessionApi {
     outputData(loginCookieOutput);
   }
 
-  @ApiOperation(value = "退出")
-  @DeleteMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
   public void logout() {
     if (sessionService.deleteSession(getUid())) {
@@ -218,8 +213,6 @@ public class SessionController extends UserController implements SessionApi {
     }
   }
 
-  @ApiOperation(value = "登录信息查询")
-  @GetMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
   public void querySessionInfo() {
     SessionBO session = sessionService.querySession(getUid());

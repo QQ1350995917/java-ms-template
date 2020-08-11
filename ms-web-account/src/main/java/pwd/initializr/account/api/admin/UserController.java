@@ -1,22 +1,17 @@
 package pwd.initializr.account.api.admin;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import java.util.LinkedHashSet;
 import java.util.List;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import pwd.initializr.account.api.admin.vo.UserAccountInput;
 import pwd.initializr.account.api.admin.vo.UserAccountOutput;
-import pwd.initializr.account.api.admin.vo.UserUserInput;
 import pwd.initializr.account.api.admin.vo.UserUserOutput;
 import pwd.initializr.account.business.user.UserAccountService;
 import pwd.initializr.account.business.user.UserUserService;
@@ -27,7 +22,11 @@ import pwd.initializr.common.web.api.admin.AdminController;
 import pwd.initializr.common.web.api.vo.Meta;
 import pwd.initializr.common.web.api.vo.PageInput;
 import pwd.initializr.common.web.api.vo.PageOutput;
+import pwd.initializr.common.web.api.vo.ScopeInput;
+import pwd.initializr.common.web.api.vo.SortInput;
 import pwd.initializr.common.web.business.bo.PageableQueryResult;
+import pwd.initializr.common.web.business.bo.ScopeBO;
+import pwd.initializr.common.web.business.bo.SortBO;
 import pwd.initializr.common.web.persistence.entity.EntityAble;
 
 /**
@@ -59,61 +58,46 @@ public class UserController extends AdminController implements UserApi {
   @Autowired
   private UserUserServiceWrap userUserServiceWrap;
 
-  @ApiOperation(value = "删除账户，最后一个可用账户不可被删除")
-  @DeleteMapping(value = {"/account"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
-  public void delAccount(@RequestBody List<Long> ids) {
+  public void delAccount(@Valid @NotNull(message = "参数不能为空") List<Long> ids) {
     // TODO 检查是否是最后一个账户
     Integer integer = userAccountService.deleteById(ids);
     outputData(new Meta(), integer);
   }
 
-  @ApiOperation(value = "删除用户，同时删除其下所有账户")
-  @DeleteMapping(value = {"/user"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
-  public void delUser(@RequestBody List<Long> ids) {
+  public void delUser(@Valid @NotNull(message = "参数不能为空") List<Long> ids) {
     Boolean result = userUserServiceWrap.deleteByUserId(ids);
     outputData(result);
   }
 
-  @ApiOperation(value = "禁用账户，最后一个可用账户不可被禁用")
-  @PatchMapping(value = {"/account/disable"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
-  public void disableAccount(@RequestBody List<Long> ids) {
+  public void disableAccount(@Valid @NotNull(message = "参数不能为空") List<Long> ids) {
     // TODO 检查是否是最后一个账户
-    Integer integer = userAccountService.ableById(ids,EntityAble.DISABLE);
+    Integer integer = userAccountService.ableById(ids, EntityAble.DISABLE);
     outputData(new Meta(), integer);
   }
 
-  @ApiOperation(value = "禁用用户，同时禁用其下所有账户")
-  @PatchMapping(value = {"/user/disable"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
-  public void disableUser(@RequestBody List<Long> ids) {
+  public void disableUser(@Valid @NotNull(message = "参数不能为空") List<Long> ids) {
     Boolean result = userUserServiceWrap.ableByUserId(ids, EntityAble.DISABLE);
     outputData(result);
   }
 
-  @ApiOperation(value = "启用账户")
-  @PatchMapping(value = {"/account/enable"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
-  public void enableAccount(@RequestBody List<Long> ids) {
-    Integer integer = userAccountService.ableById(ids,EntityAble.ENABLE);
+  public void enableAccount(@Valid @NotNull(message = "参数不能为空") List<Long> ids) {
+    Integer integer = userAccountService.ableById(ids, EntityAble.ENABLE);
     outputData(new Meta(), integer);
   }
 
-  @ApiOperation(value = "启用用户，同时启用其下所有账户")
-  @PatchMapping(value = {"/user/enable"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
-  public void enableUser(@RequestBody List<Long> ids) {
+  public void enableUser(@Valid @NotNull(message = "参数不能为空") List<Long> ids) {
     Boolean result = userUserServiceWrap.ableByUserId(ids, EntityAble.ENABLE);
     outputData(result);
   }
 
-  @ApiOperation(value = "根据用户查询账户信息")
-  @GetMapping(value = {"/account/{uid}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
-  public void listAccount(@PathVariable("uid") Long userId,
-      @RequestParam UserAccountInput input) {
+  public void listAccount(@Valid @NotNull(message = "参数不能为空") Long userId) {
     PageOutput<UserAccountOutput> responseData = new PageOutput<>();
     PageableQueryResult<UserAccountBO> queryResult = userAccountService
         .queryAllByUserId(userId);
@@ -125,10 +109,29 @@ public class UserController extends AdminController implements UserApi {
     outputData(responseData);
   }
 
-  @ApiOperation(value = "根据条件分页查询用户信息")
-  @GetMapping(value = {"/user"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
-  public void listUser(@RequestParam PageInput pageInput, @RequestParam UserUserInput input) {
+  public void listUser(String scopes, String sorts, String page) {
+    LinkedHashSet<ScopeInput> scopeInputs = null;
+    LinkedHashSet<SortInput> sortInputs = null;
+    PageInput pageInput = null;
+    try {
+      scopeInputs = JSON.parseObject(scopes, new TypeReference<LinkedHashSet<ScopeInput>>() {
+      });
+      sortInputs = JSON.parseObject(sorts, new TypeReference<LinkedHashSet<SortInput>>() {
+      });
+      pageInput = JSON.parseObject(page, PageInput.class);
+    } catch (Exception e) {
+      throw new RuntimeException("参数格式错误");
+    }
+    if (pageInput == null) {
+      pageInput = new PageInput();
+    }
+
+    // TODO 查询条件参数没有应用
+    LinkedHashSet<ScopeBO> scopeBOS = new LinkedHashSet<>();
+
+    LinkedHashSet<SortBO> sortBOS = new LinkedHashSet<>();
+
     PageOutput<UserUserOutput> responseData = new PageOutput<>();
     UserUserBO userUserBO = new UserUserBO();
     PageableQueryResult<UserUserBO> queryResult = userUserService
@@ -143,4 +146,5 @@ public class UserController extends AdminController implements UserApi {
     responseData.setTotal(queryResult.getTotal());
     outputData(responseData);
   }
+
 }

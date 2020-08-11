@@ -3,7 +3,6 @@ package pwd.initializr.account.api.admin;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import io.swagger.annotations.Api;
-import java.lang.reflect.Method;
 import java.util.LinkedHashSet;
 import java.util.List;
 import javax.validation.Valid;
@@ -11,9 +10,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.MethodParameter;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +18,6 @@ import pwd.initializr.account.api.admin.vo.AdminAccountInput;
 import pwd.initializr.account.api.admin.vo.AdminAccountOutput;
 import pwd.initializr.account.api.admin.vo.AdminUserInput;
 import pwd.initializr.account.api.admin.vo.AdminUserOutput;
-import pwd.initializr.account.api.admin.vo.AdminUserQueryInput;
 import pwd.initializr.account.api.admin.vo.CreateAdminInput;
 import pwd.initializr.account.business.admin.AdminAccountService;
 import pwd.initializr.account.business.admin.AdminUserService;
@@ -113,13 +108,28 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
   }
 
   @Override
+  public void listAccount(@PathVariable("uid") Long userId) {
+    AdminAccountBO queryCondition = new AdminAccountBO();
+    List<AdminAccountBO> adminAccountBOS = adminAccountService.queryByUserId(userId);
+    PageOutput<AdminAccountOutput> result = new PageOutput<>();
+    adminAccountBOS.forEach(adminAccountBO -> {
+      AdminAccountOutput adminAccountOutput = new AdminAccountOutput();
+      BeanUtils.copyProperties(adminAccountBO, adminAccountOutput);
+      result.getElements().add(adminAccountOutput);
+    });
+    outputData(result);
+  }
+
+  @Override
   public void listUser(String scopes, String sorts, String page) {
     LinkedHashSet<ScopeInput> scopeInputs = null;
     LinkedHashSet<SortInput> sortInputs = null;
     PageInput pageInput = null;
     try {
-      scopeInputs = JSON.parseObject(scopes, new TypeReference<LinkedHashSet<ScopeInput>>() {});
-      sortInputs = JSON.parseObject(sorts, new TypeReference<LinkedHashSet<SortInput>>() {});
+      scopeInputs = JSON.parseObject(scopes, new TypeReference<LinkedHashSet<ScopeInput>>() {
+      });
+      sortInputs = JSON.parseObject(sorts, new TypeReference<LinkedHashSet<SortInput>>() {
+      });
       pageInput = JSON.parseObject(page, PageInput.class);
     } catch (Exception e) {
       throw new RuntimeException("参数格式错误");
@@ -134,7 +144,7 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
     LinkedHashSet<SortBO> sortBOS = new LinkedHashSet<>();
 
     PageableQueryResult<AdminUserBO> adminUserBOPageableQueryResult = adminUserService
-        .queryAllByCondition(scopeBOS, sortBOS,pageInput.getIndex(), pageInput.getSize());
+        .queryAllByCondition(scopeBOS, sortBOS, pageInput.getIndex(), pageInput.getSize());
     PageOutput<AdminUserOutput> result = new PageOutput<>();
     adminUserBOPageableQueryResult.getElements().forEach(adminUserBO -> {
       AdminUserOutput adminUserOutput = new AdminUserOutput();
@@ -149,34 +159,20 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
   }
 
   @Override
-  public void listAccount(@PathVariable("uid") Long userId) {
-    AdminAccountBO queryCondition = new AdminAccountBO();
-    List<AdminAccountBO> adminAccountBOS = adminAccountService.queryByUserId(userId);
-    PageOutput<AdminAccountOutput> result = new PageOutput<>();
-    adminAccountBOS.forEach(adminAccountBO -> {
-      AdminAccountOutput adminAccountOutput = new AdminAccountOutput();
-      BeanUtils.copyProperties(adminAccountBO, adminAccountOutput);
-      result.getElements().add(adminAccountOutput);
-    });
-    outputData(result);
-  }
-
-  @Override
   public void updateAccount(@PathVariable("id") Long id, @RequestBody AdminAccountInput input) {
     AdminAccountBO adminAccountBO = new AdminAccountBO();
     adminAccountBO.setId(id);
     adminAccountBO.setLoginPwd(input.getLoginPwd());
     Integer update = adminAccountService.update(adminAccountBO);
-    outputData(new Meta(),update);
+    outputData(new Meta(), update);
   }
-
 
   @Override
   public void updateUser(@PathVariable("uid") Long id, @RequestBody AdminUserInput input) {
     AdminUserBO adminUserBO = new AdminUserBO();
-    BeanUtils.copyProperties(input,adminUserBO);
+    BeanUtils.copyProperties(input, adminUserBO);
     adminUserBO.setId(id);
     Integer update = adminUserService.update(adminUserBO);
-    outputData(new Meta(),update);
+    outputData(new Meta(), update);
   }
 }
