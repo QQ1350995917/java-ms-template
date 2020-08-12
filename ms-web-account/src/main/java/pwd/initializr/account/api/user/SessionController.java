@@ -54,10 +54,6 @@ import pwd.initializr.common.web.api.user.UserController;
 @RequestMapping(value = "/api/session")
 public class SessionController extends UserController implements SessionApi {
 
-
-  @Value("${account_secret}")
-  private String ACCOUNT_SECRET;
-
   @Value("${account.admin.cookie.expires.seconds}")
   private Integer cookieExpiresSeconds;
 

@@ -54,8 +54,6 @@ import pwd.initializr.common.web.api.admin.AdminController;
 @RequestMapping(value = "/api/admin/session")
 public class SessionController extends AdminController implements SessionApi {
 
-  @Value("${account_secret}")
-  private String ACCOUNT_SECRET;
 
   @Value("${account.admin.cookie.expires.seconds}")
   private Integer cookieExpiresSeconds;
@@ -211,7 +209,7 @@ public class SessionController extends AdminController implements SessionApi {
       outputException(500);
     }
   }
-  
+
   @Override
   public void querySessionInfo() {
     SessionBO session = sessionService.querySession(getUid());

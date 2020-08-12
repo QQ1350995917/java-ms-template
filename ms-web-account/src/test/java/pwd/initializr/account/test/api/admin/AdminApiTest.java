@@ -49,18 +49,22 @@ public class AdminApiTest {
 
   @Test
   public void testCreate() throws Exception {
-    CreateAdminInput input = new CreateAdminInput();
-    AdminUserInput adminUserInput = new AdminUserInput();
-    adminUserInput.setName("曹操");
-    adminUserInput.setGender("1");
-    AdminAccountInput adminAccountInput = new AdminAccountInput();
-    adminAccountInput.setLoginName("caocao");
-    adminAccountInput.setLoginPwd("caocao");
-    input.setAccount(adminAccountInput);
-    input.setUser(adminUserInput);
+    CreateAdminInput caocaoInput = new CreateAdminInput();
+
+    AdminUserInput caocaoAdminUserInput = new AdminUserInput();
+    caocaoAdminUserInput.setName("曹操");
+    caocaoAdminUserInput.setGender("1");
+
+    AdminAccountInput caocaoAdminAccountInput = new AdminAccountInput();
+    caocaoAdminAccountInput.setLoginName("caocao");
+    caocaoAdminAccountInput.setLoginPwd("caocao");
+
+    caocaoInput.setAccount(caocaoAdminAccountInput);
+    caocaoInput.setUser(caocaoAdminUserInput);
+
     MvcResult mvcResult = mockMvc.perform(
         MockMvcRequestBuilders.post("/api/admin/admin")
-            .contentType(MediaType.APPLICATION_JSON).content(JSON.toJSONString(input))
+            .contentType(MediaType.APPLICATION_JSON).content(JSON.toJSONString(caocaoInput))
     )
         .andExpect(MockMvcResultMatchers.status().isOk())
         .andDo(MockMvcResultHandlers.print())
