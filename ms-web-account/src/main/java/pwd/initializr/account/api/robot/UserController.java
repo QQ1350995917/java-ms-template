@@ -36,8 +36,6 @@ public class UserController extends pwd.initializr.common.web.api.user.UserContr
   @Autowired
   private UserService userService;
 
-  @ApiOperation(value = "用户信息查询")
-  @GetMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
   public void listById(ListUserInput input) {
     List<User> users = userService.listByUserId(input.getUserIds());
