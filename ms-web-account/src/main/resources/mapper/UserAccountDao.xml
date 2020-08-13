@@ -4,8 +4,8 @@
 <mapper namespace="pwd.initializr.account.persistence.dao.UserAccountDao">
 
   <resultMap id="UserAccountMap" type="pwd.initializr.account.persistence.entity.UserAccountEntity">
-    <result column="id" jdbcType="INTEGER" property="id"/>
-    <result column="uid" jdbcType="INTEGER" property="uid"/>
+    <result column="id" jdbcType="BIGINT" property="id"/>
+    <result column="uid" jdbcType="BIGINT" property="uid"/>
     <result column="login_name" jdbcType="VARCHAR" property="loginName"/>
     <result column="login_pwd" jdbcType="VARCHAR" property="loginPwd"/>
     <result column="pwd_time" jdbcType="TIMESTAMP" property="pwdTime"/>
@@ -14,12 +14,13 @@
     <result column="del" jdbcType="INTEGER" property="del"/>
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    <result column="version" jdbcType="BIGINT" property="version"/>
   </resultMap>
 
   <!--查询单个-->
   <select id="queryById" resultMap="UserAccountMap">
         select
-          id, uid, login_name, login_pwd, pwd_time, type, able, del, create_time, update_time
+          id, uid, login_name, login_pwd, pwd_time, type, able, del, create_time, update_time, version
         from initializr_account.user_account
         where id = #{id}
     </select>
@@ -99,10 +100,10 @@
   <insert id="insert" keyProperty="id" useGeneratedKeys="true">
         insert into initializr_account.user_account(uid, login_name, login_pwd, pwd_time, type, able, del, create_time, update_time)
         values (#{uid}, #{loginName}, #{loginPwd}, #{pwdTime}, #{type}, #{able}, #{del}, #{createTime}, #{updateTime})
-    </insert>
+  </insert>
 
   <!--通过主键修改数据-->
-  <update id="update">
+  <update id="updatePwd">
     update initializr_account.user_account
     <set>
       <if test="uid != null">
@@ -116,15 +117,6 @@
       </if>
       <if test="pwdTime != null">
         pwd_time = #{pwdTime},
-      </if>
-      <if test="type != null">
-        type = #{type},
-      </if>
-      <if test="able != null">
-        able = #{able},
-      </if>
-      <if test="del != null">
-        del = #{del},
       </if>
       <if test="createTime != null">
         create_time = #{createTime},
@@ -148,7 +140,6 @@
       #{id}
     </foreach>
   </delete>
-
 
   <!--通过主键启禁-->
   <update id="ableById">
@@ -176,6 +167,5 @@
       #{userId}
     </foreach>
   </update>
-
 
 </mapper>

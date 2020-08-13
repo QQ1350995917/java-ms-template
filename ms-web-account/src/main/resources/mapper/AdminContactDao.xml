@@ -5,8 +5,8 @@
 
   <resultMap id="AdminContactMap"
     type="pwd.initializr.account.persistence.entity.AdminContactEntity">
-    <result column="id" jdbcType="INTEGER" property="id"/>
-    <result column="uid" jdbcType="INTEGER" property="uid"/>
+    <result column="id" jdbcType="BIGINT" property="id"/>
+    <result column="uid" jdbcType="BIGINT" property="uid"/>
     <result column="type" jdbcType="INTEGER" property="type"/>
     <result column="value" jdbcType="VARCHAR" property="value"/>
     <result column="mark" jdbcType="VARCHAR" property="mark"/>
@@ -14,12 +14,13 @@
     <result column="del" jdbcType="INTEGER" property="del"/>
     <result column="create_time" jdbcType="INTEGER" property="createTime"/>
     <result column="update_time" jdbcType="INTEGER" property="updateTime"/>
+    <result column="version" jdbcType="BIGINT" property="version"/>
   </resultMap>
 
   <!--查询单个-->
   <select id="queryById" resultMap="AdminContactMap">
         select
-          id, uid, type, value, mark, able, del, create_time, update_time
+          id, uid, type, value, mark, able, del, create_time, update_time, version
         from initializr_account.admin_contact
         where id = #{id}
     </select>

@@ -4,7 +4,7 @@
 <mapper namespace="pwd.initializr.account.persistence.dao.AdminConfigDao">
 
   <resultMap id="AdminConfigMap" type="pwd.initializr.account.persistence.entity.AdminConfigEntity">
-    <result column="id" jdbcType="INTEGER" property="id"/>
+    <result column="id" jdbcType="BIGINT" property="id"/>
     <result column="key" jdbcType="VARCHAR" property="key"/>
     <result column="value" jdbcType="VARCHAR" property="value"/>
     <result column="summary" jdbcType="VARCHAR" property="summary"/>
@@ -12,12 +12,13 @@
     <result column="del" jdbcType="INTEGER" property="del"/>
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    <result column="version" jdbcType="BIGINT" property="version"/>
   </resultMap>
 
   <!--查询单个-->
   <select id="queryById" resultMap="AdminConfigMap">
         select
-          id, `key`, `value`,summary, able, del, create_time, update_time
+          id, `key`, `value`,summary, able, del, create_time, update_time, version
         from initializr_account.admin_config
         where id = #{id}
     </select>

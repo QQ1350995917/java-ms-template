@@ -4,7 +4,7 @@
 <mapper namespace="pwd.initializr.account.persistence.dao.UserUserDao">
 
   <resultMap id="UserUserMap" type="pwd.initializr.account.persistence.entity.UserUserEntity">
-    <result column="id" jdbcType="INTEGER" property="id"/>
+    <result column="id" jdbcType="BIGINT" property="id"/>
     <result column="pin" jdbcType="VARCHAR" property="pin"/>
     <result column="name" jdbcType="VARCHAR" property="name"/>
     <result column="gender" jdbcType="VARCHAR" property="gender"/>
@@ -14,12 +14,13 @@
     <result column="del" jdbcType="INTEGER" property="del"/>
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    <result column="version" jdbcType="BIGINT" property="version"/>
   </resultMap>
 
   <!--查询单个-->
   <select id="queryById" resultMap="UserUserMap">
         select
-          id, pin, name, gender, emp_no, summary, able, del, create_time, update_time
+          id, pin, name, gender, emp_no, summary, able, del, create_time, update_time, version
         from initializr_account.user_user
         where id = #{id}
     </select>

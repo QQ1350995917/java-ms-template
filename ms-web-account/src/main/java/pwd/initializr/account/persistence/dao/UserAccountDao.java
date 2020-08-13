@@ -143,6 +143,18 @@ public interface UserAccountDao {
    * @param userAccount 实例对象
    * @return 影响行数
    */
-  int update(UserAccountEntity userAccount);
+  /**
+   * <h2>修改密码</h2>
+   * date 2020-08-13 14:26
+   *
+   * @param id 账户ID
+   * @param uid 用户ID
+   * @param previousPwd 旧版本密码
+   * @param currentPwd 新版本密码
+   * @return int
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  int updatePwd(@Param("id") Long id,@Param("uid") Long uid,@Param("previousPwd") String previousPwd, @Param("currentPwd") String currentPwd);
 
 }

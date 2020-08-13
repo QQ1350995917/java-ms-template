@@ -32,6 +32,7 @@ CREATE TABLE `admin_account` (
   `del` int(4) NOT NULL DEFAULT '0' COMMENT '删除状态：0:未删除；1:已删除',
   `create_time` datetime NOT NULL COMMENT '数据创建时间',
   `update_time` datetime NOT NULL COMMENT '最近更新时间',
+  `version` bigint(11) NOT NULL DEFAULT '0' COMMENT '数据版本号',
   PRIMARY KEY (`id`),
   UNIQUE KEY `login_name_UNIQUE` (`login_name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
@@ -49,6 +50,7 @@ CREATE TABLE `admin_config` (
   `del` int(11) NOT NULL DEFAULT '0' COMMENT '删除状态：0:未删除；1:已删除',
   `create_time` datetime NOT NULL COMMENT '数据创建时间',
   `update_time` datetime NOT NULL COMMENT '最近更新时间',
+  `version` bigint(11) NOT NULL DEFAULT '0' COMMENT '数据版本号',
   PRIMARY KEY (`id`),
   UNIQUE KEY `key_UNIQUE` (`key`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
@@ -67,6 +69,7 @@ CREATE TABLE `admin_contact` (
   `del` int(4) NOT NULL DEFAULT '0' COMMENT '删除状态：0:未删除；1:已删除',
   `create_time` datetime NOT NULL COMMENT '数据创建时间',
   `update_time` datetime NOT NULL COMMENT '最近更新时间',
+  `version` bigint(11) NOT NULL DEFAULT '0' COMMENT '数据版本号',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -85,6 +88,7 @@ CREATE TABLE `admin_user` (
   `del` int(4) NOT NULL DEFAULT '0' COMMENT '状态：0:未删除；1:已删除',
   `create_time` datetime NOT NULL COMMENT '首次创建时间',
   `update_time` datetime NOT NULL COMMENT '最近更新时间',
+  `version` bigint(11) NOT NULL DEFAULT '0' COMMENT '数据版本号',
   PRIMARY KEY (`id`),
   UNIQUE KEY `pin_UNIQUE` (`pin`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
@@ -104,6 +108,7 @@ CREATE TABLE `user_account` (
   `del` int(4) NOT NULL DEFAULT '0' COMMENT '删除状态：0:未删除；1:已删除',
   `create_time` datetime NOT NULL COMMENT '数据创建时间',
   `update_time` datetime NOT NULL COMMENT '最近更新时间',
+  `version` bigint(11) NOT NULL DEFAULT '0' COMMENT '数据版本号',
   PRIMARY KEY (`id`),
   UNIQUE KEY `login_name_UNIQUE` (`login_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -121,6 +126,7 @@ CREATE TABLE `user_config` (
   `del` int(11) NOT NULL DEFAULT '0' COMMENT '删除状态：0:未删除；1:已删除',
   `create_time` datetime NOT NULL COMMENT '数据创建时间',
   `update_time` datetime NOT NULL COMMENT '最近更新时间',
+  `version` bigint(11) NOT NULL DEFAULT '0' COMMENT '数据版本号',
   PRIMARY KEY (`id`),
   UNIQUE KEY `key_UNIQUE` (`key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -139,6 +145,7 @@ CREATE TABLE `user_contact` (
   `del` int(4) NOT NULL DEFAULT '0' COMMENT '删除状态：0:未删除；1:已删除',
   `create_time` datetime NOT NULL COMMENT '数据创建时间',
   `update_time` datetime NOT NULL COMMENT '最近更新时间',
+  `version` bigint(11) NOT NULL DEFAULT '0' COMMENT '数据版本号',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -157,6 +164,7 @@ CREATE TABLE `user_user` (
   `del` int(4) NOT NULL DEFAULT '0' COMMENT '状态：0:未删除；1:已删除',
   `create_time` datetime NOT NULL COMMENT '首次创建时间',
   `update_time` datetime NOT NULL COMMENT '最近更新时间',
+  `version` bigint(11) NOT NULL DEFAULT '0' COMMENT '数据版本号',
   PRIMARY KEY (`id`),
   UNIQUE KEY `pin_UNIQUE` (`pin`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;

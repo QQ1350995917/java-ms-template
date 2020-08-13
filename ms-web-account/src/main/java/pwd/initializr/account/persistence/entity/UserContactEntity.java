@@ -58,5 +58,8 @@ public class UserContactEntity implements Serializable {
    * 最近更新时间
    */
   private Date updateTime;
-
+  /**
+   * 数据版本号
+   */
+  private Long version;
 }

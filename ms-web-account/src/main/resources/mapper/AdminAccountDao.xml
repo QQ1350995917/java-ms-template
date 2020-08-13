@@ -5,8 +5,8 @@
 
   <resultMap id="AdminAccountMap"
     type="pwd.initializr.account.persistence.entity.AdminAccountEntity">
-    <result column="id" jdbcType="INTEGER" property="id"/>
-    <result column="uid" jdbcType="INTEGER" property="uid"/>
+    <result column="id" jdbcType="BIGINT" property="id"/>
+    <result column="uid" jdbcType="BIGINT" property="uid"/>
     <result column="login_name" jdbcType="VARCHAR" property="loginName"/>
     <result column="login_pwd" jdbcType="VARCHAR" property="loginPwd"/>
     <result column="pwd_time" jdbcType="TIMESTAMP" property="pwdTime"/>
@@ -15,12 +15,13 @@
     <result column="del" jdbcType="INTEGER" property="del"/>
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    <result column="version" jdbcType="BIGINT" property="version"/>
   </resultMap>
 
   <!--查询单个-->
   <select id="queryById" resultMap="AdminAccountMap">
         select
-          id, uid, login_name, login_pwd, pwd_time, type, able, del, create_time, update_time
+          id, uid, login_name, login_pwd, pwd_time, type, able, del, create_time, update_time, version
         from initializr_account.admin_account
         where id = #{id}
     </select>
@@ -94,7 +95,7 @@
   <insert id="insert" keyProperty="id" useGeneratedKeys="true">
         insert into initializr_account.admin_account(uid, login_name, login_pwd, pwd_time, type, able, del, create_time, update_time)
         values (#{uid}, #{loginName}, #{loginPwd}, #{pwdTime}, #{type}, #{able}, #{del}, #{createTime}, #{updateTime})
-    </insert>
+  </insert>
 
   <!--通过主键修改数据-->
   <update id="update">
