@@ -53,7 +53,6 @@ public class FontController extends UserController implements FontApi {
     FontListOutput<FontVO> output = new FontListOutput<FontVO>();
     BeanUtils.copyProperties(input, output);
     output.setTotal(byCondition.getTotal());
-    output.setPages(byCondition.getPages());
     output.setTotal(byCondition.getTotal());
     List<FontVO> collect = byCondition.getElements().stream().map(
         obj -> new FontVO(obj.getId(), obj.getTitle(), obj.getThumbUrl(), obj.getCreateTime(),

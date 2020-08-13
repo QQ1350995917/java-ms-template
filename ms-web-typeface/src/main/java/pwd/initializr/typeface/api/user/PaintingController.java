@@ -85,7 +85,6 @@ public class PaintingController extends UserController implements PaintingApi {
     PaintingListOutput<PaintingVO> output = new PaintingListOutput<PaintingVO>();
     BeanUtils.copyProperties(input, output);
     output.setTotal(byCondition.getTotal());
-    output.setPages(byCondition.getPages());
     output.setTotal(byCondition.getTotal());
 
     List<PaintingVO> collect = byCondition.getElements().stream()

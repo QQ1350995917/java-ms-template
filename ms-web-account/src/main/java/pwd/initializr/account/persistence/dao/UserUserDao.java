@@ -1,8 +1,11 @@
 package pwd.initializr.account.persistence.dao;
 
+import java.util.LinkedHashSet;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import pwd.initializr.account.persistence.entity.UserUserEntity;
+import pwd.initializr.common.web.persistence.entity.ScopeEntity;
+import pwd.initializr.common.web.persistence.entity.SortEntity;
 
 /**
  * (UserUserEntity)表数据库访问层
@@ -36,12 +39,16 @@ public interface UserUserDao {
   Integer ableByIds(List<Long> ids, int able);
 
   /**
-   * 通过实体作为筛选条件查询
+   * <h2>通过实体作为筛选条件统计</h2>
+   * date 2020-08-13 15:09
    *
-   * @param userUserEntity 实例对象
-   * @return 行数
+   * @param scopes 查询条件
+   * @return java.lang.Long
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
    */
-  Long countAllByCondition(@Param("userUserEntity") UserUserEntity userUserEntity);
+  Long countAllByCondition(
+      @Param("scopes") LinkedHashSet<? extends ScopeEntity> scopes);
 
   /**
    * 通过主键删除数据
@@ -67,16 +74,24 @@ public interface UserUserDao {
    */
   int insert(UserUserEntity userUser);
 
+
   /**
-   * 通过实体作为筛选条件查询
+   * <h2>通过实体作为筛选条件查询</h2>
+   * date 2020-08-13 15:08
    *
-   * @param userUserEntity 实例对象
-   * @param offset 查询起始位置
-   * @param limit 查询条数
-   * @return 对象列表
+   * @param scopes 查询条件
+   * @param sorts 排序条件
+   * @param offset 偏移条件
+   * @param limit 容量条件
+   * @return java.lang.Long
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
    */
-  List<UserUserEntity> queryAllByCondition(@Param("userUserEntity") UserUserEntity userUserEntity,
-      @Param("offset") Long offset, @Param("limit") Long limit);
+  List<UserUserEntity> queryAllByCondition(
+      @Param("scopes") LinkedHashSet<? extends ScopeEntity> scopes,
+      @Param("sorts") LinkedHashSet<? extends SortEntity> sorts,
+      @Param("offset") Long offset, @Param("limit") Long limit
+  );
 
   /**
    * 通过ID查询单条数据

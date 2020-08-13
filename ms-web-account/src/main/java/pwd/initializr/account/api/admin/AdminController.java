@@ -163,7 +163,7 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
     AdminAccountBO adminAccountBO = new AdminAccountBO();
     adminAccountBO.setId(id);
     adminAccountBO.setLoginPwd(input.getLoginPwd());
-    Integer update = adminAccountService.update(adminAccountBO);
+    Integer update = adminAccountService.updateLoginPwd(id,0L,"","");
     outputData(new Meta(), update);
   }
 

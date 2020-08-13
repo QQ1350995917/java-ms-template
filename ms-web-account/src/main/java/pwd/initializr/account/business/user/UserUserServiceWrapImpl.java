@@ -1,5 +1,7 @@
 package pwd.initializr.account.business.user;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,7 +49,7 @@ public class UserUserServiceWrapImpl implements UserUserServiceWrap {
   @Override
   @Transactional(rollbackFor = Exception.class)
   public Boolean deleteByUserId(Long userId) {
-    userAccountService.deleteById(userId);
+    userAccountService.deleteById(Arrays.asList(userId));
     userUserService.deleteById(userId);
     return true;
   }

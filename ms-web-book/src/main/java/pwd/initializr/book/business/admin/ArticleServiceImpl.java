@@ -76,8 +76,8 @@ public class ArticleServiceImpl implements ArticleService {
   }
 
   @Override
-  public PageableQueryResult<ArticleBO> listArticle(Integer pageIndex, Integer pageSize) {
-    Query query = new Query().with(PageRequest.of(pageIndex, pageSize)).with(Sort.by(Direction.DESC, "id"));
+  public PageableQueryResult<ArticleBO> listArticle(Long pageIndex, Long pageSize) {
+    Query query = new Query().with(PageRequest.of(pageIndex.intValue(), pageSize.intValue())).with(Sort.by(Direction.DESC, "id"));
     PageableQueryResult<ArticleBO> result = this.listArticle(query);
     result.setIndex(pageIndex.longValue());
     result.setSize(pageSize.longValue());

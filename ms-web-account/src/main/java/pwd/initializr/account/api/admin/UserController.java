@@ -135,7 +135,7 @@ public class UserController extends AdminController implements UserApi {
     PageOutput<UserUserOutput> responseData = new PageOutput<>();
     UserUserBO userUserBO = new UserUserBO();
     PageableQueryResult<UserUserBO> queryResult = userUserService
-        .queryAllByCondition(userUserBO, pageInput.getIndex(), pageInput.getSize());
+        .queryAllByCondition(scopeBOS,sortBOS, pageInput.getIndex(), pageInput.getSize());
     queryResult.getElements().forEach(element -> {
       UserUserOutput userUserOutput = new UserUserOutput();
       BeanUtils.copyProperties(element, userUserOutput);

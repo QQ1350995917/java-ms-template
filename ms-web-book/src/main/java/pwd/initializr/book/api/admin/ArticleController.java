@@ -84,7 +84,6 @@ public class ArticleController extends AdminController implements ArticleApi {
         resultVOS.add(articleVO);
       });
       result.setTotal(articleBOPageableQueryResult.getTotal());
-      result.setPages(articleBOPageableQueryResult.getPages());
       result.setIndex(articleBOPageableQueryResult.getIndex());
       result.setSize(articleBOPageableQueryResult.getSize());
       result.setElements(resultVOS);

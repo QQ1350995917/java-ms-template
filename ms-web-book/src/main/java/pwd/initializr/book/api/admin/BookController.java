@@ -120,7 +120,6 @@ public class BookController extends AdminController implements BookApi {
         resultVOS.add(bookVO);
       });
       result.setTotal(bookBOPageableQueryResult.getTotal());
-      result.setPages(bookBOPageableQueryResult.getPages());
       result.setIndex(bookBOPageableQueryResult.getIndex());
       result.setSize(bookBOPageableQueryResult.getSize());
       result.setElements(resultVOS);

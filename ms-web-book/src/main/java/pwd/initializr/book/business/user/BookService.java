@@ -20,7 +20,7 @@ import pwd.initializr.common.web.business.bo.PageableQueryResult;
 @Service
 public interface BookService {
 
-    PageableQueryResult<BookBO> listRecommendBooks(Integer index, Integer size);
+    PageableQueryResult<BookBO> listRecommendBooks(Long index, Long size);
 
     BookBO findBookById(Long bookId);
 

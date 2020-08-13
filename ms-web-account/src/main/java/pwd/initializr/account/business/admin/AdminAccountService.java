@@ -1,9 +1,16 @@
 package pwd.initializr.account.business.admin;
 
 
+import java.util.LinkedHashSet;
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
 import pwd.initializr.account.business.admin.bo.AdminAccountBO;
+import pwd.initializr.common.web.api.vo.PageInput;
+import pwd.initializr.common.web.api.vo.ScopeInput;
+import pwd.initializr.common.web.api.vo.SortInput;
 import pwd.initializr.common.web.business.bo.PageableQueryResult;
+import pwd.initializr.common.web.business.bo.ScopeBO;
+import pwd.initializr.common.web.business.bo.SortBO;
 import pwd.initializr.common.web.persistence.entity.EntityAble;
 
 /**
@@ -40,9 +47,10 @@ public interface AdminAccountService {
    * 通过主键删除数据
    *
    * @param id 主键
+   * @param uid 外键
    * @return 是否成功
    */
-  Integer deleteById(Long id);
+  Integer deleteById(Long id,Long uid);
 
   /**
    * <h2>根据用户ID删除数据</h2>
@@ -78,15 +86,16 @@ public interface AdminAccountService {
    * <h2>根据条件查询多条数据</h2>
    * date 2020-07-26 21:31
    *
-   * @param adminAccountBO 查询条件
+   * @param scopes 查询条件
+   * @param sorts 排序条件
    * @param pageIndex 页码
-   * @param pageSize 页面容量
+   * @param pageSize 容量
    * @return @return pwd.initializr.common.web.business.bo.PageableQueryResult<pwd.initializr.account.business.admin.bo.AdminAccountBO>
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  PageableQueryResult<AdminAccountBO> queryAllByCondition(AdminAccountBO adminAccountBO, Long pageIndex,
-      Long pageSize);
+  PageableQueryResult<AdminAccountBO> queryAllByCondition(LinkedHashSet<ScopeBO> scopes, LinkedHashSet<SortBO> sorts,
+      Long pageIndex, Long pageSize);
 
   /**
    * 通过ID查询单条数据
@@ -94,7 +103,7 @@ public interface AdminAccountService {
    * @param id 主键
    * @return 实例对象
    */
-  AdminAccountBO queryById(Long id);
+  AdminAccountBO queryById(Long id,Long uid);
 
   /**
    * <h2>session创建接口：管理员通过账号密码登录</h2>
@@ -139,9 +148,9 @@ public interface AdminAccountService {
   /**
    * 修改数据
    *
-   * @param adminAccountBO 实例对象
+   * @param id 账户ID
    * @return 实例对象
    */
-  Integer update(AdminAccountBO adminAccountBO);
+  Integer updateLoginPwd(Long id, Long uid, String previousPwd, String currentPwd);
 
 }

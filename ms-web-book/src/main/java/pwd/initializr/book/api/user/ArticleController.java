@@ -59,7 +59,6 @@ public class ArticleController extends UserController implements ArticleApi {
       });
 
       result.setTotal(articleBOPageableQueryResult.getTotal());
-      result.setPages(articleBOPageableQueryResult.getPages());
       result.setIndex(articleBOPageableQueryResult.getIndex());
       result.setSize(articleBOPageableQueryResult.getSize());
       result.setElements(resultVOS);

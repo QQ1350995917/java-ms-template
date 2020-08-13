@@ -1,6 +1,7 @@
 package pwd.initializr.account.business.user;
 
 import java.util.Date;
+import java.util.LinkedHashSet;
 import java.util.List;
 import javax.annotation.Resource;
 import org.springframework.beans.BeanUtils;
@@ -9,6 +10,8 @@ import pwd.initializr.account.business.user.bo.UserUserBO;
 import pwd.initializr.account.persistence.dao.UserUserDao;
 import pwd.initializr.account.persistence.entity.UserUserEntity;
 import pwd.initializr.common.web.business.bo.PageableQueryResult;
+import pwd.initializr.common.web.business.bo.ScopeBO;
+import pwd.initializr.common.web.business.bo.SortBO;
 import pwd.initializr.common.web.persistence.entity.EntityAble;
 import pwd.initializr.common.web.persistence.entity.EntityDel;
 
@@ -59,17 +62,15 @@ public class UserUserServiceImpl implements UserUserService {
   }
 
   @Override
-  public PageableQueryResult<UserUserBO> queryAllByCondition(UserUserBO userUserBO, Long pageIndex,
-      Long pageSize) {
+  public PageableQueryResult<UserUserBO> queryAllByCondition(LinkedHashSet<ScopeBO> scopes, LinkedHashSet<SortBO> sorts,
+      Long pageIndex, Long pageSize) {
     PageableQueryResult<UserUserBO> resultData = new PageableQueryResult<>();
-    UserUserEntity queryCondition = new UserUserEntity();
-    BeanUtils.copyProperties(userUserBO, queryCondition);
-    Long queryCount = userUserDao.countAllByCondition(queryCondition);
+    Long queryCount = userUserDao.countAllByCondition(scopes);
     if (queryCount < 1) {
       return resultData;
     }
     List<UserUserEntity> queryResult = userUserDao
-        .queryAllByCondition(queryCondition, pageIndex * pageSize, pageSize);
+        .queryAllByCondition(scopes,sorts, pageIndex * pageSize, pageSize);
     queryResult.forEach(userUserEntity -> {
       UserUserBO dataItem = new UserUserBO();
       BeanUtils.copyProperties(userUserEntity, dataItem);

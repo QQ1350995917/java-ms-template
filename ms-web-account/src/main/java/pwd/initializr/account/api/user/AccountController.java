@@ -146,7 +146,7 @@ public class AccountController extends UserController implements AccountApi {
   public void deleteById(
       @Valid @NotNull(message = "参数不能为空") @Min(value = 1, message = "参数不能小于1") Long id) {
     // TODO 检查是否是自己的账号
-    Integer result = userAccountService.deleteById(id);
+    Integer result = userAccountService.deleteById(id,getUid());
     outputData(new Meta(), result);
   }
 

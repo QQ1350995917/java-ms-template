@@ -78,7 +78,6 @@ public class DocumentController extends RobotController implements DocumentApi {
     if (search != null) {
       result.setSize(search.getSize());
       result.setIndex(search.getIndex());
-      result.setPages(search.getPages());
       result.setTotal(search.getTotal());
       List<SearchBodyVOVO> elements = new LinkedList<>();
       search.getElements().forEach(articleBO -> {

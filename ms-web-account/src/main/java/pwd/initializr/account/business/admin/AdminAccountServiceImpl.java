@@ -1,6 +1,7 @@
 package pwd.initializr.account.business.admin;
 
 import java.util.Date;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.Resource;
@@ -13,6 +14,8 @@ import pwd.initializr.account.persistence.entity.AdminAccountEntity;
 import pwd.initializr.account.persistence.entity.AdminAccountType;
 import pwd.initializr.common.utils.Cryptographer;
 import pwd.initializr.common.web.business.bo.PageableQueryResult;
+import pwd.initializr.common.web.business.bo.ScopeBO;
+import pwd.initializr.common.web.business.bo.SortBO;
 import pwd.initializr.common.web.persistence.entity.EntityAble;
 import pwd.initializr.common.web.persistence.entity.EntityDel;
 
@@ -45,8 +48,8 @@ public class AdminAccountServiceImpl implements AdminAccountService {
    * @return 是否成功
    */
   @Override
-  public Integer deleteById(Long id) {
-    return this.adminAccountDao.deleteById(id);
+  public Integer deleteById(Long id,Long uid) {
+    return this.adminAccountDao.deleteById(id,uid);
   }
 
   @Override
@@ -82,17 +85,15 @@ public class AdminAccountServiceImpl implements AdminAccountService {
   }
 
   @Override
-  public PageableQueryResult<AdminAccountBO> queryAllByCondition(AdminAccountBO adminAccountBO,
-      Long pageIndex, Long pageSize) {
+  public PageableQueryResult<AdminAccountBO> queryAllByCondition(LinkedHashSet<ScopeBO> scopes,
+      LinkedHashSet<SortBO> sorts, Long pageIndex, Long pageSize) {
     PageableQueryResult<AdminAccountBO> result = new PageableQueryResult<>();
-    AdminAccountEntity queryCondition = new AdminAccountEntity();
-    BeanUtils.copyProperties(adminAccountBO, queryCondition);
-    Long total = this.adminAccountDao.countAllByCondition(queryCondition);
+    Long total = this.adminAccountDao.countAllByCondition(scopes);
     if (total == null || total < 1) {
       return result;
     }
     List<AdminAccountEntity> adminAccountEntities = this.adminAccountDao
-        .queryAllByCondition(queryCondition, pageIndex * pageSize, pageSize);
+        .queryAllByCondition(scopes,sorts, pageIndex * pageSize, pageSize);
     if (adminAccountEntities == null) {
       return null;
     }
@@ -114,8 +115,8 @@ public class AdminAccountServiceImpl implements AdminAccountService {
    * @return 实例对象
    */
   @Override
-  public AdminAccountBO queryById(Long id) {
-    AdminAccountEntity adminAccountEntity = this.adminAccountDao.queryById(id);
+  public AdminAccountBO queryById(Long id,Long uid) {
+    AdminAccountEntity adminAccountEntity = this.adminAccountDao.queryById(id,uid);
     if (adminAccountEntity == null) {
       return null;
     }
@@ -168,11 +169,11 @@ public class AdminAccountServiceImpl implements AdminAccountService {
   /**
    * 修改数据
    *
-   * @param adminAccountBO 实例对象
+   * @param id 账户ID
    * @return 实例对象
    */
   @Override
-  public Integer update(AdminAccountBO adminAccountBO) {
-    return this.adminAccountDao.update(adminAccountBO);
+  public Integer updateLoginPwd(Long id, Long uid, String previousPwd, String currentPwd) {
+    return this.adminAccountDao.updateLoginPwd(id,uid,previousPwd,currentPwd);
   }
 }

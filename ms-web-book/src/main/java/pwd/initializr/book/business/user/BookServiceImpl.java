@@ -39,8 +39,8 @@ public class BookServiceImpl implements BookService {
   private MongoTemplate mongoTemplate;
 
   @Override
-  public PageableQueryResult<BookBO> listRecommendBooks(Integer index, Integer size) {
-    Pageable pageable = PageRequest.of(index, size);
+  public PageableQueryResult<BookBO> listRecommendBooks(Long index, Long size) {
+    Pageable pageable = PageRequest.of(index.intValue(), size.intValue());
     Sort sort = new Sort(Direction.DESC, "update_time");
     Query query = new Query(Criteria.where("recommend").is(1).and("visibility").is(1))
         .with(pageable).with(sort);

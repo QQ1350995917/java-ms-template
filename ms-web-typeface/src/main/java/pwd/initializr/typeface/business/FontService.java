@@ -18,7 +18,7 @@ import pwd.initializr.typeface.business.bo.FontBO;
 @Service
 public interface FontService {
 
-  PageableQueryResult<FontBO> findByCondition(FontBO fontBO, Integer pageIndex, Integer pageSize);
+  PageableQueryResult<FontBO> findByCondition(FontBO fontBO, Long pageIndex, Long pageSize);
 
   FontBO findById(Long id);
 

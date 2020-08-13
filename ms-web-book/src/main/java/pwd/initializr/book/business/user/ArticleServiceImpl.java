@@ -58,8 +58,8 @@ public class ArticleServiceImpl implements ArticleService {
   }
 
   @Override
-  public PageableQueryResult<ArticleBO> listArticleByRange(Integer index, Integer size) {
-    Pageable pageable = PageRequest.of(index, size);
+  public PageableQueryResult<ArticleBO> listArticleByRange(Long index, Long size) {
+    Pageable pageable = PageRequest.of(index.intValue(), size.intValue());
     Sort sort = new Sort(Direction.DESC, "update_time");
     Query query = new Query(
 //            Criteria.where("status").gt("0")

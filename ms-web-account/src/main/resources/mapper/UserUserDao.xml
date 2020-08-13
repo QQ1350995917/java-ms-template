@@ -26,10 +26,10 @@
     </select>
 
 
-  <!--查询指定行数据-->
+  <!--通过实体作为筛选条件统计-->
   <select id="countAllByCondition" resultType="java.lang.Long">
     select count(*) from initializr_account.user_user
-    <include refid="countAndQueryAllByCondition"></include>
+    <include refid="pwd.initializr.common.web.persistence.entity.ScopeEntity.entityQueryScope"></include>
   </select>
 
   <!--通过实体作为筛选条件查询-->
@@ -37,45 +37,10 @@
     select
     id, pin, name, gender, emp_no, summary, able, del, create_time, update_time
     from initializr_account.user_user
-    <include refid="countAndQueryAllByCondition"></include>
+    <include refid="pwd.initializr.common.web.persistence.entity.ScopeEntity.entityQueryScope"></include>
+    <include refid="pwd.initializr.common.web.persistence.entity.SortEntity.entityQuerySort"></include>
     limit #{offset}, #{limit}
   </select>
-
-  <!-- 统计和查询条件 -->
-  <sql id="countAndQueryAllByCondition">
-    <where>
-      <if test="userUserEntity.id != null">
-        and id = #{userUserEntity.id}
-      </if>
-      <if test="userUserEntity.pin != null and userUserEntity.pin != ''">
-        and pin = #{userUserEntity.pin}
-      </if>
-      <if test="userUserEntity.name != null and userUserEntity.name != ''">
-        and name = #{userUserEntity.name}
-      </if>
-      <if test="userUserEntity.gender != null and userUserEntity.gender != ''">
-        and gender = #{userUserEntity.gender}
-      </if>
-      <if test="userUserEntity.empNo != null and userUserEntity.empNo != ''">
-        and emp_no = #{userUserEntity.empNo}
-      </if>
-      <if test="userUserEntity.summary != null and userUserEntity.summary != ''">
-        and summary = #{userUserEntity.summary}
-      </if>
-      <if test="userUserEntity.able != null">
-        and able = #{userUserEntity.able}
-      </if>
-      <if test="userUserEntity.del != null">
-        and del = #{userUserEntity.del}
-      </if>
-      <if test="userUserEntity.createTime != null">
-        and create_time = #{userUserEntity.createTime}
-      </if>
-      <if test="userUserEntity.updateTime != null">
-        and update_time = #{userUserEntity.updateTime}
-      </if>
-    </where>
-  </sql>
 
   <!--新增所有列-->
   <insert id="insert" keyProperty="id" useGeneratedKeys="true">
@@ -96,24 +61,10 @@
       <if test="gender != null and gender != ''">
         gender = #{gender},
       </if>
-      <if test="empNo != null and empNo != ''">
-        emp_no = #{empNo},
-      </if>
       <if test="summary != null and summary != ''">
         summary = #{summary},
       </if>
-      <if test="able != null">
-        able = #{able},
-      </if>
-      <if test="del != null">
-        del = #{del},
-      </if>
-      <if test="createTime != null">
-        create_time = #{createTime},
-      </if>
-      <if test="updateTime != null">
-        update_time = #{updateTime},
-      </if>
+      update_time = now()
     </set>
     where id = #{id}
   </update>

@@ -22,7 +22,7 @@
         select
           id, uid, login_name, login_pwd, pwd_time, type, able, del, create_time, update_time, version
         from initializr_account.user_account
-        where id = #{id}
+        where id = #{id} and uid = #{uid}
     </select>
 
   <!--登录查询-->
@@ -33,11 +33,10 @@
         where login_name = #{loginName} and login_pwd = #{loginPwd}
   </select>
 
-  <!--通过实体作为筛选条件查询-->
+  <!--通过实体作为筛选条件统计-->
   <select id="countAllByCondition" resultType="java.lang.Long">
     select count(*) from initializr_account.user_account
-    <include refid="countAndQueryAllByCondition"></include>
-    limit #{offset}, #{limit}
+    <include refid="pwd.initializr.common.web.persistence.entity.ScopeEntity.entityQueryScope"></include>
   </select>
 
   <!--通过实体作为筛选条件查询-->
@@ -45,7 +44,8 @@
     select
     id, uid, login_name, login_pwd, pwd_time, type, able, del, create_time, update_time
     from initializr_account.user_account
-    <include refid="countAndQueryAllByCondition"></include>
+    <include refid="pwd.initializr.common.web.persistence.entity.ScopeEntity.entityQueryScope"></include>
+    <include refid="pwd.initializr.common.web.persistence.entity.SortEntity.entityQuerySort"></include>
     limit #{offset}, #{limit}
   </select>
 
@@ -56,45 +56,9 @@
     where uId = #{uid}
   </select>
 
-  <sql id="countAndQueryAllByCondition">
-    <where>
-      <if test="userAccountEntity.id != null">
-        and id = #{userAccountEntity.id}
-      </if>
-      <if test="userAccountEntity.uid != null">
-        and uid = #{userAccountEntity.uid}
-      </if>
-      <if test="userAccountEntity.loginName != null and userAccountEntity.loginName != ''">
-        and login_name = #{userAccountEntity.loginName}
-      </if>
-      <if test="userAccountEntity.loginPwd != null and userAccountEntity.loginPwd != ''">
-        and login_pwd = #{userAccountEntity.loginPwd}
-      </if>
-      <if test="pwdTime != null">
-        and pwd_time = #{userAccountEntity.pwdTime}
-      </if>
-      <if test="userAccountEntity.type != null">
-        and type = #{userAccountEntity.type}
-      </if>
-      <if test="userAccountEntity.able != null">
-        and able = #{userAccountEntity.able}
-      </if>
-      <if test="userAccountEntity.del != null">
-        and del = #{userAccountEntity.del}
-      </if>
-      <if test="userAccountEntity.createTime != null">
-        and create_time = #{userAccountEntity.createTime}
-      </if>
-      <if test="userAccountEntity.updateTime != null">
-        and update_time = #{userAccountEntity.updateTime}
-      </if>
-    </where>
-  </sql>
-
-  <select id="existName" resultMap="UserAccountMap">
-    SELECT login_name from user_account WHERE login_name = #{loginName} AND del = 0
+  <select id="existLoginName" resultMap="UserAccountMap">
+    SELECT login_name from user_account WHERE login_name = #{loginName}
   </select>
-
 
   <!--新增所有列-->
   <insert id="insert" keyProperty="id" useGeneratedKeys="true">
@@ -102,35 +66,22 @@
         values (#{uid}, #{loginName}, #{loginPwd}, #{pwdTime}, #{type}, #{able}, #{del}, #{createTime}, #{updateTime})
   </insert>
 
-  <!--通过主键修改数据-->
-  <update id="updatePwd">
+  <!--通过主键修改登录密码-->
+  <update id="updateLoginPwd">
     update initializr_account.user_account
     <set>
-      <if test="uid != null">
-        uid = #{uid},
-      </if>
-      <if test="loginName != null and loginName != ''">
-        login_name = #{loginName},
-      </if>
-      <if test="loginPwd != null and loginPwd != ''">
-        login_pwd = #{loginPwd},
-      </if>
-      <if test="pwdTime != null">
-        pwd_time = #{pwdTime},
-      </if>
-      <if test="createTime != null">
-        create_time = #{createTime},
-      </if>
-      <if test="updateTime != null">
-        update_time = #{updateTime},
+      <if test="currentPwd != null and currentPwd != ''">
+        login_pwd = #{currentPwd},
+        pwd_time = now(),
+        update_time = now(),
       </if>
     </set>
-    where id = #{id}
+    where id = #{id} and uid = #{uid} and loginPwd = #{previousPwd}
   </update>
 
   <!--通过主键删除-->
   <delete id="deleteById">
-    update initializr_account.user_account set del = 1, update_time = now() where id = #{id}
+    update initializr_account.user_account set del = 1, update_time = now() where id = #{id} and uid = #{uid}
   </delete>
 
   <!--通过主键删除-->
@@ -143,7 +94,7 @@
 
   <!--通过主键启禁-->
   <update id="ableById">
-    update initializr_account.user_account set able = #{able}, update_time = now() where id = #{id}
+    update initializr_account.user_account set able = #{able}, update_time = now() where id = #{id} and uid = {"uid"}
   </update>
 
   <!--通过主键启禁-->

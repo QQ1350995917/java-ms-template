@@ -1,8 +1,11 @@
 package pwd.initializr.account.persistence.dao;
 
+import java.util.LinkedHashSet;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import pwd.initializr.account.persistence.entity.UserAccountEntity;
+import pwd.initializr.common.web.persistence.entity.ScopeEntity;
+import pwd.initializr.common.web.persistence.entity.SortEntity;
 
 /**
  * (UserAccountEntity)表数据库访问层
@@ -18,11 +21,13 @@ public interface UserAccountDao {
    * date 2020-07-27 00:01
    *
    * @param id 主键
+   * @param uid 外键
+   * @param able 业务数据
    * @return java.lang.Integer
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  Integer ableById(Long id, int able);
+  Integer ableById(@Param("id") Long id,@Param("uid") Long uid, @Param("able") Integer able);
 
   /**
    * <h2>通过ID启用/禁用数据</h2>
@@ -39,12 +44,13 @@ public interface UserAccountDao {
    * <h2>通过用户ID启用/禁用数据</h2>
    * date 2020-07-27 00:06
    *
-   * @param id 用户ID
+   * @param uid 用户ID
+   * @param able 业务数据
    * @return java.lang.Integer
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  Integer ableByUserId(Long id);
+  Integer ableByUserId(@Param("uid") Long uid,@Param("able") Integer able);
 
   /**
    * <h2>通过用户ID启用/禁用数据</h2>
@@ -61,12 +67,12 @@ public interface UserAccountDao {
    * <h2>通过实体作为筛选条件统计</h2>
    * date 2020-07-27 22:07
    *
-   * @param userAccountEntity 实例对象
+   * @param scopes 查询条件
    * @return java.lang.Long
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  Long countAllByCondition(@Param("userAccountEntity") UserAccountEntity userAccountEntity);
+  Long countAllByCondition(@Param("scopes") LinkedHashSet<? extends ScopeEntity> scopes);
 
   /**
    * 通过主键删除数据
@@ -74,7 +80,7 @@ public interface UserAccountDao {
    * @param id 主键
    * @return 影响行数
    */
-  int deleteById(Long id);
+  int deleteById(@Param("id") Long id,@Param("uid") Long uid);
 
   /**
    * 通过主键删除数据
@@ -89,7 +95,7 @@ public interface UserAccountDao {
    * @param loginName 账户名
    * @return
    */
-  UserAccountEntity existName(String loginName);
+  UserAccountEntity existLoginName(String loginName);
 
   /**
    * 新增数据
@@ -102,14 +108,16 @@ public interface UserAccountDao {
   /**
    * 通过实体作为筛选条件查询
    *
-   * @param userAccountEntity 实例对象
+   * @param scopes 查询条件
+   * @param sorts 排序条件
    * @param offset 查询起始位置
    * @param limit 查询条数
    * @return 对象列表
    */
   List<UserAccountEntity> queryAllByCondition(
-      @Param("userAccountEntity") UserAccountEntity userAccountEntity, @Param("offset") Long offset,
-      @Param("limit") Long limit);
+      @Param("scopes") LinkedHashSet<? extends ScopeEntity> scopes,
+      @Param("sorts") LinkedHashSet<? extends SortEntity> sorts,
+      @Param("offset") Long offset, @Param("limit") Long limit);
 
   /**
    * 通过实体作为筛选条件查询
@@ -122,10 +130,11 @@ public interface UserAccountDao {
   /**
    * 通过ID查询单条数据
    *
-   * @param id 主键
+   * @param id 账号主键
+   * @param uid 用户外键
    * @return 实例对象
    */
-  UserAccountEntity queryById(Long id);
+  UserAccountEntity queryById(@Param("id") Long id,@Param("uid") Long uid);
 
   /**
    * 登录查询：通过登录名和密码查询单条数据
@@ -138,12 +147,6 @@ public interface UserAccountDao {
       @Param("loginPwd") String loginPwd);
 
   /**
-   * 修改数据
-   *
-   * @param userAccount 实例对象
-   * @return 影响行数
-   */
-  /**
    * <h2>修改密码</h2>
    * date 2020-08-13 14:26
    *
@@ -155,6 +158,6 @@ public interface UserAccountDao {
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  int updatePwd(@Param("id") Long id,@Param("uid") Long uid,@Param("previousPwd") String previousPwd, @Param("currentPwd") String currentPwd);
+  int updateLoginPwd(@Param("id") Long id,@Param("uid") Long uid,@Param("previousPwd") String previousPwd, @Param("currentPwd") String currentPwd);
 
 }

@@ -22,7 +22,7 @@ public interface ArticleService {
 
   ArticleBO findArticleById(Long articleId);
 
-  PageableQueryResult<ArticleBO> listArticleByRange(Integer index, Integer size);
+  PageableQueryResult<ArticleBO> listArticleByRange(Long index, Long size);
 
   PageableQueryResult<SearchResultBO> searchArticleByRange(SearchInputBO searchInputBO);
 

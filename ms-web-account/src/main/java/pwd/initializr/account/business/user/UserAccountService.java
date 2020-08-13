@@ -1,9 +1,12 @@
 package pwd.initializr.account.business.user;
 
 
+import java.util.LinkedHashSet;
 import java.util.List;
 import pwd.initializr.account.business.user.bo.UserAccountBO;
 import pwd.initializr.common.web.business.bo.PageableQueryResult;
+import pwd.initializr.common.web.business.bo.ScopeBO;
+import pwd.initializr.common.web.business.bo.SortBO;
 import pwd.initializr.common.web.persistence.entity.EntityAble;
 
 /**
@@ -55,9 +58,10 @@ public interface UserAccountService {
    * 通过主键删除数据
    *
    * @param id 主键
+   * @param uid 外键
    * @return 是否成功
    */
-  Integer deleteById(Long id);
+  Integer deleteById(Long id,Long uid);
 
   Integer deleteById(List<Long> ids);
 
@@ -87,9 +91,8 @@ public interface UserAccountService {
    * @param pageSize 查询条数
    * @return 对象列表
    */
-  PageableQueryResult<UserAccountBO> queryAllByCondition(UserAccountBO userAccountBO,
-      Long pageIndex,
-      Long pageSize);
+  PageableQueryResult<UserAccountBO> queryAllByCondition(LinkedHashSet<ScopeBO> scopes, LinkedHashSet<SortBO> sorts,
+      Long pageIndex, Long pageSize);
 
   /**
    * <h2>通过用户ID查询账号信息</h2>
@@ -108,7 +111,7 @@ public interface UserAccountService {
    * @param id 主键
    * @return 实例对象
    */
-  UserAccountBO queryById(Long id);
+  UserAccountBO queryById(Long id,Long uid);
 
   /**
    * <h2>用户登录</h2>
@@ -125,9 +128,9 @@ public interface UserAccountService {
   /**
    * 修改数据
    *
-   * @param userAccountBO 实例对象
+   * @param id 实例对象
    * @return 实例对象
    */
-  Integer update(UserAccountBO userAccountBO);
+  Integer update(Long id, Long uid, String previousPwd, String currentPwd);
 
 }

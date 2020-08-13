@@ -2,6 +2,7 @@ package pwd.initializr.account.business.user;
 
 
 import java.util.Date;
+import java.util.LinkedHashSet;
 import java.util.List;
 import javax.annotation.Resource;
 import org.springframework.beans.BeanUtils;
@@ -10,6 +11,8 @@ import pwd.initializr.account.business.user.bo.UserAccountBO;
 import pwd.initializr.account.persistence.dao.UserAccountDao;
 import pwd.initializr.account.persistence.entity.UserAccountEntity;
 import pwd.initializr.common.web.business.bo.PageableQueryResult;
+import pwd.initializr.common.web.business.bo.ScopeBO;
+import pwd.initializr.common.web.business.bo.SortBO;
 import pwd.initializr.common.web.persistence.entity.EntityAble;
 import pwd.initializr.common.web.persistence.entity.EntityDel;
 
@@ -38,12 +41,12 @@ public class UserAccountServiceImpl implements UserAccountService {
 
   @Override
   public Integer ableByUserId(Long userId, EntityAble able) {
-    return userAccountDao.ableById(userId, able.getNumber());
+    return userAccountDao.ableByUserId(userId, able.getNumber());
   }
 
   @Override
-  public Integer deleteById(Long id) {
-    return userAccountDao.deleteById(id);
+  public Integer deleteById(Long id,Long uid) {
+    return userAccountDao.deleteById(id,uid);
   }
 
   @Override
@@ -53,7 +56,7 @@ public class UserAccountServiceImpl implements UserAccountService {
 
   @Override
   public Boolean existLoginName(String loginName) {
-    return userAccountDao.existName(loginName) == null;
+    return userAccountDao.existLoginName(loginName) == null;
   }
 
   @Override
@@ -73,17 +76,16 @@ public class UserAccountServiceImpl implements UserAccountService {
   }
 
   @Override
-  public PageableQueryResult<UserAccountBO> queryAllByCondition(UserAccountBO userAccountBO,
-      Long pageIndex,
-      Long pageSize) {
+  public PageableQueryResult<UserAccountBO> queryAllByCondition(LinkedHashSet<ScopeBO> scopes, LinkedHashSet<SortBO> sorts,
+      Long pageIndex, Long pageSize) {
     PageableQueryResult<UserAccountBO> resultData = new PageableQueryResult<>();
     UserAccountEntity userAccountEntity = new UserAccountEntity();
-    Long total = userAccountDao.countAllByCondition(userAccountEntity);
+    Long total = userAccountDao.countAllByCondition(scopes);
     if (total < 1) {
       return resultData;
     }
     List<UserAccountEntity> queryResult = userAccountDao
-        .queryAllByCondition(userAccountEntity, pageIndex * pageSize, pageSize);
+        .queryAllByCondition(scopes,sorts, pageIndex * pageSize, pageSize);
     for (UserAccountEntity accountEntity : queryResult) {
       UserAccountBO resultItem = new UserAccountBO();
       BeanUtils.copyProperties(accountEntity, resultData);
@@ -108,8 +110,8 @@ public class UserAccountServiceImpl implements UserAccountService {
   }
 
   @Override
-  public UserAccountBO queryById(Long id) {
-    UserAccountEntity userAccountEntity = userAccountDao.queryById(id);
+  public UserAccountBO queryById(Long id,Long uid) {
+    UserAccountEntity userAccountEntity = userAccountDao.queryById(id,uid);
     UserAccountBO userAccountBO = new UserAccountBO();
     BeanUtils.copyProperties(userAccountEntity, userAccountBO);
     return userAccountBO;
@@ -125,9 +127,7 @@ public class UserAccountServiceImpl implements UserAccountService {
   }
 
   @Override
-  public Integer update(UserAccountBO userAccountBO) {
-    UserAccountEntity userAccountEntity = new UserAccountEntity();
-    BeanUtils.copyProperties(userAccountBO, userAccountEntity);
-    return userAccountDao.update(userAccountEntity);
+  public Integer update(Long id, Long uid, String previousPwd, String currentPwd) {
+    return userAccountDao.updateLoginPwd(id,uid,previousPwd,currentPwd);
   }
 }

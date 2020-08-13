@@ -99,7 +99,6 @@ public class BookController extends UserController implements BookApi {
       });
 
       result.setTotal(bookBOPageableQueryResult.getTotal());
-      result.setPages(bookBOPageableQueryResult.getPages());
       result.setIndex(bookBOPageableQueryResult.getIndex());
       result.setSize(bookBOPageableQueryResult.getSize());
       result.setElements(resultVOS);

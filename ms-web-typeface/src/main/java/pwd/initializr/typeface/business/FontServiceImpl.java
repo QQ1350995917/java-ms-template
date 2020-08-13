@@ -31,8 +31,8 @@ public class FontServiceImpl implements FontService {
   private FontMapper fontMapper;
 
   @Override
-  public PageableQueryResult<FontBO> findByCondition(FontBO fontBO, Integer pageIndex,
-      Integer pageSize) {
+  public PageableQueryResult<FontBO> findByCondition(FontBO fontBO, Long pageIndex,
+      Long pageSize) {
     FontEntity fontEntity = new FontEntity();
     BeanUtils.copyProperties(fontBO, fontEntity);
 

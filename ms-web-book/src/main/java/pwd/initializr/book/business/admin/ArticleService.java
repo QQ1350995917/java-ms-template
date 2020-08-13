@@ -28,7 +28,7 @@ public interface ArticleService {
 
   ArticleBO findArticleById(Long articleId);
 
-  PageableQueryResult<ArticleBO> listArticle(Integer pageIndex, Integer pageSize);
+  PageableQueryResult<ArticleBO> listArticle(Long pageIndex, Long pageSize);
 
   PageableQueryResult<ArticleBO> listArticle(Long bookId, Integer pageIndex, Integer pageSize);
 

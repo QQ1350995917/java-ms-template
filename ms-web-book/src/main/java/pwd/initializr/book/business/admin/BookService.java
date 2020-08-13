@@ -29,7 +29,7 @@ public interface BookService {
 
   BookBO findBookById(Long bookId);
 
-  PageableQueryResult<BookBO> listBook(Integer pageIndex, Integer pageSize);
+  PageableQueryResult<BookBO> listBook(Long pageIndex, Long pageSize);
 
   PageableQueryResult<ArticleBO> listBookTable(Long bookId, Integer index, Integer size);
 

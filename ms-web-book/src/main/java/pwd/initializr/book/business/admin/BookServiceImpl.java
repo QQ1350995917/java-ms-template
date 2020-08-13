@@ -80,10 +80,10 @@ public class BookServiceImpl implements BookService {
   }
 
   @Override
-  public PageableQueryResult<BookBO> listBook(Integer pageIndex, Integer pageSize) {
+  public PageableQueryResult<BookBO> listBook(Long pageIndex, Long pageSize) {
     Sort sort = new Sort(Direction.DESC, "id");
     Query query = new Query()
-        .with(PageRequest.of(pageIndex, pageSize)).with(sort);
+        .with(PageRequest.of(pageIndex.intValue(), pageSize.intValue())).with(sort);
 
     List<BookEntity> bookEntities = mongoTemplate.find(query, BookEntity.class);
     long count = mongoTemplate.count(query, BookEntity.class);

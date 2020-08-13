@@ -1,8 +1,11 @@
 package pwd.initializr.account.business.user;
 
+import java.util.LinkedHashSet;
 import java.util.List;
 import pwd.initializr.account.business.user.bo.UserUserBO;
 import pwd.initializr.common.web.business.bo.PageableQueryResult;
+import pwd.initializr.common.web.business.bo.ScopeBO;
+import pwd.initializr.common.web.business.bo.SortBO;
 import pwd.initializr.common.web.persistence.entity.EntityAble;
 
 /**
@@ -61,8 +64,9 @@ public interface UserUserService {
    * @param pageSize 查询条数
    * @return 对象列表
    */
-  PageableQueryResult<UserUserBO> queryAllByCondition(UserUserBO userUserBO, Long pageIndex,
-      Long pageSize);
+  PageableQueryResult<UserUserBO> queryAllByCondition(
+      LinkedHashSet<ScopeBO> scopes, LinkedHashSet<SortBO> sorts,
+      Long pageIndex, Long pageSize);
 
   /**
    * 通过ID查询单条数据
