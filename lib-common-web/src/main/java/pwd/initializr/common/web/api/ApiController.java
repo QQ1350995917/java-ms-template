@@ -32,6 +32,7 @@ import pwd.initializr.common.web.api.vo.Output;
 @Validated
 public class ApiController {
 
+  public static ThreadLocal<String> traceLogger = new ThreadLocal();
   public static ThreadLocal<HttpServletRequest> requestLocal = new ThreadLocal();
   public static ThreadLocal<HttpServletResponse> responseLocal = new ThreadLocal();
 

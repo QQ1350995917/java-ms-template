@@ -36,7 +36,7 @@ public class OwnershipInterceptor implements HandlerInterceptor {
 //            return true;
 //        }
 
-        return false;
+        return true;
     }
 
     @Override

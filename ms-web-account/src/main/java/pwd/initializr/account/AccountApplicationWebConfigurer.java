@@ -25,6 +25,6 @@ public class AccountApplicationWebConfigurer implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(ownershipInterceptor).addPathPatterns("/api/**");
+        registry.addInterceptor(ownershipInterceptor).addPathPatterns("/api/user/**");
     }
 }

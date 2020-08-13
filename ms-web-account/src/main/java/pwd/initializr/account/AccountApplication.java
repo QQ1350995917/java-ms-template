@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,8 +32,8 @@ import pwd.initializr.common.vcode.CodeMessage;
  * @since DistributionVersion
  */
 @SpringBootApplication
-//@EnableEurekaClient
-//@EnableDiscoveryClient
+@EnableEurekaClient
+@EnableDiscoveryClient
 @RestController
 @EnableTransactionManagement
 @ComponentScan(basePackages = {"pwd.initializr.common.web", "pwd.initializr.account"})
