@@ -25,12 +25,15 @@ public class LogInterceptor implements HandlerInterceptor {
   @Override
   public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
       throws Exception {
-    String traceId = request.getAttribute("").toString();
-    String spainId = request.getAttribute("").toString();
-    String parentId = request.getAttribute("").toString();
-    MDC.put("traceId", traceId);
-    MDC.put("spanId", spainId);
-    MDC.put("parentId", parentId);
+//    String traceId = request.getAttribute("").toString();
+//    String spainId = request.getAttribute("").toString();
+//    String parentId = request.getAttribute("").toString();
+    MDC.put("traceId", "traceId");
+    MDC.put("parentId", "parentId");
+    MDC.put("spanId", "spainId");
+    MDC.put("x-uid", "pwd");
+    MDC.put("x-aid", "pwd");
+    MDC.put("x-token", "token");
     return true;
   }
 

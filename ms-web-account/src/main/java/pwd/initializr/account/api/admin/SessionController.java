@@ -1,10 +1,12 @@
 package pwd.initializr.account.api.admin;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +54,7 @@ import pwd.initializr.common.web.api.admin.AdminController;
 )
 @RestController(value = "adminSessionApi")
 @RequestMapping(value = "/api/admin/session")
+@Slf4j
 public class SessionController extends AdminController implements SessionApi {
 
 
@@ -75,6 +78,8 @@ public class SessionController extends AdminController implements SessionApi {
 
   @Override
   public void loginByNameAndPwd(@Valid @NotNull(message = "参数不能为空") LoginInput input) {
+    log.info(JSON.toJSONString(input));
+
     String cookie = getToken();
     if (StringUtils.isBlank(cookie)) {
       // cookie 不能为空

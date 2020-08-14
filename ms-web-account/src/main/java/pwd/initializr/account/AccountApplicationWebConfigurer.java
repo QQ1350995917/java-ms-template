@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import pwd.initializr.account.api.user.unified.OwnershipInterceptor;
+import pwd.initializr.common.web.api.LogInterceptor;
 
 /**
  * pwd.initializr.account.api.user@ms-web-initializr
@@ -21,10 +22,10 @@ import pwd.initializr.account.api.user.unified.OwnershipInterceptor;
 public class AccountApplicationWebConfigurer implements WebMvcConfigurer {
 
     @Autowired
-    private OwnershipInterceptor ownershipInterceptor;
+    private LogInterceptor logInterceptor;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(ownershipInterceptor).addPathPatterns("/api/user/**");
+        registry.addInterceptor(logInterceptor).addPathPatterns("/api/**");
     }
 }

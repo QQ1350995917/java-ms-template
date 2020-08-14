@@ -37,10 +37,8 @@ public class LoginInput implements Serializable {
   @NotNull(message = "0")
   private String loginPwd;
   @ApiModelProperty(name = "captcha", value = "图形验证码识别值", required = false, example = "pwd")
-  @Null(message = "0")
   private String captcha;
   @ApiModelProperty(name = "smsCode", value = "短信验证码", required = false, example = "123456")
-  @Null(message = "0")
   private String smsCode;
 
 }

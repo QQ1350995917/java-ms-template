@@ -55,6 +55,7 @@ public class ApiInputValidate {
     } else {
       message = exception.getMessage();
     }
+    exception.printStackTrace();
     return new Output(new Meta(400, message));
   }
 }
