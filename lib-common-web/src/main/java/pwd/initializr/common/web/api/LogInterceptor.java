@@ -1,6 +1,5 @@
 package pwd.initializr.common.web.api;
 
-import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.slf4j.MDC;
@@ -23,29 +22,31 @@ import org.springframework.web.servlet.ModelAndView;
 public class LogInterceptor implements HandlerInterceptor {
 
   @Override
-  public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
-      throws Exception {
-//    String traceId = request.getAttribute("").toString();
-//    String spainId = request.getAttribute("").toString();
-//    String parentId = request.getAttribute("").toString();
-    MDC.put("traceId", "traceId");
-    MDC.put("parentId", "parentId");
-    MDC.put("spanId", "spainId");
-    MDC.put("x-uid", "pwd");
-    MDC.put("x-aid", "pwd");
-    MDC.put("x-token", "token");
+  public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
+    String token = request.getHeader(ApiConstant.HTTP_HEADER_KEY_TOKEN);
+    String uid = request.getHeader(ApiConstant.HTTP_HEADER_KEY_UID);
+    String aid = request.getHeader(ApiConstant.HTTP_HEADER_KEY_AID);
+    String sv = request.getHeader(ApiConstant.HTTP_HEADER_KEY_SERVER_VERSION);
+    String cv = request.getHeader(ApiConstant.HTTP_HEADER_KEY_CLIENT_VERSION);
+    String os = request.getHeader(ApiConstant.HTTP_HEADER_KEY_OS);
+    MDC.put(ApiConstant.HTTP_HEADER_KEY_TOKEN, token);
+    MDC.put(ApiConstant.HTTP_HEADER_KEY_UID, uid);
+    MDC.put(ApiConstant.HTTP_HEADER_KEY_AID, aid);
+    MDC.put(ApiConstant.HTTP_HEADER_KEY_SERVER_VERSION, sv);
+    MDC.put(ApiConstant.HTTP_HEADER_KEY_CLIENT_VERSION, cv);
+    MDC.put(ApiConstant.HTTP_HEADER_KEY_OS, os);
     return true;
   }
 
   @Override
   public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
-      ModelAndView modelAndView) throws Exception {
+      ModelAndView modelAndView) {
 
   }
 
   @Override
   public void afterCompletion(HttpServletRequest request, HttpServletResponse response,
-      Object handler, Exception ex) throws Exception {
+      Object handler, Exception ex) {
     MDC.clear();
   }
 }

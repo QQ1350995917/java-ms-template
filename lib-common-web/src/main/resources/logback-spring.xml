@@ -34,7 +34,7 @@
     %d{yyyy-MM-dd HH:mm:ss.SSS}
     %-5level
     [${application.name}-%X{X-B3-TraceId}-%X{X-B3-SpanId}-%X{X-B3-ParentSpanId}-%X{X-Span-Export}]
-    [%X{x-token}-%X{x-uid}-%X{x-aid}]
+    [%X{x-token}-%X{x-uid}-%X{x-aid}-%X{x-os}-%X{x-sv}-%X{x-cv}]
     [${PID:- }-%thread]
     [%-40.40logger{39}-%M-%line]
     :
@@ -173,6 +173,26 @@
       <onMismatch>DENY</onMismatch>
     </filter>
   </appender>
+
+    <!-- 异步输出INFO_FILE -->
+    <appender class="ch.qos.logback.classic.AsyncAppender" name="ASYNC_INFO_FILE">
+      <!-- 更改默认的队列的深度,该值会影响性能.默认值为256 -->
+      <queueSize>256</queueSize>
+      <!-- 默认情况下，当阻塞队列的剩余容量为20％时，它将丢弃TRACE，DEBUG和INFO级别的事件，仅保留WARN和ERROR级别的事件。要保留所有事件，请将discardingThreshold设置为0。 -->
+      <discardingThreshold>0</discardingThreshold>
+      <!-- 添加附加的appender,使用前面定义的name,最多只能添加一个 -->
+      <appender-ref ref="INFO_FILE"/>
+    </appender>
+   
+    <!-- 异步输出ERROR_FILE -->
+    <appender class="ch.qos.logback.classic.AsyncAppender" name="ASYNC_ERROR_FILE">
+      <!-- 更改默认的队列的深度,该值会影响性能.默认值为256 -->
+      <queueSize>256</queueSize>
+      <!-- 默认情况下，当阻塞队列的剩余容量为20％时，它将丢弃TRACE，DEBUG和INFO级别的事件，仅保留WARN和ERROR级别的事件。要保留所有事件，请将discardingThreshold设置为0。 -->
+      <discardingThreshold>0</discardingThreshold>
+      <!-- 添加附加的appender,使用前面定义的name,最多只能添加一个 -->
+      <appender-ref ref="ERROR_FILE"/>
+    </appender>
 
   <!--开发环境:打印控制台-->
   <springProfile name="dev">

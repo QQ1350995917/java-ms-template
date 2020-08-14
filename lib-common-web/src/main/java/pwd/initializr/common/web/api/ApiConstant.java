@@ -15,7 +15,8 @@ public interface ApiConstant {
 
   String HTTP_HEADER_KEY_AID = "x-aid";
   String HTTP_HEADER_KEY_OS = "x-os";
-  String HTTP_HEADER_KEY_SERVICE_VERSION = "x-vc";
+  String HTTP_HEADER_KEY_SERVER_VERSION = "x-sv";
+  String HTTP_HEADER_KEY_CLIENT_VERSION = "x-cv";
   String HTTP_HEADER_KEY_TOKEN = "x-token";
   String HTTP_HEADER_KEY_UID = "x-uid";
 

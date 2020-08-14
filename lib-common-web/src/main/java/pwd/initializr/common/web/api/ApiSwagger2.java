@@ -78,8 +78,14 @@ public abstract class ApiSwagger2 {
         .parameterType("header")
         .required(true).build());
     globalOperationParameters.add(new ParameterBuilder()
-        .name(ApiConstant.HTTP_HEADER_KEY_SERVICE_VERSION).defaultValue("1.0.0")
+        .name(ApiConstant.HTTP_HEADER_KEY_SERVER_VERSION).defaultValue("1.0.0")
         .description("服务版本号")
+        .modelRef(new ModelRef("String"))
+        .parameterType("header")
+        .required(true).build());
+    globalOperationParameters.add(new ParameterBuilder()
+        .name(ApiConstant.HTTP_HEADER_KEY_CLIENT_VERSION).defaultValue("1.0.0")
+        .description("客户版本号")
         .modelRef(new ModelRef("String"))
         .parameterType("header")
         .required(true).build());
