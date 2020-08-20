@@ -173,7 +173,7 @@ public class SessionController extends AdminController implements SessionApi {
   }
 
   @Override
-  public void loginInitializr(String token) {
+  public void loginInitializr(String aid, String uid, String token) {
     String cookie = getToken();
     Boolean captchaRequired = false;
     SessionCookieBO sessionCookieBO = null;

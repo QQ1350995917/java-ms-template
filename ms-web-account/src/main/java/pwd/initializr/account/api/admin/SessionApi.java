@@ -81,7 +81,10 @@ public interface SessionApi {
    */
   @ApiOperation(value = "登录页面初始化")
   @GetMapping(value = {"/init"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  void loginInitializr(@RequestHeader(value = "x-token", required = false) String token);
+  void loginInitializr(
+      @RequestHeader(value = "x-aid", required = false) String aid,
+      @RequestHeader(value = "x-uid", required = false) String uid,
+      @RequestHeader(value = "x-token", required = false) String token);
 
   /**
    * <h2>退出登录</h2>
