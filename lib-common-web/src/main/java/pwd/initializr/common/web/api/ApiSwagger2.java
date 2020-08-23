@@ -95,6 +95,12 @@ public abstract class ApiSwagger2 {
         .modelRef(new ModelRef("String"))
         .parameterType("header")
         .required(true).build());
+    globalOperationParameters.add(new ParameterBuilder()
+        .name(ApiConstant.HTTP_HEADER_KEY_DT).defaultValue(String.valueOf(System.currentTimeMillis()))
+        .description("请求时间戳")
+        .modelRef(new ModelRef("Long"))
+        .parameterType("header")
+        .required(true).build());
     return globalOperationParameters;
   }
 

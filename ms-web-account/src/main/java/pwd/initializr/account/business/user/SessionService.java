@@ -2,7 +2,7 @@ package pwd.initializr.account.business.user;
 
 import pwd.initializr.account.business.common.bo.SessionBO;
 import pwd.initializr.account.business.common.bo.SessionCaptchaBO;
-import pwd.initializr.account.business.common.bo.SessionCookieBO;
+import pwd.initializr.account.business.common.bo.SessionTokenBO;
 
 /**
  * pwd.initializr.account.business.user@ms-web-initializr
@@ -37,7 +37,7 @@ public interface SessionService {
    * <p>2：把cookie存入redis，并设置过期时间，设置该cookie登录次数为0</p>
    * date 2020-07-22 14:33
    *
-   * @return pwd.initializr.account.business.user.bo.SessionCookieBO
+   * @return pwd.initializr.account.business.user.bo.SessionTokenBO
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
@@ -88,11 +88,11 @@ public interface SessionService {
    * date 2020-07-22 23:42
    *
    * @param cookie cookie
-   * @return pwd.initializr.account.business.user.bo.SessionCookieBO
+   * @return pwd.initializr.account.business.user.bo.SessionTokenBO
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  SessionCookieBO queryCookie(String cookie);
+  SessionTokenBO queryCookie(String cookie);
 
   /**
    * <h2>session查询接口，根据用户ID查询session信息</h2>
@@ -110,12 +110,12 @@ public interface SessionService {
    * <h2>cookie更新接口，更新cookie对应的登录错误次数</h2>
    * date 2020-07-23 23:08
    *
-   * @param sessionCookieBO cookie对象
-   * @return pwd.initializr.account.business.user.bo.SessionCookieBO 更新后的cookie对象
+   * @param sessionTokenBO cookie对象
+   * @return pwd.initializr.account.business.user.bo.SessionTokenBO 更新后的cookie对象
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  void updateCookie(String cookie, SessionCookieBO sessionCookieBO);
+  void updateCookie(String cookie, SessionTokenBO sessionTokenBO);
 
   /**
    * <h2>session更新接口，根据用户ID更新session信息</h2>

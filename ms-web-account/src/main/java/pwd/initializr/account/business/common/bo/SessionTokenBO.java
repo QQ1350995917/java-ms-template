@@ -22,7 +22,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class SessionCookieBO {
+public class SessionTokenBO {
 
   /**
    * 已经尝试登录次数

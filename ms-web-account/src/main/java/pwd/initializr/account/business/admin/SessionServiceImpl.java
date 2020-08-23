@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import pwd.initializr.account.business.common.bo.SessionBO;
 import pwd.initializr.account.business.common.bo.SessionCaptchaBO;
-import pwd.initializr.account.business.common.bo.SessionCookieBO;
+import pwd.initializr.account.business.common.bo.SessionTokenBO;
 import pwd.initializr.common.mw.redis.RedisClient;
 import pwd.initializr.common.utils.Cryptographer;
 import pwd.initializr.common.vcode.CaptchaArithmeticCode;
@@ -58,9 +58,9 @@ public class SessionServiceImpl implements SessionService {
     CaptchaHelper captchaHelper = new CaptchaArithmeticCode();
     CodeMessage codeMessage = captchaHelper.productMessage();
     // 更新redis中的sessionCookie对象
-    SessionCookieBO sessionCookieBO = queryCookie(cookie);
-    sessionCookieBO.setCaptcha(codeMessage.getExpected());
-    updateCookie(cookie, sessionCookieBO);
+    SessionTokenBO sessionTokenBO = queryCookie(cookie);
+    sessionTokenBO.setCaptcha(codeMessage.getExpected());
+    updateCookie(cookie, sessionTokenBO);
     // 输出sessionCookie对象
     String presented = codeMessage.getPresented();
     BufferedImage bufferedImage = captchaHelper.productImage(presented);
@@ -84,8 +84,8 @@ public class SessionServiceImpl implements SessionService {
     String uuid = UUID.randomUUID().toString();
     String clearTextCookie = currentTimeMillis + ":" + uuid;
     String encryptTextCookie = Cryptographer.encrypt(clearTextCookie, cookieSalt);
-    SessionCookieBO sessionCookieBO = new SessionCookieBO(0, null);
-    redisClient.setex(getCookieKeyInRedis(clearTextCookie), JSON.toJSONString(sessionCookieBO),
+    SessionTokenBO sessionTokenBO = new SessionTokenBO(0, null);
+    redisClient.setex(getCookieKeyInRedis(clearTextCookie), JSON.toJSONString(sessionTokenBO),
         cookieInRedisExpiresSeconds);
     return encryptTextCookie;
   }
@@ -112,14 +112,14 @@ public class SessionServiceImpl implements SessionService {
   }
 
   @Override
-  public SessionCookieBO queryCookie(String cookie) {
+  public SessionTokenBO queryCookie(String cookie) {
     Assert.notNull(cookie, "cookie should not be empty");
     String clearTextCookie = Cryptographer.decrypt(cookie, cookieSalt);
     String sessionCookieJson = redisClient.get(getCookieKeyInRedis(clearTextCookie));
     if (StringUtils.isBlank(sessionCookieJson)) {
       return null;
     }
-    return JSON.parseObject(sessionCookieJson, SessionCookieBO.class);
+    return JSON.parseObject(sessionCookieJson, SessionTokenBO.class);
   }
 
   @Override
@@ -130,9 +130,9 @@ public class SessionServiceImpl implements SessionService {
   }
 
   @Override
-  public void updateCookie(String cookie, SessionCookieBO sessionCookieBO) {
+  public void updateCookie(String cookie, SessionTokenBO sessionTokenBO) {
     String clearTextCookie = Cryptographer.decrypt(cookie, cookieSalt);
-    redisClient.set(getCookieKeyInRedis(clearTextCookie), JSON.toJSONString(sessionCookieBO),
+    redisClient.set(getCookieKeyInRedis(clearTextCookie), JSON.toJSONString(sessionTokenBO),
         cookieInRedisExpiresSeconds);
   }
 

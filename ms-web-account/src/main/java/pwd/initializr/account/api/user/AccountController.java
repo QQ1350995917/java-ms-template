@@ -24,7 +24,7 @@ import pwd.initializr.account.api.user.vo.SignUpFailOutput;
 import pwd.initializr.account.api.user.vo.SignUpFailOutput.FailType;
 import pwd.initializr.account.business.common.bo.SessionBO;
 import pwd.initializr.account.business.common.bo.SessionCaptchaBO;
-import pwd.initializr.account.business.common.bo.SessionCookieBO;
+import pwd.initializr.account.business.common.bo.SessionTokenBO;
 import pwd.initializr.account.business.user.SessionService;
 import pwd.initializr.account.business.user.UserAccountService;
 import pwd.initializr.account.business.user.UserUserServiceWrap;
@@ -112,7 +112,7 @@ public class AccountController extends UserController implements AccountApi {
     String cookie = getToken();
     // TODO 配置化
     Boolean captchaRequired = true;
-    SessionCookieBO sessionCookieBO = null;
+    SessionTokenBO sessionTokenBO = null;
     // 初次访问没有携带cookie，需要生成新的cookie
     if (StringUtils.isBlank(cookie)) {
       cookie = sessionService.createCookie();
@@ -121,16 +121,16 @@ public class AccountController extends UserController implements AccountApi {
         outputException(500);
         return;
       }
-      sessionCookieBO = new SessionCookieBO(0, null);
+      sessionTokenBO = new SessionTokenBO(0, null);
     } else {
-      sessionCookieBO = sessionService.queryCookie(cookie);
-      if (sessionCookieBO == null) {
+      sessionTokenBO = sessionService.queryCookie(cookie);
+      if (sessionTokenBO == null) {
         // cookie 比较旧，得更新
         outputException(401, new SignUpFailOutput(FailType.CookieISExpires));
         return;
       }
     }
-    if (sessionCookieBO.getTimes() >= cookieCaptchaThreshold) {
+    if (sessionTokenBO.getTimes() >= cookieCaptchaThreshold) {
       captchaRequired = true;
     }
     // 生成新的cookie成，并设置是否需要图形验证码
@@ -192,13 +192,13 @@ public class AccountController extends UserController implements AccountApi {
       outputException(401);
       return;
     }
-    SessionCookieBO sessionCookieBO = sessionService.queryCookie(cookie);
-    if (sessionCookieBO == null) {
+    SessionTokenBO sessionTokenBO = sessionService.queryCookie(cookie);
+    if (sessionTokenBO == null) {
       // cookie 过期
       outputException(401);
       return;
     }
-    if (sessionCookieBO.getTimes() < cookieCaptchaThreshold) {
+    if (sessionTokenBO.getTimes() < cookieCaptchaThreshold) {
       // 无需验证码
       outputException(401);
       return;

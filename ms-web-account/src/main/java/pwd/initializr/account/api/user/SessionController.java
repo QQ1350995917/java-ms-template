@@ -2,19 +2,12 @@ package pwd.initializr.account.api.user;
 
 import com.alibaba.fastjson.JSONObject;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.account.api.admin.vo.LoginFailOutput;
@@ -26,7 +19,7 @@ import pwd.initializr.account.api.user.vo.LoginInput;
 import pwd.initializr.account.business.admin.SessionService;
 import pwd.initializr.account.business.common.bo.SessionBO;
 import pwd.initializr.account.business.common.bo.SessionCaptchaBO;
-import pwd.initializr.account.business.common.bo.SessionCookieBO;
+import pwd.initializr.account.business.common.bo.SessionTokenBO;
 import pwd.initializr.account.business.user.UserAccountService;
 import pwd.initializr.account.business.user.UserUserService;
 import pwd.initializr.account.business.user.bo.UserAccountBO;
@@ -86,20 +79,20 @@ public class SessionController extends UserController implements SessionApi {
       outputException(401, new LoginFailOutput(FailType.ParamsISNull));
       return;
     }
-    SessionCookieBO sessionCookieBO = sessionService.queryCookie(cookie);
-    if (sessionCookieBO == null) {
+    SessionTokenBO sessionTokenBO = sessionService.queryCookie(cookie);
+    if (sessionTokenBO == null) {
       // sessionCookie 过期
       outputException(401, (Object) new LoginFailOutput(FailType.CookieISExpires));
       return;
     }
-    if (sessionCookieBO.getTimes() >= cookieCaptchaThreshold) {
+    if (sessionTokenBO.getTimes() >= cookieCaptchaThreshold) {
       // 需要校验验证码
       if (StringUtils.isBlank(input.getCaptcha())) {
         // 识别输入的验证码为空
         outputException(401, new LoginFailOutput(FailType.CaptchaISNull));
         return;
       }
-      if (!input.getCaptcha().equals(sessionCookieBO.getCaptcha())) {
+      if (!input.getCaptcha().equals(sessionTokenBO.getCaptcha())) {
         // 验证码错误
         outputException(401, new LoginFailOutput(FailType.CaptchaISError));
         return;
@@ -110,9 +103,9 @@ public class SessionController extends UserController implements SessionApi {
         .queryByNameAndPwd(input.getLoginName(), input.getLoginPwd());
     if (accountByNameAndPwd == null) {
       // 登录失败，更新错误登录次数
-      sessionCookieBO.setTimes(sessionCookieBO.getTimes() + 1);
-      sessionService.updateCookie(cookie, sessionCookieBO);
-      if (sessionCookieBO.getTimes() >= cookieCaptchaThreshold) {
+      sessionTokenBO.setTimes(sessionTokenBO.getTimes() + 1);
+      sessionService.updateCookie(cookie, sessionTokenBO);
+      if (sessionTokenBO.getTimes() >= cookieCaptchaThreshold) {
         outputException(401, new LoginFailOutput(FailType.CaptchaISNull));
       } else {
         outputException(401, new LoginFailOutput(FailType.ParamsISError));
@@ -145,13 +138,13 @@ public class SessionController extends UserController implements SessionApi {
       outputException(401);
       return;
     }
-    SessionCookieBO sessionCookieBO = sessionService.queryCookie(cookie);
-    if (sessionCookieBO == null) {
+    SessionTokenBO sessionTokenBO = sessionService.queryCookie(cookie);
+    if (sessionTokenBO == null) {
       // cookie 过期
       outputException(401);
       return;
     }
-    if (sessionCookieBO.getTimes() < cookieCaptchaThreshold) {
+    if (sessionTokenBO.getTimes() < cookieCaptchaThreshold) {
       // 无需验证码
       outputException(401);
       return;
@@ -170,7 +163,7 @@ public class SessionController extends UserController implements SessionApi {
   public void loginInitializr(String token) {
     String cookie = getToken();
     Boolean captchaRequired = false;
-    SessionCookieBO sessionCookieBO = null;
+    SessionTokenBO sessionTokenBO = null;
     // 初次访问没有携带cookie，需要生成新的cookie
     if (StringUtils.isBlank(cookie)) {
       cookie = sessionService.createCookie();
@@ -179,16 +172,16 @@ public class SessionController extends UserController implements SessionApi {
         outputException(500);
         return;
       }
-      sessionCookieBO = new SessionCookieBO(0, null);
+      sessionTokenBO = new SessionTokenBO(0, null);
     } else {
-      sessionCookieBO = sessionService.queryCookie(cookie);
-      if (sessionCookieBO == null) {
+      sessionTokenBO = sessionService.queryCookie(cookie);
+      if (sessionTokenBO == null) {
         // cookie 比较旧，得更新
         outputException(401, new LoginFailOutput(FailType.CookieISExpires));
         return;
       }
     }
-    if (sessionCookieBO.getTimes() >= cookieCaptchaThreshold) {
+    if (sessionTokenBO.getTimes() >= cookieCaptchaThreshold) {
       captchaRequired = true;
     }
     // 生成新的cookie成，并设置是否需要图形验证码
