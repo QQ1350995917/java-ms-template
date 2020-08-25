@@ -209,12 +209,13 @@ public class SessionController extends AdminController implements SessionApi {
       captchaRequired = true;
     }
     // 生成新的 token 成，并设置是否需要图形验证码
-    SessionInitOutput loginCookieOutput = new SessionInitOutput();
-    loginCookieOutput.setToken(token);
-    loginCookieOutput.setExpires(anonymousSessionExpiresSeconds);
-    loginCookieOutput.setCaptchaRequired(captchaRequired);
+    SessionInitOutput loginInitOutput = new SessionInitOutput();
+    loginInitOutput.setStatus(Status.ANONYMOUS.getNumber());
+    loginInitOutput.setToken(token);
+    loginInitOutput.setExpires(anonymousSessionExpiresSeconds);
+    loginInitOutput.setCaptchaRequired(captchaRequired);
     // TODO 登录方式列表
-    outputData(loginCookieOutput);
+    outputData(loginInitOutput);
   }
 
   @Override
