@@ -8,6 +8,7 @@ import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -52,6 +53,7 @@ import pwd.initializr.common.web.persistence.entity.EntityAble;
 )
 @RestController(value = "admin")
 @RequestMapping(value = "/api/admin/admin")
+@Slf4j
 public class AdminController extends pwd.initializr.common.web.api.admin.AdminController implements
     AdminApi {
 
@@ -132,7 +134,7 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
       });
       pageInput = JSON.parseObject(page, PageInput.class);
     } catch (Exception e) {
-      throw new RuntimeException("参数格式错误");
+      log.error("json to object",e);
     }
     if (pageInput == null) {
       pageInput = new PageInput();

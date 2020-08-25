@@ -125,6 +125,9 @@ public class SessionServiceImpl implements SessionService {
 
   @Override
   public NamedSessionBO queryNamedSession(Long uid) {
+    if (uid == null || uid < 1) {
+      return null;
+    }
     String key = getSessionKeyInRedis(uid);
     String session = redisClient.get(key);
     return JSON.parseObject(session, NamedSessionBO.class);

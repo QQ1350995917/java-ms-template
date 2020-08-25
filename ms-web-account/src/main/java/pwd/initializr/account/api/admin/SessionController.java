@@ -171,14 +171,13 @@ public class SessionController extends AdminController implements SessionApi {
     Boolean captchaRequired = false;
     AnonymousSessionBO anonymousSessionBO = null;
     if (StringUtils.isNotBlank(token)) {
-      // 该请求携带 token，认为二次登陆，检验匿名token是否存在
+      // 该请求携带 token，认为二次登陆，检验 token是否存在
       anonymousSessionBO = sessionService.queryAnonymousToken(token);
       if (anonymousSessionBO != null) {
-        // 匿名 token 存在，就延长其在redis的有效期，然后返回
+        // 识别为有效的匿名 token，延长其在redis的有效期，然后返回
         sessionService.updateAnonymousSession(token,anonymousSessionBO);
-        sessionService.createCaptcha(token);
       } else {
-        // 匿名 token 不存在，检验提交的 token 是否是具名token
+        // 识别为非匿名 token，检验提交的 token 是否是具名token
         NamedSessionBO namedSessionBO = sessionService.queryNamedSession(getUid());
         if (namedSessionBO != null) {
           // 当前提交的 token 是具名 token 表示该 token 已经登录，无需再次登录
@@ -207,6 +206,7 @@ public class SessionController extends AdminController implements SessionApi {
     // 是否对该匿名 token 产生验证码
     if (anonymousSessionBO.getTimes() >= anonymousSessionCaptchaThreshold) {
       captchaRequired = true;
+      sessionService.createCaptcha(token);
     }
     // 生成新的 token 成，并设置是否需要图形验证码
     SessionInitOutput loginInitOutput = new SessionInitOutput();
@@ -229,6 +229,8 @@ public class SessionController extends AdminController implements SessionApi {
 
   @Override
   public void querySessionInfo() {
+    // TODO 基本信息
+    // TODO 权限信息
     NamedSessionBO session = sessionService.queryNamedSession(getUid());
     if (session == null) {
       super.outputException(401);
