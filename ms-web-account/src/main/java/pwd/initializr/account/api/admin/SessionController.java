@@ -12,20 +12,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import pwd.initializr.account.api.admin.vo.CaptchaOutput;
 import pwd.initializr.account.api.admin.vo.LoginFailOutput;
 import pwd.initializr.account.api.admin.vo.LoginFailOutput.FailType;
 import pwd.initializr.account.api.admin.vo.LoginInput;
 import pwd.initializr.account.api.admin.vo.LoginOutput;
-import pwd.initializr.account.api.admin.vo.SessionCaptchaOutput;
 import pwd.initializr.account.api.admin.vo.SessionTokenOutput;
 import pwd.initializr.account.business.admin.AdminAccountService;
 import pwd.initializr.account.business.admin.AdminUserService;
 import pwd.initializr.account.business.admin.SessionService;
 import pwd.initializr.account.business.admin.bo.AdminAccountBO;
 import pwd.initializr.account.business.admin.bo.AdminUserBO;
-import pwd.initializr.account.business.common.bo.SessionBO;
-import pwd.initializr.account.business.common.bo.SessionCaptchaBO;
-import pwd.initializr.account.business.common.bo.SessionTokenBO;
+import pwd.initializr.account.business.common.bo.AnonymousSessionBO;
+import pwd.initializr.account.business.common.bo.CaptchaBO;
+import pwd.initializr.account.business.common.bo.NamedSessionBO;
 import pwd.initializr.account.rpc.RPCToken;
 import pwd.initializr.common.web.api.admin.AdminController;
 
@@ -51,14 +51,14 @@ import pwd.initializr.common.web.api.admin.AdminController;
 public class SessionController extends AdminController implements SessionApi {
 
 
-  @Value("${account.admin.cookie.expires.seconds}")
-  private Integer cookieExpiresSeconds;
+  @Value("${account.admin.session.anonymous.expires.seconds}")
+  private Integer anonymousSessionExpiresSeconds;
 
-  @Value("${account.admin.cookie.captcha.threshold}")
-  private Integer cookieCaptchaThreshold;
+  @Value("${account.admin.session.anonymous.captcha.threshold}")
+  private Integer anonymousSessionCaptchaThreshold;
 
-  @Value("${account.admin.session.secret}")
-  private String sessionSecret;
+  @Value("${account.admin.session.named.secret}")
+  private String namedSessionSecret;
 
   @Autowired
   private SessionService sessionService;
@@ -73,10 +73,10 @@ public class SessionController extends AdminController implements SessionApi {
   public void loginByNameAndPwd(@Valid @NotNull(message = "参数不能为空") LoginInput input) {
     log.info(JSON.toJSONString(input));
 
-    String cookie = getToken();
-    if (StringUtils.isBlank(cookie)) {
-      // cookie 不能为空
-      outputException(401, new LoginFailOutput(FailType.CookieISNull));
+    String anonymousToken = getToken();
+    if (StringUtils.isBlank(anonymousToken)) {
+      // token 不能为空
+      outputException(401, new LoginFailOutput(FailType.TokenISNull));
       return;
     }
     if (input == null || StringUtils.isBlank(input.getLoginName()) || StringUtils
@@ -85,20 +85,20 @@ public class SessionController extends AdminController implements SessionApi {
       outputException(401, new LoginFailOutput(FailType.ParamsISNull));
       return;
     }
-    SessionTokenBO sessionTokenBO = sessionService.queryCookie(cookie);
-    if (sessionTokenBO == null) {
+    AnonymousSessionBO anonymousSessionBO = sessionService.queryAnonymousToken(anonymousToken);
+    if (anonymousSessionBO == null) {
       // sessionCookie 过期
-      outputException(401, (Object) new LoginFailOutput(FailType.CookieISExpires));
+      outputException(401, (Object) new LoginFailOutput(FailType.TokenISExpires));
       return;
     }
-    if (sessionTokenBO.getTimes() >= cookieCaptchaThreshold) {
+    if (anonymousSessionBO.getTimes() >= anonymousSessionCaptchaThreshold) {
       // 需要校验验证码
       if (StringUtils.isBlank(input.getCaptcha())) {
         // 识别输入的验证码为空
         outputException(401, new LoginFailOutput(FailType.CaptchaISNull));
         return;
       }
-      if (!input.getCaptcha().equals(sessionTokenBO.getCaptcha())) {
+      if (!input.getCaptcha().equals(anonymousSessionBO.getCaptcha())) {
         // 验证码错误
         outputException(401, new LoginFailOutput(FailType.CaptchaISError));
         return;
@@ -109,9 +109,9 @@ public class SessionController extends AdminController implements SessionApi {
         .queryByNameAndPwd(input.getLoginName(), input.getLoginPwd());
     if (accountByNameAndPwd == null) {
       // 登录失败，更新错误登录次数
-      sessionTokenBO.setTimes(sessionTokenBO.getTimes() + 1);
-      sessionService.updateCookie(cookie, sessionTokenBO);
-      if (sessionTokenBO.getTimes() >= cookieCaptchaThreshold) {
+      anonymousSessionBO.setTimes(anonymousSessionBO.getTimes() + 1);
+      sessionService.updateAnonymousSession(anonymousToken, anonymousSessionBO);
+      if (anonymousSessionBO.getTimes() >= anonymousSessionCaptchaThreshold) {
         outputException(401, new LoginFailOutput(FailType.CaptchaISNull));
       } else {
         outputException(401, new LoginFailOutput(FailType.ParamsISError));
@@ -126,74 +126,84 @@ public class SessionController extends AdminController implements SessionApi {
       return;
     }
 
-    SessionBO sessionBO = new SessionBO(adminUserBO.getId(), adminUserBO.getName(),
+    NamedSessionBO namedSessionBO = new NamedSessionBO(adminUserBO.getId(), adminUserBO.getName(),
         accountByNameAndPwd.getId(), accountByNameAndPwd.getLoginName(),
         System.currentTimeMillis());
-    String token = RPCToken.generateToken(sessionBO, sessionSecret);
-    sessionService.createSession(token, sessionBO);
-    sessionService.deleteCookie(cookie);
-    outputData(new LoginOutput(sessionBO.getUid(), token));
+    String namedToken = RPCToken.generateToken(namedSessionBO, namedSessionSecret);
+    sessionService.createNamedSession(namedToken, namedSessionBO);
+    sessionService.deleteAnonymousToken(namedToken);
+    outputData(new LoginOutput(namedSessionBO.getUid(), namedToken));
   }
 
 
   @Override
   public void loginCaptchaRefresh() {
-    String cookie = getToken();
-    if (StringUtils.isBlank(cookie)) {
+    String token = getToken();
+    if (StringUtils.isBlank(token)) {
       // 参数不合规
       outputException(401);
       return;
     }
-    SessionTokenBO sessionTokenBO = sessionService.queryCookie(cookie);
-    if (sessionTokenBO == null) {
-      // cookie 过期
+    AnonymousSessionBO anonymousSessionBO = sessionService.queryAnonymousToken(token);
+    if (anonymousSessionBO == null) {
+      // token 过期
       outputException(401);
       return;
     }
-    if (sessionTokenBO.getTimes() < cookieCaptchaThreshold) {
+    if (anonymousSessionBO.getTimes() < anonymousSessionCaptchaThreshold) {
       // 无需验证码
       outputException(401);
       return;
     }
-    SessionCaptchaBO sessionCaptchaBO = sessionService.createCaptcha(cookie);
-    if (sessionCaptchaBO == null) {
+    CaptchaBO captchaBO = sessionService.createCaptcha(token);
+    if (captchaBO == null) {
       outputException(500);
       return;
     }
-    SessionCaptchaOutput sessionCaptchaOutput = new SessionCaptchaOutput();
-    BeanUtils.copyProperties(sessionCaptchaBO, sessionCaptchaOutput);
+    CaptchaOutput sessionCaptchaOutput = new CaptchaOutput();
+    BeanUtils.copyProperties(captchaBO, sessionCaptchaOutput);
     outputData(sessionCaptchaOutput);
   }
 
   @Override
   public void loginInitializr(String aid, String uid, String token) {
-    String cookie = getToken();
+    String anonymousToken = getToken();
     Boolean captchaRequired = false;
-    SessionTokenBO sessionTokenBO = null;
-    // 初次访问没有携带token，需要生成新的匿名token
-    if (StringUtils.isBlank(cookie)) {
-      cookie = sessionService.createCookie();
-      if (cookie == null) {
+    AnonymousSessionBO anonymousSessionBO = null;
+    if (StringUtils.isBlank(anonymousToken)) {
+      // 该请求没有携带 token，认为初次登陆，生成匿名token
+      anonymousToken = sessionService.createAnonymousSession();
+      if (anonymousToken == null) {
         // 生成匿名token失败
         outputException(500);
         return;
       }
-      sessionTokenBO = new SessionTokenBO(0, null);
+      anonymousSessionBO = new AnonymousSessionBO(0, null);
     } else {
-      sessionTokenBO = sessionService.queryCookie(cookie);
-      if (sessionTokenBO == null) {
-        // cookie 比较旧，得更新
-        outputException(401, new LoginFailOutput(FailType.CookieISExpires));
+      // 该请求携带 token，认为二次登陆，检验匿名token是否存在
+      anonymousSessionBO = sessionService.queryAnonymousToken(anonymousToken);
+      if (anonymousSessionBO != null) {
+        // 匿名 token 存在，就延长其在redis的有效期，然后返回
+        // TODO
+       outputException(304);
+       return ;
+      }
+      // 验证匿名 token 是否是具名token
+      NamedSessionBO namedSessionBO = sessionService.queryNamedSession(getUid());
+      if (namedSessionBO != null) {
+        // 当前用户已经登录
+        // TODO
         return;
       }
     }
-    if (sessionTokenBO.getTimes() >= cookieCaptchaThreshold) {
+    // todo anonymousSessionBO 存在空指针现象
+    if (anonymousSessionBO.getTimes() >= anonymousSessionCaptchaThreshold) {
       captchaRequired = true;
     }
-    // 生成新的cookie成，并设置是否需要图形验证码
+    // 生成新的 token 成，并设置是否需要图形验证码
     SessionTokenOutput loginCookieOutput = new SessionTokenOutput();
-    loginCookieOutput.setCookie(cookie);
-    loginCookieOutput.setExpires(cookieExpiresSeconds);
+    loginCookieOutput.setCookie(anonymousToken);
+    loginCookieOutput.setExpires(anonymousSessionExpiresSeconds);
     loginCookieOutput.setCaptchaRequired(captchaRequired);
     // TODO 登录方式列表
     outputData(loginCookieOutput);
@@ -201,7 +211,7 @@ public class SessionController extends AdminController implements SessionApi {
 
   @Override
   public void logout() {
-    if (sessionService.deleteSession(getUid())) {
+    if (sessionService.deleteNamedSession(getUid())) {
       outputData(200);
     } else {
       outputException(500);
@@ -210,7 +220,7 @@ public class SessionController extends AdminController implements SessionApi {
 
   @Override
   public void querySessionInfo() {
-    SessionBO session = sessionService.querySession(getUid());
+    NamedSessionBO session = sessionService.queryNamedSession(getUid());
     if (session == null) {
       super.outputException(401);
       return;

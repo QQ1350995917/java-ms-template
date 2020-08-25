@@ -9,9 +9,9 @@ import lombok.ToString;
 /**
  * pwd.initializr.account.business.admin.bo@ms-web-initializr
  *
- * <h1>服务层逻辑对象封装：管理员会话前cookie信息</h1>
+ * <h1>服务层逻辑对象封装：图形验证码</h1>
  *
- * date 2020-07-22 14:46
+ * date 2020-07-22 15:06
  *
  * @author DingPengwei[dingpengwei@foxmail.com]
  * @version 1.0.0
@@ -22,14 +22,21 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class SessionTokenBO {
+public class CaptchaBO {
 
   /**
-   * 已经尝试登录次数
+   * 图形验证码的base64编码
    */
-  private Integer times;
+  private String base64;
+
   /**
-   * 期望验证码值
+   * 用户填写的结果
    */
-  private String captcha;
+  private String result;
+
+  /**
+   * 过期时间（单位秒）
+   */
+  private Integer expires;
+
 }

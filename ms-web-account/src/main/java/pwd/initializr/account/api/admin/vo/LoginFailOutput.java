@@ -44,11 +44,11 @@ public class LoginFailOutput {
     /**
      *
      */
-    CookieISNull(0, "token can not be empty"),
+    TokenISNull(0, "token can not be empty"),
     /**
      *
      */
-    CookieISExpires(1, "token may be expires"),
+    TokenISExpires(1, "token may be expires"),
     /**
      *
      */

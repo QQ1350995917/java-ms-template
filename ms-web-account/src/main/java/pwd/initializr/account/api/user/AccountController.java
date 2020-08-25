@@ -22,9 +22,9 @@ import pwd.initializr.account.api.user.vo.SessionTokenOutput;
 import pwd.initializr.account.api.user.vo.SignUpByNamePwdInput;
 import pwd.initializr.account.api.user.vo.SignUpFailOutput;
 import pwd.initializr.account.api.user.vo.SignUpFailOutput.FailType;
-import pwd.initializr.account.business.common.bo.SessionBO;
-import pwd.initializr.account.business.common.bo.SessionCaptchaBO;
-import pwd.initializr.account.business.common.bo.SessionTokenBO;
+import pwd.initializr.account.business.common.bo.AnonymousSessionBO;
+import pwd.initializr.account.business.common.bo.CaptchaBO;
+import pwd.initializr.account.business.common.bo.NamedSessionBO;
 import pwd.initializr.account.business.user.SessionService;
 import pwd.initializr.account.business.user.UserAccountService;
 import pwd.initializr.account.business.user.UserUserServiceWrap;
@@ -59,14 +59,14 @@ import pwd.initializr.common.web.persistence.entity.EntityAble;
 @Slf4j
 public class AccountController extends UserController implements AccountApi {
 
-  @Value("${account.user.cookie.expires.seconds}")
-  private Integer cookieExpiresSeconds;
+  @Value("${account.user.session.anonymous.expires.seconds}")
+  private Integer anonymousSessionExpiresSeconds;
 
-  @Value("${account.user.cookie.captcha.threshold}")
-  private Integer cookieCaptchaThreshold;
+  @Value("${account.user.session.anonymous.captcha.threshold}")
+  private Integer anonymousSessionCaptchaThreshold;
 
-  @Value("${account.user.session.secret}")
-  private String sessionSecret;
+  @Value("${account.user.session.named.secret}")
+  private String namedSessionSecret;
 
 
   @Autowired
@@ -99,12 +99,12 @@ public class AccountController extends UserController implements AccountApi {
     }
 
     // 账号创建完成后自动登录
-    SessionBO sessionBO = new SessionBO(userUserBO.getId(), userUserBO.getName(),
+    NamedSessionBO namedSessionBO = new NamedSessionBO(userUserBO.getId(), userUserBO.getName(),
         userAccountBO.getId(), userAccountBO.getLoginName(),
         System.currentTimeMillis());
-    String token = RPCToken.generateToken(sessionBO, sessionSecret);
-    sessionService.createSession(token, sessionBO);
-    outputData(new LoginOutput(sessionBO.getUid(), token));
+    String token = RPCToken.generateToken(namedSessionBO, namedSessionSecret);
+    sessionService.createSession(token, namedSessionBO);
+    outputData(new LoginOutput(namedSessionBO.getUid(), token));
   }
 
   @Override
@@ -112,7 +112,7 @@ public class AccountController extends UserController implements AccountApi {
     String cookie = getToken();
     // TODO 配置化
     Boolean captchaRequired = true;
-    SessionTokenBO sessionTokenBO = null;
+    AnonymousSessionBO anonymousSessionBO = null;
     // 初次访问没有携带cookie，需要生成新的cookie
     if (StringUtils.isBlank(cookie)) {
       cookie = sessionService.createCookie();
@@ -121,22 +121,22 @@ public class AccountController extends UserController implements AccountApi {
         outputException(500);
         return;
       }
-      sessionTokenBO = new SessionTokenBO(0, null);
+      anonymousSessionBO = new AnonymousSessionBO(0, null);
     } else {
-      sessionTokenBO = sessionService.queryCookie(cookie);
-      if (sessionTokenBO == null) {
+      anonymousSessionBO = sessionService.queryCookie(cookie);
+      if (anonymousSessionBO == null) {
         // cookie 比较旧，得更新
         outputException(401, new SignUpFailOutput(FailType.CookieISExpires));
         return;
       }
     }
-    if (sessionTokenBO.getTimes() >= cookieCaptchaThreshold) {
+    if (anonymousSessionBO.getTimes() >= anonymousSessionCaptchaThreshold) {
       captchaRequired = true;
     }
     // 生成新的cookie成，并设置是否需要图形验证码
     SessionTokenOutput loginCookieOutput = new SessionTokenOutput();
     loginCookieOutput.setCookie(cookie);
-    loginCookieOutput.setExpires(cookieExpiresSeconds);
+    loginCookieOutput.setExpires(anonymousSessionExpiresSeconds);
     loginCookieOutput.setCaptchaRequired(captchaRequired);
     // TODO 登录方式列表
     outputData(loginCookieOutput);
@@ -192,24 +192,24 @@ public class AccountController extends UserController implements AccountApi {
       outputException(401);
       return;
     }
-    SessionTokenBO sessionTokenBO = sessionService.queryCookie(cookie);
-    if (sessionTokenBO == null) {
+    AnonymousSessionBO anonymousSessionBO = sessionService.queryCookie(cookie);
+    if (anonymousSessionBO == null) {
       // cookie 过期
       outputException(401);
       return;
     }
-    if (sessionTokenBO.getTimes() < cookieCaptchaThreshold) {
+    if (anonymousSessionBO.getTimes() < anonymousSessionCaptchaThreshold) {
       // 无需验证码
       outputException(401);
       return;
     }
-    SessionCaptchaBO sessionCaptchaBO = sessionService.createCaptcha(cookie);
-    if (sessionCaptchaBO == null) {
+    CaptchaBO captchaBO = sessionService.createCaptcha(cookie);
+    if (captchaBO == null) {
       outputException(500);
       return;
     }
     SessionCaptchaOutput sessionCaptchaOutput = new SessionCaptchaOutput();
-    BeanUtils.copyProperties(sessionCaptchaBO, sessionCaptchaOutput);
+    BeanUtils.copyProperties(captchaBO, sessionCaptchaOutput);
     outputData(sessionCaptchaOutput);
   }
 

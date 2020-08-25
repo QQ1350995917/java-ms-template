@@ -1,8 +1,8 @@
 package pwd.initializr.account.business.admin;
 
-import pwd.initializr.account.business.common.bo.SessionBO;
-import pwd.initializr.account.business.common.bo.SessionCaptchaBO;
-import pwd.initializr.account.business.common.bo.SessionTokenBO;
+import pwd.initializr.account.business.common.bo.AnonymousSessionBO;
+import pwd.initializr.account.business.common.bo.CaptchaBO;
+import pwd.initializr.account.business.common.bo.NamedSessionBO;
 
 /**
  * pwd.initializr.account.business.admin@ms-web-initializr
@@ -20,28 +20,28 @@ public interface SessionService {
   /**
    * <h2>生成图形验证码接口：管理员登录错误阈值溢出后需要图形验证码</h2>
    * <p>1：生成图形验证码</p>
-   * <p>2：把图形验证码的接口绑定到对应的cookie上，存入redis</p>
+   * <p>2：把图形验证码的接口绑定到对应的 token 上，存入redis</p>
    * <p>3：把生成的图形验证码进行存储</p>
    * date 2020-07-22 16:11
    *
-   * @param cookie 预登录生成的cookie
-   * @return pwd.initializr.account.business.common.bo.SessionCaptchaBO
+   * @param token 预登录生成的 token
+   * @return pwd.initializr.account.business.common.bo.CaptchaBO
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  SessionCaptchaBO createCaptcha(String cookie);
+  CaptchaBO createCaptcha(String token);
 
   /**
-   * <h2>cookie生成接口：管理员登录前调用</h2>
-   * <p>1：根据规则生成cookie</p>
-   * <p>2：把cookie存入redis，并设置过期时间，设置该cookie登录次数为0</p>
+   * <h2>匿名 token 生成接口：管理员登录前调用</h2>
+   * <p>1：根据规则生成匿名 token </p>
+   * <p>2：把 token 存入redis，并设置过期时间，设置该 token 登录次数为0</p>
    * date 2020-07-22 14:33
    *
-   * @return pwd.initializr.account.business.common.bo.SessionTokenBO
+   * @return pwd.initializr.account.business.common.bo.AnonymousSessionBO
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  String createCookie();
+  String createAnonymousSession();
 
   /**
    * <h2>session创建接口：管理员通过账号密码登录</h2>
@@ -53,23 +53,23 @@ public interface SessionService {
    * date 2020-07-21 22:14
    *
    * @param token token字符串
-   * @param sessionBO sessionBo对象
+   * @param namedSessionBO sessionBo对象
    * @return pwd.initializr.account.business.admin.bo.AdminAccountBO
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  void createSession(String token, SessionBO sessionBO);
+  void createNamedSession(String token, NamedSessionBO namedSessionBO);
 
   /**
-   * <h2>cookie删除接口，根据cookie删除redis中的cookie信息</h2>
+   * <h2>token 删除接口，根据 token 删除redis中的 token 信息</h2>
    * date 2020-07-22 23:14
    *
-   * @param cookie 登录前生成的cookie
+   * @param token 登录前生成的 token
    * @return java.lang.Boolean
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  Boolean deleteCookie(String cookie);
+  Boolean deleteAnonymousToken(String token);
 
   /**
    * <h2>session删除接口，根据用户ID删除session信息，等同于退出登录</h2>
@@ -81,18 +81,18 @@ public interface SessionService {
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  Boolean deleteSession(Long adminUserId);
+  Boolean deleteNamedSession(Long adminUserId);
 
   /**
-   * <h2>cookie查询接口，管理员尝试登录次数</h2>
+   * <h2> token 查询接口，管理员尝试登录次数</h2>
    * date 2020-07-22 23:42
    *
-   * @param cookie cookie
-   * @return pwd.initializr.account.business.common.bo.SessionTokenBO
+   * @param token token
+   * @return pwd.initializr.account.business.common.bo.AnonymousSessionBO
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  SessionTokenBO queryCookie(String cookie);
+  AnonymousSessionBO queryAnonymousToken(String token);
 
   /**
    * <h2>session查询接口，根据用户ID查询session信息</h2>
@@ -100,34 +100,34 @@ public interface SessionService {
    * date 2020-07-22 16:33
    *
    * @param uid 管理员用户ID
-   * @return pwd.initializr.account.business.common.bo.SessionBO
+   * @return pwd.initializr.account.business.common.bo.NamedSessionBO
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  SessionBO querySession(Long uid);
+  NamedSessionBO queryNamedSession(Long uid);
 
   /**
-   * <h2>cookie更新接口，更新cookie对应的登录错误次数</h2>
+   * <h2>token 更新接口，更新 token 对应的登录错误次数</h2>
    * date 2020-07-23 23:08
    *
-   * @param sessionTokenBO cookie对象
-   * @return pwd.initializr.account.business.common.bo.SessionTokenBO 更新后的cookie对象
+   * @param anonymousSessionBO token 对象
+   * @return pwd.initializr.account.business.common.bo.AnonymousSessionBO 更新后的 token 对象
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  void updateCookie(String cookie, SessionTokenBO sessionTokenBO);
+  void updateAnonymousSession(String token, AnonymousSessionBO anonymousSessionBO);
 
   /**
    * <h2>session更新接口，根据用户ID更新session信息</h2>
    * <p>1：在redis中更新session信息</p>
    * date 2020-07-22 16:33
    *
-   * @param sessionBO session对象
+   * @param namedSessionBO session对象
    * @return java.lang.Boolean
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  Boolean updateSession(SessionBO sessionBO);
+  Boolean updateNamedSession(NamedSessionBO namedSessionBO);
 
 
 }

@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import pwd.initializr.account.business.common.bo.SessionCaptchaBO;
+import pwd.initializr.account.business.common.bo.CaptchaBO;
 
 /**
  * pwd.initializr.account.api.admin.vo@ms-web-initializr
@@ -21,6 +21,6 @@ import pwd.initializr.account.business.common.bo.SessionCaptchaBO;
 @Getter
 @Setter
 @ToString
-public class SessionCaptchaOutput extends SessionCaptchaBO {
+public class CaptchaOutput extends CaptchaBO {
 
 }

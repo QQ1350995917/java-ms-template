@@ -7,9 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-import pwd.initializr.account.business.common.bo.SessionBO;
-import pwd.initializr.account.business.common.bo.SessionCaptchaBO;
-import pwd.initializr.account.business.common.bo.SessionTokenBO;
+import pwd.initializr.account.business.common.bo.AnonymousSessionBO;
+import pwd.initializr.account.business.common.bo.NamedSessionBO;
+import pwd.initializr.account.business.common.bo.CaptchaBO;
 import pwd.initializr.common.mw.redis.RedisClient;
 import pwd.initializr.common.utils.Cryptographer;
 
@@ -28,16 +28,16 @@ import pwd.initializr.common.utils.Cryptographer;
 public class SessionServiceImpl implements SessionService {
 
 
-  @Value("${account.user.cookie.initializr.salt}")
-  private String cookieSalt;
-  @Value("${account.user.cookie.redis.key.prefix}")
-  private String cookieInRedisPrefix;
-  @Value("${account.user.cookie.expires.seconds}")
-  private Integer cookieInRedisExpiresSeconds;
-  @Value("${account.user.session.redis.key.prefix}")
-  private String sessionInRedisPrefix;
-  @Value("${account.user.session.expires.seconds}")
-  private Integer sessionInRedisExpiresSeconds;
+  @Value("${account.user.session.anonymous.initializr.salt}")
+  private String anonymousSessionSalt;
+  @Value("${account.user.session.anonymous.redis.key.prefix}")
+  private String anonymousSessionInRedisPrefix;
+  @Value("${account.user.session.anonymous.expires.seconds}")
+  private Integer anonymousSessionInRedisExpiresSeconds;
+  @Value("${account.user.session.named.redis.key.prefix}")
+  private String namedSessionInRedisPrefix;
+  @Value("${account.user.session.named.expires.seconds}")
+  private Integer namedSessionInRedisExpiresSeconds;
 
 
   @Autowired
@@ -45,7 +45,7 @@ public class SessionServiceImpl implements SessionService {
 
 
   @Override
-  public SessionCaptchaBO createCaptcha(String cookie) {
+  public CaptchaBO createCaptcha(String cookie) {
     return null;
   }
 
@@ -54,24 +54,25 @@ public class SessionServiceImpl implements SessionService {
     long currentTimeMillis = System.currentTimeMillis();
     String uuid = UUID.randomUUID().toString();
     String clearTextCookie = currentTimeMillis + ":" + uuid;
-    String encryptTextCookie = Cryptographer.encrypt(clearTextCookie, cookieSalt);
-    SessionTokenBO sessionTokenBO = new SessionTokenBO(0, null);
-    redisClient.setex(getCookieKeyInRedis(clearTextCookie), JSON.toJSONString(sessionTokenBO),
-        cookieInRedisExpiresSeconds);
+    String encryptTextCookie = Cryptographer.encrypt(clearTextCookie, anonymousSessionSalt);
+    AnonymousSessionBO anonymousSessionBO = new AnonymousSessionBO(0, null);
+    redisClient.setex(getCookieKeyInRedis(clearTextCookie), JSON.toJSONString(
+        anonymousSessionBO),
+        anonymousSessionInRedisExpiresSeconds);
     return encryptTextCookie;
   }
 
   @Override
-  public void createSession(String token, SessionBO sessionBO) {
-    String sessionKeyInRedis = getSessionKeyInRedis(sessionBO.getUid());
+  public void createSession(String token, NamedSessionBO namedSessionBO) {
+    String sessionKeyInRedis = getSessionKeyInRedis(namedSessionBO.getUid());
     redisClient
-        .setex(sessionKeyInRedis, JSON.toJSONString(sessionBO), sessionInRedisExpiresSeconds);
+        .setex(sessionKeyInRedis, JSON.toJSONString(namedSessionBO), namedSessionInRedisExpiresSeconds);
   }
 
   @Override
   public Integer deleteCookie(String cookie) {
     Assert.notNull(cookie, "sessionCookieBO.cookie should not be empty");
-    String clearTextCookie = Cryptographer.decrypt(cookie, cookieSalt);
+    String clearTextCookie = Cryptographer.decrypt(cookie, anonymousSessionSalt);
     return redisClient.del(getCookieKeyInRedis(clearTextCookie)).intValue();
   }
 
@@ -82,40 +83,40 @@ public class SessionServiceImpl implements SessionService {
   }
 
   @Override
-  public SessionTokenBO queryCookie(String cookie) {
+  public AnonymousSessionBO queryCookie(String cookie) {
     Assert.notNull(cookie, "cookie should not be empty");
-    String clearTextCookie = Cryptographer.decrypt(cookie, cookieSalt);
+    String clearTextCookie = Cryptographer.decrypt(cookie, anonymousSessionSalt);
     String sessionCookieJson = redisClient.get(getCookieKeyInRedis(clearTextCookie));
     if (StringUtils.isBlank(sessionCookieJson)) {
       return null;
     }
-    return JSON.parseObject(sessionCookieJson, SessionTokenBO.class);
+    return JSON.parseObject(sessionCookieJson, AnonymousSessionBO.class);
   }
 
   @Override
-  public SessionBO querySession(Long uid) {
+  public NamedSessionBO querySession(Long uid) {
     String key = getSessionKeyInRedis(uid);
     String session = redisClient.get(key);
-    return JSON.parseObject(session, SessionBO.class);
+    return JSON.parseObject(session, NamedSessionBO.class);
   }
 
   @Override
-  public void updateCookie(String cookie, SessionTokenBO sessionTokenBO) {
-    String clearTextCookie = Cryptographer.decrypt(cookie, cookieSalt);
-    redisClient.set(getCookieKeyInRedis(clearTextCookie), JSON.toJSONString(sessionTokenBO),
-        cookieInRedisExpiresSeconds);
+  public void updateCookie(String cookie, AnonymousSessionBO anonymousSessionBO) {
+    String clearTextCookie = Cryptographer.decrypt(cookie, anonymousSessionSalt);
+    redisClient.set(getCookieKeyInRedis(clearTextCookie), JSON.toJSONString(anonymousSessionBO),
+        anonymousSessionInRedisExpiresSeconds);
   }
 
   @Override
-  public Integer updateSession(SessionBO sessionBO) {
+  public Integer updateSession(NamedSessionBO namedSessionBO) {
     return null;
   }
 
   private String getSessionKeyInRedis(Long uid) {
-    return StringUtils.join(new String[]{sessionInRedisPrefix, uid.toString()}, ":");
+    return StringUtils.join(new String[]{namedSessionInRedisPrefix, uid.toString()}, ":");
   }
 
   private String getCookieKeyInRedis(String cookie) {
-    return StringUtils.join(new String[]{cookieInRedisPrefix, cookie}, ":");
+    return StringUtils.join(new String[]{anonymousSessionInRedisPrefix, cookie}, ":");
   }
 }
