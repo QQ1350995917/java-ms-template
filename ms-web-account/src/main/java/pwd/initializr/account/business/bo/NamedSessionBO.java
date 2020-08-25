@@ -1,4 +1,4 @@
-package pwd.initializr.account.business.common.bo;
+package pwd.initializr.account.business.bo;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

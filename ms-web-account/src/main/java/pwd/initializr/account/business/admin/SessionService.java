@@ -1,8 +1,8 @@
 package pwd.initializr.account.business.admin;
 
-import pwd.initializr.account.business.common.bo.AnonymousSessionBO;
-import pwd.initializr.account.business.common.bo.CaptchaBO;
-import pwd.initializr.account.business.common.bo.NamedSessionBO;
+import pwd.initializr.account.business.bo.AnonymousSessionBO;
+import pwd.initializr.account.business.bo.CaptchaBO;
+import pwd.initializr.account.business.bo.NamedSessionBO;
 
 /**
  * pwd.initializr.account.business.admin@ms-web-initializr
@@ -25,7 +25,7 @@ public interface SessionService {
    * date 2020-07-22 16:11
    *
    * @param token 预登录生成的 token
-   * @return pwd.initializr.account.business.common.bo.CaptchaBO
+   * @return pwd.initializr.account.business.bo.CaptchaBO
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
@@ -37,7 +37,7 @@ public interface SessionService {
    * <p>2：把 token 存入redis，并设置过期时间，设置该 token 登录次数为0</p>
    * date 2020-07-22 14:33
    *
-   * @return pwd.initializr.account.business.common.bo.AnonymousSessionBO
+   * @return pwd.initializr.account.business.bo.AnonymousSessionBO
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
@@ -88,7 +88,7 @@ public interface SessionService {
    * date 2020-07-22 23:42
    *
    * @param token token
-   * @return pwd.initializr.account.business.common.bo.AnonymousSessionBO
+   * @return pwd.initializr.account.business.bo.AnonymousSessionBO
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
@@ -100,7 +100,7 @@ public interface SessionService {
    * date 2020-07-22 16:33
    *
    * @param uid 管理员用户ID
-   * @return pwd.initializr.account.business.common.bo.NamedSessionBO
+   * @return pwd.initializr.account.business.bo.NamedSessionBO
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
@@ -111,7 +111,7 @@ public interface SessionService {
    * date 2020-07-23 23:08
    *
    * @param anonymousSessionBO token 对象
-   * @return pwd.initializr.account.business.common.bo.AnonymousSessionBO 更新后的 token 对象
+   * @return pwd.initializr.account.business.bo.AnonymousSessionBO 更新后的 token 对象
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */

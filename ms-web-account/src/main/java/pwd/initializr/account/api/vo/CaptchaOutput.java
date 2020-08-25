@@ -1,10 +1,10 @@
-package pwd.initializr.account.api.admin.vo;
+package pwd.initializr.account.api.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import pwd.initializr.account.business.common.bo.CaptchaBO;
+import pwd.initializr.account.business.bo.CaptchaBO;
 
 /**
  * pwd.initializr.account.api.admin.vo@ms-web-initializr

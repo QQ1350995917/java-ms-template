@@ -17,14 +17,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.account.api.admin.vo.LoginOutput;
 import pwd.initializr.account.api.admin.vo.UserAccountOutput;
+import pwd.initializr.account.api.vo.SessionInitOutput;
 import pwd.initializr.account.api.user.vo.SessionCaptchaOutput;
-import pwd.initializr.account.api.user.vo.SessionTokenOutput;
 import pwd.initializr.account.api.user.vo.SignUpByNamePwdInput;
 import pwd.initializr.account.api.user.vo.SignUpFailOutput;
 import pwd.initializr.account.api.user.vo.SignUpFailOutput.FailType;
-import pwd.initializr.account.business.common.bo.AnonymousSessionBO;
-import pwd.initializr.account.business.common.bo.CaptchaBO;
-import pwd.initializr.account.business.common.bo.NamedSessionBO;
+import pwd.initializr.account.business.bo.AnonymousSessionBO;
+import pwd.initializr.account.business.bo.CaptchaBO;
+import pwd.initializr.account.business.bo.NamedSessionBO;
 import pwd.initializr.account.business.user.SessionService;
 import pwd.initializr.account.business.user.UserAccountService;
 import pwd.initializr.account.business.user.UserUserServiceWrap;
@@ -125,7 +125,7 @@ public class AccountController extends UserController implements AccountApi {
     } else {
       anonymousSessionBO = sessionService.queryCookie(cookie);
       if (anonymousSessionBO == null) {
-        // cookie 比较旧，得更新
+        // token 比较旧，得更新
         outputException(401, new SignUpFailOutput(FailType.CookieISExpires));
         return;
       }
@@ -134,8 +134,8 @@ public class AccountController extends UserController implements AccountApi {
       captchaRequired = true;
     }
     // 生成新的cookie成，并设置是否需要图形验证码
-    SessionTokenOutput loginCookieOutput = new SessionTokenOutput();
-    loginCookieOutput.setCookie(cookie);
+    SessionInitOutput loginCookieOutput = new SessionInitOutput();
+    loginCookieOutput.setToken(cookie);
     loginCookieOutput.setExpires(anonymousSessionExpiresSeconds);
     loginCookieOutput.setCaptchaRequired(captchaRequired);
     // TODO 登录方式列表
@@ -194,7 +194,7 @@ public class AccountController extends UserController implements AccountApi {
     }
     AnonymousSessionBO anonymousSessionBO = sessionService.queryCookie(cookie);
     if (anonymousSessionBO == null) {
-      // cookie 过期
+      // token 过期
       outputException(401);
       return;
     }

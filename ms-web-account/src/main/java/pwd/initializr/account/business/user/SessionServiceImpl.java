@@ -7,9 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-import pwd.initializr.account.business.common.bo.AnonymousSessionBO;
-import pwd.initializr.account.business.common.bo.NamedSessionBO;
-import pwd.initializr.account.business.common.bo.CaptchaBO;
+import pwd.initializr.account.business.bo.AnonymousSessionBO;
+import pwd.initializr.account.business.bo.NamedSessionBO;
+import pwd.initializr.account.business.bo.CaptchaBO;
 import pwd.initializr.common.mw.redis.RedisClient;
 import pwd.initializr.common.utils.Cryptographer;
 
@@ -71,7 +71,7 @@ public class SessionServiceImpl implements SessionService {
 
   @Override
   public Integer deleteCookie(String cookie) {
-    Assert.notNull(cookie, "sessionCookieBO.cookie should not be empty");
+    Assert.notNull(cookie, "sessionCookieBO.token should not be empty");
     String clearTextCookie = Cryptographer.decrypt(cookie, anonymousSessionSalt);
     return redisClient.del(getCookieKeyInRedis(clearTextCookie)).intValue();
   }
@@ -84,7 +84,7 @@ public class SessionServiceImpl implements SessionService {
 
   @Override
   public AnonymousSessionBO queryCookie(String cookie) {
-    Assert.notNull(cookie, "cookie should not be empty");
+    Assert.notNull(cookie, "token should not be empty");
     String clearTextCookie = Cryptographer.decrypt(cookie, anonymousSessionSalt);
     String sessionCookieJson = redisClient.get(getCookieKeyInRedis(clearTextCookie));
     if (StringUtils.isBlank(sessionCookieJson)) {

@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-import pwd.initializr.account.business.common.bo.AnonymousSessionBO;
-import pwd.initializr.account.business.common.bo.CaptchaBO;
-import pwd.initializr.account.business.common.bo.NamedSessionBO;
+import pwd.initializr.account.business.bo.AnonymousSessionBO;
+import pwd.initializr.account.business.bo.CaptchaBO;
+import pwd.initializr.account.business.bo.NamedSessionBO;
 import pwd.initializr.common.mw.redis.RedisClient;
 import pwd.initializr.common.utils.Cryptographer;
 import pwd.initializr.common.vcode.CaptchaArithmeticCode;
@@ -100,7 +100,7 @@ public class SessionServiceImpl implements SessionService {
 
   @Override
   public Boolean deleteAnonymousToken(String token) {
-    Assert.notNull(token, "sessionCookieBO.cookie should not be empty");
+    Assert.notNull(token, "sessionCookieBO.token should not be empty");
     String clearTextCookie = Cryptographer.decrypt(token, anonymousSessionSalt);
     redisClient.del(getCookieKeyInRedis(clearTextCookie));
     return true;
@@ -114,7 +114,7 @@ public class SessionServiceImpl implements SessionService {
 
   @Override
   public AnonymousSessionBO queryAnonymousToken(String token) {
-    Assert.notNull(token, "cookie should not be empty");
+    Assert.notNull(token, "token should not be empty");
     String clearTextCookie = Cryptographer.decrypt(token, anonymousSessionSalt);
     String sessionCookieJson = redisClient.get(getCookieKeyInRedis(clearTextCookie));
     if (StringUtils.isBlank(sessionCookieJson)) {

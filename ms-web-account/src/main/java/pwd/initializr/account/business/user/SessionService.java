@@ -1,8 +1,8 @@
 package pwd.initializr.account.business.user;
 
-import pwd.initializr.account.business.common.bo.AnonymousSessionBO;
-import pwd.initializr.account.business.common.bo.CaptchaBO;
-import pwd.initializr.account.business.common.bo.NamedSessionBO;
+import pwd.initializr.account.business.bo.AnonymousSessionBO;
+import pwd.initializr.account.business.bo.CaptchaBO;
+import pwd.initializr.account.business.bo.NamedSessionBO;
 
 /**
  * pwd.initializr.account.business.user@ms-web-initializr
@@ -87,7 +87,7 @@ public interface SessionService {
    * <h2>cookie查询接口，用户尝试登录次数</h2>
    * date 2020-07-22 23:42
    *
-   * @param cookie cookie
+   * @param cookie token
    * @return pwd.initializr.account.business.user.bo.AnonymousSessionBO
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion

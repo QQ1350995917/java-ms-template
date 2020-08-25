@@ -1,4 +1,4 @@
-package pwd.initializr.account.api.user.vo;
+package pwd.initializr.account.api.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,12 +22,17 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class SessionTokenOutput {
+public class SessionInitOutput {
 
   /**
-   * cookie
+   * session 状态 0：匿名；1：具名
    */
-  private String cookie;
+  private Integer status = Status.ANONYMOUS.number;
+
+  /**
+   * token
+   */
+  private String token;
   /**
    * 过期时间（单位秒）
    */
@@ -37,4 +42,23 @@ public class SessionTokenOutput {
    * 过期时间（单位秒）
    */
   private Boolean captchaRequired;
+
+  @Getter
+  @ToString
+  public enum Status {
+      ANONYMOUS(0,"anonymous","Anonymous"),
+      NAMED(1,"named","named");
+
+      private int number;
+      private String enus;
+      private String zhcn;
+
+      Status(int number, String enus, String zhcn) {
+          this.number = number;
+          this.enus = enus;
+          this.zhcn = zhcn;
+      }
+  }
+
+
 }

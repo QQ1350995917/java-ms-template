@@ -12,20 +12,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pwd.initializr.account.api.admin.vo.CaptchaOutput;
+import pwd.initializr.account.api.vo.CaptchaOutput;
 import pwd.initializr.account.api.admin.vo.LoginFailOutput;
 import pwd.initializr.account.api.admin.vo.LoginFailOutput.FailType;
 import pwd.initializr.account.api.admin.vo.LoginInput;
 import pwd.initializr.account.api.admin.vo.LoginOutput;
-import pwd.initializr.account.api.admin.vo.SessionTokenOutput;
+import pwd.initializr.account.api.vo.SessionInitOutput;
+import pwd.initializr.account.api.vo.SessionInitOutput.Status;
 import pwd.initializr.account.business.admin.AdminAccountService;
 import pwd.initializr.account.business.admin.AdminUserService;
 import pwd.initializr.account.business.admin.SessionService;
 import pwd.initializr.account.business.admin.bo.AdminAccountBO;
 import pwd.initializr.account.business.admin.bo.AdminUserBO;
-import pwd.initializr.account.business.common.bo.AnonymousSessionBO;
-import pwd.initializr.account.business.common.bo.CaptchaBO;
-import pwd.initializr.account.business.common.bo.NamedSessionBO;
+import pwd.initializr.account.business.bo.AnonymousSessionBO;
+import pwd.initializr.account.business.bo.CaptchaBO;
+import pwd.initializr.account.business.bo.NamedSessionBO;
 import pwd.initializr.account.rpc.RPCToken;
 import pwd.initializr.common.web.api.admin.AdminController;
 
@@ -33,7 +34,7 @@ import pwd.initializr.common.web.api.admin.AdminController;
  * pwd.initializr.account.api.admin@ms-web-initializr
  *
  * <h1>控制层逻辑：管理员session生命周期接口</h1>
- * <p>fixme: 逻辑漏洞，无法拦截机器登录情况，执行方式为：刷新页面（生成新的token）-> 执行登录（新的token无需图形验证码）</p>
+ * <p>fixme: 逻辑漏洞，无法拦截机器登录情况，执行方式为：无 token 刷新页面（生成新的token）</p>
  * date 2019-10-25 20:18
  *
  * @author DingPengwei[dingpengwei@foxmail.com]
@@ -166,43 +167,50 @@ public class SessionController extends AdminController implements SessionApi {
   }
 
   @Override
-  public void loginInitializr(String aid, String uid, String token) {
-    String anonymousToken = getToken();
+  public void loginInitializr(Long aid, Long uid, String token) {
     Boolean captchaRequired = false;
     AnonymousSessionBO anonymousSessionBO = null;
-    if (StringUtils.isBlank(anonymousToken)) {
+    if (StringUtils.isNotBlank(token)) {
+      // 该请求携带 token，认为二次登陆，检验匿名token是否存在
+      anonymousSessionBO = sessionService.queryAnonymousToken(token);
+      if (anonymousSessionBO != null) {
+        // 匿名 token 存在，就延长其在redis的有效期，然后返回
+        sessionService.updateAnonymousSession(token,anonymousSessionBO);
+        sessionService.createCaptcha(token);
+      } else {
+        // 匿名 token 不存在，检验提交的 token 是否是具名token
+        NamedSessionBO namedSessionBO = sessionService.queryNamedSession(getUid());
+        if (namedSessionBO != null) {
+          // 当前提交的 token 是具名 token 表示该 token 已经登录，无需再次登录
+          SessionInitOutput loginCookieOutput = new SessionInitOutput();
+          loginCookieOutput.setStatus(Status.NAMED.getNumber());
+          outputData(loginCookieOutput);
+          return;
+        } else {
+          // 当前提交的 token 非有效的匿名 token 也非有效的具名 token ,当做提交的 token 为空处理
+        }
+      }
+    }
+
+    if (anonymousSessionBO == null) {
+      // 当前提交的 token 非有效的匿名 token 也非有效的具名 token ,当做提交的 token 为空处理
       // 该请求没有携带 token，认为初次登陆，生成匿名token
-      anonymousToken = sessionService.createAnonymousSession();
-      if (anonymousToken == null) {
+      token = sessionService.createAnonymousSession();
+      if (token == null) {
         // 生成匿名token失败
         outputException(500);
         return;
       }
       anonymousSessionBO = new AnonymousSessionBO(0, null);
-    } else {
-      // 该请求携带 token，认为二次登陆，检验匿名token是否存在
-      anonymousSessionBO = sessionService.queryAnonymousToken(anonymousToken);
-      if (anonymousSessionBO != null) {
-        // 匿名 token 存在，就延长其在redis的有效期，然后返回
-        // TODO
-       outputException(304);
-       return ;
-      }
-      // 验证匿名 token 是否是具名token
-      NamedSessionBO namedSessionBO = sessionService.queryNamedSession(getUid());
-      if (namedSessionBO != null) {
-        // 当前用户已经登录
-        // TODO
-        return;
-      }
     }
-    // todo anonymousSessionBO 存在空指针现象
+
+    // 是否对该匿名 token 产生验证码
     if (anonymousSessionBO.getTimes() >= anonymousSessionCaptchaThreshold) {
       captchaRequired = true;
     }
     // 生成新的 token 成，并设置是否需要图形验证码
-    SessionTokenOutput loginCookieOutput = new SessionTokenOutput();
-    loginCookieOutput.setCookie(anonymousToken);
+    SessionInitOutput loginCookieOutput = new SessionInitOutput();
+    loginCookieOutput.setToken(token);
     loginCookieOutput.setExpires(anonymousSessionExpiresSeconds);
     loginCookieOutput.setCaptchaRequired(captchaRequired);
     // TODO 登录方式列表

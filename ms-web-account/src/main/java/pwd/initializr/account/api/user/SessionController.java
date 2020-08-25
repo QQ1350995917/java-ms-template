@@ -13,13 +13,13 @@ import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.account.api.admin.vo.LoginFailOutput;
 import pwd.initializr.account.api.admin.vo.LoginFailOutput.FailType;
 import pwd.initializr.account.api.admin.vo.LoginOutput;
-import pwd.initializr.account.api.admin.vo.CaptchaOutput;
-import pwd.initializr.account.api.admin.vo.SessionTokenOutput;
+import pwd.initializr.account.api.vo.CaptchaOutput;
+import pwd.initializr.account.api.vo.SessionInitOutput;
 import pwd.initializr.account.api.user.vo.LoginInput;
 import pwd.initializr.account.business.admin.SessionService;
-import pwd.initializr.account.business.common.bo.AnonymousSessionBO;
-import pwd.initializr.account.business.common.bo.CaptchaBO;
-import pwd.initializr.account.business.common.bo.NamedSessionBO;
+import pwd.initializr.account.business.bo.AnonymousSessionBO;
+import pwd.initializr.account.business.bo.CaptchaBO;
+import pwd.initializr.account.business.bo.NamedSessionBO;
 import pwd.initializr.account.business.user.UserAccountService;
 import pwd.initializr.account.business.user.UserUserService;
 import pwd.initializr.account.business.user.bo.UserAccountBO;
@@ -185,8 +185,8 @@ public class SessionController extends UserController implements SessionApi {
       captchaRequired = true;
     }
     // 生成新的 token，并设置是否需要图形验证码
-    SessionTokenOutput loginCookieOutput = new SessionTokenOutput();
-    loginCookieOutput.setCookie(anonymousToken);
+    SessionInitOutput loginCookieOutput = new SessionInitOutput();
+    loginCookieOutput.setToken(anonymousToken);
     loginCookieOutput.setExpires(anonymousSessionExpiresSeconds);
     loginCookieOutput.setCaptchaRequired(captchaRequired);
     // TODO 登录方式列表
