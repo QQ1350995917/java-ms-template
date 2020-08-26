@@ -1,4 +1,4 @@
-package pwd.initializr.account.api.admin.vo;
+package pwd.initializr.account.api.vo;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -28,9 +28,13 @@ import lombok.ToString;
 @ApiModel(value = "loginOutput", description = "管理员登录响应参数")
 public class LoginOutput {
 
-  @ApiModelProperty(name = "uid", value = "登录ID", required = true, example = "0")
+  @ApiModelProperty(name = "uid", value = "用户ID", required = true, example = "0")
   @NotNull(message = "0")
   private Long uid;
+
+  @ApiModelProperty(name = "aid", value = "账号ID", required = true, example = "0")
+  @NotNull(message = "0")
+  private Long aid;
 
   @ApiModelProperty(name = "token", value = "登录令牌", required = true, example = "token")
   @NotNull(message = "0")

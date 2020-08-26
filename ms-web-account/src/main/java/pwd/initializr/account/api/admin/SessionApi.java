@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pwd.initializr.account.api.admin.vo.LoginInput;
+import pwd.initializr.account.api.vo.LoginInput;
 
 /**
  * pwd.initializr.account.api.admin@ms-web-initializr

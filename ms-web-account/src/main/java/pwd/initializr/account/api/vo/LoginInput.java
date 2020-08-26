@@ -1,4 +1,4 @@
-package pwd.initializr.account.api.admin.vo;
+package pwd.initializr.account.api.vo;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

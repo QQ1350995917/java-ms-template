@@ -1,4 +1,4 @@
-package pwd.initializr.account.api.admin.vo;
+package pwd.initializr.account.api.vo;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -23,17 +23,28 @@ import lombok.ToString;
 public class LoginFailOutput {
 
   /**
-   *
+   * 下次登录是否需要携带验证码
+   */
+  @ApiModelProperty(name = "captchaRequired", value = "下次登录是否需要携带验证码", required = false, example = "false")
+  @NotNull(message = "0")
+  private Boolean captchaRequired;
+  /**
+   * 错误类型
    */
   @ApiModelProperty(name = "type", value = "错误类型", required = true, example = "0")
   @NotNull(message = "0")
   private Integer type;
   /**
-   *
+   * 错误信息
    */
   @ApiModelProperty(name = "message", value = "错误信息", required = true, example = "token can not be empty")
   @NotNull(message = "0")
   private String message;
+
+  public LoginFailOutput(Boolean captchaRequired,FailType failType) {
+    this(failType);
+    this.captchaRequired = captchaRequired;
+  }
 
   public LoginFailOutput(FailType failType) {
     this.type = failType.type;

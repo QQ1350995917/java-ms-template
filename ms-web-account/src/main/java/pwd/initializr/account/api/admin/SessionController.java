@@ -13,10 +13,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.account.api.vo.CaptchaOutput;
-import pwd.initializr.account.api.admin.vo.LoginFailOutput;
-import pwd.initializr.account.api.admin.vo.LoginFailOutput.FailType;
-import pwd.initializr.account.api.admin.vo.LoginInput;
-import pwd.initializr.account.api.admin.vo.LoginOutput;
+import pwd.initializr.account.api.vo.LoginFailOutput;
+import pwd.initializr.account.api.vo.LoginFailOutput.FailType;
+import pwd.initializr.account.api.vo.LoginInput;
+import pwd.initializr.account.api.vo.LoginOutput;
 import pwd.initializr.account.api.vo.SessionInitOutput;
 import pwd.initializr.account.api.vo.SessionInitOutput.Status;
 import pwd.initializr.account.business.admin.AdminAccountService;
@@ -113,7 +113,8 @@ public class SessionController extends AdminController implements SessionApi {
       anonymousSessionBO.setTimes(anonymousSessionBO.getTimes() + 1);
       sessionService.updateAnonymousSession(anonymousToken, anonymousSessionBO);
       if (anonymousSessionBO.getTimes() >= anonymousSessionCaptchaThreshold) {
-        outputException(401, new LoginFailOutput(FailType.CaptchaISNull));
+        sessionService.createCaptcha(anonymousToken);
+        outputException(401, new LoginFailOutput(true,FailType.CaptchaISNull));
       } else {
         outputException(401, new LoginFailOutput(FailType.ParamsISError));
       }
@@ -133,7 +134,7 @@ public class SessionController extends AdminController implements SessionApi {
     String namedToken = RPCToken.generateToken(namedSessionBO, namedSessionSecret);
     sessionService.createNamedSession(namedToken, namedSessionBO);
     sessionService.deleteAnonymousToken(namedToken);
-    outputData(new LoginOutput(namedSessionBO.getUid(), namedToken));
+    outputData(new LoginOutput(namedSessionBO.getUid(),namedSessionBO.getAccountId(), namedToken));
   }
 
 

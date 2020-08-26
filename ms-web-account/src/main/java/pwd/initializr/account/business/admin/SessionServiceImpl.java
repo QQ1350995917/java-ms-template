@@ -95,7 +95,8 @@ public class SessionServiceImpl implements SessionService {
   public void createNamedSession(String token, NamedSessionBO namedSessionBO) {
     String sessionKeyInRedis = getSessionKeyInRedis(namedSessionBO.getUid());
     redisClient
-        .setex(sessionKeyInRedis, JSON.toJSONString(namedSessionBO), namedSessionInRedisExpiresSeconds);
+        .setex(sessionKeyInRedis, JSON.toJSONString(namedSessionBO),
+            namedSessionInRedisExpiresSeconds);
   }
 
   @Override
@@ -136,7 +137,8 @@ public class SessionServiceImpl implements SessionService {
   @Override
   public void updateAnonymousSession(String token, AnonymousSessionBO anonymousSessionBO) {
     String clearTextCookie = Cryptographer.decrypt(token, anonymousSessionSalt);
-    redisClient.set(getCookieKeyInRedis(clearTextCookie), JSON.toJSONString(anonymousSessionBO),
+    redisClient.del(getCookieKeyInRedis(clearTextCookie));
+    redisClient.setex(getCookieKeyInRedis(clearTextCookie), JSON.toJSONString(anonymousSessionBO),
         anonymousSessionInRedisExpiresSeconds);
   }
 

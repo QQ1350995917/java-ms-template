@@ -15,7 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pwd.initializr.account.api.admin.vo.LoginOutput;
+import pwd.initializr.account.api.vo.LoginOutput;
 import pwd.initializr.account.api.admin.vo.UserAccountOutput;
 import pwd.initializr.account.api.vo.SessionInitOutput;
 import pwd.initializr.account.api.user.vo.SessionCaptchaOutput;
@@ -104,7 +104,7 @@ public class AccountController extends UserController implements AccountApi {
         System.currentTimeMillis());
     String token = RPCToken.generateToken(namedSessionBO, namedSessionSecret);
     sessionService.createSession(token, namedSessionBO);
-    outputData(new LoginOutput(namedSessionBO.getUid(), token));
+    outputData(new LoginOutput(namedSessionBO.getUid(),namedSessionBO.getAccountId(), token));
   }
 
   @Override

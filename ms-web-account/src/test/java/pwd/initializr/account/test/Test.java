@@ -1,9 +1,9 @@
 package pwd.initializr.account.test;
 
-import static pwd.initializr.account.api.admin.vo.LoginFailOutput.FailType.CaptchaISError;
+import static pwd.initializr.account.api.vo.LoginFailOutput.FailType.CaptchaISError;
 
 import com.alibaba.fastjson.JSON;
-import pwd.initializr.account.api.admin.vo.LoginFailOutput;
+import pwd.initializr.account.api.vo.LoginFailOutput;
 
 /**
  * pwd.initializr.account.test@ms-web-initializr

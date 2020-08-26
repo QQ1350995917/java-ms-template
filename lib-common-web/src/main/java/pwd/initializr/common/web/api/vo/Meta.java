@@ -5,6 +5,8 @@ import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * pwd.initializr.common.web.api@ms-web-initializr
@@ -21,6 +23,8 @@ import javax.validation.constraints.NotNull;
  * @since DistributionVersion
  */
 @ApiModel
+@Getter
+@Setter
 public class Meta implements Serializable {
 
   @NotNull(message = "400")
@@ -61,19 +65,5 @@ public class Meta implements Serializable {
     return new Meta();
   }
 
-  public int getCode() {
-    return code;
-  }
 
-  public void setCode(int code) {
-    this.code = code;
-  }
-
-  public String getMessage() {
-    return message;
-  }
-
-  public void setMessage(String message) {
-    this.message = message;
-  }
 }
