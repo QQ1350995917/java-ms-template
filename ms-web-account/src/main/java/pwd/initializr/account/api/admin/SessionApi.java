@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pwd.initializr.account.api.vo.LoginInput;
+import pwd.initializr.account.api.vo.SessionCreateInput;
 
 /**
  * pwd.initializr.account.api.admin@ms-web-initializr
@@ -52,7 +52,7 @@ public interface SessionApi {
    */
   @ApiOperation(value = "登录")
   @PutMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  void loginByNameAndPwd(@RequestBody @Valid @NotNull(message = "参数不能为空") LoginInput input);
+  void loginByNameAndPwd(@RequestBody @Valid @NotNull(message = "参数不能为空") SessionCreateInput input);
 
   /**
    * <h2>用户登录验证码刷新</h2>

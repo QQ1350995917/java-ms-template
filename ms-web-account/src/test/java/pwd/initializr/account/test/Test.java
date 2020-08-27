@@ -1,9 +1,9 @@
 package pwd.initializr.account.test;
 
-import static pwd.initializr.account.api.vo.LoginFailOutput.FailType.CaptchaISError;
+import static pwd.initializr.account.api.vo.SessionCreateFailOutput.FailType.CaptchaISError;
 
 import com.alibaba.fastjson.JSON;
-import pwd.initializr.account.api.vo.LoginFailOutput;
+import pwd.initializr.account.api.vo.SessionCreateFailOutput;
 
 /**
  * pwd.initializr.account.test@ms-web-initializr
@@ -19,7 +19,7 @@ import pwd.initializr.account.api.vo.LoginFailOutput;
 public class Test {
 
   public static void main(String[] args) {
-    String jsonString = JSON.toJSONString(new LoginFailOutput(CaptchaISError));
+    String jsonString = JSON.toJSONString(new SessionCreateFailOutput(CaptchaISError));
     System.out.println(jsonString);
   }
 }

@@ -20,12 +20,12 @@ import lombok.ToString;
 @Getter
 @ToString
 @ApiModel(value = "loginFailOutput", description = "管理员登录失败响应参数")
-public class LoginFailOutput {
+public class SessionCreateFailOutput {
 
   /**
-   * 下次登录是否需要携带验证码
+   * 下次请求是否需要携带验证码
    */
-  @ApiModelProperty(name = "captchaRequired", value = "下次登录是否需要携带验证码", required = false, example = "false")
+  @ApiModelProperty(name = "captchaRequired", value = "下次请求是否需要携带验证码", required = false, example = "false")
   @NotNull(message = "0")
   private Boolean captchaRequired;
   /**
@@ -41,12 +41,12 @@ public class LoginFailOutput {
   @NotNull(message = "0")
   private String message;
 
-  public LoginFailOutput(Boolean captchaRequired,FailType failType) {
+  public SessionCreateFailOutput(Boolean captchaRequired,FailType failType) {
     this(failType);
     this.captchaRequired = captchaRequired;
   }
 
-  public LoginFailOutput(FailType failType) {
+  public SessionCreateFailOutput(FailType failType) {
     this.type = failType.type;
     this.message = failType.message;
   }

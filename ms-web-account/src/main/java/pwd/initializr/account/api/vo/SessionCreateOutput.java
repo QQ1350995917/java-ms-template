@@ -1,5 +1,6 @@
 package pwd.initializr.account.api.vo;
 
+import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,9 +10,9 @@ import lombok.ToString;
 /**
  * pwd.initializr.account.api.admin.vo@ms-web-initializr
  *
- * <h1>TODO what you want to do?</h1>
+ * <h1>VO数据模型：管理员登录成功响应参数</h1>
  *
- * date 2020-07-22 22:48
+ * date 2019-11-02 09:20
  *
  * @author DingPengwei[www.dingpengwei@foxmail.com]
  * @version 1.0.0
@@ -22,26 +23,14 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class SessionInitOutput {
+@ApiModel(value = "loginOutput", description = "管理员登录响应参数")
+public class SessionCreateOutput<T> {
 
   /**
    * session 状态 0：匿名；1：具名
    */
   private Integer status = SessionStatus.ANONYMOUS.getNumber();
 
-  /**
-   * token
-   */
-  private String token;
-  /**
-   * 过期时间（单位秒）
-   */
-  private Integer expires;
-
-  /**
-   * 过期时间（单位秒）
-   */
-  private Boolean captchaRequired;
-
+  private T session;
 
 }

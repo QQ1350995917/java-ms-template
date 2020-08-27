@@ -13,12 +13,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.account.api.vo.CaptchaOutput;
-import pwd.initializr.account.api.vo.LoginFailOutput;
-import pwd.initializr.account.api.vo.LoginFailOutput.FailType;
-import pwd.initializr.account.api.vo.LoginInput;
-import pwd.initializr.account.api.vo.LoginOutput;
+import pwd.initializr.account.api.vo.SessionCreateFailOutput;
+import pwd.initializr.account.api.vo.SessionCreateFailOutput.FailType;
+import pwd.initializr.account.api.vo.SessionCreateInput;
+import pwd.initializr.account.api.vo.SessionCreateOkOutput;
+import pwd.initializr.account.api.vo.SessionCreateOutput;
 import pwd.initializr.account.api.vo.SessionInitOutput;
-import pwd.initializr.account.api.vo.SessionInitOutput.Status;
+import pwd.initializr.account.api.vo.SessionStatus;
 import pwd.initializr.account.business.admin.AdminAccountService;
 import pwd.initializr.account.business.admin.AdminUserService;
 import pwd.initializr.account.business.admin.SessionService;
@@ -71,37 +72,37 @@ public class SessionController extends AdminController implements SessionApi {
   private AdminUserService adminUserService;
 
   @Override
-  public void loginByNameAndPwd(@Valid @NotNull(message = "参数不能为空") LoginInput input) {
+  public void loginByNameAndPwd(@Valid @NotNull(message = "参数不能为空") SessionCreateInput input) {
     log.info(JSON.toJSONString(input));
 
     String anonymousToken = getToken();
     if (StringUtils.isBlank(anonymousToken)) {
       // token 不能为空
-      outputException(401, new LoginFailOutput(FailType.TokenISNull));
+      outputException(401, new SessionCreateOutput<>(SessionStatus.ANONYMOUS.getNumber(),new SessionCreateFailOutput(FailType.TokenISNull)));
       return;
     }
     if (input == null || StringUtils.isBlank(input.getLoginName()) || StringUtils
         .isBlank(input.getLoginName())) {
       // 输入不能为空
-      outputException(401, new LoginFailOutput(FailType.ParamsISNull));
+      outputException(401, new SessionCreateOutput<>(SessionStatus.ANONYMOUS.getNumber(),new SessionCreateFailOutput(FailType.ParamsISNull)));
       return;
     }
     AnonymousSessionBO anonymousSessionBO = sessionService.queryAnonymousToken(anonymousToken);
     if (anonymousSessionBO == null) {
       // sessionCookie 过期
-      outputException(401, (Object) new LoginFailOutput(FailType.TokenISExpires));
+      outputException(401, new SessionCreateOutput<>(SessionStatus.ANONYMOUS.getNumber(),new SessionCreateFailOutput(FailType.TokenISExpires)));
       return;
     }
     if (anonymousSessionBO.getTimes() >= anonymousSessionCaptchaThreshold) {
       // 需要校验验证码
       if (StringUtils.isBlank(input.getCaptcha())) {
         // 识别输入的验证码为空
-        outputException(401, new LoginFailOutput(FailType.CaptchaISNull));
+        outputException(401, new SessionCreateOutput<>(SessionStatus.ANONYMOUS.getNumber(),new SessionCreateFailOutput(FailType.CaptchaISNull)));
         return;
       }
       if (!input.getCaptcha().equals(anonymousSessionBO.getCaptcha())) {
         // 验证码错误
-        outputException(401, new LoginFailOutput(FailType.CaptchaISError));
+        outputException(401, new SessionCreateOutput<>(SessionStatus.ANONYMOUS.getNumber(),new SessionCreateFailOutput(FailType.CaptchaISError)));
         return;
       }
     }
@@ -114,9 +115,9 @@ public class SessionController extends AdminController implements SessionApi {
       sessionService.updateAnonymousSession(anonymousToken, anonymousSessionBO);
       if (anonymousSessionBO.getTimes() >= anonymousSessionCaptchaThreshold) {
         sessionService.createCaptcha(anonymousToken);
-        outputException(401, new LoginFailOutput(true,FailType.CaptchaISNull));
+        outputException(401, new SessionCreateOutput<>(SessionStatus.ANONYMOUS.getNumber(),new SessionCreateFailOutput(true,FailType.CaptchaISNull)));
       } else {
-        outputException(401, new LoginFailOutput(FailType.ParamsISError));
+        outputException(401, new SessionCreateOutput<>(SessionStatus.ANONYMOUS.getNumber(),new SessionCreateFailOutput(FailType.ParamsISError)));
       }
       return;
     }
@@ -134,7 +135,7 @@ public class SessionController extends AdminController implements SessionApi {
     String namedToken = RPCToken.generateToken(namedSessionBO, namedSessionSecret);
     sessionService.createNamedSession(namedToken, namedSessionBO);
     sessionService.deleteAnonymousToken(namedToken);
-    outputData(new LoginOutput(namedSessionBO.getUid(),namedSessionBO.getAccountId(), namedToken));
+    outputData(new SessionCreateOutput<>(SessionStatus.NAMED.getNumber(),new SessionCreateOkOutput(namedSessionBO.getUid(),namedSessionBO.getAccountId(), namedToken)));
   }
 
 
@@ -183,7 +184,7 @@ public class SessionController extends AdminController implements SessionApi {
         if (namedSessionBO != null) {
           // 当前提交的 token 是具名 token 表示该 token 已经登录，无需再次登录
           SessionInitOutput loginCookieOutput = new SessionInitOutput();
-          loginCookieOutput.setStatus(Status.NAMED.getNumber());
+          loginCookieOutput.setStatus(SessionStatus.NAMED.getNumber());
           outputData(loginCookieOutput);
           return;
         } else {
@@ -211,7 +212,7 @@ public class SessionController extends AdminController implements SessionApi {
     }
     // 生成新的 token 成，并设置是否需要图形验证码
     SessionInitOutput loginInitOutput = new SessionInitOutput();
-    loginInitOutput.setStatus(Status.ANONYMOUS.getNumber());
+    loginInitOutput.setStatus(SessionStatus.ANONYMOUS.getNumber());
     loginInitOutput.setToken(token);
     loginInitOutput.setExpires(anonymousSessionExpiresSeconds);
     loginInitOutput.setCaptchaRequired(captchaRequired);

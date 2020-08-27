@@ -26,7 +26,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @ApiModel(value = "loginOutput", description = "管理员登录响应参数")
-public class LoginOutput {
+public class SessionCreateOkOutput {
 
   @ApiModelProperty(name = "uid", value = "用户ID", required = true, example = "0")
   @NotNull(message = "0")

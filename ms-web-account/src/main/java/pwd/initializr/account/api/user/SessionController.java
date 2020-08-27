@@ -10,9 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pwd.initializr.account.api.vo.LoginFailOutput;
-import pwd.initializr.account.api.vo.LoginFailOutput.FailType;
-import pwd.initializr.account.api.vo.LoginOutput;
+import pwd.initializr.account.api.vo.SessionCreateFailOutput;
+import pwd.initializr.account.api.vo.SessionCreateFailOutput.FailType;
+import pwd.initializr.account.api.vo.SessionCreateOkOutput;
 import pwd.initializr.account.api.vo.CaptchaOutput;
 import pwd.initializr.account.api.vo.SessionInitOutput;
 import pwd.initializr.account.api.user.vo.LoginInput;
@@ -70,31 +70,31 @@ public class SessionController extends UserController implements SessionApi {
     String anonymousToken = getToken();
     if (StringUtils.isBlank(anonymousToken)) {
       // token 不能为空
-      outputException(401, new LoginFailOutput(FailType.TokenISNull));
+      outputException(401, new SessionCreateFailOutput(FailType.TokenISNull));
       return;
     }
     if (input == null || StringUtils.isBlank(input.getLoginName()) || StringUtils
         .isBlank(input.getLoginName())) {
       // 输入不能为空
-      outputException(401, new LoginFailOutput(FailType.ParamsISNull));
+      outputException(401, new SessionCreateFailOutput(FailType.ParamsISNull));
       return;
     }
     AnonymousSessionBO anonymousSessionBO = sessionService.queryAnonymousToken(anonymousToken);
     if (anonymousSessionBO == null) {
       // sessionCookie 过期
-      outputException(401, (Object) new LoginFailOutput(FailType.TokenISExpires));
+      outputException(401, (Object) new SessionCreateFailOutput(FailType.TokenISExpires));
       return;
     }
     if (anonymousSessionBO.getTimes() >= anonymousSessionCaptchaThreshold) {
       // 需要校验验证码
       if (StringUtils.isBlank(input.getCaptcha())) {
         // 识别输入的验证码为空
-        outputException(401, new LoginFailOutput(FailType.CaptchaISNull));
+        outputException(401, new SessionCreateFailOutput(FailType.CaptchaISNull));
         return;
       }
       if (!input.getCaptcha().equals(anonymousSessionBO.getCaptcha())) {
         // 验证码错误
-        outputException(401, new LoginFailOutput(FailType.CaptchaISError));
+        outputException(401, new SessionCreateFailOutput(FailType.CaptchaISError));
         return;
       }
     }
@@ -106,9 +106,9 @@ public class SessionController extends UserController implements SessionApi {
       anonymousSessionBO.setTimes(anonymousSessionBO.getTimes() + 1);
       sessionService.updateAnonymousSession(anonymousToken, anonymousSessionBO);
       if (anonymousSessionBO.getTimes() >= anonymousSessionCaptchaThreshold) {
-        outputException(401, new LoginFailOutput(FailType.CaptchaISNull));
+        outputException(401, new SessionCreateFailOutput(FailType.CaptchaISNull));
       } else {
-        outputException(401, new LoginFailOutput(FailType.ParamsISError));
+        outputException(401, new SessionCreateFailOutput(FailType.ParamsISError));
       }
       return;
     }
@@ -126,7 +126,7 @@ public class SessionController extends UserController implements SessionApi {
     String token = RPCToken.generateToken(namedSessionBO, namedSessionSecret);
     sessionService.createNamedSession(token, namedSessionBO);
     sessionService.deleteAnonymousToken(anonymousToken);
-    outputData(new LoginOutput(namedSessionBO.getUid(),namedSessionBO.getAccountId(), token));
+    outputData(new SessionCreateOkOutput(namedSessionBO.getUid(),namedSessionBO.getAccountId(), token));
   }
 
 
@@ -177,7 +177,7 @@ public class SessionController extends UserController implements SessionApi {
       anonymousSessionBO = sessionService.queryAnonymousToken(anonymousToken);
       if (anonymousSessionBO == null) {
         // token 比较旧，得更新
-        outputException(401, new LoginFailOutput(FailType.TokenISExpires));
+        outputException(401, new SessionCreateFailOutput(FailType.TokenISExpires));
         return;
       }
     }

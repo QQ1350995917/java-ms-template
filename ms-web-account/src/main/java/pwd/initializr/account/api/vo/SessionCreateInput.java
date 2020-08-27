@@ -28,7 +28,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @ApiModel(value = "loginInput", description = "管理员登录请求参数")
-public class LoginInput implements Serializable {
+public class SessionCreateInput implements Serializable {
 
   @ApiModelProperty(name = "loginName", value = "登录名称", required = true, example = "pwd")
   @NotNull(message = "0")
