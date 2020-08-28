@@ -63,18 +63,9 @@ public class SessionServiceImpl implements SessionService {
     updateAnonymousSession(token, anonymousSessionBO);
     // 输出sessionCookie对象
     String presented = codeMessage.getPresented();
-    BufferedImage bufferedImage = captchaHelper.productImage(presented);
-    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-    try {
-      ImageIO.write(bufferedImage, "png", byteArrayOutputStream);
-    } catch (IOException e) {
-      // TODO 不应该吃掉异常
-      e.printStackTrace();
-    }
-    String encode = new BASE64Encoder().encode(byteArrayOutputStream.toByteArray())
-        .replaceAll("\r|\n", "");
+    String base64Image = captchaHelper.productBase64Image(presented);
     CaptchaBO captchaBO = new CaptchaBO();
-    captchaBO.setBase64(encode);
+    captchaBO.setBase64(base64Image);
     return captchaBO;
   }
 

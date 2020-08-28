@@ -115,7 +115,7 @@ public class SessionController extends AdminController implements SessionApi {
       sessionService.updateAnonymousSession(anonymousToken, anonymousSessionBO);
       if (anonymousSessionBO.getTimes() >= anonymousSessionCaptchaThreshold) {
         sessionService.createCaptcha(anonymousToken);
-        outputException(401, new SessionCreateOutput<>(SessionStatus.ANONYMOUS.getNumber(),new SessionCreateFailOutput(true,FailType.CaptchaISNull)));
+        outputException(401, new SessionCreateOutput<>(SessionStatus.ANONYMOUS.getNumber(),new SessionCreateFailOutput(true,FailType.ParamsISError)));
       } else {
         outputException(401, new SessionCreateOutput<>(SessionStatus.ANONYMOUS.getNumber(),new SessionCreateFailOutput(FailType.ParamsISError)));
       }
@@ -163,6 +163,7 @@ public class SessionController extends AdminController implements SessionApi {
       outputException(500);
       return;
     }
+    // TODO update captcha in redis
     CaptchaOutput sessionCaptchaOutput = new CaptchaOutput();
     BeanUtils.copyProperties(captchaBO, sessionCaptchaOutput);
     outputData(sessionCaptchaOutput);

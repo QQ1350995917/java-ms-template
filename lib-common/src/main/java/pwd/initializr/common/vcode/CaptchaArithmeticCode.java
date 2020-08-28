@@ -1,7 +1,11 @@
 package pwd.initializr.common.vcode;
 
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.Random;
+import javax.imageio.ImageIO;
+import sun.misc.BASE64Encoder;
 
 /**
  * pwd.initializr.common.vcode@ms-web-initializr
@@ -62,6 +66,12 @@ public class CaptchaArithmeticCode extends CaptchaHelper {
   public BufferedImage productImage(String codeMessage) {
     BufferedImage bufferedImage = draw(codeMessage);
     return bufferedImage;
+  }
+
+  public static void main(String[] args) {
+    CaptchaHelper captchaHelper = new CaptchaArithmeticCode();
+    String base64Image = captchaHelper.productBase64Image("1 + 1 = ?");
+    System.out.println(base64Image);
   }
 
 

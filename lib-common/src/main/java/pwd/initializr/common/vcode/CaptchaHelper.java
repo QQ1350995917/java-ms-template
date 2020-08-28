@@ -4,7 +4,11 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.Random;
+import javax.imageio.ImageIO;
+import sun.misc.BASE64Encoder;
 
 /**
  * pwd.initializr.common.vcode@ms-web-initializr
@@ -23,11 +27,11 @@ public abstract class CaptchaHelper {
     int height = 60;
     int fontSize = 50;
 
-    public CodeMessage productMessage(){
+    public CodeMessage productMessage() {
         return productMessage(null);
     }
 
-    protected CodeMessage productMessage(Integer length){
+    protected CodeMessage productMessage(Integer length) {
         if (length == null) {
             length = 6;
         }
@@ -49,7 +53,7 @@ public abstract class CaptchaHelper {
             char code = originCode.charAt(random.nextInt(originCode.length()));
             stringBuilder.append(code);
         }
-        return new CodeMessage(stringBuilder.toString(),stringBuilder.toString());
+        return new CodeMessage(stringBuilder.toString(), stringBuilder.toString());
     }
 
     protected abstract String getOriginCode();
@@ -57,6 +61,20 @@ public abstract class CaptchaHelper {
     public abstract BufferedImage productImage();
 
     public abstract BufferedImage productImage(String codeMessage);
+
+    public String productBase64Image(String codeMessage) {
+        BufferedImage bufferedImage = this.productImage(codeMessage);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        try {
+            ImageIO.write(bufferedImage, "png", byteArrayOutputStream);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        String encode = new BASE64Encoder().encode(byteArrayOutputStream.toByteArray())
+            .replaceAll("\r|\n", "");
+        return "data:image/png/;base64,"+ encode;
+    }
+
 
     protected BufferedImage draw(String codeMessage) {
         BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
@@ -80,7 +98,7 @@ public abstract class CaptchaHelper {
             20 + random.nextInt(110)));
         int red = 0, green = 0, blue = 0;
         for (int i = 0; i < codeMessage.length(); i++) {
-            String code = codeMessage.substring(i,i+1);
+            String code = codeMessage.substring(i, i + 1);
             red = random.nextInt(255);
             green = random.nextInt(255);
             blue = random.nextInt(255);
