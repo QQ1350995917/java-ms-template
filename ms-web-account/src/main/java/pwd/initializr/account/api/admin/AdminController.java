@@ -47,7 +47,7 @@ import pwd.initializr.common.web.persistence.entity.EntityAble;
  * @since DistributionVersion
  */
 @Api(
-    tags = "人员管理",
+    tags = "管理员管理",
     value = "adminManageApi",
     description = "[创建管理员/账号，人员/账号列表，人员/账号启/禁用，人员/账号删除]"
 )
@@ -110,6 +110,19 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
   }
 
   @Override
+  public void getUser(@Valid @NotNull(message = "参数不能为空") Long userId) {
+    AdminUserOutput adminUserOutput = new AdminUserOutput();
+    AdminUserBO adminUserBO = adminUserService.queryById(userId);
+    if (adminUserBO == null) {
+      outputException(401);
+      return;
+    }
+    BeanUtils.copyProperties(adminUserBO, adminUserOutput);
+    outputData(adminUserOutput);
+  }
+
+
+  @Override
   public void listAccount(@PathVariable("uid") Long userId) {
     AdminAccountBO queryCondition = new AdminAccountBO();
     List<AdminAccountBO> adminAccountBOS = adminAccountService.queryByUserId(userId);
@@ -134,7 +147,7 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
       });
       pageInput = JSON.parseObject(page, PageInput.class);
     } catch (Exception e) {
-      log.error("json to object",e);
+      log.error("json to object", e);
     }
     if (pageInput == null) {
       pageInput = new PageInput();
@@ -165,7 +178,7 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
     AdminAccountBO adminAccountBO = new AdminAccountBO();
     adminAccountBO.setId(id);
     adminAccountBO.setLoginPwd(input.getLoginPwd());
-    Integer update = adminAccountService.updateLoginPwd(id,0L,"","");
+    Integer update = adminAccountService.updateLoginPwd(id, 0L, "", "");
     outputData(new Meta(), update);
   }
 

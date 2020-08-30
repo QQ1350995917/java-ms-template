@@ -32,10 +32,10 @@ public class AdminAccountInput implements Serializable {
 
   @ApiModelProperty(name = "loginName", value = "登录名称", required = true, example = "caocao")
   @NotBlank(message = "登录账号不能为空")
-  @Length(min = 6, max = 24, message = "登录账号长度[6,24]位")
+  @Length(min = 4, max = 24, message = "登录账号长度[4,24]位")
   private String loginName;
   @ApiModelProperty(name = "loginPwd", value = "登录密码", required = true, example = "caocao")
   @NotBlank(message = "登录密码不能为空")
-  @Length(min = 6, max = 24, message = "登录密码长度[6,18]位")
+  @Length(min = 6, max = 18, message = "登录密码长度[6,18]位")
   private String loginPwd;
 }

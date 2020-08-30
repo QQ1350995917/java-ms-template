@@ -34,7 +34,7 @@ import pwd.initializr.account.api.admin.vo.CreateAdminInput;
  * @since DistributionVersion
  */
 @Api(
-    tags = "人员管理",
+    tags = "管理员管理",
     value = "adminManageApi",
     description = "[创建管理员/账号，人员/账号列表，人员/账号启/禁用，人员/账号删除]"
 )
@@ -72,6 +72,10 @@ public interface AdminApi {
   @ApiOperation(value = "启用用户，同时启用其下所有账户")
   @PatchMapping(value = {"/user/enable"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   void enableUser(@RequestBody @Valid @NotNull(message = "参数不能为空") List<Long> ids);
+
+  @ApiOperation(value = "用户查询，查询对应的管理员用户")
+  @GetMapping(value = {"/user/{uid}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  void getUser(@PathVariable("uid") @Valid @NotNull(message = "参数不能为空") Long userId);
 
   /**
    * <h2>根据普通用户ID查询该用户的账号信息</h2>

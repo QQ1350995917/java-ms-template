@@ -15,9 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import pwd.initializr.account.api.admin.vo.UserAccountInput;
-import pwd.initializr.account.api.admin.vo.UserUserInput;
-import pwd.initializr.common.web.api.vo.PageInput;
 
 /**
  * pwd.initializr.account.api.admin@ms-web-initializr

@@ -78,31 +78,31 @@ public class SessionController extends AdminController implements SessionApi {
     String anonymousToken = getToken();
     if (StringUtils.isBlank(anonymousToken)) {
       // token 不能为空
-      outputException(401, new SessionCreateOutput<>(SessionStatus.ANONYMOUS.getNumber(),new SessionCreateFailOutput(FailType.TokenISNull)));
+      outputException(407, new SessionCreateOutput<>(SessionStatus.ANONYMOUS.getNumber(),new SessionCreateFailOutput(FailType.TokenISNull)));
       return;
     }
     if (input == null || StringUtils.isBlank(input.getLoginName()) || StringUtils
         .isBlank(input.getLoginName())) {
       // 输入不能为空
-      outputException(401, new SessionCreateOutput<>(SessionStatus.ANONYMOUS.getNumber(),new SessionCreateFailOutput(FailType.ParamsISNull)));
+      outputException(407, new SessionCreateOutput<>(SessionStatus.ANONYMOUS.getNumber(),new SessionCreateFailOutput(FailType.ParamsISNull)));
       return;
     }
     AnonymousSessionBO anonymousSessionBO = sessionService.queryAnonymousToken(anonymousToken);
     if (anonymousSessionBO == null) {
-      // sessionCookie 过期
-      outputException(401, new SessionCreateOutput<>(SessionStatus.ANONYMOUS.getNumber(),new SessionCreateFailOutput(FailType.TokenISExpires)));
+      // anonymousToken 过期
+      outputException(408, new SessionCreateOutput<>(SessionStatus.ANONYMOUS.getNumber(),new SessionCreateFailOutput(FailType.TokenISExpires)));
       return;
     }
     if (anonymousSessionBO.getTimes() >= anonymousSessionCaptchaThreshold) {
       // 需要校验验证码
       if (StringUtils.isBlank(input.getCaptcha())) {
         // 识别输入的验证码为空
-        outputException(401, new SessionCreateOutput<>(SessionStatus.ANONYMOUS.getNumber(),new SessionCreateFailOutput(FailType.CaptchaISNull)));
+        outputException(407, new SessionCreateOutput<>(SessionStatus.ANONYMOUS.getNumber(),new SessionCreateFailOutput(FailType.CaptchaISNull)));
         return;
       }
       if (!input.getCaptcha().equals(anonymousSessionBO.getCaptcha())) {
         // 验证码错误
-        outputException(401, new SessionCreateOutput<>(SessionStatus.ANONYMOUS.getNumber(),new SessionCreateFailOutput(FailType.CaptchaISError)));
+        outputException(407, new SessionCreateOutput<>(SessionStatus.ANONYMOUS.getNumber(),new SessionCreateFailOutput(FailType.CaptchaISError)));
         return;
       }
     }
@@ -115,9 +115,9 @@ public class SessionController extends AdminController implements SessionApi {
       sessionService.updateAnonymousSession(anonymousToken, anonymousSessionBO);
       if (anonymousSessionBO.getTimes() >= anonymousSessionCaptchaThreshold) {
         sessionService.createCaptcha(anonymousToken);
-        outputException(401, new SessionCreateOutput<>(SessionStatus.ANONYMOUS.getNumber(),new SessionCreateFailOutput(true,FailType.ParamsISError)));
+        outputException(407, new SessionCreateOutput<>(SessionStatus.ANONYMOUS.getNumber(),new SessionCreateFailOutput(true,FailType.ParamsISError)));
       } else {
-        outputException(401, new SessionCreateOutput<>(SessionStatus.ANONYMOUS.getNumber(),new SessionCreateFailOutput(FailType.ParamsISError)));
+        outputException(407, new SessionCreateOutput<>(SessionStatus.ANONYMOUS.getNumber(),new SessionCreateFailOutput(FailType.ParamsISError)));
       }
       return;
     }
@@ -134,7 +134,7 @@ public class SessionController extends AdminController implements SessionApi {
         System.currentTimeMillis());
     String namedToken = RPCToken.generateToken(namedSessionBO, namedSessionSecret);
     sessionService.createNamedSession(namedToken, namedSessionBO);
-    sessionService.deleteAnonymousToken(namedToken);
+    sessionService.deleteAnonymousToken(anonymousToken);
     outputData(new SessionCreateOutput<>(SessionStatus.NAMED.getNumber(),new SessionCreateOkOutput(namedSessionBO.getUid(),namedSessionBO.getAccountId(), namedToken)));
   }
 
@@ -144,18 +144,18 @@ public class SessionController extends AdminController implements SessionApi {
     String token = getToken();
     if (StringUtils.isBlank(token)) {
       // 参数不合规
-      outputException(401);
+      outputException(417);
       return;
     }
     AnonymousSessionBO anonymousSessionBO = sessionService.queryAnonymousToken(token);
     if (anonymousSessionBO == null) {
       // token 过期
-      outputException(401);
+      outputException(417);
       return;
     }
     if (anonymousSessionBO.getTimes() < anonymousSessionCaptchaThreshold) {
       // 无需验证码
-      outputException(401);
+      outputException(417);
       return;
     }
     CaptchaBO captchaBO = sessionService.createCaptcha(token);
@@ -163,7 +163,7 @@ public class SessionController extends AdminController implements SessionApi {
       outputException(500);
       return;
     }
-    // TODO update captcha in redis
+
     CaptchaOutput sessionCaptchaOutput = new CaptchaOutput();
     BeanUtils.copyProperties(captchaBO, sessionCaptchaOutput);
     outputData(sessionCaptchaOutput);

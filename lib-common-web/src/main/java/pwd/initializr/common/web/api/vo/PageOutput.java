@@ -34,7 +34,7 @@ public class PageOutput<T> extends PageInput {
   @ApiModelProperty(value = "总页码量")
   private Long pages;
   @ApiModelProperty(value = "总数据量")
-  private Long total;
+  private Long total = 0L;
 
   public Long getPages() {
     if (getSize() != null && getSize() > 0) {
