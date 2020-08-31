@@ -52,7 +52,7 @@ CREATE TABLE `admin_config` (
   `update_time` datetime NOT NULL COMMENT '最近更新时间',
   `version` bigint(11) NOT NULL DEFAULT '0' COMMENT '数据版本号',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `key_UNIQUE` (`key`)
+  UNIQUE KEY `key_UNIQUE` (`key`),
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -90,7 +90,8 @@ CREATE TABLE `admin_user` (
   `update_time` datetime NOT NULL COMMENT '最近更新时间',
   `version` bigint(11) NOT NULL DEFAULT '0' COMMENT '数据版本号',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `pin_UNIQUE` (`pin`)
+  UNIQUE KEY `pin_UNIQUE` (`pin`),
+  UNIQUE KEY `emp_no_UNIQUE` (`emp_no`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- ----------------------------
@@ -166,7 +167,8 @@ CREATE TABLE `user_user` (
   `update_time` datetime NOT NULL COMMENT '最近更新时间',
   `version` bigint(11) NOT NULL DEFAULT '0' COMMENT '数据版本号',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `pin_UNIQUE` (`pin`)
+  UNIQUE KEY `pin_UNIQUE` (`pin`),
+  UNIQUE KEY `emp_no_UNIQUE` (`emp_no`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 SET FOREIGN_KEY_CHECKS = 1;

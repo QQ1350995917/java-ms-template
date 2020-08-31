@@ -1,7 +1,7 @@
 package pwd.initializr.account.api.admin.vo;
 
 import io.swagger.annotations.ApiModel;
-import javax.xml.crypto.Data;
+import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,6 +29,6 @@ public class AdminUserOutput extends AdminUserInput {
 
   private Long id;
   private Integer able;
-  private Data createTime;
-  private Data updateTime;
+  private Date createTime;
+  private Date updateTime;
 }
