@@ -94,8 +94,8 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
 
   @Override
   public void disableUser(@Valid @NotNull(message = "参数不能为空") List<Long> ids) {
-    Integer able = adminUserServiceWrap.ableByUserId(ids, EntityAble.DISABLE);
-    outputData(able);
+    Integer able = adminUserService.ableById(ids, EntityAble.DISABLE);
+    outputData(200,able);
   }
 
   @Override
@@ -105,8 +105,8 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
 
   @Override
   public void enableUser(@Valid @NotNull(message = "参数不能为空") List<Long> ids) {
-    Integer able = adminUserServiceWrap.ableByUserId(ids, EntityAble.ENABLE);
-    outputData(able);
+    Integer able = adminUserService.ableById(ids, EntityAble.ENABLE);
+    outputData(200,able);
   }
 
   @Override
