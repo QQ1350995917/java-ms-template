@@ -89,7 +89,7 @@
 
   <!--通过用户外键删除-->
   <update id="deleteByUserIds">
-    update initializr_account.admin_account set del = 1, update_time = now() where uid where id in
+    update initializr_account.admin_account set del = 1, update_time = now() where uid in
     <foreach close=")" collection="userIds" index="index" item="userId" open="(" separator=",">
       #{userId}
     </foreach>

@@ -32,11 +32,12 @@ public interface AdminUserDao {
    * date 2020-07-27 00:01
    *
    * @param ids 主键集合
+   * @param able 启用/禁用
    * @return java.lang.Integer
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  Integer ableByIds(List<Long> ids, int able);
+  Integer ableByIds(@Param("ids") List<Long> ids, @Param("able") int able);
 
   /**
    * 通过实体作为筛选条件统计数量
@@ -63,7 +64,7 @@ public interface AdminUserDao {
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  Integer deleteByIds(List<Long> ids);
+  Integer deleteByIds(@Param("ids") List<Long> ids);
 
   /**
    * 新增数据

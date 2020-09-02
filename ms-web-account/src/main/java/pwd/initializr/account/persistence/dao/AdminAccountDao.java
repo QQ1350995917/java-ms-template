@@ -101,7 +101,7 @@ public interface AdminAccountDao {
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  int deleteByUserIds(List<Long> userIds);
+  int deleteByUserIds(@Param("userIds") List<Long> userIds);
 
   /**
    * 新增数据

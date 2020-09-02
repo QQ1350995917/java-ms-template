@@ -32,7 +32,7 @@ public class ScopeInput implements Serializable {
   private String fieldName;
   @ApiModelProperty(name = "fieldValue", value = "指定查询目标", required = false, example = "fieldValue")
   private String fieldValue;
-  @ApiModelProperty(name = "hit", value = "指定查询方式[E:精确,AL:前后模糊,LL:左模糊,RL:右模糊,S:范围]", required = false, example = "RL")
+  @ApiModelProperty(name = "hit", value = "指定查询方式[EM:精确,ENM:精确非,AL:前后模糊,LL:左模糊,RL:右模糊,S:范围]", required = false, example = "RL")
   private String hit = "RL";
   @ApiModelProperty(name = "start", value = "范围查询起始值，区间包含", required = false, example = "0")
   private String start;
