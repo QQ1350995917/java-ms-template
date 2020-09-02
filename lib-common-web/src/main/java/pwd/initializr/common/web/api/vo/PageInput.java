@@ -36,7 +36,7 @@ public class PageInput implements Serializable {
   private Long index = 0L;
   @ApiModelProperty(name = "size", value = "当前页面容量", required = false, example = "12")
   @Min(value = 1)
-  @Max(value = 100)
+  @Max(value = 500)
   private Long size = 12L;
 
 

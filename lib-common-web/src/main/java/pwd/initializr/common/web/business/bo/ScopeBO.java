@@ -1,5 +1,6 @@
 package pwd.initializr.common.web.business.bo;
 
+import pwd.initializr.common.web.api.vo.ScopeInput;
 import pwd.initializr.common.web.persistence.entity.ScopeEntity;
 
 /**
@@ -15,4 +16,28 @@ import pwd.initializr.common.web.persistence.entity.ScopeEntity;
  */
 public class ScopeBO extends ScopeEntity {
 
+    @Override
+    public int hashCode() {
+        return this.getFieldName().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (!(obj instanceof ScopeInput)) {
+            return false;
+        }
+
+        ScopeInput scopeInput = (ScopeInput) obj;
+        if (scopeInput.getFieldName() == null) {
+            return false;
+        }
+        if (!scopeInput.getFieldName().equals(this.getFieldName())) {
+            return false;
+        }
+
+        return true;
+    }
 }

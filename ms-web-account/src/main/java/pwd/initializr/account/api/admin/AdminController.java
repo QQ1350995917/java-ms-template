@@ -77,23 +77,25 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
   @Override
   public void delAccount(
       @Valid @NotNull(message = "参数不能为空") @Size(message = "参数不能为空") List<Long> ids) {
-
+    // TODO 同时移除 session
   }
 
   @Override
   public void delUser(
       @Valid @NotNull(message = "参数不能为空") @Size(message = "参数不能为空") List<Long> ids) {
+    // TODO 同时移除 session
     Integer del = adminUserServiceWrap.deleteByUserId(ids);
     outputData(del);
   }
 
   @Override
   public void disableAccount(@Valid @NotNull(message = "参数不能为空") List<Long> ids) {
-
+    // TODO 同时移除 session
   }
 
   @Override
   public void disableUser(@Valid @NotNull(message = "参数不能为空") List<Long> ids) {
+    // TODO 同时移除 session
     Integer able = adminUserService.ableById(ids, EntityAble.DISABLE);
     outputData(200,able);
   }
@@ -147,16 +149,32 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
       });
       pageInput = JSON.parseObject(page, PageInput.class);
     } catch (Exception e) {
-      log.error("json to object", e);
+      outputException(401,e.getMessage());
+      return;
     }
     if (pageInput == null) {
       pageInput = new PageInput();
     }
+    if (scopeInputs == null) {
+      scopeInputs = new LinkedHashSet<>();
+    }
+    if (sortInputs == null) {
+      sortInputs = new LinkedHashSet<>();
+    }
 
-    // TODO 查询条件参数没有应用
     LinkedHashSet<ScopeBO> scopeBOS = new LinkedHashSet<>();
+    for (ScopeInput scopeInput : scopeInputs) {
+      ScopeBO scopeBO = new ScopeBO();
+      BeanUtils.copyProperties(scopeInput,scopeBO);
+      scopeBOS.add(scopeBO);
+    }
 
     LinkedHashSet<SortBO> sortBOS = new LinkedHashSet<>();
+    for (SortInput sortInput : sortInputs) {
+      SortBO sortBO = new SortBO();
+      BeanUtils.copyProperties(sortInput,sortBO);
+      sortBOS.add(sortBO);
+    }
 
     PageableQueryResult<AdminUserBO> adminUserBOPageableQueryResult = adminUserService
         .queryAllByCondition(scopeBOS, sortBOS, pageInput.getIndex(), pageInput.getSize());

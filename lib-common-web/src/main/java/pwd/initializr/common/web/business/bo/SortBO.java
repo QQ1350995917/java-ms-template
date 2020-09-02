@@ -1,5 +1,7 @@
 package pwd.initializr.common.web.business.bo;
 
+import org.apache.commons.lang.StringUtils;
+import pwd.initializr.common.web.api.vo.SortInput;
 import pwd.initializr.common.web.persistence.entity.SortEntity;
 
 /**
@@ -14,5 +16,30 @@ import pwd.initializr.common.web.persistence.entity.SortEntity;
  * @since DistributionVersion
  */
 public class SortBO extends SortEntity {
+
+    @Override
+    public int hashCode() {
+        return this.getFieldName().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (!(obj instanceof SortInput)) {
+            return false;
+        }
+
+        SortInput sortInput = (SortInput) obj;
+        if (sortInput.getFieldName() == null) {
+            return false;
+        }
+        if (!sortInput.getSort().equals(this.getFieldName())) {
+            return false;
+        }
+
+        return true;
+    }
 
 }

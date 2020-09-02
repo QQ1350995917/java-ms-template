@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * pwd.initializr.common.web.persistence.entity@ms-web-initializr
@@ -30,4 +31,13 @@ public class SortEntity implements Serializable {
      * @see EntitySort
      */
     private String sort;
+
+    public String getFieldName() {
+        return StringUtils.isBlank(fieldName) ? "id" : fieldName;
+    }
+
+    public String getSort() {
+        return StringUtils.isBlank(sort) ? "desc" : sort;
+    }
+
 }
