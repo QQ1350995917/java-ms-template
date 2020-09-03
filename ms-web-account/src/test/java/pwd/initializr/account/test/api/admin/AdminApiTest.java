@@ -3,6 +3,7 @@ package pwd.initializr.account.test.api.admin;
 import com.alibaba.fastjson.JSON;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
@@ -71,6 +72,7 @@ public class AdminApiTest {
     String file = "E:\\workspace\\github\\ms-web-initializr\\ms-web-account\\src\\test\\java\\pwd\\initializr\\account\\test\\test\\list.txt";
     try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
       String line;
+      LinkedHashMap<String,Integer> linkedHashMap = new LinkedHashMap();
       while ((line = bufferedReader.readLine()) != null) {
         if (line.trim().equals("魏") || line.trim().equals("蜀") || line.trim().equals("吴")) {
           continue;
@@ -78,7 +80,15 @@ public class AdminApiTest {
         String[] s = line.split(" ");
         String userName = s[0];
         String accountName = getAccountName(userName);
-        String accountPwd = accountName+"@123";
+        if (linkedHashMap.containsKey(accountName)){
+            Integer integer = linkedHashMap.get(accountName);
+            integer = integer + 1;
+            linkedHashMap.put(accountName,integer);
+            accountName = accountName + integer;
+        } else {
+            linkedHashMap.put(accountName,0);
+        }
+        String accountPwd = "123456";
         StringBuilder summaryBuilder = new StringBuilder();
         for (int i = 4; i < s.length; i++) {
           summaryBuilder.append(s[i] + " ");

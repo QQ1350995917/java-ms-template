@@ -2,6 +2,7 @@ package pwd.initializr.account.test.test;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.util.LinkedHashMap;
 import net.sourceforge.pinyin4j.PinyinHelper;
 import net.sourceforge.pinyin4j.format.HanyuPinyinCaseType;
 import net.sourceforge.pinyin4j.format.HanyuPinyinOutputFormat;
@@ -34,6 +35,7 @@ public class InitSQLTest {
         String file = "E:\\workspace\\github\\ms-web-initializr\\ms-web-account\\src\\test\\java\\pwd\\initializr\\account\\test\\test\\list.txt";
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
             String line;
+            LinkedHashMap linkedHashMap = new LinkedHashMap();
             while ((line = bufferedReader.readLine()) != null) {
                 if (line.trim().equals("魏") || line.trim().equals("蜀") || line.trim().equals("吴")) {
                     continue;
