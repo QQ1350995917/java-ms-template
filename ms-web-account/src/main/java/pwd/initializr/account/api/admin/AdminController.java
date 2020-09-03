@@ -84,13 +84,14 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
   public void delUser(
       @Valid @NotNull(message = "参数不能为空") @Size(message = "参数不能为空") List<Long> ids) {
     // TODO 同时移除 session
-    Integer del = adminUserServiceWrap.deleteByUserId(ids);
+    Integer del = adminUserService.deleteById(ids);
     outputData(del);
   }
 
   @Override
   public void disableAccount(@Valid @NotNull(message = "参数不能为空") List<Long> ids) {
     // TODO 同时移除 session
+
   }
 
   @Override

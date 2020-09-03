@@ -7,6 +7,7 @@ import java.util.List;
 import javax.annotation.Resource;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pwd.initializr.account.business.admin.bo.AdminUserBO;
 import pwd.initializr.account.persistence.dao.AdminUserDao;
 import pwd.initializr.account.persistence.entity.AdminUserEntity;
@@ -45,7 +46,9 @@ public class AdminUserServiceImpl implements AdminUserService {
   }
 
   @Override
+  @Transactional(rollbackFor = Exception.class)
   public Integer deleteById(List<Long> ids) {
+    this.ableById(ids,EntityAble.DISABLE);
     return this.adminUserDao.deleteByIds(ids);
   }
 
