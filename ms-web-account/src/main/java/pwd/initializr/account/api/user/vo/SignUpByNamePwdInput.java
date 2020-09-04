@@ -31,11 +31,11 @@ public class SignUpByNamePwdInput {
 
   @ApiModelProperty(name = "loginName", value = "账号", required = true, example = "18511694468")
   @NotBlank(message = "账号不能为空")
-  @Size(min = 6, max = 18, message = "账号长度必须在[6,18]之间")
+  @Size(min = 4, max = 18, message = "账号长度必须在[4,18]之间")
   private String loginName;
   @ApiModelProperty(name = "loginPwd", value = "密码", required = true, example = "pwd")
   @NotBlank(message = "密码不能为空")
-  @Size(min = 8, max = 24, message = "密码长度必须在[6,24]之间")
+  @Size(min = 6, max = 18, message = "密码长度必须在[6,18]之间")
   private String loginPwd;
   @ApiModelProperty(name = "captcha", value = "图形验证码", required = true, example = "turing")
   @NotBlank(message = "验证码不能为空")

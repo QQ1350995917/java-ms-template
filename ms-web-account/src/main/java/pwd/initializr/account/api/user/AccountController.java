@@ -90,17 +90,19 @@ public class AccountController extends UserController implements AccountApi {
 
     UserUserBO userUserBO = new UserUserBO();
     UserAccountBO userAccountBO = new UserAccountBO();
+    userAccountBO.setLoginName(input.getLoginName());
+    userAccountBO.setLoginPwd(input.getLoginPwd());
     userAccountBO.setType(AccountType.ByNamePwd.getType());
-    UserUserBO insertedUserUserBO = userUserServiceWrap.insert(userUserBO, userAccountBO);
-    if (insertedUserUserBO == null) {
+    UserAccountBO insertedUserAccountBO = userUserServiceWrap.insert(userUserBO, userAccountBO);
+    if (insertedUserAccountBO == null) {
       // 账号创建失败
       outputException(500);
       return;
     }
 
     // 账号创建完成后自动登录
-    NamedSessionBO namedSessionBO = new NamedSessionBO(userUserBO.getId(), userUserBO.getName(),
-        userAccountBO.getId(), userAccountBO.getLoginName(),
+    NamedSessionBO namedSessionBO = new NamedSessionBO(insertedUserAccountBO.getUid(), userUserBO.getName(),
+        insertedUserAccountBO.getId(), userAccountBO.getLoginName(),
         System.currentTimeMillis());
     String token = RPCToken.generateToken(namedSessionBO, namedSessionSecret);
     sessionService.createSession(token, namedSessionBO);
@@ -145,7 +147,6 @@ public class AccountController extends UserController implements AccountApi {
   @Override
   public void deleteById(
       @Valid @NotNull(message = "参数不能为空") @Min(value = 1, message = "参数不能小于1") Long id) {
-    // TODO 检查是否是自己的账号
     Integer result = userAccountService.deleteById(id,getUid());
     outputData(new Meta(), result);
   }
@@ -153,7 +154,6 @@ public class AccountController extends UserController implements AccountApi {
   @Override
   public void disableById(
       @Valid @NotNull(message = "参数不能为空") @Min(value = 1, message = "参数不能小于1") Long id) {
-    // TODO 检查是否是自己的账号
     Integer result = userAccountService.ableById(Arrays.asList(id), EntityAble.DISABLE);
     outputData(new Meta(), result);
   }
@@ -161,7 +161,6 @@ public class AccountController extends UserController implements AccountApi {
   @Override
   public void enableById(
       @Valid @NotNull(message = "参数不能为空") @Min(value = 1, message = "参数不能小于1") Long id) {
-    // TODO 检查是否是自己的账号
     Integer result = userAccountService.ableById(Arrays.asList(id), EntityAble.ENABLE);
     outputData(new Meta(), result);
   }
@@ -215,7 +214,7 @@ public class AccountController extends UserController implements AccountApi {
 
   @Override
   public void usabilityCheck(
-      @Valid @NotBlank(message = "参数不能为空") @Size(min = 6, max = 18, message = "账号长度必须在[6,18]之间") String loginName) {
+      @Valid @NotBlank(message = "参数不能为空") @Size(min = 4, max = 18, message = "账号长度必须在[4,18]之间") String loginName) {
     if (userAccountService.existLoginName(loginName)) {
       // 账号已被占用
       outputException(401);

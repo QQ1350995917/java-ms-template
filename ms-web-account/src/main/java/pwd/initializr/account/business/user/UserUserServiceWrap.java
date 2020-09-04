@@ -72,5 +72,5 @@ public interface UserUserServiceWrap {
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  UserUserBO insert(UserUserBO userUserBO, UserAccountBO userAccountBO);
+  UserAccountBO insert(UserUserBO userUserBO, UserAccountBO userAccountBO);
 }

@@ -64,10 +64,10 @@ public class UserUserServiceWrapImpl implements UserUserServiceWrap {
 
   @Override
   @Transactional(rollbackFor = Exception.class)
-  public UserUserBO insert(UserUserBO userUserBO, UserAccountBO userAccountBO) {
-    UserUserBO result = userUserService.insert(userUserBO);
-    userAccountBO.setUid(result.getId());
-    userAccountService.insert(userAccountBO);
-    return result;
+  public UserAccountBO insert(UserUserBO userUserBO, UserAccountBO userAccountBO) {
+    UserUserBO userUserBOResult = userUserService.insert(userUserBO);
+    userAccountBO.setUid(userUserBOResult.getId());
+    UserAccountBO insert = userAccountService.insert(userAccountBO);
+    return insert;
   }
 }

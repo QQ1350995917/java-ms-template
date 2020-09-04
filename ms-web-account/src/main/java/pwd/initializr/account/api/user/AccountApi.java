@@ -142,6 +142,6 @@ public interface AccountApi {
    * @since DistributionVersion
    */
   void usabilityCheck(
-      @PathVariable(name = "loginName", required = false) @Valid @NotBlank(message = "参数不能为空") @Size(min = 6, max = 18, message = "账号长度必须在[6,18]之间") String loginName);
+      @PathVariable(name = "loginName", required = false) @Valid @NotBlank(message = "参数不能为空") @Size(min = 4, max = 18, message = "账号长度必须在[4,18]之间") String loginName);
 
 }

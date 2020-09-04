@@ -56,7 +56,7 @@ public class UserAccountServiceImpl implements UserAccountService {
 
   @Override
   public Boolean existLoginName(String loginName) {
-    return userAccountDao.existLoginName(loginName) == null;
+    return userAccountDao.existLoginName(loginName) != null;
   }
 
   @Override
@@ -65,7 +65,7 @@ public class UserAccountServiceImpl implements UserAccountService {
     BeanUtils.copyProperties(userAccountBO, userAccountEntity);
     userAccountEntity.setPwdTime(new Date());
     userAccountEntity.setAble(EntityAble.ENABLE.getNumber());
-    userAccountEntity.setDel(EntityDel.YES.getNumber());
+    userAccountEntity.setDel(EntityDel.NO.getNumber());
     userAccountEntity.setCreateTime(new Date());
     userAccountEntity.setUpdateTime(new Date());
     userAccountDao.insert(userAccountEntity);
