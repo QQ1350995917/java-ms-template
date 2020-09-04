@@ -88,7 +88,9 @@ public interface UserAccountDao {
    * @param ids 主键
    * @return 影响行数
    */
-  int deleteByIds(List<Long> ids);
+  int deleteByIds(@Param("ids") List<Long> ids);
+
+  int deleteByUserIds(@Param("uids") List<Long> uids);
 
   /**
    * 检查账户名是否存在

@@ -1,5 +1,6 @@
 package pwd.initializr.common.web.api.vo;
 
+import com.alibaba.fastjson.JSON;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
@@ -11,6 +12,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.StringUtils;
 
 /**
  * pwd.initializr.common.web.api.vo@ms-web-initializr
@@ -29,6 +32,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
+@Slf4j
 public class PageInput implements Serializable {
 
   @ApiModelProperty(name = "index", value = "当前页码", required = false, example = "0")
@@ -39,6 +43,19 @@ public class PageInput implements Serializable {
   @Max(value = 500)
   private Long size = 12L;
 
+  public static PageInput parse(String pageJson) {
+    if (StringUtils.isEmpty(pageJson)) {
+      return new PageInput();
+    }
+
+    try {
+      PageInput pageInput = JSON.parseObject(pageJson, PageInput.class);
+      return pageInput;
+    } catch (Exception e) {
+      log.error("格式化" + pageJson + "JSON" + "发生异常",e);
+      return new PageInput();
+    }
+  }
 
 
 }

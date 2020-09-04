@@ -59,41 +59,33 @@ public class UserController extends AdminController implements UserApi {
   private UserUserServiceWrap userUserServiceWrap;
 
   @Override
-  public void delAccount(@Valid @NotNull(message = "参数不能为空") List<Long> ids) {
-    // TODO 检查是否是最后一个账户
-    Integer integer = userAccountService.deleteById(ids);
-    outputData(new Meta(), integer);
-  }
-
-  @Override
   public void delUser(@Valid @NotNull(message = "参数不能为空") List<Long> ids) {
-    Boolean result = userUserServiceWrap.deleteByUserId(ids);
-    outputData(result);
-  }
-
-  @Override
-  public void disableAccount(@Valid @NotNull(message = "参数不能为空") List<Long> ids) {
-    // TODO 检查是否是最后一个账户
-    Integer integer = userAccountService.ableById(ids, EntityAble.DISABLE);
-    outputData(new Meta(), integer);
+    Integer result = userUserServiceWrap.deleteByUserId(ids);
+    outputData(200,result);
   }
 
   @Override
   public void disableUser(@Valid @NotNull(message = "参数不能为空") List<Long> ids) {
-    Boolean result = userUserServiceWrap.ableByUserId(ids, EntityAble.DISABLE);
-    outputData(result);
-  }
-
-  @Override
-  public void enableAccount(@Valid @NotNull(message = "参数不能为空") List<Long> ids) {
-    Integer integer = userAccountService.ableById(ids, EntityAble.ENABLE);
-    outputData(new Meta(), integer);
+    Integer result = userUserService.ableById(ids, EntityAble.DISABLE);
+    outputData(200,result);
   }
 
   @Override
   public void enableUser(@Valid @NotNull(message = "参数不能为空") List<Long> ids) {
-    Boolean result = userUserServiceWrap.ableByUserId(ids, EntityAble.ENABLE);
-    outputData(result);
+    Integer result = userUserService.ableById(ids, EntityAble.ENABLE);
+    outputData(200,result);
+  }
+
+  @Override
+  public void getUser(@Valid @NotNull(message = "参数不能为空") Long userId) {
+    UserUserBO userUserBO = userUserService.queryById(userId);
+    UserUserOutput userUserOutput = new UserUserOutput();
+    if (userUserBO == null) {
+      outputData(401);
+      return;
+    }
+    BeanUtils.copyProperties(userUserBO,userUserOutput);
+    outputData(userUserOutput);
   }
 
   @Override
@@ -111,29 +103,10 @@ public class UserController extends AdminController implements UserApi {
 
   @Override
   public void listUser(String scopes, String sorts, String page) {
-    LinkedHashSet<ScopeInput> scopeInputs = null;
-    LinkedHashSet<SortInput> sortInputs = null;
-    PageInput pageInput = null;
-    try {
-      scopeInputs = JSON.parseObject(scopes, new TypeReference<LinkedHashSet<ScopeInput>>() {
-      });
-      sortInputs = JSON.parseObject(sorts, new TypeReference<LinkedHashSet<SortInput>>() {
-      });
-      pageInput = JSON.parseObject(page, PageInput.class);
-    } catch (Exception e) {
-      throw new RuntimeException("参数格式错误");
-    }
-    if (pageInput == null) {
-      pageInput = new PageInput();
-    }
-
-    // TODO 查询条件参数没有应用
-    LinkedHashSet<ScopeBO> scopeBOS = new LinkedHashSet<>();
-
-    LinkedHashSet<SortBO> sortBOS = new LinkedHashSet<>();
-
+    PageInput pageInput = PageInput.parse(page);
+    LinkedHashSet<ScopeBO> scopeBOS = ScopeInput.parse(scopes);
+    LinkedHashSet<SortBO> sortBOS = SortInput.parse(sorts);
     PageOutput<UserUserOutput> responseData = new PageOutput<>();
-    UserUserBO userUserBO = new UserUserBO();
     PageableQueryResult<UserUserBO> queryResult = userUserService
         .queryAllByCondition(scopeBOS, sortBOS, pageInput.getIndex(), pageInput.getSize());
     queryResult.getElements().forEach(element -> {

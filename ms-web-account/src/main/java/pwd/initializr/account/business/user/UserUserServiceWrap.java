@@ -36,31 +36,31 @@ public interface UserUserServiceWrap {
    *
    * @param userIds 用户ID
    * @param entityAble 禁用/启用
-   * @return Boolean
+   * @return Integer
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  Boolean ableByUserId(List<Long> userIds, EntityAble entityAble);
+  Integer ableByUserId(List<Long> userIds, EntityAble entityAble);
 
   /**
    * <h2>删除用户，同时删除其下所有账户</h2>
    * date 2020-07-26 23:24
    *
-   * @return Boolean
+   * @return Integer
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  Boolean deleteByUserId(Long userId);
+  Integer deleteByUserId(Long userId);
 
   /**
    * <h2>删除用户，同时删除其下所有账户</h2>
    * date 2020-07-26 23:49
    *
-   * @return Boolean
+   * @return Integer
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  Boolean deleteByUserId(List<Long> userIds);
+  Integer deleteByUserId(List<Long> userIds);
 
   /**
    * <h2>创建用户，同时创建账户</h2>

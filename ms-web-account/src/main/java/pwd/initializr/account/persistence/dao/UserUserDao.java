@@ -64,7 +64,7 @@ public interface UserUserDao {
    * @param ids 主键
    * @return 影响行数
    */
-  int deleteByIds(List<Long> ids);
+  int deleteByIds(@Param("ids") List<Long> ids);
 
   /**
    * 新增数据

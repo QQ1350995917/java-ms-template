@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
 import javax.annotation.Resource;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import pwd.initializr.account.business.user.bo.UserAccountBO;
@@ -52,6 +53,11 @@ public class UserAccountServiceImpl implements UserAccountService {
   @Override
   public Integer deleteById(List<Long> ids) {
     return userAccountDao.deleteByIds(ids);
+  }
+
+  @Override
+  public Integer deleteByUserId(List<Long> uids) {
+    return userAccountDao.deleteByUserIds(uids);
   }
 
   @Override

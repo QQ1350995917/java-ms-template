@@ -40,26 +40,26 @@ public class UserUserServiceWrapImpl implements UserUserServiceWrap {
 
   @Override
   @Transactional(rollbackFor = Exception.class)
-  public Boolean ableByUserId(List<Long> userIds, EntityAble entityAble) {
+  public Integer ableByUserId(List<Long> userIds, EntityAble entityAble) {
     userAccountService.ableByUserId(userIds, entityAble);
-    userUserService.ableById(userIds, entityAble);
-    return true;
+    Integer integer = userUserService.ableById(userIds, entityAble);
+    return integer;
   }
 
   @Override
   @Transactional(rollbackFor = Exception.class)
-  public Boolean deleteByUserId(Long userId) {
+  public Integer deleteByUserId(Long userId) {
     userAccountService.deleteById(Arrays.asList(userId));
-    userUserService.deleteById(userId);
-    return true;
+    Integer integer = userUserService.deleteById(userId);
+    return integer;
   }
 
   @Override
   @Transactional(rollbackFor = Exception.class)
-  public Boolean deleteByUserId(List<Long> userIds) {
-    userAccountService.deleteById(userIds);
-    userUserService.deleteById(userIds);
-    return true;
+  public Integer deleteByUserId(List<Long> userIds) {
+    userAccountService.deleteByUserId(userIds);
+    Integer integer = userUserService.deleteById(userIds);
+    return integer;
   }
 
   @Override

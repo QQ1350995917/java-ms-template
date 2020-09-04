@@ -29,7 +29,7 @@ public class UserUserServiceImpl implements UserUserService {
 
   @Override
   public Integer ableById(List<Long> ids, EntityAble able) {
-    return null;
+    return userUserDao.ableByIds(ids,able.getNumber());
   }
 
   @Override
@@ -44,7 +44,7 @@ public class UserUserServiceImpl implements UserUserService {
 
   @Override
   public Integer deleteById(List<Long> ids) {
-    return 0;
+    return userUserDao.deleteByIds(ids);
   }
 
   @Override

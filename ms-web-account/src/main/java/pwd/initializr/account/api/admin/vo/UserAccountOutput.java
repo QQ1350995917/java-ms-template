@@ -1,5 +1,12 @@
 package pwd.initializr.account.api.admin.vo;
 
+import java.util.Date;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
 /**
  * pwd.initializr.account.api.admin.vo@ms-web-initializr
  *
@@ -11,6 +18,19 @@ package pwd.initializr.account.api.admin.vo;
  * @version 1.0.0
  * @since DistributionVersion
  */
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString
 public class UserAccountOutput {
-
+    private Long id;
+    private Long uid;
+    private String loginName;
+    private Date pwdTime;
+    private Integer type;
+    private Integer able;
+    private Integer del;
+    private Date createTime;
+    private Date updateTime;
 }

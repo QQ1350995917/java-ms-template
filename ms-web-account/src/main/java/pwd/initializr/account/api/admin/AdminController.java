@@ -84,7 +84,7 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
   public void delUser(
       @Valid @NotNull(message = "参数不能为空") @Size(message = "参数不能为空") List<Long> ids) {
     // TODO 同时移除 session
-    Integer del = adminUserService.deleteById(ids);
+    Integer del = adminUserServiceWrap.deleteByUserId(ids);
     outputData(del);
   }
 
@@ -127,7 +127,6 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
 
   @Override
   public void listAccount(@PathVariable("uid") Long userId) {
-    AdminAccountBO queryCondition = new AdminAccountBO();
     List<AdminAccountBO> adminAccountBOS = adminAccountService.queryByUserId(userId);
     PageOutput<AdminAccountOutput> result = new PageOutput<>();
     adminAccountBOS.forEach(adminAccountBO -> {
@@ -140,43 +139,9 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
 
   @Override
   public void listUser(String scopes, String sorts, String page) {
-    LinkedHashSet<ScopeInput> scopeInputs = null;
-    LinkedHashSet<SortInput> sortInputs = null;
-    PageInput pageInput = null;
-    try {
-      scopeInputs = JSON.parseObject(scopes, new TypeReference<LinkedHashSet<ScopeInput>>() {
-      });
-      sortInputs = JSON.parseObject(sorts, new TypeReference<LinkedHashSet<SortInput>>() {
-      });
-      pageInput = JSON.parseObject(page, PageInput.class);
-    } catch (Exception e) {
-      outputException(401,e.getMessage());
-      return;
-    }
-    if (pageInput == null) {
-      pageInput = new PageInput();
-    }
-    if (scopeInputs == null) {
-      scopeInputs = new LinkedHashSet<>();
-    }
-    if (sortInputs == null) {
-      sortInputs = new LinkedHashSet<>();
-    }
-
-    LinkedHashSet<ScopeBO> scopeBOS = new LinkedHashSet<>();
-    for (ScopeInput scopeInput : scopeInputs) {
-      ScopeBO scopeBO = new ScopeBO();
-      BeanUtils.copyProperties(scopeInput,scopeBO);
-      scopeBOS.add(scopeBO);
-    }
-
-    LinkedHashSet<SortBO> sortBOS = new LinkedHashSet<>();
-    for (SortInput sortInput : sortInputs) {
-      SortBO sortBO = new SortBO();
-      BeanUtils.copyProperties(sortInput,sortBO);
-      sortBOS.add(sortBO);
-    }
-
+    PageInput pageInput = PageInput.parse(page);
+    LinkedHashSet<ScopeBO> scopeBOS = ScopeInput.parse(scopes);
+    LinkedHashSet<SortBO> sortBOS = SortInput.parse(sorts);
     PageableQueryResult<AdminUserBO> adminUserBOPageableQueryResult = adminUserService
         .queryAllByCondition(scopeBOS, sortBOS, pageInput.getIndex(), pageInput.getSize());
     PageOutput<AdminUserOutput> result = new PageOutput<>();

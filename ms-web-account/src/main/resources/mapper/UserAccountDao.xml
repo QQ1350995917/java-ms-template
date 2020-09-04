@@ -92,6 +92,14 @@
     </foreach>
   </delete>
 
+  <!--通过用户外键删除-->
+  <delete id="deleteByUserIds">
+    update initializr_account.user_account set del = 1, update_time = now() where uid in
+    <foreach close=")" collection="uids" index="index" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </delete>
+
   <!--通过主键启禁-->
   <update id="ableById">
     update initializr_account.user_account set able = #{able}, update_time = now() where id = #{id} and uid = {"uid"}

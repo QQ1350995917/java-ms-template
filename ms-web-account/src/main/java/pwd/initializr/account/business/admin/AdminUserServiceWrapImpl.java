@@ -50,8 +50,8 @@ public class AdminUserServiceWrapImpl implements AdminUserServiceWrap {
 
   @Override
   public Integer deleteByUserId(List<Long> userIds) {
-    Integer integer = adminUserService.deleteById(userIds);
     adminAccountService.deleteByUserId(userIds);
+    Integer integer = adminUserService.deleteById(userIds);
     return integer;
   }
 

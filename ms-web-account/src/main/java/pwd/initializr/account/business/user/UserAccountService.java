@@ -66,6 +66,13 @@ public interface UserAccountService {
   Integer deleteById(List<Long> ids);
 
   /**
+   * 通过外键删除数据
+   * @param uids 外键
+   * @return
+   */
+  Integer deleteByUserId(List<Long> uids);
+
+  /**
    * <h2>检查账号名是否存在</h2>
    * date 2020-08-08 11:07
    *
