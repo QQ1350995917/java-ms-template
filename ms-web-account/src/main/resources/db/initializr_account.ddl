@@ -157,8 +157,8 @@ DROP TABLE IF EXISTS `user_user`;
 CREATE TABLE `user_user` (
   `id` bigint(11) NOT NULL AUTO_INCREMENT COMMENT '自增主键',
   `pin` varchar(20) COLLATE utf8_bin DEFAULT NULL COMMENT '身份证号',
-  `name` varchar(255) COLLATE utf8_bin NOT NULL COMMENT '姓名',
-  `gender` char(1) COLLATE utf8_bin NOT NULL COMMENT '性别',
+  `name` varchar(255) COLLATE utf8_bin DEFAULT NULL COMMENT '姓名',
+  `gender` char(1) COLLATE utf8_bin DEFAULT NULL COMMENT '性别',
   `emp_no` varchar(45) COLLATE utf8_bin DEFAULT NULL COMMENT '工号',
   `summary` varchar(255) COLLATE utf8_bin DEFAULT NULL COMMENT '简介',
   `able` int(4) NOT NULL DEFAULT '0' COMMENT '可用性：0:不可用；1:可用',

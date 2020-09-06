@@ -1,8 +1,5 @@
 package pwd.initializr.account.api.admin;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.TypeReference;
-import com.netflix.eureka.registry.Key.EntityType;
 import io.swagger.annotations.Api;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -15,8 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.account.api.admin.vo.UserAccountOutput;
 import pwd.initializr.account.api.admin.vo.UserCreateInput;
 import pwd.initializr.account.api.admin.vo.UserUserOutput;
-import pwd.initializr.account.business.admin.bo.AdminAccountBO;
-import pwd.initializr.account.business.admin.bo.AdminUserBO;
 import pwd.initializr.account.business.user.UserAccountService;
 import pwd.initializr.account.business.user.UserUserService;
 import pwd.initializr.account.business.user.UserUserServiceWrap;
@@ -24,7 +19,6 @@ import pwd.initializr.account.business.user.bo.UserAccountBO;
 import pwd.initializr.account.business.user.bo.UserUserBO;
 import pwd.initializr.account.persistence.entity.AdminAccountType;
 import pwd.initializr.common.web.api.admin.AdminController;
-import pwd.initializr.common.web.api.vo.Meta;
 import pwd.initializr.common.web.api.vo.PageInput;
 import pwd.initializr.common.web.api.vo.PageOutput;
 import pwd.initializr.common.web.api.vo.ScopeInput;
@@ -77,19 +71,19 @@ public class UserController extends AdminController implements UserApi {
   @Override
   public void delUser(@Valid @NotNull(message = "参数不能为空") List<Long> ids) {
     Integer result = userUserServiceWrap.deleteByUserId(ids);
-    outputData(200,result);
+    outputData(200, result);
   }
 
   @Override
   public void disableUser(@Valid @NotNull(message = "参数不能为空") List<Long> ids) {
     Integer result = userUserService.ableById(ids, EntityAble.DISABLE);
-    outputData(200,result);
+    outputData(200, result);
   }
 
   @Override
   public void enableUser(@Valid @NotNull(message = "参数不能为空") List<Long> ids) {
     Integer result = userUserService.ableById(ids, EntityAble.ENABLE);
-    outputData(200,result);
+    outputData(200, result);
   }
 
   @Override
@@ -100,7 +94,7 @@ public class UserController extends AdminController implements UserApi {
       outputData(401);
       return;
     }
-    BeanUtils.copyProperties(userUserBO,userUserOutput);
+    BeanUtils.copyProperties(userUserBO, userUserOutput);
     outputData(userUserOutput);
   }
 
