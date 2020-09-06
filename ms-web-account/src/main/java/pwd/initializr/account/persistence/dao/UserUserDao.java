@@ -36,7 +36,7 @@ public interface UserUserDao {
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  Integer ableByIds(List<Long> ids, int able);
+  Integer ableByIds(@Param("ids") List<Long> ids, @Param("able") int able);
 
   /**
    * <h2>通过实体作为筛选条件统计</h2>

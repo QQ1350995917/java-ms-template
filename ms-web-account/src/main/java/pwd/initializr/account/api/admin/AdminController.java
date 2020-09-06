@@ -1,7 +1,5 @@
 package pwd.initializr.account.api.admin;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.TypeReference;
 import io.swagger.annotations.Api;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -17,9 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.account.api.admin.vo.AdminAccountInput;
 import pwd.initializr.account.api.admin.vo.AdminAccountOutput;
+import pwd.initializr.account.api.admin.vo.AdminCreateInput;
 import pwd.initializr.account.api.admin.vo.AdminUserInput;
 import pwd.initializr.account.api.admin.vo.AdminUserOutput;
-import pwd.initializr.account.api.admin.vo.CreateAdminInput;
 import pwd.initializr.account.business.admin.AdminAccountService;
 import pwd.initializr.account.business.admin.AdminUserService;
 import pwd.initializr.account.business.admin.AdminUserServiceWrap;
@@ -65,7 +63,7 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
   private AdminAccountService adminAccountService;
 
   @Override
-  public void create(@Valid @NotNull(message = "参数不能为空") CreateAdminInput input) {
+  public void create(@Valid @NotNull(message = "参数不能为空") AdminCreateInput input) {
     AdminUserBO adminUserBO = new AdminUserBO();
     AdminAccountBO adminAccountBO = new AdminAccountBO();
     BeanUtils.copyProperties(input.getUser(), adminUserBO);

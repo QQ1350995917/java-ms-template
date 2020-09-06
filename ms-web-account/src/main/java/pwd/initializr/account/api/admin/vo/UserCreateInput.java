@@ -27,8 +27,8 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-@ApiModel(value = "createAdminInput", description = "管理员创建请求参数")
-public class AdminCreateInput implements Serializable {
+@ApiModel(value = "createUserInput", description = "管理员创建请求参数")
+public class UserCreateInput implements Serializable {
 
   @ApiModelProperty(name = "user", value = "用户信息", required = true)
   @Valid

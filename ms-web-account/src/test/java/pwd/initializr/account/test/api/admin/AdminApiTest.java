@@ -4,8 +4,6 @@ import com.alibaba.fastjson.JSON;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import net.sourceforge.pinyin4j.PinyinHelper;
 import net.sourceforge.pinyin4j.format.HanyuPinyinCaseType;
@@ -29,8 +27,8 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import pwd.initializr.account.api.admin.vo.AdminAccountInput;
+import pwd.initializr.account.api.admin.vo.AdminCreateInput;
 import pwd.initializr.account.api.admin.vo.AdminUserInput;
-import pwd.initializr.account.api.admin.vo.CreateAdminInput;
 
 /**
  * pwd.initializr.account.test.api.admin@ms-web-initializr
@@ -94,7 +92,7 @@ public class AdminApiTest {
           summaryBuilder.append(s[i] + " ");
         }
 
-        CreateAdminInput caocaoInput = new CreateAdminInput();
+        AdminCreateInput caocaoInput = new AdminCreateInput();
         AdminUserInput adminUserInput = new AdminUserInput();
         adminUserInput.setName(userName);
         adminUserInput.setGender("1");

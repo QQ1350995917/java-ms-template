@@ -26,9 +26,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import pwd.initializr.account.api.admin.vo.AdminAccountInput;
-import pwd.initializr.account.api.admin.vo.AdminUserInput;
-import pwd.initializr.account.api.admin.vo.CreateAdminInput;
 import pwd.initializr.account.api.user.vo.SignUpByNamePwdInput;
 
 /**
@@ -68,6 +65,7 @@ public class AccountApiTest {
     @Test
     public void testCreate() throws Exception {
         String file = "E:\\workspace\\github\\ms-web-initializr\\ms-web-account\\src\\test\\java\\pwd\\initializr\\account\\test\\test\\list.txt";
+        file = "/Users/pwd/workspace/dingpw/ms-web-initializr/ms-web-account/src/test/java/pwd/initializr/account/test/test/list.txt";
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
             String line;
             LinkedHashMap<String,Integer> linkedHashMap = new LinkedHashMap();

@@ -2,6 +2,7 @@ package pwd.initializr.account.api.admin;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
+import com.netflix.eureka.registry.Key.EntityType;
 import io.swagger.annotations.Api;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -12,12 +13,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.account.api.admin.vo.UserAccountOutput;
+import pwd.initializr.account.api.admin.vo.UserCreateInput;
 import pwd.initializr.account.api.admin.vo.UserUserOutput;
+import pwd.initializr.account.business.admin.bo.AdminAccountBO;
+import pwd.initializr.account.business.admin.bo.AdminUserBO;
 import pwd.initializr.account.business.user.UserAccountService;
 import pwd.initializr.account.business.user.UserUserService;
 import pwd.initializr.account.business.user.UserUserServiceWrap;
 import pwd.initializr.account.business.user.bo.UserAccountBO;
 import pwd.initializr.account.business.user.bo.UserUserBO;
+import pwd.initializr.account.persistence.entity.AdminAccountType;
 import pwd.initializr.common.web.api.admin.AdminController;
 import pwd.initializr.common.web.api.vo.Meta;
 import pwd.initializr.common.web.api.vo.PageInput;
@@ -57,6 +62,17 @@ public class UserController extends AdminController implements UserApi {
 
   @Autowired
   private UserUserServiceWrap userUserServiceWrap;
+
+  @Override
+  public void create(@Valid @NotNull(message = "参数不能为空") UserCreateInput input) {
+    UserUserBO userUserBO = new UserUserBO();
+    UserAccountBO userAccountBO = new UserAccountBO();
+    BeanUtils.copyProperties(input.getUser(), userUserBO);
+    BeanUtils.copyProperties(input.getAccount(), userAccountBO);
+    userAccountBO.setType(AdminAccountType.GRANT.getNumber());
+    UserAccountBO userAccountBOResult = userUserServiceWrap.insert(userUserBO, userAccountBO);
+    super.outputData(userAccountBOResult.getUid());
+  }
 
   @Override
   public void delUser(@Valid @NotNull(message = "参数不能为空") List<Long> ids) {

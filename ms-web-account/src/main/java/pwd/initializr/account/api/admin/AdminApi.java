@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.account.api.admin.vo.AdminAccountInput;
 import pwd.initializr.account.api.admin.vo.AdminUserInput;
-import pwd.initializr.account.api.admin.vo.CreateAdminInput;
+import pwd.initializr.account.api.admin.vo.AdminCreateInput;
 
 /**
  * pwd.initializr.account.api.admin@ms-web-initializr
@@ -45,7 +45,7 @@ public interface AdminApi {
   @ApiOperation(value = "创建管理员用户信息以及账户信息")
   @PostMapping(value = {
       ""}, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  void create(@RequestBody @Valid @NotNull(message = "参数不能为空") CreateAdminInput input);
+  void create(@RequestBody @Valid @NotNull(message = "参数不能为空") AdminCreateInput input);
 
   @ApiOperation(value = "删除账户，最后一个可用账户不可被删除")
   @DeleteMapping(value = {"/account"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

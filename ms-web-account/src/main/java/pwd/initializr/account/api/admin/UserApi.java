@@ -11,10 +11,13 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import pwd.initializr.account.api.admin.vo.AdminCreateInput;
+import pwd.initializr.account.api.admin.vo.UserCreateInput;
 
 /**
  * pwd.initializr.account.api.admin@ms-web-initializr
@@ -35,6 +38,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController(value = "userManageApi")
 @RequestMapping(value = "/api/admin/user")
 public interface UserApi {
+
+  @ApiOperation(value = "创建管理员用户信息以及账户信息")
+  @PostMapping(value = {
+      ""}, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  void create(@RequestBody @Valid @NotNull(message = "参数不能为空") UserCreateInput input);
 
   @ApiOperation(value = "删除用户，同时删除其下所有账户")
   @DeleteMapping(value = {"/user"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
