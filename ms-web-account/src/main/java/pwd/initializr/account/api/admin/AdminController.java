@@ -21,9 +21,9 @@ import pwd.initializr.account.api.admin.vo.AdminUserOutput;
 import pwd.initializr.account.business.admin.AdminAccountService;
 import pwd.initializr.account.business.admin.AdminUserService;
 import pwd.initializr.account.business.admin.AdminUserServiceWrap;
-import pwd.initializr.account.business.session.SessionService;
 import pwd.initializr.account.business.admin.bo.AdminAccountBO;
 import pwd.initializr.account.business.admin.bo.AdminUserBO;
+import pwd.initializr.account.business.session.SessionService;
 import pwd.initializr.common.web.api.vo.Meta;
 import pwd.initializr.common.web.api.vo.PageInput;
 import pwd.initializr.common.web.api.vo.PageOutput;
@@ -77,14 +77,14 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
 
   @Override
   public void delAccount(
-      @Valid @NotNull(message = "参数不能为空") @Size(message = "参数不能为空") Long userId,
-      @Valid @NotNull(message = "参数不能为空") @Size(message = "参数不能为空") Long accountId) {
-    Integer enabledAccountNum = adminAccountService.enabledAccountNum(userId);
-    if (enabledAccountNum > 1) {
+      @Valid @NotNull(message = "参数不能为空") Long userId,
+      @Valid @NotNull(message = "参数不能为空") Long accountId) {
+    Integer existedAccountNum = adminAccountService.existedAccountNum(userId);
+    if (existedAccountNum > 1) {
       Integer result = adminAccountService.deleteById(accountId, userId);
-      super.outputData(200,result);
+      super.outputData(200, result);
     } else {
-      super.outputData(412,"用户的最后一个账号不可被删除");
+      super.outputData(new Meta(412, "用户的最后一个账号不可被删除"));
     }
   }
 
@@ -99,14 +99,14 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
 
   @Override
   public void disableAccount(
-      @Valid @NotNull(message = "参数不能为空") @Size(message = "参数不能为空") Long userId,
-      @Valid @NotNull(message = "参数不能为空") @Size(message = "参数不能为空") Long accountId) {
+      @Valid @NotNull(message = "参数不能为空") Long userId,
+      @Valid @NotNull(message = "参数不能为空") Long accountId) {
     Integer enabledAccountNum = adminAccountService.enabledAccountNum(userId);
     if (enabledAccountNum > 1) {
-      Integer result = adminAccountService.ableById(accountId, userId,EntityAble.DISABLE);
-      super.outputData(200,result);
+      Integer result = adminAccountService.ableById(accountId, userId, EntityAble.DISABLE);
+      super.outputData(200, result);
     } else {
-      super.outputData(412,"用户的最后一个账号不可被禁用");
+      super.outputData(new Meta(412, "用户的最后一个账号不可被禁用"));
     }
   }
 
@@ -115,21 +115,21 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
     // 同时移除 session
     ids.forEach(id -> sessionService.deleteNamedSession(id));
     Integer able = adminUserService.ableById(ids, EntityAble.DISABLE);
-    outputData(200,able);
+    outputData(200, able);
   }
 
   @Override
   public void enableAccount(
-      @Valid @NotNull(message = "参数不能为空") @Size(message = "参数不能为空") Long userId,
-      @Valid @NotNull(message = "参数不能为空") @Size(message = "参数不能为空") Long accountId) {
+      @Valid @NotNull(message = "参数不能为空") Long userId,
+      @Valid @NotNull(message = "参数不能为空") Long accountId) {
     Integer able = adminAccountService.ableById(accountId, userId, EntityAble.ENABLE);
-    outputData(200,able);
+    outputData(200, able);
   }
 
   @Override
   public void enableUser(@Valid @NotNull(message = "参数不能为空") List<Long> ids) {
     Integer able = adminUserService.ableById(ids, EntityAble.ENABLE);
-    outputData(200,able);
+    outputData(200, able);
   }
 
   @Override

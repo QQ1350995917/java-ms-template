@@ -54,7 +54,7 @@
     select
     id, uid, login_name, login_pwd, pwd_time, type, able, del, create_time, update_time
     from initializr_account.admin_account
-    where uId = #{uid}
+    where uId = #{uid} and del = 0
   </select>
 
   <!--新增所有列-->
@@ -96,9 +96,14 @@
   </update>
 
   <!--通过用户外键查询-->
-  <update id="enabledAccountNum">
+  <select id="enabledAccountNum" resultType="java.lang.Integer">
     select count(*) from initializr_account.admin_account where able = 1 and uid = #{userId}
-  </update>
+  </select>
+
+  <!--通过用户外键查询-->
+  <select id="existedAccountNum" resultType="java.lang.Integer">
+    select count(*) from initializr_account.admin_account where del = 0 and uid = #{userId}
+  </select>
 
   <!--通过主键启禁-->
   <update id="ableById">

@@ -72,6 +72,11 @@ public class AdminAccountServiceImpl implements AdminAccountService {
     return this.adminAccountDao.enabledAccountNum(userId);
   }
 
+  @Override
+  public Integer existedAccountNum(Long userId) {
+    return this.adminAccountDao.existedAccountNum(userId);
+  }
+
   /**
    * 新增数据
    *

@@ -208,7 +208,7 @@ public class SessionController extends AdminController implements SessionApi {
       }
       SessionInitOutput loginInitOutput = new SessionInitOutput();
       loginInitOutput.setStatus(SessionStatus.ANONYMOUS.getNumber());
-      loginInitOutput.setToken(token);
+      loginInitOutput.setToken(((SessionBOAnonymous) session).getToken());
       loginInitOutput.setExpires(anonymousSessionExpiresSeconds);
       loginInitOutput.setCaptchaRequired(captchaRequired);
       // TODO 登录方式列表

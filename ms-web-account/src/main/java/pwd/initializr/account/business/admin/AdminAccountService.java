@@ -3,11 +3,7 @@ package pwd.initializr.account.business.admin;
 
 import java.util.LinkedHashSet;
 import java.util.List;
-import org.apache.ibatis.annotations.Param;
 import pwd.initializr.account.business.admin.bo.AdminAccountBO;
-import pwd.initializr.common.web.api.vo.PageInput;
-import pwd.initializr.common.web.api.vo.ScopeInput;
-import pwd.initializr.common.web.api.vo.SortInput;
 import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.common.web.business.bo.ScopeBO;
 import pwd.initializr.common.web.business.bo.SortBO;
@@ -30,7 +26,7 @@ public interface AdminAccountService {
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  Integer ableById(Long id,Long uid, EntityAble able);
+  Integer ableById(Long id, Long uid, EntityAble able);
 
 
   /**
@@ -62,7 +58,7 @@ public interface AdminAccountService {
    * @param uid 外键
    * @return 是否成功
    */
-  Integer deleteById(Long id,Long uid);
+  Integer deleteById(Long id, Long uid);
 
   /**
    * <h2>根据用户ID删除数据</h2>
@@ -87,7 +83,7 @@ public interface AdminAccountService {
   Integer deleteByUserId(List<Long> userIds);
 
   /**
-   * <h2>根据用户ID查询可用的账户上个月狂</h2>
+   * <h2>根据用户ID查询可用的账号个数</h2>
    * date 2020-09-07 11:13
    *
    * @param userId 用户ID
@@ -96,6 +92,17 @@ public interface AdminAccountService {
    * @since DistributionVersion
    */
   Integer enabledAccountNum(Long userId);
+
+  /**
+   * <h2>根据用户ID查询未删除账号个数</h2>
+   * date 2020-09-07 23:45
+   *
+   * @param userId 用户ID
+   * @return java.lang.Integer
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  Integer existedAccountNum(Long userId);
 
   /**
    * 新增数据
@@ -117,7 +124,8 @@ public interface AdminAccountService {
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  PageableQueryResult<AdminAccountBO> queryAllByCondition(LinkedHashSet<ScopeBO> scopes, LinkedHashSet<SortBO> sorts,
+  PageableQueryResult<AdminAccountBO> queryAllByCondition(LinkedHashSet<ScopeBO> scopes,
+      LinkedHashSet<SortBO> sorts,
       Long pageIndex, Long pageSize);
 
   /**
@@ -126,7 +134,7 @@ public interface AdminAccountService {
    * @param id 主键
    * @return 实例对象
    */
-  AdminAccountBO queryById(Long id,Long uid);
+  AdminAccountBO queryById(Long id, Long uid);
 
   /**
    * <h2>session创建接口：管理员通过账号密码登录</h2>
