@@ -30,22 +30,15 @@ import pwd.initializr.common.vcode.CodeMessage;
  * @version 1.0.0
  * @since DistributionVersion
  */
-@Service("adminSessionService")
-public class SessionServiceImpl implements SessionService {
+public abstract class SessionServiceAbs implements SessionService {
 
-  @Value("${account_login_prefix_admin:sso_identify_admin}")
-  private String SESSION_PREFIX;
+  public abstract String getSessionPrefix();
+  public abstract String getAnonymousSessionSalt();
+  public abstract String getAnonymousSessionInRedisPrefix();
+  public abstract Integer getAnonymousSessionInRedisExpiresSeconds();
+  public abstract String getNamedSessionInRedisPrefix();
+  public abstract Integer getNamedSessionInRedisExpiresSeconds();
 
-  @Value("${account.admin.session.anonymous.initializr.salt}")
-  private String anonymousSessionSalt;
-  @Value("${account.admin.session.anonymous.redis.key.prefix}")
-  private String anonymousSessionInRedisPrefix;
-  @Value("${account.admin.session.anonymous.expires.seconds}")
-  private Integer anonymousSessionInRedisExpiresSeconds;
-  @Value("${account.admin.session.named.redis.key.prefix}")
-  private String namedSessionInRedisPrefix;
-  @Value("${account.admin.session.named.expires.seconds}")
-  private Integer namedSessionInRedisExpiresSeconds;
 
   @Autowired
   private RedisClient redisClient;
@@ -68,16 +61,36 @@ public class SessionServiceImpl implements SessionService {
   }
 
   @Override
-  public String createAnonymousSession() {
+  public SessionBO createSession(String token, Long uid) {
+    if (StringUtils.isNotBlank(token)) {
+      // 该请求携带token，初步认为登陆后调用，检验token是否为具名token
+      SessionBONamed sessionBONamed = this.querySessionNamed(uid);
+      if (sessionBONamed != null) {
+        return sessionBONamed;
+      }
+      // 该请求携带token，排除为具名token，检验token是否为匿名token
+      SessionBOAnonymous sessionBOAnonymous = this.querySessionAnonymous(token);
+      if (sessionBOAnonymous != null) {
+        // 识别为有效的匿名token，延长其在redis的有效期，然后返回
+        this.updateAnonymousSession(token, sessionBOAnonymous);
+        return sessionBOAnonymous;
+      }
+    }
+    // 当前提交的token非有效的匿名token也非有效的具名token,当做提交的token为空处理
+    SessionBOAnonymous anonymousSession = this.createAnonymousSession();
+    return anonymousSession;
+  }
+
+  @Override
+  public SessionBOAnonymous createAnonymousSession() {
     long currentTimeMillis = System.currentTimeMillis();
     String uuid = UUID.randomUUID().toString();
     String clearTextToken = currentTimeMillis + ":" + uuid;
-    String encryptTextCookie = Cryptographer.encrypt(clearTextToken, anonymousSessionSalt);
-    SessionBOAnonymous sessionBOAnonymous = new SessionBOAnonymous(0, null);
-    redisClient.setex(getCookieKeyInRedis(clearTextToken), JSON.toJSONString(
-        sessionBOAnonymous),
-        anonymousSessionInRedisExpiresSeconds);
-    return encryptTextCookie;
+    String encryptTextCookie = Cryptographer.encrypt(clearTextToken, getAnonymousSessionSalt());
+    SessionBOAnonymous sessionBOAnonymous = new SessionBOAnonymous(encryptTextCookie,0, null);
+    redisClient.setex(getCookieKeyInRedis(clearTextToken), JSON.toJSONString(sessionBOAnonymous),
+        getAnonymousSessionInRedisExpiresSeconds());
+    return sessionBOAnonymous;
   }
 
   @Override
@@ -85,13 +98,13 @@ public class SessionServiceImpl implements SessionService {
     String sessionKeyInRedis = getSessionKeyInRedis(sessionBONamed.getUid());
     redisClient
         .setex(sessionKeyInRedis, JSON.toJSONString(sessionBONamed),
-            namedSessionInRedisExpiresSeconds);
+            getNamedSessionInRedisExpiresSeconds());
   }
 
   @Override
   public Boolean deleteAnonymousToken(String token) {
     Assert.notNull(token, "sessionCookieBO.token should not be empty");
-    String clearTextCookie = Cryptographer.decrypt(token, anonymousSessionSalt);
+    String clearTextCookie = Cryptographer.decrypt(token, getAnonymousSessionSalt());
     redisClient.del(getCookieKeyInRedis(clearTextCookie));
     return true;
   }
@@ -105,7 +118,7 @@ public class SessionServiceImpl implements SessionService {
   @Override
   public SessionBOAnonymous querySessionAnonymous(String token) {
     Assert.notNull(token, "token should not be empty");
-    String clearTextCookie = Cryptographer.decrypt(token, anonymousSessionSalt);
+    String clearTextCookie = Cryptographer.decrypt(token, getAnonymousSessionSalt());
     String sessionCookieJson = redisClient.get(getCookieKeyInRedis(clearTextCookie));
     if (StringUtils.isBlank(sessionCookieJson)) {
       return null;
@@ -125,15 +138,15 @@ public class SessionServiceImpl implements SessionService {
 
   @Override
   public void updateAnonymousSession(String token, SessionBOAnonymous sessionBOAnonymous) {
-    String clearTextCookie = Cryptographer.decrypt(token, anonymousSessionSalt);
+    String clearTextCookie = Cryptographer.decrypt(token, getAnonymousSessionSalt());
     redisClient.del(getCookieKeyInRedis(clearTextCookie));
     redisClient.setex(getCookieKeyInRedis(clearTextCookie), JSON.toJSONString(sessionBOAnonymous),
-        anonymousSessionInRedisExpiresSeconds);
+        getAnonymousSessionInRedisExpiresSeconds());
   }
 
   @Override
   public Boolean updateNamedSession(SessionBONamed sessionBONamed) {
-    String key = StringUtils.join(new String[]{SESSION_PREFIX, sessionBONamed.getId().toString()});
+    String key = StringUtils.join(new String[]{getSessionPrefix(), sessionBONamed.getId().toString()});
     if (!"0".equals(redisClient.set(key, JSON.toJSONString(sessionBONamed)))) {
       return true;
     } else {
@@ -142,10 +155,10 @@ public class SessionServiceImpl implements SessionService {
   }
 
   private String getSessionKeyInRedis(Long uid) {
-    return StringUtils.join(new String[]{namedSessionInRedisPrefix, uid.toString()}, ":");
+    return StringUtils.join(new String[]{getNamedSessionInRedisPrefix(), uid.toString()}, ":");
   }
 
   private String getCookieKeyInRedis(String cookie) {
-    return StringUtils.join(new String[]{anonymousSessionInRedisPrefix, cookie}, ":");
+    return StringUtils.join(new String[]{getAnonymousSessionInRedisPrefix(), cookie}, ":");
   }
 }

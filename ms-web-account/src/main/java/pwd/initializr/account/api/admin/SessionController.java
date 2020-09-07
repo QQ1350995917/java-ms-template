@@ -25,6 +25,7 @@ import pwd.initializr.account.business.admin.AdminUserService;
 import pwd.initializr.account.business.session.SessionService;
 import pwd.initializr.account.business.admin.bo.AdminAccountBO;
 import pwd.initializr.account.business.admin.bo.AdminUserBO;
+import pwd.initializr.account.business.session.bo.SessionBO;
 import pwd.initializr.account.business.session.bo.SessionBOAnonymous;
 import pwd.initializr.account.business.session.bo.CaptchaBO;
 import pwd.initializr.account.business.session.bo.SessionBONamed;
@@ -191,54 +192,31 @@ public class SessionController extends AdminController implements SessionApi {
 
   @Override
   public void loginInitializr(Long aid, Long uid, String token) {
-    Boolean captchaRequired = false;
-    SessionBOAnonymous sessionBOAnonymous = null;
-    if (StringUtils.isNotBlank(token)) {
-      // 该请求携带 token，认为二次登陆，检验 token是否存在
-      sessionBOAnonymous = sessionService.querySessionAnonymous(token);
-      if (sessionBOAnonymous != null) {
-        // 识别为有效的匿名 token，延长其在redis的有效期，然后返回
-        sessionService.updateAnonymousSession(token, sessionBOAnonymous);
-      } else {
-        // 识别为非匿名 token，检验提交的 token 是否是具名token
-        SessionBONamed sessionBONamed = sessionService.querySessionNamed(getUid());
-        if (sessionBONamed != null) {
-          // 当前提交的 token 是具名 token 表示该 token 已经登录，无需再次登录
-          SessionInitOutput loginCookieOutput = new SessionInitOutput();
-          loginCookieOutput.setStatus(SessionStatus.NAMED.getNumber());
-          outputData(loginCookieOutput);
-          return;
-        } else {
-          // 当前提交的 token 非有效的匿名 token 也非有效的具名 token ,当做提交的 token 为空处理
-        }
+    SessionBO session = sessionService.createSession(token, uid);
+    if (session instanceof SessionBONamed) {
+      SessionInitOutput loginCookieOutput = new SessionInitOutput();
+      loginCookieOutput.setStatus(SessionStatus.NAMED.getNumber());
+      outputData(202,loginCookieOutput);
+      return;
+    }
+    if (session instanceof SessionBOAnonymous) {
+      Boolean captchaRequired = false;
+      // 是否对该匿名 token 产生验证码
+      if (((SessionBOAnonymous) session).getTimes() >= anonymousSessionCaptchaThreshold) {
+        captchaRequired = true;
+        sessionService.createCaptcha(token);
       }
+      SessionInitOutput loginInitOutput = new SessionInitOutput();
+      loginInitOutput.setStatus(SessionStatus.ANONYMOUS.getNumber());
+      loginInitOutput.setToken(token);
+      loginInitOutput.setExpires(anonymousSessionExpiresSeconds);
+      loginInitOutput.setCaptchaRequired(captchaRequired);
+      // TODO 登录方式列表
+      outputData(loginInitOutput);
+      return;
     }
-
-    if (sessionBOAnonymous == null) {
-      // 当前提交的 token 非有效的匿名 token 也非有效的具名 token ,当做提交的 token 为空处理
-      // 该请求没有携带 token，认为初次登陆，生成匿名token
-      token = sessionService.createAnonymousSession();
-      if (token == null) {
-        // 生成匿名token失败
-        outputException(500);
-        return;
-      }
-      sessionBOAnonymous = new SessionBOAnonymous(0, null);
-    }
-
-    // 是否对该匿名 token 产生验证码
-    if (sessionBOAnonymous.getTimes() >= anonymousSessionCaptchaThreshold) {
-      captchaRequired = true;
-      sessionService.createCaptcha(token);
-    }
-    // 生成新的 token 成，并设置是否需要图形验证码
-    SessionInitOutput loginInitOutput = new SessionInitOutput();
-    loginInitOutput.setStatus(SessionStatus.ANONYMOUS.getNumber());
-    loginInitOutput.setToken(token);
-    loginInitOutput.setExpires(anonymousSessionExpiresSeconds);
-    loginInitOutput.setCaptchaRequired(captchaRequired);
-    // TODO 登录方式列表
-    outputData(loginInitOutput);
+    // 生成匿名token失败
+    outputException(500);
   }
 
   @Override

@@ -16,7 +16,9 @@ import pwd.initializr.account.api.vo.SessionCreateOkOutput;
 import pwd.initializr.account.api.vo.CaptchaOutput;
 import pwd.initializr.account.api.vo.SessionInitOutput;
 import pwd.initializr.account.api.user.vo.LoginInput;
+import pwd.initializr.account.api.vo.SessionStatus;
 import pwd.initializr.account.business.session.SessionService;
+import pwd.initializr.account.business.session.bo.SessionBO;
 import pwd.initializr.account.business.session.bo.SessionBOAnonymous;
 import pwd.initializr.account.business.session.bo.CaptchaBO;
 import pwd.initializr.account.business.session.bo.SessionBONamed;
@@ -160,37 +162,32 @@ public class SessionController extends UserController implements SessionApi {
   }
 
   @Override
-  public void loginInitializr(String token) {
-    String anonymousToken = getToken();
-    Boolean captchaRequired = false;
-    SessionBOAnonymous sessionBOAnonymous = null;
-    // 初次访问没有携带 token，需要生成新的 token
-    if (StringUtils.isBlank(anonymousToken)) {
-      anonymousToken = sessionService.createAnonymousSession();
-      if (anonymousToken == null) {
-        // 生成新的token失败
-        outputException(500);
-        return;
-      }
-      sessionBOAnonymous = new SessionBOAnonymous(0, null);
-    } else {
-      sessionBOAnonymous = sessionService.querySessionAnonymous(anonymousToken);
-      if (sessionBOAnonymous == null) {
-        // token 比较旧，得更新
-        outputException(401, new SessionCreateFailOutput(FailType.TokenISExpires));
-        return;
-      }
+  public void loginInitializr(Long aid, Long uid, String token) {
+    SessionBO session = sessionService.createSession(token, uid);
+    if (session instanceof SessionBONamed) {
+      SessionInitOutput loginCookieOutput = new SessionInitOutput();
+      loginCookieOutput.setStatus(SessionStatus.NAMED.getNumber());
+      outputData(202,loginCookieOutput);
+      return;
     }
-    if (sessionBOAnonymous.getTimes() >= anonymousSessionCaptchaThreshold) {
-      captchaRequired = true;
+    if (session instanceof SessionBOAnonymous) {
+      Boolean captchaRequired = false;
+      // 是否对该匿名 token 产生验证码
+      if (((SessionBOAnonymous) session).getTimes() >= anonymousSessionCaptchaThreshold) {
+        captchaRequired = true;
+        sessionService.createCaptcha(token);
+      }
+      SessionInitOutput loginInitOutput = new SessionInitOutput();
+      loginInitOutput.setStatus(SessionStatus.ANONYMOUS.getNumber());
+      loginInitOutput.setToken(token);
+      loginInitOutput.setExpires(anonymousSessionExpiresSeconds);
+      loginInitOutput.setCaptchaRequired(captchaRequired);
+      // TODO 登录方式列表
+      outputData(loginInitOutput);
+      return;
     }
-    // 生成新的 token，并设置是否需要图形验证码
-    SessionInitOutput loginCookieOutput = new SessionInitOutput();
-    loginCookieOutput.setToken(anonymousToken);
-    loginCookieOutput.setExpires(anonymousSessionExpiresSeconds);
-    loginCookieOutput.setCaptchaRequired(captchaRequired);
-    // TODO 登录方式列表
-    outputData(loginCookieOutput);
+    // 生成匿名token失败
+    outputException(500);
   }
 
   @Override

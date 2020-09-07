@@ -32,6 +32,9 @@ public interface SessionService {
    */
   CaptchaBO createCaptcha(String token);
 
+
+  SessionBO createSession(String token,Long uid);
+
   /**
    * <h2>匿名 token 生成接口：管理员登录前调用</h2>
    * <p>1：根据规则生成匿名 token </p>
@@ -42,7 +45,7 @@ public interface SessionService {
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  String createAnonymousSession();
+  SessionBOAnonymous createAnonymousSession();
 
   /**
    * <h2>session创建接口：管理员通过账号密码登录</h2>

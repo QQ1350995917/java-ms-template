@@ -22,8 +22,9 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class SessionBOAnonymous implements SessionBO{
+public class SessionBOAnonymous implements SessionBO {
 
+  private String token;
   /**
    * 已经尝试登录次数
    */
