@@ -1,8 +1,9 @@
-package pwd.initializr.account.business.admin;
+package pwd.initializr.account.business.session;
 
-import pwd.initializr.account.business.bo.AnonymousSessionBO;
-import pwd.initializr.account.business.bo.CaptchaBO;
-import pwd.initializr.account.business.bo.NamedSessionBO;
+import pwd.initializr.account.business.session.bo.SessionBO;
+import pwd.initializr.account.business.session.bo.SessionBOAnonymous;
+import pwd.initializr.account.business.session.bo.CaptchaBO;
+import pwd.initializr.account.business.session.bo.SessionBONamed;
 
 /**
  * pwd.initializr.account.business.admin@ms-web-initializr
@@ -25,7 +26,7 @@ public interface SessionService {
    * date 2020-07-22 16:11
    *
    * @param token 预登录生成的 token
-   * @return pwd.initializr.account.business.bo.CaptchaBO
+   * @return pwd.initializr.account.business.session.bo.CaptchaBO
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
@@ -37,7 +38,7 @@ public interface SessionService {
    * <p>2：把 token 存入redis，并设置过期时间，设置该 token 登录次数为0</p>
    * date 2020-07-22 14:33
    *
-   * @return pwd.initializr.account.business.bo.AnonymousSessionBO
+   * @return pwd.initializr.account.business.session.bo.SessionBOAnonymous
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
@@ -53,12 +54,12 @@ public interface SessionService {
    * date 2020-07-21 22:14
    *
    * @param token token字符串
-   * @param namedSessionBO sessionBo对象
+   * @param sessionBONamed sessionBo对象
    * @return pwd.initializr.account.business.admin.bo.AdminAccountBO
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  void createNamedSession(String token, NamedSessionBO namedSessionBO);
+  void createNamedSession(String token, SessionBONamed sessionBONamed);
 
   /**
    * <h2>token 删除接口，根据 token 删除redis中的 token 信息</h2>
@@ -88,11 +89,11 @@ public interface SessionService {
    * date 2020-07-22 23:42
    *
    * @param token token
-   * @return pwd.initializr.account.business.bo.AnonymousSessionBO
+   * @return pwd.initializr.account.business.session.bo.SessionBOAnonymous
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  AnonymousSessionBO queryAnonymousToken(String token);
+  SessionBOAnonymous querySessionAnonymous(String token);
 
   /**
    * <h2>session查询接口，根据用户ID查询session信息</h2>
@@ -100,34 +101,34 @@ public interface SessionService {
    * date 2020-07-22 16:33
    *
    * @param uid 管理员用户ID
-   * @return pwd.initializr.account.business.bo.NamedSessionBO
+   * @return pwd.initializr.account.business.session.bo.SessionBONamed
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  NamedSessionBO queryNamedSession(Long uid);
+  SessionBONamed querySessionNamed(Long uid);
 
   /**
    * <h2>token 更新接口，更新 token 对应的登录错误次数</h2>
    * date 2020-07-23 23:08
    *
-   * @param anonymousSessionBO token 对象
-   * @return pwd.initializr.account.business.bo.AnonymousSessionBO 更新后的 token 对象
+   * @param sessionBOAnonymous token 对象
+   * @return pwd.initializr.account.business.session.bo.SessionBOAnonymous 更新后的 token 对象
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  void updateAnonymousSession(String token, AnonymousSessionBO anonymousSessionBO);
+  void updateAnonymousSession(String token, SessionBOAnonymous sessionBOAnonymous);
 
   /**
    * <h2>session更新接口，根据用户ID更新session信息</h2>
    * <p>1：在redis中更新session信息</p>
    * date 2020-07-22 16:33
    *
-   * @param namedSessionBO session对象
+   * @param sessionBONamed session对象
    * @return java.lang.Boolean
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  Boolean updateNamedSession(NamedSessionBO namedSessionBO);
+  Boolean updateNamedSession(SessionBONamed sessionBONamed);
 
 
 }

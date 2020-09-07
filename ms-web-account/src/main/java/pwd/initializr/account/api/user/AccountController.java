@@ -18,14 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.account.api.vo.SessionCreateOkOutput;
 import pwd.initializr.account.api.admin.vo.UserAccountOutput;
 import pwd.initializr.account.api.vo.SessionInitOutput;
-import pwd.initializr.account.api.user.vo.SessionCaptchaOutput;
 import pwd.initializr.account.api.user.vo.SignUpByNamePwdInput;
-import pwd.initializr.account.api.user.vo.SignUpFailOutput;
-import pwd.initializr.account.api.user.vo.SignUpFailOutput.FailType;
-import pwd.initializr.account.business.bo.AnonymousSessionBO;
-import pwd.initializr.account.business.bo.CaptchaBO;
-import pwd.initializr.account.business.bo.NamedSessionBO;
-import pwd.initializr.account.business.user.SessionService;
+import pwd.initializr.account.api.vo.SessionStatus;
+import pwd.initializr.account.business.session.SessionService;
+import pwd.initializr.account.business.session.bo.SessionBOAnonymous;
+import pwd.initializr.account.business.session.bo.SessionBONamed;
 import pwd.initializr.account.business.user.UserAccountService;
 import pwd.initializr.account.business.user.UserUserServiceWrap;
 import pwd.initializr.account.business.user.bo.UserAccountBO;
@@ -101,47 +98,64 @@ public class AccountController extends UserController implements AccountApi {
     }
 
     // 账号创建完成后自动登录
-    NamedSessionBO namedSessionBO = new NamedSessionBO(insertedUserAccountBO.getUid(), userUserBO.getName(),
+    SessionBONamed sessionBONamed = new SessionBONamed(insertedUserAccountBO.getUid(), userUserBO.getName(),
         insertedUserAccountBO.getId(), userAccountBO.getLoginName(),
         System.currentTimeMillis());
-    String token = RPCToken.generateToken(namedSessionBO, namedSessionSecret);
-    sessionService.createSession(token, namedSessionBO);
-    outputData(new SessionCreateOkOutput(namedSessionBO.getUid(),namedSessionBO.getAccountId(), token));
+    String token = RPCToken.generateToken(sessionBONamed, namedSessionSecret);
+    //sessionService.createSession(token, sessionBONamed);
+    outputData(new SessionCreateOkOutput(sessionBONamed.getUid(), sessionBONamed.getAccountId(), token));
   }
 
   @Override
-  public void createInitializr(String token) {
-    String cookie = getToken();
-    // TODO 配置化
-    Boolean captchaRequired = true;
-    AnonymousSessionBO anonymousSessionBO = null;
-    // 初次访问没有携带cookie，需要生成新的cookie
-    if (StringUtils.isBlank(cookie)) {
-      cookie = sessionService.createCookie();
-      if (cookie == null) {
-        // 生成新的cookie失败
+  public void createInitializr(Long aid, Long uid, String token) {
+    Boolean captchaRequired = false;
+    SessionBOAnonymous sessionBOAnonymous = null;
+    if (StringUtils.isNotBlank(token)) {
+      // 该请求携带 token，认为二次登陆，检验 token是否存在
+      sessionBOAnonymous = sessionService.querySessionAnonymous(token);
+      if (sessionBOAnonymous != null) {
+        // 识别为有效的匿名 token，延长其在redis的有效期，然后返回
+        sessionService.updateAnonymousSession(token, sessionBOAnonymous);
+      } else {
+        // 识别为非匿名 token，检验提交的 token 是否是具名token
+        SessionBONamed sessionBONamed = sessionService.querySessionNamed(getUid());
+        if (sessionBONamed != null) {
+          // 当前提交的 token 是具名 token 表示该 token 已经登录，无需再次登录
+          SessionInitOutput loginCookieOutput = new SessionInitOutput();
+          loginCookieOutput.setStatus(SessionStatus.NAMED.getNumber());
+          outputData(loginCookieOutput);
+          return;
+        } else {
+          // 当前提交的 token 非有效的匿名 token 也非有效的具名 token ,当做提交的 token 为空处理
+        }
+      }
+    }
+
+    if (sessionBOAnonymous == null) {
+      // 当前提交的 token 非有效的匿名 token 也非有效的具名 token ,当做提交的 token 为空处理
+      // 该请求没有携带 token，认为初次登陆，生成匿名token
+      token = sessionService.createAnonymousSession();
+      if (token == null) {
+        // 生成匿名token失败
         outputException(500);
         return;
       }
-      anonymousSessionBO = new AnonymousSessionBO(0, null);
-    } else {
-      anonymousSessionBO = sessionService.queryCookie(cookie);
-      if (anonymousSessionBO == null) {
-        // token 比较旧，得更新
-        outputException(401, new SignUpFailOutput(FailType.CookieISExpires));
-        return;
-      }
+      sessionBOAnonymous = new SessionBOAnonymous(0, null);
     }
-    if (anonymousSessionBO.getTimes() >= anonymousSessionCaptchaThreshold) {
+
+    // 是否对该匿名 token 产生验证码
+    if (sessionBOAnonymous.getTimes() >= anonymousSessionCaptchaThreshold) {
       captchaRequired = true;
+      sessionService.createCaptcha(token);
     }
-    // 生成新的cookie成，并设置是否需要图形验证码
-    SessionInitOutput loginCookieOutput = new SessionInitOutput();
-    loginCookieOutput.setToken(cookie);
-    loginCookieOutput.setExpires(anonymousSessionExpiresSeconds);
-    loginCookieOutput.setCaptchaRequired(captchaRequired);
-    // TODO 登录方式列表
-    outputData(loginCookieOutput);
+    // 生成新的 token 成，并设置是否需要图形验证码
+    SessionInitOutput loginInitOutput = new SessionInitOutput();
+    loginInitOutput.setStatus(SessionStatus.ANONYMOUS.getNumber());
+    loginInitOutput.setToken(token);
+    loginInitOutput.setExpires(anonymousSessionExpiresSeconds);
+    loginInitOutput.setCaptchaRequired(captchaRequired);
+    // TODO 创建方式列表
+    outputData(loginInitOutput);
   }
 
   @Override
@@ -185,31 +199,7 @@ public class AccountController extends UserController implements AccountApi {
 
   @Override
   public void loginCaptchaRefresh() {
-    String cookie = getToken();
-    if (StringUtils.isBlank(cookie)) {
-      // 参数不合规
-      outputException(401);
-      return;
-    }
-    AnonymousSessionBO anonymousSessionBO = sessionService.queryCookie(cookie);
-    if (anonymousSessionBO == null) {
-      // token 过期
-      outputException(401);
-      return;
-    }
-    if (anonymousSessionBO.getTimes() < anonymousSessionCaptchaThreshold) {
-      // 无需验证码
-      outputException(401);
-      return;
-    }
-    CaptchaBO captchaBO = sessionService.createCaptcha(cookie);
-    if (captchaBO == null) {
-      outputException(500);
-      return;
-    }
-    SessionCaptchaOutput sessionCaptchaOutput = new SessionCaptchaOutput();
-    BeanUtils.copyProperties(captchaBO, sessionCaptchaOutput);
-    outputData(sessionCaptchaOutput);
+
   }
 
   @Override

@@ -95,6 +95,11 @@
     </foreach>
   </update>
 
+  <!--通过用户外键查询-->
+  <update id="enabledAccountNum">
+    select count(*) from initializr_account.admin_account where able = 1 and uid = #{userId}
+  </update>
+
   <!--通过主键启禁-->
   <update id="ableById">
     update initializr_account.admin_account set able = #{able}, update_time = now() where id = #{id} and uid = #{uid}

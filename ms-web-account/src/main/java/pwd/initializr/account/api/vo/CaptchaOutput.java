@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import pwd.initializr.account.business.bo.CaptchaBO;
+import pwd.initializr.account.business.session.bo.CaptchaBO;
 
 /**
  * pwd.initializr.account.api.admin.vo@ms-web-initializr

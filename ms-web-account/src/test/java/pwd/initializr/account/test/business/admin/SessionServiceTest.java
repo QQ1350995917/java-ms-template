@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import pwd.initializr.account.AccountApplication;
-import pwd.initializr.account.business.admin.SessionService;
+import pwd.initializr.account.business.session.SessionService;
 
 /**
  * pwd.initializr.account.test.admin.service@ms-web-initializr

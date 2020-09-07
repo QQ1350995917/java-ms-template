@@ -21,6 +21,7 @@ import pwd.initializr.account.api.admin.vo.AdminUserOutput;
 import pwd.initializr.account.business.admin.AdminAccountService;
 import pwd.initializr.account.business.admin.AdminUserService;
 import pwd.initializr.account.business.admin.AdminUserServiceWrap;
+import pwd.initializr.account.business.session.SessionService;
 import pwd.initializr.account.business.admin.bo.AdminAccountBO;
 import pwd.initializr.account.business.admin.bo.AdminUserBO;
 import pwd.initializr.common.web.api.vo.Meta;
@@ -61,6 +62,8 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
   private AdminUserService adminUserService;
   @Autowired
   private AdminAccountService adminAccountService;
+  @Autowired
+  private SessionService sessionService;
 
   @Override
   public void create(@Valid @NotNull(message = "参数不能为空") AdminCreateInput input) {
@@ -74,34 +77,53 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
 
   @Override
   public void delAccount(
-      @Valid @NotNull(message = "参数不能为空") @Size(message = "参数不能为空") List<Long> ids) {
-    // TODO 同时移除 session
+      @Valid @NotNull(message = "参数不能为空") @Size(message = "参数不能为空") Long userId,
+      @Valid @NotNull(message = "参数不能为空") @Size(message = "参数不能为空") Long accountId) {
+    Integer enabledAccountNum = adminAccountService.enabledAccountNum(userId);
+    if (enabledAccountNum > 1) {
+      Integer result = adminAccountService.deleteById(accountId, userId);
+      super.outputData(200,result);
+    } else {
+      super.outputData(412,"用户的最后一个账号不可被删除");
+    }
   }
 
   @Override
   public void delUser(
       @Valid @NotNull(message = "参数不能为空") @Size(message = "参数不能为空") List<Long> ids) {
-    // TODO 同时移除 session
+    // 同时移除 session
+    ids.forEach(id -> sessionService.deleteNamedSession(id));
     Integer del = adminUserServiceWrap.deleteByUserId(ids);
     outputData(del);
   }
 
   @Override
-  public void disableAccount(@Valid @NotNull(message = "参数不能为空") List<Long> ids) {
-    // TODO 同时移除 session
-
+  public void disableAccount(
+      @Valid @NotNull(message = "参数不能为空") @Size(message = "参数不能为空") Long userId,
+      @Valid @NotNull(message = "参数不能为空") @Size(message = "参数不能为空") Long accountId) {
+    Integer enabledAccountNum = adminAccountService.enabledAccountNum(userId);
+    if (enabledAccountNum > 1) {
+      Integer result = adminAccountService.ableById(accountId, userId,EntityAble.DISABLE);
+      super.outputData(200,result);
+    } else {
+      super.outputData(412,"用户的最后一个账号不可被禁用");
+    }
   }
 
   @Override
   public void disableUser(@Valid @NotNull(message = "参数不能为空") List<Long> ids) {
-    // TODO 同时移除 session
+    // 同时移除 session
+    ids.forEach(id -> sessionService.deleteNamedSession(id));
     Integer able = adminUserService.ableById(ids, EntityAble.DISABLE);
     outputData(200,able);
   }
 
   @Override
-  public void enableAccount(@Valid @NotNull(message = "参数不能为空") List<Long> ids) {
-
+  public void enableAccount(
+      @Valid @NotNull(message = "参数不能为空") @Size(message = "参数不能为空") Long userId,
+      @Valid @NotNull(message = "参数不能为空") @Size(message = "参数不能为空") Long accountId) {
+    Integer able = adminAccountService.ableById(accountId, userId, EntityAble.ENABLE);
+    outputData(200,able);
   }
 
   @Override
@@ -152,7 +174,6 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
     result.setIndex(adminUserBOPageableQueryResult.getIndex());
     result.setSize(adminUserBOPageableQueryResult.getSize());
     outputData(result);
-
   }
 
   @Override

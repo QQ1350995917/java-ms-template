@@ -1,4 +1,4 @@
-package pwd.initializr.account.business.bo;
+package pwd.initializr.account.business.session.bo;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,9 +9,9 @@ import lombok.ToString;
 /**
  * pwd.initializr.account.business.admin.bo@ms-web-initializr
  *
- * <h1>服务层逻辑对象封装：图形验证码</h1>
+ * <h1>服务层逻辑对象封装：管理员会话前cookie信息</h1>
  *
- * date 2020-07-22 15:06
+ * date 2020-07-22 14:46
  *
  * @author DingPengwei[dingpengwei@foxmail.com]
  * @version 1.0.0
@@ -22,21 +22,14 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class CaptchaBO {
+public class SessionBOAnonymous implements SessionBO{
 
   /**
-   * 图形验证码的base64编码
+   * 已经尝试登录次数
    */
-  private String base64;
-
+  private Integer times;
   /**
-   * 用户填写的结果
+   * 期望验证码值
    */
-  private String result;
-
-  /**
-   * 过期时间（单位秒）
-   */
-  private Integer expires;
-
+  private String captcha;
 }

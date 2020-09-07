@@ -1,25 +1,23 @@
-package pwd.initializr.account.business.admin;
+package pwd.initializr.account.business.session;
 
 import com.alibaba.fastjson.JSON;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.UUID;
-import javax.imageio.ImageIO;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-import pwd.initializr.account.business.bo.AnonymousSessionBO;
-import pwd.initializr.account.business.bo.CaptchaBO;
-import pwd.initializr.account.business.bo.NamedSessionBO;
+import pwd.initializr.account.api.vo.SessionInitOutput;
+import pwd.initializr.account.api.vo.SessionStatus;
+import pwd.initializr.account.business.session.bo.SessionBO;
+import pwd.initializr.account.business.session.bo.SessionBOAnonymous;
+import pwd.initializr.account.business.session.bo.CaptchaBO;
+import pwd.initializr.account.business.session.bo.SessionBONamed;
 import pwd.initializr.common.mw.redis.RedisClient;
 import pwd.initializr.common.utils.Cryptographer;
 import pwd.initializr.common.vcode.CaptchaArithmeticCode;
 import pwd.initializr.common.vcode.CaptchaHelper;
 import pwd.initializr.common.vcode.CodeMessage;
-import sun.misc.BASE64Encoder;
 
 /**
  * pwd.initializr.account.business.admin@ms-web-initializr
@@ -58,9 +56,9 @@ public class SessionServiceImpl implements SessionService {
     CaptchaHelper captchaHelper = new CaptchaArithmeticCode();
     CodeMessage codeMessage = captchaHelper.productMessage();
     // 更新redis中的sessionCookie对象
-    AnonymousSessionBO anonymousSessionBO = queryAnonymousToken(token);
-    anonymousSessionBO.setCaptcha(codeMessage.getExpected());
-    updateAnonymousSession(token, anonymousSessionBO);
+    SessionBOAnonymous sessionBOAnonymous = querySessionAnonymous(token);
+    sessionBOAnonymous.setCaptcha(codeMessage.getExpected());
+    updateAnonymousSession(token, sessionBOAnonymous);
     // 输出sessionCookie对象
     String presented = codeMessage.getPresented();
     String base64Image = captchaHelper.productBase64Image(presented);
@@ -75,18 +73,18 @@ public class SessionServiceImpl implements SessionService {
     String uuid = UUID.randomUUID().toString();
     String clearTextToken = currentTimeMillis + ":" + uuid;
     String encryptTextCookie = Cryptographer.encrypt(clearTextToken, anonymousSessionSalt);
-    AnonymousSessionBO anonymousSessionBO = new AnonymousSessionBO(0, null);
+    SessionBOAnonymous sessionBOAnonymous = new SessionBOAnonymous(0, null);
     redisClient.setex(getCookieKeyInRedis(clearTextToken), JSON.toJSONString(
-        anonymousSessionBO),
+        sessionBOAnonymous),
         anonymousSessionInRedisExpiresSeconds);
     return encryptTextCookie;
   }
 
   @Override
-  public void createNamedSession(String token, NamedSessionBO namedSessionBO) {
-    String sessionKeyInRedis = getSessionKeyInRedis(namedSessionBO.getUid());
+  public void createNamedSession(String token, SessionBONamed sessionBONamed) {
+    String sessionKeyInRedis = getSessionKeyInRedis(sessionBONamed.getUid());
     redisClient
-        .setex(sessionKeyInRedis, JSON.toJSONString(namedSessionBO),
+        .setex(sessionKeyInRedis, JSON.toJSONString(sessionBONamed),
             namedSessionInRedisExpiresSeconds);
   }
 
@@ -105,38 +103,38 @@ public class SessionServiceImpl implements SessionService {
   }
 
   @Override
-  public AnonymousSessionBO queryAnonymousToken(String token) {
+  public SessionBOAnonymous querySessionAnonymous(String token) {
     Assert.notNull(token, "token should not be empty");
     String clearTextCookie = Cryptographer.decrypt(token, anonymousSessionSalt);
     String sessionCookieJson = redisClient.get(getCookieKeyInRedis(clearTextCookie));
     if (StringUtils.isBlank(sessionCookieJson)) {
       return null;
     }
-    return JSON.parseObject(sessionCookieJson, AnonymousSessionBO.class);
+    return JSON.parseObject(sessionCookieJson, SessionBOAnonymous.class);
   }
 
   @Override
-  public NamedSessionBO queryNamedSession(Long uid) {
+  public SessionBONamed querySessionNamed(Long uid) {
     if (uid == null || uid < 1) {
       return null;
     }
     String key = getSessionKeyInRedis(uid);
     String session = redisClient.get(key);
-    return JSON.parseObject(session, NamedSessionBO.class);
+    return JSON.parseObject(session, SessionBONamed.class);
   }
 
   @Override
-  public void updateAnonymousSession(String token, AnonymousSessionBO anonymousSessionBO) {
+  public void updateAnonymousSession(String token, SessionBOAnonymous sessionBOAnonymous) {
     String clearTextCookie = Cryptographer.decrypt(token, anonymousSessionSalt);
     redisClient.del(getCookieKeyInRedis(clearTextCookie));
-    redisClient.setex(getCookieKeyInRedis(clearTextCookie), JSON.toJSONString(anonymousSessionBO),
+    redisClient.setex(getCookieKeyInRedis(clearTextCookie), JSON.toJSONString(sessionBOAnonymous),
         anonymousSessionInRedisExpiresSeconds);
   }
 
   @Override
-  public Boolean updateNamedSession(NamedSessionBO namedSessionBO) {
-    String key = StringUtils.join(new String[]{SESSION_PREFIX, namedSessionBO.getId().toString()});
-    if (!"0".equals(redisClient.set(key, JSON.toJSONString(namedSessionBO)))) {
+  public Boolean updateNamedSession(SessionBONamed sessionBONamed) {
+    String key = StringUtils.join(new String[]{SESSION_PREFIX, sessionBONamed.getId().toString()});
+    if (!"0".equals(redisClient.set(key, JSON.toJSONString(sessionBONamed)))) {
       return true;
     } else {
       return false;

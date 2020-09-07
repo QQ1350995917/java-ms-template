@@ -32,6 +32,11 @@ public class AdminAccountServiceImpl implements AdminAccountService {
   private AdminAccountDao adminAccountDao;
 
   @Override
+  public Integer ableById(Long id, Long uid, EntityAble able) {
+    return this.adminAccountDao.ableById(id,uid,able.getNumber());
+  }
+
+  @Override
   public Integer ableByIds(List<Long> ids, EntityAble able) {
     return adminAccountDao.ableByIds(ids, able.getNumber());
   }
@@ -60,6 +65,11 @@ public class AdminAccountServiceImpl implements AdminAccountService {
   @Override
   public Integer deleteByUserId(List<Long> userIds) {
     return this.adminAccountDao.deleteByUserIds(userIds);
+  }
+
+  @Override
+  public Integer enabledAccountNum(Long userId) {
+    return this.adminAccountDao.enabledAccountNum(userId);
   }
 
   /**

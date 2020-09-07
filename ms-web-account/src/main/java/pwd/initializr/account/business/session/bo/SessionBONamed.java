@@ -1,4 +1,4 @@
-package pwd.initializr.account.business.bo;
+package pwd.initializr.account.business.session.bo;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,9 +21,9 @@ import pwd.initializr.account.rpc.RPCSession;
 @Getter
 @Setter
 @ToString
-public class NamedSessionBO extends RPCSession {
+public class SessionBONamed extends RPCSession implements SessionBO {
 
-  public NamedSessionBO(Long uid, String uName, Long accountId, String accountName,
+  public SessionBONamed(Long uid, String uName, Long accountId, String accountName,
       Long timestamp) {
     super(uid, uName, accountId, accountName, timestamp);
   }

@@ -104,6 +104,17 @@ public interface AdminAccountDao {
   int deleteByUserIds(@Param("userIds") List<Long> userIds);
 
   /**
+   * <h2>根据用户外键查询可用账户数量</h2>
+   * date 2020-09-07 11:15
+   *
+   * @param userId 用户ID
+   * @return int
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  int enabledAccountNum(@Param("userId") Long userId);
+
+  /**
    * 新增数据
    *
    * @param adminAccountEntity 实例对象

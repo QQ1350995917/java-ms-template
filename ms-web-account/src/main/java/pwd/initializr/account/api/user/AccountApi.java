@@ -64,7 +64,11 @@ public interface AccountApi {
    */
   @ApiOperation(value = "初始化登录环境")
   @GetMapping(value = {"/init"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  void createInitializr(@RequestHeader(value = "x-token", required = false) String token);
+  void createInitializr(
+      @RequestHeader(value = "x-aid", required = false) Long aid,
+      @RequestHeader(value = "x-uid", required = false) Long uid,
+      @RequestHeader(value = "x-token", required = false) String token
+  );
 
   /**
    * <h2>通过账号ID删除账号</h2>

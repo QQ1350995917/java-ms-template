@@ -50,7 +50,9 @@ public interface AdminApi {
   @ApiOperation(value = "删除账户，最后一个可用账户不可被删除")
   @DeleteMapping(value = {"/account"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   void delAccount(
-      @RequestBody @Valid @NotNull(message = "参数不能为空") @Size(message = "参数不能为空") List<Long> ids);
+      @RequestParam("userId") @Valid @NotNull(message = "参数不能为空") @Size(message = "参数不能为空") Long userId,
+      @RequestParam("accountId") @Valid @NotNull(message = "参数不能为空") @Size(message = "参数不能为空") Long accountId
+      );
 
   @ApiOperation(value = "删除用户，同时删除其下所有账户")
   @DeleteMapping(value = {"/user"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -59,7 +61,10 @@ public interface AdminApi {
 
   @ApiOperation(value = "禁用账户，最后一个可用账户不可被禁用")
   @PatchMapping(value = {"/account/disable"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  void disableAccount(@RequestBody @Valid @NotNull(message = "参数不能为空") List<Long> ids);
+  void disableAccount(
+      @RequestParam("userId") @Valid @NotNull(message = "参数不能为空") @Size(message = "参数不能为空") Long userId,
+      @RequestParam("accountId") @Valid @NotNull(message = "参数不能为空") @Size(message = "参数不能为空") Long accountId
+  );
 
   @ApiOperation(value = "禁用用户，同时禁用其下所有账户")
   @PatchMapping(value = {"/user/disable"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -67,7 +72,10 @@ public interface AdminApi {
 
   @ApiOperation(value = "启用账户")
   @PatchMapping(value = {"/account/enable"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  void enableAccount(@RequestBody @Valid @NotNull(message = "参数不能为空") List<Long> ids);
+  void enableAccount(
+      @RequestParam("userId") @Valid @NotNull(message = "参数不能为空") @Size(message = "参数不能为空") Long userId,
+      @RequestParam("accountId") @Valid @NotNull(message = "参数不能为空") @Size(message = "参数不能为空") Long accountId
+  );
 
   @ApiOperation(value = "启用用户，同时启用其下所有账户")
   @PatchMapping(value = {"/user/enable"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

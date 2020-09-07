@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.account.api.admin.vo.UserAccountOutput;
 import pwd.initializr.account.api.admin.vo.UserCreateInput;
 import pwd.initializr.account.api.admin.vo.UserUserOutput;
+import pwd.initializr.account.business.session.SessionService;
 import pwd.initializr.account.business.user.UserAccountService;
 import pwd.initializr.account.business.user.UserUserService;
 import pwd.initializr.account.business.user.UserUserServiceWrap;
@@ -42,7 +43,7 @@ import pwd.initializr.common.web.persistence.entity.EntityAble;
 @Api(
     tags = "系统用户管理",
     value = "userManageApi",
-    description = "[用户/账户列表，用户/账户详情，用户/账户禁用/启用，用户/账户删除]"
+    description = "[用户/账户创建，用户/账户列表，用户/账户详情，用户/账户禁用/启用，用户/账户删除]"
 )
 @RestController(value = "userManageApi")
 @RequestMapping(value = "/api/admin/user")
@@ -50,12 +51,12 @@ public class UserController extends AdminController implements UserApi {
 
   @Autowired
   private UserAccountService userAccountService;
-
   @Autowired
   private UserUserService userUserService;
-
   @Autowired
   private UserUserServiceWrap userUserServiceWrap;
+  @Autowired
+  private SessionService sessionService;
 
   @Override
   public void create(@Valid @NotNull(message = "参数不能为空") UserCreateInput input) {
@@ -70,12 +71,14 @@ public class UserController extends AdminController implements UserApi {
 
   @Override
   public void delUser(@Valid @NotNull(message = "参数不能为空") List<Long> ids) {
+    ids.forEach(id -> sessionService.deleteNamedSession(id));
     Integer result = userUserServiceWrap.deleteByUserId(ids);
     outputData(200, result);
   }
 
   @Override
   public void disableUser(@Valid @NotNull(message = "参数不能为空") List<Long> ids) {
+    ids.forEach(id -> sessionService.deleteNamedSession(id));
     Integer result = userUserService.ableById(ids, EntityAble.DISABLE);
     outputData(200, result);
   }

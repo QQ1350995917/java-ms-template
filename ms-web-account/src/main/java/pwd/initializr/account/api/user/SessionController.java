@@ -16,10 +16,10 @@ import pwd.initializr.account.api.vo.SessionCreateOkOutput;
 import pwd.initializr.account.api.vo.CaptchaOutput;
 import pwd.initializr.account.api.vo.SessionInitOutput;
 import pwd.initializr.account.api.user.vo.LoginInput;
-import pwd.initializr.account.business.admin.SessionService;
-import pwd.initializr.account.business.bo.AnonymousSessionBO;
-import pwd.initializr.account.business.bo.CaptchaBO;
-import pwd.initializr.account.business.bo.NamedSessionBO;
+import pwd.initializr.account.business.session.SessionService;
+import pwd.initializr.account.business.session.bo.SessionBOAnonymous;
+import pwd.initializr.account.business.session.bo.CaptchaBO;
+import pwd.initializr.account.business.session.bo.SessionBONamed;
 import pwd.initializr.account.business.user.UserAccountService;
 import pwd.initializr.account.business.user.UserUserService;
 import pwd.initializr.account.business.user.bo.UserAccountBO;
@@ -79,20 +79,20 @@ public class SessionController extends UserController implements SessionApi {
       outputException(401, new SessionCreateFailOutput(FailType.ParamsISNull));
       return;
     }
-    AnonymousSessionBO anonymousSessionBO = sessionService.queryAnonymousToken(anonymousToken);
-    if (anonymousSessionBO == null) {
+    SessionBOAnonymous sessionBOAnonymous = sessionService.querySessionAnonymous(anonymousToken);
+    if (sessionBOAnonymous == null) {
       // sessionCookie 过期
       outputException(401, (Object) new SessionCreateFailOutput(FailType.TokenISExpires));
       return;
     }
-    if (anonymousSessionBO.getTimes() >= anonymousSessionCaptchaThreshold) {
+    if (sessionBOAnonymous.getTimes() >= anonymousSessionCaptchaThreshold) {
       // 需要校验验证码
       if (StringUtils.isBlank(input.getCaptcha())) {
         // 识别输入的验证码为空
         outputException(401, new SessionCreateFailOutput(FailType.CaptchaISNull));
         return;
       }
-      if (!input.getCaptcha().equals(anonymousSessionBO.getCaptcha())) {
+      if (!input.getCaptcha().equals(sessionBOAnonymous.getCaptcha())) {
         // 验证码错误
         outputException(401, new SessionCreateFailOutput(FailType.CaptchaISError));
         return;
@@ -103,9 +103,9 @@ public class SessionController extends UserController implements SessionApi {
         .queryByNameAndPwd(input.getLoginName(), input.getLoginPwd());
     if (accountByNameAndPwd == null) {
       // 登录失败，更新错误登录次数
-      anonymousSessionBO.setTimes(anonymousSessionBO.getTimes() + 1);
-      sessionService.updateAnonymousSession(anonymousToken, anonymousSessionBO);
-      if (anonymousSessionBO.getTimes() >= anonymousSessionCaptchaThreshold) {
+      sessionBOAnonymous.setTimes(sessionBOAnonymous.getTimes() + 1);
+      sessionService.updateAnonymousSession(anonymousToken, sessionBOAnonymous);
+      if (sessionBOAnonymous.getTimes() >= anonymousSessionCaptchaThreshold) {
         outputException(401, new SessionCreateFailOutput(FailType.CaptchaISNull));
       } else {
         outputException(401, new SessionCreateFailOutput(FailType.ParamsISError));
@@ -120,13 +120,13 @@ public class SessionController extends UserController implements SessionApi {
       return;
     }
 
-    NamedSessionBO namedSessionBO = new NamedSessionBO(userUserBO.getId(), userUserBO.getName(),
+    SessionBONamed sessionBONamed = new SessionBONamed(userUserBO.getId(), userUserBO.getName(),
         accountByNameAndPwd.getId(), accountByNameAndPwd.getLoginName(),
         System.currentTimeMillis());
-    String token = RPCToken.generateToken(namedSessionBO, namedSessionSecret);
-    sessionService.createNamedSession(token, namedSessionBO);
+    String token = RPCToken.generateToken(sessionBONamed, namedSessionSecret);
+    sessionService.createNamedSession(token, sessionBONamed);
     sessionService.deleteAnonymousToken(anonymousToken);
-    outputData(new SessionCreateOkOutput(namedSessionBO.getUid(),namedSessionBO.getAccountId(), token));
+    outputData(new SessionCreateOkOutput(sessionBONamed.getUid(), sessionBONamed.getAccountId(), token));
   }
 
 
@@ -138,13 +138,13 @@ public class SessionController extends UserController implements SessionApi {
       outputException(401);
       return;
     }
-    AnonymousSessionBO anonymousSessionBO = sessionService.queryAnonymousToken(anonymousToken);
-    if (anonymousSessionBO == null) {
+    SessionBOAnonymous sessionBOAnonymous = sessionService.querySessionAnonymous(anonymousToken);
+    if (sessionBOAnonymous == null) {
       // token 过期
       outputException(401);
       return;
     }
-    if (anonymousSessionBO.getTimes() < anonymousSessionCaptchaThreshold) {
+    if (sessionBOAnonymous.getTimes() < anonymousSessionCaptchaThreshold) {
       // 无需验证码
       outputException(401);
       return;
@@ -163,7 +163,7 @@ public class SessionController extends UserController implements SessionApi {
   public void loginInitializr(String token) {
     String anonymousToken = getToken();
     Boolean captchaRequired = false;
-    AnonymousSessionBO anonymousSessionBO = null;
+    SessionBOAnonymous sessionBOAnonymous = null;
     // 初次访问没有携带 token，需要生成新的 token
     if (StringUtils.isBlank(anonymousToken)) {
       anonymousToken = sessionService.createAnonymousSession();
@@ -172,16 +172,16 @@ public class SessionController extends UserController implements SessionApi {
         outputException(500);
         return;
       }
-      anonymousSessionBO = new AnonymousSessionBO(0, null);
+      sessionBOAnonymous = new SessionBOAnonymous(0, null);
     } else {
-      anonymousSessionBO = sessionService.queryAnonymousToken(anonymousToken);
-      if (anonymousSessionBO == null) {
+      sessionBOAnonymous = sessionService.querySessionAnonymous(anonymousToken);
+      if (sessionBOAnonymous == null) {
         // token 比较旧，得更新
         outputException(401, new SessionCreateFailOutput(FailType.TokenISExpires));
         return;
       }
     }
-    if (anonymousSessionBO.getTimes() >= anonymousSessionCaptchaThreshold) {
+    if (sessionBOAnonymous.getTimes() >= anonymousSessionCaptchaThreshold) {
       captchaRequired = true;
     }
     // 生成新的 token，并设置是否需要图形验证码
@@ -204,7 +204,7 @@ public class SessionController extends UserController implements SessionApi {
 
   @Override
   public void querySessionInfo() {
-    NamedSessionBO session = sessionService.queryNamedSession(getUid());
+    SessionBONamed session = sessionService.querySessionNamed(getUid());
     if (session == null) {
       super.outputException(401);
       return;

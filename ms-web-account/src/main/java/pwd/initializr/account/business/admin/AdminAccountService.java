@@ -21,6 +21,18 @@ import pwd.initializr.common.web.persistence.entity.EntityAble;
  */
 public interface AdminAccountService {
 
+
+  /**
+   * <h2>通过主键启用/禁用账户</h2>
+   * date 2020-07-28 16:09
+   *
+   * @return java.lang.Integer
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  Integer ableById(Long id,Long uid, EntityAble able);
+
+
   /**
    * <h2>通过主键启用/禁用账户</h2>
    * date 2020-07-28 16:09
@@ -73,6 +85,17 @@ public interface AdminAccountService {
    * @since DistributionVersion
    */
   Integer deleteByUserId(List<Long> userIds);
+
+  /**
+   * <h2>根据用户ID查询可用的账户上个月狂</h2>
+   * date 2020-09-07 11:13
+   *
+   * @param userId 用户ID
+   * @return java.lang.Integer
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  Integer enabledAccountNum(Long userId);
 
   /**
    * 新增数据
