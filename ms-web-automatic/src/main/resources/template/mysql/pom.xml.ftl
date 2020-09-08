@@ -39,7 +39,9 @@
   </dependencies>
 
 
+
   <build>
+    <#noparse>
     <resources>
       <!--将resources下的配置文件拷贝到target/config目录下 -->
       <resource>
@@ -52,6 +54,7 @@
         <targetPath>${project.build.directory}/classes</targetPath>
       </resource>
     </resources>
+    </#noparse>
     <plugins>
       <plugin>
         <!-- (true)skip test    -->
@@ -82,7 +85,9 @@
               <goal>copy-dependencies</goal>
             </goals>
             <configuration>
+              <#noparse>
               <outputDirectory>${project.build.directory}/lib</outputDirectory>
+              </#noparse>
             </configuration>
           </execution>
         </executions>
