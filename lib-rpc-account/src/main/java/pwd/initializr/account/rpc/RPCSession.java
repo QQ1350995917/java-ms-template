@@ -47,19 +47,4 @@ public class RPCSession implements Serializable {
    */
   private Long timestamp;
 
-  public RPCSession(Long uid, String uName, Long accountId, String accountName,
-      Long timestamp) {
-    this.uid = uid;
-    this.uName = uName;
-    this.accountId = accountId;
-    this.accountName = accountName;
-    this.timestamp = timestamp;
-  }
-
-  @Deprecated
-  private Long id;
-  @Deprecated
-  private String loginName;
-  @Deprecated
-  private String phoneNumber;
 }

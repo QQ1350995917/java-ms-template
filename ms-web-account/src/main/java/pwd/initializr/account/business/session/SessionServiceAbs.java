@@ -4,20 +4,16 @@ import com.alibaba.fastjson.JSON;
 import java.util.UUID;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-import pwd.initializr.account.api.vo.SessionInitOutput;
-import pwd.initializr.account.api.vo.SessionStatus;
 import pwd.initializr.account.business.session.bo.SessionBO;
 import pwd.initializr.account.business.session.bo.SessionBOAnonymous;
 import pwd.initializr.account.business.session.bo.CaptchaBO;
 import pwd.initializr.account.business.session.bo.SessionBONamed;
+import pwd.initializr.common.captcha.CaptchaArithmetic;
 import pwd.initializr.common.mw.redis.RedisClient;
 import pwd.initializr.common.utils.Cryptographer;
-import pwd.initializr.common.vcode.CaptchaArithmeticCode;
-import pwd.initializr.common.vcode.CaptchaHelper;
-import pwd.initializr.common.vcode.CodeMessage;
+import pwd.initializr.common.captcha.CaptchaHelper;
+import pwd.initializr.common.captcha.CaptchaMessage;
 
 /**
  * pwd.initializr.account.business.admin@ms-web-initializr
@@ -45,18 +41,15 @@ public abstract class SessionServiceAbs implements SessionService {
 
   @Override
   public CaptchaBO createCaptcha(String token) {
-    // TODO 生成验证码的逻辑用着不舒服
-    CaptchaHelper captchaHelper = new CaptchaArithmeticCode();
-    CodeMessage codeMessage = captchaHelper.productMessage();
+    CaptchaMessage captchaMessage = new CaptchaArithmetic().createCaptcha();
     // 更新redis中的sessionCookie对象
     SessionBOAnonymous sessionBOAnonymous = querySessionAnonymous(token);
-    sessionBOAnonymous.setCaptcha(codeMessage.getExpected());
+    sessionBOAnonymous.setCaptcha(captchaMessage.getExpected());
     updateAnonymousSession(token, sessionBOAnonymous);
     // 输出sessionCookie对象
-    String presented = codeMessage.getPresented();
-    String base64Image = captchaHelper.productBase64Image(presented);
+    String presented = captchaMessage.getPresented();
     CaptchaBO captchaBO = new CaptchaBO();
-    captchaBO.setBase64(base64Image);
+    captchaBO.setBase64(presented);
     return captchaBO;
   }
 
@@ -146,7 +139,7 @@ public abstract class SessionServiceAbs implements SessionService {
 
   @Override
   public Boolean updateNamedSession(SessionBONamed sessionBONamed) {
-    String key = StringUtils.join(new String[]{getSessionPrefix(), sessionBONamed.getId().toString()});
+    String key = StringUtils.join(new String[]{getSessionPrefix(), sessionBONamed.getUid().toString()});
     if (!"0".equals(redisClient.set(key, JSON.toJSONString(sessionBONamed)))) {
       return true;
     } else {

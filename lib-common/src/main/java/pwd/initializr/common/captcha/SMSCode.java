@@ -1,4 +1,4 @@
-package pwd.initializr.common.vcode;
+package pwd.initializr.common.captcha;
 
 import java.awt.image.BufferedImage;
 
@@ -15,20 +15,13 @@ import java.awt.image.BufferedImage;
  */
 public class SMSCode extends CaptchaHelper {
 
-  private final String originCode = "0123456789";
-
   @Override
-  public String getOriginCode() {
-    return originCode;
-  }
-
-  @Override
-  public BufferedImage productImage() {
+  protected String getPresented() {
     return null;
   }
 
   @Override
-  public BufferedImage productImage(String codeMessage) {
+  protected String getExpected() {
     return null;
   }
 }

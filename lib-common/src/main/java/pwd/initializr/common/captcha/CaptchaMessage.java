@@ -1,4 +1,4 @@
-package pwd.initializr.common.vcode;
+package pwd.initializr.common.captcha;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,8 +22,14 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class CodeMessage {
+public class CaptchaMessage {
 
+    /**
+     * Base64编码的验证码图片
+     */
     private String presented;
+    /**
+     * 验证码图片中的期望值
+     */
     private String expected;
 }

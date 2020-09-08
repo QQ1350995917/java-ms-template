@@ -16,9 +16,9 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pwd.initializr.common.vcode.CaptchaArithmeticCode;
-import pwd.initializr.common.vcode.CaptchaHelper;
-import pwd.initializr.common.vcode.CodeMessage;
+import pwd.initializr.common.captcha.CaptchaArithmetic;
+import pwd.initializr.common.captcha.CaptchaHelper;
+import pwd.initializr.common.captcha.CaptchaMessage;
 
 /**
  * pwd.initializr.account@ms-web-initializr
@@ -40,7 +40,7 @@ import pwd.initializr.common.vcode.CodeMessage;
 @MapperScan("pwd.initializr.account.persistence")
 public class AccountApplication {
 
-  private CaptchaHelper captchaHelper = new CaptchaArithmeticCode();
+  private CaptchaHelper captchaHelper = new CaptchaArithmetic();
 
   public static void main(String[] args) {
     SpringApplication.run(AccountApplication.class, args);
@@ -55,9 +55,9 @@ public class AccountApplication {
     response.addHeader("Cache-Control", "post-check=0, pre-check=0");
     response.setHeader("Pragma", "no-cache");
     response.setContentType("image/jpeg");
-    CodeMessage codeMessage = captchaHelper.productMessage();
-//    request.getSession().setAttribute(Constants.KAPTCHA_SESSION_KEY, codeMessage.getExpected());
-    BufferedImage bufferedImage = captchaHelper.productImage(codeMessage.getPresented());
+    CaptchaMessage captchaMessage = captchaHelper.createCaptcha();
+//    request.getSession().setAttribute(Constants.KAPTCHA_SESSION_KEY, captchaMessage.getExpected());
+    BufferedImage bufferedImage = captchaHelper.productImage(captchaMessage.getPresented());
     ServletOutputStream out = null;
     try {
       out = response.getOutputStream();

@@ -20,26 +20,26 @@
 //    private final String originCode = "abcdefghigklmnopqrstuvwxyzZXCVBNMASDFGHJKLQWERTYUIOP0123456789";
 //
 //    @Override
-//    public String getOriginCode() {
+//    public String getPresented() {
 //        return originCode;
 //    }
 //
 //    @Override
-//    public CodeMessage productMessage() {
-//        return productMessage(null);
+//    public CaptchaMessage createCaptcha() {
+//        return createCaptcha(null);
 //    }
 //
 //    @Override
-//    protected CodeMessage productMessage(Integer length) {
+//    protected CaptchaMessage createCaptcha(Integer length) {
 //        DefaultKaptcha captchaProducer = new DefaultKaptcha();
 //        captchaProducer.setConfig(createConfig());
 //        String text = captchaProducer.createText();
-//        return new CodeMessage(text,text);
+//        return new CaptchaMessage(text,text);
 //    }
 //
 //    @Override
 //    public BufferedImage productImage() {
-//        return productImage(productMessage().getPresented());
+//        return productImage(createCaptcha().getPresented());
 //    }
 //
 //    @Override
