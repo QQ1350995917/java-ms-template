@@ -1,12 +1,5 @@
 package pwd.initializr.account;
 
-import io.swagger.annotations.ApiOperation;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import javax.imageio.ImageIO;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -18,7 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.common.captcha.CaptchaArithmetic;
 import pwd.initializr.common.captcha.CaptchaHelper;
-import pwd.initializr.common.captcha.CaptchaMessage;
 
 /**
  * pwd.initializr.account@ms-web-initializr
@@ -44,35 +36,6 @@ public class AccountApplication {
 
   public static void main(String[] args) {
     SpringApplication.run(AccountApplication.class, args);
-  }
-
-  @ApiOperation(value = "获取一个验证码")
-  @GetMapping(value = {"/captcha"}, produces = "application/json;charset=UTF-8")
-  public void applyVCode(HttpServletRequest request, HttpServletResponse response) {
-
-    response.setDateHeader("Expires", 0);
-    response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
-    response.addHeader("Cache-Control", "post-check=0, pre-check=0");
-    response.setHeader("Pragma", "no-cache");
-    response.setContentType("image/jpeg");
-    CaptchaMessage captchaMessage = captchaHelper.createCaptcha();
-//    request.getSession().setAttribute(Constants.KAPTCHA_SESSION_KEY, captchaMessage.getExpected());
-    BufferedImage bufferedImage = captchaHelper.productImage(captchaMessage.getPresented());
-    ServletOutputStream out = null;
-    try {
-      out = response.getOutputStream();
-      ImageIO.write(bufferedImage, "jpg", out);
-      out.flush();
-    } catch (IOException e) {
-    } finally {
-      if (out != null) {
-        try {
-          out.close();
-        } catch (IOException e) {
-          e.printStackTrace();
-        }
-      }
-    }
   }
 
   @GetMapping(value = "")
