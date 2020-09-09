@@ -25,7 +25,7 @@ import lombok.ToString;
 public class ProjectBO {
     private String exportDir = "E:\\workspace\\github\\ms-web-initializr";
     private String packageName = "me.taoqigui.automatic";
-    private String projectName = "ms-web-automatic-test";
+    private String projectName = "project-generator-test";
     private String projectVersion = "0.0.1-SNAPSHOT";
     private String applicationName = "AutomaticTestApplication";
     private int projectPort = 80;

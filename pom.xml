@@ -23,8 +23,6 @@
     <module>lib-rpc-search</module>
     <module>ms-web-access</module>
     <module>ms-web-account</module>
-    <module>ms-web-automatic</module>
-    <module>ms-web-automatic-test</module>
     <module>ms-web-book</module>
     <module>ms-web-configure</module>
     <module>ms-web-etl</module>
@@ -38,6 +36,8 @@
     <module>ms-web-search</module>
     <module>ms-web-storage</module>
     <module>ms-web-typeface</module>
+    <module>project-generator</module>
+    <module>project-generator-test</module>
     <module>widget-tool</module>
   </modules>
   <version>0.0.1-SNAPSHOT</version>
