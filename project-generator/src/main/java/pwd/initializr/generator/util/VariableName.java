@@ -1,4 +1,4 @@
-package pwd.initializr.automatic.util;
+package pwd.initializr.generator.util;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

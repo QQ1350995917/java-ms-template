@@ -1,10 +1,5 @@
-package pwd.initializr.automatic.business.mysql.project;
+package pwd.initializr.generator.business.mysql.project;
 
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**

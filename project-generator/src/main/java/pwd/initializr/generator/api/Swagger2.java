@@ -1,4 +1,4 @@
-package pwd.initializr.automatic.api;
+package pwd.initializr.generator.api;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -19,7 +19,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  */
 @Configuration
 @EnableSwagger2
-@ComponentScan(basePackages = "pwd.initializr.automatic.api")
+@ComponentScan(basePackages = "pwd.initializr.generator.api")
 public class Swagger2 extends ApiSwagger2 {
 
   @Override

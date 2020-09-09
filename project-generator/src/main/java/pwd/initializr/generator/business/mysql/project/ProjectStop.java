@@ -1,4 +1,4 @@
-package pwd.initializr.automatic.business.mysql.project;
+package pwd.initializr.generator.business.mysql.project;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,14 +16,12 @@ import java.util.Map;
  * @version 1.0.0
  * @since DistributionVersion
  */
-public class ProjectStart extends ProjectFile {
+public class ProjectStop extends ProjectFile {
 
     private Map<String, Object> data = new LinkedHashMap<>();
     private String fileDir;
 
-    public ProjectStart(ProjectBO projectBO) {
-        this.data.put("projectName", projectBO.getProjectName());
-        this.data.put("projectVersion", projectBO.getProjectVersion());
+    public ProjectStop(ProjectBO projectBO) {
         this.fileDir = projectBO.getExportDir() + File.separator + projectBO.getProjectName() + File.separator + "sh";
     }
 
@@ -34,7 +32,7 @@ public class ProjectStart extends ProjectFile {
 
     @Override
     protected String getTemplate() {
-        return "mysql/bin/start.sh.ftl";
+        return "mysql/bin/stop.sh.ftl";
     }
 
     @Override
@@ -45,7 +43,7 @@ public class ProjectStart extends ProjectFile {
             fileDir.mkdirs();
         }
 
-        String filePath = this.fileDir + File.separator + "start.sh";
+        String filePath = this.fileDir + File.separator + "stop.sh";
         return new File(filePath);
     }
 }

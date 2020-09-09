@@ -1,4 +1,4 @@
-package pwd.initializr.automatic.business.mysql.database;
+package pwd.initializr.generator.business.mysql.database;
 
 
 import java.sql.Connection;

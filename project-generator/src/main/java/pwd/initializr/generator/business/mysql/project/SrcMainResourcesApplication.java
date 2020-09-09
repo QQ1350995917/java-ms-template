@@ -1,4 +1,4 @@
-package pwd.initializr.automatic.business.mysql.project;
+package pwd.initializr.generator.business.mysql.project;
 
 import java.util.Map;
 

@@ -1,4 +1,4 @@
-package pwd.initializr.automatic.util;
+package pwd.initializr.generator.util;
 
 /**
  * pwd.initializr.automatic.util@ms-web-initializr

@@ -1,4 +1,4 @@
-package pwd.initializr.automatic;
+package pwd.initializr.generator;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 @RestController
-@ComponentScan(basePackages = {"pwd.initializr.common.web", "pwd.initializr.automatic"})
+@ComponentScan(basePackages = {"pwd.initializr.common.web", "pwd.initializr.generator"})
 public class AutomaticApplication {
 
     public static void main(String[] args) {

@@ -1,4 +1,4 @@
-package pwd.initializr.automatic.business.mysql.project;
+package pwd.initializr.generator.business.mysql.project;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,36 +16,34 @@ import java.util.Map;
  * @version 1.0.0
  * @since DistributionVersion
  */
-public class ProjectPom extends ProjectFile {
+public abstract class SrcMainResources extends ProjectFile {
 
-    private Map<String, Object> data = new LinkedHashMap<>();
-    private String fileDir;
+    protected String filePath;
+    protected Map<String, Object> data = new LinkedHashMap<>();
 
-    public ProjectPom(ProjectBO projectBO) {
+    public SrcMainResources(ProjectBO projectBO) {
+        this.data.put("projectPackage", projectBO.getPackageName());
         this.data.put("projectName", projectBO.getProjectName());
         this.data.put("projectVersion", projectBO.getProjectVersion());
-        this.data.put("projectPackage", projectBO.getPackageName());
         this.data.put("applicationName", projectBO.getApplicationName());
-        this.fileDir = projectBO.getExportDir() + File.separator + projectBO.getProjectName();
-    }
 
-    @Override
-    protected Map<String, Object> getData() {
-        return this.data;
-    }
-
-    @Override
-    protected String getTemplate() {
-        return "mysql/pom.xml.ftl";
+        this.filePath = projectBO.getExportDir()
+            + File.separator + projectBO.getProjectName()
+            + File.separator + "src"
+            + File.separator + "main"
+            + File.separator + "resources"
+        ;
     }
 
     @Override
     protected File getOutputFile() throws IOException {
-        File fileDir = new File(this.fileDir);
+        File fileDir = new File(this.filePath);
         if (!fileDir.exists()) {
             fileDir.mkdirs();
         }
-        String filePath = this.fileDir + File.separator + "pom.xml";
+        String filePath = this.filePath + File.separator + getResourceName();
         return new File(filePath);
     }
+
+    protected abstract String getResourceName();
 }

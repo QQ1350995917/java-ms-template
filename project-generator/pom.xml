@@ -108,7 +108,7 @@
             <manifest>
               <addClasspath>true</addClasspath>
               <classpathPrefix>lib/</classpathPrefix>
-              <mainClass>pwd.initializr.automatic.AutomaticApplication</mainClass>
+              <mainClass>pwd.initializr.generator.AutomaticApplication</mainClass>
               <useUniqueVersions>false</useUniqueVersions>
             </manifest>
             <!-- 给清单文件添加键值对(配置文件外置) -->
