@@ -60,7 +60,7 @@ public class WordToPdfByOpenoffice {
     return false;
   }
   public static void main(String[] args) {
-    officeToPDF("C:\\Users\\Administrator\\Desktop\\自动报告\\template.docx", "C:\\Users\\Administrator\\Desktop\\自动报告\\template.pdf");
+    officeToPDF("C:\\Users\\Administrator\\Desktop\\自动报告\\templates.docx", "C:\\Users\\Administrator\\Desktop\\自动报告\\templates.pdf");
 //    officeToPDF("C:\\Users\\Administrator\\Desktop\\自动报告\\xxx.docx", "C:\\Users\\Administrator\\Desktop\\自动报告\\xxx.pdf");
   }
 

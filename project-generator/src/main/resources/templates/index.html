@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>ProjectGenerator</title>
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+  <style>
+    .row-bg {
+      background-color: #f9fafc;
+    }
+    .grid-content {
+      background: #fafafa;
+    }
+    .text {
+      font-size: 14px;
+    }
+    .item {
+      padding: 5px 0;
+    }
+    .box-card {
+      width: 100%;
+    }
+    .submit{
+      width: 100%;
+      margin: 20px auto;
+    }
+  </style>
+</head>
+<body>
+<el-container id="container">
+  <el-header style="padding: 0px;height: 42px">
+    <el-row>
+      <el-col :span="12" :offset="6">
+        <template>
+          <el-tabs v-model="activeName" type="card">
+            <el-tab-pane label="MySQL" name="0"></el-tab-pane>
+          </el-tabs>
+        </template>
+      </el-col>
+    </el-row>
+  </el-header>
+  <el-main style="padding: 0px">
+    <el-row class="row-bg">
+      <el-col :span="12" :offset="6">
+        <div class="grid-content">
+          <el-tag style="margin-top: 5px">工程属性</el-tag>
+          <el-card class="box-card">
+            <div class="text item">
+              <el-input placeholder="必填" v-model="projectName">
+                <template slot="prepend">工程名称</template>
+              </el-input>
+            </div>
+            <div class="text item">
+              <el-input placeholder="必填" v-model="projectPackage">
+                <template slot="prepend">工程包名</template>
+              </el-input>
+            </div>
+            <div class="text item">
+              <el-input placeholder="必填" v-model="projectVersion">
+                <template slot="prepend">工程版本</template>
+              </el-input>
+            </div>
+            <div class="text item">
+              <el-input placeholder="必填" v-model="applicationName">
+                <template slot="prepend">应用名称</template>
+              </el-input>
+            </div>
+            <div class="text item">
+              <el-input placeholder="必填" v-model="applicationPort">
+                <template slot="prepend">应用端口</template>
+              </el-input>
+            </div>
+          </el-card>
+          <el-tag style="margin-top: 5px">数据库属性</el-tag>
+          <el-card class="box-card">
+            <div class="text item">
+              <el-input placeholder="必填" v-model="databaseName">
+                <template slot="prepend">数据库名称</template>
+              </el-input>
+            </div>
+            <div class="text item">
+              <el-input placeholder="必填" v-model="databaseUrl">
+                <template slot="prepend">数据库地址</template>
+              </el-input>
+            </div>
+            <div class="text item">
+              <el-input placeholder="必填" v-model="databaseDriver">
+                <template slot="prepend">数据库驱动</template>
+              </el-input>
+            </div>
+            <div class="text item">
+              <el-input placeholder="必填" v-model="databaseUser">
+                <template slot="prepend">数据库用户</template>
+              </el-input>
+            </div>
+            <div class="text item">
+              <el-input placeholder="必填" v-model="databasePwd">
+                <template slot="prepend">数据库密码</template>
+              </el-input>
+            </div>
+            <div>
+              <el-button type="text">连接测试</el-button>
+              <el-progress :percentage="100" status="success"></el-progress>
+            </div>
+            <template>
+              <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
+              <div style="margin: 15px 0;"></div>
+              <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
+                <el-checkbox v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>
+              </el-checkbox-group>
+            </template>
+          </el-card>
+        </div>
+        <el-button type="primary" class="submit">提交</el-button>
+      </el-col>
+    </el-row>
+  </el-main>
+  <el-footer>
+    <el-row>
+      <el-col :span="12" :offset="6">
+        @support:DingPengwei
+      </el-col>
+    </el-row>
+  </el-footer>
+</el-container>
+<script>
+  new Vue({
+    el: '#container',
+    data: function() {
+      var cityOptions = ['table0', 'table1', 'table2', 'table3','table4', 'table5', 'table6', 'table7table6table7'];
+      return {
+        activeName: '0',
+        projectName: 'pwd-code-generator',
+        projectPackage: 'pwd.code.generator',
+        projectVersion: '0.0.1-SNAPSHOT',
+        applicationName: 'CodeGeneratorApplication',
+        applicationPort: 80,
+        databaseName: 'test',
+        databaseUrl: 'jdbc:mysql://localhost:3306/test?characterEncoding=utf-8&autoReconnect=true&serverTimezone=GMT',
+        databaseDriver: 'com.mysql.jdbc.Driver',
+        databaseUser: 'root',
+        databasePwd: 'root',
+        checkAll: false,
+        checkedCities: ['table0', 'table1'],
+        cities: cityOptions,
+        isIndeterminate: true
+      };
+    },
+    methods: {
+      handleCheckAllChange(val) {
+        this.checkedCities = val ? cityOptions : [];
+        this.isIndeterminate = false;
+      },
+      handleCheckedCitiesChange(value) {
+        var checkedCount = value.length;
+        this.checkAll = checkedCount === this.cities.length;
+        this.isIndeterminate = checkedCount > 0 && checkedCount < this.cities.length;
+      }
+    }
+  });
+</script>
+</body>
+</html>

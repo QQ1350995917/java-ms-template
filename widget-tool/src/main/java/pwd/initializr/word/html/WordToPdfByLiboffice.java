@@ -18,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 public class WordToPdfByLiboffice {
 //https://www.cnblogs.com/qlqwjy/p/9846904.html
   public static void main(String[] args) {
-    convertOffice2PDF("C:\\Users\\Administrator\\Desktop\\自动报告\\template.docx","C:\\Users\\Administrator\\Desktop\\自动报告");
+    convertOffice2PDF("C:\\Users\\Administrator\\Desktop\\自动报告\\templates.docx","C:\\Users\\Administrator\\Desktop\\自动报告");
   }
 
   public static boolean convertOffice2PDF(String inputFile, String pdfFile){

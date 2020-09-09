@@ -50,7 +50,7 @@ Mandatory in IE 6, 7, 8 and 9.
       try {
         doc=new window.docxtemplater(zip);
       } catch(error) {
-        // Catch compilation errors (errors caused by the compilation of the template : misplaced tags)
+        // Catch compilation errors (errors caused by the compilation of the templates : misplaced tags)
         errorHandler(error);
       }
 
@@ -65,7 +65,7 @@ Mandatory in IE 6, 7, 8 and 9.
         doc.render();
       }
       catch (error) {
-        // Catch rendering errors (errors relating to the rendering of the template : angularParser throws an error)
+        // Catch rendering errors (errors relating to the rendering of the templates : angularParser throws an error)
         errorHandler(error);
       }
 

@@ -19,7 +19,7 @@ import pwd.initializr.common.web.persistence.entity.SortEntity;
 public interface ${className}Dao {
 
   /**
-   * <h2>通过ID启用/禁用数据</h2>
+   * <h2>通过主键启用/禁用数据</h2>
    * date ${projectCreateDate}
    *
    * @param id 主键
@@ -31,7 +31,7 @@ public interface ${className}Dao {
   Integer ableById(@Param("id") Long id, @Param("able") Integer able);
 
   /**
-   * <h2>通过ID批量启用/禁用数据</h2>
+   * <h2>通过主键批量启用/禁用数据</h2>
    * date ${projectCreateDate}
    *
    * @param ids 主键集合
@@ -50,7 +50,7 @@ public interface ${className}Dao {
    * @author Automatic[www.dingpengwei@foxmail.com]
    * @since ${projectVersion}
    */
-  Long countAllByCondition(@Param("scopes") LinkedHashSet<? extends ScopeEntity> scopes);
+  Long countByCondition(@Param("scopes") LinkedHashSet<? extends ScopeEntity> scopes);
 
   /**
    * <h2>通过主键删除数据</h2>
@@ -62,6 +62,17 @@ public interface ${className}Dao {
    * @since ${projectVersion}
    */
   Integer deleteById(@Param("id") Long id);
+
+  /**
+   * <h2>通过主键批量删除数据</h2>
+   * date ${projectCreateDate}
+   *
+   * @param ids 主键集合
+   * @return java.lang.Integer 影响行数
+   * @author Automatic[www.dingpengwei@foxmail.com]
+   * @since ${projectVersion}
+   */
+  Integer deleteByIds(@Param("ids") List<Long> ids);
 
   /**
    * <h2>新增数据</h2>
@@ -86,9 +97,19 @@ public interface ${className}Dao {
    * @author Automatic[www.dingpengwei@foxmail.com]
    * @since ${projectVersion}
    */
-  List<${className}Entity> queryAllByCondition(
+  List<${className}Entity> queryByCondition(
     @Param("scopes") LinkedHashSet<? extends ScopeEntity> scopes,
     @Param("sorts") LinkedHashSet<? extends SortEntity> sorts,
     @Param("offset") Long offset, @Param("limit") Long limit);
 
+  /**
+   * <h2>通过主键更新数据</h2>
+   * date ${projectCreateDate}
+   *
+   * @param entity 实例对象
+   * @return java.lang.Integer 影响行数
+   * @author Automatic[www.dingpengwei@foxmail.com]
+   * @since ${projectVersion}
+   */
+  Integer updateById(@Param("entity") ${className}Entity entity);
 }
