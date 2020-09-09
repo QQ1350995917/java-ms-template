@@ -28,6 +28,7 @@ public class Springboot {
         projectFiles.add(new SrcMainResourcesApplication(projectBO));
         projectFiles.add(new SrcMainResourcesApplicationDev(projectBO));
         projectFiles.add(new SrcMainResourcesBanner(projectBO));
+        projectFiles.add(new SrcMainJavaPackageSwagger(projectBO));
 
         projectFiles.forEach(obj -> {
             try {
