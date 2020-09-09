@@ -113,7 +113,7 @@
             <manifest>
               <addClasspath>true</addClasspath>
               <classpathPrefix>lib/</classpathPrefix>
-              <mainClass>${projectPackage}.${applicationName}Application</mainClass>
+              <mainClass>${projectPackage}.${applicationName}</mainClass>
               <useUniqueVersions>false</useUniqueVersions>
             </manifest>
             <!-- 给清单文件添加键值对(配置文件外置) -->

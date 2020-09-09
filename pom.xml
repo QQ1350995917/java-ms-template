@@ -24,6 +24,7 @@
     <module>ms-web-access</module>
     <module>ms-web-account</module>
     <module>ms-web-automatic</module>
+    <module>ms-web-automatic-test</module>
     <module>ms-web-book</module>
     <module>ms-web-configure</module>
     <module>ms-web-etl</module>
