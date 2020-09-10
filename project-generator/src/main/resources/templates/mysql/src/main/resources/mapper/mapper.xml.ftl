@@ -1,111 +1,158 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="pwd.initializr.account.persistence.dao.AdminUserDao">
+<mapper namespace="${projectPackage}.persistence.dao.${className}Dao">
 
-  <resultMap id="AdminUserMap" type="pwd.initializr.account.persistence.entity.AdminUserEntity">
-    <result column="id" jdbcType="BIGINT" property="id"/>
-    <result column="pin" jdbcType="VARCHAR" property="pin"/>
-    <result column="name" jdbcType="VARCHAR" property="name"/>
-    <result column="gender" jdbcType="VARCHAR" property="gender"/>
-    <result column="emp_no" jdbcType="VARCHAR" property="empNo"/>
-    <result column="summary" jdbcType="VARCHAR" property="summary"/>
-    <result column="able" jdbcType="INTEGER" property="able"/>
-    <result column="del" jdbcType="INTEGER" property="del"/>
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
-    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
-    <result column="version" jdbcType="BIGINT" property="version"/>
+  <resultMap id="${className}Map" type="${projectPackage}.persistence.entity.${className}Entity">
+<#if columns?exists>
+  <#list columns as column>
+    <result column="${column.jdbcName}" jdbcType="${column.jdbcType?upper_case}" property="${column.javaName}"/>
+  </#list>
+</#if>
   </resultMap>
 
   <!--查询单个-->
-  <select id="queryById" resultMap="AdminUserMap">
-    select
-    id, pin, name, gender, emp_no, summary, able, del, create_time, update_time, version
-    from initializr_account.admin_user
-    where id = #{id}
+  <select id="queryById" resultMap="${className}Map">
+    SELECT
+<#if columns?exists>
+  <#list columns as column>
+    <#if column_index == (columns?size -1)>
+      `${column.jdbcName}`
+    <#else>
+      `${column.jdbcName}`,
+    </#if>
+  </#list>
+</#if>
+    FROM
+      ${tableName}
+    <#noparse>
+    WHERE
+      id = #{id}
+    </#noparse>
   </select>
 
   <!--查询指定行数据-->
-  <select id="countAllByCondition" resultType="java.lang.Long">
-    select count(*) from initializr_account.admin_user
+  <select id="countByCondition" resultType="java.lang.Long">
+    SELECT COUNT(*) FROM ${tableName}
     <include refid="pwd.initializr.common.web.persistence.entity.ScopeEntity.entityQueryScope"></include>
   </select>
 
   <!--通过实体作为筛选条件查询-->
-  <select id="queryAllByCondition" resultMap="AdminUserMap">
-    select
-    id, pin, name, gender, emp_no, summary, able, del, create_time, update_time
-    from initializr_account.admin_user
+  <select id="queryByCondition" resultMap="${className}Map">
+    SELECT
+<#if columns?exists>
+  <#list columns as column>
+    <#if column_index == (columns?size -1)>
+      `${column.jdbcName}`
+    <#else>
+      `${column.jdbcName}`,
+    </#if>
+  </#list>
+</#if>
+    FROM
+      ${tableName}
     <include refid="pwd.initializr.common.web.persistence.entity.ScopeEntity.entityQueryScope"></include>
     <include refid="pwd.initializr.common.web.persistence.entity.SortEntity.entityQuerySort"></include>
-    limit #{offset}, #{limit}
+    <#noparse>
+    LIMIT
+      #{offset}, #{limit}
+    </#noparse>
   </select>
 
   <!--新增所有列-->
   <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-    insert into initializr_account.admin_user(pin, name, gender, emp_no, summary, able, del, create_time, update_time)
-    values (#{pin}, #{name}, #{gender}, #{empNo}, #{summary}, #{able}, #{del}, #{createTime}, #{updateTime})
+    INSERT INTO ${tableName}
+      (
+  <#if columns?exists>
+    <#list columns as column>
+      <#if column_index == (columns?size -1)>
+        `${column.jdbcName}`
+      <#else>
+        `${column.jdbcName}`,
+      </#if>
+    </#list>
+  </#if>
+      )
+    VALUES
+      (
+  <#if columns?exists>
+    <#list columns as column>
+      <#if column_index == (columns?size -1)>
+        <#noparse>#{</#noparse>${column.javaName}<#noparse>}</#noparse>
+      <#else>
+        <#noparse>#{</#noparse>${column.javaName}<#noparse>}</#noparse>,
+      </#if>
+    </#list>
+  </#if>
+      )
   </insert>
 
   <!--通过主键修改数据-->
-  <update id="update">
-    update initializr_account.admin_user
+  <update id="updateById">
+    UPDATE ${tableName}
     <set>
-      <if test="pin != null and pin != ''">
-        pin = #{pin},
+  <#if columns?exists>
+    <#list columns as column>
+      <if test="${column.javaName} != null and ${column.javaName} != ''">
+        `${column.jdbcName}` = <#noparse>#{</#noparse>${column.javaName}<#noparse>}</#noparse>,
       </if>
-      <if test="name != null and name != ''">
-        name = #{name},
-      </if>
-      <if test="gender != null and gender != ''">
-        gender = #{gender},
-      </if>
-      <if test="empNo != null and empNo != ''">
-        emp_no = #{empNo},
-      </if>
-      <if test="summary != null and summary != ''">
-        summary = #{summary},
-      </if>
-      <if test="able != null">
-        able = #{able},
-      </if>
-      <if test="del != null">
-        del = #{del},
-      </if>
-      <if test="createTime != null">
-        create_time = #{createTime},
-      </if>
-      <if test="updateTime != null">
-        update_time = #{updateTime},
-      </if>
+    </#list>
+  </#if>
     </set>
-    where id = #{id}
+    WHERE
+      id = <#noparse>#{id}</#noparse>
   </update>
 
   <!--通过主键删除-->
   <update id="deleteById">
-    update initializr_account.admin_user set del = 1, update_time = now() where id = #{id}
+    UPDATE ${tableName}
+    SET
+      del = 1,
+      update_time = now()
+    WHERE
+      id = <#noparse>#{id}</#noparse>
   </update>
 
-  <!--通过主键删除-->
+  <!--通过主键批量删除-->
   <update id="deleteByIds">
-    update initializr_account.admin_user set del = 1, update_time = now() where id in
+    UPDATE ${tableName}
+    SET
+      del = 1,
+      update_time = now()
+    WHERE
+      id in
     <foreach close=")" collection="ids" index="index" item="id" open="(" separator=",">
-    #{id}
+    <#noparse>
+      #{id}
+    </#noparse>
     </foreach>
   </update>
 
   <!--通过主键启禁-->
   <update id="ableById">
-    update initializr_account.admin_user set able = #{able}, update_time = now() where id = #{id}
+    UPDATE ${tableName}
+    <#noparse>
+    SET
+      able = #{able},
+      update_time = now()
+    WHERE
+      id = #{id}
+    </#noparse>
   </update>
 
-  <!--通过主键启禁-->
+  <!--通过主键批量启禁-->
   <update id="ableByIds">
-    update initializr_account.admin_user set able = #{able}, update_time = now() where id in
+    UPDATE ${tableName}
+    <#noparse>
+    SET
+      able = #{able},
+      update_time = now()
+    WHERE
+      id in
     <foreach close=")" collection="ids" index="index" item="id" open="(" separator=",">
-    #{id}
+      #{id}
     </foreach>
+    </#noparse>
   </update>
 
 </mapper>

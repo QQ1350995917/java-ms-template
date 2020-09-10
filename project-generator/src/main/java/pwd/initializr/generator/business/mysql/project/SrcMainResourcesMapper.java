@@ -1,11 +1,9 @@
 package pwd.initializr.generator.business.mysql.project;
 
 import java.io.File;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import pwd.initializr.generator.business.mysql.database.TableColumnBO;
-import pwd.initializr.generator.util.VariableName;
 
 /**
  * pwd.initializr.automatic.business.mysql.project@ms-web-initializr
@@ -18,22 +16,20 @@ import pwd.initializr.generator.util.VariableName;
  * @version 1.0.0
  * @since DistributionVersion
  */
-public class SrcMainJavaPackagePersistenceEntity extends SrcMainJavaPackage {
+public class SrcMainResourcesMapper extends SrcMainResources {
 
     private String tableName;
     private String className;
     private List<TableColumnBO> tableColumnBOList;
-
-    public SrcMainJavaPackagePersistenceEntity(ProjectBO projectBO, String tableName,
+    public SrcMainResourcesMapper(ProjectBO projectBO, String tableName,
         String className,
         List<TableColumnBO> tableColumnBOList) {
         super(projectBO);
-        this.packagePath += File.separator + "persistence" + File.separator + "entity";
+        this.filePath += File.separator + "mapper";
         this.tableName = tableName;
         this.className = className;
         this.tableColumnBOList = tableColumnBOList;
     }
-
     @Override
     protected Map<String, Object> getData() {
         this.data.put("className", this.className);
@@ -44,13 +40,12 @@ public class SrcMainJavaPackagePersistenceEntity extends SrcMainJavaPackage {
 
     @Override
     protected String getTemplate() {
-        return "mysql/src/main/java/Entity.java.ftl";
+        return "mysql/src/main/resources/mapper/mapper.xml.ftl";
     }
 
     @Override
-    protected String getClassName() {
-        return className + "Entity";
+    protected String getResourceName(){
+        return className + "Dao.xml";
     }
-
 
 }

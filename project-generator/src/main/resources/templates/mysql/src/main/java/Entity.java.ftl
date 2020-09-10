@@ -2,10 +2,10 @@ package ${projectPackage}.persistence.entity;
 
 <#if columns?exists>
   <#list columns as column>
-    <#if (column.type?lower_case = 'date')>
+    <#if (column.javaType?lower_case = 'date')>
       <#assign importDate="import java.util.Date;"/>
     </#if>
-    <#if (column.type?lower_case = 'bigdecimal')>
+    <#if (column.javaType?lower_case = 'bigdecimal')>
       <#assign importBigDecimal="import java.math.BigDecimal;"/>
     </#if>
   </#list>
@@ -41,10 +41,10 @@ public class ${className}Entity implements Serializable {
 <#if columns?exists>
   <#list columns as column>
   /**
-    * <#if (column.key)>主键<#assign hasKey=true/><#assign keyName='${column.name}'/></#if>
+    * <#if (column.key)>主键<#assign hasKey=true/><#assign keyName='${column.javaName}'/></#if>
     * ${column.comment!}
     */
-  private ${column.type} ${column.name};
+  private ${column.javaType} ${column.javaName};
   </#list>
 </#if>
 

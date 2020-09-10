@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import pwd.initializr.generator.business.mysql.project.ProjectBO;
+import pwd.initializr.generator.business.mysql.project.SrcMainJavaPackagePersistenceDao;
 import pwd.initializr.generator.business.mysql.project.SrcMainJavaPackagePersistenceEntity;
+import pwd.initializr.generator.business.mysql.project.SrcMainResourcesMapper;
 
 /**
  * pwd.initializr.generator.business.mysql.database@ms-web-initializr
@@ -30,6 +32,9 @@ public class DatabaseBoot {
         ProjectBO projectBO = new ProjectBO();
         String tableName = "admin_account";
         String className = "AdminAccount";
+        new SrcMainResourcesMapper(projectBO, tableName, className,
+            tableColumnBOList).createProjectFile();
+        new SrcMainJavaPackagePersistenceDao(projectBO, tableName, className).createProjectFile();
         new SrcMainJavaPackagePersistenceEntity(projectBO, tableName, className,
             tableColumnBOList).createProjectFile();
     }
