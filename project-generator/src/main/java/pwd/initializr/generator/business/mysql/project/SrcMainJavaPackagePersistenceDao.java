@@ -16,19 +16,21 @@ import java.util.Map;
  */
 public class SrcMainJavaPackagePersistenceDao extends SrcMainJavaPackage {
 
-    private String className;
     private String tableName;
-    public SrcMainJavaPackagePersistenceDao(ProjectBO projectBO) {
+    private String className;
+
+    public SrcMainJavaPackagePersistenceDao(ProjectBO projectBO, String tableName,
+        String className) {
         super(projectBO);
         this.packagePath += File.separator + "persistence" + File.separator + "dao";
-        this.className = "TestClass";
-        this.tableName = "test_class";
+        this.tableName = tableName;
+        this.className = className;
     }
 
     @Override
     protected Map<String, Object> getData() {
-        this.data.put("className",this.className);
-        this.data.put("tableName",this.tableName);
+        this.data.put("className", this.className);
+        this.data.put("tableName", this.tableName);
         return this.data;
     }
 

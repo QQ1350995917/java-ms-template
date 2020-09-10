@@ -1,7 +1,22 @@
 package ${projectPackage}.persistence.entity;
 
+<#if columns?exists>
+  <#list columns as column>
+    <#if (column.type?lower_case = 'date')>
+      <#assign importDate="import java.util.Date;"/>
+    </#if>
+    <#if (column.type?lower_case = 'bigdecimal')>
+      <#assign importBigDecimal="import java.math.BigDecimal;"/>
+    </#if>
+  </#list>
+</#if>
+<#if (importBigDecimal)??>
+${importBigDecimal!''}
+</#if>
+<#if (importDate)??>
+${importDate!''}
+</#if>
 import java.io.Serializable;
-import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,43 +37,45 @@ import lombok.ToString;
 @ToString
 public class ${className}Entity implements Serializable {
 
-  private static final long serialVersionUID = 864136679056019403L;
+  private static final long serialVersionUID = 1L;
+<#if columns?exists>
+  <#list columns as column>
   /**
-  * 自增主键
-  */
-  private Long id;
-  /**
-  * 逻辑外键:admin_user.id
-  */
-  private Long uid;
+    * <#if (column.key)>主键<#assign hasKey=true/><#assign keyName='${column.name}'/></#if>
+    * ${column.comment!}
+    */
+  private ${column.type} ${column.name};
+  </#list>
+</#if>
 
-  private String loginName;
+  @Override
+  public boolean equals(Object obj) {
+    // fixme: 视情况而定是否修改或删除equals
+    if (obj == null) {
+      return false;
+    }
+    if (!(obj instanceof AdminAccountEntity)) {
+      return false;
+    }
+  <#if hasKey>
+    ${className}Entity entity = (${className}Entity) obj;
+    if (entity.get${keyName?cap_first}() == null || !(entity.get${keyName?cap_first}().equals(this.get${keyName?cap_first}()))) {
+      return false;
+    } else {
+      return true;
+    }
+  <#else>
+    return super.equals(obj);
+  </#if>
+  }
 
-  private String loginPwd;
-
-  private Date pwdTime;
-  /**
-  * 1:授权账号；2：电话号码+短信验证码账号；3：电话号码+密码账号；4：邮箱账号+直接登录链接账号；5：邮箱账号+验证码账号；6：邮箱账号+密码账号；7：微信认证账号；8：微博认证账号；9：QQ账号；
-  */
-  private Integer type;
-  /**
-  * 可用状态：0:不可用；1:可用
-  */
-  private Integer able;
-  /**
-  * 删除状态：0:未删除；1:已删除
-  */
-  private Integer del;
-  /**
-  * 数据创建时间
-  */
-  private Date createTime;
-  /**
-  * 最近更新时间
-  */
-  private Date updateTime;
-  /**
-  * 数据版本号
-  */
-  private Long version;
+  @Override
+  public int hashCode() {
+    // fixme: 视情况而定是否修改或删除hashCode
+  <#if hasKey>
+    return this.get${keyName?cap_first}().hashCode();
+  <#else>
+    return super.hashCode();
+  </#if>
+  }
 }

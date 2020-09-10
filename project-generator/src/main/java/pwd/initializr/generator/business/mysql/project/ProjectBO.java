@@ -23,8 +23,7 @@ import lombok.ToString;
 @Setter
 @ToString
 public class ProjectBO {
-//    private String exportDir = "E:\\workspace\\github\\ms-web-initializr";
-    private String exportDir = "/Users/pwd/workspace/dingpw/ms-web-initializr";
+    private String exportDir = "E:\\workspace\\github\\ms-web-initializr";
     private String packageName = "me.taoqigui.automatic";
     private String projectName = "project-generator-test";
     private String projectVersion = "0.0.1-SNAPSHOT";

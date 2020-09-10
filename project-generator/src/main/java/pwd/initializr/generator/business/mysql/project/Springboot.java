@@ -16,9 +16,13 @@ import java.util.List;
  */
 public class Springboot {
 
-
     public static void main(String[] args) throws Exception {
         ProjectBO projectBO = new ProjectBO();
+        Springboot springboot = new Springboot();
+        springboot.generateProjectFrame(projectBO);
+    }
+
+    public void generateProjectFrame(ProjectBO projectBO) {
         List<ProjectFile> projectFiles = new LinkedList<>();
         projectFiles.add(new ProjectPom(projectBO));
         projectFiles.add(new ProjectZip(projectBO));
@@ -29,8 +33,6 @@ public class Springboot {
         projectFiles.add(new SrcMainResourcesApplicationDev(projectBO));
         projectFiles.add(new SrcMainResourcesBanner(projectBO));
         projectFiles.add(new SrcMainJavaPackageSwagger(projectBO));
-        projectFiles.add(new SrcMainJavaPackagePersistenceDao(projectBO));
-        projectFiles.add(new SrcMainJavaPackagePersistenceEntity(projectBO));
 
         projectFiles.forEach(obj -> {
             try {
