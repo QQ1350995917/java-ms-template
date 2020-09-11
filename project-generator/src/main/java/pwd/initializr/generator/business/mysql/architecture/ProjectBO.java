@@ -1,4 +1,4 @@
-package pwd.initializr.generator.business.mysql.project;
+package pwd.initializr.generator.business.mysql.architecture;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

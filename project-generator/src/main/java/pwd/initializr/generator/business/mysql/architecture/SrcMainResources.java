@@ -1,9 +1,7 @@
-package pwd.initializr.generator.business.mysql.project;
+package pwd.initializr.generator.business.mysql.architecture;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -18,42 +16,34 @@ import java.util.Map;
  * @version 1.0.0
  * @since DistributionVersion
  */
-public abstract class SrcMainJavaPackage extends ProjectFile {
+public abstract class SrcMainResources extends ProjectFile {
 
-    private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("YYYY-MM-dd HH:mm");
-    protected String packagePath;
+    protected String filePath;
     protected Map<String, Object> data = new LinkedHashMap<>();
 
-    public SrcMainJavaPackage(ProjectBO projectBO) {
+    public SrcMainResources(ProjectBO projectBO) {
         this.data.put("projectPackage", projectBO.getPackageName());
         this.data.put("projectName", projectBO.getProjectName());
         this.data.put("projectVersion", projectBO.getProjectVersion());
-        this.data.put("projectCreateDate", simpleDateFormat.format(new Date()));
         this.data.put("applicationName", projectBO.getApplicationName());
 
-        this.packagePath = projectBO.getExportDir()
+        this.filePath = projectBO.getExportDir()
             + File.separator + projectBO.getProjectName()
             + File.separator + "src"
             + File.separator + "main"
-            + File.separator + "java"
+            + File.separator + "resources"
         ;
-
-        String packageName = projectBO.getPackageName();
-        String[] split = packageName.split("\\.");
-        for (String s : split) {
-            this.packagePath += File.separator + s;
-        }
     }
 
     @Override
     protected File getOutputFile() throws IOException {
-        File fileDir = new File(this.packagePath);
+        File fileDir = new File(this.filePath);
         if (!fileDir.exists()) {
             fileDir.mkdirs();
         }
-        String filePath = this.packagePath + File.separator + getClassName() + ".java";
+        String filePath = this.filePath + File.separator + getResourceName();
         return new File(filePath);
     }
 
-    protected abstract String getClassName();
+    protected abstract String getResourceName();
 }

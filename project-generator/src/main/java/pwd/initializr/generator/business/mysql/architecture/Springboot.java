@@ -1,4 +1,4 @@
-package pwd.initializr.generator.business.mysql.project;
+package pwd.initializr.generator.business.mysql.architecture;
 
 import java.util.LinkedList;
 import java.util.List;

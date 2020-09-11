@@ -1,6 +1,5 @@
-package pwd.initializr.generator.business.mysql.project;
+package pwd.initializr.generator.business.mysql.architecture;
 
-import java.io.File;
 import java.util.Map;
 
 /**
@@ -14,16 +13,12 @@ import java.util.Map;
  * @version 1.0.0
  * @since DistributionVersion
  */
-public class SrcMainJavaPackageApiSwagger2 extends SrcMainJavaPackage {
+public class SrcMainJavaPackageApplication extends SrcMainJavaPackage {
 
-    public SrcMainJavaPackageApiSwagger2(ProjectBO projectBO) {
+    private String applicationName;
+    public SrcMainJavaPackageApplication(ProjectBO projectBO) {
         super(projectBO);
-        this.packagePath += File.separator + "api";
-    }
-
-    @Override
-    protected String getClassName() {
-        return "Swagger2";
+        this.applicationName = projectBO.getApplicationName();
     }
 
     @Override
@@ -33,6 +28,11 @@ public class SrcMainJavaPackageApiSwagger2 extends SrcMainJavaPackage {
 
     @Override
     protected String getTemplate() {
-        return "mysql/src/main/java/ApiSwagger2.java.ftl";
+        return "mysql/src/main/java/Application.java.ftl";
+    }
+
+    @Override
+    protected String getClassName() {
+        return applicationName;
     }
 }

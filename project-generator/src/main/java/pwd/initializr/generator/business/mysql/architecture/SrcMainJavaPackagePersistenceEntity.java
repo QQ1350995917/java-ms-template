@@ -1,11 +1,9 @@
-package pwd.initializr.generator.business.mysql.project;
+package pwd.initializr.generator.business.mysql.architecture;
 
 import java.io.File;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import pwd.initializr.generator.business.mysql.database.TableColumnBO;
-import pwd.initializr.generator.util.VariableName;
 
 /**
  * pwd.initializr.automatic.business.mysql.project@ms-web-initializr

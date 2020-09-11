@@ -1,4 +1,4 @@
-package pwd.initializr.generator.business.mysql.project;
+package pwd.initializr.generator.business.mysql.architecture;
 
 import java.util.Map;
 
@@ -13,12 +13,10 @@ import java.util.Map;
  * @version 1.0.0
  * @since DistributionVersion
  */
-public class SrcMainJavaPackageApplication extends SrcMainJavaPackage {
+public class SrcMainResourcesApplication extends SrcMainResources {
 
-    private String applicationName;
-    public SrcMainJavaPackageApplication(ProjectBO projectBO) {
+    public SrcMainResourcesApplication(ProjectBO projectBO) {
         super(projectBO);
-        this.applicationName = projectBO.getApplicationName();
     }
 
     @Override
@@ -28,11 +26,12 @@ public class SrcMainJavaPackageApplication extends SrcMainJavaPackage {
 
     @Override
     protected String getTemplate() {
-        return "mysql/src/main/java/Application.java.ftl";
+        return "mysql/src/main/resources/application.properties.ftl";
     }
 
     @Override
-    protected String getClassName() {
-        return applicationName;
+    protected String getResourceName(){
+        return "application.properties";
     }
+
 }

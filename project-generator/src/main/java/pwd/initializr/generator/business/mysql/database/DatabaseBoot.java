@@ -4,13 +4,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import pwd.initializr.generator.business.mysql.project.ProjectBO;
-import pwd.initializr.generator.business.mysql.project.SrcMainJavaPackageBusinessBO;
-import pwd.initializr.generator.business.mysql.project.SrcMainJavaPackageBusinessService;
-import pwd.initializr.generator.business.mysql.project.SrcMainJavaPackageBusinessServiceImpl;
-import pwd.initializr.generator.business.mysql.project.SrcMainJavaPackagePersistenceDao;
-import pwd.initializr.generator.business.mysql.project.SrcMainJavaPackagePersistenceEntity;
-import pwd.initializr.generator.business.mysql.project.SrcMainResourcesMapper;
+import pwd.initializr.generator.business.mysql.architecture.ProjectBO;
+import pwd.initializr.generator.business.mysql.architecture.SrcMainJavaPackageBusinessBO;
+import pwd.initializr.generator.business.mysql.architecture.SrcMainJavaPackageBusinessService;
+import pwd.initializr.generator.business.mysql.architecture.SrcMainJavaPackageBusinessServiceImpl;
+import pwd.initializr.generator.business.mysql.architecture.SrcMainJavaPackagePersistenceDao;
+import pwd.initializr.generator.business.mysql.architecture.SrcMainJavaPackagePersistenceEntity;
+import pwd.initializr.generator.business.mysql.architecture.SrcMainResourcesMapper;
 
 /**
  * pwd.initializr.generator.business.mysql.database@ms-web-initializr

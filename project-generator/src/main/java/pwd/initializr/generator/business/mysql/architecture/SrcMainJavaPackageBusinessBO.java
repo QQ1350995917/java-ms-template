@@ -1,4 +1,4 @@
-package pwd.initializr.generator.business.mysql.project;
+package pwd.initializr.generator.business.mysql.architecture;
 
 import java.io.File;
 import java.util.Map;
@@ -8,25 +8,25 @@ import java.util.Map;
  *
  * <h1>TODO what you want to do?</h1>
  *
- * date 2020-09-11 16:24
+ * date 2020-09-11 16:32
  *
  * @author DingPengwei[dingpengwei@foxmail.com]
  * @version 1.0.0
  * @since DistributionVersion
  */
-public class SrcMainJavaPackageBusinessServiceImpl extends SrcMainJavaPackage {
+public class SrcMainJavaPackageBusinessBO extends SrcMainJavaPackage {
 
     private String className;
 
-    public SrcMainJavaPackageBusinessServiceImpl(ProjectBO projectBO, String className) {
+    public SrcMainJavaPackageBusinessBO(ProjectBO projectBO,String className) {
         super(projectBO);
-        this.packagePath += File.separator + "business";
+        this.packagePath += File.separator + "business" + File.separator + "bo";
         this.className = className;
     }
 
     @Override
     protected String getClassName() {
-        return className + "ServiceImpl";
+        return className + "BO";
     }
 
     @Override
@@ -37,6 +37,6 @@ public class SrcMainJavaPackageBusinessServiceImpl extends SrcMainJavaPackage {
 
     @Override
     protected String getTemplate() {
-        return "mysql/src/main/java/BusinessServiceImpl.java.ftl";
+        return "mysql/src/main/java/BusinessBO.java.ftl";
     }
 }

@@ -18,10 +18,10 @@ import pwd.initializr.generator.api.vo.GeneratorInput;
 import pwd.initializr.generator.business.mysql.database.DataSourceBO;
 import pwd.initializr.generator.business.mysql.database.DataSourceTableColumn;
 import pwd.initializr.generator.business.mysql.database.TableColumnBO;
-import pwd.initializr.generator.business.mysql.project.ProjectBO;
-import pwd.initializr.generator.business.mysql.project.Springboot;
-import pwd.initializr.generator.business.mysql.project.SrcMainJavaPackagePersistenceDao;
-import pwd.initializr.generator.business.mysql.project.SrcMainJavaPackagePersistenceEntity;
+import pwd.initializr.generator.business.mysql.architecture.ProjectBO;
+import pwd.initializr.generator.business.mysql.architecture.Springboot;
+import pwd.initializr.generator.business.mysql.architecture.SrcMainJavaPackagePersistenceDao;
+import pwd.initializr.generator.business.mysql.architecture.SrcMainJavaPackagePersistenceEntity;
 import pwd.initializr.generator.util.VariableName;
 
 /**
