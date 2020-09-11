@@ -6,12 +6,12 @@
   <resultMap id="${className}Map" type="${projectPackage}.persistence.entity.${className}Entity">
 <#if columns?exists>
   <#list columns as column>
-    <result column="${column.jdbcName}" jdbcType="${column.jdbcType?upper_case}" property="${column.javaName}"/>
+    <result column="${column.jdbcName}" jdbcType="${column.mybatisType?upper_case}" property="${column.javaName}"/>
   </#list>
 </#if>
   </resultMap>
 
-  <!--查询单个-->
+  <!--根据主键查询查询-->
   <select id="queryById" resultMap="${className}Map">
     SELECT
 <#if columns?exists>
@@ -93,8 +93,8 @@
     <set>
   <#if columns?exists>
     <#list columns as column>
-      <if test="${column.javaName} != null and ${column.javaName} != ''">
-        `${column.jdbcName}` = <#noparse>#{</#noparse>${column.javaName}<#noparse>}</#noparse>,
+      <if test="entity.${column.javaName} != null and entity.${column.javaName} != ''">
+        `${column.jdbcName}` = <#noparse>#{</#noparse>entity.${column.javaName}<#noparse>}</#noparse>,
       </if>
     </#list>
   </#if>

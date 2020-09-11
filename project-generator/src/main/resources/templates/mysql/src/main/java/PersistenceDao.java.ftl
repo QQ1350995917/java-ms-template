@@ -86,7 +86,7 @@ public interface ${className}Dao {
   Integer insert(@Param("entity") ${className}Entity entity);
 
   /**
-   * <h2>查询指定行数据</h2>
+   * <h2>在指定的条件下查询数据</h2>
    * date ${projectCreateDate}
    *
    * @param scopes 查询条件
@@ -101,6 +101,18 @@ public interface ${className}Dao {
     @Param("scopes") LinkedHashSet<? extends ScopeEntity> scopes,
     @Param("sorts") LinkedHashSet<? extends SortEntity> sorts,
     @Param("offset") Long offset, @Param("limit") Long limit);
+
+  /**
+   * <h2>根据主键进行查询</h2>
+   * date ${projectCreateDate}
+   *
+   * @param id 主键
+   * @return ${className}Entity
+   * @author Automatic[www.dingpengwei@foxmail.com]
+   * @since ${projectVersion}
+   */
+  ${className}Entity queryById(@Param("id") Long id);
+
 
   /**
    * <h2>通过主键更新数据</h2>

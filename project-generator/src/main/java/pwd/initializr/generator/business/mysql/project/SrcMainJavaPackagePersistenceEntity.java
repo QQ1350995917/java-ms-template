@@ -44,7 +44,7 @@ public class SrcMainJavaPackagePersistenceEntity extends SrcMainJavaPackage {
 
     @Override
     protected String getTemplate() {
-        return "mysql/src/main/java/Entity.java.ftl";
+        return "mysql/src/main/java/PersistenceEntity.java.ftl";
     }
 
     @Override

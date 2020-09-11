@@ -36,7 +36,7 @@ public class SrcMainJavaPackagePersistenceDao extends SrcMainJavaPackage {
 
     @Override
     protected String getTemplate() {
-        return "mysql/src/main/java/Dao.java.ftl";
+        return "mysql/src/main/java/PersistenceDao.java.ftl";
     }
 
     @Override

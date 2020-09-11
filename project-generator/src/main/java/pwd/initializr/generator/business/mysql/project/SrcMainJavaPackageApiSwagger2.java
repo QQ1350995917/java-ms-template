@@ -14,9 +14,9 @@ import java.util.Map;
  * @version 1.0.0
  * @since DistributionVersion
  */
-public class SrcMainJavaPackageSwagger extends SrcMainJavaPackage {
+public class SrcMainJavaPackageApiSwagger2 extends SrcMainJavaPackage {
 
-    public SrcMainJavaPackageSwagger(ProjectBO projectBO) {
+    public SrcMainJavaPackageApiSwagger2(ProjectBO projectBO) {
         super(projectBO);
         this.packagePath += File.separator + "api";
     }
@@ -33,6 +33,6 @@ public class SrcMainJavaPackageSwagger extends SrcMainJavaPackage {
 
     @Override
     protected String getTemplate() {
-        return "mysql/src/main/java/Swagger2.java.ftl";
+        return "mysql/src/main/java/ApiSwagger2.java.ftl";
     }
 }

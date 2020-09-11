@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import pwd.initializr.generator.business.mysql.project.ProjectBO;
+import pwd.initializr.generator.business.mysql.project.SrcMainJavaPackageBusinessBO;
+import pwd.initializr.generator.business.mysql.project.SrcMainJavaPackageBusinessService;
+import pwd.initializr.generator.business.mysql.project.SrcMainJavaPackageBusinessServiceImpl;
 import pwd.initializr.generator.business.mysql.project.SrcMainJavaPackagePersistenceDao;
 import pwd.initializr.generator.business.mysql.project.SrcMainJavaPackagePersistenceEntity;
 import pwd.initializr.generator.business.mysql.project.SrcMainResourcesMapper;
@@ -37,5 +40,9 @@ public class DatabaseBoot {
         new SrcMainJavaPackagePersistenceDao(projectBO, tableName, className).createProjectFile();
         new SrcMainJavaPackagePersistenceEntity(projectBO, tableName, className,
             tableColumnBOList).createProjectFile();
+        new SrcMainJavaPackageBusinessBO(projectBO,className).createProjectFile();
+
+        new SrcMainJavaPackageBusinessService(projectBO,className).createProjectFile();
+        new SrcMainJavaPackageBusinessServiceImpl(projectBO,className).createProjectFile();
     }
 }

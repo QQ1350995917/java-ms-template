@@ -32,7 +32,7 @@ public class Springboot {
         projectFiles.add(new SrcMainResourcesApplication(projectBO));
         projectFiles.add(new SrcMainResourcesApplicationDev(projectBO));
         projectFiles.add(new SrcMainResourcesBanner(projectBO));
-        projectFiles.add(new SrcMainJavaPackageSwagger(projectBO));
+        projectFiles.add(new SrcMainJavaPackageApiSwagger2(projectBO));
 
         projectFiles.forEach(obj -> {
             try {

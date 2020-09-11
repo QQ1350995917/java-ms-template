@@ -29,6 +29,7 @@ public class TableColumnBO {
     private String javaName;
     private String jdbcType;
     private String javaType;
+    private String mybatisType;
     private String comment;
     private Boolean key;
 
@@ -43,12 +44,17 @@ public class TableColumnBO {
         return VariableName.underlineToHump(this.getJdbcName());
     }
 
-    public String getJavaType() {
-        return changeDabaseTypeToJavaType(this.getJdbcType());
+
+    public String getMybatisType() {
+        return dabaseTypeToMybatisType(this.getJdbcType());
     }
 
-    protected String changeDabaseTypeToJavaType(String type) {
-        type = type.toUpperCase();
+    public String getJavaType() {
+        return dabaseTypeToJavaType(this.getJdbcType());
+    }
+
+    protected String dabaseTypeToJavaType(String jdbcType) {
+        jdbcType = jdbcType.toUpperCase();
         Map<String, String> typeMapping = new HashMap<>();
         typeMapping.put("CHAR", "String");
         typeMapping.put("VARCHAR", "String");
@@ -78,6 +84,14 @@ public class TableColumnBO {
         typeMapping.put("DISTINCT", "mapping of underlying type");
         typeMapping.put("STRUCT", "Struct");
         typeMapping.put("REF", "Ref");
-        return typeMapping.get(type);
+        return typeMapping.get(jdbcType);
+    }
+
+    protected String dabaseTypeToMybatisType(String type) {
+        type = type.toUpperCase();
+        Map<String, String> typeMapping = new HashMap<>();
+        typeMapping.put("INT", "INTEGER");
+        typeMapping.put("DATETIME", "TIMESTAMP");
+        return typeMapping.get(type) == null ? type : typeMapping.get(type);
     }
 }
