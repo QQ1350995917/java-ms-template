@@ -41,13 +41,15 @@ public class DataSourceTableColumn extends DataSourceComponent {
             String dataType = resultSet.getString("DATA_TYPE");
             String columnKey = resultSet.getString("COLUMN_KEY");
             String columnComment = resultSet.getString("COLUMN_COMMENT");
+            String columnNullable = resultSet.getString("IS_NULLABLE");
+            String columnDefault = resultSet.getString("COLUMN_DEFAULT");
             List<TableColumnBO> tableColumnBOS = (List<TableColumnBO>) result.get(tableName);
             if (tableColumnBOS == null) {
                 tableColumnBOS = new LinkedList<>();
                 result.put(tableName, tableColumnBOS);
             }
             tableColumnBOS.add(new TableColumnBO(columnName, dataType, columnComment,
-                "PRI".equalsIgnoreCase(columnKey)));
+                "PRI".equalsIgnoreCase(columnKey),columnNullable,columnDefault));
         }
         return result;
     }
@@ -57,7 +59,7 @@ public class DataSourceTableColumn extends DataSourceComponent {
         Set<String> sqls = new HashSet<>();
         for (String table : tables) {
             String sql =
-                "SELECT TABLE_NAME, COLUMN_NAME,DATA_TYPE,COLUMN_KEY,COLUMN_COMMENT FROM information_schema.columns WHERE table_schema = '"
+                "SELECT TABLE_NAME, COLUMN_NAME,DATA_TYPE,COLUMN_KEY,COLUMN_COMMENT,IS_NULLABLE,COLUMN_DEFAULT FROM information_schema.columns WHERE table_schema = '"
                     + this.databaseName + "' and table_name = '" + table + "';";
             sqls.add(sql);
         }

@@ -5,16 +5,16 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 /**
-* ${projectName}@ms-web-initializr
-*
-* <h1>${projectName}启动</h1>
-*
-* date ${projectCreateDate}
-*
-* @author Automatic[www.dingpengwei@foxmail.com]
-* @version ${projectVersion}
-* @since ${projectVersion}
-*/
+ * ${projectName}@ms-web-initializr
+ *
+ * <h1>${projectName}启动</h1>
+ *
+ * date ${projectCreateDate}
+ *
+ * @author Automatic[www.dingpengwei@foxmail.com]
+ * @version ${projectVersion}
+ * @since ${projectVersion}
+ */
 @SpringBootApplication
 @ComponentScan(basePackages = {"pwd.initializr.common.web", "${projectPackage}"})
 public class ${applicationName} {

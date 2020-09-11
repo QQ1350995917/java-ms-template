@@ -32,12 +32,16 @@ public class TableColumnBO {
     private String mybatisType;
     private String comment;
     private Boolean key;
+    private String nullable;
+    private String defaultValue;
 
-    public TableColumnBO(String jdbcName, String jdbcType, String comment, Boolean key) {
+    public TableColumnBO(String jdbcName, String jdbcType, String comment, Boolean key,String nullable,String defaultValue) {
         this.jdbcName = jdbcName;
         this.jdbcType = jdbcType;
         this.comment = comment;
         this.key = key;
+        this.nullable = nullable;
+        this.defaultValue = defaultValue;
     }
 
     public String getJavaName() {
