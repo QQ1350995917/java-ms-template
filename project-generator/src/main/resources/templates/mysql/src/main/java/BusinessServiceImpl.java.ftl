@@ -3,6 +3,7 @@ package ${projectPackage}.business;
 import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import javax.annotation.Resource;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -34,7 +35,7 @@ public class ${className}ServiceImpl implements ${className}Service {
   }
 
   @Override
-  public Integer ableById(List<Long> ids, EntityAble able) {
+  public Integer ableById(Set<Long> ids, EntityAble able) {
     return this.dao.ableByIds(ids, able.getNumber());
   }
 
@@ -44,7 +45,7 @@ public class ${className}ServiceImpl implements ${className}Service {
   }
 
   @Override
-  public Integer deleteById(List<Long> ids) {
+  public Integer deleteById(Set<Long> ids) {
     return this.dao.deleteByIds(ids);
   }
 

@@ -2,6 +2,7 @@ package ${projectPackage}.business;
 
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import ${projectPackage}.business.bo.${className}BO;
 import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.common.web.business.bo.ScopeBO;
@@ -39,7 +40,7 @@ public interface ${className}Service {
    * @author Automatic[www.dingpengwei@foxmail.com]
    * @since ${projectCreateDate}
    */
-  Integer ableById(List<Long> ids, EntityAble able);
+  Integer ableById(Set<Long> ids, EntityAble able);
 
   /**
    * <h2>通过主键删除数据</h2>
@@ -61,7 +62,7 @@ public interface ${className}Service {
    * @author Automatic[www.dingpengwei@foxmail.com]
    * @since ${projectCreateDate}
    */
-  Integer deleteById(List<Long> ids);
+  Integer deleteById(Set<Long> ids);
 
   /**
    * <h2>新增数据</h2>

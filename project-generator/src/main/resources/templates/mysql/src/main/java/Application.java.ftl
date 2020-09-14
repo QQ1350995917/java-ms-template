@@ -15,6 +15,7 @@ import org.springframework.context.annotation.ComponentScan;
  * @version ${projectVersion}
  * @since ${projectVersion}
  */
+@Controller
 @SpringBootApplication
 @ComponentScan(basePackages = {"pwd.initializr.common.web", "${projectPackage}"})
 public class ${applicationName} {
@@ -23,4 +24,9 @@ public class ${applicationName} {
     SpringApplication.run(${applicationName}.class, args);
   }
 
+  @GetMapping("")
+  public ModelAndView index(){
+  ModelAndView modelAndView = new ModelAndView("redirect:/swagger-ui.html");
+    return modelAndView;
+  }
 }

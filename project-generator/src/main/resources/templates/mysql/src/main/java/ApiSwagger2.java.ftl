@@ -24,7 +24,7 @@ public class Swagger2 extends ApiSwagger2 {
 
   @Override
   protected Customer adminApiCustomer() {
-    return new Customer("AdminApi", "AdminApi", "管理接口", "${projectPackage}.api.admin");
+    return new Customer("AdminApi", "AdminApi", "管理接口", "${projectPackage}.api");
   }
 
   @Override

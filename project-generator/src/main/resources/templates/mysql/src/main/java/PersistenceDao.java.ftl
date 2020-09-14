@@ -2,6 +2,7 @@ package ${projectPackage}.persistence.dao;
 
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import ${projectPackage}.persistence.entity.${className}Entity;
@@ -39,7 +40,7 @@ public interface ${className}Dao {
    * @author Automatic[www.dingpengwei@foxmail.com]
    * @since ${projectVersion}
    */
-  Integer ableByIds(List<Long> ids, int able);
+  Integer ableByIds(Set<Long> ids, int able);
 
   /**
    * <h2>统计指定条件下命中的数据行数</h2>
@@ -72,7 +73,7 @@ public interface ${className}Dao {
    * @author Automatic[www.dingpengwei@foxmail.com]
    * @since ${projectVersion}
    */
-  Integer deleteByIds(@Param("ids") List<Long> ids);
+  Integer deleteByIds(@Param("ids") Set<Long> ids);
 
   /**
    * <h2>新增数据</h2>

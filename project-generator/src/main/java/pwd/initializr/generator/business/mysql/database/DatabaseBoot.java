@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import pwd.initializr.generator.business.mysql.architecture.ProjectBO;
+import pwd.initializr.generator.business.mysql.architecture.SrcMainJavaPackageApi;
+import pwd.initializr.generator.business.mysql.architecture.SrcMainJavaPackageApiController;
 import pwd.initializr.generator.business.mysql.architecture.SrcMainJavaPackageApiInput;
 import pwd.initializr.generator.business.mysql.architecture.SrcMainJavaPackageApiOutput;
 import pwd.initializr.generator.business.mysql.architecture.SrcMainJavaPackageBusinessBO;
@@ -48,5 +50,7 @@ public class DatabaseBoot {
         new SrcMainJavaPackageBusinessServiceImpl(projectBO,className).createProjectFile();
         new SrcMainJavaPackageApiInput(projectBO,className, tableColumnBOList).createProjectFile();
         new SrcMainJavaPackageApiOutput(projectBO,className, tableColumnBOList).createProjectFile();
+        new SrcMainJavaPackageApi(projectBO,className).createProjectFile();
+        new SrcMainJavaPackageApiController(projectBO,className).createProjectFile();
     }
 }
