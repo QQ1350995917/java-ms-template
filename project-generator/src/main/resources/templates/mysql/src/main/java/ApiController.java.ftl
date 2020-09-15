@@ -111,7 +111,7 @@ public class ${className}Controller extends pwd.initializr.common.web.api.admin.
   }
 
   @Override
-  public void create(@Valid @NotNull(message = "参数不能为空") AdminAccountInput input) {
+  public void create(@Valid @NotNull(message = "参数不能为空") ${className}Input input) {
     ${className}BO bo = new ${className}BO();
     BeanUtils.copyProperties(input,bo);
     service.insert(bo);

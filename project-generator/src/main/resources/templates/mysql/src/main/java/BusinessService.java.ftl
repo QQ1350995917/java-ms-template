@@ -83,11 +83,11 @@ public interface ${className}Service {
    * @param sorts 排序条件
    * @param pageIndex 页码
    * @param pageSize 容量
-   * @return pwd.initializr.common.web.business.bo.PageableQueryResult<pwd.initializr.account.business.admin.bo.AdminAccountBO>
+   * @return pwd.initializr.common.web.business.bo.PageableQueryResult<${projectPackage}.business.bo.${className}BO>
    * @author Automatic[www.dingpengwei@foxmail.com]
    * @since ${projectCreateDate}
    */
-  PageableQueryResult<AdminAccountBO> queryAllByCondition(LinkedHashSet<ScopeBO> scopes,
+  PageableQueryResult<${className}BO> queryAllByCondition(LinkedHashSet<ScopeBO> scopes,
     LinkedHashSet<SortBO> sorts, Long pageIndex, Long pageSize);
 
   /**

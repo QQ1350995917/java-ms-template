@@ -21,7 +21,7 @@ import lombok.ToString;
 public enum AdminAccountType {
   GRANT(1, "grant", "授权账号"),
   PHONE_SMS(2, "phone number and SMS code", "电话号码和短信验证码"),
-  PHONE_PWD(3, "phone number and password", "电话号码和密码");
+  PHONE_PWD(3, "phone number and pwd", "电话号码和密码");
 
   private int number;
   private String enus;

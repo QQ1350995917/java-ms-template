@@ -14,15 +14,15 @@ import java.util.List;
  * @version 1.0.0
  * @since DistributionVersion
  */
-public class Springboot {
+public class ArchitectureBoot {
 
     public static void main(String[] args) throws Exception {
         ProjectBO projectBO = new ProjectBO();
-        Springboot springboot = new Springboot();
-        springboot.generateProjectFrame(projectBO);
+        ArchitectureBoot architectureBoot = new ArchitectureBoot();
+        architectureBoot.generateProjectArchitecture(projectBO);
     }
 
-    public void generateProjectFrame(ProjectBO projectBO) {
+    public void generateProjectArchitecture(ProjectBO projectBO) {
         List<ProjectFile> projectFiles = new LinkedList<>();
         projectFiles.add(new ProjectPom(projectBO));
         projectFiles.add(new ProjectZip(projectBO));

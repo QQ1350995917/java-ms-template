@@ -29,19 +29,21 @@ public abstract class DataSourceComponent {
         this.config = config;
     }
 
-    public Map<String, Object> exec() {
+    protected Connection getConnection() throws ClassNotFoundException, SQLException {
+        Class.forName(this.config.getDriver());
+        return DriverManager.getConnection(this.config.getUrl(), this.config.getUser(), this.config.getPwd());
+    }
+
+    public Map<String, Object> exec() throws ClassNotFoundException,SQLException {
         Map<String, Object> result = new HashMap();
-        Connection connection = null;
+        Connection connection = getConnection();
         Statement statement = null;
         try {
-            Class.forName(config.getDriver());
-            connection = DriverManager
-                .getConnection(config.getUrl(), config.getUsername(), config.getPassword());
             statement = connection.createStatement();
             Set<String> sqls = getSqls();
             for (String sql : sqls) {
                 ResultSet resultSet = statement.executeQuery(sql);
-                result = getResult(resultSet);
+                result.putAll(getResult(resultSet));
                 resultSet.close();
             }
             statement.close();
@@ -51,27 +53,45 @@ public abstract class DataSourceComponent {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            try {
-                if (statement != null) {
-                    statement.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException se) {
-                se.printStackTrace();
-            }
+            close(connection, statement);
         }
         return result;
+    }
+
+    protected void close(Connection connection) {
+        this.close(connection, null);
+    }
+
+    protected void close(Connection connection, Statement statement) {
+        this.close(connection, statement, null);
+    }
+
+    protected void close(Connection connection, Statement statement, ResultSet resultSet) {
+        try {
+            if (resultSet != null && !resultSet.isClosed()) {
+                resultSet.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try {
+            if (statement != null && !statement.isClosed()) {
+                statement.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try {
+            if (connection != null && !connection.isClosed()) {
+                connection.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     protected abstract Map<String, Object> getResult(ResultSet resultSet) throws Exception;
 
     protected abstract Set<String> getSqls();
-
 
 }

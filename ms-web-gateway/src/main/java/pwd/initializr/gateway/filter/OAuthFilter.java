@@ -30,7 +30,7 @@ public class OAuthFilter implements GlobalFilter, Ordered {
   /**
    * 授权访问密码
    */
-  @Value("${spring.security.user.password}")
+  @Value("${spring.security.user.pwd}")
   private String securityUserPassword;
 
   @Override

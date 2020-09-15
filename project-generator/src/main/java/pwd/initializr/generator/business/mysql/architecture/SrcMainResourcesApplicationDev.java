@@ -18,11 +18,11 @@ public class SrcMainResourcesApplicationDev extends SrcMainResources {
     public SrcMainResourcesApplicationDev(ProjectBO projectBO) {
         super(projectBO);
         this.data.put("projectPort",projectBO.getProjectPort());
-        this.data.put("databaseName",projectBO.getDatabaseName());
-        this.data.put("databaseUrl",projectBO.getDatabaseUrl());
-        this.data.put("databaseUser",projectBO.getDatabaseUser());
-        this.data.put("databasePwd",projectBO.getDatabasePwd());
-        this.data.put("databaseDriver",projectBO.getDatabaseDriver());
+        this.data.put("databaseName",projectBO.getName());
+        this.data.put("databaseUrl",projectBO.getUrl());
+        this.data.put("databaseUser",projectBO.getUser());
+        this.data.put("databasePwd",projectBO.getPwd());
+        this.data.put("databaseDriver",projectBO.getDriver());
     }
 
     @Override

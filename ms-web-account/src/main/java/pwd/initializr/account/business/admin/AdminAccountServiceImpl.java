@@ -143,7 +143,7 @@ public class AdminAccountServiceImpl implements AdminAccountService {
   @Override
   public AdminAccountBO queryByNameAndPwd(String loginName, String loginPwd) {
     Assert.notNull(loginName, "Login name should not be empty");
-    Assert.notNull(loginName, "Login password should not be empty");
+    Assert.notNull(loginName, "Login pwd should not be empty");
     String encrypt = null;
     try {
       encrypt = Cryptographer.encrypt(loginPwd, loginName);

@@ -33,12 +33,19 @@ public class DatabaseBoot {
         DataSourceBO dataSourceBO = new DataSourceBO();
         Set<String> tables = new HashSet<>();
         tables.add("admin_account");
-        DataSourceComponent dataSourceComponent = new DataSourceTableColumn(dataSourceBO,dataSourceBO.getDatabaseName(),tables);
+        DataSourceComponent dataSourceComponent = new DataSourceTableColumn(dataSourceBO,dataSourceBO.getName(),tables);
         Map<String, Object> exec = dataSourceComponent.exec();
         List<TableColumnBO> tableColumnBOList = (List<TableColumnBO>)exec.get("admin_account");
         ProjectBO projectBO = new ProjectBO();
         String tableName = "admin_account";
         String className = "AdminAccount";
+
+        DatabaseBoot databaseBoot = new DatabaseBoot();
+        databaseBoot.generateProjectSrc(projectBO,tableName,className,tableColumnBOList);
+
+    }
+
+    public void generateProjectSrc(ProjectBO projectBO,String tableName,String className,List<TableColumnBO> tableColumnBOList) throws Exception {
         new SrcMainResourcesMapper(projectBO, tableName, className,
             tableColumnBOList).createProjectFile();
         new SrcMainJavaPackagePersistenceDao(projectBO, tableName, className).createProjectFile();

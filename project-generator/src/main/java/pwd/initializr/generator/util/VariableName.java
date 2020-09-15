@@ -19,6 +19,12 @@ public class VariableName {
     private static Pattern underlinePattern = Pattern.compile("_(\\w)");
     private static Pattern humpPattern = Pattern.compile("[A-Z]");
 
+    public static String upperInitials(String string) {
+        char[] cs = string.toCharArray();
+        cs[0] -= 32;
+        return String.valueOf(cs);
+    }
+
     public static String underlineToHump(String underline) {
         underline = underline.toLowerCase();
         Matcher matcher = underlinePattern.matcher(underline);

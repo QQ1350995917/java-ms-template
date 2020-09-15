@@ -35,7 +35,7 @@ public class SignUpByPhoneInput {
   @ApiModelProperty(name = "smsCode", value = "短信验证码", required = true, example = "123456")
   @NotNull(message = "0")
   private String smsCode;
-  @ApiModelProperty(name = "username", value = "真实姓名", required = true, example = "诸葛亮")
+  @ApiModelProperty(name = "user", value = "真实姓名", required = true, example = "诸葛亮")
   @NotNull(message = "0")
   private String username;
   @ApiModelProperty(name = "vCode", value = "图形验证码(登录响应无验证码时可为空)", required = true, example = "123456")

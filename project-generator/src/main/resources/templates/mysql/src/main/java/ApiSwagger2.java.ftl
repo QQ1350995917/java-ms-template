@@ -29,12 +29,12 @@ public class Swagger2 extends ApiSwagger2 {
 
   @Override
   protected Customer robotApiCustomer() {
-    return new Customer("RobotApi", "RobotApi", "机器接口", "${projectPackage}.api.robot");
+    return new Customer("RobotApi", "RobotApi", "机器接口", "${projectPackage}.api");
   }
 
   @Override
   protected Customer userApiCustomer() {
-    return new Customer("UserApi", "UserApi", "用户接口", "${projectPackage}.api.user");
+    return new Customer("UserApi", "UserApi", "用户接口", "${projectPackage}.api");
   }
 
   @Override

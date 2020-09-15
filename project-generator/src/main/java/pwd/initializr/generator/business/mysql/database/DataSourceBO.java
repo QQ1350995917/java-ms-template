@@ -24,11 +24,11 @@ import lombok.ToString;
 @ToString
 public class DataSourceBO {
 
-    private String databaseName = "initializr_account";
+    private String name = "initializr_account";
     private String url = "jdbc:mysql://localhost:3306/initializr_account";
     private String driver = "com.mysql.jdbc.Driver";
-    private String username = "root";
-    private String password = "root";
+    private String user = "root";
+    private String pwd = "root";
 
 //    // MySQL 8.0 以下版本 - JDBC 驱动名及数据库 URL
 //    static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";

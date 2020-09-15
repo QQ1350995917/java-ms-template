@@ -26,7 +26,7 @@ public abstract class ProjectFile {
 
     static {
         // 设置加载的目录
-        configuration.setClassForTemplateLoading(Springboot.class, "/templates");
+        configuration.setClassForTemplateLoading(ArchitectureBoot.class, "/templates");
     }
 
     protected abstract Map<String, Object> getData();

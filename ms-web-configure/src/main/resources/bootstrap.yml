@@ -6,7 +6,7 @@ spring:
 #            uri: http://192.168.31.18:81/ms-web-initializr/ms-web-initializr-configure.git
           uri: http://192.168.50.20:81/pwd.initializr/pwd.initializr.config.git
 #            uri: https://github.com/QQ1350995917/ms-web-initializr-configure.git
-          username: dingpengwei # username of git repo
-          password: ps1234567890 # password of git repo
+          username: dingpengwei # user of git repo
+          password: ps1234567890 # pwd of git repo
           default-label: master # branch of git repo
           search-paths: configuration  # path of config file in git repo

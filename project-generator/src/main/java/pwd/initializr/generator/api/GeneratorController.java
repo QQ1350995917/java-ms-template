@@ -2,28 +2,27 @@ package pwd.initializr.generator.api;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pwd.initializr.common.web.api.admin.AdminController;
 import pwd.initializr.generator.api.vo.GeneratorInput;
+import pwd.initializr.generator.business.mysql.architecture.ArchitectureBoot;
+import pwd.initializr.generator.business.mysql.architecture.ProjectBO;
 import pwd.initializr.generator.business.mysql.database.DataSourceBO;
 import pwd.initializr.generator.business.mysql.database.DataSourceTableColumn;
+import pwd.initializr.generator.business.mysql.database.DatabaseBoot;
 import pwd.initializr.generator.business.mysql.database.TableColumnBO;
-import pwd.initializr.generator.business.mysql.architecture.ProjectBO;
-import pwd.initializr.generator.business.mysql.architecture.Springboot;
-import pwd.initializr.generator.business.mysql.architecture.SrcMainJavaPackagePersistenceDao;
-import pwd.initializr.generator.business.mysql.architecture.SrcMainJavaPackagePersistenceEntity;
 import pwd.initializr.generator.util.VariableName;
 
 /**
@@ -50,46 +49,43 @@ public class GeneratorController extends AdminController {
     @Value("${project.genetator.storage}")
     private String projectGenetatorStorage;
 
-    @ApiOperation(value = "连接测试同时获取表名")
+    @ApiOperation(value = "工程代码生成")
     @PostMapping(value = {
         ""}, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public void generate(@RequestBody @NotNull(message = "参数不能为空") GeneratorInput input) {
+        ProjectBO projectBO = new ProjectBO();
+        BeanUtils.copyProperties(input, projectBO);
+        projectBO.setExportDir(projectGenetatorStorage);
+        projectBO.setProjectPort(80);
+        ArchitectureBoot architectureBoot = new ArchitectureBoot();
+        architectureBoot.generateProjectArchitecture(projectBO);
+
         DataSourceBO dataSourceBO = new DataSourceBO();
-        dataSourceBO.setDatabaseName(input.getName());
-        dataSourceBO.setDriver(input.getDriver());
-        dataSourceBO.setUrl(input.getUrl());
-        dataSourceBO.setUsername(input.getUser());
-        dataSourceBO.setPassword(input.getPwd());
+        BeanUtils.copyProperties(input, dataSourceBO);
         DataSourceTableColumn dataSourceTableColumn = new DataSourceTableColumn(dataSourceBO,
             input.getName(), input.getTables());
-        Map<String, Object> exec = dataSourceTableColumn.exec();
-
-        ProjectBO projectBO = new ProjectBO();
-        projectBO.setExportDir(projectGenetatorStorage);
-        projectBO.setProjectName(input.getProjectName());
-        projectBO.setPackageName(input.getPackageName());
-        projectBO.setProjectVersion(input.getProjectVersion());
-        projectBO.setApplicationName(input.getApplicationName());
-        projectBO.setProjectPort(80);
-
-        Springboot springboot = new Springboot();
-        springboot.generateProjectFrame(projectBO);
+        Map<String, Object> exec = null;
+        try {
+            exec = dataSourceTableColumn.exec();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         Set<String> tables = exec.keySet();
         for (String table : tables) {
             try {
                 String tableName = table;
-                String className = VariableName.underlineToHump(tableName);
+                String className = VariableName.upperInitials(VariableName.underlineToHump(tableName));
                 List<TableColumnBO> tableColumnBOList = (List<TableColumnBO>) exec.get(table);
-                new SrcMainJavaPackagePersistenceDao(projectBO, tableName, className)
-                    .createProjectFile();
-                new SrcMainJavaPackagePersistenceEntity(projectBO, tableName, className,
-                    tableColumnBOList).createProjectFile();
+                DatabaseBoot databaseBoot = new DatabaseBoot();
+                databaseBoot.generateProjectSrc(projectBO, tableName, className, tableColumnBOList);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
-
+        outputData(200);
     }
 }

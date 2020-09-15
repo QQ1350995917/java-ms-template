@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import pwd.initializr.generator.business.mysql.database.DataSourceBO;
+import pwd.initializr.generator.business.mysql.database.DatabaseBoot;
 
 /**
  * pwd.initializr.automatic.business.mysql.project@ms-web-initializr
@@ -22,16 +24,12 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class ProjectBO {
-    private String exportDir = "E:\\workspace\\github\\ms-web-initializr";
+public class ProjectBO extends DataSourceBO {
+
+    private String exportDir;
     private String packageName = "me.taoqigui.automatic";
     private String projectName = "project-generator-test";
     private String projectVersion = "0.0.1-SNAPSHOT";
     private String applicationName = "AutomaticTestApplication";
     private int projectPort = 80;
-    private String databaseName = "initializr_account";
-    private String databaseUrl = "jdbc:mysql://localhost:3306/initializr_account?characterEncoding=utf-8&autoReconnect=true&serverTimezone=GMT";
-    private String databaseUser = "root";
-    private String databasePwd = "root";
-    private String databaseDriver = "com.mysql.jdbc.Driver";
 }
