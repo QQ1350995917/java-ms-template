@@ -11,7 +11,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pwd.initializr.common.web.api.admin.AdminController;
 import pwd.initializr.generator.api.vo.GeneratorInput;
@@ -51,7 +53,7 @@ public class GeneratorController extends AdminController {
     @ApiOperation(value = "连接测试同时获取表名")
     @PostMapping(value = {
         ""}, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public void generate(@Valid @NotNull(message = "参数不能为空") GeneratorInput input) {
+    public void generate(@RequestBody @NotNull(message = "参数不能为空") GeneratorInput input) {
         DataSourceBO dataSourceBO = new DataSourceBO();
         dataSourceBO.setDatabaseName(input.getName());
         dataSourceBO.setDriver(input.getDriver());

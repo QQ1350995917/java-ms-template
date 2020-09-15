@@ -50,6 +50,7 @@ public class DataSourceTable extends DataSourceComponent {
         LinkedHashSet<String> sqls = new LinkedHashSet<>();
         String sql = "select TABLE_NAME from information_schema.columns where table_schema ='"
             + this.databaseName + "'  group by TABLE_NAME;";
+        sqls.add(sql);
         return sqls;
     }
 }
