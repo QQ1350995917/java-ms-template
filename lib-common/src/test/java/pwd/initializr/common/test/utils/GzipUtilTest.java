@@ -1,6 +1,6 @@
 package pwd.initializr.common.test.utils;
 
-import pwd.initializr.common.utils.GzipUtil;
+import pwd.initializr.common.utils.ZipUtil;
 
 /**
  * pwd.initializr.common.test.utils@ms-web-initializr
@@ -27,8 +27,8 @@ public class GzipUtilTest {
             .length());
 
     try {
-      byte[] out1 = GzipUtil.compress(sourceStr.getBytes());
-      System.out.println("after compress:" + out1.length);
+      byte[] out1 = ZipUtil.gZipCompress(sourceStr.getBytes());
+      System.out.println("after gZipCompress:" + out1.length);
     } catch (Exception var4) {
       var4.printStackTrace();
     }

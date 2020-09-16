@@ -41,6 +41,10 @@ public abstract class ProjectFile {
         // 2.创建数据
         Map<String, Object> data = getData();
         // 3.产生输出
-        template.process(data, new OutputStreamWriter(new FileOutputStream(getOutputFile())));
+        OutputStreamWriter outputStreamWriter = new OutputStreamWriter(
+            new FileOutputStream(getOutputFile()));
+        template.process(data, outputStreamWriter);
+        outputStreamWriter.flush();
+        outputStreamWriter.close();
     }
 }

@@ -2,10 +2,19 @@ package pwd.initializr.generator.api;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import javax.activation.MimetypesFileTypeMap;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -15,6 +24,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import pwd.initializr.common.utils.ZipUtil;
 import pwd.initializr.common.web.api.admin.AdminController;
 import pwd.initializr.generator.api.vo.GeneratorInput;
 import pwd.initializr.generator.business.mysql.architecture.ArchitectureBoot;
@@ -69,23 +79,70 @@ public class GeneratorController extends AdminController {
             exec = dataSourceTableColumn.exec();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
+            outputException(500);
+            return;
         } catch (SQLException e) {
             e.printStackTrace();
+            outputException(500);
+            return;
         }
 
-        Set<String> tables = exec.keySet();
-        for (String table : tables) {
-            try {
+        try {
+            Set<String> tables = exec.keySet();
+            for (String table : tables) {
                 String tableName = table;
-                String className = VariableName.upperInitials(VariableName.underlineToHump(tableName));
+                String className = VariableName
+                    .upperInitials(VariableName.underlineToHump(tableName));
                 List<TableColumnBO> tableColumnBOList = (List<TableColumnBO>) exec.get(table);
                 DatabaseBoot databaseBoot = new DatabaseBoot();
                 databaseBoot.generateProjectSrc(projectBO, tableName, className, tableColumnBOList);
-            } catch (Exception e) {
-                e.printStackTrace();
             }
+        } catch (Exception e) {
+            outputException(500);
+            return;
         }
 
-        outputData(200);
+        try {
+            ZipUtil.zip(projectGenetatorStorage + File.separator + projectBO.getProjectName(),
+                projectGenetatorStorage + File.separator + projectBO.getProjectName() + ".zip");
+        } catch (IOException e) {
+            e.printStackTrace();
+            outputException(500);
+            return;
+        }
+
+        String contentType = "application/x-zip-compressed";
+        HttpServletResponse response = getResponse();
+        String type = new MimetypesFileTypeMap().getContentType(contentType);
+        response.setCharacterEncoding("utf-8");
+        response.setHeader("Content-type", type);
+        response.setContentType(contentType);
+        String fileName = projectBO.getProjectName() + ".zip";
+        try {
+            response.setHeader("title", fileName);
+//            response.setHeader("Content-Disposition",
+//                "inline;filename=" + URLEncoder.encode(fileName, "UTF-8"));
+            response.setHeader("Content-Disposition",
+                "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            outputException(500);
+            return;
+        }
+        try (OutputStream outputStream = response.getOutputStream();
+            BufferedInputStream bufferedInputStream = new BufferedInputStream(
+                new FileInputStream(new File(
+                    projectGenetatorStorage + File.separator + fileName)))) {
+            byte[] buff = new byte[1024 * 512];
+            int len = 0;
+            while ((len = bufferedInputStream.read(buff)) != -1) {
+                outputStream.write(buff, 0, len);
+                outputStream.flush();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            outputException(500);
+            return;
+        }
     }
 }

@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import pwd.initializr.common.utils.GzipUtil;
+import pwd.initializr.common.utils.ZipUtil;
 import pwd.initializr.common.utils.StringUtil;
 import pwd.initializr.common.web.api.vo.Meta;
 import pwd.initializr.common.web.api.vo.Output;
@@ -108,7 +108,7 @@ public class ApiController {
     byte[] bytes = null;
 
     try {
-      bytes = GzipUtil.compress(data.getBytes("UTF-8"));
+      bytes = ZipUtil.gZipCompress(data.getBytes("UTF-8"));
     } catch (Exception e) {
       e.printStackTrace();
     }
