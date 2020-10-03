@@ -19,11 +19,11 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class IndexPage {
 
-//  @RequestMapping(value = "", method = RequestMethod.GET)
-//  public ModelAndView index() {
-//    ModelAndView modelAndView = new ModelAndView();
-//    modelAndView.setViewName("index");
-//    modelAndView.addObject("port", "");
-//    return modelAndView;
-//  }
+  @RequestMapping(value = "", method = RequestMethod.GET)
+  public ModelAndView index() {
+    ModelAndView modelAndView = new ModelAndView();
+    modelAndView.setViewName("index");
+    modelAndView.addObject("port", "");
+    return modelAndView;
+  }
 }

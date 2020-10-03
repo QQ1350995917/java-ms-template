@@ -17,5 +17,6 @@
 |schedule|11280|
 
 http://patorjk.com/software/taag/#p=display&f=Doh
+http://patorjk.com/software/taag/#p=display&h=3&v=3&c=bash&f=Star%20Wars&t=
 
 mvn clean package docker:build -Dmaven.test.skip=true -DpushImage

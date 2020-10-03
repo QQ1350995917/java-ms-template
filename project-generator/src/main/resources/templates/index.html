@@ -6,23 +6,29 @@
   <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
   <script src="https://unpkg.com/vue/dist/vue.js"></script>
   <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+  <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
   <style>
     .row-bg {
       background-color: #f9fafc;
     }
+
     .grid-content {
       background: #fafafa;
     }
+
     .text {
       font-size: 14px;
     }
+
     .item {
       padding: 5px 0;
     }
+
     .box-card {
       width: 100%;
     }
-    .submit{
+
+    .submit {
       width: 100%;
       margin: 20px auto;
     }
@@ -101,26 +107,31 @@
               </el-input>
             </div>
             <div>
-              <el-button type="text">连接测试</el-button>
+              <el-button type="text" @click="onDBConnect">连接测试</el-button>
               <el-progress :percentage="100" status="success"></el-progress>
             </div>
             <template>
-              <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
+              <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll"
+                           @change="handleCheckAllChange">全选
+              </el-checkbox>
               <div style="margin: 15px 0;"></div>
-              <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
-                <el-checkbox v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>
+              <el-checkbox-group v-model="checkedTables" :min="1"
+                                 @change="handleCheckedCitiesChange">
+                <el-checkbox v-for="table in tables" :label="table" :key="table">{{table}}
+                </el-checkbox>
               </el-checkbox-group>
             </template>
           </el-card>
         </div>
-        <el-button type="primary" class="submit">提交</el-button>
+        <el-button type="primary" class="submit" @click="onCodeGenerator">提交</el-button>
       </el-col>
     </el-row>
   </el-main>
   <el-footer>
     <el-row>
       <el-col :span="12" :offset="6">
-        @support:DingPengwei
+        <p>Powered by www.dingpengwei@foxmail.com</p>
+        <p>copyright©2020</p>
       </el-col>
     </el-row>
   </el-footer>
@@ -128,9 +139,11 @@
 <script>
   new Vue({
     el: '#container',
-    data: function() {
-      var cityOptions = ['table0', 'table1', 'table2', 'table3','table4', 'table5', 'table6', 'table7table6table7'];
+    data: function () {
       return {
+        tableOptions: [],
+        tables: [],
+        checkedTables: [],
         activeName: '0',
         projectName: 'pwd-code-generator',
         projectPackage: 'pwd.code.generator',
@@ -143,20 +156,82 @@
         databaseUser: 'root',
         databasePwd: 'root',
         checkAll: false,
-        checkedCities: ['table0', 'table1'],
-        cities: cityOptions,
         isIndeterminate: true
       };
     },
     methods: {
+      onDBConnect() {
+        this.$http.get(
+            '/api/admin/database?name=' + this.databaseName + '&url=' + this.databaseUrl
+            + '&driver='
+            + this.databaseDriver + '&user=' + this.databaseUser + '&pwd=' + this.databasePwd).then(
+            function (res) {
+              var body = res.body;
+              var meta = body.meta;
+              var code = meta.code;
+              var data = body.data;
+              this.tableOptions = data.tables;
+              this.tables = data.tables;
+            }, function (e) {
+              var body = e.body;
+              var meta = body.meta;
+              var code = meta.code;
+              if (code == 400) {
+                this.$message.error('参数错误');
+              } else if (code == 500) {
+                this.$message.error('服务异常');
+              } else {
+                this.$message.error('未知异常');
+              }
+            });
+      },
+      onCodeGenerator() {
+        this.$http.post(
+            '/api/admin/generator', {
+              name: this.databaseName,
+              url: this.databaseUrl,
+              driver: this.databaseDriver,
+              user: this.databaseUser,
+              pwd: this.databasePwd,
+              projectName: this.projectName,
+              packageName: this.projectPackage,
+              projectVersion: this.projectVersion,
+              applicationName: this.applicationName,
+              tables: this.checkedTables
+            }, {
+              header: {
+                'Content-Type': 'application/json;charset=UTF-8'
+              },
+              // emulateJSON: true
+            }).then(
+            function (res) {
+              var body = res.body;
+              var meta = body.meta;
+              var code = meta.code;
+              var data = body.data;
+              this.tableOptions = data.tables;
+              this.tables = data.tables;
+            }, function (e) {
+              var body = e.body;
+              var meta = body.meta;
+              var code = meta.code;
+              if (code == 400) {
+                this.$message.error('参数错误');
+              } else if (code == 500) {
+                this.$message.error('服务异常');
+              } else {
+                this.$message.error('未知异常');
+              }
+            });
+      },
       handleCheckAllChange(val) {
-        this.checkedCities = val ? cityOptions : [];
+        this.checkedTables = val ? this.tableOptions : [];
         this.isIndeterminate = false;
       },
       handleCheckedCitiesChange(value) {
         var checkedCount = value.length;
-        this.checkAll = checkedCount === this.cities.length;
-        this.isIndeterminate = checkedCount > 0 && checkedCount < this.cities.length;
+        this.checkAll = checkedCount === this.tables.length;
+        this.isIndeterminate = checkedCount > 0 && checkedCount < this.tables.length;
       }
     }
   });

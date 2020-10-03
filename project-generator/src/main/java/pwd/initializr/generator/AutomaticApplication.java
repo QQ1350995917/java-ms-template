@@ -29,9 +29,9 @@ public class AutomaticApplication {
         SpringApplication.run(AutomaticApplication.class, args);
     }
 
-    @GetMapping("")
-    public ModelAndView index(){
-        ModelAndView modelAndView = new ModelAndView("redirect:/swagger-ui.html");
-        return modelAndView;
-    }
+//    @GetMapping("")
+//    public ModelAndView index(){
+//        ModelAndView modelAndView = new ModelAndView("redirect:/swagger-ui.html");
+//        return modelAndView;
+//    }
 }
