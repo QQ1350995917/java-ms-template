@@ -39,6 +39,8 @@
     <module>project-generator</module>
     <module>project-generator-test</module>
     <module>widget-tool</module>
+    <module>lib-common-mw-monitor</module>
+    <module>lib-rpc-monitor</module>
   </modules>
   <version>0.0.1-SNAPSHOT</version>
   <name>ms-web-initializr</name>

@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import pwd.initializr.monitor.rpc.RPCOperatingSystem;
 
 /**
  * pwd.initializr.monitor.api.admin.vo@ms-web-initializr
@@ -27,30 +28,7 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class OperatingSystemOutput implements Serializable {
+public class OperatingSystemOutput extends RPCOperatingSystem implements Serializable {
 
-    @ApiModelProperty(value = "操作系统名称")
-    private String name;
-    @ApiModelProperty(value = "操作系统的版本号")
-    private String version;
-    @ApiModelProperty(value = "操作系统内核架构如： 386、486、586等x86")
-    private String arch;
-    @ApiModelProperty(value = "machine")
-    private String machine;
-    @ApiModelProperty(value = "description")
-    private String description;
-    @ApiModelProperty(value = "patchLevel")
-    private String patchLevel;
-    @ApiModelProperty(value = "操作系统的卖主")
-    private String vendor;
-    @ApiModelProperty(value = "操作系统卖主类型")
-    private String vendorVersion;
-    @ApiModelProperty(value = "操作系统名称")
-    private String vendorName;
-    @ApiModelProperty(value = "卖主名称")
-    private String vendorCodeName;
-    @ApiModelProperty(value = "操作系统位数")
-    private String dataModel;
-    @ApiModelProperty(value = "操作系统CPU大端/小端")
-    private String cpuEndian;
+
 }
