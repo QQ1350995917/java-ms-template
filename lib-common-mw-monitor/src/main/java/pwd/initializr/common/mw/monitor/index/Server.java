@@ -1,8 +1,9 @@
 package pwd.initializr.common.mw.monitor.index;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
+import org.hyperic.sigar.Cpu;
 import org.hyperic.sigar.CpuInfo;
 import org.hyperic.sigar.CpuPerc;
 import org.hyperic.sigar.FileSystem;
@@ -16,7 +17,18 @@ import org.hyperic.sigar.Sigar;
 import org.hyperic.sigar.SigarException;
 import org.hyperic.sigar.Swap;
 import org.hyperic.sigar.Who;
-import pwd.initializr.monitor.rpc.RPCOperatingSystem;
+import pwd.initializr.monitor.rpc.RPCServer;
+import pwd.initializr.monitor.rpc.RPCServerCpu;
+import pwd.initializr.monitor.rpc.RPCServerCpuCore;
+import pwd.initializr.monitor.rpc.RPCServerCpuCoreUsage;
+import pwd.initializr.monitor.rpc.RPCServerDisk;
+import pwd.initializr.monitor.rpc.RPCServerDiskUsage;
+import pwd.initializr.monitor.rpc.RPCServerEthernet;
+import pwd.initializr.monitor.rpc.RPCServerEthernetStat;
+import pwd.initializr.monitor.rpc.RPCServerMemory;
+import pwd.initializr.monitor.rpc.RPCServerMemorySwap;
+import pwd.initializr.monitor.rpc.RPCServerOS;
+import pwd.initializr.monitor.rpc.RPCServerWho;
 
 /**
  * pwd.initializr.common.mw.monitor.index@ms-web-initializr
@@ -30,234 +42,313 @@ import pwd.initializr.monitor.rpc.RPCOperatingSystem;
  * @since DistributionVersion
  */
 public class Server {
-  //    private static final OperatingSystem OS = OperatingSystem.getInstance();
-//    private static final Sigar SIGAR = new Sigar();
-  private static OperatingSystem OS;
-  private static Sigar SIGAR ;
 
-  public static RPCOperatingSystem os() {
-    RPCOperatingSystem rpcOperatingSystem = new RPCOperatingSystem();
-    rpcOperatingSystem.setName(OS.getName());
-    rpcOperatingSystem.setVersion(OS.getVersion());
-    rpcOperatingSystem.setArch(OS.getArch());
-    rpcOperatingSystem.setDescription(OS.getDescription());
-    rpcOperatingSystem.setMachine(OS.getMachine());
-    rpcOperatingSystem.setPatchLevel(OS.getPatchLevel());
-    rpcOperatingSystem.setCpuEndian(OS.getCpuEndian());
-    rpcOperatingSystem.setDataModel(OS.getDataModel());
-    rpcOperatingSystem.setVendor(OS.getVendor());
-    rpcOperatingSystem.setVendorCodeName(OS.getVendorCodeName());
-    rpcOperatingSystem.setVendorName(OS.getVendorName());
-    rpcOperatingSystem.setVendorVersion(OS.getVendorVersion());
-    return rpcOperatingSystem;
-  }
+    private static final OperatingSystem OS = OperatingSystem.getInstance();
+    private static final Sigar SIGAR = new Sigar();
 
-  public void cpu() {
-    try {
-      CpuInfo infos[] = SIGAR.getCpuInfoList();
-      System.out.println("cpu总量参数情况 "+ SIGAR.getCpu());
-      System.out.println("cpu总百分比情况 "+ SIGAR.getCpuPerc());
-      CpuPerc cpuList[] = SIGAR.getCpuPercList();
-      for (int i = 0; i < infos.length; i++) {// 不管是单块CPU还是多CPU都适用
-        CpuInfo info = infos[i];
-        System.out.println("第" + (i + 1) + "块CPU信息");
-        System.out.println("CPU的总量MHz:    " + info.getMhz());// CPU的总量MHz
-        System.out.println("CPU生产商:    " + info.getVendor());// 获得CPU的卖主，如：Intel
-        System.out.println("CPU类别:    " + info.getModel());// 获得CPU的类别，如：Celeron
-        System.out.println("CPU缓存数量:    " + info.getCacheSize());// 缓冲存储器数量
-        CpuPerc cpu = cpuList[i];
-        System.out.println("CPU用户使用率:    " + CpuPerc.format(cpu.getUser()));// 用户使用率
-        System.out.println("CPU系统使用率:    " + CpuPerc.format(cpu.getSys()));// 系统使用率
-        System.out.println("CPU当前等待率:    " + CpuPerc.format(cpu.getWait()));// 当前等待率
-        System.out.println("CPU当前错误率:    " + CpuPerc.format(cpu.getNice()));//
-        System.out.println("CPU当前空闲率:    " + CpuPerc.format(cpu.getIdle()));// 当前空闲率
-        System.out.println("CPU总的使用率:    " + CpuPerc.format(cpu.getCombined()));// 总的使用率
-      }
-    } catch (SigarException e) {
-      e.printStackTrace();
-    }
-  }
-
-  public static void main(String[] args) {
-  }
-
-  public void memory() {
-
-    try {
-      Mem mem = SIGAR.getMem();
-      // 内存总量
-      System.out.println("内存总量:    " + mem.getTotal() / 1024L + "K av");
-      // 当前内存使用量
-      System.out.println("当前内存使用量:    " + mem.getUsed() / 1024L + "K used");
-      // 当前内存剩余量
-      System.out.println("当前内存剩余量:    " + mem.getFree() / 1024L + "K free");
-    } catch (SigarException e) {
-      e.printStackTrace();
-    }
-  }
-
-  public void swap() {
-
-    try {
-      Swap swap = SIGAR.getSwap();
-      // 交换区总量
-      System.out.println("交换区总量:    " + swap.getTotal() / 1024L + "K av");
-      // 当前交换区使用量
-      System.out.println("当前交换区使用量:    " + swap.getUsed() / 1024L + "K used");
-      // 当前交换区剩余量
-      System.out.println("当前交换区剩余量:    " + swap.getFree() / 1024L + "K free");
-    } catch (SigarException e) {
-      e.printStackTrace();
-    }
-  }
-
-  public void who() {
-    try {
-      Who who[] = SIGAR.getWhoList();
-      if (who != null && who.length > 0) {
-        for (int i = 0; i < who.length; i++) {
-          // System.out.println("当前系统进程表中的用户名" + String.valueOf(i));
-          Who _who = who[i];
-          System.out.println("用户控制台:    " + _who.getDevice());
-          System.out.println("用户host:    " + _who.getHost());
-          // System.out.println("getTime():    " + _who.getTime());
-          // 当前系统进程表中的用户名
-          System.out.println("当前系统进程表中的用户名:    " + _who.getUser());
-        }
+    public static RPCServer server() {
         Map<String, String> map = System.getenv();
-        String userName = map.get("USERNAME");// 获取用户名
-        String computerName = map.get("COMPUTERNAME");// 获取计算机名
-        String userDomain = map.get("USERDOMAIN");// 获取计算机域名
-        System.out.println("用户名:    " + userName);
-        System.out.println("计算机名:    " + computerName);
-        System.out.println("计算机域名:    " + userDomain);
-
-      }
-    } catch (SigarException e) {
-      e.printStackTrace();
+        RPCServer rpcServer = new RPCServer();
+        rpcServer.setComputerName(map.get("COMPUTERNAME"));
+        rpcServer.setUserDomain(map.get("USERDOMAIN"));
+        rpcServer.setUserName(map.get("USERNAME"));
+        return rpcServer;
     }
-  }
 
-  public void disk() {
-    try {
-      FileSystem fslist[] = SIGAR.getFileSystemList();
-      for (int i = 0; i < fslist.length; i++) {
-        System.out.println("分区的盘符名称" + i);
-        FileSystem fs = fslist[i];
-        // 分区的盘符名称
-        System.out.println("盘符名称:    " + fs.getDevName());
-        // 分区的盘符名称
-        System.out.println("盘符路径:    " + fs.getDirName());
-        System.out.println("盘符标志:    " + fs.getFlags());//
-        // 文件系统类型，比如 FAT32、NTFS
-        System.out.println("盘符类型:    " + fs.getSysTypeName());
-        // 文件系统类型名，比如本地硬盘、光驱、网络文件系统等
-        System.out.println("盘符类型名:    " + fs.getTypeName());
-        // 文件系统类型
-        System.out.println("盘符文件系统类型:    " + fs.getType());
-        FileSystemUsage usage = null;
-        usage = SIGAR.getFileSystemUsage(fs.getDirName());
-        switch (fs.getType()) {
-          case 0: // TYPE_UNKNOWN ：未知
-            break;
-          case 1: // TYPE_NONE
-            break;
-          case 2: // TYPE_LOCAL_DISK : 本地硬盘
-            // 文件系统总大小
-            System.out.println(fs.getDevName() + "总大小:    "
-                + usage.getTotal() + "KB");
-            // 文件系统剩余大小
-            System.out.println(fs.getDevName() + "剩余大小:    "
-                + usage.getFree() + "KB");
-            // 文件系统可用大小
-            System.out.println(fs.getDevName() + "可用大小:    "
-                + usage.getAvail() + "KB");
-            // 文件系统已经使用量
-            System.out.println(fs.getDevName() + "已经使用量:    "
-                + usage.getUsed() + "KB");
-            double usePercent = usage.getUsePercent() * 100D;
-            // 文件系统资源的利用率
-            System.out.println(fs.getDevName() + "资源的利用率:    "
-                + usePercent + "%");
-            break;
-          case 3:// TYPE_NETWORK ：网络
-            break;
-          case 4:// TYPE_RAM_DISK ：闪存
-            break;
-          case 5:// TYPE_CDROM ：光驱
-            break;
-          case 6:// TYPE_SWAP ：页面交换
-            break;
+    private static List<RPCServerWho> who() {
+        List<RPCServerWho> rpcServerWhos = new LinkedList<>();
+        try {
+            Who whos[] = SIGAR.getWhoList();
+            if (whos != null && whos.length > 0) {
+                for (int i = 0; i < whos.length; i++) {
+                    Who who = whos[i];
+                    RPCServerWho rpcServerWho = new RPCServerWho();
+                    rpcServerWho.setUser(who.getUser());
+                    rpcServerWho.setHost(who.getHost());
+                    rpcServerWho.setDevice(who.getDevice());
+                    rpcServerWho.setTime(who.getTime());
+                    rpcServerWhos.add(rpcServerWho);
+                }
+            }
+        } catch (SigarException e) {
+            e.printStackTrace();
         }
-        System.out.println(fs.getDevName() + "读出：    "
-            + usage.getDiskReads());
-        System.out.println(fs.getDevName() + "写入：    "
-            + usage.getDiskWrites());
-      }
-    } catch (SigarException e) {
-      e.printStackTrace();
+        return rpcServerWhos;
     }
-  }
 
-  public void network() {
-    try {
-      String ifNames[] = SIGAR.getNetInterfaceList();
-      for (int i = 0; i < ifNames.length; i++) {
-        String name = ifNames[i];
-        NetInterfaceConfig ifconfig = SIGAR.getNetInterfaceConfig(name);
-        System.out.println("网络设备名:    " + name);// 网络设备名
-        System.out.println("IP地址:    " + ifconfig.getAddress());// IP地址
-        System.out.println("子网掩码:    " + ifconfig.getNetmask());// 子网掩码
-        if ((ifconfig.getFlags() & 1L) <= 0L) {
-          System.out.println("!IFF_UP...skipping getNetInterfaceStat");
-          continue;
+    public static RPCServerOS os() {
+        RPCServerOS rpcServerOS = new RPCServerOS();
+        rpcServerOS.setName(OS.getName());
+        rpcServerOS.setVersion(OS.getVersion());
+        rpcServerOS.setArch(OS.getArch());
+        rpcServerOS.setDescription(OS.getDescription());
+        rpcServerOS.setMachine(OS.getMachine());
+        rpcServerOS.setPatchLevel(OS.getPatchLevel());
+        rpcServerOS.setCpuEndian(OS.getCpuEndian());
+        rpcServerOS.setDataModel(OS.getDataModel());
+        rpcServerOS.setVendor(OS.getVendor());
+        rpcServerOS.setVendorCodeName(OS.getVendorCodeName());
+        rpcServerOS.setVendorName(OS.getVendorName());
+        rpcServerOS.setVendorVersion(OS.getVendorVersion());
+        return rpcServerOS;
+    }
+
+    public static RPCServerCpu cpu() {
+        RPCServerCpu rpcServerCpu = new RPCServerCpu();
+        new LinkedList<>();
+        try {
+            Cpu cpu = SIGAR.getCpu();
+            rpcServerCpu.setUser(cpu.getUser());
+            rpcServerCpu.setSys(cpu.getSys());
+            rpcServerCpu.setNice(cpu.getNice());
+            rpcServerCpu.setIdle(cpu.getIdle());
+            rpcServerCpu.setWait(cpu.getWait());
+            rpcServerCpu.setIrq(cpu.getIrq());
+            rpcServerCpu.setSoftIrq(cpu.getSoftIrq());
+            rpcServerCpu.setStolen(cpu.getStolen());
+            rpcServerCpu.setTotal(cpu.getTotal());
+            //System.out.println("cpu总百分比情况 " + SIGAR.getCpuPerc());
+            LinkedList<RPCServerCpuCore> rpcServerCpuCores = cpuCore();
+            rpcServerCpu.setCore(rpcServerCpuCores);
+        } catch (SigarException e) {
+            e.printStackTrace();
         }
-        NetInterfaceStat ifstat = SIGAR.getNetInterfaceStat(name);
-        System.out.println(name + "接收的总包裹数:" + ifstat.getRxPackets());// 接收的总包裹数
-        System.out.println(name + "发送的总包裹数:" + ifstat.getTxPackets());// 发送的总包裹数
-        System.out.println(name + "接收到的总字节数:" + ifstat.getRxBytes());// 接收到的总字节数
-        System.out.println(name + "发送的总字节数:" + ifstat.getTxBytes());// 发送的总字节数
-        System.out.println(name + "接收到的错误包数:" + ifstat.getRxErrors());// 接收到的错误包数
-        System.out.println(name + "发送数据包时的错误数:" + ifstat.getTxErrors());// 发送数据包时的错误数
-        System.out.println(name + "接收时丢弃的包数:" + ifstat.getRxDropped());// 接收时丢弃的包数
-        System.out.println(name + "发送时丢弃的包数:" + ifstat.getTxDropped());// 发送时丢弃的包数
-      }
-
-      try {
-        InetAddress addr = InetAddress.getLocalHost();
-        String ip = addr.getHostAddress();
-
-        System.out.println("本地ip地址:    " + ip);
-        //
-        System.out.println("本地主机名:    " + addr.getHostName());
-      } catch (UnknownHostException e) {
-        e.printStackTrace();
-      }
-      //
-    } catch (SigarException e) {
-      e.printStackTrace();
+        return rpcServerCpu;
     }
-  }
 
-  public void ethernet() {
-    try {
-      String[] ifaces = SIGAR.getNetInterfaceList();
-      for (int i = 0; i < ifaces.length; i++) {
-        NetInterfaceConfig cfg = SIGAR.getNetInterfaceConfig(ifaces[i]);
-        if (NetFlags.LOOPBACK_ADDRESS.equals(cfg.getAddress())
-            || (cfg.getFlags() & NetFlags.IFF_LOOPBACK) != 0
-            || NetFlags.NULL_HWADDR.equals(cfg.getHwaddr())) {
-          continue;
+    public static LinkedList<RPCServerCpuCore> cpuCore() {
+        RPCServerCpu rpcServerCpu = new RPCServerCpu();
+        LinkedList<RPCServerCpuCore> rpcServerCpuCores = new LinkedList<>();
+        try {
+            CpuInfo[] cpuInfoList = SIGAR.getCpuInfoList();
+            for (int i = 0; i < cpuInfoList.length; i++) {
+                CpuInfo info = cpuInfoList[i];
+                RPCServerCpuCore rpcServerCpuCore = new RPCServerCpuCore();
+                rpcServerCpuCore.setVendor(info.getVendor());
+                rpcServerCpuCore.setModel(info.getModel());
+                rpcServerCpuCore.setCacheSize(info.getCacheSize());
+                rpcServerCpuCore.setMhz(info.getMhz());
+                rpcServerCpuCore.setTotalCores(info.getTotalCores());
+                rpcServerCpuCore.setTotalSockets(info.getTotalSockets());
+                rpcServerCpuCore.setCoresPerSocket(info.getCoresPerSocket());
+                rpcServerCpuCores.add(rpcServerCpuCore);
+            }
+            rpcServerCpu.setCore(rpcServerCpuCores);
+        } catch (SigarException e) {
+            e.printStackTrace();
         }
-        System.out.println(cfg.getName() + "IP地址:" + cfg.getAddress());// IP地址
-        System.out.println(cfg.getName() + "网关广播地址:" + cfg.getBroadcast());// 网关广播地址
-        System.out.println(cfg.getName() + "网卡MAC地址:" + cfg.getHwaddr());// 网卡MAC地址
-        System.out.println(cfg.getName() + "子网掩码:" + cfg.getNetmask());// 子网掩码
-        System.out.println(cfg.getName() + "网卡描述信息:" + cfg.getDescription());// 网卡描述信息
-        System.out.println(cfg.getName() + "网卡类型" + cfg.getType());//
-      }
-    } catch (SigarException e) {
-      e.printStackTrace();
+        return rpcServerCpuCores;
     }
-  }
+
+    public static LinkedList<RPCServerCpuCoreUsage> cpuCoreUsage() {
+        LinkedList<RPCServerCpuCoreUsage> rpcServerCpuCoreUsages = new LinkedList<>();
+        try {
+            CpuPerc[] cpuList = SIGAR.getCpuPercList();
+            for (int i = 0; i < cpuList.length; i++) {
+                RPCServerCpuCoreUsage rpcServerCpuCoreUsage = new RPCServerCpuCoreUsage();
+                CpuPerc cpuPerc = cpuList[i];
+                rpcServerCpuCoreUsage.setUser(CpuPerc.format(cpuPerc.getUser()));
+                rpcServerCpuCoreUsage.setSys(CpuPerc.format(cpuPerc.getSys()));
+                rpcServerCpuCoreUsage.setNice(CpuPerc.format(cpuPerc.getNice()));
+                rpcServerCpuCoreUsage.setIdle(CpuPerc.format(cpuPerc.getIdle()));
+                rpcServerCpuCoreUsage.setWait(CpuPerc.format(cpuPerc.getWait()));
+                rpcServerCpuCoreUsage.setIrq(CpuPerc.format(cpuPerc.getIrq()));
+                rpcServerCpuCoreUsage.setSoftIrq(CpuPerc.format(cpuPerc.getSoftIrq()));
+                rpcServerCpuCoreUsage.setStolen(CpuPerc.format(cpuPerc.getStolen()));
+                rpcServerCpuCoreUsage.setCombined(CpuPerc.format(cpuPerc.getCombined()));
+                rpcServerCpuCoreUsages.add(rpcServerCpuCoreUsage);
+            }
+        } catch (SigarException e) {
+            e.printStackTrace();
+        }
+        return rpcServerCpuCoreUsages;
+    }
+
+    public static RPCServerMemory memory() {
+        RPCServerMemory rpcServerMemory = new RPCServerMemory();
+        try {
+            Mem mem = SIGAR.getMem();
+            rpcServerMemory.setTotal(mem.getTotal());
+            rpcServerMemory.setRam(mem.getRam());
+            rpcServerMemory.setUsed(mem.getUsed());
+            rpcServerMemory.setFree(mem.getFree());
+            rpcServerMemory.setActualUsed(mem.getActualUsed());
+            rpcServerMemory.setActualFree(mem.getActualFree());
+            rpcServerMemory.setUsedPercent(mem.getUsedPercent());
+            rpcServerMemory.setFreePercent(mem.getFreePercent());
+        } catch (SigarException e) {
+            e.printStackTrace();
+        }
+        return rpcServerMemory;
+    }
+
+    public static RPCServerMemorySwap swap() {
+        RPCServerMemorySwap rpcServerMemorySwap = new RPCServerMemorySwap();
+        try {
+            Swap swap = SIGAR.getSwap();
+            rpcServerMemorySwap.setTotal(swap.getTotal());
+            rpcServerMemorySwap.setUsed(swap.getUsed());
+            rpcServerMemorySwap.setFree(swap.getFree());
+        } catch (SigarException e) {
+            e.printStackTrace();
+        }
+        return rpcServerMemorySwap;
+    }
+
+    public static List<RPCServerDisk> disk() {
+        List<RPCServerDisk> rpcServerDisks = new LinkedList<>();
+        try {
+            FileSystem[] fileSystemList = SIGAR.getFileSystemList();
+            for (int i = 0; i < fileSystemList.length; i++) {
+                RPCServerDisk rpcServerDisk = new RPCServerDisk();
+                FileSystem fs = fileSystemList[i];
+                rpcServerDisk.setDevName(fs.getDevName());
+                rpcServerDisk.setDirName(fs.getDirName());
+                rpcServerDisk.setFlags(fs.getFlags());
+                rpcServerDisk.setSysTypeName(fs.getSysTypeName());
+                rpcServerDisk.setTypeName(fs.getTypeName());
+                rpcServerDisk.setType(fs.getType());
+                rpcServerDisk.setOptions(fs.getOptions());
+                rpcServerDisks.add(rpcServerDisk);
+            }
+        } catch (SigarException e) {
+            e.printStackTrace();
+        }
+        return rpcServerDisks;
+    }
+
+    public static List<RPCServerDiskUsage> diskUsage() {
+        List<RPCServerDiskUsage> rpcServerDisks = new LinkedList<>();
+        try {
+            FileSystem[] fileSystemList = SIGAR.getFileSystemList();
+            for (int i = 0; i < fileSystemList.length; i++) {
+                FileSystem fs = fileSystemList[i];
+                RPCServerDiskUsage rpcServerDiskUsage = diskUsage(fs.getDirName());
+                rpcServerDisks.add(rpcServerDiskUsage);
+            }
+        } catch (SigarException e) {
+            e.printStackTrace();
+        }
+        return rpcServerDisks;
+    }
+
+    public static RPCServerDiskUsage diskUsage(String dirName) {
+        RPCServerDiskUsage rpcServerDiskUsage = new RPCServerDiskUsage();
+        try {
+            FileSystemUsage fileSystemUsage = SIGAR.getFileSystemUsage(dirName);
+            rpcServerDiskUsage.setTotal(fileSystemUsage.getTotal());
+            rpcServerDiskUsage.setFree(fileSystemUsage.getFree());
+            rpcServerDiskUsage.setUsed(fileSystemUsage.getUsed());
+            rpcServerDiskUsage.setAvail(fileSystemUsage.getAvail());
+            rpcServerDiskUsage.setFiles(fileSystemUsage.getFiles());
+            rpcServerDiskUsage.setFreeFiles(fileSystemUsage.getFreeFiles());
+            rpcServerDiskUsage.setDiskReads(fileSystemUsage.getDiskReads());
+            rpcServerDiskUsage.setDiskWrites(fileSystemUsage.getDiskWrites());
+            rpcServerDiskUsage.setDiskReadBytes(fileSystemUsage.getDiskReadBytes());
+            rpcServerDiskUsage.setDiskWriteBytes(fileSystemUsage.getDiskWriteBytes());
+            rpcServerDiskUsage.setDiskQueue(fileSystemUsage.getDiskQueue());
+            rpcServerDiskUsage.setDiskServiceTime(fileSystemUsage.getDiskServiceTime());
+            rpcServerDiskUsage.setUsePercent(fileSystemUsage.getUsePercent());
+        } catch (SigarException e) {
+            e.printStackTrace();
+        }
+        return rpcServerDiskUsage;
+    }
+
+    public static List<RPCServerEthernet> ethernet() {
+        List<RPCServerEthernet> rpcServerEthernets = new LinkedList<>();
+        try {
+            String[] netInterfaceList = SIGAR.getNetInterfaceList();
+            for (int i = 0; i < netInterfaceList.length; i++) {
+                RPCServerEthernet rpcServerEthernet = new RPCServerEthernet();
+                String name = netInterfaceList[i];
+                NetInterfaceConfig cfg = SIGAR.getNetInterfaceConfig(name);
+                if (NetFlags.LOOPBACK_ADDRESS.equals(cfg.getAddress())
+                    || (cfg.getFlags() & NetFlags.IFF_LOOPBACK) != 0
+                    || NetFlags.NULL_HWADDR.equals(cfg.getHwaddr())) {
+                    continue;
+                }
+                rpcServerEthernet.setName(cfg.getName());
+                rpcServerEthernet.setHwaddr(cfg.getHwaddr());
+                rpcServerEthernet.setType(cfg.getType());
+                rpcServerEthernet.setDescription(cfg.getDescription());
+                rpcServerEthernet.setAddress(cfg.getAddress());
+                rpcServerEthernet.setDescription(cfg.getDescription());
+                rpcServerEthernet.setBroadcast(cfg.getBroadcast());
+                rpcServerEthernet.setNetmask(cfg.getNetmask());
+                rpcServerEthernet.setMtu(cfg.getMtu());
+                rpcServerEthernet.setMetric(cfg.getMetric());
+                rpcServerEthernets.add(rpcServerEthernet);
+            }
+        } catch (SigarException e) {
+            e.printStackTrace();
+        }
+        return rpcServerEthernets;
+    }
+
+    public static List<RPCServerEthernetStat> ethernetStat() {
+        List<RPCServerEthernetStat> rpcServerEthernetStats = new LinkedList<>();
+        try {
+            String[] netInterfaceList = SIGAR.getNetInterfaceList();
+            for (int i = 0; i < netInterfaceList.length; i++) {
+                String name = netInterfaceList[i];
+                RPCServerEthernetStat rpcServerEthernetStat = ethernetStat(name);
+                rpcServerEthernetStats.add(rpcServerEthernetStat);
+            }
+        } catch (SigarException e) {
+            e.printStackTrace();
+        }
+        return rpcServerEthernetStats;
+    }
+
+    public static RPCServerEthernetStat ethernetStat(String name) {
+        RPCServerEthernetStat rpcServerEthernetStat = new RPCServerEthernetStat();
+        try {
+            NetInterfaceConfig cfg = SIGAR.getNetInterfaceConfig(name);
+            if (NetFlags.LOOPBACK_ADDRESS.equals(cfg.getAddress())
+                || (cfg.getFlags() & NetFlags.IFF_LOOPBACK) != 0
+                || NetFlags.NULL_HWADDR.equals(cfg.getHwaddr())) {
+                return rpcServerEthernetStat;
+            }
+
+            NetInterfaceStat netInterfaceStat = SIGAR.getNetInterfaceStat(name);
+            rpcServerEthernetStat.setRxBytes(netInterfaceStat.getRxBytes());
+            rpcServerEthernetStat.setRxPackets(netInterfaceStat.getRxPackets());
+            rpcServerEthernetStat.setRxErrors(netInterfaceStat.getRxErrors());
+            rpcServerEthernetStat.setRxDropped(netInterfaceStat.getRxDropped());
+            rpcServerEthernetStat.setRxOverruns(netInterfaceStat.getRxOverruns());
+            rpcServerEthernetStat.setRxFrame(netInterfaceStat.getRxFrame());
+            rpcServerEthernetStat.setTxBytes(netInterfaceStat.getTxBytes());
+            rpcServerEthernetStat.setTxPackets(netInterfaceStat.getTxPackets());
+            rpcServerEthernetStat.setTxErrors(netInterfaceStat.getTxErrors());
+            rpcServerEthernetStat.setTxDropped(netInterfaceStat.getTxDropped());
+            rpcServerEthernetStat.setTxOverruns(netInterfaceStat.getTxOverruns());
+            rpcServerEthernetStat.setTxCollisions(netInterfaceStat.getTxCollisions());
+            rpcServerEthernetStat.setTxCarrier(netInterfaceStat.getTxCarrier());
+            rpcServerEthernetStat.setSpeed(netInterfaceStat.getSpeed());
+        } catch (SigarException e) {
+            e.printStackTrace();
+        }
+        return rpcServerEthernetStat;
+    }
+
+    public static void main(String[] args) {
+        long start = System.currentTimeMillis();
+        RPCServer server = Server.server();
+        RPCServerOS os = Server.os();
+        List<RPCServerWho> who = Server.who();
+        RPCServerCpu cpu = Server.cpu();
+        LinkedList<RPCServerCpuCore> rpcServerCpuCores = Server.cpuCore();
+        LinkedList<RPCServerCpuCoreUsage> rpcServerCpuCoreUsages = Server.cpuCoreUsage();
+        RPCServerMemory memory = Server.memory();
+        RPCServerMemorySwap swap = Server.swap();
+        List<RPCServerDisk> disk = Server.disk();
+        List<RPCServerDiskUsage> rpcServerDiskUsages = Server.diskUsage();
+        List<RPCServerEthernet> ethernet = Server.ethernet();
+        List<RPCServerEthernetStat> rpcServerEthernetStats = Server.ethernetStat();
+        long end = System.currentTimeMillis();
+        System.out.println(end - start);
+    }
+
+
 }

@@ -10,7 +10,7 @@ import lombok.ToString;
 /**
  * pwd.initializr.monitor.rpc@ms-web-initializr
  *
- * <h1>TODO what you want to do?</h1>
+ * <h1>JVM static time</h1>
  *
  * date 2020-10-20 21:24
  *
@@ -23,7 +23,7 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class RPCJst {
+public class RPCJvmJst {
 
   @ApiModelProperty(value = "Java的运行环境版本")
   private String version;

@@ -1,11 +1,9 @@
 package pwd.initializr.monitor.api.admin;
 
 import io.swagger.annotations.Api;
-import java.util.Properties;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.common.web.api.admin.AdminController;
-import pwd.initializr.monitor.api.admin.vo.JstOutput;
 
 /**
  * pwd.initializr.monitor.api.admin@ms-web-initializr

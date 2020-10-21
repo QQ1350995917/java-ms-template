@@ -1,7 +1,10 @@
 package pwd.initializr.common.mw.monitor.index;
 
 import java.util.Properties;
-import pwd.initializr.monitor.rpc.RPCJst;
+import pwd.initializr.monitor.rpc.RPCJvmFile;
+import pwd.initializr.monitor.rpc.RPCJvmJrt;
+import pwd.initializr.monitor.rpc.RPCJvmJst;
+import pwd.initializr.monitor.rpc.RPCJvmUser;
 
 /**
  * pwd.initializr.common.mw.monitor.index@ms-web-initializr
@@ -18,46 +21,62 @@ public class Jvm {
 
   private static final Properties PROPERTIES = System.getProperties();
 
-  public static RPCJst jst() {
-    RPCJst rpcJst = new RPCJst();
-    rpcJst.setVersion(PROPERTIES.getProperty("java.version"));
-    rpcJst.setVendor(PROPERTIES.getProperty("java.vendor"));
-    rpcJst.setVendorUrl(PROPERTIES.getProperty("java.vendor.url"));
-    rpcJst.setHome(PROPERTIES.getProperty("java.home"));
-    rpcJst.setVmVersion(PROPERTIES.getProperty("java.vm.version"));
-    rpcJst.setVmVendor(PROPERTIES.getProperty("java.vm.vendor"));
-    rpcJst.setVmName(PROPERTIES.getProperty("java.vm.name"));
-    rpcJst.setVmSpecificationVersion(PROPERTIES.getProperty("java.vm.specification.version"));
-    rpcJst.setSpecificationVender(PROPERTIES.getProperty("java.specification.vender"));
-    rpcJst.setVmSpecificationVendor(PROPERTIES.getProperty("java.vm.specification.vendor"));
-    rpcJst.setVmSpecificationName(PROPERTIES.getProperty("java.vm.specification.name"));
-    rpcJst.setSpecificationVersion(PROPERTIES.getProperty("java.specification.version"));
-    rpcJst.setSpecificationName(PROPERTIES.getProperty("java.specification.name"));
-    rpcJst.setClassVersion(PROPERTIES.getProperty("java.class.version"));
-    rpcJst.setClassPath(PROPERTIES.getProperty("java.class.path"));
-    rpcJst.setLibraryPath(PROPERTIES.getProperty("java.library.path"));
-    rpcJst.setIoTmpdir(PROPERTIES.getProperty("java.io.tmpdir"));
-    rpcJst.setExtDirs(PROPERTIES.getProperty("java.ext.dirs"));
-    return rpcJst;
+  public static RPCJvmJst jst() {
+    RPCJvmJst rpcJvmJst = new RPCJvmJst();
+    rpcJvmJst.setVersion(PROPERTIES.getProperty("java.version"));
+    rpcJvmJst.setVendor(PROPERTIES.getProperty("java.vendor"));
+    rpcJvmJst.setVendorUrl(PROPERTIES.getProperty("java.vendor.url"));
+    rpcJvmJst.setHome(PROPERTIES.getProperty("java.home"));
+    rpcJvmJst.setVmVersion(PROPERTIES.getProperty("java.vm.version"));
+    rpcJvmJst.setVmVendor(PROPERTIES.getProperty("java.vm.vendor"));
+    rpcJvmJst.setVmName(PROPERTIES.getProperty("java.vm.name"));
+    rpcJvmJst.setVmSpecificationVersion(PROPERTIES.getProperty("java.vm.specification.version"));
+    rpcJvmJst.setSpecificationVender(PROPERTIES.getProperty("java.specification.vender"));
+    rpcJvmJst.setVmSpecificationVendor(PROPERTIES.getProperty("java.vm.specification.vendor"));
+    rpcJvmJst.setVmSpecificationName(PROPERTIES.getProperty("java.vm.specification.name"));
+    rpcJvmJst.setSpecificationVersion(PROPERTIES.getProperty("java.specification.version"));
+    rpcJvmJst.setSpecificationName(PROPERTIES.getProperty("java.specification.name"));
+    rpcJvmJst.setClassVersion(PROPERTIES.getProperty("java.class.version"));
+    rpcJvmJst.setClassPath(PROPERTIES.getProperty("java.class.path"));
+    rpcJvmJst.setLibraryPath(PROPERTIES.getProperty("java.library.path"));
+    rpcJvmJst.setIoTmpdir(PROPERTIES.getProperty("java.io.tmpdir"));
+    rpcJvmJst.setExtDirs(PROPERTIES.getProperty("java.ext.dirs"));
+    return rpcJvmJst;
   }
 
-  public void jrt() {
-    Runtime r = Runtime.getRuntime();
-    System.out.println("JVM可以使用的总内存:    " + r.totalMemory());
-    System.out.println("JVM可以使用的剩余内存:    " + r.freeMemory());
-    System.out.println("JVM可以使用的处理器个数:    " + r.availableProcessors());
+  public static RPCJvmJrt jrt() {
+    Runtime runtime = Runtime.getRuntime();
+    RPCJvmJrt rpcJvmJrt = new RPCJvmJrt();
+    rpcJvmJrt.setTotalMemory(runtime.totalMemory());
+    rpcJvmJrt.setFreeMemory(runtime.freeMemory());
+    rpcJvmJrt.setAvailableProcessors(runtime.availableProcessors());
+    return rpcJvmJrt;
   }
 
-  public void file() {
-    System.out.println("文件分隔符：    " + PROPERTIES.getProperty("file.separator"));
-    System.out.println("路径分隔符：    " + PROPERTIES.getProperty("path.separator"));
-    System.out.println("行分隔符：    " + PROPERTIES.getProperty("line.separator"));
+  public static RPCJvmFile file() {
+    RPCJvmFile rpcJvmFile = new RPCJvmFile();
+    rpcJvmFile.setFileSeparator(PROPERTIES.getProperty("file.separator"));
+    rpcJvmFile.setPathSeparator(PROPERTIES.getProperty("path.separator"));
+    rpcJvmFile.setPathSeparator(PROPERTIES.getProperty("line.separator"));
+    return rpcJvmFile;
   }
 
-  public void user() {
-    System.out.println("用户的账户名称：    " + PROPERTIES.getProperty("user.name"));
-    System.out.println("用户的主目录：    " + PROPERTIES.getProperty("user.home"));
-    System.out.println("用户的当前工作目录：    " + PROPERTIES.getProperty("user.dir"));
+  public static RPCJvmUser user() {
+    RPCJvmUser rpcJvmUser = new RPCJvmUser();
+    rpcJvmUser.setName(PROPERTIES.getProperty("user.name"));
+    rpcJvmUser.setHome(PROPERTIES.getProperty("user.home"));
+    rpcJvmUser.setDir(PROPERTIES.getProperty("user.dir"));
+    return rpcJvmUser;
+  }
+
+  public static void main(String[] args) {
+    long start = System.currentTimeMillis();
+    RPCJvmJst jst = Jvm.jst();
+    RPCJvmJrt jrt = Jvm.jrt();
+    RPCJvmFile file = Jvm.file();
+    RPCJvmUser user = Jvm.user();
+    long end = System.currentTimeMillis();
+    System.out.println(end - start);
   }
 
 
