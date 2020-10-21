@@ -57,8 +57,24 @@ public class Post extends Http {
   public static HttpResponse doPost(String host, String path, String jsonParams)
       throws IOException {
     RequestConfig requestConfig = RequestConfig.custom()
-        .setConnectionRequestTimeout(10000)
-        .setConnectTimeout(5000)
+        .setConnectionRequestTimeout(9000)
+        .setConnectTimeout(9000)
+        .build();
+    HttpPost httpPost = new HttpPost(host + path);
+    StringEntity stringentity = new StringEntity(jsonParams, ContentType.APPLICATION_JSON);
+    httpPost.setEntity(stringentity);
+    httpPost.setConfig(requestConfig);
+    httpPost.addHeader(HTTP.CONTENT_TYPE, ContentType.APPLICATION_JSON.toString());
+
+    return httpClient.execute(httpPost);
+  }
+
+  public static HttpResponse doPost(String host, String path, String jsonParams,int connectionRequestTimeout,int connectTimeout,int socketTimeout)
+      throws IOException {
+    RequestConfig requestConfig = RequestConfig.custom()
+        .setConnectionRequestTimeout(connectionRequestTimeout)
+        .setConnectTimeout(connectTimeout)
+        .setSocketTimeout(socketTimeout)
         .build();
     HttpPost httpPost = new HttpPost(host + path);
     StringEntity stringentity = new StringEntity(jsonParams, ContentType.APPLICATION_JSON);

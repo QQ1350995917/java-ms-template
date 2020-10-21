@@ -1,9 +1,11 @@
 package pwd.initializr.common.mw.monitor;
 
+import com.alibaba.fastjson.JSON;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.SynchronousQueue;
@@ -14,6 +16,7 @@ import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import pwd.initializr.common.http.Post;
+import pwd.initializr.monitor.rpc.RPCServiceInstance;
 
 /**
  * pwd.initializr.common.mw.montor@ms-web-initializr
@@ -66,7 +69,7 @@ public class MonitorClient {
             scheduler,
             uploadExecutor, 3,
             TimeUnit.SECONDS,
-            3,
+            1,
             new UploadThread()
         ),
         3, TimeUnit.SECONDS);
@@ -75,8 +78,13 @@ public class MonitorClient {
   @VisibleForTesting
   void refreshRegistry() {
     try {
-      Post.doPost("","",new HashMap<>());
-    } catch (IOException e) {
+      RPCServiceInstance rpcServiceInstance = new RPCServiceInstance();
+      rpcServiceInstance.setApp("test");
+      rpcServiceInstance.setAppGroup("testGroup");
+      rpcServiceInstance.setInstanceId("testInstanceId");
+      String jsonString = JSON.toJSONString(rpcServiceInstance);
+      Post.doPost("http://localhost:11260","/api/robot/instance",jsonString,100,100,100);
+    } catch (Exception e) {
       e.printStackTrace();
     }
   }
@@ -87,6 +95,12 @@ public class MonitorClient {
     public void run() {
       refreshRegistry();
     }
+  }
+
+  public static void main(String[] args) throws Exception {
+    new MonitorClient();
+
+    Thread.sleep(10000000);
   }
 
 }
