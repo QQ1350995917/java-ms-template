@@ -24,22 +24,23 @@ import lombok.ToString;
 @Getter
 @ToString
 public class RPCHostMemory {
+
     @ApiModelProperty(value = "主机名称")
     private String id;
     @ApiModelProperty(value = "总内存量")
-    private Long total = 0L;
-    @ApiModelProperty(value = "")
-    private Long ram = 0L;
+    private Long total;
+    @ApiModelProperty(value = "可用内存总量")
+    private Long ram;
     @ApiModelProperty(value = "当前内存使用量")
-    private Long used = 0L;
+    private Long used;
     @ApiModelProperty(value = "当前内存空闲量")
-    private Long free = 0L;
+    private Long free;
     @ApiModelProperty(value = "实际内存使用量")
-    private Long actualUsed = 0L;
+    private Long actualUsed;
     @ApiModelProperty(value = "实际内存空闲量")
-    private Long actualFree = 0L;
+    private Long actualFree;
     @ApiModelProperty(value = "使用百分比")
-    private Double usedPercent = 0.0D;
+    private Double usedPercent;
     @ApiModelProperty(value = "空闲百分比")
-    private Double freePercent = 0.0D;
+    private Double freePercent;
 }

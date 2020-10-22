@@ -24,24 +24,29 @@ import lombok.ToString;
 @Getter
 @ToString
 public class RPCHostEthernet {
+
     @ApiModelProperty(value = "主机名称")
     private String id;
     @ApiModelProperty(value = "网络设备名")
-    private String name = null;
+    private String name;
     @ApiModelProperty(value = "网卡MAC地址")
-    private String hwaddr = null;
+    private String hwaddr;
     @ApiModelProperty(value = "网卡类型")
-    private String type = null;
+    private String type;
     @ApiModelProperty(value = "网卡描述信息")
-    private String description = null;
+    private String description;
     @ApiModelProperty(value = "IP地址")
-    private String address = null;
-    private String destination = null;
+    private String address;
+    @ApiModelProperty(value = "目标地址")
+    private String destination;
     @ApiModelProperty(value = "网关广播地址")
-    private String broadcast = null;
+    private String broadcast;
     @ApiModelProperty(value = "子网掩码")
-    private String netmask = null;
-    private Long flags = 0L;
-    private Long mtu = 0L;
-    private Long metric = 0L;
+    private String netmask;
+    @ApiModelProperty(value = "网卡标记")
+    private Long flags;
+    @ApiModelProperty(value = "网卡MTU")
+    private Long mtu;
+    @ApiModelProperty(value = "跃点数量")
+    private Long metric;
 }

@@ -24,15 +24,22 @@ import lombok.ToString;
 @Getter
 @ToString
 public class RPCHostDisk {
+
     @ApiModelProperty(value = "主机名称")
     private String id;
-    private String dirName = null;
-    private String devName = null;
+    @ApiModelProperty(value = "磁盘挂载路径")
+    private String dirName;
+    @ApiModelProperty(value = "磁盘名称")
+    private String devName;
     @ApiModelProperty(value = "本地硬盘、光驱、网络文件系统等")
-    private String typeName = null;
+    private String typeName;
     @ApiModelProperty(value = "FAT32、NTFS")
-    private String sysTypeName = null;
-    private String options = null;
-    private Integer type = 0;
-    private Long flags = 0L;
+    private String sysTypeName;
+    @ApiModelProperty(value = "磁盘选项")
+    private String options;
+    @ApiModelProperty(value = "磁盘类型，0：UNKNOWN；1：NONE；2：LOCAL_DISK；3：NETWORK；4：RAM_DISK；5：CDROM；6：SWAP；")
+    private Integer type;
+    @ApiModelProperty(value = "磁盘标记")
+    private Long flags;
+
 }

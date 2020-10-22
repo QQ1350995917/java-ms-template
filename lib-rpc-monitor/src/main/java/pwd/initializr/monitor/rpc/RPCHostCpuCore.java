@@ -24,8 +24,10 @@ import lombok.ToString;
 @Getter
 @ToString
 public class RPCHostCpuCore {
-    @ApiModelProperty(value = "核心编号")
+    @ApiModelProperty(value = "主机名称")
     private String id;
+    @ApiModelProperty(value = "核心编号")
+    private String index;
     @ApiModelProperty(value = "CPU生产商")
     private String vendor;
     @ApiModelProperty(value = "CPU类别")
@@ -34,10 +36,10 @@ public class RPCHostCpuCore {
     private Long cacheSize;
     @ApiModelProperty(value = "CPU的总量MHz")
     private Integer mhz;
-    @ApiModelProperty(value = "")
+    @ApiModelProperty(value = "总核心数")
     private Integer totalCores;
-    @ApiModelProperty(value = "")
+    @ApiModelProperty(value = "主板总路数")
     private Integer totalSockets;
-    @ApiModelProperty(value = "")
+    @ApiModelProperty(value = "主板每路支持最大核心数")
     private Integer coresPerSocket;
 }

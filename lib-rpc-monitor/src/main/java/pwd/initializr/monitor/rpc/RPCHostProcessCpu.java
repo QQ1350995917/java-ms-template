@@ -1,6 +1,5 @@
 package pwd.initializr.monitor.rpc;
 
-import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,6 +23,7 @@ import lombok.ToString;
 @Getter
 @ToString
 public class RPCHostProcessCpu {
+
     double percent = 0.0D;
     long lastTime = 0L;
     long startTime = 0L;

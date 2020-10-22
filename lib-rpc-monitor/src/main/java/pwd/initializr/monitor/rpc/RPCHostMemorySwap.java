@@ -25,14 +25,16 @@ import lombok.ToString;
 @ToString
 public class RPCHostMemorySwap {
 
+    @ApiModelProperty(value = "主机名称")
+    private String id;
     @ApiModelProperty(value = "swap总量")
-    private Long total = 0L;
+    private Long total;
     @ApiModelProperty(value = "swap使用量")
-    private Long used = 0L;
+    private Long used;
     @ApiModelProperty(value = "swap空闲量")
-    private Long free = 0L;
+    private Long free;
     @ApiModelProperty(value = "swapPageIn")
-    private Long pageIn = 0L;
+    private Long pageIn;
     @ApiModelProperty(value = "swapPageOut")
-    private Long pageOut = 0L;
+    private Long pageOut;
 }

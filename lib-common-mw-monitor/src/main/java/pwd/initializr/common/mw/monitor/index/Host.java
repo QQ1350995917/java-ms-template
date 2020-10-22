@@ -80,6 +80,7 @@ public class Host {
                 for (int i = 0; i < whos.length; i++) {
                     Who who = whos[i];
                     RPCHostWho rpcHostWho = new RPCHostWho();
+                    rpcHostWho.setId(getId());
                     rpcHostWho.setUser(who.getUser());
                     rpcHostWho.setHost(who.getHost());
                     rpcHostWho.setDevice(who.getDevice());
@@ -95,6 +96,7 @@ public class Host {
 
     public static RPCHostOS os() {
         RPCHostOS rpcHostOS = new RPCHostOS();
+        rpcHostOS.setId(getId());
         rpcHostOS.setName(OS.getName());
         rpcHostOS.setVersion(OS.getVersion());
         rpcHostOS.setArch(OS.getArch());
@@ -112,6 +114,7 @@ public class Host {
 
     public static RPCHostCpu cpu() {
         RPCHostCpu rpcHostCpu = new RPCHostCpu();
+            rpcHostCpu.setId(getId());
         new LinkedList<>();
         try {
             Cpu cpu = SIGAR.getCpu();
@@ -141,7 +144,8 @@ public class Host {
             for (int i = 0; i < cpuInfoList.length; i++) {
                 CpuInfo info = cpuInfoList[i];
                 RPCHostCpuCore rpcHostCpuCore = new RPCHostCpuCore();
-                rpcHostCpuCore.setId(String.valueOf(i));
+                rpcHostCpuCore.setId(getId());
+                rpcHostCpuCore.setIndex(String.valueOf(i));
                 rpcHostCpuCore.setVendor(info.getVendor());
                 rpcHostCpuCore.setModel(info.getModel());
                 rpcHostCpuCore.setCacheSize(info.getCacheSize());
@@ -165,7 +169,8 @@ public class Host {
             for (int i = 0; i < cpuList.length; i++) {
                 CpuPerc cpuPerc = cpuList[i];
                 RPCHostCpuCoreUsage rpcHostCpuCoreUsage = new RPCHostCpuCoreUsage();
-                rpcHostCpuCoreUsage.setId(String.valueOf(i));
+                rpcHostCpuCoreUsage.setId(getId());
+                rpcHostCpuCoreUsage.setIndex(String.valueOf(i));
                 rpcHostCpuCoreUsage.setUser(CpuPerc.format(cpuPerc.getUser()));
                 rpcHostCpuCoreUsage.setSys(CpuPerc.format(cpuPerc.getSys()));
                 rpcHostCpuCoreUsage.setNice(CpuPerc.format(cpuPerc.getNice()));
@@ -185,6 +190,7 @@ public class Host {
 
     public static RPCHostMemory memory() {
         RPCHostMemory rpcHostMemory = new RPCHostMemory();
+            rpcHostMemory.setId(getId());
         try {
             Mem mem = SIGAR.getMem();
             rpcHostMemory.setTotal(mem.getTotal());
@@ -203,6 +209,7 @@ public class Host {
 
     public static RPCHostMemorySwap swap() {
         RPCHostMemorySwap rpcHostMemorySwap = new RPCHostMemorySwap();
+            rpcHostMemorySwap.setId(getId());
         try {
             Swap swap = SIGAR.getSwap();
             rpcHostMemorySwap.setTotal(swap.getTotal());
@@ -221,6 +228,7 @@ public class Host {
             for (int i = 0; i < fileSystemList.length; i++) {
                 RPCHostDisk rpcHostDisk = new RPCHostDisk();
                 FileSystem fs = fileSystemList[i];
+                rpcHostDisk.setId(getId());
                 rpcHostDisk.setDevName(fs.getDevName());
                 rpcHostDisk.setDirName(fs.getDirName());
                 rpcHostDisk.setFlags(fs.getFlags());
@@ -255,6 +263,7 @@ public class Host {
         RPCHostDiskUsage rpcHostDiskUsage = new RPCHostDiskUsage();
         try {
             FileSystemUsage fileSystemUsage = SIGAR.getFileSystemUsage(devName);
+            rpcHostDiskUsage.setId(getId());
             rpcHostDiskUsage.setDevName(devName);
             rpcHostDiskUsage.setTotal(fileSystemUsage.getTotal());
             rpcHostDiskUsage.setFree(fileSystemUsage.getFree());
@@ -288,6 +297,7 @@ public class Host {
                     || NetFlags.NULL_HWADDR.equals(cfg.getHwaddr())) {
                     continue;
                 }
+                rpcHostEthernet.setId(getId());
                 rpcHostEthernet.setName(cfg.getName());
                 rpcHostEthernet.setHwaddr(cfg.getHwaddr());
                 rpcHostEthernet.setType(cfg.getType());
@@ -330,9 +340,9 @@ public class Host {
                 || NetFlags.NULL_HWADDR.equals(cfg.getHwaddr())) {
                 return rpcHostEthernetStat;
             }
-
             NetInterfaceStat netInterfaceStat = SIGAR.getNetInterfaceStat(name);
-            rpcHostEthernetStat.setName(name);
+            rpcHostEthernetStat.setId(getId());
+            rpcHostEthernetStat.setHwaddr(cfg.getHwaddr());
             rpcHostEthernetStat.setRxBytes(netInterfaceStat.getRxBytes());
             rpcHostEthernetStat.setRxPackets(netInterfaceStat.getRxPackets());
             rpcHostEthernetStat.setRxErrors(netInterfaceStat.getRxErrors());
@@ -412,13 +422,13 @@ public class Host {
 //        RPCHostCpu cpu = Host.cpu();
 //        LinkedList<RPCHostCpuCore> rpcHostCpuCores = Host.cpuCore();
 //        LinkedList<RPCHostCpuCoreUsage> rpcHostCpuCoreUsages = Host.cpuCoreUsage();
-//        RPCHostMemory memory = Host.memory();
+        RPCHostMemory memory = Host.memory();
 //        RPCHostMemorySwap swap = Host.swap();
 //        List<RPCHostDisk> disk = Host.disk();
 //        List<RPCHostDiskUsage> rpcHostDiskUsages = Host.diskUsage();
 //        List<RPCHostEthernet> ethernet = Host.ethernet();
 //        List<RPCHostEthernetStat> rpcHostEthernetStats = Host.ethernetStat();
-        List<RPCHostProcess> process = Host.process();
+//        List<RPCHostProcess> process = Host.process();
         long end = System.currentTimeMillis();
         System.out.println(end - start);
 

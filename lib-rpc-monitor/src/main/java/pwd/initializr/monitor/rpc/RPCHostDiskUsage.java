@@ -25,24 +25,34 @@ import lombok.ToString;
 @ToString
 public class RPCHostDiskUsage {
 
+    @ApiModelProperty(value = "主机名称")
+    private String id;
     @ApiModelProperty(value = "设备名称")
     private String devName;
     @ApiModelProperty(value = "文件系统总大小")
-    private Long total = 0L;
+    private Long total;
     @ApiModelProperty(value = "剩余大小")
-    private Long free = 0L;
+    private Long free;
     @ApiModelProperty(value = "已经使用量")
-    private Long used = 0L;
+    private Long used;
     @ApiModelProperty(value = "可用大小")
-    private Long avail = 0L;
-    private Long files = 0L;
-    private Long freeFiles = 0L;
-    private Long diskReads = 0L;
-    private Long diskWrites = 0L;
-    private Long diskReadBytes = 0L;
-    private Long diskWriteBytes = 0L;
-    private Double diskQueue = 0.0D;
-    private Double diskServiceTime = 0.0D;
+    private Long avail;
+    @ApiModelProperty(value = "")
+    private Long files;
+    @ApiModelProperty(value = "")
+    private Long freeFiles;
+    @ApiModelProperty(value = "")
+    private Long diskReads;
+    @ApiModelProperty(value = "")
+    private Long diskWrites;
+    @ApiModelProperty(value = "")
+    private Long diskReadBytes;
+    @ApiModelProperty(value = "")
+    private Long diskWriteBytes;
+    @ApiModelProperty(value = "")
+    private Double diskQueue;
+    @ApiModelProperty(value = "")
+    private Double diskServiceTime;
     @ApiModelProperty(value = "资源的利用率")
-    private Double usePercent = 0.0D;
+    private Double usePercent;
 }

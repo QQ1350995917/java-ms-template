@@ -25,28 +25,36 @@ import lombok.ToString;
 @ToString
 public class RPCHostEthernetStat {
 
-    @ApiModelProperty(value = "网卡名称")
-    private String name;
+    @ApiModelProperty(value = "主机名称")
+    private String id;
+    @ApiModelProperty(value = "网卡MAC")
+    private String hwaddr;
     @ApiModelProperty(value = "接收到的总字节数")
-    private Long rxBytes = 0L;
+    private Long rxBytes;
     @ApiModelProperty(value = "接收的总包裹数")
-    private Long rxPackets = 0L;
+    private Long rxPackets;
     @ApiModelProperty(value = "接收到的错误包数")
-    private Long rxErrors = 0L;
-    @ApiModelProperty(value = "接收时丢弃的包数")
-    private Long rxDropped = 0L;
-    private Long rxOverruns = 0L;
-    private Long rxFrame = 0L;
+    private Long rxErrors;
+    @ApiModelProperty(value = "系统接收时丢弃的包数，未进入系统内核")
+    private Long rxDropped;
+    @ApiModelProperty(value = "网卡接收时丢弃的包数，未进入网卡缓存")
+    private Long rxOverruns;
+    @ApiModelProperty(value = "网卡接收最大巨帧")
+    private Long rxFrame;
     @ApiModelProperty(value = "发送的总字节数")
-    private Long txBytes = 0L;
+    private Long txBytes;
     @ApiModelProperty(value = "发送的总包裹数")
-    private Long txPackets = 0L;
+    private Long txPackets;
     @ApiModelProperty(value = "发送的错误包数")
-    private Long txErrors = 0L;
-    @ApiModelProperty(value = "发送时丢弃的包数")
-    private Long txDropped = 0L;
-    private Long txOverruns = 0L;
-    private Long txCollisions = 0L;
-    private Long txCarrier = 0L;
-    private Long speed = 0L;
+    private Long txErrors;
+    @ApiModelProperty(value = "系统发送时丢弃的包数，未进入系统内核")
+    private Long txDropped;
+    @ApiModelProperty(value = "网卡发送时丢弃的包数，未进入网卡缓存")
+    private Long txOverruns;
+    @ApiModelProperty(value = "")
+    private Long txCollisions;
+    @ApiModelProperty(value = "")
+    private Long txCarrier;
+    @ApiModelProperty(value = "")
+    private Long speed;
 }
