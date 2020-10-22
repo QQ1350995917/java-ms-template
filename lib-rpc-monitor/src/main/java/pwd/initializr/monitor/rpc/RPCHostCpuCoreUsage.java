@@ -23,7 +23,9 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class RPCServerCpuCoreUsage {
+public class RPCHostCpuCoreUsage {
+    @ApiModelProperty(value = "核心编号")
+    private String id;
     @ApiModelProperty(value = "用户使用率")
     private String user;
     @ApiModelProperty(value = "系统使用率")

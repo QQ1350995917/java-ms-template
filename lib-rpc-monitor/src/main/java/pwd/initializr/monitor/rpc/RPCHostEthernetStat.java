@@ -23,7 +23,10 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class RPCServerEthernetStat {
+public class RPCHostEthernetStat {
+
+    @ApiModelProperty(value = "网卡名称")
+    private String name;
     @ApiModelProperty(value = "接收到的总字节数")
     private Long rxBytes = 0L;
     @ApiModelProperty(value = "接收的总包裹数")

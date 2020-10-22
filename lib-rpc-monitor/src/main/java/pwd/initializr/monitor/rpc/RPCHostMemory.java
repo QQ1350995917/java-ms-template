@@ -23,8 +23,9 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class RPCServerMemory {
-
+public class RPCHostMemory {
+    @ApiModelProperty(value = "主机名称")
+    private String id;
     @ApiModelProperty(value = "总内存量")
     private Long total = 0L;
     @ApiModelProperty(value = "")

@@ -23,8 +23,9 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class RPCServerCpuCore {
-
+public class RPCHostCpuCore {
+    @ApiModelProperty(value = "核心编号")
+    private String id;
     @ApiModelProperty(value = "CPU生产商")
     private String vendor;
     @ApiModelProperty(value = "CPU类别")

@@ -23,7 +23,9 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class RPCServerOS {
+public class RPCHostOS {
+  @ApiModelProperty(value = "主机名称")
+  private String id;
   @ApiModelProperty(value = "操作系统名称")
   private String name;
   @ApiModelProperty(value = "操作系统的版本号")

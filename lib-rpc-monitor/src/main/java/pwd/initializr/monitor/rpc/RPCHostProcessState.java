@@ -12,7 +12,7 @@ import lombok.ToString;
  *
  * <h1>TODO what you want to do?</h1>
  *
- * date 2020-10-21 16:34
+ * date 2020-10-22 14:44
  *
  * @author DingPengwei[dingpengwei@foxmail.com]
  * @version 1.0.0
@@ -23,14 +23,14 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class RPCServerDisk {
-    private String dirName = null;
-    private String devName = null;
-    @ApiModelProperty(value = "本地硬盘、光驱、网络文件系统等")
-    private String typeName = null;
-    @ApiModelProperty(value = "FAT32、NTFS")
-    private String sysTypeName = null;
-    private String options = null;
-    private Integer type = 0;
-    private Long flags = 0L;
+public class RPCHostProcessState {
+
+    char state = 0;
+    String name = null;
+    long ppid = 0L;
+    int tty = 0;
+    int nice = 0;
+    int priority = 0;
+    long threads = 0L;
+    int processor = 0;
 }

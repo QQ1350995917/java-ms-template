@@ -23,8 +23,10 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class RPCServerDiskUsage {
+public class RPCHostDiskUsage {
 
+    @ApiModelProperty(value = "设备名称")
+    private String devName;
     @ApiModelProperty(value = "文件系统总大小")
     private Long total = 0L;
     @ApiModelProperty(value = "剩余大小")

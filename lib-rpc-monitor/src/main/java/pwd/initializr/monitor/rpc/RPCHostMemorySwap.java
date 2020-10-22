@@ -23,7 +23,7 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class RPCServerMemorySwap {
+public class RPCHostMemorySwap {
 
     @ApiModelProperty(value = "swap总量")
     private Long total = 0L;

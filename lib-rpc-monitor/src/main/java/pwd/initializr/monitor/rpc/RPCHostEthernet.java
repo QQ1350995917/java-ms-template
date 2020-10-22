@@ -23,7 +23,9 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class RPCServerEthernet {
+public class RPCHostEthernet {
+    @ApiModelProperty(value = "主机名称")
+    private String id;
     @ApiModelProperty(value = "网络设备名")
     private String name = null;
     @ApiModelProperty(value = "网卡MAC地址")

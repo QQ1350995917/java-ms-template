@@ -24,8 +24,9 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class RPCServerCpu {
-
+public class RPCHostCpu {
+    @ApiModelProperty(value = "主机名称")
+    private String id;
     @ApiModelProperty(value = "用户使用量")
     private Long user;
     @ApiModelProperty(value = "系统使用量")
@@ -45,5 +46,5 @@ public class RPCServerCpu {
     @ApiModelProperty(value = "总使用量")
     private Long total;
     @ApiModelProperty(value = "CPU核心")
-    private List<RPCServerCpuCore> core;
+    private List<RPCHostCpuCore> core;
 }

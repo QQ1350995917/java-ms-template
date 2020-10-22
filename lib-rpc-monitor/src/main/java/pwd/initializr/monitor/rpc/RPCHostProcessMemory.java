@@ -12,7 +12,7 @@ import lombok.ToString;
  *
  * <h1>TODO what you want to do?</h1>
  *
- * date 2020-10-21 15:06
+ * date 2020-10-22 14:45
  *
  * @author DingPengwei[dingpengwei@foxmail.com]
  * @version 1.0.0
@@ -23,12 +23,12 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class RPCServer {
+public class RPCHostProcessMemory {
 
-    @ApiModelProperty(value = "计算机名")
-    private String computerName;
-    @ApiModelProperty(value = "计算机域名")
-    private String userDomain;
-    @ApiModelProperty(value = "当前登录用户名称")
-    private String userName;
+    long size = 0L;
+    long resident = 0L;
+    long share = 0L;
+    long minorFaults = 0L;
+    long majorFaults = 0L;
+    long pageFaults = 0L;
 }
