@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pwd.initializr.monitor.persistence.dao.HostEthernetStatDao">
+
+  <resultMap id="HostEthernetStatMap" type="pwd.initializr.monitor.persistence.entity.HostEthernetStatEntity">
+    <result column="id" jdbcType="VARCHAR" property="id"/>
+    <result column="hwaddr" jdbcType="VARCHAR" property="hwaddr"/>
+    <result column="rx_bytes" jdbcType="BIGINT" property="rxBytes"/>
+    <result column="rx_packets" jdbcType="BIGINT" property="rxPackets"/>
+    <result column="rx_errors" jdbcType="BIGINT" property="rxErrors"/>
+    <result column="rx_dropped" jdbcType="BIGINT" property="rxDropped"/>
+    <result column="rx_overruns" jdbcType="BIGINT" property="rxOverruns"/>
+    <result column="rx_frame" jdbcType="BIGINT" property="rxFrame"/>
+    <result column="tx_bytes" jdbcType="BIGINT" property="txBytes"/>
+    <result column="tx_packets" jdbcType="BIGINT" property="txPackets"/>
+    <result column="tx_errors" jdbcType="BIGINT" property="txErrors"/>
+    <result column="tx_dropped" jdbcType="BIGINT" property="txDropped"/>
+    <result column="tx_overruns" jdbcType="BIGINT" property="txOverruns"/>
+    <result column="tx_collisions" jdbcType="BIGINT" property="txCollisions"/>
+    <result column="tx_carrier" jdbcType="BIGINT" property="txCarrier"/>
+    <result column="speed" jdbcType="BIGINT" property="speed"/>
+    <result column="able" jdbcType="INTEGER" property="able"/>
+    <result column="del" jdbcType="INTEGER" property="del"/>
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+  </resultMap>
+
+  <!--根据主键查询查询-->
+  <select id="queryById" resultMap="HostEthernetStatMap">
+    SELECT
+      `id`,
+      `hwaddr`,
+      `rx_bytes`,
+      `rx_packets`,
+      `rx_errors`,
+      `rx_dropped`,
+      `rx_overruns`,
+      `rx_frame`,
+      `tx_bytes`,
+      `tx_packets`,
+      `tx_errors`,
+      `tx_dropped`,
+      `tx_overruns`,
+      `tx_collisions`,
+      `tx_carrier`,
+      `speed`,
+      `able`,
+      `del`,
+      `create_time`,
+      `update_time`
+    FROM
+      host_ethernet_stat
+    WHERE
+      id = #{id}
+  </select>
+
+  <!--查询指定行数据-->
+  <select id="countByCondition" resultType="java.lang.Long">
+    SELECT COUNT(*) FROM host_ethernet_stat
+    <include refid="pwd.initializr.common.web.persistence.entity.ScopeEntity.entityQueryScope"></include>
+  </select>
+
+  <!--通过实体作为筛选条件查询-->
+  <select id="queryByCondition" resultMap="HostEthernetStatMap">
+    SELECT
+      `id`,
+      `hwaddr`,
+      `rx_bytes`,
+      `rx_packets`,
+      `rx_errors`,
+      `rx_dropped`,
+      `rx_overruns`,
+      `rx_frame`,
+      `tx_bytes`,
+      `tx_packets`,
+      `tx_errors`,
+      `tx_dropped`,
+      `tx_overruns`,
+      `tx_collisions`,
+      `tx_carrier`,
+      `speed`,
+      `able`,
+      `del`,
+      `create_time`,
+      `update_time`
+    FROM
+      host_ethernet_stat
+    <include refid="pwd.initializr.common.web.persistence.entity.ScopeEntity.entityQueryScope"></include>
+    <include refid="pwd.initializr.common.web.persistence.entity.SortEntity.entityQuerySort"></include>
+    LIMIT
+      #{offset}, #{limit}
+  </select>
+
+  <!--新增所有列-->
+  <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+    INSERT INTO host_ethernet_stat
+      (
+        `id`,
+        `hwaddr`,
+        `rx_bytes`,
+        `rx_packets`,
+        `rx_errors`,
+        `rx_dropped`,
+        `rx_overruns`,
+        `rx_frame`,
+        `tx_bytes`,
+        `tx_packets`,
+        `tx_errors`,
+        `tx_dropped`,
+        `tx_overruns`,
+        `tx_collisions`,
+        `tx_carrier`,
+        `speed`,
+        `able`,
+        `del`,
+        `create_time`,
+        `update_time`
+      )
+    VALUES
+      (
+        #{id},
+        #{hwaddr},
+        #{rxBytes},
+        #{rxPackets},
+        #{rxErrors},
+        #{rxDropped},
+        #{rxOverruns},
+        #{rxFrame},
+        #{txBytes},
+        #{txPackets},
+        #{txErrors},
+        #{txDropped},
+        #{txOverruns},
+        #{txCollisions},
+        #{txCarrier},
+        #{speed},
+        #{able},
+        #{del},
+        #{createTime},
+        #{updateTime}
+      )
+  </insert>
+
+  <!--通过主键修改数据-->
+  <update id="updateById">
+    UPDATE host_ethernet_stat
+    <set>
+      <if test="entity.id != null and entity.id != ''">
+        `id` = #{entity.id},
+      </if>
+      <if test="entity.hwaddr != null and entity.hwaddr != ''">
+        `hwaddr` = #{entity.hwaddr},
+      </if>
+      <if test="entity.rxBytes != null and entity.rxBytes != ''">
+        `rx_bytes` = #{entity.rxBytes},
+      </if>
+      <if test="entity.rxPackets != null and entity.rxPackets != ''">
+        `rx_packets` = #{entity.rxPackets},
+      </if>
+      <if test="entity.rxErrors != null and entity.rxErrors != ''">
+        `rx_errors` = #{entity.rxErrors},
+      </if>
+      <if test="entity.rxDropped != null and entity.rxDropped != ''">
+        `rx_dropped` = #{entity.rxDropped},
+      </if>
+      <if test="entity.rxOverruns != null and entity.rxOverruns != ''">
+        `rx_overruns` = #{entity.rxOverruns},
+      </if>
+      <if test="entity.rxFrame != null and entity.rxFrame != ''">
+        `rx_frame` = #{entity.rxFrame},
+      </if>
+      <if test="entity.txBytes != null and entity.txBytes != ''">
+        `tx_bytes` = #{entity.txBytes},
+      </if>
+      <if test="entity.txPackets != null and entity.txPackets != ''">
+        `tx_packets` = #{entity.txPackets},
+      </if>
+      <if test="entity.txErrors != null and entity.txErrors != ''">
+        `tx_errors` = #{entity.txErrors},
+      </if>
+      <if test="entity.txDropped != null and entity.txDropped != ''">
+        `tx_dropped` = #{entity.txDropped},
+      </if>
+      <if test="entity.txOverruns != null and entity.txOverruns != ''">
+        `tx_overruns` = #{entity.txOverruns},
+      </if>
+      <if test="entity.txCollisions != null and entity.txCollisions != ''">
+        `tx_collisions` = #{entity.txCollisions},
+      </if>
+      <if test="entity.txCarrier != null and entity.txCarrier != ''">
+        `tx_carrier` = #{entity.txCarrier},
+      </if>
+      <if test="entity.speed != null and entity.speed != ''">
+        `speed` = #{entity.speed},
+      </if>
+      <if test="entity.able != null and entity.able != ''">
+        `able` = #{entity.able},
+      </if>
+      <if test="entity.del != null and entity.del != ''">
+        `del` = #{entity.del},
+      </if>
+      <if test="entity.createTime != null and entity.createTime != ''">
+        `create_time` = #{entity.createTime},
+      </if>
+      <if test="entity.updateTime != null and entity.updateTime != ''">
+        `update_time` = #{entity.updateTime},
+      </if>
+    </set>
+    WHERE
+      id = #{id}
+  </update>
+
+  <!--通过主键删除-->
+  <update id="deleteById">
+    UPDATE host_ethernet_stat
+    SET
+      del = 1,
+      update_time = now()
+    WHERE
+      id = #{id}
+  </update>
+
+  <!--通过主键批量删除-->
+  <update id="deleteByIds">
+    UPDATE host_ethernet_stat
+    SET
+      del = 1,
+      update_time = now()
+    WHERE
+      id in
+    <foreach close=")" collection="ids" index="index" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </update>
+
+  <!--通过主键启禁-->
+  <update id="ableById">
+    UPDATE host_ethernet_stat
+    SET
+      able = #{able},
+      update_time = now()
+    WHERE
+      id = #{id}
+  </update>
+
+  <!--通过主键批量启禁-->
+  <update id="ableByIds">
+    UPDATE host_ethernet_stat
+    SET
+      able = #{able},
+      update_time = now()
+    WHERE
+      id in
+    <foreach close=")" collection="ids" index="index" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </update>
+
+</mapper>

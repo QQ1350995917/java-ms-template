@@ -1,11 +1,7 @@
 package pwd.initializr.common.mw.monitor;
 
-import com.alibaba.fastjson.JSON;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.SynchronousQueue;
@@ -14,9 +10,6 @@ import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import pwd.initializr.common.http.Post;
-import pwd.initializr.monitor.rpc.RPCServiceInstance;
 
 /**
  * pwd.initializr.common.mw.montor@ms-web-initializr
@@ -31,76 +24,65 @@ import pwd.initializr.monitor.rpc.RPCServiceInstance;
  */
 @Singleton
 @Slf4j
-public class MonitorClient {
+public abstract class MonitorClient {
 
-  private final ScheduledExecutorService scheduler;
-  private final ThreadPoolExecutor uploadExecutor;
+    private final ScheduledExecutorService scheduler;
+    private final ThreadPoolExecutor uploadExecutor;
 
-  @Inject
-  MonitorClient() {
-    try {
-      // default size of 2 - 1 each for heartbeat and cacheRefresh
-      scheduler = Executors.newScheduledThreadPool(1,
-          new ThreadFactoryBuilder()
-              .setNameFormat("MonitorClient-%d")
-              .setDaemon(true)
-              .build());
+    @Inject
+    public MonitorClient() {
+        try {
+            // default size of 2 - 1 each for heartbeat and cacheRefresh
+            scheduler = Executors.newScheduledThreadPool(1,
+                new ThreadFactoryBuilder()
+                    .setNameFormat("MonitorClient-%d")
+                    .setDaemon(true)
+                    .build());
 
-      uploadExecutor = new ThreadPoolExecutor(
-          1, 1, 0, TimeUnit.SECONDS,
-          new SynchronousQueue<Runnable>(),
-          new ThreadFactoryBuilder()
-              .setNameFormat("MonitorClient-UploadExecutor-%d")
-              .setDaemon(true)
-              .build()
-      );
+            uploadExecutor = new ThreadPoolExecutor(
+                1, 1, 0, TimeUnit.SECONDS,
+                new SynchronousQueue<Runnable>(),
+                new ThreadFactoryBuilder()
+                    .setNameFormat("MonitorClient-UploadExecutor-%d")
+                    .setDaemon(true)
+                    .build()
+            );
 
-      initScheduledTasks();
-      log.info("Monitor Client initialized at timestamp {}", System.currentTimeMillis());
-    } catch (Throwable e) {
-      throw new RuntimeException("Failed to initialize MonitorClient!", e);
+            initScheduledTasks();
+            log.info("Monitor Client initialized at timestamp {}", System.currentTimeMillis());
+        } catch (Throwable e) {
+            throw new RuntimeException("Failed to initialize MonitorClient!", e);
+        }
     }
-  }
 
-  private void initScheduledTasks() {
-    scheduler.schedule(
-        new TimedSupervisorTask(
-            "cacheRefresh",
-            scheduler,
-            uploadExecutor, 3,
-            TimeUnit.SECONDS,
-            1,
-            new UploadThread()
-        ),
-        3, TimeUnit.SECONDS);
-  }
-
-  @VisibleForTesting
-  void refreshRegistry() {
-    try {
-      RPCServiceInstance rpcServiceInstance = new RPCServiceInstance();
-      rpcServiceInstance.setApp("test");
-      rpcServiceInstance.setAppGroup("testGroup");
-      rpcServiceInstance.setInstanceId("testInstanceId");
-      String jsonString = JSON.toJSONString(rpcServiceInstance);
-      Post.doPost("http://localhost:11260","/api/robot/instance",jsonString,100,100,100);
-    } catch (Exception e) {
-      e.printStackTrace();
+    private void initScheduledTasks() {
+        scheduler.schedule(
+            new TimedSupervisorTask(
+                getScheduleName(),
+                scheduler,
+                uploadExecutor, getScheduleMillisecondTimeout(),
+                TimeUnit.MILLISECONDS,
+                1,
+                new UploadThread()
+            ),
+            getScheduleSecondRate(), TimeUnit.SECONDS);
     }
-  }
 
-  class UploadThread implements Runnable {
+    @VisibleForTesting
+    protected abstract void refresh();
 
-    @Override
-    public void run() {
-      refreshRegistry();
+    protected abstract String getScheduleName();
+
+    protected abstract int getScheduleMillisecondTimeout();
+
+    protected abstract int getScheduleSecondRate();
+
+    class UploadThread implements Runnable {
+
+        @Override
+        public void run() {
+            refresh();
+        }
     }
-  }
-
-  public static void main(String[] args) throws Exception {
-    new MonitorClient();
-
-    Thread.sleep(10000000);
-  }
 
 }

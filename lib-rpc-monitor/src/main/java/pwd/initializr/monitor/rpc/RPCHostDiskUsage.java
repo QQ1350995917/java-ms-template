@@ -1,6 +1,7 @@
 package pwd.initializr.monitor.rpc;
 
 import io.swagger.annotations.ApiModelProperty;
+import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,7 +24,7 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class RPCHostDiskUsage {
+public class RPCHostDiskUsage implements Serializable {
 
     @ApiModelProperty(value = "主机名称")
     private String id;

@@ -43,7 +43,7 @@ public class EnableMonitorImportSelector extends SpringFactoryImportSelector<Ena
 
   @Override
   protected boolean isEnabled() {
-    return this.getEnvironment().getProperty("monitor.cloud.client.enabled", Boolean.class, Boolean.TRUE);
+    return this.getEnvironment().getProperty("monitor.cloud.client.enable", Boolean.class, Boolean.TRUE);
   }
 
   @Override

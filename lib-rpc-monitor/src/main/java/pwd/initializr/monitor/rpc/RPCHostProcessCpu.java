@@ -1,5 +1,6 @@
 package pwd.initializr.monitor.rpc;
 
+import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,7 +23,7 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class RPCHostProcessCpu {
+public class RPCHostProcessCpu implements Serializable {
 
     double percent = 0.0D;
     long lastTime = 0L;

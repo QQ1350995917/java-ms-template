@@ -1,6 +1,7 @@
 package pwd.initializr.monitor.rpc;
 
 import io.swagger.annotations.ApiModelProperty;
+import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,7 +24,7 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class RPCHostProcessMemory {
+public class RPCHostProcessMemory implements Serializable {
 
     long size = 0L;
     long resident = 0L;

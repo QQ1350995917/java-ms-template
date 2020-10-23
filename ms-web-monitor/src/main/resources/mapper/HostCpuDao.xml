@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pwd.initializr.monitor.persistence.dao.HostCpuDao">
+
+  <resultMap id="HostCpuMap" type="pwd.initializr.monitor.persistence.entity.HostCpuEntity">
+    <result column="id" jdbcType="VARCHAR" property="id"/>
+    <result column="user" jdbcType="BIGINT" property="user"/>
+    <result column="sys" jdbcType="BIGINT" property="sys"/>
+    <result column="nice" jdbcType="BIGINT" property="nice"/>
+    <result column="idle" jdbcType="BIGINT" property="idle"/>
+    <result column="wait" jdbcType="BIGINT" property="wait"/>
+    <result column="irq" jdbcType="BIGINT" property="irq"/>
+    <result column="soft_irq" jdbcType="BIGINT" property="softIrq"/>
+    <result column="stolen" jdbcType="BIGINT" property="stolen"/>
+    <result column="total" jdbcType="BIGINT" property="total"/>
+    <result column="able" jdbcType="INTEGER" property="able"/>
+    <result column="del" jdbcType="INTEGER" property="del"/>
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+  </resultMap>
+
+  <!--根据主键查询查询-->
+  <select id="queryById" resultMap="HostCpuMap">
+    SELECT
+      `id`,
+      `user`,
+      `sys`,
+      `nice`,
+      `idle`,
+      `wait`,
+      `irq`,
+      `soft_irq`,
+      `stolen`,
+      `total`,
+      `able`,
+      `del`,
+      `create_time`,
+      `update_time`
+    FROM
+      host_cpu
+    WHERE
+      id = #{id}
+  </select>
+
+  <!--查询指定行数据-->
+  <select id="countByCondition" resultType="java.lang.Long">
+    SELECT COUNT(*) FROM host_cpu
+    <include refid="pwd.initializr.common.web.persistence.entity.ScopeEntity.entityQueryScope"></include>
+  </select>
+
+  <!--通过实体作为筛选条件查询-->
+  <select id="queryByCondition" resultMap="HostCpuMap">
+    SELECT
+      `id`,
+      `user`,
+      `sys`,
+      `nice`,
+      `idle`,
+      `wait`,
+      `irq`,
+      `soft_irq`,
+      `stolen`,
+      `total`,
+      `able`,
+      `del`,
+      `create_time`,
+      `update_time`
+    FROM
+      host_cpu
+    <include refid="pwd.initializr.common.web.persistence.entity.ScopeEntity.entityQueryScope"></include>
+    <include refid="pwd.initializr.common.web.persistence.entity.SortEntity.entityQuerySort"></include>
+    LIMIT
+      #{offset}, #{limit}
+  </select>
+
+  <!--新增所有列-->
+  <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+    INSERT INTO host_cpu
+      (
+        `id`,
+        `user`,
+        `sys`,
+        `nice`,
+        `idle`,
+        `wait`,
+        `irq`,
+        `soft_irq`,
+        `stolen`,
+        `total`,
+        `able`,
+        `del`,
+        `create_time`,
+        `update_time`
+      )
+    VALUES
+      (
+        #{id},
+        #{user},
+        #{sys},
+        #{nice},
+        #{idle},
+        #{wait},
+        #{irq},
+        #{softIrq},
+        #{stolen},
+        #{total},
+        #{able},
+        #{del},
+        #{createTime},
+        #{updateTime}
+      )
+  </insert>
+
+  <!--通过主键修改数据-->
+  <update id="updateById">
+    UPDATE host_cpu
+    <set>
+      <if test="entity.id != null and entity.id != ''">
+        `id` = #{entity.id},
+      </if>
+      <if test="entity.user != null and entity.user != ''">
+        `user` = #{entity.user},
+      </if>
+      <if test="entity.sys != null and entity.sys != ''">
+        `sys` = #{entity.sys},
+      </if>
+      <if test="entity.nice != null and entity.nice != ''">
+        `nice` = #{entity.nice},
+      </if>
+      <if test="entity.idle != null and entity.idle != ''">
+        `idle` = #{entity.idle},
+      </if>
+      <if test="entity.wait != null and entity.wait != ''">
+        `wait` = #{entity.wait},
+      </if>
+      <if test="entity.irq != null and entity.irq != ''">
+        `irq` = #{entity.irq},
+      </if>
+      <if test="entity.softIrq != null and entity.softIrq != ''">
+        `soft_irq` = #{entity.softIrq},
+      </if>
+      <if test="entity.stolen != null and entity.stolen != ''">
+        `stolen` = #{entity.stolen},
+      </if>
+      <if test="entity.total != null and entity.total != ''">
+        `total` = #{entity.total},
+      </if>
+      <if test="entity.able != null and entity.able != ''">
+        `able` = #{entity.able},
+      </if>
+      <if test="entity.del != null and entity.del != ''">
+        `del` = #{entity.del},
+      </if>
+      <if test="entity.createTime != null and entity.createTime != ''">
+        `create_time` = #{entity.createTime},
+      </if>
+      <if test="entity.updateTime != null and entity.updateTime != ''">
+        `update_time` = #{entity.updateTime},
+      </if>
+    </set>
+    WHERE
+      id = #{id}
+  </update>
+
+  <!--通过主键删除-->
+  <update id="deleteById">
+    UPDATE host_cpu
+    SET
+      del = 1,
+      update_time = now()
+    WHERE
+      id = #{id}
+  </update>
+
+  <!--通过主键批量删除-->
+  <update id="deleteByIds">
+    UPDATE host_cpu
+    SET
+      del = 1,
+      update_time = now()
+    WHERE
+      id in
+    <foreach close=")" collection="ids" index="index" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </update>
+
+  <!--通过主键启禁-->
+  <update id="ableById">
+    UPDATE host_cpu
+    SET
+      able = #{able},
+      update_time = now()
+    WHERE
+      id = #{id}
+  </update>
+
+  <!--通过主键批量启禁-->
+  <update id="ableByIds">
+    UPDATE host_cpu
+    SET
+      able = #{able},
+      update_time = now()
+    WHERE
+      id in
+    <foreach close=")" collection="ids" index="index" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </update>
+
+</mapper>

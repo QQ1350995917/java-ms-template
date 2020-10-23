@@ -2,6 +2,7 @@ package pwd.initializr.common.mw.monitor;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import pwd.initializr.common.mw.monitor.client.OSClient;
 
 /**
  * pwd.initializr.common.mw.montor@ms-web-initializr
@@ -19,7 +20,7 @@ public class MonitorClientAutoConfiguration {
 
   @Bean
   public MonitorClient discoveryClient() {
-    return new MonitorClient();
+    return new OSClient();
   }
 
 }

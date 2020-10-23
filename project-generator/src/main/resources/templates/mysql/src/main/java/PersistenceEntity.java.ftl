@@ -41,7 +41,7 @@ public class ${className}Entity implements Serializable {
 <#if columns?exists>
   <#list columns as column>
   /**
-    * <#if (column.key)>主键<#assign hasKey=true/><#assign keyName='${column.javaName}'/></#if>
+    * <#if (column.key)>主键<#assign hasKey=true/><#assign keyName='${column.javaName}'/><#else><#assign hasKey=false/></#if>
     * ${column.comment!}
     */
   private ${column.javaType} ${column.javaName};
@@ -54,7 +54,7 @@ public class ${className}Entity implements Serializable {
     if (obj == null) {
       return false;
     }
-    if (!(obj instanceof AdminAccountEntity)) {
+    if (!(obj instanceof ${className}Entity)) {
       return false;
     }
   <#if hasKey>

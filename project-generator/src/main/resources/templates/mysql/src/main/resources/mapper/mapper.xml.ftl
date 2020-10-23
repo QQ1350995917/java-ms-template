@@ -78,9 +78,9 @@
   <#if columns?exists>
     <#list columns as column>
       <#if column_index == (columns?size -1)>
-        <#noparse>#{</#noparse>${column.javaName}<#noparse>}</#noparse>
+        <#noparse>#{</#noparse>entity.${column.javaName}<#noparse>}</#noparse>
       <#else>
-        <#noparse>#{</#noparse>${column.javaName}<#noparse>}</#noparse>,
+        <#noparse>#{</#noparse>entity.${column.javaName}<#noparse>}</#noparse>,
       </#if>
     </#list>
   </#if>
@@ -100,7 +100,7 @@
   </#if>
     </set>
     WHERE
-      id = <#noparse>#{id}</#noparse>
+      id = <#noparse>#{entity.id}</#noparse>
   </update>
 
   <!--通过主键删除-->

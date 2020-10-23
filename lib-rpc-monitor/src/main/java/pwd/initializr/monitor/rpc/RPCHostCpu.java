@@ -1,6 +1,7 @@
 package pwd.initializr.monitor.rpc;
 
 import io.swagger.annotations.ApiModelProperty;
+import java.io.Serializable;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,7 +25,7 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class RPCHostCpu {
+public class RPCHostCpu implements Serializable {
     @ApiModelProperty(value = "主机名称")
     private String id;
     @ApiModelProperty(value = "执行用户进程的耗时，包括ni耗时")

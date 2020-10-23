@@ -97,7 +97,8 @@ public class TimedSupervisorTask extends TimerTask {
       }
 
       if (!scheduler.isShutdown()) {
-        scheduler.schedule(this, delay.get(), TimeUnit.MILLISECONDS);
+//        scheduler.schedule(this, delay.get(), TimeUnit.MILLISECONDS);
+        scheduler.schedule(this, 0, TimeUnit.MILLISECONDS);
       }
     }
   }
