@@ -23,7 +23,7 @@ import pwd.initializr.common.mw.monitor.EnableMonitorClient;
 @SpringBootApplication
 @EnableEurekaClient
 @EnableDiscoveryClient
-@EnableMonitorClient(autoMonitor = true)
+@EnableMonitorClient
 @ComponentScan(basePackages = {"pwd.initializr.common.web", "pwd.initializr.monitor"})
 public class MonitorApplication {
     public static void main(String[] args) {

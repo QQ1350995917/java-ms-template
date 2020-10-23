@@ -1,7 +1,12 @@
 package pwd.initializr.common.mw.monitor;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import pwd.initializr.common.http.HttpX;
+import pwd.initializr.common.http.HttpXByHttpClient;
+import pwd.initializr.common.http.HttpXConfig;
+import pwd.initializr.common.mw.monitor.client.CpuClient;
 import pwd.initializr.common.mw.monitor.client.OSClient;
 
 /**
@@ -16,11 +21,26 @@ import pwd.initializr.common.mw.monitor.client.OSClient;
  * @since DistributionVersion
  */
 @Configuration
+@ConditionalOnProperty(value = "monitor.cloud.client.enable", matchIfMissing = true)
 public class MonitorClientAutoConfiguration {
 
   @Bean
-  public MonitorClient discoveryClient() {
+  @ConditionalOnProperty(value = "monitor.cloud.client.enable", matchIfMissing = true)
+  public HttpX client() {
+    return new HttpXByHttpClient(new HttpXConfig());
+  }
+
+
+  @Bean
+  @ConditionalOnProperty(value = "monitor.cloud.client.os.enable", matchIfMissing = true)
+  public MonitorClient osClient() {
     return new OSClient();
   }
+
+//  @Bean
+//  @ConditionalOnProperty(value = "monitor.cloud.client.os.enable", matchIfMissing = true)
+//  public MonitorClient cpuClient() {
+//    return new CpuClient();
+//  }
 
 }

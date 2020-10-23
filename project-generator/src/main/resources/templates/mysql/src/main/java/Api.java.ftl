@@ -158,7 +158,7 @@ public interface ${className}Api {
    * @since ${projectVersion}
    */
   @ApiOperation(value = "新增")
-  @PostMapping(value = {""}, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @PostMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   void create(@RequestBody @Valid @NotNull(message = "参数不能为空") ${className}Input input);
 
   /**

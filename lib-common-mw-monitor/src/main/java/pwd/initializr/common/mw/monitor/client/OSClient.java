@@ -3,7 +3,8 @@ package pwd.initializr.common.mw.monitor.client;
 import com.alibaba.fastjson.JSON;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
-import pwd.initializr.common.http.Post;
+import org.springframework.beans.factory.annotation.Autowired;
+import pwd.initializr.common.http.HttpX;
 import pwd.initializr.common.mw.monitor.MonitorClient;
 import pwd.initializr.common.mw.monitor.index.Host;
 import pwd.initializr.monitor.rpc.RPCHostOS;
@@ -23,16 +24,22 @@ import pwd.initializr.monitor.rpc.RPCHostOS;
 @Slf4j
 public class OSClient extends MonitorClient {
 
+    @Autowired
+    private HttpX httpX;
+
+    public static void main(String[] args) throws Exception {
+        new OSClient();
+        Thread.sleep(Integer.MAX_VALUE);
+    }
+
     @Override
     protected void refresh() {
-        System.out.println(System.currentTimeMillis());
         try {
             RPCHostOS os = Host.os();
             String jsonString = JSON.toJSONString(os);
-            Post.doPost("http://localhost:11260", "/api/robot/os", jsonString, 1000, 1000, 1000);
-            Thread.sleep(5000);
+            httpX.postJson("http://localhost:11260/api/robot/os", jsonString);
         } catch (Exception e) {
-//            e.printStackTrace();
+            e.printStackTrace();
         }
     }
 
@@ -42,17 +49,7 @@ public class OSClient extends MonitorClient {
     }
 
     @Override
-    protected int getScheduleMillisecondTimeout() {
-        return 1000;
-    }
-
-    @Override
     protected int getScheduleSecondRate() {
         return 5;
-    }
-
-    public static void main(String[] args) throws Exception {
-        new OSClient();
-        Thread.sleep(Integer.MAX_VALUE);
     }
 }

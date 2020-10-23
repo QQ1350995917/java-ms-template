@@ -60,8 +60,8 @@ public abstract class MonitorClient {
             new TimedSupervisorTask(
                 getScheduleName(),
                 scheduler,
-                uploadExecutor, getScheduleMillisecondTimeout(),
-                TimeUnit.MILLISECONDS,
+                uploadExecutor, getScheduleSecondRate(),
+                TimeUnit.SECONDS,
                 1,
                 new UploadThread()
             ),
@@ -72,8 +72,6 @@ public abstract class MonitorClient {
     protected abstract void refresh();
 
     protected abstract String getScheduleName();
-
-    protected abstract int getScheduleMillisecondTimeout();
 
     protected abstract int getScheduleSecondRate();
 
