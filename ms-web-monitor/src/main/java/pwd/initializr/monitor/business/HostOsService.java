@@ -75,6 +75,17 @@ public interface HostOsService {
   void insert(HostOsBO bo);
 
   /**
+   * <h2>新增数据或者根据ID替换数据</h2>
+   * date 2020-10-24 21:23
+   *
+   * @param bo 业务对象
+   * @return java.lang.Integer 影响行数
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  void insertOrReplace(HostOsBO bo);
+
+  /**
    * <h2>根据条件查询多条数据</h2>
    * date 2020-10-23 11:58
    *

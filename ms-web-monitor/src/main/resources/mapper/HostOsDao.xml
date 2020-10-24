@@ -127,6 +127,50 @@
       )
   </insert>
 
+  <!--新增或者根据ID替换所有列-->
+  <insert id="insertOrReplace" keyProperty="id">
+    REPLACE INTO host_os
+      (
+        `id`,
+        `name`,
+        `version`,
+        `arch`,
+        `machine`,
+        `description`,
+        `patch_level`,
+        `vendor`,
+        `vendor_version`,
+        `vendor_name`,
+        `vendor_code_name`,
+        `data_model`,
+        `cpu_endian`,
+        `able`,
+        `del`,
+        `create_time`,
+        `update_time`
+      )
+    VALUES
+      (
+        #{entity.id},
+        #{entity.name},
+        #{entity.version},
+        #{entity.arch},
+        #{entity.machine},
+        #{entity.description},
+        #{entity.patchLevel},
+        #{entity.vendor},
+        #{entity.vendorVersion},
+        #{entity.vendorName},
+        #{entity.vendorCodeName},
+        #{entity.dataModel},
+        #{entity.cpuEndian},
+        #{entity.able},
+        #{entity.del},
+        #{entity.createTime},
+        #{entity.updateTime}
+      )
+  </insert>
+
   <!--通过主键修改数据-->
   <update id="updateById">
     UPDATE host_os

@@ -37,7 +37,7 @@ public class OSClient extends MonitorClient {
         try {
             RPCHostOS os = Host.os();
             String jsonString = JSON.toJSONString(os);
-            httpX.postJson("http://localhost:11260/api/robot/os", jsonString);
+            httpX.putJson("http://localhost:11260/api/robot/os", jsonString);
         } catch (Exception e) {
             e.printStackTrace();
         }

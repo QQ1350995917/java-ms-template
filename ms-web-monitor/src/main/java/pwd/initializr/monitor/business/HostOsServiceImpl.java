@@ -61,14 +61,26 @@ public class HostOsServiceImpl implements HostOsService {
   }
 
   @Override
+  public void insertOrReplace(HostOsBO bo) {
+    HostOsEntity entity = new HostOsEntity();
+    BeanUtils.copyProperties(bo, entity);
+    entity.setAble(EntityAble.DISABLE.getNumber());
+    entity.setDel(EntityDel.NO.getNumber());
+    entity.setCreateTime(new Date());
+    entity.setUpdateTime(new Date());
+    this.dao.insertOrReplace(entity);
+  }
+
+  @Override
   public PageableQueryResult<HostOsBO> queryAllByCondition(LinkedHashSet<ScopeBO> scopes,
-    LinkedHashSet<SortBO> sorts, Long pageIndex, Long pageSize) {
+      LinkedHashSet<SortBO> sorts, Long pageIndex, Long pageSize) {
     PageableQueryResult<HostOsBO> result = new PageableQueryResult<>();
     Long total = this.dao.countByCondition(scopes);
     if (total == null || total < 1) {
       return result;
     }
-    List<HostOsEntity> entities = this.dao.queryByCondition(scopes,sorts, pageIndex * pageSize, pageSize);
+    List<HostOsEntity> entities = this.dao
+        .queryByCondition(scopes, sorts, pageIndex * pageSize, pageSize);
     if (entities == null) {
       return result;
     }
@@ -95,7 +107,7 @@ public class HostOsServiceImpl implements HostOsService {
   }
 
   @Override
-  public Integer updateById(HostOsBO bo){
+  public Integer updateById(HostOsBO bo) {
     HostOsEntity entity = new HostOsEntity();
     BeanUtils.copyProperties(bo, entity);
     return this.dao.updateById(entity);

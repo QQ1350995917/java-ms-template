@@ -1,5 +1,8 @@
 package pwd.initializr.common.http;
 
+import java.io.File;
+import java.util.Map;
+
 /**
  * pwd.initializr.common.http@ms-web-initializr
  *
@@ -14,8 +17,32 @@ package pwd.initializr.common.http;
 public abstract class HttpX {
 
 
-    public abstract String postJson(String uri,String body);
+  public abstract String get(String url);
 
-    public abstract String getJson(String uri,String body);
+  public abstract String get(String url, Map<String, String> params);
 
+  public abstract String get(String url, Map<String, String> headers, Map<String, String> params);
+
+  public abstract void getFile(String url, File localFile);
+
+  public abstract void getFile(String url, Map<String, String> headers, File localFile);
+
+  public abstract void getFile(String url, Map<String, String> headers, File localFile,
+      int cacheBytes);
+
+  public abstract String postFile(String url, String attachmentParamName, File attachment);
+
+  public abstract String postFile(String url, String attachmentParamName, File attachment,
+      Map<String, String> textPlainParams);
+
+  public abstract String postFile(String url, Map<String, String> headers,
+      String attachmentParamName, File attachment, Map<String, String> textPlainParams);
+
+  public abstract String postJson(String url, String body);
+
+  public abstract String postJson(String url, Map<String, String> headers, String body);
+
+  public abstract String putJson(String url, String body);
+
+  public abstract String putJson(String url, Map<String, String> headers, String body);
 }
