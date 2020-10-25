@@ -27,7 +27,7 @@ public class HttpXByHttpClientTest {
   public void testGet() {
     Map<String, String> headers = new HashMap<>();
     headers.put("User-Agent",
-        "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36");
+        "Mozilla/5.0 (ShellOnWindows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36");
     Map<String, String> params = new HashMap<>();
     params.put("id", "123456");
     params.put("language", "中文");
@@ -38,7 +38,7 @@ public class HttpXByHttpClientTest {
   public void testPutJson() {
     Map<String, String> headers = new HashMap<>();
     headers.put("User-Agent",
-        "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36");
+        "Mozilla/5.0 (ShellOnWindows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36");
     HashMap<String, String> stringStringHashMap = new HashMap<>();
     stringStringHashMap.put("id", System.currentTimeMillis() + "");
     String jsonString = JSON.toJSONString(stringStringHashMap);

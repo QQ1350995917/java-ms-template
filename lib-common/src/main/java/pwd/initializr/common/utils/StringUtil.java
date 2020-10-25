@@ -13,6 +13,7 @@ import java.util.Date;
  * @version 1.0.0
  * @since DistributionVersion
  */
+@Deprecated
 public class StringUtil {
     public StringUtil() {
     }

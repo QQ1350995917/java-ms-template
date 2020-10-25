@@ -7,10 +7,10 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import pwd.initializr.common.utils.ZipUtil;
-import pwd.initializr.common.utils.StringUtil;
 import pwd.initializr.common.web.api.vo.Meta;
 import pwd.initializr.common.web.api.vo.Output;
 
@@ -77,7 +77,7 @@ public class ApiController {
     String clientEncoding = getRequest().getHeader("Accept-Encoding");
     boolean canGzip = false;
     if (clientEncoding != null && clientEncoding.indexOf("gzip") > -1
-        && StringUtil.null2Str(data).length() >= 200) {
+        && (StringUtils.isBlank(data) ? "" : data.trim()).length() >= 200) {
       canGzip = true;
       getResponse().setHeader("Content-Encoding", "gzip");
     }
