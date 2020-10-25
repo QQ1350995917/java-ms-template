@@ -87,6 +87,17 @@ public interface HostCpuCoreDao {
   Integer insert(@Param("entity") HostCpuCoreEntity entity);
 
   /**
+   * <h2>新增或者替换数据</h2>
+   * date 2020-10-25 14:33
+   *
+   * @param entity 实例对象
+   * @return java.lang.Integer
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  Integer insertOrReplace(@Param("entity") HostCpuCoreEntity entity);
+
+  /**
    * <h2>在指定的条件下查询数据</h2>
    * date 2020-10-23 11:58
    *

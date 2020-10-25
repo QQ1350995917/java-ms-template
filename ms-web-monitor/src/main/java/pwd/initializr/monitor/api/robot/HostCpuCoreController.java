@@ -78,7 +78,7 @@ public class HostCpuCoreController extends pwd.initializr.common.web.api.admin.A
   public void create(@Valid @NotNull(message = "参数不能为空") HostCpuCoreInput input) {
     HostCpuCoreBO bo = new HostCpuCoreBO();
     BeanUtils.copyProperties(input,bo);
-    service.insert(bo);
+    service.insertOrReplace(bo);
     outputData(200,bo.getId());
   }
 

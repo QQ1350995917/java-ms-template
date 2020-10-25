@@ -61,6 +61,17 @@ public class HostCpuServiceImpl implements HostCpuService {
   }
 
   @Override
+  public void insertOrReplace(HostCpuBO bo) {
+    HostCpuEntity entity = new HostCpuEntity();
+    BeanUtils.copyProperties(bo, entity);
+    entity.setAble(EntityAble.DISABLE.getNumber());
+    entity.setDel(EntityDel.NO.getNumber());
+    entity.setCreateTime(new Date());
+    entity.setUpdateTime(new Date());
+    this.dao.insertOrReplace(entity);
+  }
+
+  @Override
   public PageableQueryResult<HostCpuBO> queryAllByCondition(LinkedHashSet<ScopeBO> scopes,
     LinkedHashSet<SortBO> sorts, Long pageIndex, Long pageSize) {
     PageableQueryResult<HostCpuBO> result = new PageableQueryResult<>();

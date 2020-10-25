@@ -78,7 +78,7 @@ public class HostDiskController extends pwd.initializr.common.web.api.admin.Admi
   public void create(@Valid @NotNull(message = "参数不能为空") HostDiskInput input) {
     HostDiskBO bo = new HostDiskBO();
     BeanUtils.copyProperties(input,bo);
-    service.insert(bo);
+    service.insertOrReplace(bo);
     outputData(200,bo.getId());
   }
 }

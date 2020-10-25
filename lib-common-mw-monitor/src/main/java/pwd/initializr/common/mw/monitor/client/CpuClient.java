@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import pwd.initializr.common.mw.monitor.MonitorClient;
 import pwd.initializr.common.mw.monitor.MonitorClientConfig;
 import pwd.initializr.common.mw.monitor.index.Host;
+import pwd.initializr.monitor.rpc.RPCHostCpu;
 import pwd.initializr.monitor.rpc.RPCHostOS;
 
 /**
@@ -40,8 +41,8 @@ public class CpuClient extends MonitorClient {
   @Override
   protected void refresh() {
     try {
-      RPCHostOS os = Host.os();
-      String jsonString = JSON.toJSONString(os);
+      RPCHostCpu cpu = Host.cpu();
+      String jsonString = JSON.toJSONString(cpu);
       httpX.putJson(monitorClientConfig.getCpuUrl(), jsonString);
     } catch (Exception e) {
       throw new RuntimeException(e);

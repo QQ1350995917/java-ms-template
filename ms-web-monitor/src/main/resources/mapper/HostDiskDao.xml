@@ -87,18 +87,52 @@
       )
     VALUES
       (
-        #{id},
-        #{devName},
-        #{dirName},
-        #{typeName},
-        #{sysTypeName},
-        #{options},
-        #{type},
-        #{flags},
-        #{able},
-        #{del},
-        #{createTime},
-        #{updateTime}
+        #{entity.id},
+        #{entity.devName},
+        #{entity.dirName},
+        #{entity.typeName},
+        #{entity.sysTypeName},
+        #{entity.options},
+        #{entity.type},
+        #{entity.flags},
+        #{entity.able},
+        #{entity.del},
+        #{entity.createTime},
+        #{entity.updateTime}
+      )
+  </insert>
+
+  <!--新增所有列-->
+  <insert id="insertOrReplace" keyProperty="id" useGeneratedKeys="true">
+    REPLACE INTO host_disk
+      (
+        `id`,
+        `dev_name`,
+        `dir_name`,
+        `type_name`,
+        `sys_type_name`,
+        `options`,
+        `type`,
+        `flags`,
+        `able`,
+        `del`,
+        `create_time`,
+        `update_time`
+      )
+    VALUES
+      (
+        #{entity.id},
+        #{entity.devName},
+        #{entity.dirName},
+        #{entity.typeName},
+        #{entity.sysTypeName},
+        #{entity.options},
+        #{entity.type},
+        #{entity.flags},
+        #{entity.able},
+        #{entity.del},
+        #{entity.createTime},
+        #{entity.updateTime}
       )
   </insert>
 

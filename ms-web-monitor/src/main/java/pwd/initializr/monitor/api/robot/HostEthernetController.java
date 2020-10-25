@@ -78,7 +78,7 @@ public class HostEthernetController extends pwd.initializr.common.web.api.admin.
   public void create(@Valid @NotNull(message = "参数不能为空") HostEthernetInput input) {
     HostEthernetBO bo = new HostEthernetBO();
     BeanUtils.copyProperties(input,bo);
-    service.insert(bo);
+    service.insertOrReplace(bo);
     outputData(200,bo.getId());
   }
 

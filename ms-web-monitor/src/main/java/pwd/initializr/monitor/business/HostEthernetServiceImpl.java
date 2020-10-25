@@ -61,6 +61,17 @@ public class HostEthernetServiceImpl implements HostEthernetService {
   }
 
   @Override
+  public void insertOrReplace(HostEthernetBO bo) {
+    HostEthernetEntity entity = new HostEthernetEntity();
+    BeanUtils.copyProperties(bo, entity);
+    entity.setAble(EntityAble.DISABLE.getNumber());
+    entity.setDel(EntityDel.NO.getNumber());
+    entity.setCreateTime(new Date());
+    entity.setUpdateTime(new Date());
+    this.dao.insertOrReplace(entity);
+  }
+
+  @Override
   public PageableQueryResult<HostEthernetBO> queryAllByCondition(LinkedHashSet<ScopeBO> scopes,
     LinkedHashSet<SortBO> sorts, Long pageIndex, Long pageSize) {
     PageableQueryResult<HostEthernetBO> result = new PageableQueryResult<>();

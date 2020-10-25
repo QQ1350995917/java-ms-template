@@ -75,6 +75,17 @@ public interface HostCpuCoreService {
   void insert(HostCpuCoreBO bo);
 
   /**
+   * <h2>新增或替换数据</h2>
+   * date 2020-10-25 14:37
+   *
+   * @param bo 业务对象
+   * @return void
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  void insertOrReplace(HostCpuCoreBO bo);
+
+  /**
    * <h2>根据条件查询多条数据</h2>
    * date 2020-10-23 11:58
    *

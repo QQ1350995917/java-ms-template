@@ -91,19 +91,55 @@
       )
     VALUES
       (
-        #{id},
-        #{index},
-        #{vendor},
-        #{model},
-        #{cacheSize},
-        #{mhz},
-        #{totalCores},
-        #{totalSockets},
-        #{coresPerSocket},
-        #{able},
-        #{del},
-        #{createTime},
-        #{updateTime}
+        #{entity.id},
+        #{entity.index},
+        #{entity.vendor},
+        #{entity.model},
+        #{entity.cacheSize},
+        #{entity.mhz},
+        #{entity.totalCores},
+        #{entity.totalSockets},
+        #{entity.coresPerSocket},
+        #{entity.able},
+        #{entity.del},
+        #{entity.createTime},
+        #{entity.updateTime}
+      )
+  </insert>
+
+  <!--新增所有列-->
+  <insert id="insertOrReplace" keyProperty="id" useGeneratedKeys="true">
+    REPLACE INTO host_cpu_core
+      (
+        `id`,
+        `index`,
+        `vendor`,
+        `model`,
+        `cache_size`,
+        `mhz`,
+        `total_cores`,
+        `total_sockets`,
+        `cores_per_socket`,
+        `able`,
+        `del`,
+        `create_time`,
+        `update_time`
+      )
+    VALUES
+      (
+        #{entity.id},
+        #{entity.index},
+        #{entity.vendor},
+        #{entity.model},
+        #{entity.cacheSize},
+        #{entity.mhz},
+        #{entity.totalCores},
+        #{entity.totalSockets},
+        #{entity.coresPerSocket},
+        #{entity.able},
+        #{entity.del},
+        #{entity.createTime},
+        #{entity.updateTime}
       )
   </insert>
 

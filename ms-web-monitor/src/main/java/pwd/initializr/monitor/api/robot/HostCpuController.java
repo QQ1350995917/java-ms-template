@@ -77,7 +77,7 @@ public class HostCpuController extends
     public void create(@Valid @NotNull(message = "参数不能为空") HostCpuInput input) {
         HostCpuBO bo = new HostCpuBO();
         BeanUtils.copyProperties(input, bo);
-        service.insert(bo);
+        service.insertOrReplace(bo);
         outputData(200, bo.getId());
     }
 

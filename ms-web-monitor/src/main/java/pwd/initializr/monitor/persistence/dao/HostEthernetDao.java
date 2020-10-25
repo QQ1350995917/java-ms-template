@@ -87,6 +87,17 @@ public interface HostEthernetDao {
   Integer insert(@Param("entity") HostEthernetEntity entity);
 
   /**
+   * <h2>新增或替换数据</h2>
+   * date 2020-10-25 14:35
+   *
+   * @param entity 实例对象
+   * @return java.lang.Integer
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  Integer insertOrReplace(@Param("entity") HostEthernetEntity entity);
+
+  /**
    * <h2>在指定的条件下查询数据</h2>
    * date 2020-10-23 11:58
    *

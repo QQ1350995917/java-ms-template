@@ -103,22 +103,64 @@
       )
     VALUES
       (
-        #{id},
-        #{hwaddr},
-        #{name},
-        #{type},
-        #{description},
-        #{address},
-        #{destination},
-        #{broadcast},
-        #{netmask},
-        #{flags},
-        #{mtu},
-        #{metric},
-        #{able},
-        #{del},
-        #{createTime},
-        #{updateTime}
+        #{entity.id},
+        #{entity.hwaddr},
+        #{entity.name},
+        #{entity.type},
+        #{entity.description},
+        #{entity.address},
+        #{entity.destination},
+        #{entity.broadcast},
+        #{entity.netmask},
+        #{entity.flags},
+        #{entity.mtu},
+        #{entity.metric},
+        #{entity.able},
+        #{entity.del},
+        #{entity.createTime},
+        #{entity.updateTime}
+      )
+  </insert>
+
+  <!--新增所有列-->
+  <insert id="insertOrReplace" keyProperty="id" useGeneratedKeys="true">
+    REPLACE INTO host_ethernet
+      (
+        `id`,
+        `hwaddr`,
+        `name`,
+        `type`,
+        `description`,
+        `address`,
+        `destination`,
+        `broadcast`,
+        `netmask`,
+        `flags`,
+        `mtu`,
+        `metric`,
+        `able`,
+        `del`,
+        `create_time`,
+        `update_time`
+      )
+    VALUES
+      (
+        #{entity.id},
+        #{entity.hwaddr},
+        #{entity.name},
+        #{entity.type},
+        #{entity.description},
+        #{entity.address},
+        #{entity.destination},
+        #{entity.broadcast},
+        #{entity.netmask},
+        #{entity.flags},
+        #{entity.mtu},
+        #{entity.metric},
+        #{entity.able},
+        #{entity.del},
+        #{entity.createTime},
+        #{entity.updateTime}
       )
   </insert>
 

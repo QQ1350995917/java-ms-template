@@ -75,7 +75,7 @@
   </select>
 
   <!--新增所有列-->
-  <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+  <insert id="insert" keyProperty="id">
     INSERT INTO host_cpu
       (
         `id`,
@@ -95,20 +95,58 @@
       )
     VALUES
       (
-        #{id},
-        #{user},
-        #{sys},
-        #{nice},
-        #{idle},
-        #{wait},
-        #{irq},
-        #{softIrq},
-        #{stolen},
-        #{total},
-        #{able},
-        #{del},
-        #{createTime},
-        #{updateTime}
+        #{entity.id},
+        #{entity.user},
+        #{entity.sys},
+        #{entity.nice},
+        #{entity.idle},
+        #{entity.wait},
+        #{entity.irq},
+        #{entity.softIrq},
+        #{entity.stolen},
+        #{entity.total},
+        #{entity.able},
+        #{entity.del},
+        #{entity.createTime},
+        #{entity.updateTime}
+      )
+  </insert>
+
+  <!--新增所有列-->
+  <insert id="insertOrReplace" keyProperty="id">
+    REPLACE INTO host_cpu
+      (
+        `id`,
+        `user`,
+        `sys`,
+        `nice`,
+        `idle`,
+        `wait`,
+        `irq`,
+        `soft_irq`,
+        `stolen`,
+        `total`,
+        `able`,
+        `del`,
+        `create_time`,
+        `update_time`
+      )
+    VALUES
+      (
+        #{entity.id},
+        #{entity.user},
+        #{entity.sys},
+        #{entity.nice},
+        #{entity.idle},
+        #{entity.wait},
+        #{entity.irq},
+        #{entity.softIrq},
+        #{entity.stolen},
+        #{entity.total},
+        #{entity.able},
+        #{entity.del},
+        #{entity.createTime},
+        #{entity.updateTime}
       )
   </insert>
 

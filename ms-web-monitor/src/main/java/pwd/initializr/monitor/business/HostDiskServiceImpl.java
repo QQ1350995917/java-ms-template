@@ -61,6 +61,17 @@ public class HostDiskServiceImpl implements HostDiskService {
   }
 
   @Override
+  public void insertOrReplace(HostDiskBO bo) {
+    HostDiskEntity entity = new HostDiskEntity();
+    BeanUtils.copyProperties(bo, entity);
+    entity.setAble(EntityAble.DISABLE.getNumber());
+    entity.setDel(EntityDel.NO.getNumber());
+    entity.setCreateTime(new Date());
+    entity.setUpdateTime(new Date());
+    this.dao.insertOrReplace(entity);
+  }
+
+  @Override
   public PageableQueryResult<HostDiskBO> queryAllByCondition(LinkedHashSet<ScopeBO> scopes,
     LinkedHashSet<SortBO> sorts, Long pageIndex, Long pageSize) {
     PageableQueryResult<HostDiskBO> result = new PageableQueryResult<>();
