@@ -6,43 +6,48 @@ import lombok.extern.slf4j.Slf4j;
 import pwd.initializr.common.mw.monitor.MonitorClient;
 import pwd.initializr.common.mw.monitor.MonitorClientConfig;
 import pwd.initializr.common.mw.monitor.index.Host;
-import pwd.initializr.monitor.rpc.RPCHostOS;
+import pwd.initializr.monitor.rpc.RPCHostCpu;
 
 /**
  * pwd.initializr.common.mw.monitor.client@ms-web-initializr
  *
  * <h1>TODO what you want to do?</h1>
  *
- * date 2020-10-23 17:05
+ * date 2020-10-25 13:50
  *
- * @author DingPengwei[dingpengwei@foxmail.com]
+ * @author DingPengwei[www.dingpengwei@foxmail.com]
  * @version 1.0.0
  * @since DistributionVersion
  */
 @Singleton
 @Slf4j
-public class CpuClient extends MonitorClient {
+public class WhoClient extends MonitorClient {
 
-  public CpuClient(MonitorClientConfig monitorClientConfig) {
+  public WhoClient(MonitorClientConfig monitorClientConfig) {
     super(monitorClientConfig);
+  }
+
+  public static void main(String[] args) throws Exception {
+    new OSClient(null);
+    Thread.sleep(Integer.MAX_VALUE);
   }
 
   @Override
   protected String getScheduleName() {
-    return "Monitor-CPU-Client";
+    return "Monitor-WHO-Client";
   }
 
   @Override
   protected int getScheduleSecondRate() {
-    return monitorClientConfig.getCpuRateSecond();
+    return monitorClientConfig.getWhoRateSecond();
   }
 
   @Override
   protected void refresh() {
     try {
-      RPCHostOS os = Host.os();
-      String jsonString = JSON.toJSONString(os);
-      httpX.putJson(monitorClientConfig.getCpuUrl(), jsonString);
+      RPCHostCpu cpu = Host.cpu();
+      String jsonString = JSON.toJSONString(cpu);
+      httpX.putJson(monitorClientConfig.getWhoUrl(), jsonString);
     } catch (Exception e) {
       throw new RuntimeException(e);
     }

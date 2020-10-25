@@ -10,6 +10,8 @@ import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import pwd.initializr.common.http.HttpX;
 
 /**
  * pwd.initializr.common.mw.montor@ms-web-initializr
@@ -26,61 +28,66 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public abstract class MonitorClient {
 
-    private final ScheduledExecutorService scheduler;
-    private final ThreadPoolExecutor uploadExecutor;
+  private final ScheduledExecutorService scheduler;
+  private final ThreadPoolExecutor uploadExecutor;
+  protected MonitorClientConfig monitorClientConfig;
 
-    @Inject
-    public MonitorClient() {
-        try {
-            // default size of 2 - 1 each for heartbeat and cacheRefresh
-            scheduler = Executors.newScheduledThreadPool(1,
-                new ThreadFactoryBuilder()
-                    .setNameFormat("MonitorClient-%d")
-                    .setDaemon(true)
-                    .build());
+  @Autowired
+  protected HttpX httpX;
 
-            uploadExecutor = new ThreadPoolExecutor(
-                1, 1, 0, TimeUnit.SECONDS,
-                new SynchronousQueue<Runnable>(),
-                new ThreadFactoryBuilder()
-                    .setNameFormat("MonitorClient-UploadExecutor-%d")
-                    .setDaemon(true)
-                    .build()
-            );
+  @Inject
+  public MonitorClient(MonitorClientConfig monitorClientConfig) {
+    this.monitorClientConfig = monitorClientConfig;
+    try {
+      // default size of 2 - 1 each for heartbeat and cacheRefresh
+      scheduler = Executors.newScheduledThreadPool(1,
+          new ThreadFactoryBuilder()
+              .setNameFormat("MonitorClient-%d")
+              .setDaemon(true)
+              .build());
 
-            initScheduledTasks();
-            log.info("Monitor Client initialized at timestamp {}", System.currentTimeMillis());
-        } catch (Throwable e) {
-            throw new RuntimeException("Failed to initialize MonitorClient!", e);
-        }
+      uploadExecutor = new ThreadPoolExecutor(
+          1, 1, 0, TimeUnit.SECONDS,
+          new SynchronousQueue<Runnable>(),
+          new ThreadFactoryBuilder()
+              .setNameFormat("MonitorClient-UploadExecutor-%d")
+              .setDaemon(true)
+              .build()
+      );
+
+      initScheduledTasks();
+      log.info("Monitor Client initialized at timestamp {}", System.currentTimeMillis());
+    } catch (Throwable e) {
+      throw new RuntimeException("Failed to initialize MonitorClient!", e);
     }
+  }
 
-    private void initScheduledTasks() {
-        scheduler.schedule(
-            new TimedSupervisorTask(
-                getScheduleName(),
-                scheduler,
-                uploadExecutor, getScheduleSecondRate(),
-                TimeUnit.SECONDS,
-                1,
-                new UploadThread()
-            ),
-            getScheduleSecondRate(), TimeUnit.SECONDS);
+  private void initScheduledTasks() {
+    scheduler.schedule(
+        new TimedSupervisorTask(
+            getScheduleName(),
+            scheduler,
+            uploadExecutor, getScheduleSecondRate(),
+            TimeUnit.SECONDS,
+            1,
+            new UploadThread()
+        ),
+        getScheduleSecondRate(), TimeUnit.SECONDS);
+  }
+
+  protected abstract String getScheduleName();
+
+  protected abstract int getScheduleSecondRate();
+
+  @VisibleForTesting
+  protected abstract void refresh();
+
+  class UploadThread implements Runnable {
+
+    @Override
+    public void run() {
+      refresh();
     }
-
-    @VisibleForTesting
-    protected abstract void refresh();
-
-    protected abstract String getScheduleName();
-
-    protected abstract int getScheduleSecondRate();
-
-    class UploadThread implements Runnable {
-
-        @Override
-        public void run() {
-            refresh();
-        }
-    }
+  }
 
 }

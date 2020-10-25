@@ -3,11 +3,10 @@ package pwd.initializr.common.mw.monitor.client;
 import com.alibaba.fastjson.JSON;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import pwd.initializr.common.http.HttpX;
 import pwd.initializr.common.mw.monitor.MonitorClient;
+import pwd.initializr.common.mw.monitor.MonitorClientConfig;
 import pwd.initializr.common.mw.monitor.index.Host;
-import pwd.initializr.monitor.rpc.RPCHostOS;
+import pwd.initializr.monitor.rpc.RPCHostCpu;
 
 /**
  * pwd.initializr.common.mw.monitor.client@ms-web-initializr
@@ -24,32 +23,33 @@ import pwd.initializr.monitor.rpc.RPCHostOS;
 @Slf4j
 public class OSClient extends MonitorClient {
 
-    @Autowired
-    private HttpX httpX;
+  public OSClient(MonitorClientConfig monitorClientConfig) {
+    super(monitorClientConfig);
+  }
 
-    public static void main(String[] args) throws Exception {
-        new OSClient();
-        Thread.sleep(Integer.MAX_VALUE);
-    }
+  public static void main(String[] args) throws Exception {
+    new OSClient(null);
+    Thread.sleep(Integer.MAX_VALUE);
+  }
 
-    @Override
-    protected void refresh() {
-        try {
-            RPCHostOS os = Host.os();
-            String jsonString = JSON.toJSONString(os);
-            httpX.putJson("http://localhost:11260/api/robot/os", jsonString);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+  @Override
+  protected String getScheduleName() {
+    return "Monitor-OS-Client";
+  }
 
-    @Override
-    protected String getScheduleName() {
-        return "Monitor-OS-Client";
-    }
+  @Override
+  protected int getScheduleSecondRate() {
+    return monitorClientConfig.getOsRateSecond();
+  }
 
-    @Override
-    protected int getScheduleSecondRate() {
-        return 5;
+  @Override
+  protected void refresh() {
+    try {
+      RPCHostCpu cpu = Host.cpu();
+      String jsonString = JSON.toJSONString(cpu);
+      httpX.putJson(monitorClientConfig.getOsUrl(), jsonString);
+    } catch (Exception e) {
+      throw new RuntimeException(e);
     }
+  }
 }

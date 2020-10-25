@@ -63,7 +63,8 @@ public class TimedSupervisorTask extends TimerTask {
     try {
       future = executor.submit(task);
       threadPoolLevelGauge.set((long) executor.getActiveCount());
-      future.get(timeoutMillis, TimeUnit.MILLISECONDS);  // block until done or timeout
+      // block until done or timeout
+      future.get(timeoutMillis, TimeUnit.MILLISECONDS);
       delay.set(timeoutMillis);
       threadPoolLevelGauge.set((long) executor.getActiveCount());
       successCounter.increment();
