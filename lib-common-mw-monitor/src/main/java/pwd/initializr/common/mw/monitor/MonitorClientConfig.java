@@ -22,6 +22,8 @@ public class MonitorClientConfig implements EnvironmentAware {
   private Environment environment;
 
   private boolean enable = true;
+  private int rateSecond;
+  private String url;
   private int connectionRequestTimeoutMillisecond;
   private int connectTimeoutMillisecond;
   private int socketTimeoutMillisecond;
@@ -102,7 +104,6 @@ public class MonitorClientConfig implements EnvironmentAware {
   private int memorySwapConnectionRequestTimeoutMillisecond;
   private int memorySwapConnectTimeoutMillisecond;
   private int memorySwapSocketTimeoutMillisecond;
-
 
   public int getConnectTimeoutMillisecond() {
     return connectTimeoutMillisecond;
@@ -529,12 +530,28 @@ public class MonitorClientConfig implements EnvironmentAware {
     this.osUrl = osUrl;
   }
 
+  public int getRateSecond() {
+    return rateSecond;
+  }
+
+  public void setRateSecond(int rateSecond) {
+    this.rateSecond = rateSecond;
+  }
+
   public int getSocketTimeoutMillisecond() {
     return socketTimeoutMillisecond;
   }
 
   public void setSocketTimeoutMillisecond(int socketTimeoutMillisecond) {
     this.socketTimeoutMillisecond = socketTimeoutMillisecond;
+  }
+
+  public String getUrl() {
+    return url;
+  }
+
+  public void setUrl(String url) {
+    this.url = url;
   }
 
   public int getWhoConnectTimeoutMillisecond() {

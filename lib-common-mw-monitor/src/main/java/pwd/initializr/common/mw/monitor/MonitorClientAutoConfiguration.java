@@ -1,5 +1,6 @@
 package pwd.initializr.common.mw.monitor;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.SearchStrategy;
@@ -48,6 +49,8 @@ public class MonitorClientAutoConfiguration {
   public MonitorClientConfig monitorClientConfig() {
 
     String enable = getProperty("monitor.cloud.client.enable");
+    String rateSecond = getProperty("monitor.cloud.client.rate.second");
+    String url = getProperty("monitor.cloud.client.url");
     String connectionRequestTimeoutMillisecond = getProperty("monitor.cloud.client.connection.request.timeout.millisecond");
     String connectTimeoutMillisecond = getProperty("monitor.cloud.client.connect.timeout.millisecond");
     String socketTimeoutMillisecond = getProperty("monitor.cloud.client.socket.timeout.millisecond");
@@ -73,33 +76,147 @@ public class MonitorClientAutoConfiguration {
     String cpuConnectTimeoutMillisecond = getProperty("monitor.cloud.client.cpu.connect.timeout.millisecond");
     String cpuSocketTimeoutMillisecond = getProperty("monitor.cloud.client.cpu.socket.timeout.millisecond");
 
+    String cpuCoreEnable = getProperty("monitor.cloud.client.cpu.core.enable");
+    String cpuCoreRateSecond = getProperty("monitor.cloud.client.cpu.core.rate.second");
+    String cpuCoreUrl = getProperty("monitor.cloud.client.cpu.core.url");
+    String cpuCoreConnectionRequestTimeoutMillisecond = getProperty("monitor.cloud.client.cpu.core.connection.request.timeout.millisecond");
+    String cpuCoreConnectTimeoutMillisecond = getProperty("monitor.cloud.client.cpu.core.connect.timeout.millisecond");
+    String cpuCoreSocketTimeoutMillisecond = getProperty("monitor.cloud.client.cpu.core.socket.timeout.millisecond");
+
+    String cpuCoreUsageEnable = getProperty("monitor.cloud.client.cpu.core.usage.enable");
+    String cpuCoreUsageRateSecond = getProperty("monitor.cloud.client.cpu.core.usage.rate.second");
+    String cpuCoreUsageUrl = getProperty("monitor.cloud.client.cpu.core.usage.url");
+    String cpuCoreUsageConnectionRequestTimeoutMillisecond = getProperty("monitor.cloud.client.cpu.core.usage.connection.request.timeout.millisecond");
+    String cpuCoreUsageConnectTimeoutMillisecond = getProperty("monitor.cloud.client.cpu.core.usage.connect.timeout.millisecond");
+    String cpuCoreUsageSocketTimeoutMillisecond = getProperty("monitor.cloud.client.cpu.core.usage.socket.timeout.millisecond");
+
+    String diskEnable = getProperty("monitor.cloud.client.disk.enable");
+    String diskRateSecond = getProperty("monitor.cloud.client.disk.rate.second");
+    String diskUrl = getProperty("monitor.cloud.client.disk.url");
+    String diskConnectionRequestTimeoutMillisecond = getProperty("monitor.cloud.client.disk.connection.request.timeout.millisecond");
+    String diskConnectTimeoutMillisecond = getProperty("monitor.cloud.client.disk.connect.timeout.millisecond");
+    String diskSocketTimeoutMillisecond = getProperty("monitor.cloud.client.disk.socket.timeout.millisecond");
+
+    String diskUsageEnable = getProperty("monitor.cloud.client.disk.usage.enable");
+    String diskUsageRateSecond = getProperty("monitor.cloud.client.disk.usage.rate.second");
+    String diskUsageUrl = getProperty("monitor.cloud.client.disk.usage.url");
+    String diskUsageConnectionRequestTimeoutMillisecond = getProperty("monitor.cloud.client.disk.usage.connection.request.timeout.millisecond");
+    String diskUsageConnectTimeoutMillisecond = getProperty("monitor.cloud.client.disk.usage.connect.timeout.millisecond");
+    String diskUsageSocketTimeoutMillisecond = getProperty("monitor.cloud.client.disk.usage.socket.timeout.millisecond");
+
+    String ethernetEnable = getProperty("monitor.cloud.client.ethernet.enable");
+    String ethernetRateSecond = getProperty("monitor.cloud.client.ethernet.rate.second");
+    String ethernetUrl = getProperty("monitor.cloud.client.ethernet.url");
+    String ethernetConnectionRequestTimeoutMillisecond = getProperty("monitor.cloud.client.ethernet.connection.request.timeout.millisecond");
+    String ethernetConnectTimeoutMillisecond = getProperty("monitor.cloud.client.ethernet.connect.timeout.millisecond");
+    String ethernetSocketTimeoutMillisecond = getProperty("monitor.cloud.client.ethernet.socket.timeout.millisecond");
+
+    String ethernetStatEnable = getProperty("monitor.cloud.client.ethernet.stat.enable");
+    String ethernetStatRateSecond = getProperty("monitor.cloud.client.ethernet.stat.rate.second");
+    String ethernetStatUrl = getProperty("monitor.cloud.client.ethernet.stat.url");
+    String ethernetStatConnectionRequestTimeoutMillisecond = getProperty("monitor.cloud.client.ethernet.stat.connection.request.timeout.millisecond");
+    String ethernetStatConnectTimeoutMillisecond = getProperty("monitor.cloud.client.ethernet.stat.connect.timeout.millisecond");
+    String ethernetStatSocketTimeoutMillisecond = getProperty("monitor.cloud.client.ethernet.stat.socket.timeout.millisecond");
+
+    String memoryEnable = getProperty("monitor.cloud.client.memory.enable");
+    String memoryRateSecond = getProperty("monitor.cloud.client.memory.rate.second");
+    String memoryUrl = getProperty("monitor.cloud.client.memory.url");
+    String memoryConnectionRequestTimeoutMillisecond = getProperty("monitor.cloud.client.memory.connection.request.timeout.millisecond");
+    String memoryConnectTimeoutMillisecond = getProperty("monitor.cloud.client.memory.connect.timeout.millisecond");
+    String memorySocketTimeoutMillisecond = getProperty("monitor.cloud.client.memory.socket.timeout.millisecond");
+
+    String memorySwapEnable = getProperty("monitor.cloud.client.memory.swap.enable");
+    String memorySwapRateSecond = getProperty("monitor.cloud.client.memory.swap.rate.second");
+    String memorySwapUrl = getProperty("monitor.cloud.client.memory.swap.url");
+    String memorySwapConnectionRequestTimeoutMillisecond = getProperty("monitor.cloud.client.memory.swap.connection.request.timeout.millisecond");
+    String memorySwapConnectTimeoutMillisecond = getProperty("monitor.cloud.client.memory.swap.connect.timeout.millisecond");
+    String memorySwapSocketTimeoutMillisecond = getProperty("monitor.cloud.client.memory.swap.socket.timeout.millisecond");
+
     MonitorClientConfig instance = new MonitorClientConfig();
 
-    instance.setEnable(Boolean.parseBoolean(enable));
-    instance.setConnectTimeoutMillisecond(Integer.parseInt(connectTimeoutMillisecond));
-    instance.setConnectionRequestTimeoutMillisecond(Integer.parseInt(connectionRequestTimeoutMillisecond));
-    instance.setSocketTimeoutMillisecond(Integer.parseInt(socketTimeoutMillisecond));
+    instance.setEnable(Boolean.parseBoolean(StringUtils.isBlank(enable) ? "true" : enable));
+    instance.setRateSecond(Integer.parseInt(StringUtils.isBlank(rateSecond) ? "300" : rateSecond));
+    instance.setUrl(StringUtils.isBlank(url) ? "http://127.0.0.1:80" : url);
+    instance.setConnectionRequestTimeoutMillisecond(Integer.parseInt(StringUtils.isBlank(connectionRequestTimeoutMillisecond) ? "1000" : connectionRequestTimeoutMillisecond));
+    instance.setConnectTimeoutMillisecond(Integer.parseInt(StringUtils.isBlank(connectTimeoutMillisecond) ? "3000" : connectTimeoutMillisecond));
+    instance.setSocketTimeoutMillisecond(Integer.parseInt(StringUtils.isBlank(socketTimeoutMillisecond) ? "2000" : socketTimeoutMillisecond));
 
-    instance.setOsEnable(Boolean.parseBoolean(osEnable));
-    instance.setOsRateSecond(Integer.parseInt(osRateSecond));
-    instance.setOsUrl(osUrl);
-    instance.setOsConnectionRequestTimeoutMillisecond(Integer.parseInt(osConnectionRequestTimeoutMillisecond));
-    instance.setOsConnectTimeoutMillisecond(Integer.parseInt(osConnectTimeoutMillisecond));
-    instance.setOsSocketTimeoutMillisecond(Integer.parseInt(osSocketTimeoutMillisecond));
+    instance.setOsEnable(StringUtils.isBlank(osEnable) ? instance.isEnable() : Boolean.parseBoolean(osEnable));
+    instance.setOsRateSecond(StringUtils.isBlank(osRateSecond) ? instance.getRateSecond() : Integer.parseInt(osRateSecond));
+    instance.setOsUrl(StringUtils.isBlank(osUrl) ? url : osUrl);
+    instance.setOsConnectionRequestTimeoutMillisecond(StringUtils.isBlank(osConnectionRequestTimeoutMillisecond) ? instance.getConnectionRequestTimeoutMillisecond() : Integer.parseInt(osConnectionRequestTimeoutMillisecond));
+    instance.setOsConnectTimeoutMillisecond(StringUtils.isBlank(osConnectTimeoutMillisecond) ? instance.getConnectTimeoutMillisecond() : Integer.parseInt(osConnectTimeoutMillisecond));
+    instance.setOsSocketTimeoutMillisecond(StringUtils.isBlank(osSocketTimeoutMillisecond) ? instance.getSocketTimeoutMillisecond() : Integer.parseInt(osSocketTimeoutMillisecond));
 
-    instance.setWhoEnable(Boolean.parseBoolean(whoEnable));
-    instance.setWhoRateSecond(Integer.parseInt(whoRateSecond));
-    instance.setWhoUrl(whoUrl);
-    instance.setWhoConnectionRequestTimeoutMillisecond(Integer.parseInt(whoConnectionRequestTimeoutMillisecond));
-    instance.setWhoConnectTimeoutMillisecond(Integer.parseInt(whoConnectTimeoutMillisecond));
-    instance.setWhoSocketTimeoutMillisecond(Integer.parseInt(whoSocketTimeoutMillisecond));
+    instance.setWhoEnable(StringUtils.isBlank(whoEnable) ? instance.isEnable() : Boolean.parseBoolean(whoEnable));
+    instance.setWhoRateSecond(StringUtils.isBlank(whoRateSecond) ? instance.getRateSecond() : Integer.parseInt(whoRateSecond));
+    instance.setWhoUrl(StringUtils.isBlank(whoUrl) ? url : whoUrl);
+    instance.setWhoConnectionRequestTimeoutMillisecond(StringUtils.isBlank(whoConnectionRequestTimeoutMillisecond) ? instance.getConnectionRequestTimeoutMillisecond() : Integer.parseInt(whoConnectionRequestTimeoutMillisecond));
+    instance.setWhoConnectTimeoutMillisecond(StringUtils.isBlank(whoConnectTimeoutMillisecond) ? instance.getConnectTimeoutMillisecond() : Integer.parseInt(whoConnectTimeoutMillisecond));
+    instance.setWhoSocketTimeoutMillisecond(StringUtils.isBlank(whoSocketTimeoutMillisecond) ? instance.getSocketTimeoutMillisecond() : Integer.parseInt(whoSocketTimeoutMillisecond));
 
-    instance.setCpuEnable(Boolean.parseBoolean(cpuEnable));
-    instance.setCpuRateSecond(Integer.parseInt(cpuRateSecond));
-    instance.setCpuUrl(cpuUrl);
-    instance.setCpuConnectionRequestTimeoutMillisecond(Integer.parseInt(cpuConnectionRequestTimeoutMillisecond));
-    instance.setCpuConnectTimeoutMillisecond(Integer.parseInt(cpuConnectTimeoutMillisecond));
-    instance.setCpuSocketTimeoutMillisecond(Integer.parseInt(cpuSocketTimeoutMillisecond));
+    instance.setCpuEnable(StringUtils.isBlank(cpuEnable) ? instance.isEnable() : Boolean.parseBoolean(cpuEnable));
+    instance.setCpuRateSecond(StringUtils.isBlank(cpuRateSecond) ? instance.getRateSecond() : Integer.parseInt(cpuRateSecond));
+    instance.setCpuUrl(StringUtils.isBlank(cpuUrl) ? url : cpuUrl);
+    instance.setCpuConnectionRequestTimeoutMillisecond(StringUtils.isBlank(cpuConnectionRequestTimeoutMillisecond) ? instance.getConnectionRequestTimeoutMillisecond() : Integer.parseInt(cpuConnectionRequestTimeoutMillisecond));
+    instance.setCpuConnectTimeoutMillisecond(StringUtils.isBlank(cpuConnectTimeoutMillisecond) ? instance.getConnectTimeoutMillisecond() : Integer.parseInt(cpuConnectTimeoutMillisecond));
+    instance.setCpuSocketTimeoutMillisecond(StringUtils.isBlank(cpuSocketTimeoutMillisecond) ? instance.getSocketTimeoutMillisecond() : Integer.parseInt(cpuSocketTimeoutMillisecond));
+
+    instance.setCpuCoreEnable(StringUtils.isBlank(cpuCoreEnable) ? instance.isEnable() : Boolean.parseBoolean(cpuCoreEnable));
+    instance.setCpuCoreRateSecond(StringUtils.isBlank(cpuCoreRateSecond) ? instance.getRateSecond() : Integer.parseInt(cpuCoreRateSecond));
+    instance.setCpuCoreUrl(StringUtils.isBlank(cpuCoreUrl) ? url : cpuCoreUrl);
+    instance.setCpuCoreConnectionRequestTimeoutMillisecond(StringUtils.isBlank(cpuCoreConnectionRequestTimeoutMillisecond) ? instance.getConnectionRequestTimeoutMillisecond() : Integer.parseInt(cpuCoreConnectionRequestTimeoutMillisecond));
+    instance.setCpuCoreConnectTimeoutMillisecond(StringUtils.isBlank(cpuCoreConnectTimeoutMillisecond) ? instance.getConnectTimeoutMillisecond() : Integer.parseInt(cpuCoreConnectTimeoutMillisecond));
+    instance.setCpuCoreSocketTimeoutMillisecond(StringUtils.isBlank(cpuCoreSocketTimeoutMillisecond) ? instance.getSocketTimeoutMillisecond() : Integer.parseInt(cpuCoreSocketTimeoutMillisecond));
+
+    instance.setCpuCoreUsageEnable(StringUtils.isBlank(cpuCoreUsageEnable) ? instance.isEnable() : Boolean.parseBoolean(cpuCoreUsageEnable));
+    instance.setCpuCoreUsageRateSecond(StringUtils.isBlank(cpuCoreUsageRateSecond) ? instance.getRateSecond() : Integer.parseInt(cpuCoreUsageRateSecond));
+    instance.setCpuCoreUsageUrl(StringUtils.isBlank(cpuCoreUsageUrl) ? url : cpuCoreUsageUrl);
+    instance.setCpuCoreUsageConnectionRequestTimeoutMillisecond(StringUtils.isBlank(cpuCoreUsageConnectionRequestTimeoutMillisecond) ? instance.getConnectionRequestTimeoutMillisecond() : Integer.parseInt(cpuCoreUsageConnectionRequestTimeoutMillisecond));
+    instance.setCpuCoreUsageConnectTimeoutMillisecond(StringUtils.isBlank(cpuCoreUsageConnectTimeoutMillisecond) ? instance.getConnectTimeoutMillisecond() : Integer.parseInt(cpuCoreUsageConnectTimeoutMillisecond));
+    instance.setCpuCoreUsageSocketTimeoutMillisecond(StringUtils.isBlank(cpuCoreUsageSocketTimeoutMillisecond) ? instance.getSocketTimeoutMillisecond() : Integer.parseInt(cpuCoreUsageSocketTimeoutMillisecond));
+
+    instance.setDiskEnable(StringUtils.isBlank(diskEnable) ? instance.isEnable() : Boolean.parseBoolean(diskEnable));
+    instance.setDiskRateSecond(StringUtils.isBlank(diskRateSecond) ? instance.getRateSecond() : Integer.parseInt(diskRateSecond));
+    instance.setDiskUrl(StringUtils.isBlank(diskUrl) ? url : diskUrl);
+    instance.setDiskConnectionRequestTimeoutMillisecond(StringUtils.isBlank(diskConnectionRequestTimeoutMillisecond) ? instance.getConnectionRequestTimeoutMillisecond() : Integer.parseInt(diskConnectionRequestTimeoutMillisecond));
+    instance.setDiskConnectTimeoutMillisecond(StringUtils.isBlank(diskConnectTimeoutMillisecond) ? instance.getConnectTimeoutMillisecond() : Integer.parseInt(diskConnectTimeoutMillisecond));
+    instance.setDiskSocketTimeoutMillisecond(StringUtils.isBlank(diskSocketTimeoutMillisecond) ? instance.getSocketTimeoutMillisecond() : Integer.parseInt(diskSocketTimeoutMillisecond));
+
+    instance.setDiskUsageEnable(StringUtils.isBlank(diskUsageEnable) ? instance.isEnable() : Boolean.parseBoolean(diskUsageEnable));
+    instance.setDiskUsageRateSecond(StringUtils.isBlank(diskUsageRateSecond) ? instance.getRateSecond() : Integer.parseInt(diskUsageRateSecond));
+    instance.setDiskUsageUrl(StringUtils.isBlank(diskUsageUrl) ? url : diskUsageUrl);
+    instance.setDiskUsageConnectionRequestTimeoutMillisecond(StringUtils.isBlank(diskUsageConnectionRequestTimeoutMillisecond) ? instance.getConnectionRequestTimeoutMillisecond() : Integer.parseInt(diskUsageConnectionRequestTimeoutMillisecond));
+    instance.setDiskUsageConnectTimeoutMillisecond(StringUtils.isBlank(diskUsageConnectTimeoutMillisecond) ? instance.getConnectTimeoutMillisecond() : Integer.parseInt(diskUsageConnectTimeoutMillisecond));
+    instance.setDiskUsageSocketTimeoutMillisecond(StringUtils.isBlank(diskUsageSocketTimeoutMillisecond) ? instance.getSocketTimeoutMillisecond() : Integer.parseInt(diskUsageSocketTimeoutMillisecond));
+
+    instance.setEthernetEnable(StringUtils.isBlank(ethernetEnable) ? instance.isEnable() : Boolean.parseBoolean(ethernetEnable));
+    instance.setEthernetRateSecond(StringUtils.isBlank(ethernetRateSecond) ? instance.getRateSecond() : Integer.parseInt(ethernetRateSecond));
+    instance.setEthernetUrl(StringUtils.isBlank(ethernetUrl) ? url : ethernetUrl);
+    instance.setEthernetConnectionRequestTimeoutMillisecond(StringUtils.isBlank(ethernetConnectionRequestTimeoutMillisecond) ? instance.getConnectionRequestTimeoutMillisecond() : Integer.parseInt(ethernetConnectionRequestTimeoutMillisecond));
+    instance.setEthernetConnectTimeoutMillisecond(StringUtils.isBlank(ethernetConnectTimeoutMillisecond) ? instance.getConnectTimeoutMillisecond() : Integer.parseInt(ethernetConnectTimeoutMillisecond));
+    instance.setEthernetSocketTimeoutMillisecond(StringUtils.isBlank(ethernetSocketTimeoutMillisecond) ? instance.getSocketTimeoutMillisecond() : Integer.parseInt(ethernetSocketTimeoutMillisecond));
+
+    instance.setEthernetStatEnable(StringUtils.isBlank(ethernetStatEnable) ? instance.isEnable() : Boolean.parseBoolean(ethernetStatEnable));
+    instance.setEthernetStatRateSecond(StringUtils.isBlank(ethernetStatRateSecond) ? instance.getRateSecond() : Integer.parseInt(ethernetStatRateSecond));
+    instance.setEthernetStatUrl(StringUtils.isBlank(ethernetStatUrl) ? url : ethernetStatUrl);
+    instance.setEthernetStatConnectionRequestTimeoutMillisecond(StringUtils.isBlank(ethernetStatConnectionRequestTimeoutMillisecond) ? instance.getConnectionRequestTimeoutMillisecond() : Integer.parseInt(ethernetStatConnectionRequestTimeoutMillisecond));
+    instance.setEthernetStatConnectTimeoutMillisecond(StringUtils.isBlank(ethernetStatConnectTimeoutMillisecond) ? instance.getConnectTimeoutMillisecond() : Integer.parseInt(ethernetStatConnectTimeoutMillisecond));
+    instance.setEthernetStatSocketTimeoutMillisecond(StringUtils.isBlank(ethernetStatSocketTimeoutMillisecond) ? instance.getSocketTimeoutMillisecond() : Integer.parseInt(ethernetStatSocketTimeoutMillisecond));
+
+    instance.setMemoryEnable(StringUtils.isBlank(memoryEnable) ? instance.isEnable() : Boolean.parseBoolean(memoryEnable));
+    instance.setMemoryRateSecond(StringUtils.isBlank(memoryRateSecond) ? instance.getRateSecond() : Integer.parseInt(memoryRateSecond));
+    instance.setMemoryUrl(StringUtils.isBlank(memoryUrl) ? url : memoryUrl);
+    instance.setMemoryConnectionRequestTimeoutMillisecond(StringUtils.isBlank(memoryConnectionRequestTimeoutMillisecond) ? instance.getConnectionRequestTimeoutMillisecond() : Integer.parseInt(memoryConnectionRequestTimeoutMillisecond));
+    instance.setMemoryConnectTimeoutMillisecond(StringUtils.isBlank(memoryConnectTimeoutMillisecond) ? instance.getConnectTimeoutMillisecond() : Integer.parseInt(memoryConnectTimeoutMillisecond));
+    instance.setMemorySocketTimeoutMillisecond(StringUtils.isBlank(memorySocketTimeoutMillisecond) ? instance.getSocketTimeoutMillisecond() : Integer.parseInt(memorySocketTimeoutMillisecond));
+
+    instance.setMemorySwapEnable(StringUtils.isBlank(memorySwapEnable) ? instance.isEnable() : Boolean.parseBoolean(memorySwapEnable));
+    instance.setMemorySwapRateSecond(StringUtils.isBlank(memorySwapRateSecond) ? instance.getRateSecond() : Integer.parseInt(memorySwapRateSecond));
+    instance.setMemorySwapUrl(StringUtils.isBlank(memorySwapUrl) ? url : memorySwapUrl);
+    instance.setMemorySwapConnectionRequestTimeoutMillisecond(StringUtils.isBlank(memorySwapConnectionRequestTimeoutMillisecond) ? instance.getConnectionRequestTimeoutMillisecond() : Integer.parseInt(memorySwapConnectionRequestTimeoutMillisecond));
+    instance.setMemorySwapConnectTimeoutMillisecond(StringUtils.isBlank(memorySwapConnectTimeoutMillisecond) ? instance.getConnectTimeoutMillisecond() : Integer.parseInt(memorySwapConnectTimeoutMillisecond));
+    instance.setMemorySwapSocketTimeoutMillisecond(StringUtils.isBlank(memorySwapSocketTimeoutMillisecond) ? instance.getSocketTimeoutMillisecond() : Integer.parseInt(memorySwapSocketTimeoutMillisecond));
 
     return instance;
   }
