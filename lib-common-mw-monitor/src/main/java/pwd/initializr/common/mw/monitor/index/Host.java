@@ -1,5 +1,7 @@
 package pwd.initializr.common.mw.monitor.index;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +23,7 @@ import org.hyperic.sigar.ProcTime;
 import org.hyperic.sigar.ProcUtil;
 import org.hyperic.sigar.Sigar;
 import org.hyperic.sigar.SigarException;
+import org.hyperic.sigar.SigarFileNotFoundException;
 import org.hyperic.sigar.Swap;
 import org.hyperic.sigar.Who;
 import pwd.initializr.monitor.rpc.RPCHostCpu;
@@ -140,17 +143,19 @@ public class Host {
     try {
       FileSystem[] fileSystemList = SIGAR.getFileSystemList();
       for (int i = 0; i < fileSystemList.length; i++) {
-        RPCHostDisk rpcHostDisk = new RPCHostDisk();
         FileSystem fs = fileSystemList[i];
-        rpcHostDisk.setId(getId());
-        rpcHostDisk.setDevName(fs.getDevName());
-        rpcHostDisk.setDirName(fs.getDirName());
-        rpcHostDisk.setFlags(fs.getFlags());
-        rpcHostDisk.setSysTypeName(fs.getSysTypeName());
-        rpcHostDisk.setTypeName(fs.getTypeName());
-        rpcHostDisk.setType(fs.getType());
-        rpcHostDisk.setOptions(fs.getOptions());
-        rpcHostDisks.add(rpcHostDisk);
+        if (fs.getType() == FileSystem.TYPE_LOCAL_DISK) {
+          RPCHostDisk rpcHostDisk = new RPCHostDisk();
+          rpcHostDisk.setId(getId());
+          rpcHostDisk.setDevName(fs.getDevName());
+          rpcHostDisk.setDirName(fs.getDirName());
+          rpcHostDisk.setFlags(fs.getFlags());
+          rpcHostDisk.setSysTypeName(fs.getSysTypeName());
+          rpcHostDisk.setTypeName(fs.getTypeName());
+          rpcHostDisk.setType(fs.getType());
+          rpcHostDisk.setOptions(fs.getOptions());
+          rpcHostDisks.add(rpcHostDisk);
+        }
       }
     } catch (SigarException e) {
       e.printStackTrace();
@@ -164,8 +169,10 @@ public class Host {
       FileSystem[] fileSystemList = SIGAR.getFileSystemList();
       for (int i = 0; i < fileSystemList.length; i++) {
         FileSystem fs = fileSystemList[i];
-        RPCHostDiskUsage rpcHostDiskUsage = diskUsage(fs.getDevName());
-        rpcServerDisks.add(rpcHostDiskUsage);
+        if (fs.getType() == FileSystem.TYPE_LOCAL_DISK) {
+          RPCHostDiskUsage rpcHostDiskUsage = diskUsage(fs.getDevName());
+          rpcServerDisks.add(rpcHostDiskUsage);
+        }
       }
     } catch (SigarException e) {
       e.printStackTrace();
@@ -176,22 +183,27 @@ public class Host {
   public static RPCHostDiskUsage diskUsage(String devName) {
     RPCHostDiskUsage rpcHostDiskUsage = new RPCHostDiskUsage();
     try {
-      FileSystemUsage fileSystemUsage = SIGAR.getFileSystemUsage(devName);
-      rpcHostDiskUsage.setId(getId());
-      rpcHostDiskUsage.setDevName(devName);
-      rpcHostDiskUsage.setTotal(fileSystemUsage.getTotal());
-      rpcHostDiskUsage.setFree(fileSystemUsage.getFree());
-      rpcHostDiskUsage.setUsed(fileSystemUsage.getUsed());
-      rpcHostDiskUsage.setAvail(fileSystemUsage.getAvail());
-      rpcHostDiskUsage.setFiles(fileSystemUsage.getFiles());
-      rpcHostDiskUsage.setFreeFiles(fileSystemUsage.getFreeFiles());
-      rpcHostDiskUsage.setDiskReads(fileSystemUsage.getDiskReads());
-      rpcHostDiskUsage.setDiskWrites(fileSystemUsage.getDiskWrites());
-      rpcHostDiskUsage.setDiskReadBytes(fileSystemUsage.getDiskReadBytes());
-      rpcHostDiskUsage.setDiskWriteBytes(fileSystemUsage.getDiskWriteBytes());
-      rpcHostDiskUsage.setDiskQueue(fileSystemUsage.getDiskQueue());
-      rpcHostDiskUsage.setDiskServiceTime(fileSystemUsage.getDiskServiceTime());
-      rpcHostDiskUsage.setUsePercent(fileSystemUsage.getUsePercent());
+      FileSystemUsage fileSystemUsage = null;
+      try {
+        fileSystemUsage = SIGAR.getFileSystemUsage(devName);
+        rpcHostDiskUsage.setId(getId());
+        rpcHostDiskUsage.setDevName(devName);
+        rpcHostDiskUsage.setTotal(fileSystemUsage.getTotal());
+        rpcHostDiskUsage.setFree(fileSystemUsage.getFree());
+        rpcHostDiskUsage.setUsed(fileSystemUsage.getUsed());
+        rpcHostDiskUsage.setAvail(fileSystemUsage.getAvail());
+        rpcHostDiskUsage.setFiles(fileSystemUsage.getFiles());
+        rpcHostDiskUsage.setFreeFiles(fileSystemUsage.getFreeFiles());
+        rpcHostDiskUsage.setDiskReads(fileSystemUsage.getDiskReads());
+        rpcHostDiskUsage.setDiskWrites(fileSystemUsage.getDiskWrites());
+        rpcHostDiskUsage.setDiskReadBytes(fileSystemUsage.getDiskReadBytes());
+        rpcHostDiskUsage.setDiskWriteBytes(fileSystemUsage.getDiskWriteBytes());
+        rpcHostDiskUsage.setDiskQueue(fileSystemUsage.getDiskQueue());
+        rpcHostDiskUsage.setDiskServiceTime(fileSystemUsage.getDiskServiceTime());
+        rpcHostDiskUsage.setUsePercent(fileSystemUsage.getUsePercent());
+      } catch (SigarFileNotFoundException e) {
+
+      }
     } catch (SigarException e) {
       e.printStackTrace();
     }
@@ -278,14 +290,15 @@ public class Host {
   }
 
   public static void main(String[] args) {
+
     long start = System.currentTimeMillis();
-//        String id = getId();
+        String id = getId();
 //        RPCHostOS os = Host.os();
 //        List<RPCHostWho> who = Host.who();
 //        RPCHostCpu cpu = Host.cpu();
 //        LinkedList<RPCHostCpuCore> rpcHostCpuCores = Host.cpuCore();
 //        LinkedList<RPCHostCpuCoreUsage> rpcHostCpuCoreUsages = Host.cpuCoreUsage();
-    RPCHostMemory memory = Host.memory();
+//    RPCHostMemory memory = Host.memory();
 //        RPCHostMemorySwap swap = Host.swap();
 //        List<RPCHostDisk> disk = Host.disk();
 //        List<RPCHostDiskUsage> rpcHostDiskUsages = Host.diskUsage();
@@ -294,8 +307,6 @@ public class Host {
 //        List<RPCHostProcess> process = Host.process();
     long end = System.currentTimeMillis();
     System.out.println(end - start);
-
-
   }
 
   public static RPCHostMemory memory() {
@@ -439,8 +450,12 @@ public class Host {
   }
 
   private static String server() {
-    Map<String, String> map = System.getenv();
-    return map.get("COMPUTERNAME");
+    try {
+      InetAddress netaddress = InetAddress.getLocalHost();
+      return netaddress.getHostName();
+    } catch (UnknownHostException e) {
+      throw new RuntimeException(e);
+    }
   }
 
 

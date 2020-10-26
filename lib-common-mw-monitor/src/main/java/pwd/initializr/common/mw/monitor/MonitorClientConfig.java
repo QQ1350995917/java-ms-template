@@ -23,6 +23,11 @@ public class MonitorClientConfig implements EnvironmentAware {
 
   private boolean enable = true;
   private int rateSecond;
+  private int threadMaxTotal;
+  private int threadPerRoute;
+  private boolean retryEnable;
+  private int retryCount;
+
   private String url;
   private int connectionRequestTimeoutMillisecond;
   private int connectTimeoutMillisecond;
@@ -104,6 +109,38 @@ public class MonitorClientConfig implements EnvironmentAware {
   private int memorySwapConnectionRequestTimeoutMillisecond;
   private int memorySwapConnectTimeoutMillisecond;
   private int memorySwapSocketTimeoutMillisecond;
+
+  public int getThreadMaxTotal() {
+    return threadMaxTotal;
+  }
+
+  public void setThreadMaxTotal(int threadMaxTotal) {
+    this.threadMaxTotal = threadMaxTotal;
+  }
+
+  public int getThreadPerRoute() {
+    return threadPerRoute;
+  }
+
+  public void setThreadPerRoute(int threadPerRoute) {
+    this.threadPerRoute = threadPerRoute;
+  }
+
+  public boolean isRetryEnable() {
+    return retryEnable;
+  }
+
+  public void setRetryEnable(boolean retryEnable) {
+    this.retryEnable = retryEnable;
+  }
+
+  public int getRetryCount() {
+    return retryCount;
+  }
+
+  public void setRetryCount(int retryCount) {
+    this.retryCount = retryCount;
+  }
 
   public int getConnectTimeoutMillisecond() {
     return connectTimeoutMillisecond;

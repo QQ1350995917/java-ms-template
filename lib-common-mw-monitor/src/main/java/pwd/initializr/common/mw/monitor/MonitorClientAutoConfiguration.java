@@ -59,6 +59,11 @@ public class MonitorClientAutoConfiguration {
 
     String enable = getProperty("monitor.cloud.client.enable");
     String rateSecond = getProperty("monitor.cloud.client.rate.second");
+    String threadMaxTotal = getProperty("monitor.cloud.client.thread.max.total");
+    String threadPerRoute = getProperty("monitor.cloud.client.thread.per.route");
+    String retryEnable = getProperty("monitor.cloud.client.retry.enable");
+    String retryCount = getProperty("monitor.cloud.client.retry.count");
+
     String url = getProperty("monitor.cloud.client.url");
     String connectionRequestTimeoutMillisecond = getProperty("monitor.cloud.client.connection.request.timeout.millisecond");
     String connectTimeoutMillisecond = getProperty("monitor.cloud.client.connect.timeout.millisecond");
@@ -145,6 +150,12 @@ public class MonitorClientAutoConfiguration {
 
     instance.setEnable(Boolean.parseBoolean(StringUtils.isBlank(enable) ? "true" : enable));
     instance.setRateSecond(Integer.parseInt(StringUtils.isBlank(rateSecond) ? "300" : rateSecond));
+
+    instance.setThreadMaxTotal(Integer.parseInt(StringUtils.isBlank(threadMaxTotal) ? "22" : threadMaxTotal));
+    instance.setThreadPerRoute(Integer.parseInt(StringUtils.isBlank(threadPerRoute) ? "2" : threadPerRoute));
+    instance.setRetryEnable(Boolean.parseBoolean(StringUtils.isBlank(retryEnable) ? "false" : retryEnable));
+    instance.setRetryCount(Integer.parseInt(StringUtils.isBlank(retryCount) ? "0" : retryCount));
+
     instance.setUrl(StringUtils.isBlank(url) ? "http://127.0.0.1:80" : url);
     instance.setConnectionRequestTimeoutMillisecond(Integer.parseInt(StringUtils.isBlank(connectionRequestTimeoutMillisecond) ? "1000" : connectionRequestTimeoutMillisecond));
     instance.setConnectTimeoutMillisecond(Integer.parseInt(StringUtils.isBlank(connectTimeoutMillisecond) ? "3000" : connectTimeoutMillisecond));
