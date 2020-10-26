@@ -2,6 +2,8 @@ package pwd.initializr.monitor.api.robot;
 
 import io.swagger.annotations.Api;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -75,11 +77,15 @@ public class HostEthernetStatController extends pwd.initializr.common.web.api.ad
   }
 
   @Override
-  public void create(@Valid @NotNull(message = "参数不能为空") HostEthernetStatInput input) {
-    HostEthernetStatBO bo = new HostEthernetStatBO();
-    BeanUtils.copyProperties(input,bo);
-    service.insert(bo);
-    outputData(200,bo.getId());
+  public void create(@Valid @NotNull(message = "参数不能为空") List<HostEthernetStatInput> input) {
+    LinkedList<HostEthernetStatBO> hostEthernetStatBOS = new LinkedList<>();
+    for (HostEthernetStatInput hostEthernetStatInput : input) {
+      HostEthernetStatBO bo = new HostEthernetStatBO();
+      BeanUtils.copyProperties(hostEthernetStatInput,bo);
+      hostEthernetStatBOS.add(bo);
+    }
+    service.insert(hostEthernetStatBOS);
+    outputData(200);
   }
 
 }

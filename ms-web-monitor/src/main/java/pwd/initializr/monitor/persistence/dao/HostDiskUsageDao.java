@@ -87,6 +87,17 @@ public interface HostDiskUsageDao {
   Integer insert(@Param("entity") HostDiskUsageEntity entity);
 
   /**
+   * <h2>新增数据</h2>
+   * date 2020-10-26 11:29
+   *
+   * @param entities 实例对象
+   * @return java.lang.Integer
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  Integer insertBatch(@Param("entities") List<HostDiskUsageEntity> entities);
+
+  /**
    * <h2>在指定的条件下查询数据</h2>
    * date 2020-10-23 11:58
    *

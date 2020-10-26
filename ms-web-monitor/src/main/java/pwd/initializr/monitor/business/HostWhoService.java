@@ -1,6 +1,7 @@
 package pwd.initializr.monitor.business;
 
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.common.web.business.bo.ScopeBO;
@@ -73,6 +74,17 @@ public interface HostWhoService {
    * @since 2020-10-23 11:58
    */
   void insert(HostWhoBO bo);
+
+  /**
+   * <h2>新增数据</h2>
+   * date 2020-10-26 12:49
+   *
+   * @param bos 业务对象
+   * @return void
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  void insert(List<HostWhoBO> bos);
 
   /**
    * <h2>根据条件查询多条数据</h2>

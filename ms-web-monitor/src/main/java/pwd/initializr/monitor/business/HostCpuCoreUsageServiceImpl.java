@@ -2,6 +2,7 @@ package pwd.initializr.monitor.business;
 
 import java.util.Date;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import javax.annotation.Resource;
@@ -58,6 +59,21 @@ public class HostCpuCoreUsageServiceImpl implements HostCpuCoreUsageService {
     entity.setCreateTime(new Date());
     entity.setUpdateTime(new Date());
     this.dao.insert(entity);
+  }
+
+  @Override
+  public void insert(List<HostCpuCoreUsageBO> bos) {
+    LinkedList<HostCpuCoreUsageEntity> hostCpuCoreUsageEntities = new LinkedList<>();
+    for (HostCpuCoreUsageBO bo : bos) {
+      HostCpuCoreUsageEntity entity = new HostCpuCoreUsageEntity();
+      BeanUtils.copyProperties(bo, entity);
+      entity.setAble(EntityAble.DISABLE.getNumber());
+      entity.setDel(EntityDel.NO.getNumber());
+      entity.setCreateTime(new Date());
+      entity.setUpdateTime(new Date());
+      hostCpuCoreUsageEntities.add(entity);
+    }
+    this.dao.insertBatch(hostCpuCoreUsageEntities);
   }
 
   @Override

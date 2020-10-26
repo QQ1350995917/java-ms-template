@@ -164,6 +164,50 @@
       )
   </insert>
 
+  <!--新增所有列-->
+  <insert id="insertOrReplaceBatch" >
+    REPLACE INTO host_ethernet
+      (
+        `id`,
+        `hwaddr`,
+        `name`,
+        `type`,
+        `description`,
+        `address`,
+        `destination`,
+        `broadcast`,
+        `netmask`,
+        `flags`,
+        `mtu`,
+        `metric`,
+        `able`,
+        `del`,
+        `create_time`,
+        `update_time`
+      )
+    VALUES
+    <foreach collection="entities" item="entity" separator=",">
+      (
+      #{entity.id},
+      #{entity.hwaddr},
+      #{entity.name},
+      #{entity.type},
+      #{entity.description},
+      #{entity.address},
+      #{entity.destination},
+      #{entity.broadcast},
+      #{entity.netmask},
+      #{entity.flags},
+      #{entity.mtu},
+      #{entity.metric},
+      #{entity.able},
+      #{entity.del},
+      #{entity.createTime},
+      #{entity.updateTime}
+      )
+    </foreach>
+  </insert>
+
   <!--通过主键修改数据-->
   <update id="updateById">
     UPDATE host_ethernet

@@ -97,6 +97,8 @@ public interface HostCpuCoreDao {
    */
   Integer insertOrReplace(@Param("entity") HostCpuCoreEntity entity);
 
+  Integer insertOrReplaceBatch(@Param("entities") List<HostCpuCoreEntity> entities);
+
   /**
    * <h2>在指定的条件下查询数据</h2>
    * date 2020-10-23 11:58

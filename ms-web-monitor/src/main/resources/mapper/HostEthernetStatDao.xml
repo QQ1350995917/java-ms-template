@@ -119,27 +119,79 @@
       )
     VALUES
       (
-        #{id},
-        #{hwaddr},
-        #{rxBytes},
-        #{rxPackets},
-        #{rxErrors},
-        #{rxDropped},
-        #{rxOverruns},
-        #{rxFrame},
-        #{txBytes},
-        #{txPackets},
-        #{txErrors},
-        #{txDropped},
-        #{txOverruns},
-        #{txCollisions},
-        #{txCarrier},
-        #{speed},
-        #{able},
-        #{del},
-        #{createTime},
-        #{updateTime}
+        #{entity.id},
+        #{entity.hwaddr},
+        #{entity.rxBytes},
+        #{entity.rxPackets},
+        #{entity.rxErrors},
+        #{entity.rxDropped},
+        #{entity.rxOverruns},
+        #{entity.rxFrame},
+        #{entity.txBytes},
+        #{entity.txPackets},
+        #{entity.txErrors},
+        #{entity.txDropped},
+        #{entity.txOverruns},
+        #{entity.txCollisions},
+        #{entity.txCarrier},
+        #{entity.speed},
+        #{entity.able},
+        #{entity.del},
+        #{entity.createTime},
+        #{entity.updateTime}
       )
+  </insert>
+
+  <!--新增所有列-->
+  <insert id="insertBatch">
+    INSERT INTO host_ethernet_stat
+      (
+        `id`,
+        `hwaddr`,
+        `rx_bytes`,
+        `rx_packets`,
+        `rx_errors`,
+        `rx_dropped`,
+        `rx_overruns`,
+        `rx_frame`,
+        `tx_bytes`,
+        `tx_packets`,
+        `tx_errors`,
+        `tx_dropped`,
+        `tx_overruns`,
+        `tx_collisions`,
+        `tx_carrier`,
+        `speed`,
+        `able`,
+        `del`,
+        `create_time`,
+        `update_time`
+      )
+    VALUES
+    <foreach collection="entities" item="entity" separator=",">
+      (
+      #{entity.id},
+      #{entity.hwaddr},
+      #{entity.rxBytes},
+      #{entity.rxPackets},
+      #{entity.rxErrors},
+      #{entity.rxDropped},
+      #{entity.rxOverruns},
+      #{entity.rxFrame},
+      #{entity.txBytes},
+      #{entity.txPackets},
+      #{entity.txErrors},
+      #{entity.txDropped},
+      #{entity.txOverruns},
+      #{entity.txCollisions},
+      #{entity.txCarrier},
+      #{entity.speed},
+      #{entity.able},
+      #{entity.del},
+      #{entity.createTime},
+      #{entity.updateTime}
+      )
+    </foreach>
   </insert>
 
   <!--通过主键修改数据-->

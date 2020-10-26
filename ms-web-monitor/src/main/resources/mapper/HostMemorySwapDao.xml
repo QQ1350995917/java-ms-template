@@ -79,16 +79,16 @@
       )
     VALUES
       (
-        #{id},
-        #{total},
-        #{used},
-        #{free},
-        #{pageIn},
-        #{pageOut},
-        #{able},
-        #{del},
-        #{createTime},
-        #{updateTime}
+        #{entity.id},
+        #{entity.total},
+        #{entity.used},
+        #{entity.free},
+        #{entity.pageIn},
+        #{entity.pageOut},
+        #{entity.able},
+        #{entity.del},
+        #{entity.createTime},
+        #{entity.updateTime}
       )
   </insert>
 

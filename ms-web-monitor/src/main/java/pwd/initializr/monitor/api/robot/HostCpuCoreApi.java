@@ -3,6 +3,7 @@ package pwd.initializr.monitor.api.robot;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import java.util.List;
 import java.util.Set;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -80,6 +81,6 @@ public interface HostCpuCoreApi {
    */
   @ApiOperation(value = "新增")
   @PutMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  void create(@RequestBody @Valid @NotNull(message = "参数不能为空") HostCpuCoreInput input);
+  void create(@RequestBody @Valid @NotNull(message = "参数不能为空") List<HostCpuCoreInput> input);
 
 }

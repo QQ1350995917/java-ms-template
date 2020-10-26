@@ -2,6 +2,8 @@ package pwd.initializr.monitor.api.robot;
 
 import io.swagger.annotations.Api;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -75,11 +77,15 @@ public class HostWhoController extends pwd.initializr.common.web.api.admin.Admin
   }
 
   @Override
-  public void create(@Valid @NotNull(message = "参数不能为空") HostWhoInput input) {
-    HostWhoBO bo = new HostWhoBO();
-    BeanUtils.copyProperties(input,bo);
-    service.insert(bo);
-    outputData(200,bo.getId());
+  public void create(@Valid @NotNull(message = "参数不能为空") List<HostWhoInput> input) {
+    LinkedList<HostWhoBO> hostWhoBOS = new LinkedList<>();
+    for (HostWhoInput hostWhoInput : input) {
+      HostWhoBO bo = new HostWhoBO();
+      BeanUtils.copyProperties(hostWhoInput,bo);
+      hostWhoBOS.add(bo);
+    }
+    service.insert(hostWhoBOS);
+    outputData(200);
   }
 
 }

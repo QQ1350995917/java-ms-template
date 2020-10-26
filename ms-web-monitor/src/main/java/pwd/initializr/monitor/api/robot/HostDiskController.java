@@ -2,6 +2,8 @@ package pwd.initializr.monitor.api.robot;
 
 import io.swagger.annotations.Api;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -75,10 +77,14 @@ public class HostDiskController extends pwd.initializr.common.web.api.admin.Admi
   }
 
   @Override
-  public void create(@Valid @NotNull(message = "参数不能为空") HostDiskInput input) {
-    HostDiskBO bo = new HostDiskBO();
-    BeanUtils.copyProperties(input,bo);
-    service.insertOrReplace(bo);
-    outputData(200,bo.getId());
+  public void create(@Valid @NotNull(message = "参数不能为空") List<HostDiskInput> input) {
+    LinkedList<HostDiskBO> hostDiskBOS = new LinkedList<>();
+    for (HostDiskInput hostDiskInput : input) {
+      HostDiskBO bo = new HostDiskBO();
+      BeanUtils.copyProperties(hostDiskInput,bo);
+      hostDiskBOS.add(bo);
+    }
+    service.insertOrReplace(hostDiskBOS);
+    outputData(200);
   }
 }

@@ -1,6 +1,7 @@
 package pwd.initializr.monitor.business;
 
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.common.web.business.bo.ScopeBO;
@@ -84,6 +85,17 @@ public interface HostDiskService {
    * @since DistributionVersion
    */
   void insertOrReplace(HostDiskBO bo);
+
+  /**
+   * <h2>新增或替换数据</h2>
+   * date 2020-10-26 11:20
+   *
+   * @param bos 业务对象
+   * @return void
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  void insertOrReplace(List<HostDiskBO> bos);
 
   /**
    * <h2>根据条件查询多条数据</h2>

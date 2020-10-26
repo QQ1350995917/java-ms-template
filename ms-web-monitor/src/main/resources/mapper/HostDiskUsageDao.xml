@@ -115,26 +115,76 @@
       )
     VALUES
       (
-        #{id},
-        #{devName},
-        #{total},
-        #{free},
-        #{used},
-        #{avail},
-        #{files},
-        #{freeFiles},
-        #{diskReads},
-        #{diskWrites},
-        #{diskReadBytes},
-        #{diskWriteBytes},
-        #{diskQueue},
-        #{diskServiceTime},
-        #{usePercent},
-        #{able},
-        #{del},
-        #{createTime},
-        #{updateTime}
+        #{entity.id},
+        #{entity.devName},
+        #{entity.total},
+        #{entity.free},
+        #{entity.used},
+        #{entity.avail},
+        #{entity.files},
+        #{entity.freeFiles},
+        #{entity.diskReads},
+        #{entity.diskWrites},
+        #{entity.diskReadBytes},
+        #{entity.diskWriteBytes},
+        #{entity.diskQueue},
+        #{entity.diskServiceTime},
+        #{entity.usePercent},
+        #{entity.able},
+        #{entity.del},
+        #{entity.createTime},
+        #{entity.updateTime}
       )
+  </insert>
+
+  <!--新增所有列-->
+  <insert id="insertBatch">
+    INSERT INTO host_disk_usage
+      (
+        `id`,
+        `dev_name`,
+        `total`,
+        `free`,
+        `used`,
+        `avail`,
+        `files`,
+        `free_files`,
+        `disk_reads`,
+        `disk_writes`,
+        `disk_read_bytes`,
+        `disk_write_bytes`,
+        `disk_queue`,
+        `disk_service_time`,
+        `use_percent`,
+        `able`,
+        `del`,
+        `create_time`,
+        `update_time`
+      )
+    VALUES
+    <foreach collection="entities" item="entity" separator=",">
+      (
+      #{entity.id},
+      #{entity.devName},
+      #{entity.total},
+      #{entity.free},
+      #{entity.used},
+      #{entity.avail},
+      #{entity.files},
+      #{entity.freeFiles},
+      #{entity.diskReads},
+      #{entity.diskWrites},
+      #{entity.diskReadBytes},
+      #{entity.diskWriteBytes},
+      #{entity.diskQueue},
+      #{entity.diskServiceTime},
+      #{entity.usePercent},
+      #{entity.able},
+      #{entity.del},
+      #{entity.createTime},
+      #{entity.updateTime}
+      )
+    </foreach>
   </insert>
 
   <!--通过主键修改数据-->

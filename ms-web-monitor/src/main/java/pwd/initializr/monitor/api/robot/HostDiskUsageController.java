@@ -2,6 +2,8 @@ package pwd.initializr.monitor.api.robot;
 
 import io.swagger.annotations.Api;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -21,6 +23,7 @@ import pwd.initializr.common.web.persistence.entity.EntityAble;
 import pwd.initializr.monitor.api.robot.vo.HostDiskUsageInput;
 import pwd.initializr.monitor.api.robot.vo.HostDiskUsageOutput;
 import pwd.initializr.monitor.business.HostDiskUsageService;
+import pwd.initializr.monitor.business.bo.HostDiskBO;
 import pwd.initializr.monitor.business.bo.HostDiskUsageBO;
 
 /**
@@ -75,10 +78,14 @@ public class HostDiskUsageController extends pwd.initializr.common.web.api.admin
   }
 
   @Override
-  public void create(@Valid @NotNull(message = "参数不能为空") HostDiskUsageInput input) {
-    HostDiskUsageBO bo = new HostDiskUsageBO();
-    BeanUtils.copyProperties(input,bo);
-    service.insert(bo);
-    outputData(200,bo.getId());
+  public void create(@Valid @NotNull(message = "参数不能为空") List<HostDiskUsageInput> input) {
+    LinkedList<HostDiskUsageBO> hostDiskBOS = new LinkedList<>();
+    for (HostDiskUsageInput hostDiskUsageInput : input) {
+      HostDiskUsageBO bo = new HostDiskUsageBO();
+      BeanUtils.copyProperties(hostDiskUsageInput,bo);
+      hostDiskBOS.add(bo);
+    }
+    service.insert(hostDiskBOS);
+    outputData(200);
   }
 }

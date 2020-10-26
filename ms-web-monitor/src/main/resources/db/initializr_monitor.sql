@@ -203,9 +203,7 @@ CREATE TABLE `host_memory`  (
   `able` int(4) NOT NULL DEFAULT 0 COMMENT '可用状态：0:不可用；1:可用',
   `del` int(4) NOT NULL DEFAULT 0 COMMENT '删除状态：0:未删除；1:已删除',
   `create_time` datetime(0) NOT NULL COMMENT '数据创建时间',
-  `update_time` datetime(0) NOT NULL COMMENT '最近更新时间',
-
-  PRIMARY KEY (`id`) USING BTREE
+  `update_time` datetime(0) NOT NULL COMMENT '最近更新时间'
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -237,8 +235,8 @@ CREATE TABLE `host_os`  (
 -- ----------------------------
 -- Table structure for host_swap
 -- ----------------------------
-DROP TABLE IF EXISTS `host_swap`;
-CREATE TABLE `host_swap`  (
+DROP TABLE IF EXISTS `host_memory_swap`;
+CREATE TABLE `host_memory_swap`  (
   `id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '主机名称',
   `total` bigint(11) NULL DEFAULT NULL COMMENT 'swap总量',
   `used` bigint(11) NULL DEFAULT NULL COMMENT 'swap使用量',
@@ -248,9 +246,7 @@ CREATE TABLE `host_swap`  (
   `able` int(4) NOT NULL DEFAULT 0 COMMENT '可用状态：0:不可用；1:可用',
   `del` int(4) NOT NULL DEFAULT 0 COMMENT '删除状态：0:未删除；1:已删除',
   `create_time` datetime(0) NOT NULL COMMENT '数据创建时间',
-  `update_time` datetime(0) NOT NULL COMMENT '最近更新时间',
-
-  PRIMARY KEY (`id`) USING BTREE
+  `update_time` datetime(0) NOT NULL COMMENT '最近更新时间'
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------

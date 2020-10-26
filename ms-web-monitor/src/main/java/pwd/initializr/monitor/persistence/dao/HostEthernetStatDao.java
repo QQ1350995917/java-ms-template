@@ -87,6 +87,17 @@ public interface HostEthernetStatDao {
   Integer insert(@Param("entity") HostEthernetStatEntity entity);
 
   /**
+   * <h2>新增数据</h2>
+   * date 2020-10-26 11:53
+   *
+   * @param entities 实例对象
+   * @return java.lang.Integer
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  Integer insertBatch(@Param("entities") List<HostEthernetStatEntity> entities);
+
+  /**
    * <h2>在指定的条件下查询数据</h2>
    * date 2020-10-23 11:58
    *

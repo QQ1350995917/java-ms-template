@@ -143,6 +143,44 @@
       )
   </insert>
 
+  <!--新增所有列-->
+  <insert id="insertOrReplaceBatch" >
+    REPLACE INTO host_cpu_core
+      (
+        `id`,
+        `index`,
+        `vendor`,
+        `model`,
+        `cache_size`,
+        `mhz`,
+        `total_cores`,
+        `total_sockets`,
+        `cores_per_socket`,
+        `able`,
+        `del`,
+        `create_time`,
+        `update_time`
+      )
+    VALUES
+    <foreach collection="entities" item="entity" separator=",">
+      (
+      #{entity.id},
+      #{entity.index},
+      #{entity.vendor},
+      #{entity.model},
+      #{entity.cacheSize},
+      #{entity.mhz},
+      #{entity.totalCores},
+      #{entity.totalSockets},
+      #{entity.coresPerSocket},
+      #{entity.able},
+      #{entity.del},
+      #{entity.createTime},
+      #{entity.updateTime}
+      )
+    </foreach>
+  </insert>
+
   <!--通过主键修改数据-->
   <update id="updateById">
     UPDATE host_cpu_core

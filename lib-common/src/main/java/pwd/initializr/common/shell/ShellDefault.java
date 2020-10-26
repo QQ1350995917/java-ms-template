@@ -1,7 +1,6 @@
 package pwd.initializr.common.shell;
 
 import java.io.IOException;
-import org.apache.commons.io.IOUtils;
 
 /**
  * pwd.initializr.common.shell@ms-web-initializr
@@ -20,8 +19,8 @@ public abstract class ShellDefault implements Shell {
   public void exec() {
     try {
       Process process = Runtime.getRuntime().exec(getCommandArray());
-      String result = IOUtils.toString(process.getInputStream());
-      System.out.println(result);
+//      String result = IOUtils.toString(process.getInputStream());
+//      System.out.println(result);
     } catch (IOException e) {
       throw new RuntimeException(e);
     }

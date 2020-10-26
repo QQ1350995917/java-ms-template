@@ -1,13 +1,17 @@
 package pwd.initializr.monitor.api.robot;
 
 import io.swagger.annotations.Api;
+import java.util.Collection;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.common.web.api.vo.PageInput;
@@ -75,11 +79,15 @@ public class HostCpuCoreController extends pwd.initializr.common.web.api.admin.A
   }
 
   @Override
-  public void create(@Valid @NotNull(message = "参数不能为空") HostCpuCoreInput input) {
-    HostCpuCoreBO bo = new HostCpuCoreBO();
-    BeanUtils.copyProperties(input,bo);
-    service.insertOrReplace(bo);
-    outputData(200,bo.getId());
+  public void create(@Valid @NotNull(message = "参数不能为空") List<HostCpuCoreInput> input) {
+    LinkedList<HostCpuCoreBO> hostCpuCoreBOS = new LinkedList<>();
+    for (HostCpuCoreInput hostCpuCoreInput : input) {
+      HostCpuCoreBO bo = new HostCpuCoreBO();
+      BeanUtils.copyProperties(hostCpuCoreInput,bo);
+      hostCpuCoreBOS.add(bo);
+    }
+    service.insertOrReplace(hostCpuCoreBOS);
+    outputData(200);
   }
 
 

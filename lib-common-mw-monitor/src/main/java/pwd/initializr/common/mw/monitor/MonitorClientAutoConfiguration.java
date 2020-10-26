@@ -11,7 +11,16 @@ import pwd.initializr.common.http.HttpX;
 import pwd.initializr.common.http.HttpXByHttpClient;
 import pwd.initializr.common.http.HttpXConfig;
 import pwd.initializr.common.mw.monitor.client.CpuClient;
+import pwd.initializr.common.mw.monitor.client.CpuCoreClient;
+import pwd.initializr.common.mw.monitor.client.CpuCoreUsageClient;
+import pwd.initializr.common.mw.monitor.client.DiskClient;
+import pwd.initializr.common.mw.monitor.client.DiskUsageClient;
+import pwd.initializr.common.mw.monitor.client.EthernetClient;
+import pwd.initializr.common.mw.monitor.client.EthernetStatClient;
+import pwd.initializr.common.mw.monitor.client.MemoryClient;
+import pwd.initializr.common.mw.monitor.client.MemorySwapClient;
 import pwd.initializr.common.mw.monitor.client.OSClient;
+import pwd.initializr.common.mw.monitor.client.WhoClient;
 
 /**
  * pwd.initializr.common.mw.montor@ms-web-initializr
@@ -233,9 +242,63 @@ public class MonitorClientAutoConfiguration {
   }
 
   @Bean
-  @ConditionalOnProperty(value = "monitor.cloud.client.os.enable", matchIfMissing = true)
+  @ConditionalOnProperty(value = "monitor.cloud.client.who.enable", matchIfMissing = true)
+  public MonitorClient whoClient(MonitorClientConfig monitorClientConfig) {
+    return new WhoClient(monitorClientConfig);
+  }
+
+  @Bean
+  @ConditionalOnProperty(value = "monitor.cloud.client.cpu.enable", matchIfMissing = true)
   public MonitorClient cpuClient(MonitorClientConfig monitorClientConfig) {
     return new CpuClient(monitorClientConfig);
+  }
+
+  @Bean
+  @ConditionalOnProperty(value = "monitor.cloud.client.cpu.core.enable", matchIfMissing = true)
+  public MonitorClient cpuCoreClient(MonitorClientConfig monitorClientConfig) {
+    return new CpuCoreClient(monitorClientConfig);
+  }
+
+  @Bean
+  @ConditionalOnProperty(value = "monitor.cloud.client.cpu.core.usage.enable", matchIfMissing = true)
+  public MonitorClient cpuCoreUsageClient(MonitorClientConfig monitorClientConfig) {
+    return new CpuCoreUsageClient(monitorClientConfig);
+  }
+
+  @Bean
+  @ConditionalOnProperty(value = "monitor.cloud.client.disk.enable", matchIfMissing = true)
+  public MonitorClient diskClient(MonitorClientConfig monitorClientConfig) {
+    return new DiskClient(monitorClientConfig);
+  }
+
+  @Bean
+  @ConditionalOnProperty(value = "monitor.cloud.client.disk.usage.enable", matchIfMissing = true)
+  public MonitorClient diskUsageClient(MonitorClientConfig monitorClientConfig) {
+    return new DiskUsageClient(monitorClientConfig);
+  }
+
+  @Bean
+  @ConditionalOnProperty(value = "monitor.cloud.client.ethernet.enable", matchIfMissing = true)
+  public MonitorClient ethernetClient(MonitorClientConfig monitorClientConfig) {
+    return new EthernetClient(monitorClientConfig);
+  }
+
+  @Bean
+  @ConditionalOnProperty(value = "monitor.cloud.client.ethernet.stat.enable", matchIfMissing = true)
+  public MonitorClient ethernetStatClient(MonitorClientConfig monitorClientConfig) {
+    return new EthernetStatClient(monitorClientConfig);
+  }
+
+  @Bean
+  @ConditionalOnProperty(value = "monitor.cloud.client.memory.enable", matchIfMissing = true)
+  public MonitorClient memoryClient(MonitorClientConfig monitorClientConfig) {
+    return new MemoryClient(monitorClientConfig);
+  }
+
+  @Bean
+  @ConditionalOnProperty(value = "monitor.cloud.client.memory.swap.enable", matchIfMissing = true)
+  public MonitorClient memorySwapClient(MonitorClientConfig monitorClientConfig) {
+    return new MemorySwapClient(monitorClientConfig);
   }
 
 }

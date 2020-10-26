@@ -2,6 +2,8 @@ package pwd.initializr.monitor.api.robot;
 
 import io.swagger.annotations.Api;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -75,11 +77,15 @@ public class HostCpuCoreUsageController extends pwd.initializr.common.web.api.ad
   }
 
   @Override
-  public void create(@Valid @NotNull(message = "参数不能为空") HostCpuCoreUsageInput input) {
-    HostCpuCoreUsageBO bo = new HostCpuCoreUsageBO();
-    BeanUtils.copyProperties(input,bo);
-    service.insert(bo);
-    outputData(200,bo.getId());
+  public void create(@Valid @NotNull(message = "参数不能为空") List<HostCpuCoreUsageInput> input) {
+    LinkedList<HostCpuCoreUsageBO> hostCpuCoreUsageBOS = new LinkedList<>();
+    for (HostCpuCoreUsageInput hostCpuCoreUsageInput : input) {
+      HostCpuCoreUsageBO bo = new HostCpuCoreUsageBO();
+      BeanUtils.copyProperties(hostCpuCoreUsageInput,bo);
+      hostCpuCoreUsageBOS.add(bo);
+    }
+    service.insert(hostCpuCoreUsageBOS);
+    outputData(200);
   }
 
 }

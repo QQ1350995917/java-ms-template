@@ -32,7 +32,7 @@ import pwd.initializr.monitor.api.robot.vo.HostMemorySwapInput;
   description = "[列表查询，详情查询，启/禁用，删除，新增，修改]"
 )
 @RestController(value = "HostSwap")
-@RequestMapping(value = "/api/robot/swap")
+@RequestMapping(value = "/api/robot/memory/swap")
 public interface HostMemorySwapApi {
 
   /**

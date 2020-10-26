@@ -91,19 +91,19 @@
       )
     VALUES
       (
-        #{id},
-        #{total},
-        #{ram},
-        #{used},
-        #{free},
-        #{actualUsed},
-        #{actualFree},
-        #{usedPercent},
-        #{freePercent},
-        #{able},
-        #{del},
-        #{createTime},
-        #{updateTime}
+        #{entity.id},
+        #{entity.total},
+        #{entity.ram},
+        #{entity.used},
+        #{entity.free},
+        #{entity.actualUsed},
+        #{entity.actualFree},
+        #{entity.usedPercent},
+        #{entity.freePercent},
+        #{entity.able},
+        #{entity.del},
+        #{entity.createTime},
+        #{entity.updateTime}
       )
   </insert>
 

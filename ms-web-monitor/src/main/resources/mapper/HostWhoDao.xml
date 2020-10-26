@@ -87,6 +87,36 @@
       )
   </insert>
 
+  <!--新增所有列-->
+  <insert id="insertBatch" >
+    INSERT INTO host_who
+      (
+        `id`,
+        `user`,
+        `device`,
+        `host`,
+        `time`,
+        `able`,
+        `del`,
+        `create_time`,
+        `update_time`
+      )
+    VALUES
+    <foreach collection="entities" item="entity" separator=",">
+      (
+      #{entity.id},
+      #{entity.user},
+      #{entity.device},
+      #{entity.host},
+      #{entity.time},
+      #{entity.able},
+      #{entity.del},
+      #{entity.createTime},
+      #{entity.updateTime}
+      )
+    </foreach>
+  </insert>
+
   <!--通过主键修改数据-->
   <update id="updateById">
     UPDATE host_who

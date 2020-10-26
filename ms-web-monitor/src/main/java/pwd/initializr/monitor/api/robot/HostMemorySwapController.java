@@ -38,7 +38,7 @@ import pwd.initializr.monitor.business.bo.HostMemoryMemorySwapBO;
   description = "[列表查询，详情查询，启/禁用，删除，新增，修改]"
 )
 @RestController(value = "HostSwap")
-@RequestMapping(value = "/api/robot/swap")
+@RequestMapping(value = "/api/robot/memory/swap")
 @Slf4j
 public class HostMemorySwapController extends pwd.initializr.common.web.api.admin.AdminController implements
     HostMemorySwapApi {
