@@ -56,8 +56,8 @@ import pwd.initializr.generator.util.VariableName;
 @Slf4j
 public class GeneratorController extends AdminController {
 
-    @Value("${project.genetator.storage}")
-    private String projectGenetatorStorage;
+    @Value("${project.generator.storage}")
+    private String projectGeneratorStorage;
 
     @ApiOperation(value = "工程代码生成")
     @PostMapping(value = {
@@ -65,7 +65,7 @@ public class GeneratorController extends AdminController {
     public void generate(@RequestBody @NotNull(message = "参数不能为空") GeneratorInput input) {
         ProjectBO projectBO = new ProjectBO();
         BeanUtils.copyProperties(input, projectBO);
-        projectBO.setExportDir(projectGenetatorStorage);
+        projectBO.setExportDir(projectGeneratorStorage);
         projectBO.setProjectPort(80);
         ArchitectureBoot architectureBoot = new ArchitectureBoot();
         architectureBoot.generateProjectArchitecture(projectBO);
@@ -103,8 +103,8 @@ public class GeneratorController extends AdminController {
         }
 
         try {
-            ZipUtil.zip(projectGenetatorStorage + File.separator + projectBO.getProjectName(),
-                projectGenetatorStorage + File.separator + projectBO.getProjectName() + ".zip");
+            ZipUtil.zip(projectGeneratorStorage + File.separator + projectBO.getProjectName(),
+                projectGeneratorStorage + File.separator + projectBO.getProjectName() + ".zip");
         } catch (IOException e) {
             e.printStackTrace();
             outputException(500);
@@ -132,7 +132,7 @@ public class GeneratorController extends AdminController {
         try (OutputStream outputStream = response.getOutputStream();
             BufferedInputStream bufferedInputStream = new BufferedInputStream(
                 new FileInputStream(new File(
-                    projectGenetatorStorage + File.separator + fileName)))) {
+                    projectGeneratorStorage + File.separator + fileName)))) {
             byte[] buff = new byte[1024 * 512];
             int len = 0;
             while ((len = bufferedInputStream.read(buff)) != -1) {

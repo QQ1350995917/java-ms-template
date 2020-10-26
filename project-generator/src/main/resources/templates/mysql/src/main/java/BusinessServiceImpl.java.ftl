@@ -61,6 +61,47 @@ public class ${className}ServiceImpl implements ${className}Service {
   }
 
   @Override
+  public void insert(List<${className}BO> bos) {
+    LinkedList<${className}Entity> ${className}Entities = new LinkedList<>();
+    for (${className}BO bo : bos) {
+      ${className}Entity entity = new ${className}Entity();
+      BeanUtils.copyProperties(bo, entity);
+      entity.setAble(EntityAble.DISABLE.getNumber());
+      entity.setDel(EntityDel.NO.getNumber());
+      entity.setCreateTime(new Date());
+      entity.setUpdateTime(new Date());
+      ${className}Entities.add(entity);
+    }
+    this.dao.insertByBatch(${className}Entities);
+  }
+
+  @Override
+  public void insertOrReplace(${className}BO bo) {
+    ${className}Entity entity = new ${className}Entity();
+    BeanUtils.copyProperties(bo, entity);
+    entity.setAble(EntityAble.DISABLE.getNumber());
+    entity.setDel(EntityDel.NO.getNumber());
+    entity.setCreateTime(new Date());
+    entity.setUpdateTime(new Date());
+    this.dao.insertOrReplace(entity);
+  }
+
+  @Override
+  public void insertOrReplace(List<${className}BO> bos) {
+    LinkedList<${className}Entity> ${className}Entities = new LinkedList<>();
+    for (${className}BO bo : bos) {
+      ${className}Entity entity = new ${className}Entity();
+      BeanUtils.copyProperties(bo, entity);
+      entity.setAble(EntityAble.DISABLE.getNumber());
+      entity.setDel(EntityDel.NO.getNumber());
+      entity.setCreateTime(new Date());
+      entity.setUpdateTime(new Date());
+      ${className}Entities.add(entity);
+    }
+    this.dao.insertOrReplaceByBatch(${className}Entities);
+  }
+
+  @Override
   public PageableQueryResult<${className}BO> queryAllByCondition(LinkedHashSet<ScopeBO> scopes,
     LinkedHashSet<SortBO> sorts, Long pageIndex, Long pageSize) {
     PageableQueryResult<${className}BO> result = new PageableQueryResult<>();

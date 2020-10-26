@@ -2,6 +2,7 @@ package ${projectPackage}.api;
 
 import io.swagger.annotations.Api;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -119,7 +120,39 @@ public class ${className}Controller extends pwd.initializr.common.web.api.admin.
   }
 
   @Override
-  public void updateUser(@Valid @NotNull(message = "参数不能为空") Long id,
+  public void create(@Valid @NotNull(message = "参数不能为空") List<${className}Input> input) {
+    LinkedList<${className}BO> ${className}BOS = new LinkedList<>();
+    for (${className}Input item : input) {
+      ${className}BO bo = new ${className}BO();
+      BeanUtils.copyProperties(item,bo);
+      ${className}BOS.add(bo);
+    }
+    service.insert(${className}BOS);
+    outputData(200);
+  }
+
+  @Override
+  public void createOrReplace(@Valid @NotNull(message = "参数不能为空") ${className}Input input) {
+    ${className}BO bo = new ${className}BO();
+    BeanUtils.copyProperties(input,bo);
+    service.insertOrReplace(bo);
+    outputData(200,bo.getId());
+  }
+
+  @Override
+  public void createOrReplace(@Valid @NotNull(message = "参数不能为空") List<${className}Input> input) {
+    LinkedList<${className}BO> ${className}BOS = new LinkedList<>();
+    for (${className}Input item : input) {
+      ${className}BO bo = new ${className}BO();
+      BeanUtils.copyProperties(item,bo);
+      ${className}BOS.add(bo);
+    }
+    service.insertOrReplace(${className}BOS);
+    outputData(200);
+  }
+
+  @Override
+  public void update(@Valid @NotNull(message = "参数不能为空") Long id,
   @Valid @NotNull(message = "参数不能为空") ${className}Input input) {
     ${className}BO bo = new ${className}BO();
     BeanUtils.copyProperties(input,bo);

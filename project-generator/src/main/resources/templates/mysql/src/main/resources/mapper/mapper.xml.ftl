@@ -87,6 +87,94 @@
       )
   </insert>
 
+  <!--新增所有列（批量新增）-->
+  <insert id="insertByBatch" keyProperty="id" useGeneratedKeys="true">
+    INSERT INTO ${tableName}
+    (
+  <#if columns?exists>
+    <#list columns as column>
+      <#if column_index == (columns?size -1)>
+        `${column.jdbcName}`
+      <#else>
+        `${column.jdbcName}`,
+      </#if>
+    </#list>
+  </#if>
+    )
+    VALUES
+    <foreach collection="entities" item="entity" separator=",">
+    (
+  <#if columns?exists>
+    <#list columns as column>
+      <#if column_index == (columns?size -1)>
+        <#noparse>#{</#noparse>entity.${column.javaName}<#noparse>}</#noparse>
+      <#else>
+        <#noparse>#{</#noparse>entity.${column.javaName}<#noparse>}</#noparse>,
+      </#if>
+    </#list>
+  </#if>
+    )
+    </foreach>
+  </insert>
+
+  <!--新增或者替换所有列-->
+  <insert id="insertOrReplace" keyProperty="id" useGeneratedKeys="true">
+    REPLACE INTO ${tableName}
+    (
+  <#if columns?exists>
+    <#list columns as column>
+      <#if column_index == (columns?size -1)>
+        `${column.jdbcName}`
+      <#else>
+        `${column.jdbcName}`,
+      </#if>
+    </#list>
+  </#if>
+    )
+    VALUES
+    (
+  <#if columns?exists>
+    <#list columns as column>
+      <#if column_index == (columns?size -1)>
+        <#noparse>#{</#noparse>entity.${column.javaName}<#noparse>}</#noparse>
+      <#else>
+        <#noparse>#{</#noparse>entity.${column.javaName}<#noparse>}</#noparse>,
+      </#if>
+    </#list>
+  </#if>
+    )
+  </insert>
+
+  <!--新增或者替换所有列（批量新增或者替换）-->
+  <insert id="insertOrReplaceByBatch" keyProperty="id" useGeneratedKeys="true">
+    REPLACE INTO ${tableName}
+    (
+  <#if columns?exists>
+    <#list columns as column>
+      <#if column_index == (columns?size -1)>
+        `${column.jdbcName}`
+      <#else>
+        `${column.jdbcName}`,
+      </#if>
+    </#list>
+  </#if>
+    )
+    VALUES
+    <foreach collection="entities" item="entity" separator=",">
+      (
+  <#if columns?exists>
+    <#list columns as column>
+      <#if column_index == (columns?size -1)>
+        <#noparse>#{</#noparse>entity.${column.javaName}<#noparse>}</#noparse>
+      <#else>
+        <#noparse>#{</#noparse>entity.${column.javaName}<#noparse>}</#noparse>,
+      </#if>
+    </#list>
+  </#if>
+      )
+    </foreach>
+  </insert>
+
   <!--通过主键修改数据-->
   <update id="updateById">
     UPDATE ${tableName}

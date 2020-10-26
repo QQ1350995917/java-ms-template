@@ -76,6 +76,39 @@ public interface ${className}Service {
   void insert(${className}BO bo);
 
   /**
+   * <h2>新增数据（批量操作）</h2>
+   * date ${projectCreateDate}
+   *
+   * @param bos 业务对象
+   * @return java.lang.Integer 影响行数
+   * @author Automatic[www.dingpengwei@foxmail.com]
+   * @since ${projectCreateDate}
+   */
+  void insert(List<${className}BO> bos);
+
+  /**
+   * <h2>新增或者替换数据</h2>
+   * date ${projectCreateDate}
+   *
+   * @param bo 业务对象
+   * @return java.lang.Integer 影响行数
+   * @author Automatic[www.dingpengwei@foxmail.com]
+   * @since ${projectCreateDate}
+   */
+  void insertOrReplace(${className}BO bo);
+
+  /**
+   * <h2>新增或者替换数据（批量操作）</h2>
+   * date ${projectCreateDate}
+   *
+   * @param bos 业务对象
+   * @return java.lang.Integer 影响行数
+   * @author Automatic[www.dingpengwei@foxmail.com]
+   * @since ${projectCreateDate}
+   */
+  void insertOrReplace(List<${className}BO> bos);
+
+  /**
    * <h2>根据条件查询多条数据</h2>
    * date ${projectCreateDate}
    *

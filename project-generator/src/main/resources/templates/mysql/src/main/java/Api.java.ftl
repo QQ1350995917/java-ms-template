@@ -3,12 +3,14 @@ package ${projectPackage}.api;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import java.util.List;
 import java.util.Set;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -162,6 +164,45 @@ public interface ${className}Api {
   void create(@RequestBody @Valid @NotNull(message = "参数不能为空") ${className}Input input);
 
   /**
+   * <h2>新增（批量）</h2>
+   * date ${projectCreateDate}
+   *
+   * @param input 请求参数
+   * @return void
+   * @author Automatic[www.dingpengwei@foxmail.com]
+   * @since ${projectVersion}
+   */
+  @ApiOperation(value = "新增（批量）")
+  @PostMapping(value = {"/batch"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  void create(@RequestBody @Valid @NotNull(message = "参数不能为空") List<${className}Input> input);
+
+  /**
+   * <h2>新增或替换</h2>
+   * date ${projectCreateDate}
+   *
+   * @param input 请求参数
+   * @return void
+   * @author Automatic[www.dingpengwei@foxmail.com]
+   * @since ${projectVersion}
+   */
+  @ApiOperation(value = "新增或替换")
+  @PutMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  void createOrReplace(@RequestBody @Valid @NotNull(message = "参数不能为空") ${className}Input input);
+
+  /**
+   * <h2>新增或替换（批量）</h2>
+   * date ${projectCreateDate}
+   *
+   * @param input 请求参数
+   * @return void
+   * @author Automatic[www.dingpengwei@foxmail.com]
+   * @since ${projectVersion}
+   */
+  @ApiOperation(value = "新增或替换（批量）")
+  @PutMapping(value = {"/batch"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  void createOrReplace(@RequestBody @Valid @NotNull(message = "参数不能为空") List<${className}Input> input);
+
+  /**
    * <h2>更新</h2>
    * date ${projectCreateDate}
    *
@@ -171,8 +212,8 @@ public interface ${className}Api {
    * @since ${projectVersion}
    */
   @ApiOperation(value = "更新")
-  @PutMapping(value = {"/{id}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  void updateUser(@PathVariable("id") @Valid @NotNull(message = "参数不能为空") Long id,
+  @PatchMapping(value = {"/{id}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  void update(@PathVariable("id") @Valid @NotNull(message = "参数不能为空") Long id,
     @RequestBody @Valid @NotNull(message = "参数不能为空") ${className}Input input);
 
 }

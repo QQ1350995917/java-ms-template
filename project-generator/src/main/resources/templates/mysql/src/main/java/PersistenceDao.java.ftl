@@ -87,6 +87,39 @@ public interface ${className}Dao {
   Integer insert(@Param("entity") ${className}Entity entity);
 
   /**
+   * <h2>新增数据（批量新增）</h2>
+   * date ${projectCreateDate}
+   *
+   * @param entities 实例对象
+   * @return java.lang.Integer 影响行数
+   * @author Automatic[www.dingpengwei@foxmail.com]
+   * @since ${projectVersion}
+   */
+  Integer insertByBatch(@Param("entities") List<${className}Entity> entities);
+
+  /**
+   * <h2>新增或者替换数据</h2>
+   * date ${projectCreateDate}
+   *
+   * @param entity 实例对象
+   * @return java.lang.Integer 影响行数
+   * @author Automatic[www.dingpengwei@foxmail.com]
+   * @since ${projectVersion}
+   */
+  Integer insertOrReplace(@Param("entity") ${className}Entity entity);
+
+  /**
+   * <h2>新增或者替换数据（批量新增或者替换）</h2>
+   * date ${projectCreateDate}
+   *
+   * @param entities 实例对象
+   * @return java.lang.Integer 影响行数
+   * @author Automatic[www.dingpengwei@foxmail.com]
+   * @since ${projectVersion}
+   */
+  Integer insertOrReplaceByBatch(@Param("entities") List<${className}Entity> entities);
+
+  /**
    * <h2>在指定的条件下查询数据</h2>
    * date ${projectCreateDate}
    *
