@@ -19,24 +19,24 @@ public class ShellOnLinux extends ShellDefault {
   String[] command = {"/bin/sh", "-c"};
 
   @Override
-  String[] getCommandArray() {
+  protected String[] getCommandArray() {
     String[] linuxCommandArray = getLinuxCommandArray();
     return ArrayUtils.addAll(command,linuxCommandArray);
   }
 
   @Override
-  String[] getCommandForResultArray() {
+  protected String[] getCommandForResultArray() {
     String[] linuxCommandForResultArray = getLinuxCommandForResultArray();
     return ArrayUtils.addAll(command,linuxCommandForResultArray);
   }
 
 
 
-  String[] getLinuxCommandArray(){
+  protected String[] getLinuxCommandArray(){
     return new String[]{"date"};
   }
 
-  String[] getLinuxCommandForResultArray(){
+  protected String[] getLinuxCommandForResultArray(){
     return new String[]{"date"};
   }
 

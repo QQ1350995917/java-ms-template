@@ -17,22 +17,22 @@ public class ShellOnWindows extends ShellDefault {
     String[] command = { "cmd", "/c"};
 
   @Override
-  String[] getCommandArray() {
+  protected String[] getCommandArray() {
     String[] linuxCommandArray = getWindowsCommandArray();
     return ArrayUtils.addAll(command,linuxCommandArray);
   }
 
   @Override
-  String[] getCommandForResultArray() {
+  protected String[] getCommandForResultArray() {
     String[] linuxCommandForResultArray = getWindowsCommandForResultArray();
     return ArrayUtils.addAll(command,linuxCommandForResultArray);
   }
 
-  String[] getWindowsCommandArray(){
+  protected String[] getWindowsCommandArray(){
    return new String[]{"date"};
   }
 
-  String[] getWindowsCommandForResultArray(){
+  protected String[] getWindowsCommandForResultArray(){
     return new String[]{"date"};
   }
 }
