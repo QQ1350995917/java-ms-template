@@ -95,7 +95,6 @@ public abstract class ShellDefault implements Shell {
         }
     }
 
-
     abstract String[] getCommandArray();
 
     abstract String[] getCommandForResultArray();

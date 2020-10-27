@@ -1,5 +1,7 @@
 package pwd.initializr.common.shell;
 
+import pwd.initializr.common.utils.ArrayUtils;
+
 /**
  * pwd.initializr.common.shell@ms-web-initializr
  *
@@ -12,10 +14,25 @@ package pwd.initializr.common.shell;
  * @since DistributionVersion
  */
 public class ShellOnWindows extends ShellDefault {
+    String[] command = { "cmd", "/c"};
 
   @Override
   String[] getCommandArray() {
-    String[] command = { "cmd", "/c", "" };
-    return new String[0];
+    String[] linuxCommandArray = getWindowsCommandArray();
+    return ArrayUtils.addAll(command,linuxCommandArray);
+  }
+
+  @Override
+  String[] getCommandForResultArray() {
+    String[] linuxCommandForResultArray = getWindowsCommandForResultArray();
+    return ArrayUtils.addAll(command,linuxCommandForResultArray);
+  }
+
+  String[] getWindowsCommandArray(){
+   return new String[]{"date"};
+  }
+
+  String[] getWindowsCommandForResultArray(){
+    return new String[]{"date"};
   }
 }

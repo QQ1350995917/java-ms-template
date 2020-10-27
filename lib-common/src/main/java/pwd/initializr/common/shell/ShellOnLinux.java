@@ -1,5 +1,8 @@
 package pwd.initializr.common.shell;
 
+import java.util.Arrays;
+import pwd.initializr.common.utils.ArrayUtils;
+
 /**
  * pwd.initializr.common.shell@ms-web-initializr
  *
@@ -13,15 +16,28 @@ package pwd.initializr.common.shell;
  */
 public class ShellOnLinux extends ShellDefault {
 
-  public static void main(String[] args) {
-    ShellOnLinux shellOnLinux = new ShellOnLinux();
-    shellOnLinux.exec();
-
-  }
+  String[] command = {"/bin/sh", "-c"};
 
   @Override
   String[] getCommandArray() {
-    String[] command = {"/bin/sh", "-c", "cd /Users/pwd/workspace", "ls -al",};
-    return command;
+    String[] linuxCommandArray = getLinuxCommandArray();
+    return ArrayUtils.addAll(command,linuxCommandArray);
   }
+
+  @Override
+  String[] getCommandForResultArray() {
+    String[] linuxCommandForResultArray = getLinuxCommandForResultArray();
+    return ArrayUtils.addAll(command,linuxCommandForResultArray);
+  }
+
+
+
+  String[] getLinuxCommandArray(){
+    return new String[]{"date"};
+  }
+
+  String[] getLinuxCommandForResultArray(){
+    return new String[]{"date"};
+  }
+
 }

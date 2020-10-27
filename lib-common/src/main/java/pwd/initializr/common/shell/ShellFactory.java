@@ -1,5 +1,7 @@
 package pwd.initializr.common.shell;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * pwd.initializr.common.shell@ms-web-initializr
  *
@@ -13,4 +15,20 @@ package pwd.initializr.common.shell;
  */
 public class ShellFactory {
 
+    public static Shell getShell() {
+        String property = System.getProperty("os.name");
+        if (StringUtils.isBlank(property)) {
+            return null;
+        }
+        if (property.equalsIgnoreCase("linux")) {
+            return new ShellOnLinux();
+        }
+        if (property.equalsIgnoreCase("windows")) {
+            return new ShellOnWindows();
+        }
+        if (property.equalsIgnoreCase("mac")) {
+            return new ShellOnMacOS();
+        }
+        return null;
+    }
 }
