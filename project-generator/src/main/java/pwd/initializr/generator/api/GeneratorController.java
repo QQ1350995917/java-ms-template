@@ -21,9 +21,12 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import pwd.initializr.common.utils.DateTimeUtil;
 import pwd.initializr.common.utils.ZipUtil;
 import pwd.initializr.common.web.api.admin.AdminController;
 import pwd.initializr.generator.api.vo.GeneratorInput;
@@ -60,8 +63,7 @@ public class GeneratorController extends AdminController {
     private String projectGeneratorStorage;
 
     @ApiOperation(value = "工程代码生成")
-    @PostMapping(value = {
-        ""}, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public void generate(@RequestBody @NotNull(message = "参数不能为空") GeneratorInput input) {
         ProjectBO projectBO = new ProjectBO();
         BeanUtils.copyProperties(input, projectBO);
@@ -102,47 +104,29 @@ public class GeneratorController extends AdminController {
             return;
         }
 
+        String sourceDir = projectGeneratorStorage + File.separator + projectBO.getProjectName();
+        String fileName = projectBO.getProjectName() + "-" + DateTimeUtil.getCurrent("yyyyMMddHHmmssSSS");
+        String fullFileName = fileName + ".zip";
+        String targetFile = projectGeneratorStorage + File.separator + fullFileName;
         try {
-            ZipUtil.zip(projectGeneratorStorage + File.separator + projectBO.getProjectName(),
-                projectGeneratorStorage + File.separator + projectBO.getProjectName() + ".zip");
+            ZipUtil.zip(sourceDir, targetFile);
         } catch (IOException e) {
             e.printStackTrace();
             outputException(500);
             return;
         }
+        outputData(200,fileName);
+    }
 
-        String contentType = "application/x-zip-compressed";
-        HttpServletResponse response = getResponse();
-        String type = new MimetypesFileTypeMap().getContentType(contentType);
-        response.setCharacterEncoding("utf-8");
-        response.setHeader("Content-type", type);
-        response.setContentType(contentType);
-        String fileName = projectBO.getProjectName() + ".zip";
+    @ApiOperation(value = "工程代码下载")
+    @GetMapping(value = {"/{filename}"})
+    public void download(@PathVariable("filename") @NotNull(message = "参数不能为空") String filename) {
+        File file = new File(filename + ".zip");
         try {
-            response.setHeader("title", fileName);
-//            response.setHeader("Content-Disposition",
-//                "inline;filename=" + URLEncoder.encode(fileName, "UTF-8"));
-            response.setHeader("Content-Disposition",
-                "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));
-        } catch (UnsupportedEncodingException e) {
+            this.outputAttachmentFile(file);
+        } catch (Exception e) {
             e.printStackTrace();
             outputException(500);
-            return;
-        }
-        try (OutputStream outputStream = response.getOutputStream();
-            BufferedInputStream bufferedInputStream = new BufferedInputStream(
-                new FileInputStream(new File(
-                    projectGeneratorStorage + File.separator + fileName)))) {
-            byte[] buff = new byte[1024 * 512];
-            int len = 0;
-            while ((len = bufferedInputStream.read(buff)) != -1) {
-                outputStream.write(buff, 0, len);
-                outputStream.flush();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            outputException(500);
-            return;
         }
     }
 }

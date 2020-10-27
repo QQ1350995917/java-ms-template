@@ -18,9 +18,20 @@ import java.util.Date;
 public class DateTimeUtil {
 
   private static final String solt = "0";
-  public static DateFormat FORMAT_0 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+  public static DateFormat yyyy_MM_dd0HH1mm1ss = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+  public static DateFormat yyyy_MM_dd0HH1mm1ss0SSS = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS");
+  public static DateFormat yyyyMMddHHmmss = new SimpleDateFormat("yyyyMMddHHmmss");
+  public static DateFormat yyyyMMddHHmmssSSS = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+  public static DateFormat yyyy_MM_dd_HH_mm_ss = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
+  public static DateFormat yyyy_MM_dd_HH_mm_ss_SSS = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS");
 
   public DateTimeUtil() {
+
+  }
+
+  public static String getCurrent(String formater) {
+    DateFormat dateFormat = new SimpleDateFormat(formater);
+    return dateFormat.format(new Date());
   }
 
   public static String date2Str(Date date) {
@@ -41,18 +52,5 @@ public class DateTimeUtil {
     }
 
     return Long.valueOf(Long.parseLong(time.append(random).toString()));
-  }
-
-  public static String getCurrentDateTime() {
-    return FORMAT_0.format(new Date());
-  }
-
-  public static String getCurrentDateTime(DateFormat dateFormat) {
-    return dateFormat.format(new Date());
-  }
-
-  public static String getCurrentDateTime(String formatter) {
-    DateFormat format = new SimpleDateFormat(formatter);
-    return format.format(new Date());
   }
 }

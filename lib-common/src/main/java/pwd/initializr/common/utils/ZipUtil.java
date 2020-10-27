@@ -96,6 +96,12 @@ public class ZipUtil {
         if (sourceFile == null || !sourceFile.exists()) {
             throw new RuntimeException(new FileNotFoundException(sourceFile.getAbsolutePath()));
         }
+
+        File parentFile = targetFile.getParentFile();
+        if (!parentFile.exists()) {
+            parentFile.mkdirs();
+        }
+
         try (ZipOutputStream zipOutputStream = new ZipOutputStream(new FileOutputStream(targetFile))) {
             if (sourceFile.isDirectory()) {
                 directory(zipOutputStream, sourceFile, "");

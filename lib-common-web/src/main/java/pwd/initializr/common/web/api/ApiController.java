@@ -139,31 +139,54 @@ public class ApiController {
     this.finalOutput(JSON.toJSONString(objectOutput));
   }
 
-  public void outputFile(File file){
-    this.outputFile(file,1024 * 1024);
+  protected void outputAttachmentFile(File file){
+    String contentType = new MimetypesFileTypeMap().getContentType(file);
+    this.outputAttachmentFile(file,contentType);
   }
 
-  public void outputFile(File file,int buffBytes){
+  protected void outputAttachmentFile(File file,String contentType){
     String fileName = file.getName();
     String fileSuffix = "";
-    this.outputFile(file,fileName,fileSuffix,1024 * 1024);
+    this.outputAttachmentFile(file,contentType,fileName,fileSuffix);
   }
 
-  public void outputFile(File file,String fileName,String fileSuffix){
-    this.outputFile(file,fileName,fileSuffix,1024 * 1024);
+  protected void outputAttachmentFile(File file,String contentType,String fileName,String fileSuffix){
+    this.outputAttachmentFile(file,contentType,fileName,fileSuffix,1024 * 1024);
   }
 
-  public void outputFile(File file,String fileName,String fileSuffix,int buffBytes){
+  protected void outputAttachmentFile(File file,String contentType,String fileName,String fileSuffix,int buffBytes){
+    this.outputFile("attachment",file,contentType,fileName,fileSuffix,buffBytes);
+  }
+
+  protected void outputInlineFile(File file){
+    String contentType = new MimetypesFileTypeMap().getContentType(file);
+    this.outputInlineFile(file,contentType);
+  }
+
+  protected void outputInlineFile(File file,String contentType){
+    String fileName = file.getName();
+    String fileSuffix = "";
+    this.outputInlineFile(file,contentType,fileName,fileSuffix);
+  }
+
+  protected void outputInlineFile(File file,String contentType,String fileName,String fileSuffix){
+    this.outputInlineFile(file,contentType,fileName,fileSuffix,1024 * 1024);
+  }
+
+  protected void outputInlineFile(File file,String contentType,String fileName,String fileSuffix,int buffBytes){
+    this.outputFile("inline",file,contentType,fileName,fileSuffix,buffBytes);
+  }
+
+  protected void outputFile(String model,File file,String contentType,String fileName,String fileSuffix,int buffBytes){
     HttpServletResponse response = getResponse();
     try (OutputStream outputStream = response.getOutputStream();
       BufferedInputStream bufferedInputStream = new BufferedInputStream(new FileInputStream(file))) {
-      String type = new MimetypesFileTypeMap().getContentType(file);
       response.setCharacterEncoding("utf-8");
-      response.setHeader("Content-type", type);
-      response.setContentType(type);
+      response.setHeader("Content-type", contentType);
+      response.setContentType(contentType);
       response.setHeader("title", fileName);
       String encode = URLEncoder.encode(String.join(".",fileName , fileSuffix),"UTF-8");
-      response.setHeader("Content-Disposition", "inline;filename=" + encode);
+      response.setHeader("Content-Disposition", model + ";filename=" + encode);
       if (buffBytes < 1) {
         buffBytes = 1024 * 1024;
       }
