@@ -2,7 +2,13 @@ package pwd.initializr.common.web.api;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.net.URLEncoder;
+import javax.activation.MimetypesFileTypeMap;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -131,6 +137,45 @@ public class ApiController {
   public <T> void outputData(Meta meta) {
     Output<Object> objectOutput = new Output<>(meta, null);
     this.finalOutput(JSON.toJSONString(objectOutput));
+  }
+
+  public void outputFile(File file){
+    this.outputFile(file,1024 * 1024);
+  }
+
+  public void outputFile(File file,int buffBytes){
+    String fileName = file.getName();
+    String fileSuffix = "";
+    this.outputFile(file,fileName,fileSuffix,1024 * 1024);
+  }
+
+  public void outputFile(File file,String fileName,String fileSuffix){
+    this.outputFile(file,fileName,fileSuffix,1024 * 1024);
+  }
+
+  public void outputFile(File file,String fileName,String fileSuffix,int buffBytes){
+    HttpServletResponse response = getResponse();
+    try (OutputStream outputStream = response.getOutputStream();
+      BufferedInputStream bufferedInputStream = new BufferedInputStream(new FileInputStream(file))) {
+      String type = new MimetypesFileTypeMap().getContentType(file);
+      response.setCharacterEncoding("utf-8");
+      response.setHeader("Content-type", type);
+      response.setContentType(type);
+      response.setHeader("title", fileName);
+      String encode = URLEncoder.encode(String.join(".",fileName , fileSuffix),"UTF-8");
+      response.setHeader("Content-Disposition", "inline;filename=" + encode);
+      if (buffBytes < 1) {
+        buffBytes = 1024 * 1024;
+      }
+      byte[] buff = new byte[buffBytes];
+      int len;
+      while ((len = bufferedInputStream.read(buff)) != -1) {
+        outputStream.write(buff, 0, len);
+        outputStream.flush();
+      }
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
   }
 
   public <T> void outputData(T t) {
