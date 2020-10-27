@@ -1,5 +1,12 @@
 package pwd.initializr.common.shell;
 
+import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
 /**
  * pwd.initializr.common.shell@ms-web-initializr
  *
@@ -13,6 +20,24 @@ package pwd.initializr.common.shell;
  */
 public interface Shell {
 
-  void exec();
+    void exec();
 
+    void exec(String[] commands);
+
+    ShellResult execForResult();
+
+    ShellResult execForResult(String[] commands);
+
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Getter
+    @Setter
+    @ToString
+    class ShellResult {
+
+        private int exitValue;
+        private String exitMessage;
+        private List<String> lines;
+        private List<String> errors;
+    }
 }
