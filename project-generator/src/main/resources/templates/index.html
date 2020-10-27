@@ -123,7 +123,7 @@
             </template>
           </el-card>
         </div>
-        <el-button type="primary" class="submit" @click="onCodeGenerator">提交</el-button>
+        <el-button type="primary" class="submit" @click="onCodeClick">{{tagName}}</el-button>
       </el-col>
     </el-row>
   </el-main>
@@ -156,7 +156,9 @@
         databaseUser: 'root',
         databasePwd: 'root',
         checkAll: false,
-        isIndeterminate: true
+        isIndeterminate: true,
+        tagName: '提交',
+        filename: ''
       };
     },
     methods: {
@@ -185,6 +187,13 @@
               }
             });
       },
+      onCodeClick(){
+        if (this.filename === '') {
+          this.onCodeGenerator();
+        } else {
+          window.location.href = '/api/admin/generator/' + this.filename;
+        }
+      },
       onCodeGenerator() {
         this.$http.post(
             '/api/admin/generator', {
@@ -208,9 +217,31 @@
               var body = res.body;
               var meta = body.meta;
               var code = meta.code;
-              var data = body.data;
-              this.tableOptions = data.tables;
-              this.tables = data.tables;
+              this.tagName = '下载';
+              this.filename = body.data;
+
+            }, function (e) {
+              var body = e.body;
+              var meta = body.meta;
+              var code = meta.code;
+              if (code == 400) {
+                this.$message.error('参数错误');
+              } else if (code == 500) {
+                this.$message.error('服务异常');
+              } else {
+                this.$message.error('未知异常');
+              }
+            });
+      },
+      onCodeDownload() {
+
+        this.$http.get('/api/admin/generator/' + this.filename).then(
+            function (res) {
+              var body = res.body;
+
+
+
+
             }, function (e) {
               var body = e.body;
               var meta = body.meta;

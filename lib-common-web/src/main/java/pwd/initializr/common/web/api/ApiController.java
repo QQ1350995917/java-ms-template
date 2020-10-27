@@ -185,7 +185,8 @@ public class ApiController {
       response.setHeader("Content-type", contentType);
       response.setContentType(contentType);
       response.setHeader("title", fileName);
-      String encode = URLEncoder.encode(String.join(".",fileName , fileSuffix),"UTF-8");
+      String fullName = StringUtils.isBlank(fileSuffix) ? fileName : String.join(".",fileName,fileSuffix);
+      String encode = URLEncoder.encode(fullName,"UTF-8");
       response.setHeader("Content-Disposition", model + ";filename=" + encode);
       if (buffBytes < 1) {
         buffBytes = 1024 * 1024;
