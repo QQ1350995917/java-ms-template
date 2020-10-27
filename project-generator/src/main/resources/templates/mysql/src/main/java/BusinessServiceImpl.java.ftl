@@ -2,6 +2,7 @@ package ${projectPackage}.business;
 
 import java.util.Date;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import javax.annotation.Resource;
@@ -62,7 +63,7 @@ public class ${className}ServiceImpl implements ${className}Service {
 
   @Override
   public void insert(List<${className}BO> bos) {
-    LinkedList<${className}Entity> ${className}Entities = new LinkedList<>();
+    LinkedList<${className}Entity> entities = new LinkedList<>();
     for (${className}BO bo : bos) {
       ${className}Entity entity = new ${className}Entity();
       BeanUtils.copyProperties(bo, entity);
@@ -70,9 +71,9 @@ public class ${className}ServiceImpl implements ${className}Service {
       entity.setDel(EntityDel.NO.getNumber());
       entity.setCreateTime(new Date());
       entity.setUpdateTime(new Date());
-      ${className}Entities.add(entity);
+      entities.add(entity);
     }
-    this.dao.insertByBatch(${className}Entities);
+    this.dao.insertByBatch(entities);
   }
 
   @Override
@@ -88,7 +89,7 @@ public class ${className}ServiceImpl implements ${className}Service {
 
   @Override
   public void insertOrReplace(List<${className}BO> bos) {
-    LinkedList<${className}Entity> ${className}Entities = new LinkedList<>();
+    LinkedList<${className}Entity> entities = new LinkedList<>();
     for (${className}BO bo : bos) {
       ${className}Entity entity = new ${className}Entity();
       BeanUtils.copyProperties(bo, entity);
@@ -96,9 +97,9 @@ public class ${className}ServiceImpl implements ${className}Service {
       entity.setDel(EntityDel.NO.getNumber());
       entity.setCreateTime(new Date());
       entity.setUpdateTime(new Date());
-      ${className}Entities.add(entity);
+      entities.add(entity);
     }
-    this.dao.insertOrReplaceByBatch(${className}Entities);
+    this.dao.insertOrReplaceByBatch(entities);
   }
 
   @Override

@@ -2,6 +2,7 @@ package ${projectPackage}.api;
 
 import io.swagger.annotations.Api;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import javax.validation.Valid;
@@ -121,13 +122,13 @@ public class ${className}Controller extends pwd.initializr.common.web.api.admin.
 
   @Override
   public void create(@Valid @NotNull(message = "参数不能为空") List<${className}Input> input) {
-    LinkedList<${className}BO> ${className}BOS = new LinkedList<>();
+    LinkedList<${className}BO> bos = new LinkedList<>();
     for (${className}Input item : input) {
       ${className}BO bo = new ${className}BO();
       BeanUtils.copyProperties(item,bo);
-      ${className}BOS.add(bo);
+      bos.add(bo);
     }
-    service.insert(${className}BOS);
+    service.insert(bos);
     outputData(200);
   }
 
@@ -141,13 +142,13 @@ public class ${className}Controller extends pwd.initializr.common.web.api.admin.
 
   @Override
   public void createOrReplace(@Valid @NotNull(message = "参数不能为空") List<${className}Input> input) {
-    LinkedList<${className}BO> ${className}BOS = new LinkedList<>();
+    LinkedList<${className}BO> bos = new LinkedList<>();
     for (${className}Input item : input) {
       ${className}BO bo = new ${className}BO();
       BeanUtils.copyProperties(item,bo);
-      ${className}BOS.add(bo);
+      bos.add(bo);
     }
-    service.insertOrReplace(${className}BOS);
+    service.insertOrReplace(bos);
     outputData(200);
   }
 
