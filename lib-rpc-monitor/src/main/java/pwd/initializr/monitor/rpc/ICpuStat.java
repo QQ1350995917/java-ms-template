@@ -1,6 +1,7 @@
 package pwd.initializr.monitor.rpc;
 
-import java.util.List;
+import java.io.Serializable;
+import java.util.LinkedList;
 
 /**
  * pwd.initializr.monitor.rpc@ms-web-initializr
@@ -13,7 +14,15 @@ import java.util.List;
  * @version 1.0.0
  * @since DistributionVersion
  */
-public interface ICpuStat {
+public interface ICpuStat extends Serializable {
+
+    /**
+     * CPU总体状态
+     */
     ICpuCoreStat getCpuStat();
-    List<ICpuCoreStat> getCpuCoreStat();
+
+    /**
+     * CPU各内核状态
+     */
+    LinkedList<ICpuCoreStat> getCpuCoreStat();
 }

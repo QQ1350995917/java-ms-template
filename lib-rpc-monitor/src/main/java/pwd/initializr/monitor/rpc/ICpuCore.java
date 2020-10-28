@@ -1,5 +1,7 @@
 package pwd.initializr.monitor.rpc;
 
+import java.io.Serializable;
+
 /**
  * pwd.initializr.monitor.rpc@ms-web-initializr
  *
@@ -11,7 +13,7 @@ package pwd.initializr.monitor.rpc;
  * @version 1.0.0
  * @since DistributionVersion
  */
-public interface ICpuCore {
+public interface ICpuCore extends Serializable {
 
     String getProcessor();
 
@@ -21,7 +23,7 @@ public interface ICpuCore {
 
     String getModel();
 
-    String getModelMame();
+    String getModelName();
 
     String getStepping();
 

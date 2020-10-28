@@ -100,7 +100,7 @@ public abstract class ShellDefault implements Shell {
     protected abstract String[] getCommandForResultArray();
 
     protected int getTimeout() {
-        return 3;
+        return 1;
     }
 
     protected TimeUnit getTimeoutUnit() {

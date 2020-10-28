@@ -1,5 +1,7 @@
 package pwd.initializr.monitor.rpc;
 
+import java.io.Serializable;
+
 /**
  * pwd.initializr.monitor.rpc@ms-web-initializr
  *
@@ -11,7 +13,7 @@ package pwd.initializr.monitor.rpc;
  * @version 1.0.0
  * @since DistributionVersion
  */
-public interface ICpuCoreStat {
+public interface ICpuCoreStat extends Serializable {
 
     /**
      * 用户态时间（单位：jiffies）

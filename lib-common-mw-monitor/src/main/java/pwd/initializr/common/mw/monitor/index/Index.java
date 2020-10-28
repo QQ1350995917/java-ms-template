@@ -1,9 +1,21 @@
 package pwd.initializr.common.mw.monitor.index;
 
+import java.util.LinkedList;
+import java.util.List;
+import pwd.initializr.monitor.rpc.ICpuCore;
+import pwd.initializr.monitor.rpc.ICpuStat;
+import pwd.initializr.monitor.rpc.IDiskStat;
+import pwd.initializr.monitor.rpc.IEthernetStat;
+import pwd.initializr.monitor.rpc.IHost;
+import pwd.initializr.monitor.rpc.ILoadStat;
+import pwd.initializr.monitor.rpc.ILoggedStat;
+import pwd.initializr.monitor.rpc.IMemoryStat;
+
 /**
  * pwd.initializr.common.mw.monitor.index@ms-web-initializr
  *
- * <h1>TODO what you want to do?</h1>
+ * <h1>指标采集</h1>
+ * <p>https://man7.org/linux/man-pages/man5/proc.5.html</p>
  *
  * date 2020-10-27 20:43
  *
@@ -11,6 +23,22 @@ package pwd.initializr.common.mw.monitor.index;
  * @version 1.0.0
  * @since DistributionVersion
  */
-public class Index {
+public interface Index {
+
+    IHost getHost();
+
+    ILoadStat getLoadStat();
+
+    List<ILoggedStat> getLoggedStat();
+
+    List<ICpuCore> getCpuCore();
+
+    ICpuStat getCpuStat();
+
+    IMemoryStat getMemoryStat();
+
+    List<IDiskStat> getDiskStat();
+
+    List<IEthernetStat> getEthernetStat();
 
 }
