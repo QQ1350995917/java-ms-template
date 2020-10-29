@@ -1,6 +1,5 @@
 package pwd.initializr.common.mw.monitor;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.core.env.Environment;
 
@@ -53,19 +52,13 @@ public class MonitorClientConfig implements EnvironmentAware {
   private int cpuConnectTimeoutMillisecond;
   private int cpuSocketTimeoutMillisecond;
 
-  private boolean cpuCoreEnable;
-  private int cpuCoreRateSecond;
-  private String cpuCoreUrl;
-  private int cpuCoreConnectionRequestTimeoutMillisecond;
-  private int cpuCoreConnectTimeoutMillisecond;
-  private int cpuCoreSocketTimeoutMillisecond;
+  private boolean cpuStatEnable;
+  private int cpuStatRateSecond;
+  private String cpuStatUrl;
+  private int cpuStatConnectionRequestTimeoutMillisecond;
+  private int cpuStatConnectTimeoutMillisecond;
+  private int cpuStatSocketTimeoutMillisecond;
 
-  private boolean cpuCoreUsageEnable;
-  private int cpuCoreUsageRateSecond;
-  private String cpuCoreUsageUrl;
-  private int cpuCoreUsageConnectionRequestTimeoutMillisecond;
-  private int cpuCoreUsageConnectTimeoutMillisecond;
-  private int cpuCoreUsageSocketTimeoutMillisecond;
 
   private boolean diskEnable;
   private int diskRateSecond;
@@ -174,86 +167,45 @@ public class MonitorClientConfig implements EnvironmentAware {
     this.cpuConnectionRequestTimeoutMillisecond = cpuConnectionRequestTimeoutMillisecond;
   }
 
-  public int getCpuCoreConnectTimeoutMillisecond() {
-    return cpuCoreConnectTimeoutMillisecond;
+  public int getCpuStatConnectTimeoutMillisecond() {
+    return cpuStatConnectTimeoutMillisecond;
   }
 
-  public void setCpuCoreConnectTimeoutMillisecond(int cpuCoreConnectTimeoutMillisecond) {
-    this.cpuCoreConnectTimeoutMillisecond = cpuCoreConnectTimeoutMillisecond;
+  public void setCpuStatConnectTimeoutMillisecond(int cpuStatConnectTimeoutMillisecond) {
+    this.cpuStatConnectTimeoutMillisecond = cpuStatConnectTimeoutMillisecond;
   }
 
-  public int getCpuCoreConnectionRequestTimeoutMillisecond() {
-    return cpuCoreConnectionRequestTimeoutMillisecond;
+  public int getCpuStatConnectionRequestTimeoutMillisecond() {
+    return cpuStatConnectionRequestTimeoutMillisecond;
   }
 
-  public void setCpuCoreConnectionRequestTimeoutMillisecond(
-      int cpuCoreConnectionRequestTimeoutMillisecond) {
-    this.cpuCoreConnectionRequestTimeoutMillisecond = cpuCoreConnectionRequestTimeoutMillisecond;
+  public void setCpuStatConnectionRequestTimeoutMillisecond(
+      int cpuStatConnectionRequestTimeoutMillisecond) {
+    this.cpuStatConnectionRequestTimeoutMillisecond = cpuStatConnectionRequestTimeoutMillisecond;
   }
 
-  public int getCpuCoreRateSecond() {
-    return cpuCoreRateSecond;
+  public int getCpuStatRateSecond() {
+    return cpuStatRateSecond;
   }
 
-  public void setCpuCoreRateSecond(int cpuCoreRateSecond) {
-    this.cpuCoreRateSecond = cpuCoreRateSecond;
+  public void setCpuStatRateSecond(int cpuStatRateSecond) {
+    this.cpuStatRateSecond = cpuStatRateSecond;
   }
 
-  public int getCpuCoreSocketTimeoutMillisecond() {
-    return cpuCoreSocketTimeoutMillisecond;
+  public int getCpuStatSocketTimeoutMillisecond() {
+    return cpuStatSocketTimeoutMillisecond;
   }
 
-  public void setCpuCoreSocketTimeoutMillisecond(int cpuCoreSocketTimeoutMillisecond) {
-    this.cpuCoreSocketTimeoutMillisecond = cpuCoreSocketTimeoutMillisecond;
+  public void setCpuStatSocketTimeoutMillisecond(int cpuStatSocketTimeoutMillisecond) {
+    this.cpuStatSocketTimeoutMillisecond = cpuStatSocketTimeoutMillisecond;
   }
 
-  public String getCpuCoreUrl() {
-    return cpuCoreUrl;
+  public String getCpuStatUrl() {
+    return cpuStatUrl;
   }
 
-  public void setCpuCoreUrl(String cpuCoreUrl) {
-    this.cpuCoreUrl = cpuCoreUrl;
-  }
-
-  public int getCpuCoreUsageConnectTimeoutMillisecond() {
-    return cpuCoreUsageConnectTimeoutMillisecond;
-  }
-
-  public void setCpuCoreUsageConnectTimeoutMillisecond(int cpuCoreUsageConnectTimeoutMillisecond) {
-    this.cpuCoreUsageConnectTimeoutMillisecond = cpuCoreUsageConnectTimeoutMillisecond;
-  }
-
-  public int getCpuCoreUsageConnectionRequestTimeoutMillisecond() {
-    return cpuCoreUsageConnectionRequestTimeoutMillisecond;
-  }
-
-  public void setCpuCoreUsageConnectionRequestTimeoutMillisecond(
-      int cpuCoreUsageConnectionRequestTimeoutMillisecond) {
-    this.cpuCoreUsageConnectionRequestTimeoutMillisecond = cpuCoreUsageConnectionRequestTimeoutMillisecond;
-  }
-
-  public int getCpuCoreUsageRateSecond() {
-    return cpuCoreUsageRateSecond;
-  }
-
-  public void setCpuCoreUsageRateSecond(int cpuCoreUsageRateSecond) {
-    this.cpuCoreUsageRateSecond = cpuCoreUsageRateSecond;
-  }
-
-  public int getCpuCoreUsageSocketTimeoutMillisecond() {
-    return cpuCoreUsageSocketTimeoutMillisecond;
-  }
-
-  public void setCpuCoreUsageSocketTimeoutMillisecond(int cpuCoreUsageSocketTimeoutMillisecond) {
-    this.cpuCoreUsageSocketTimeoutMillisecond = cpuCoreUsageSocketTimeoutMillisecond;
-  }
-
-  public String getCpuCoreUsageUrl() {
-    return cpuCoreUsageUrl;
-  }
-
-  public void setCpuCoreUsageUrl(String cpuCoreUsageUrl) {
-    this.cpuCoreUsageUrl = cpuCoreUsageUrl;
+  public void setCpuStatUrl(String cpuStatUrl) {
+    this.cpuStatUrl = cpuStatUrl;
   }
 
   public int getCpuRateSecond() {
@@ -631,20 +583,12 @@ public class MonitorClientConfig implements EnvironmentAware {
     this.whoUrl = whoUrl;
   }
 
-  public boolean isCpuCoreEnable() {
-    return cpuCoreEnable;
+  public boolean isCpuStatEnable() {
+    return cpuStatEnable;
   }
 
-  public void setCpuCoreEnable(boolean cpuCoreEnable) {
-    this.cpuCoreEnable = cpuCoreEnable;
-  }
-
-  public boolean isCpuCoreUsageEnable() {
-    return cpuCoreUsageEnable;
-  }
-
-  public void setCpuCoreUsageEnable(boolean cpuCoreUsageEnable) {
-    this.cpuCoreUsageEnable = cpuCoreUsageEnable;
+  public void setCpuStatEnable(boolean cpuStatEnable) {
+    this.cpuStatEnable = cpuStatEnable;
   }
 
   public boolean isCpuEnable() {

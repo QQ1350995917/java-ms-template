@@ -1,9 +1,8 @@
 package pwd.initializr.common.mw.monitor.index;
 
-import java.util.LinkedList;
 import java.util.List;
 import pwd.initializr.monitor.rpc.ICpuCore;
-import pwd.initializr.monitor.rpc.ICpuStat;
+import pwd.initializr.monitor.rpc.ICpuCoreStat;
 import pwd.initializr.monitor.rpc.IDiskStat;
 import pwd.initializr.monitor.rpc.IEthernetStat;
 import pwd.initializr.monitor.rpc.IHost;
@@ -33,7 +32,7 @@ public interface Index {
 
     List<ICpuCore> getCpuCore();
 
-    ICpuStat getCpuStat();
+    List<ICpuCoreStat> getCpuCoreStat();
 
     IMemoryStat getMemoryStat();
 

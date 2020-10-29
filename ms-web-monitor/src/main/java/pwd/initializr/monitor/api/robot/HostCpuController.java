@@ -42,7 +42,7 @@ import pwd.initializr.monitor.business.bo.HostCpuBO;
   description = "[列表查询，详情查询，启/禁用，删除，新增，修改]"
 )
 @RestController(value = "HostCpu")
-@RequestMapping(value = "/api/robot/cpu")
+@RequestMapping(value = "/api/robot/host/cpu")
 @Slf4j
 public class HostCpuController extends pwd.initializr.common.web.api.admin.AdminController implements HostCpuApi {
 

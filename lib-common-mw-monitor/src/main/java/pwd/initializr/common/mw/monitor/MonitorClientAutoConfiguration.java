@@ -12,8 +12,10 @@ import pwd.initializr.common.http.HttpXByHttpClient;
 import pwd.initializr.common.http.HttpXConfig;
 import pwd.initializr.common.mw.monitor.client.linux.HostClientOnLinux;
 import pwd.initializr.common.mw.monitor.client.linux.HostCpuClientOnLinux;
+import pwd.initializr.common.mw.monitor.client.linux.HostCpuStatClientOnLinux;
 import pwd.initializr.common.mw.monitor.client.win.HostClientOnWin;
 import pwd.initializr.common.mw.monitor.client.win.HostCpuClientOnWin;
+import pwd.initializr.common.mw.monitor.client.win.HostCpuStatClientOnWin;
 import pwd.initializr.common.utils.OSUtil;
 
 /**
@@ -77,19 +79,12 @@ public class MonitorClientAutoConfiguration {
     String cpuConnectTimeoutMillisecond = getProperty("monitor.cloud.client.host.cpu.connect.timeout.millisecond");
     String cpuSocketTimeoutMillisecond = getProperty("monitor.cloud.client.host.cpu.socket.timeout.millisecond");
 
-    String whoEnable = getProperty("monitor.cloud.client.who.enable");
-    String whoRateSecond = getProperty("monitor.cloud.client.who.rate.second");
-    String whoUrl = getProperty("monitor.cloud.client.who.url");
-    String whoConnectionRequestTimeoutMillisecond = getProperty("monitor.cloud.client.who.connection.request.timeout.millisecond");
-    String whoConnectTimeoutMillisecond = getProperty("monitor.cloud.client.who.connect.timeout.millisecond");
-    String whoSocketTimeoutMillisecond = getProperty("monitor.cloud.client.who.socket.timeout.millisecond");
-
-    String cpuCoreEnable = getProperty("monitor.cloud.client.cpu.core.enable");
-    String cpuCoreRateSecond = getProperty("monitor.cloud.client.cpu.core.rate.second");
-    String cpuCoreUrl = getProperty("monitor.cloud.client.cpu.core.url");
-    String cpuCoreConnectionRequestTimeoutMillisecond = getProperty("monitor.cloud.client.cpu.core.connection.request.timeout.millisecond");
-    String cpuCoreConnectTimeoutMillisecond = getProperty("monitor.cloud.client.cpu.core.connect.timeout.millisecond");
-    String cpuCoreSocketTimeoutMillisecond = getProperty("monitor.cloud.client.cpu.core.socket.timeout.millisecond");
+    String cpuCoreEnable = getProperty("monitor.cloud.client.host.cpu.stat.enable");
+    String cpuCoreRateSecond = getProperty("monitor.cloud.client.host.cpu.stat.rate.second");
+    String cpuCoreUrl = getProperty("monitor.cloud.client.host.cpu.stat.url");
+    String cpuCoreConnectionRequestTimeoutMillisecond = getProperty("monitor.cloud.client.host.cpu.stat.connection.request.timeout.millisecond");
+    String cpuCoreConnectTimeoutMillisecond = getProperty("monitor.cloud.client.host.cpu.stat.connect.timeout.millisecond");
+    String cpuCoreSocketTimeoutMillisecond = getProperty("monitor.cloud.client.host.cpu.stat.socket.timeout.millisecond");
 
     String cpuCoreUsageEnable = getProperty("monitor.cloud.client.cpu.core.usage.enable");
     String cpuCoreUsageRateSecond = getProperty("monitor.cloud.client.cpu.core.usage.rate.second");
@@ -169,26 +164,12 @@ public class MonitorClientAutoConfiguration {
     instance.setCpuConnectTimeoutMillisecond(StringUtils.isBlank(cpuConnectTimeoutMillisecond) ? instance.getConnectTimeoutMillisecond() : Integer.parseInt(cpuConnectTimeoutMillisecond));
     instance.setCpuSocketTimeoutMillisecond(StringUtils.isBlank(cpuSocketTimeoutMillisecond) ? instance.getSocketTimeoutMillisecond() : Integer.parseInt(cpuSocketTimeoutMillisecond));
 
-    instance.setWhoEnable(StringUtils.isBlank(whoEnable) ? instance.isEnable() : Boolean.parseBoolean(whoEnable));
-    instance.setWhoRateSecond(StringUtils.isBlank(whoRateSecond) ? instance.getRateSecond() : Integer.parseInt(whoRateSecond));
-    instance.setWhoUrl(StringUtils.isBlank(whoUrl) ? url : whoUrl);
-    instance.setWhoConnectionRequestTimeoutMillisecond(StringUtils.isBlank(whoConnectionRequestTimeoutMillisecond) ? instance.getConnectionRequestTimeoutMillisecond() : Integer.parseInt(whoConnectionRequestTimeoutMillisecond));
-    instance.setWhoConnectTimeoutMillisecond(StringUtils.isBlank(whoConnectTimeoutMillisecond) ? instance.getConnectTimeoutMillisecond() : Integer.parseInt(whoConnectTimeoutMillisecond));
-    instance.setWhoSocketTimeoutMillisecond(StringUtils.isBlank(whoSocketTimeoutMillisecond) ? instance.getSocketTimeoutMillisecond() : Integer.parseInt(whoSocketTimeoutMillisecond));
-
-    instance.setCpuCoreEnable(StringUtils.isBlank(cpuCoreEnable) ? instance.isEnable() : Boolean.parseBoolean(cpuCoreEnable));
-    instance.setCpuCoreRateSecond(StringUtils.isBlank(cpuCoreRateSecond) ? instance.getRateSecond() : Integer.parseInt(cpuCoreRateSecond));
-    instance.setCpuCoreUrl(StringUtils.isBlank(cpuCoreUrl) ? url : cpuCoreUrl);
-    instance.setCpuCoreConnectionRequestTimeoutMillisecond(StringUtils.isBlank(cpuCoreConnectionRequestTimeoutMillisecond) ? instance.getConnectionRequestTimeoutMillisecond() : Integer.parseInt(cpuCoreConnectionRequestTimeoutMillisecond));
-    instance.setCpuCoreConnectTimeoutMillisecond(StringUtils.isBlank(cpuCoreConnectTimeoutMillisecond) ? instance.getConnectTimeoutMillisecond() : Integer.parseInt(cpuCoreConnectTimeoutMillisecond));
-    instance.setCpuCoreSocketTimeoutMillisecond(StringUtils.isBlank(cpuCoreSocketTimeoutMillisecond) ? instance.getSocketTimeoutMillisecond() : Integer.parseInt(cpuCoreSocketTimeoutMillisecond));
-
-    instance.setCpuCoreUsageEnable(StringUtils.isBlank(cpuCoreUsageEnable) ? instance.isEnable() : Boolean.parseBoolean(cpuCoreUsageEnable));
-    instance.setCpuCoreUsageRateSecond(StringUtils.isBlank(cpuCoreUsageRateSecond) ? instance.getRateSecond() : Integer.parseInt(cpuCoreUsageRateSecond));
-    instance.setCpuCoreUsageUrl(StringUtils.isBlank(cpuCoreUsageUrl) ? url : cpuCoreUsageUrl);
-    instance.setCpuCoreUsageConnectionRequestTimeoutMillisecond(StringUtils.isBlank(cpuCoreUsageConnectionRequestTimeoutMillisecond) ? instance.getConnectionRequestTimeoutMillisecond() : Integer.parseInt(cpuCoreUsageConnectionRequestTimeoutMillisecond));
-    instance.setCpuCoreUsageConnectTimeoutMillisecond(StringUtils.isBlank(cpuCoreUsageConnectTimeoutMillisecond) ? instance.getConnectTimeoutMillisecond() : Integer.parseInt(cpuCoreUsageConnectTimeoutMillisecond));
-    instance.setCpuCoreUsageSocketTimeoutMillisecond(StringUtils.isBlank(cpuCoreUsageSocketTimeoutMillisecond) ? instance.getSocketTimeoutMillisecond() : Integer.parseInt(cpuCoreUsageSocketTimeoutMillisecond));
+    instance.setCpuStatEnable(StringUtils.isBlank(cpuCoreEnable) ? instance.isEnable() : Boolean.parseBoolean(cpuCoreEnable));
+    instance.setCpuStatRateSecond(StringUtils.isBlank(cpuCoreRateSecond) ? instance.getRateSecond() : Integer.parseInt(cpuCoreRateSecond));
+    instance.setCpuStatUrl(StringUtils.isBlank(cpuCoreUrl) ? url : cpuCoreUrl);
+    instance.setCpuStatConnectionRequestTimeoutMillisecond(StringUtils.isBlank(cpuCoreConnectionRequestTimeoutMillisecond) ? instance.getConnectionRequestTimeoutMillisecond() : Integer.parseInt(cpuCoreConnectionRequestTimeoutMillisecond));
+    instance.setCpuStatConnectTimeoutMillisecond(StringUtils.isBlank(cpuCoreConnectTimeoutMillisecond) ? instance.getConnectTimeoutMillisecond() : Integer.parseInt(cpuCoreConnectTimeoutMillisecond));
+    instance.setCpuStatSocketTimeoutMillisecond(StringUtils.isBlank(cpuCoreSocketTimeoutMillisecond) ? instance.getSocketTimeoutMillisecond() : Integer.parseInt(cpuCoreSocketTimeoutMillisecond));
 
     instance.setDiskEnable(StringUtils.isBlank(diskEnable) ? instance.isEnable() : Boolean.parseBoolean(diskEnable));
     instance.setDiskRateSecond(StringUtils.isBlank(diskRateSecond) ? instance.getRateSecond() : Integer.parseInt(diskRateSecond));
@@ -257,6 +238,17 @@ public class MonitorClientAutoConfiguration {
       return new HostCpuClientOnLinux(monitorClientConfig);
     } else if (OSUtil.isWindows()) {
       return new HostCpuClientOnWin(monitorClientConfig);
+    }
+    throw new RuntimeException("incompatible OS " + OSUtil.getOSName());
+  }
+
+  @Bean
+  @ConditionalOnProperty(value = "monitor.cloud.client.host.cpu.stat.enable", matchIfMissing = true)
+  public MonitorClient cpuStatClient(MonitorClientConfig monitorClientConfig) {
+    if (OSUtil.isLinux()) {
+      return new HostCpuStatClientOnLinux(monitorClientConfig);
+    } else if (OSUtil.isWindows()) {
+      return new HostCpuStatClientOnWin(monitorClientConfig);
     }
     throw new RuntimeException("incompatible OS " + OSUtil.getOSName());
   }

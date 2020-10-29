@@ -6,7 +6,6 @@ import org.apache.commons.lang.StringUtils;
 import pwd.initializr.common.shell.ShellOnLinux;
 import pwd.initializr.monitor.rpc.ICpuCore;
 import pwd.initializr.monitor.rpc.ICpuCoreStat;
-import pwd.initializr.monitor.rpc.ICpuStat;
 import pwd.initializr.monitor.rpc.IDiskStat;
 import pwd.initializr.monitor.rpc.IEthernetStat;
 import pwd.initializr.monitor.rpc.IHost;
@@ -15,7 +14,6 @@ import pwd.initializr.monitor.rpc.ILoggedStat;
 import pwd.initializr.monitor.rpc.IMemoryStat;
 import pwd.initializr.monitor.rpc.RPCCpuCore;
 import pwd.initializr.monitor.rpc.RPCCpuCoreStat;
-import pwd.initializr.monitor.rpc.RPCCpuStat;
 import pwd.initializr.monitor.rpc.RPCDiskStat;
 import pwd.initializr.monitor.rpc.RPCEthernetStat;
 import pwd.initializr.monitor.rpc.RPCHost;
@@ -244,7 +242,7 @@ public class MonitorByShellOnLinux extends ShellOnLinux implements Index {
     }
 
     @Override
-    public ICpuStat getCpuStat() {
+    public List<ICpuCoreStat> getCpuCoreStat() {
         ShellResult cpuStatShellResult = this.execForResult(new String[]{"cat /proc/stat"});
         /**
          * cpu  44770555 640 15844690 2752674416 4186605 0 188012 0 0 0
@@ -265,32 +263,24 @@ public class MonitorByShellOnLinux extends ShellOnLinux implements Index {
          * softirq 2914150691 4 1323483050 712067 203001674 56992397 0 748102 794580919 0 534632478
          */
 
-        RPCCpuStat rpcCpuStat = new RPCCpuStat();
         LinkedList<ICpuCoreStat> cpuCoreStats = new LinkedList<>();
-        rpcCpuStat.setCpuCoreStat(cpuCoreStats);
         List<String> lines = cpuStatShellResult.getLines();
         for (String line : lines) {
-            if (line.startsWith("cpu")) {
-                String[] split = line.split(" ");
-                RPCCpuCoreStat rpcCpuCoreStat = new RPCCpuCoreStat();
-                rpcCpuCoreStat.setUser(Long.parseLong(split[0]));
-                rpcCpuCoreStat.setNice(Long.parseLong(split[1]));
-                rpcCpuCoreStat.setSystem(Long.parseLong(split[2]));
-                rpcCpuCoreStat.setIdle(Long.parseLong(split[3]));
-                rpcCpuCoreStat.setIowait(Long.parseLong(split[4]));
-                rpcCpuCoreStat.setIrq(Long.parseLong(split[5]));
-                rpcCpuCoreStat.setSoftirq(Long.parseLong(split[6]));
-                rpcCpuCoreStat.setSteal(Long.parseLong(split[7]));
-                rpcCpuCoreStat.setGuest(Long.parseLong(split[8]));
-                rpcCpuCoreStat.setGuestNice(Long.parseLong(split[9]));
-                if ("cpu".equalsIgnoreCase(split[0])) {
-                    rpcCpuStat.setCpuStat(rpcCpuCoreStat);
-                } else {
-                    cpuCoreStats.add(rpcCpuCoreStat);
-                }
-            }
+            String[] split = line.split(" ");
+            RPCCpuCoreStat rpcCpuCoreStat = new RPCCpuCoreStat();
+            rpcCpuCoreStat.setUser(Long.parseLong(split[0]));
+            rpcCpuCoreStat.setNice(Long.parseLong(split[1]));
+            rpcCpuCoreStat.setSystem(Long.parseLong(split[2]));
+            rpcCpuCoreStat.setIdle(Long.parseLong(split[3]));
+            rpcCpuCoreStat.setIowait(Long.parseLong(split[4]));
+            rpcCpuCoreStat.setIrq(Long.parseLong(split[5]));
+            rpcCpuCoreStat.setSoftirq(Long.parseLong(split[6]));
+            rpcCpuCoreStat.setSteal(Long.parseLong(split[7]));
+            rpcCpuCoreStat.setGuest(Long.parseLong(split[8]));
+            rpcCpuCoreStat.setGuestNice(Long.parseLong(split[9]));
+            cpuCoreStats.add(rpcCpuCoreStat);
         }
-        return rpcCpuStat;
+        return cpuCoreStats;
     }
 
     @Override
