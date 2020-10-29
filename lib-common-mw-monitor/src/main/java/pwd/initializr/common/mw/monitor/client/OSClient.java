@@ -1,12 +1,9 @@
 package pwd.initializr.common.mw.monitor.client;
 
-import com.alibaba.fastjson.JSON;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import pwd.initializr.common.mw.monitor.MonitorClient;
 import pwd.initializr.common.mw.monitor.MonitorClientConfig;
-import pwd.initializr.common.mw.monitor.index.Host;
-import pwd.initializr.monitor.rpc.RPCHostOS;
 
 /**
  * pwd.initializr.common.mw.monitor.client@ms-web-initializr
@@ -45,9 +42,9 @@ public class OSClient extends MonitorClient {
   @Override
   protected void refresh() {
     try {
-      RPCHostOS os = Host.os();
-      String jsonString = JSON.toJSONString(os);
-      httpX.putJson(monitorClientConfig.getOsUrl(), jsonString);
+//      RPCHostOS os = MonitorBySigar.os();
+//      String jsonString = JSON.toJSONString(os);
+//      httpX.putJson(monitorClientConfig.getOsUrl(), jsonString);
     } catch (Exception e) {
       throw new RuntimeException(e);
     }

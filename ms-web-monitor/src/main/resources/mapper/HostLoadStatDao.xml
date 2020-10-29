@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pwd.initializr.monitor.persistence.dao.HostLoadStatDao">
+
+  <resultMap id="HostLoadStatMap" type="pwd.initializr.monitor.persistence.entity.HostLoadStatEntity">
+    <result column="group_name" jdbcType="VARCHAR" property="groupName"/>
+    <result column="node_name" jdbcType="VARCHAR" property="nodeName"/>
+    <result column="load_in1m" jdbcType="VARCHAR" property="loadIn1m"/>
+    <result column="load_in5m" jdbcType="VARCHAR" property="loadIn5m"/>
+    <result column="load_in15m" jdbcType="VARCHAR" property="loadIn15m"/>
+    <result column="process_rate" jdbcType="VARCHAR" property="processRate"/>
+    <result column="last_process_id" jdbcType="VARCHAR" property="lastProcessId"/>
+    <result column="able" jdbcType="INTEGER" property="able"/>
+    <result column="del" jdbcType="INTEGER" property="del"/>
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+  </resultMap>
+
+  <!--根据主键查询查询-->
+  <select id="queryById" resultMap="HostLoadStatMap">
+    SELECT
+      `group_name`,
+      `node_name`,
+      `load_in1m`,
+      `load_in5m`,
+      `load_in15m`,
+      `process_rate`,
+      `last_process_id`,
+      `able`,
+      `del`,
+      `create_time`,
+      `update_time`
+    FROM
+      host_load_stat
+    WHERE
+      id = #{id}
+  </select>
+
+  <!--查询指定行数据-->
+  <select id="countByCondition" resultType="java.lang.Long">
+    SELECT COUNT(*) FROM host_load_stat
+    <include refid="pwd.initializr.common.web.persistence.entity.ScopeEntity.entityQueryScope"></include>
+  </select>
+
+  <!--通过实体作为筛选条件查询-->
+  <select id="queryByCondition" resultMap="HostLoadStatMap">
+    SELECT
+      `group_name`,
+      `node_name`,
+      `load_in1m`,
+      `load_in5m`,
+      `load_in15m`,
+      `process_rate`,
+      `last_process_id`,
+      `able`,
+      `del`,
+      `create_time`,
+      `update_time`
+    FROM
+      host_load_stat
+    <include refid="pwd.initializr.common.web.persistence.entity.ScopeEntity.entityQueryScope"></include>
+    <include refid="pwd.initializr.common.web.persistence.entity.SortEntity.entityQuerySort"></include>
+    LIMIT
+      #{offset}, #{limit}
+  </select>
+
+  <!--新增所有列-->
+  <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+    INSERT INTO host_load_stat
+      (
+        `group_name`,
+        `node_name`,
+        `load_in1m`,
+        `load_in5m`,
+        `load_in15m`,
+        `process_rate`,
+        `last_process_id`,
+        `able`,
+        `del`,
+        `create_time`,
+        `update_time`
+      )
+    VALUES
+      (
+        #{entity.groupName},
+        #{entity.nodeName},
+        #{entity.loadIn1m},
+        #{entity.loadIn5m},
+        #{entity.loadIn15m},
+        #{entity.processRate},
+        #{entity.lastProcessId},
+        #{entity.able},
+        #{entity.del},
+        #{entity.createTime},
+        #{entity.updateTime}
+      )
+  </insert>
+
+  <!--新增所有列（批量新增）-->
+  <insert id="insertByBatch" keyProperty="id" useGeneratedKeys="true">
+    INSERT INTO host_load_stat
+    (
+        `group_name`,
+        `node_name`,
+        `load_in1m`,
+        `load_in5m`,
+        `load_in15m`,
+        `process_rate`,
+        `last_process_id`,
+        `able`,
+        `del`,
+        `create_time`,
+        `update_time`
+    )
+    VALUES
+    <foreach collection="entities" item="entity" separator=",">
+    (
+        #{entity.groupName},
+        #{entity.nodeName},
+        #{entity.loadIn1m},
+        #{entity.loadIn5m},
+        #{entity.loadIn15m},
+        #{entity.processRate},
+        #{entity.lastProcessId},
+        #{entity.able},
+        #{entity.del},
+        #{entity.createTime},
+        #{entity.updateTime}
+    )
+    </foreach>
+  </insert>
+
+  <!--新增或者替换所有列-->
+  <insert id="insertOrReplace" keyProperty="id" useGeneratedKeys="true">
+    REPLACE INTO host_load_stat
+    (
+        `group_name`,
+        `node_name`,
+        `load_in1m`,
+        `load_in5m`,
+        `load_in15m`,
+        `process_rate`,
+        `last_process_id`,
+        `able`,
+        `del`,
+        `create_time`,
+        `update_time`
+    )
+    VALUES
+    (
+        #{entity.groupName},
+        #{entity.nodeName},
+        #{entity.loadIn1m},
+        #{entity.loadIn5m},
+        #{entity.loadIn15m},
+        #{entity.processRate},
+        #{entity.lastProcessId},
+        #{entity.able},
+        #{entity.del},
+        #{entity.createTime},
+        #{entity.updateTime}
+    )
+  </insert>
+
+  <!--新增或者替换所有列（批量新增或者替换）-->
+  <insert id="insertOrReplaceByBatch" keyProperty="id" useGeneratedKeys="true">
+    REPLACE INTO host_load_stat
+    (
+        `group_name`,
+        `node_name`,
+        `load_in1m`,
+        `load_in5m`,
+        `load_in15m`,
+        `process_rate`,
+        `last_process_id`,
+        `able`,
+        `del`,
+        `create_time`,
+        `update_time`
+    )
+    VALUES
+    <foreach collection="entities" item="entity" separator=",">
+      (
+        #{entity.groupName},
+        #{entity.nodeName},
+        #{entity.loadIn1m},
+        #{entity.loadIn5m},
+        #{entity.loadIn15m},
+        #{entity.processRate},
+        #{entity.lastProcessId},
+        #{entity.able},
+        #{entity.del},
+        #{entity.createTime},
+        #{entity.updateTime}
+      )
+    </foreach>
+  </insert>
+
+  <!--通过主键修改数据-->
+  <update id="updateById">
+    UPDATE host_load_stat
+    <set>
+      <if test="entity.groupName != null and entity.groupName != ''">
+        `group_name` = #{entity.groupName},
+      </if>
+      <if test="entity.nodeName != null and entity.nodeName != ''">
+        `node_name` = #{entity.nodeName},
+      </if>
+      <if test="entity.loadIn1m != null and entity.loadIn1m != ''">
+        `load_in1m` = #{entity.loadIn1m},
+      </if>
+      <if test="entity.loadIn5m != null and entity.loadIn5m != ''">
+        `load_in5m` = #{entity.loadIn5m},
+      </if>
+      <if test="entity.loadIn15m != null and entity.loadIn15m != ''">
+        `load_in15m` = #{entity.loadIn15m},
+      </if>
+      <if test="entity.processRate != null and entity.processRate != ''">
+        `process_rate` = #{entity.processRate},
+      </if>
+      <if test="entity.lastProcessId != null and entity.lastProcessId != ''">
+        `last_process_id` = #{entity.lastProcessId},
+      </if>
+      <if test="entity.able != null and entity.able != ''">
+        `able` = #{entity.able},
+      </if>
+      <if test="entity.del != null and entity.del != ''">
+        `del` = #{entity.del},
+      </if>
+      <if test="entity.createTime != null and entity.createTime != ''">
+        `create_time` = #{entity.createTime},
+      </if>
+      <if test="entity.updateTime != null and entity.updateTime != ''">
+        `update_time` = #{entity.updateTime},
+      </if>
+    </set>
+    WHERE
+      id = #{entity.id}
+  </update>
+
+  <!--通过主键删除-->
+  <update id="deleteById">
+    UPDATE host_load_stat
+    SET
+      del = 1,
+      update_time = now()
+    WHERE
+      id = #{id}
+  </update>
+
+  <!--通过主键批量删除-->
+  <update id="deleteByIds">
+    UPDATE host_load_stat
+    SET
+      del = 1,
+      update_time = now()
+    WHERE
+      id in
+    <foreach close=")" collection="ids" index="index" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </update>
+
+  <!--通过主键启禁-->
+  <update id="ableById">
+    UPDATE host_load_stat
+    SET
+      able = #{able},
+      update_time = now()
+    WHERE
+      id = #{id}
+  </update>
+
+  <!--通过主键批量启禁-->
+  <update id="ableByIds">
+    UPDATE host_load_stat
+    SET
+      able = #{able},
+      update_time = now()
+    WHERE
+      id in
+    <foreach close=")" collection="ids" index="index" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </update>
+
+</mapper>

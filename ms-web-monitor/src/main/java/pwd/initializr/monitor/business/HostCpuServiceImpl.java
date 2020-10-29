@@ -2,6 +2,7 @@ package pwd.initializr.monitor.business;
 
 import java.util.Date;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import javax.annotation.Resource;
@@ -18,7 +19,7 @@ import pwd.initializr.monitor.persistence.entity.HostCpuEntity;
 
 /**
  * <h2>服务层逻辑接口封装：HostCpuEntity信息服务接口</h2>
- * date 2020-10-23 11:58
+ * date 2020-10-29 11:44
  *
  * @author Automatic[www.dingpengwei@foxmail.com]
  * @since 0.0.1-SNAPSHOT
@@ -61,6 +62,21 @@ public class HostCpuServiceImpl implements HostCpuService {
   }
 
   @Override
+  public void insert(List<HostCpuBO> bos) {
+    LinkedList<HostCpuEntity> entities = new LinkedList<>();
+    for (HostCpuBO bo : bos) {
+      HostCpuEntity entity = new HostCpuEntity();
+      BeanUtils.copyProperties(bo, entity);
+      entity.setAble(EntityAble.DISABLE.getNumber());
+      entity.setDel(EntityDel.NO.getNumber());
+      entity.setCreateTime(new Date());
+      entity.setUpdateTime(new Date());
+      entities.add(entity);
+    }
+    this.dao.insertByBatch(entities);
+  }
+
+  @Override
   public void insertOrReplace(HostCpuBO bo) {
     HostCpuEntity entity = new HostCpuEntity();
     BeanUtils.copyProperties(bo, entity);
@@ -69,6 +85,21 @@ public class HostCpuServiceImpl implements HostCpuService {
     entity.setCreateTime(new Date());
     entity.setUpdateTime(new Date());
     this.dao.insertOrReplace(entity);
+  }
+
+  @Override
+  public void insertOrReplace(List<HostCpuBO> bos) {
+    LinkedList<HostCpuEntity> entities = new LinkedList<>();
+    for (HostCpuBO bo : bos) {
+      HostCpuEntity entity = new HostCpuEntity();
+      BeanUtils.copyProperties(bo, entity);
+      entity.setAble(EntityAble.DISABLE.getNumber());
+      entity.setDel(EntityDel.NO.getNumber());
+      entity.setCreateTime(new Date());
+      entity.setUpdateTime(new Date());
+      entities.add(entity);
+    }
+    this.dao.insertOrReplaceByBatch(entities);
   }
 
   @Override

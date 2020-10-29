@@ -19,7 +19,7 @@ import pwd.initializr.monitor.persistence.entity.HostEthernetStatEntity;
 
 /**
  * <h2>服务层逻辑接口封装：HostEthernetStatEntity信息服务接口</h2>
- * date 2020-10-23 11:58
+ * date 2020-10-29 11:44
  *
  * @author Automatic[www.dingpengwei@foxmail.com]
  * @since 0.0.1-SNAPSHOT
@@ -63,7 +63,7 @@ public class HostEthernetStatServiceImpl implements HostEthernetStatService {
 
   @Override
   public void insert(List<HostEthernetStatBO> bos) {
-    LinkedList<HostEthernetStatEntity> hostEthernetStatEntities = new LinkedList<>();
+    LinkedList<HostEthernetStatEntity> entities = new LinkedList<>();
     for (HostEthernetStatBO bo : bos) {
       HostEthernetStatEntity entity = new HostEthernetStatEntity();
       BeanUtils.copyProperties(bo, entity);
@@ -71,9 +71,35 @@ public class HostEthernetStatServiceImpl implements HostEthernetStatService {
       entity.setDel(EntityDel.NO.getNumber());
       entity.setCreateTime(new Date());
       entity.setUpdateTime(new Date());
-      hostEthernetStatEntities.add(entity);
+      entities.add(entity);
     }
-    this.dao.insertBatch(hostEthernetStatEntities);
+    this.dao.insertByBatch(entities);
+  }
+
+  @Override
+  public void insertOrReplace(HostEthernetStatBO bo) {
+    HostEthernetStatEntity entity = new HostEthernetStatEntity();
+    BeanUtils.copyProperties(bo, entity);
+    entity.setAble(EntityAble.DISABLE.getNumber());
+    entity.setDel(EntityDel.NO.getNumber());
+    entity.setCreateTime(new Date());
+    entity.setUpdateTime(new Date());
+    this.dao.insertOrReplace(entity);
+  }
+
+  @Override
+  public void insertOrReplace(List<HostEthernetStatBO> bos) {
+    LinkedList<HostEthernetStatEntity> entities = new LinkedList<>();
+    for (HostEthernetStatBO bo : bos) {
+      HostEthernetStatEntity entity = new HostEthernetStatEntity();
+      BeanUtils.copyProperties(bo, entity);
+      entity.setAble(EntityAble.DISABLE.getNumber());
+      entity.setDel(EntityDel.NO.getNumber());
+      entity.setCreateTime(new Date());
+      entity.setUpdateTime(new Date());
+      entities.add(entity);
+    }
+    this.dao.insertOrReplaceByBatch(entities);
   }
 
   @Override

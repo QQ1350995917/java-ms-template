@@ -10,7 +10,8 @@ import lombok.ToString;
 /**
  * pwd.initializr.common.shell@ms-web-initializr
  *
- * <h1>TODO what you want to do?</h1>
+ * <h1>shell客户端</h1>
+ * <p>fixme:生命周期管理，线程池管理，优化工程能力</p>
  *
  * date 2020-10-25 22:07
  *

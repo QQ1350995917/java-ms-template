@@ -1,11 +1,7 @@
 package pwd.initializr.common.mw.monitor.client;
 
-import com.alibaba.fastjson.JSON;
-import java.util.LinkedList;
 import pwd.initializr.common.mw.monitor.MonitorClient;
 import pwd.initializr.common.mw.monitor.MonitorClientConfig;
-import pwd.initializr.common.mw.monitor.index.Host;
-import pwd.initializr.monitor.rpc.RPCHostCpuCore;
 
 /**
  * pwd.initializr.common.mw.monitor.client@ms-web-initializr
@@ -37,9 +33,9 @@ public class CpuCoreClient extends MonitorClient {
   @Override
   protected void refresh() {
     try {
-      LinkedList<RPCHostCpuCore> rpcHostCpuCores = Host.cpuCore();
-      String jsonString = JSON.toJSONString(rpcHostCpuCores);
-      httpX.putJson(monitorClientConfig.getCpuCoreUrl(), jsonString);
+//      LinkedList<RPCHostCpuCore> rpcHostCpuCores = MonitorBySigar.cpuCore();
+//      String jsonString = JSON.toJSONString(rpcHostCpuCores);
+//      httpX.putJson(monitorClientConfig.getCpuCoreUrl(), jsonString);
     } catch (Exception e) {
       throw new RuntimeException(e);
     }

@@ -1,10 +1,7 @@
 package pwd.initializr.common.mw.monitor.client;
 
-import com.alibaba.fastjson.JSON;
 import pwd.initializr.common.mw.monitor.MonitorClient;
 import pwd.initializr.common.mw.monitor.MonitorClientConfig;
-import pwd.initializr.common.mw.monitor.index.Host;
-import pwd.initializr.monitor.rpc.RPCHostMemorySwap;
 
 /**
  * pwd.initializr.common.mw.monitor.client@ms-web-initializr
@@ -36,9 +33,9 @@ public class MemorySwapClient extends MonitorClient {
   @Override
   protected void refresh() {
     try {
-      RPCHostMemorySwap rpcHostMemorySwap = Host.memorySwap();
-      String jsonString = JSON.toJSONString(rpcHostMemorySwap);
-      httpX.postJson(monitorClientConfig.getMemorySwapUrl(), jsonString);
+//      RPCHostMemorySwap rpcHostMemorySwap = MonitorBySigar.memorySwap();
+//      String jsonString = JSON.toJSONString(rpcHostMemorySwap);
+//      httpX.postJson(monitorClientConfig.getMemorySwapUrl(), jsonString);
     } catch (Exception e) {
       throw new RuntimeException(e);
     }

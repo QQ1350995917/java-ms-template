@@ -10,7 +10,7 @@ import lombok.ToString;
 
 /**
  * <h2>host_ethernet_stat数据表实体类</h2>
- * date 2020-10-23 11:58
+ * date 2020-10-29 11:44
  *
  * @author Automatic[www.dingpengwei@foxmail.com]
  * @since 0.0.1-SNAPSHOT
@@ -24,102 +24,117 @@ public class HostEthernetStatEntity implements Serializable {
 
   private static final long serialVersionUID = 1L;
   /**
-    *
-    * 主机名称
+    * 
+    * 逻辑组名
     */
-  private String id;
+  private String groupName;
   /**
-    *
-    * 网卡名称
+    * 
+    * 主机名
     */
-  private String hwaddr;
+  private String nodeName;
   /**
-    *
-    * 接收到的总字节数
+    * 
+    * 
     */
-  private Long rxBytes;
+  private String interFace;
   /**
-    *
-    * 接收的总包裹数
+    * 
+    * 
     */
-  private Long rxPackets;
+  private Integer receiveBytes;
   /**
-    *
-    * 接收到的错误包数
+    * 
+    * 
     */
-  private Long rxErrors;
+  private Integer receivePackets;
   /**
-    *
-    * 系统接收时丢弃的包数，未进入系统内核
+    * 
+    * 
     */
-  private Long rxDropped;
+  private Integer receiveErrs;
   /**
-    *
-    * 网卡接收时丢弃的包数，未进入网卡缓存
+    * 
+    * 
     */
-  private Long rxOverruns;
+  private Integer receiveDrop;
   /**
-    *
-    * 网卡接收最大巨帧
+    * 
+    * 
     */
-  private Long rxFrame;
+  private Integer receiveFifo;
   /**
-    *
-    * 发送的总字节数
+    * 
+    * 
     */
-  private Long txBytes;
+  private Integer receiveFrame;
   /**
-    *
-    * 发送的总包裹数
+    * 
+    * 
     */
-  private Long txPackets;
+  private Integer receiveCompressed;
   /**
-    *
-    * 发送的错误包数
+    * 
+    * 
     */
-  private Long txErrors;
+  private Integer receiveMulticast;
   /**
-    *
-    * 系统发送时丢弃的包数，未进入系统内核
+    * 
+    * 
     */
-  private Long txDropped;
+  private Integer transmitBytes;
   /**
-    *
-    * 网卡发送时丢弃的包数，未进入网卡缓存
+    * 
+    * 
     */
-  private Long txOverruns;
+  private Integer transmitPackets;
   /**
-    *
-    *
+    * 
+    * 
     */
-  private Long txCollisions;
+  private Integer transmitErrs;
   /**
-    *
-    *
+    * 
+    * 
     */
-  private Long txCarrier;
+  private Integer transmitDrop;
   /**
-    *
-    *
+    * 
+    * 
     */
-  private Long speed;
+  private Integer transmitFifo;
   /**
-    *
+    * 
+    * 
+    */
+  private Integer transmitColls;
+  /**
+    * 
+    * 
+    */
+  private Integer transmitCarrier;
+  /**
+    * 
+    * 
+    */
+  private Integer transmitCompressed;
+  /**
+    * 
     * 可用状态：0:不可用；1:可用
     */
   private Integer able;
   /**
-    *
+    * 
     * 删除状态：0:未删除；1:已删除
     */
   private Integer del;
   /**
-    *
+    * 
     * 数据创建时间
     */
   private Date createTime;
   /**
-    *
+    * 
     * 最近更新时间
     */
   private Date updateTime;

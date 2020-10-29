@@ -4,22 +4,25 @@
 <mapper namespace="pwd.initializr.monitor.persistence.dao.HostEthernetStatDao">
 
   <resultMap id="HostEthernetStatMap" type="pwd.initializr.monitor.persistence.entity.HostEthernetStatEntity">
-    <result column="id" jdbcType="VARCHAR" property="id"/>
-    <result column="hwaddr" jdbcType="VARCHAR" property="hwaddr"/>
-    <result column="rx_bytes" jdbcType="BIGINT" property="rxBytes"/>
-    <result column="rx_packets" jdbcType="BIGINT" property="rxPackets"/>
-    <result column="rx_errors" jdbcType="BIGINT" property="rxErrors"/>
-    <result column="rx_dropped" jdbcType="BIGINT" property="rxDropped"/>
-    <result column="rx_overruns" jdbcType="BIGINT" property="rxOverruns"/>
-    <result column="rx_frame" jdbcType="BIGINT" property="rxFrame"/>
-    <result column="tx_bytes" jdbcType="BIGINT" property="txBytes"/>
-    <result column="tx_packets" jdbcType="BIGINT" property="txPackets"/>
-    <result column="tx_errors" jdbcType="BIGINT" property="txErrors"/>
-    <result column="tx_dropped" jdbcType="BIGINT" property="txDropped"/>
-    <result column="tx_overruns" jdbcType="BIGINT" property="txOverruns"/>
-    <result column="tx_collisions" jdbcType="BIGINT" property="txCollisions"/>
-    <result column="tx_carrier" jdbcType="BIGINT" property="txCarrier"/>
-    <result column="speed" jdbcType="BIGINT" property="speed"/>
+    <result column="group_name" jdbcType="VARCHAR" property="groupName"/>
+    <result column="node_name" jdbcType="VARCHAR" property="nodeName"/>
+    <result column="inter_face" jdbcType="VARCHAR" property="interFace"/>
+    <result column="receive_bytes" jdbcType="INTEGER" property="receiveBytes"/>
+    <result column="receive_packets" jdbcType="INTEGER" property="receivePackets"/>
+    <result column="receive_errs" jdbcType="INTEGER" property="receiveErrs"/>
+    <result column="receive_drop" jdbcType="INTEGER" property="receiveDrop"/>
+    <result column="receive_fifo" jdbcType="INTEGER" property="receiveFifo"/>
+    <result column="receive_frame" jdbcType="INTEGER" property="receiveFrame"/>
+    <result column="receive_compressed" jdbcType="INTEGER" property="receiveCompressed"/>
+    <result column="receive_multicast" jdbcType="INTEGER" property="receiveMulticast"/>
+    <result column="transmit_bytes" jdbcType="INTEGER" property="transmitBytes"/>
+    <result column="transmit_packets" jdbcType="INTEGER" property="transmitPackets"/>
+    <result column="transmit_errs" jdbcType="INTEGER" property="transmitErrs"/>
+    <result column="transmit_drop" jdbcType="INTEGER" property="transmitDrop"/>
+    <result column="transmit_fifo" jdbcType="INTEGER" property="transmitFifo"/>
+    <result column="transmit_colls" jdbcType="INTEGER" property="transmitColls"/>
+    <result column="transmit_carrier" jdbcType="INTEGER" property="transmitCarrier"/>
+    <result column="transmit_compressed" jdbcType="INTEGER" property="transmitCompressed"/>
     <result column="able" jdbcType="INTEGER" property="able"/>
     <result column="del" jdbcType="INTEGER" property="del"/>
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
@@ -29,22 +32,25 @@
   <!--根据主键查询查询-->
   <select id="queryById" resultMap="HostEthernetStatMap">
     SELECT
-      `id`,
-      `hwaddr`,
-      `rx_bytes`,
-      `rx_packets`,
-      `rx_errors`,
-      `rx_dropped`,
-      `rx_overruns`,
-      `rx_frame`,
-      `tx_bytes`,
-      `tx_packets`,
-      `tx_errors`,
-      `tx_dropped`,
-      `tx_overruns`,
-      `tx_collisions`,
-      `tx_carrier`,
-      `speed`,
+      `group_name`,
+      `node_name`,
+      `inter_face`,
+      `receive_bytes`,
+      `receive_packets`,
+      `receive_errs`,
+      `receive_drop`,
+      `receive_fifo`,
+      `receive_frame`,
+      `receive_compressed`,
+      `receive_multicast`,
+      `transmit_bytes`,
+      `transmit_packets`,
+      `transmit_errs`,
+      `transmit_drop`,
+      `transmit_fifo`,
+      `transmit_colls`,
+      `transmit_carrier`,
+      `transmit_compressed`,
       `able`,
       `del`,
       `create_time`,
@@ -64,22 +70,25 @@
   <!--通过实体作为筛选条件查询-->
   <select id="queryByCondition" resultMap="HostEthernetStatMap">
     SELECT
-      `id`,
-      `hwaddr`,
-      `rx_bytes`,
-      `rx_packets`,
-      `rx_errors`,
-      `rx_dropped`,
-      `rx_overruns`,
-      `rx_frame`,
-      `tx_bytes`,
-      `tx_packets`,
-      `tx_errors`,
-      `tx_dropped`,
-      `tx_overruns`,
-      `tx_collisions`,
-      `tx_carrier`,
-      `speed`,
+      `group_name`,
+      `node_name`,
+      `inter_face`,
+      `receive_bytes`,
+      `receive_packets`,
+      `receive_errs`,
+      `receive_drop`,
+      `receive_fifo`,
+      `receive_frame`,
+      `receive_compressed`,
+      `receive_multicast`,
+      `transmit_bytes`,
+      `transmit_packets`,
+      `transmit_errs`,
+      `transmit_drop`,
+      `transmit_fifo`,
+      `transmit_colls`,
+      `transmit_carrier`,
+      `transmit_compressed`,
       `able`,
       `del`,
       `create_time`,
@@ -96,22 +105,25 @@
   <insert id="insert" keyProperty="id" useGeneratedKeys="true">
     INSERT INTO host_ethernet_stat
       (
-        `id`,
-        `hwaddr`,
-        `rx_bytes`,
-        `rx_packets`,
-        `rx_errors`,
-        `rx_dropped`,
-        `rx_overruns`,
-        `rx_frame`,
-        `tx_bytes`,
-        `tx_packets`,
-        `tx_errors`,
-        `tx_dropped`,
-        `tx_overruns`,
-        `tx_collisions`,
-        `tx_carrier`,
-        `speed`,
+        `group_name`,
+        `node_name`,
+        `inter_face`,
+        `receive_bytes`,
+        `receive_packets`,
+        `receive_errs`,
+        `receive_drop`,
+        `receive_fifo`,
+        `receive_frame`,
+        `receive_compressed`,
+        `receive_multicast`,
+        `transmit_bytes`,
+        `transmit_packets`,
+        `transmit_errs`,
+        `transmit_drop`,
+        `transmit_fifo`,
+        `transmit_colls`,
+        `transmit_carrier`,
+        `transmit_compressed`,
         `able`,
         `del`,
         `create_time`,
@@ -119,22 +131,25 @@
       )
     VALUES
       (
-        #{entity.id},
-        #{entity.hwaddr},
-        #{entity.rxBytes},
-        #{entity.rxPackets},
-        #{entity.rxErrors},
-        #{entity.rxDropped},
-        #{entity.rxOverruns},
-        #{entity.rxFrame},
-        #{entity.txBytes},
-        #{entity.txPackets},
-        #{entity.txErrors},
-        #{entity.txDropped},
-        #{entity.txOverruns},
-        #{entity.txCollisions},
-        #{entity.txCarrier},
-        #{entity.speed},
+        #{entity.groupName},
+        #{entity.nodeName},
+        #{entity.interFace},
+        #{entity.receiveBytes},
+        #{entity.receivePackets},
+        #{entity.receiveErrs},
+        #{entity.receiveDrop},
+        #{entity.receiveFifo},
+        #{entity.receiveFrame},
+        #{entity.receiveCompressed},
+        #{entity.receiveMulticast},
+        #{entity.transmitBytes},
+        #{entity.transmitPackets},
+        #{entity.transmitErrs},
+        #{entity.transmitDrop},
+        #{entity.transmitFifo},
+        #{entity.transmitColls},
+        #{entity.transmitCarrier},
+        #{entity.transmitCompressed},
         #{entity.able},
         #{entity.del},
         #{entity.createTime},
@@ -142,54 +157,174 @@
       )
   </insert>
 
-  <!--新增所有列-->
-  <insert id="insertBatch">
+  <!--新增所有列（批量新增）-->
+  <insert id="insertByBatch" keyProperty="id" useGeneratedKeys="true">
     INSERT INTO host_ethernet_stat
-      (
-        `id`,
-        `hwaddr`,
-        `rx_bytes`,
-        `rx_packets`,
-        `rx_errors`,
-        `rx_dropped`,
-        `rx_overruns`,
-        `rx_frame`,
-        `tx_bytes`,
-        `tx_packets`,
-        `tx_errors`,
-        `tx_dropped`,
-        `tx_overruns`,
-        `tx_collisions`,
-        `tx_carrier`,
-        `speed`,
+    (
+        `group_name`,
+        `node_name`,
+        `inter_face`,
+        `receive_bytes`,
+        `receive_packets`,
+        `receive_errs`,
+        `receive_drop`,
+        `receive_fifo`,
+        `receive_frame`,
+        `receive_compressed`,
+        `receive_multicast`,
+        `transmit_bytes`,
+        `transmit_packets`,
+        `transmit_errs`,
+        `transmit_drop`,
+        `transmit_fifo`,
+        `transmit_colls`,
+        `transmit_carrier`,
+        `transmit_compressed`,
         `able`,
         `del`,
         `create_time`,
         `update_time`
-      )
+    )
+    VALUES
+    <foreach collection="entities" item="entity" separator=",">
+    (
+        #{entity.groupName},
+        #{entity.nodeName},
+        #{entity.interFace},
+        #{entity.receiveBytes},
+        #{entity.receivePackets},
+        #{entity.receiveErrs},
+        #{entity.receiveDrop},
+        #{entity.receiveFifo},
+        #{entity.receiveFrame},
+        #{entity.receiveCompressed},
+        #{entity.receiveMulticast},
+        #{entity.transmitBytes},
+        #{entity.transmitPackets},
+        #{entity.transmitErrs},
+        #{entity.transmitDrop},
+        #{entity.transmitFifo},
+        #{entity.transmitColls},
+        #{entity.transmitCarrier},
+        #{entity.transmitCompressed},
+        #{entity.able},
+        #{entity.del},
+        #{entity.createTime},
+        #{entity.updateTime}
+    )
+    </foreach>
+  </insert>
+
+  <!--新增或者替换所有列-->
+  <insert id="insertOrReplace" keyProperty="id" useGeneratedKeys="true">
+    REPLACE INTO host_ethernet_stat
+    (
+        `group_name`,
+        `node_name`,
+        `inter_face`,
+        `receive_bytes`,
+        `receive_packets`,
+        `receive_errs`,
+        `receive_drop`,
+        `receive_fifo`,
+        `receive_frame`,
+        `receive_compressed`,
+        `receive_multicast`,
+        `transmit_bytes`,
+        `transmit_packets`,
+        `transmit_errs`,
+        `transmit_drop`,
+        `transmit_fifo`,
+        `transmit_colls`,
+        `transmit_carrier`,
+        `transmit_compressed`,
+        `able`,
+        `del`,
+        `create_time`,
+        `update_time`
+    )
+    VALUES
+    (
+        #{entity.groupName},
+        #{entity.nodeName},
+        #{entity.interFace},
+        #{entity.receiveBytes},
+        #{entity.receivePackets},
+        #{entity.receiveErrs},
+        #{entity.receiveDrop},
+        #{entity.receiveFifo},
+        #{entity.receiveFrame},
+        #{entity.receiveCompressed},
+        #{entity.receiveMulticast},
+        #{entity.transmitBytes},
+        #{entity.transmitPackets},
+        #{entity.transmitErrs},
+        #{entity.transmitDrop},
+        #{entity.transmitFifo},
+        #{entity.transmitColls},
+        #{entity.transmitCarrier},
+        #{entity.transmitCompressed},
+        #{entity.able},
+        #{entity.del},
+        #{entity.createTime},
+        #{entity.updateTime}
+    )
+  </insert>
+
+  <!--新增或者替换所有列（批量新增或者替换）-->
+  <insert id="insertOrReplaceByBatch" keyProperty="id" useGeneratedKeys="true">
+    REPLACE INTO host_ethernet_stat
+    (
+        `group_name`,
+        `node_name`,
+        `inter_face`,
+        `receive_bytes`,
+        `receive_packets`,
+        `receive_errs`,
+        `receive_drop`,
+        `receive_fifo`,
+        `receive_frame`,
+        `receive_compressed`,
+        `receive_multicast`,
+        `transmit_bytes`,
+        `transmit_packets`,
+        `transmit_errs`,
+        `transmit_drop`,
+        `transmit_fifo`,
+        `transmit_colls`,
+        `transmit_carrier`,
+        `transmit_compressed`,
+        `able`,
+        `del`,
+        `create_time`,
+        `update_time`
+    )
     VALUES
     <foreach collection="entities" item="entity" separator=",">
       (
-      #{entity.id},
-      #{entity.hwaddr},
-      #{entity.rxBytes},
-      #{entity.rxPackets},
-      #{entity.rxErrors},
-      #{entity.rxDropped},
-      #{entity.rxOverruns},
-      #{entity.rxFrame},
-      #{entity.txBytes},
-      #{entity.txPackets},
-      #{entity.txErrors},
-      #{entity.txDropped},
-      #{entity.txOverruns},
-      #{entity.txCollisions},
-      #{entity.txCarrier},
-      #{entity.speed},
-      #{entity.able},
-      #{entity.del},
-      #{entity.createTime},
-      #{entity.updateTime}
+        #{entity.groupName},
+        #{entity.nodeName},
+        #{entity.interFace},
+        #{entity.receiveBytes},
+        #{entity.receivePackets},
+        #{entity.receiveErrs},
+        #{entity.receiveDrop},
+        #{entity.receiveFifo},
+        #{entity.receiveFrame},
+        #{entity.receiveCompressed},
+        #{entity.receiveMulticast},
+        #{entity.transmitBytes},
+        #{entity.transmitPackets},
+        #{entity.transmitErrs},
+        #{entity.transmitDrop},
+        #{entity.transmitFifo},
+        #{entity.transmitColls},
+        #{entity.transmitCarrier},
+        #{entity.transmitCompressed},
+        #{entity.able},
+        #{entity.del},
+        #{entity.createTime},
+        #{entity.updateTime}
       )
     </foreach>
   </insert>
@@ -198,53 +333,62 @@
   <update id="updateById">
     UPDATE host_ethernet_stat
     <set>
-      <if test="entity.id != null and entity.id != ''">
-        `id` = #{entity.id},
+      <if test="entity.groupName != null and entity.groupName != ''">
+        `group_name` = #{entity.groupName},
       </if>
-      <if test="entity.hwaddr != null and entity.hwaddr != ''">
-        `hwaddr` = #{entity.hwaddr},
+      <if test="entity.nodeName != null and entity.nodeName != ''">
+        `node_name` = #{entity.nodeName},
       </if>
-      <if test="entity.rxBytes != null and entity.rxBytes != ''">
-        `rx_bytes` = #{entity.rxBytes},
+      <if test="entity.interFace != null and entity.interFace != ''">
+        `inter_face` = #{entity.interFace},
       </if>
-      <if test="entity.rxPackets != null and entity.rxPackets != ''">
-        `rx_packets` = #{entity.rxPackets},
+      <if test="entity.receiveBytes != null and entity.receiveBytes != ''">
+        `receive_bytes` = #{entity.receiveBytes},
       </if>
-      <if test="entity.rxErrors != null and entity.rxErrors != ''">
-        `rx_errors` = #{entity.rxErrors},
+      <if test="entity.receivePackets != null and entity.receivePackets != ''">
+        `receive_packets` = #{entity.receivePackets},
       </if>
-      <if test="entity.rxDropped != null and entity.rxDropped != ''">
-        `rx_dropped` = #{entity.rxDropped},
+      <if test="entity.receiveErrs != null and entity.receiveErrs != ''">
+        `receive_errs` = #{entity.receiveErrs},
       </if>
-      <if test="entity.rxOverruns != null and entity.rxOverruns != ''">
-        `rx_overruns` = #{entity.rxOverruns},
+      <if test="entity.receiveDrop != null and entity.receiveDrop != ''">
+        `receive_drop` = #{entity.receiveDrop},
       </if>
-      <if test="entity.rxFrame != null and entity.rxFrame != ''">
-        `rx_frame` = #{entity.rxFrame},
+      <if test="entity.receiveFifo != null and entity.receiveFifo != ''">
+        `receive_fifo` = #{entity.receiveFifo},
       </if>
-      <if test="entity.txBytes != null and entity.txBytes != ''">
-        `tx_bytes` = #{entity.txBytes},
+      <if test="entity.receiveFrame != null and entity.receiveFrame != ''">
+        `receive_frame` = #{entity.receiveFrame},
       </if>
-      <if test="entity.txPackets != null and entity.txPackets != ''">
-        `tx_packets` = #{entity.txPackets},
+      <if test="entity.receiveCompressed != null and entity.receiveCompressed != ''">
+        `receive_compressed` = #{entity.receiveCompressed},
       </if>
-      <if test="entity.txErrors != null and entity.txErrors != ''">
-        `tx_errors` = #{entity.txErrors},
+      <if test="entity.receiveMulticast != null and entity.receiveMulticast != ''">
+        `receive_multicast` = #{entity.receiveMulticast},
       </if>
-      <if test="entity.txDropped != null and entity.txDropped != ''">
-        `tx_dropped` = #{entity.txDropped},
+      <if test="entity.transmitBytes != null and entity.transmitBytes != ''">
+        `transmit_bytes` = #{entity.transmitBytes},
       </if>
-      <if test="entity.txOverruns != null and entity.txOverruns != ''">
-        `tx_overruns` = #{entity.txOverruns},
+      <if test="entity.transmitPackets != null and entity.transmitPackets != ''">
+        `transmit_packets` = #{entity.transmitPackets},
       </if>
-      <if test="entity.txCollisions != null and entity.txCollisions != ''">
-        `tx_collisions` = #{entity.txCollisions},
+      <if test="entity.transmitErrs != null and entity.transmitErrs != ''">
+        `transmit_errs` = #{entity.transmitErrs},
       </if>
-      <if test="entity.txCarrier != null and entity.txCarrier != ''">
-        `tx_carrier` = #{entity.txCarrier},
+      <if test="entity.transmitDrop != null and entity.transmitDrop != ''">
+        `transmit_drop` = #{entity.transmitDrop},
       </if>
-      <if test="entity.speed != null and entity.speed != ''">
-        `speed` = #{entity.speed},
+      <if test="entity.transmitFifo != null and entity.transmitFifo != ''">
+        `transmit_fifo` = #{entity.transmitFifo},
+      </if>
+      <if test="entity.transmitColls != null and entity.transmitColls != ''">
+        `transmit_colls` = #{entity.transmitColls},
+      </if>
+      <if test="entity.transmitCarrier != null and entity.transmitCarrier != ''">
+        `transmit_carrier` = #{entity.transmitCarrier},
+      </if>
+      <if test="entity.transmitCompressed != null and entity.transmitCompressed != ''">
+        `transmit_compressed` = #{entity.transmitCompressed},
       </if>
       <if test="entity.able != null and entity.able != ''">
         `able` = #{entity.able},
@@ -260,7 +404,7 @@
       </if>
     </set>
     WHERE
-      id = #{id}
+      id = #{entity.id}
   </update>
 
   <!--通过主键删除-->

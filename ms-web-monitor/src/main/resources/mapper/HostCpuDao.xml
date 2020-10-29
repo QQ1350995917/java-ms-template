@@ -4,16 +4,33 @@
 <mapper namespace="pwd.initializr.monitor.persistence.dao.HostCpuDao">
 
   <resultMap id="HostCpuMap" type="pwd.initializr.monitor.persistence.entity.HostCpuEntity">
-    <result column="id" jdbcType="VARCHAR" property="id"/>
-    <result column="user" jdbcType="BIGINT" property="user"/>
-    <result column="sys" jdbcType="BIGINT" property="sys"/>
-    <result column="nice" jdbcType="BIGINT" property="nice"/>
-    <result column="idle" jdbcType="BIGINT" property="idle"/>
-    <result column="wait" jdbcType="BIGINT" property="wait"/>
-    <result column="irq" jdbcType="BIGINT" property="irq"/>
-    <result column="soft_irq" jdbcType="BIGINT" property="softIrq"/>
-    <result column="stolen" jdbcType="BIGINT" property="stolen"/>
-    <result column="total" jdbcType="BIGINT" property="total"/>
+    <result column="group_name" jdbcType="VARCHAR" property="groupName"/>
+    <result column="node_name" jdbcType="VARCHAR" property="nodeName"/>
+    <result column="processor" jdbcType="VARCHAR" property="processor"/>
+    <result column="vendor_id" jdbcType="VARCHAR" property="vendorId"/>
+    <result column="cpu_family" jdbcType="VARCHAR" property="cpuFamily"/>
+    <result column="model" jdbcType="VARCHAR" property="model"/>
+    <result column="model_name" jdbcType="VARCHAR" property="modelName"/>
+    <result column="stepping" jdbcType="VARCHAR" property="stepping"/>
+    <result column="microcode" jdbcType="VARCHAR" property="microcode"/>
+    <result column="cpu_mHz" jdbcType="VARCHAR" property="cpuMhz"/>
+    <result column="cache_size" jdbcType="VARCHAR" property="cacheSize"/>
+    <result column="physical_id" jdbcType="VARCHAR" property="physicalId"/>
+    <result column="siblings" jdbcType="VARCHAR" property="siblings"/>
+    <result column="core_id" jdbcType="VARCHAR" property="coreId"/>
+    <result column="cpu_cores" jdbcType="VARCHAR" property="cpuCores"/>
+    <result column="apicid" jdbcType="VARCHAR" property="apicid"/>
+    <result column="initial_apicid" jdbcType="VARCHAR" property="initialApicid"/>
+    <result column="fpu" jdbcType="VARCHAR" property="fpu"/>
+    <result column="fpu_exception" jdbcType="VARCHAR" property="fpuException"/>
+    <result column="cpuid_level" jdbcType="VARCHAR" property="cpuidLevel"/>
+    <result column="wp" jdbcType="VARCHAR" property="wp"/>
+    <result column="flags" jdbcType="VARCHAR" property="flags"/>
+    <result column="bogomips" jdbcType="VARCHAR" property="bogomips"/>
+    <result column="clflush_size" jdbcType="VARCHAR" property="clflushSize"/>
+    <result column="cache_alignment" jdbcType="VARCHAR" property="cacheAlignment"/>
+    <result column="address_sizes" jdbcType="VARCHAR" property="addressSizes"/>
+    <result column="power_management" jdbcType="VARCHAR" property="powerManagement"/>
     <result column="able" jdbcType="INTEGER" property="able"/>
     <result column="del" jdbcType="INTEGER" property="del"/>
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
@@ -23,16 +40,33 @@
   <!--根据主键查询查询-->
   <select id="queryById" resultMap="HostCpuMap">
     SELECT
-      `id`,
-      `user`,
-      `sys`,
-      `nice`,
-      `idle`,
-      `wait`,
-      `irq`,
-      `soft_irq`,
-      `stolen`,
-      `total`,
+      `group_name`,
+      `node_name`,
+      `processor`,
+      `vendor_id`,
+      `cpu_family`,
+      `model`,
+      `model_name`,
+      `stepping`,
+      `microcode`,
+      `cpu_mHz`,
+      `cache_size`,
+      `physical_id`,
+      `siblings`,
+      `core_id`,
+      `cpu_cores`,
+      `apicid`,
+      `initial_apicid`,
+      `fpu`,
+      `fpu_exception`,
+      `cpuid_level`,
+      `wp`,
+      `flags`,
+      `bogomips`,
+      `clflush_size`,
+      `cache_alignment`,
+      `address_sizes`,
+      `power_management`,
       `able`,
       `del`,
       `create_time`,
@@ -52,16 +86,33 @@
   <!--通过实体作为筛选条件查询-->
   <select id="queryByCondition" resultMap="HostCpuMap">
     SELECT
-      `id`,
-      `user`,
-      `sys`,
-      `nice`,
-      `idle`,
-      `wait`,
-      `irq`,
-      `soft_irq`,
-      `stolen`,
-      `total`,
+      `group_name`,
+      `node_name`,
+      `processor`,
+      `vendor_id`,
+      `cpu_family`,
+      `model`,
+      `model_name`,
+      `stepping`,
+      `microcode`,
+      `cpu_mHz`,
+      `cache_size`,
+      `physical_id`,
+      `siblings`,
+      `core_id`,
+      `cpu_cores`,
+      `apicid`,
+      `initial_apicid`,
+      `fpu`,
+      `fpu_exception`,
+      `cpuid_level`,
+      `wp`,
+      `flags`,
+      `bogomips`,
+      `clflush_size`,
+      `cache_alignment`,
+      `address_sizes`,
+      `power_management`,
       `able`,
       `del`,
       `create_time`,
@@ -75,19 +126,36 @@
   </select>
 
   <!--新增所有列-->
-  <insert id="insert" keyProperty="id">
+  <insert id="insert" keyProperty="id" useGeneratedKeys="true">
     INSERT INTO host_cpu
       (
-        `id`,
-        `user`,
-        `sys`,
-        `nice`,
-        `idle`,
-        `wait`,
-        `irq`,
-        `soft_irq`,
-        `stolen`,
-        `total`,
+        `group_name`,
+        `node_name`,
+        `processor`,
+        `vendor_id`,
+        `cpu_family`,
+        `model`,
+        `model_name`,
+        `stepping`,
+        `microcode`,
+        `cpu_mHz`,
+        `cache_size`,
+        `physical_id`,
+        `siblings`,
+        `core_id`,
+        `cpu_cores`,
+        `apicid`,
+        `initial_apicid`,
+        `fpu`,
+        `fpu_exception`,
+        `cpuid_level`,
+        `wp`,
+        `flags`,
+        `bogomips`,
+        `clflush_size`,
+        `cache_alignment`,
+        `address_sizes`,
+        `power_management`,
         `able`,
         `del`,
         `create_time`,
@@ -95,16 +163,33 @@
       )
     VALUES
       (
-        #{entity.id},
-        #{entity.user},
-        #{entity.sys},
-        #{entity.nice},
-        #{entity.idle},
-        #{entity.wait},
-        #{entity.irq},
-        #{entity.softIrq},
-        #{entity.stolen},
-        #{entity.total},
+        #{entity.groupName},
+        #{entity.nodeName},
+        #{entity.processor},
+        #{entity.vendorId},
+        #{entity.cpuFamily},
+        #{entity.model},
+        #{entity.modelName},
+        #{entity.stepping},
+        #{entity.microcode},
+        #{entity.cpuMhz},
+        #{entity.cacheSize},
+        #{entity.physicalId},
+        #{entity.siblings},
+        #{entity.coreId},
+        #{entity.cpuCores},
+        #{entity.apicid},
+        #{entity.initialApicid},
+        #{entity.fpu},
+        #{entity.fpuException},
+        #{entity.cpuidLevel},
+        #{entity.wp},
+        #{entity.flags},
+        #{entity.bogomips},
+        #{entity.clflushSize},
+        #{entity.cacheAlignment},
+        #{entity.addressSizes},
+        #{entity.powerManagement},
         #{entity.able},
         #{entity.del},
         #{entity.createTime},
@@ -112,77 +197,310 @@
       )
   </insert>
 
-  <!--新增所有列-->
-  <insert id="insertOrReplace" keyProperty="id">
-    REPLACE INTO host_cpu
-      (
-        `id`,
-        `user`,
-        `sys`,
-        `nice`,
-        `idle`,
-        `wait`,
-        `irq`,
-        `soft_irq`,
-        `stolen`,
-        `total`,
+  <!--新增所有列（批量新增）-->
+  <insert id="insertByBatch" keyProperty="id" useGeneratedKeys="true">
+    INSERT INTO host_cpu
+    (
+        `group_name`,
+        `node_name`,
+        `processor`,
+        `vendor_id`,
+        `cpu_family`,
+        `model`,
+        `model_name`,
+        `stepping`,
+        `microcode`,
+        `cpu_mHz`,
+        `cache_size`,
+        `physical_id`,
+        `siblings`,
+        `core_id`,
+        `cpu_cores`,
+        `apicid`,
+        `initial_apicid`,
+        `fpu`,
+        `fpu_exception`,
+        `cpuid_level`,
+        `wp`,
+        `flags`,
+        `bogomips`,
+        `clflush_size`,
+        `cache_alignment`,
+        `address_sizes`,
+        `power_management`,
         `able`,
         `del`,
         `create_time`,
         `update_time`
-      )
+    )
     VALUES
+    <foreach collection="entities" item="entity" separator=",">
+    (
+        #{entity.groupName},
+        #{entity.nodeName},
+        #{entity.processor},
+        #{entity.vendorId},
+        #{entity.cpuFamily},
+        #{entity.model},
+        #{entity.modelName},
+        #{entity.stepping},
+        #{entity.microcode},
+        #{entity.cpuMhz},
+        #{entity.cacheSize},
+        #{entity.physicalId},
+        #{entity.siblings},
+        #{entity.coreId},
+        #{entity.cpuCores},
+        #{entity.apicid},
+        #{entity.initialApicid},
+        #{entity.fpu},
+        #{entity.fpuException},
+        #{entity.cpuidLevel},
+        #{entity.wp},
+        #{entity.flags},
+        #{entity.bogomips},
+        #{entity.clflushSize},
+        #{entity.cacheAlignment},
+        #{entity.addressSizes},
+        #{entity.powerManagement},
+        #{entity.able},
+        #{entity.del},
+        #{entity.createTime},
+        #{entity.updateTime}
+    )
+    </foreach>
+  </insert>
+
+  <!--新增或者替换所有列-->
+  <insert id="insertOrReplace" keyProperty="id" useGeneratedKeys="true">
+    REPLACE INTO host_cpu
+    (
+        `group_name`,
+        `node_name`,
+        `processor`,
+        `vendor_id`,
+        `cpu_family`,
+        `model`,
+        `model_name`,
+        `stepping`,
+        `microcode`,
+        `cpu_mHz`,
+        `cache_size`,
+        `physical_id`,
+        `siblings`,
+        `core_id`,
+        `cpu_cores`,
+        `apicid`,
+        `initial_apicid`,
+        `fpu`,
+        `fpu_exception`,
+        `cpuid_level`,
+        `wp`,
+        `flags`,
+        `bogomips`,
+        `clflush_size`,
+        `cache_alignment`,
+        `address_sizes`,
+        `power_management`,
+        `able`,
+        `del`,
+        `create_time`,
+        `update_time`
+    )
+    VALUES
+    (
+        #{entity.groupName},
+        #{entity.nodeName},
+        #{entity.processor},
+        #{entity.vendorId},
+        #{entity.cpuFamily},
+        #{entity.model},
+        #{entity.modelName},
+        #{entity.stepping},
+        #{entity.microcode},
+        #{entity.cpuMhz},
+        #{entity.cacheSize},
+        #{entity.physicalId},
+        #{entity.siblings},
+        #{entity.coreId},
+        #{entity.cpuCores},
+        #{entity.apicid},
+        #{entity.initialApicid},
+        #{entity.fpu},
+        #{entity.fpuException},
+        #{entity.cpuidLevel},
+        #{entity.wp},
+        #{entity.flags},
+        #{entity.bogomips},
+        #{entity.clflushSize},
+        #{entity.cacheAlignment},
+        #{entity.addressSizes},
+        #{entity.powerManagement},
+        #{entity.able},
+        #{entity.del},
+        #{entity.createTime},
+        #{entity.updateTime}
+    )
+  </insert>
+
+  <!--新增或者替换所有列（批量新增或者替换）-->
+  <insert id="insertOrReplaceByBatch" keyProperty="id" useGeneratedKeys="true">
+    REPLACE INTO host_cpu
+    (
+        `group_name`,
+        `node_name`,
+        `processor`,
+        `vendor_id`,
+        `cpu_family`,
+        `model`,
+        `model_name`,
+        `stepping`,
+        `microcode`,
+        `cpu_mHz`,
+        `cache_size`,
+        `physical_id`,
+        `siblings`,
+        `core_id`,
+        `cpu_cores`,
+        `apicid`,
+        `initial_apicid`,
+        `fpu`,
+        `fpu_exception`,
+        `cpuid_level`,
+        `wp`,
+        `flags`,
+        `bogomips`,
+        `clflush_size`,
+        `cache_alignment`,
+        `address_sizes`,
+        `power_management`,
+        `able`,
+        `del`,
+        `create_time`,
+        `update_time`
+    )
+    VALUES
+    <foreach collection="entities" item="entity" separator=",">
       (
-        #{entity.id},
-        #{entity.user},
-        #{entity.sys},
-        #{entity.nice},
-        #{entity.idle},
-        #{entity.wait},
-        #{entity.irq},
-        #{entity.softIrq},
-        #{entity.stolen},
-        #{entity.total},
+        #{entity.groupName},
+        #{entity.nodeName},
+        #{entity.processor},
+        #{entity.vendorId},
+        #{entity.cpuFamily},
+        #{entity.model},
+        #{entity.modelName},
+        #{entity.stepping},
+        #{entity.microcode},
+        #{entity.cpuMhz},
+        #{entity.cacheSize},
+        #{entity.physicalId},
+        #{entity.siblings},
+        #{entity.coreId},
+        #{entity.cpuCores},
+        #{entity.apicid},
+        #{entity.initialApicid},
+        #{entity.fpu},
+        #{entity.fpuException},
+        #{entity.cpuidLevel},
+        #{entity.wp},
+        #{entity.flags},
+        #{entity.bogomips},
+        #{entity.clflushSize},
+        #{entity.cacheAlignment},
+        #{entity.addressSizes},
+        #{entity.powerManagement},
         #{entity.able},
         #{entity.del},
         #{entity.createTime},
         #{entity.updateTime}
       )
+    </foreach>
   </insert>
 
   <!--通过主键修改数据-->
   <update id="updateById">
     UPDATE host_cpu
     <set>
-      <if test="entity.id != null and entity.id != ''">
-        `id` = #{entity.id},
+      <if test="entity.groupName != null and entity.groupName != ''">
+        `group_name` = #{entity.groupName},
       </if>
-      <if test="entity.user != null and entity.user != ''">
-        `user` = #{entity.user},
+      <if test="entity.nodeName != null and entity.nodeName != ''">
+        `node_name` = #{entity.nodeName},
       </if>
-      <if test="entity.sys != null and entity.sys != ''">
-        `sys` = #{entity.sys},
+      <if test="entity.processor != null and entity.processor != ''">
+        `processor` = #{entity.processor},
       </if>
-      <if test="entity.nice != null and entity.nice != ''">
-        `nice` = #{entity.nice},
+      <if test="entity.vendorId != null and entity.vendorId != ''">
+        `vendor_id` = #{entity.vendorId},
       </if>
-      <if test="entity.idle != null and entity.idle != ''">
-        `idle` = #{entity.idle},
+      <if test="entity.cpuFamily != null and entity.cpuFamily != ''">
+        `cpu_family` = #{entity.cpuFamily},
       </if>
-      <if test="entity.wait != null and entity.wait != ''">
-        `wait` = #{entity.wait},
+      <if test="entity.model != null and entity.model != ''">
+        `model` = #{entity.model},
       </if>
-      <if test="entity.irq != null and entity.irq != ''">
-        `irq` = #{entity.irq},
+      <if test="entity.modelName != null and entity.modelName != ''">
+        `model_name` = #{entity.modelName},
       </if>
-      <if test="entity.softIrq != null and entity.softIrq != ''">
-        `soft_irq` = #{entity.softIrq},
+      <if test="entity.stepping != null and entity.stepping != ''">
+        `stepping` = #{entity.stepping},
       </if>
-      <if test="entity.stolen != null and entity.stolen != ''">
-        `stolen` = #{entity.stolen},
+      <if test="entity.microcode != null and entity.microcode != ''">
+        `microcode` = #{entity.microcode},
       </if>
-      <if test="entity.total != null and entity.total != ''">
-        `total` = #{entity.total},
+      <if test="entity.cpuMhz != null and entity.cpuMhz != ''">
+        `cpu_mHz` = #{entity.cpuMhz},
+      </if>
+      <if test="entity.cacheSize != null and entity.cacheSize != ''">
+        `cache_size` = #{entity.cacheSize},
+      </if>
+      <if test="entity.physicalId != null and entity.physicalId != ''">
+        `physical_id` = #{entity.physicalId},
+      </if>
+      <if test="entity.siblings != null and entity.siblings != ''">
+        `siblings` = #{entity.siblings},
+      </if>
+      <if test="entity.coreId != null and entity.coreId != ''">
+        `core_id` = #{entity.coreId},
+      </if>
+      <if test="entity.cpuCores != null and entity.cpuCores != ''">
+        `cpu_cores` = #{entity.cpuCores},
+      </if>
+      <if test="entity.apicid != null and entity.apicid != ''">
+        `apicid` = #{entity.apicid},
+      </if>
+      <if test="entity.initialApicid != null and entity.initialApicid != ''">
+        `initial_apicid` = #{entity.initialApicid},
+      </if>
+      <if test="entity.fpu != null and entity.fpu != ''">
+        `fpu` = #{entity.fpu},
+      </if>
+      <if test="entity.fpuException != null and entity.fpuException != ''">
+        `fpu_exception` = #{entity.fpuException},
+      </if>
+      <if test="entity.cpuidLevel != null and entity.cpuidLevel != ''">
+        `cpuid_level` = #{entity.cpuidLevel},
+      </if>
+      <if test="entity.wp != null and entity.wp != ''">
+        `wp` = #{entity.wp},
+      </if>
+      <if test="entity.flags != null and entity.flags != ''">
+        `flags` = #{entity.flags},
+      </if>
+      <if test="entity.bogomips != null and entity.bogomips != ''">
+        `bogomips` = #{entity.bogomips},
+      </if>
+      <if test="entity.clflushSize != null and entity.clflushSize != ''">
+        `clflush_size` = #{entity.clflushSize},
+      </if>
+      <if test="entity.cacheAlignment != null and entity.cacheAlignment != ''">
+        `cache_alignment` = #{entity.cacheAlignment},
+      </if>
+      <if test="entity.addressSizes != null and entity.addressSizes != ''">
+        `address_sizes` = #{entity.addressSizes},
+      </if>
+      <if test="entity.powerManagement != null and entity.powerManagement != ''">
+        `power_management` = #{entity.powerManagement},
       </if>
       <if test="entity.able != null and entity.able != ''">
         `able` = #{entity.able},
@@ -198,7 +516,7 @@
       </if>
     </set>
     WHERE
-      id = #{id}
+      id = #{entity.id}
   </update>
 
   <!--通过主键删除-->

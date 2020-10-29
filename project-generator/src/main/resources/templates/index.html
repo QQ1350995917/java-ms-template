@@ -172,8 +172,16 @@
               var meta = body.meta;
               var code = meta.code;
               var data = body.data;
-              this.tableOptions = data.tables;
-              this.tables = data.tables;
+              if (data.tables == undefined || data.tables.length == 0) {
+                this.$message({
+                  message: '没有找到数据表',
+                  type: 'warning'
+                });
+              } else {
+                this.tableOptions = data.tables;
+                this.tables = data.tables;
+              }
+
             }, function (e) {
               var body = e.body;
               var meta = body.meta;

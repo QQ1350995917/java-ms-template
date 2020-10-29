@@ -1,10 +1,7 @@
 package pwd.initializr.common.mw.monitor.client;
 
-import com.alibaba.fastjson.JSON;
 import pwd.initializr.common.mw.monitor.MonitorClient;
 import pwd.initializr.common.mw.monitor.MonitorClientConfig;
-import pwd.initializr.common.mw.monitor.index.Host;
-import pwd.initializr.monitor.rpc.RPCHostMemory;
 
 /**
  * pwd.initializr.common.mw.monitor.client@ms-web-initializr
@@ -36,9 +33,9 @@ public class MemoryClient extends MonitorClient {
   @Override
   protected void refresh() {
     try {
-      RPCHostMemory memory = Host.memory();
-      String jsonString = JSON.toJSONString(memory);
-      httpX.postJson(monitorClientConfig.getMemoryUrl(), jsonString);
+//      RPCHostMemory memory = MonitorBySigar.memory();
+//      String jsonString = JSON.toJSONString(memory);
+//      httpX.postJson(monitorClientConfig.getMemoryUrl(), jsonString);
     } catch (Exception e) {
       throw new RuntimeException(e);
     }

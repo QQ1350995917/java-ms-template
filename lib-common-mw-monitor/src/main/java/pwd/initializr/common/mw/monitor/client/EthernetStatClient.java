@@ -1,14 +1,7 @@
 package pwd.initializr.common.mw.monitor.client;
 
-import com.alibaba.fastjson.JSON;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import org.apache.commons.lang.StringUtils;
 import pwd.initializr.common.mw.monitor.MonitorClient;
 import pwd.initializr.common.mw.monitor.MonitorClientConfig;
-import pwd.initializr.common.mw.monitor.index.Host;
-import pwd.initializr.monitor.rpc.RPCHostEthernetStat;
 
 /**
  * pwd.initializr.common.mw.monitor.client@ms-web-initializr
@@ -40,15 +33,15 @@ public class EthernetStatClient extends MonitorClient {
   @Override
   protected void refresh() {
     try {
-      List<RPCHostEthernetStat> rpcHostEthernetStats = Host.ethernetStat();
-      for (Iterator<RPCHostEthernetStat> it = rpcHostEthernetStats.iterator(); it.hasNext();) {
-        RPCHostEthernetStat next = it.next();
-        if (StringUtils.isBlank(next.getId()) || StringUtils.isBlank(next.getHwaddr())){
-          it.remove();
-        }
-      }
-      String jsonString = JSON.toJSONString(rpcHostEthernetStats);
-      httpX.postJson(monitorClientConfig.getEthernetStatUrl(), jsonString);
+//      List<RPCHostEthernetStat> rpcHostEthernetStats = MonitorBySigar.ethernetStat();
+//      for (Iterator<RPCHostEthernetStat> it = rpcHostEthernetStats.iterator(); it.hasNext();) {
+//        RPCHostEthernetStat next = it.next();
+//        if (StringUtils.isBlank(next.getNodeName()) || StringUtils.isBlank(next.getHwaddr())){
+//          it.remove();
+//        }
+//      }
+//      String jsonString = JSON.toJSONString(rpcHostEthernetStats);
+//      httpX.postJson(monitorClientConfig.getEthernetStatUrl(), jsonString);
     } catch (Exception e) {
       throw new RuntimeException(e);
     }

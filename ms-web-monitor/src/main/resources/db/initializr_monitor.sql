@@ -4,7 +4,7 @@
  Source Server         : localhost
  Source Server Type    : MySQL
  Source Server Version : 50727
- Source Host           : localhost:3306
+ Source MonitorBySigar           : localhost:3306
  Source Schema         : initializr_monitor
 
  Target Server Type    : MySQL

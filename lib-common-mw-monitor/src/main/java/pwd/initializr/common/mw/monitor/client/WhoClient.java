@@ -1,13 +1,9 @@
 package pwd.initializr.common.mw.monitor.client;
 
-import com.alibaba.fastjson.JSON;
-import java.util.List;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import pwd.initializr.common.mw.monitor.MonitorClient;
 import pwd.initializr.common.mw.monitor.MonitorClientConfig;
-import pwd.initializr.common.mw.monitor.index.Host;
-import pwd.initializr.monitor.rpc.RPCHostWho;
 
 /**
  * pwd.initializr.common.mw.monitor.client@ms-web-initializr
@@ -46,9 +42,9 @@ public class WhoClient extends MonitorClient {
   @Override
   protected void refresh() {
     try {
-      List<RPCHostWho> who = Host.who();
-      String jsonString = JSON.toJSONString(who);
-      httpX.postJson(monitorClientConfig.getWhoUrl(), jsonString);
+//      List<RPCHostWho> who = MonitorBySigar.who();
+//      String jsonString = JSON.toJSONString(who);
+//      httpX.postJson(monitorClientConfig.getWhoUrl(), jsonString);
     } catch (Exception e) {
       throw new RuntimeException(e);
     }

@@ -1,11 +1,7 @@
 package pwd.initializr.common.mw.monitor.client;
 
-import com.alibaba.fastjson.JSON;
-import java.util.List;
 import pwd.initializr.common.mw.monitor.MonitorClient;
 import pwd.initializr.common.mw.monitor.MonitorClientConfig;
-import pwd.initializr.common.mw.monitor.index.Host;
-import pwd.initializr.monitor.rpc.RPCHostDiskUsage;
 
 /**
  * pwd.initializr.common.mw.monitor.client@ms-web-initializr
@@ -37,9 +33,9 @@ public class DiskUsageClient extends MonitorClient {
   @Override
   protected void refresh() {
     try {
-      List<RPCHostDiskUsage> rpcHostDiskUsages = Host.diskUsage();
-      String jsonString = JSON.toJSONString(rpcHostDiskUsages);
-      httpX.postJson(monitorClientConfig.getDiskUsageUrl(), jsonString);
+//      List<RPCHostDiskUsage> rpcHostDiskUsages = MonitorBySigar.diskUsage();
+//      String jsonString = JSON.toJSONString(rpcHostDiskUsages);
+//      httpX.postJson(monitorClientConfig.getDiskUsageUrl(), jsonString);
     } catch (Exception e) {
       throw new RuntimeException(e);
     }

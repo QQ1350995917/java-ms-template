@@ -7,16 +7,16 @@ import springfox.documentation.swagger.web.UiConfigurationBuilder;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
- * pwd.initializr.account.api@ms-web-initializr
- *
- * <h1>TODO what you want to do?</h1>
- *
- * date 2019-09-14 21:10
- *
- * @author DingPengwei[www.dingpengwei@foxmail.com]
- * @version 1.0.0
- * @since DistributionVersion
- */
+* project-generator-test@ms-web-initializr
+*
+* <h1>project-generator-test接口文档声明</h1>
+*
+* date 2020-10-29 11:44
+*
+* @author Automatic[www.dingpengwei@foxmail.com]
+* @version 0.0.1-SNAPSHOT
+* @since 0.0.1-SNAPSHOT
+*/
 @Configuration
 @EnableSwagger2
 @ComponentScan(basePackages = "pwd.initializr.monitor.api")
@@ -31,7 +31,6 @@ public class Swagger2 extends ApiSwagger2 {
   protected Customer robotApiCustomer() {
     return new Customer("RobotApi", "RobotApi", "机器接口", "pwd.initializr.monitor.api.robot");
   }
-
 
   @Override
   protected Customer userApiCustomer() {

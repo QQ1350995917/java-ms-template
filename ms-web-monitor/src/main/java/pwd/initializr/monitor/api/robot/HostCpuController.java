@@ -2,6 +2,9 @@ package pwd.initializr.monitor.api.robot;
 
 import io.swagger.annotations.Api;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
@@ -16,69 +19,146 @@ import pwd.initializr.common.web.api.vo.SortInput;
 import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.common.web.business.bo.ScopeBO;
 import pwd.initializr.common.web.business.bo.SortBO;
+import pwd.initializr.common.web.persistence.entity.EntityAble;
 import pwd.initializr.monitor.api.robot.vo.HostCpuInput;
 import pwd.initializr.monitor.api.robot.vo.HostCpuOutput;
 import pwd.initializr.monitor.business.HostCpuService;
 import pwd.initializr.monitor.business.bo.HostCpuBO;
 
 /**
- * project-generator-test@ms-web-initializr
- *
- * <h1>HostCpu控制层接口实现</h1>
- *
- * date 2020-10-23 11:58
- *
- * @author Automatic[dingpengwei@foxmail.com]
- * @version 0.0.1-SNAPSHOT
- * @since 0.0.1-SNAPSHOT
- */
+* project-generator-test@ms-web-initializr
+*
+* <h1>HostCpu控制层接口实现</h1>
+*
+* date 2020-10-29 11:44
+*
+* @author Automatic[dingpengwei@foxmail.com]
+* @version 0.0.1-SNAPSHOT
+* @since 0.0.1-SNAPSHOT
+*/
 @Api(
-    tags = "HostCpu信息结构",
-    value = "HostCpuManageApi",
-    description = "[列表查询，详情查询，启/禁用，删除，新增，修改]"
+  tags = "HostCpu信息结构",
+  value = "HostCpuManageApi",
+  description = "[列表查询，详情查询，启/禁用，删除，新增，修改]"
 )
 @RestController(value = "HostCpu")
-@RequestMapping(value = "/api/robot/cpu")
+@RequestMapping(value = "/api/HostCpu")
 @Slf4j
-public class HostCpuController extends
-    pwd.initializr.common.web.api.admin.AdminController implements HostCpuApi {
+public class HostCpuController extends pwd.initializr.common.web.api.admin.AdminController implements HostCpuApi {
 
-    @Autowired
-    private HostCpuService service;
+  @Autowired
+  private HostCpuService service;
 
-    @Override
-    public void list(String scopes, String sorts, String page) {
-        PageInput pageInput = PageInput.parse(page);
-        LinkedHashSet<ScopeBO> scopeBOS = ScopeInput.parse(scopes);
-        LinkedHashSet<SortBO> sortBOS = SortInput.parse(sorts);
-        PageableQueryResult<HostCpuBO> pageableQueryResult = service
-            .queryAllByCondition(scopeBOS, sortBOS, pageInput.getIndex(), pageInput.getSize());
-        PageOutput<HostCpuOutput> result = new PageOutput<>();
-        pageableQueryResult.getElements().forEach(bo -> {
-            HostCpuOutput output = new HostCpuOutput();
-            BeanUtils.copyProperties(bo, output);
-            result.getElements().add(output);
-        });
-        result.setTotal(pageableQueryResult.getTotal());
-        result.setIndex(pageableQueryResult.getIndex());
-        result.setSize(pageableQueryResult.getSize());
-        outputData(result);
+  @Override
+  public void list(String scopes, String sorts, String page) {
+    PageInput pageInput = PageInput.parse(page);
+    LinkedHashSet<ScopeBO> scopeBOS = ScopeInput.parse(scopes);
+    LinkedHashSet<SortBO> sortBOS = SortInput.parse(sorts);
+    PageableQueryResult<HostCpuBO> pageableQueryResult = service
+      .queryAllByCondition(scopeBOS, sortBOS, pageInput.getIndex(), pageInput.getSize());
+    PageOutput<HostCpuOutput> result = new PageOutput<>();
+    pageableQueryResult.getElements().forEach(bo -> {
+      HostCpuOutput output = new HostCpuOutput();
+      BeanUtils.copyProperties(bo, output);
+      result.getElements().add(output);
+    });
+    result.setTotal(pageableQueryResult.getTotal());
+    result.setIndex(pageableQueryResult.getIndex());
+    result.setSize(pageableQueryResult.getSize());
+    outputData(result);
+  }
+
+  @Override
+  public void detail(@Valid @NotNull(message = "参数不能为空") Long id) {
+    HostCpuBO bo = service.queryById(id);
+    HostCpuOutput output = new HostCpuOutput();
+    BeanUtils.copyProperties(bo,output);
+    outputData(output);
+  }
+
+  @Override
+  public void enable(@Valid @NotNull(message = "参数不能为空") Long id) {
+    Integer result = service.ableById(id, EntityAble.ENABLE);
+    outputData(200,result);
+  }
+
+  @Override
+  public void enable(@Valid @NotNull(message = "参数不能为空") Set<Long> ids) {
+    Integer result = service.ableById(ids, EntityAble.ENABLE);
+    outputData(200,result);
+  }
+
+  @Override
+  public void disable(@Valid @NotNull(message = "参数不能为空") Long id) {
+    Integer result = service.ableById(id, EntityAble.DISABLE);
+    outputData(200,result);
+  }
+
+  @Override
+  public void disable(@Valid @NotNull(message = "参数不能为空") Set<Long> ids) {
+    Integer result = service.ableById(ids, EntityAble.DISABLE);
+    outputData(200,result);
+  }
+
+  @Override
+  public void delete(@Valid @NotNull(message = "参数不能为空") Long id) {
+    Integer result = service.deleteById(id);
+    outputData(200,result);
+  }
+
+  @Override
+  public void delete(@Valid @NotNull(message = "参数不能为空") Set<Long> ids) {
+    Integer result = service.deleteById(ids);
+    outputData(200,result);
+  }
+
+  @Override
+  public void create(@Valid @NotNull(message = "参数不能为空") HostCpuInput input) {
+    HostCpuBO bo = new HostCpuBO();
+    BeanUtils.copyProperties(input,bo);
+    service.insert(bo);
+    outputData(200);
+  }
+
+  @Override
+  public void create(@Valid @NotNull(message = "参数不能为空") List<HostCpuInput> input) {
+    LinkedList<HostCpuBO> bos = new LinkedList<>();
+    for (HostCpuInput item : input) {
+      HostCpuBO bo = new HostCpuBO();
+      BeanUtils.copyProperties(item,bo);
+      bos.add(bo);
     }
+    service.insert(bos);
+    outputData(200);
+  }
 
-    @Override
-    public void detail(@Valid @NotNull(message = "参数不能为空") Long id) {
-        HostCpuBO bo = service.queryById(id);
-        HostCpuOutput output = new HostCpuOutput();
-        BeanUtils.copyProperties(bo, output);
-        outputData(output);
-    }
+  @Override
+  public void createOrReplace(@Valid @NotNull(message = "参数不能为空") HostCpuInput input) {
+    HostCpuBO bo = new HostCpuBO();
+    BeanUtils.copyProperties(input,bo);
+    service.insertOrReplace(bo);
+    outputData(200);
+  }
 
-    @Override
-    public void create(@Valid @NotNull(message = "参数不能为空") HostCpuInput input) {
-        HostCpuBO bo = new HostCpuBO();
-        BeanUtils.copyProperties(input, bo);
-        service.insertOrReplace(bo);
-        outputData(200, bo.getId());
+  @Override
+  public void createOrReplace(@Valid @NotNull(message = "参数不能为空") List<HostCpuInput> input) {
+    LinkedList<HostCpuBO> bos = new LinkedList<>();
+    for (HostCpuInput item : input) {
+      HostCpuBO bo = new HostCpuBO();
+      BeanUtils.copyProperties(item,bo);
+      bos.add(bo);
     }
+    service.insertOrReplace(bos);
+    outputData(200);
+  }
+
+  @Override
+  public void update(@Valid @NotNull(message = "参数不能为空") Long id,
+  @Valid @NotNull(message = "参数不能为空") HostCpuInput input) {
+    HostCpuBO bo = new HostCpuBO();
+    BeanUtils.copyProperties(input,bo);
+    Integer result = service.updateById(bo);
+    outputData(200,result);
+  }
 
 }

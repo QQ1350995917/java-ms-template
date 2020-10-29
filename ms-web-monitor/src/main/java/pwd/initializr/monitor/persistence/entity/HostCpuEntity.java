@@ -10,7 +10,7 @@ import lombok.ToString;
 
 /**
  * <h2>host_cpu数据表实体类</h2>
- * date 2020-10-23 11:58
+ * date 2020-10-29 11:44
  *
  * @author Automatic[www.dingpengwei@foxmail.com]
  * @since 0.0.1-SNAPSHOT
@@ -25,71 +25,156 @@ public class HostCpuEntity implements Serializable {
   private static final long serialVersionUID = 1L;
   /**
     * 主键
-    * 主机名称
+    * 逻辑组名
     */
-  private String id;
+  private String groupName;
   /**
-    *
-    * 执行用户进程的耗时，包括ni耗时
+    * 主键
+    * 主机名
     */
-  private Long user;
+  private String nodeName;
   /**
-    *
-    * 内核运行耗时，包括IRQ和softirq耗时
+    * 
+    * 
     */
-  private Long sys;
+  private String processor;
   /**
-    *
-    * 调整进程优先级耗时
+    * 
+    * 
     */
-  private Long nice;
+  private String vendorId;
   /**
-    *
-    * 空闲期
+    * 
+    * 
     */
-  private Long idle;
+  private String cpuFamily;
   /**
-    *
-    * 等待I/O操作完成耗时
+    * 
+    * 
     */
-  private Long wait;
+  private String model;
   /**
-    *
-    * 处理硬中断耗时
+    * 
+    * 
     */
-  private Long irq;
+  private String modelName;
   /**
-    *
-    * 处理软中断耗时
+    * 
+    * 
     */
-  private Long softIrq;
+  private String stepping;
   /**
-    *
-    * 等待虚拟CPU的耗时，此时hypervisor在为另一个虚拟处理器服务
+    * 
+    * 
     */
-  private Long stolen;
+  private String microcode;
   /**
-    *
-    * 总使用量
+    * 
+    * 
     */
-  private Long total;
+  private String cpuMhz;
   /**
-    *
+    * 
+    * 
+    */
+  private String cacheSize;
+  /**
+    * 
+    * 
+    */
+  private String physicalId;
+  /**
+    * 
+    * 
+    */
+  private String siblings;
+  /**
+    * 
+    * 
+    */
+  private String coreId;
+  /**
+    * 
+    * 
+    */
+  private String cpuCores;
+  /**
+    * 
+    * 
+    */
+  private String apicid;
+  /**
+    * 
+    * 
+    */
+  private String initialApicid;
+  /**
+    * 
+    * 
+    */
+  private String fpu;
+  /**
+    * 
+    * 
+    */
+  private String fpuException;
+  /**
+    * 
+    * 
+    */
+  private String cpuidLevel;
+  /**
+    * 
+    * 
+    */
+  private String wp;
+  /**
+    * 
+    * 
+    */
+  private String flags;
+  /**
+    * 
+    * 
+    */
+  private String bogomips;
+  /**
+    * 
+    * 
+    */
+  private String clflushSize;
+  /**
+    * 
+    * 
+    */
+  private String cacheAlignment;
+  /**
+    * 
+    * 
+    */
+  private String addressSizes;
+  /**
+    * 
+    * 
+    */
+  private String powerManagement;
+  /**
+    * 
     * 可用状态：0:不可用；1:可用
     */
   private Integer able;
   /**
-    *
+    * 
     * 删除状态：0:未删除；1:已删除
     */
   private Integer del;
   /**
-    *
+    * 
     * 数据创建时间
     */
   private Date createTime;
   /**
-    *
+    * 
     * 最近更新时间
     */
   private Date updateTime;
