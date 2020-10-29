@@ -13,9 +13,11 @@ import pwd.initializr.common.http.HttpXConfig;
 import pwd.initializr.common.mw.monitor.client.linux.HostClientOnLinux;
 import pwd.initializr.common.mw.monitor.client.linux.HostCpuClientOnLinux;
 import pwd.initializr.common.mw.monitor.client.linux.HostCpuStatClientOnLinux;
+import pwd.initializr.common.mw.monitor.client.linux.HostDiskStatClientOnLinux;
 import pwd.initializr.common.mw.monitor.client.win.HostClientOnWin;
 import pwd.initializr.common.mw.monitor.client.win.HostCpuClientOnWin;
 import pwd.initializr.common.mw.monitor.client.win.HostCpuStatClientOnWin;
+import pwd.initializr.common.mw.monitor.client.win.HostDiskStatClientOnWin;
 import pwd.initializr.common.utils.OSUtil;
 
 /**
@@ -79,33 +81,19 @@ public class MonitorClientAutoConfiguration {
     String cpuConnectTimeoutMillisecond = getProperty("monitor.cloud.client.host.cpu.connect.timeout.millisecond");
     String cpuSocketTimeoutMillisecond = getProperty("monitor.cloud.client.host.cpu.socket.timeout.millisecond");
 
-    String cpuCoreEnable = getProperty("monitor.cloud.client.host.cpu.stat.enable");
-    String cpuCoreRateSecond = getProperty("monitor.cloud.client.host.cpu.stat.rate.second");
-    String cpuCoreUrl = getProperty("monitor.cloud.client.host.cpu.stat.url");
-    String cpuCoreConnectionRequestTimeoutMillisecond = getProperty("monitor.cloud.client.host.cpu.stat.connection.request.timeout.millisecond");
-    String cpuCoreConnectTimeoutMillisecond = getProperty("monitor.cloud.client.host.cpu.stat.connect.timeout.millisecond");
-    String cpuCoreSocketTimeoutMillisecond = getProperty("monitor.cloud.client.host.cpu.stat.socket.timeout.millisecond");
+    String cpuStatEnable = getProperty("monitor.cloud.client.host.cpu.stat.enable");
+    String cpuStatRateSecond = getProperty("monitor.cloud.client.host.cpu.stat.rate.second");
+    String cpuStatUrl = getProperty("monitor.cloud.client.host.cpu.stat.url");
+    String cpuStatConnectionRequestTimeoutMillisecond = getProperty("monitor.cloud.client.host.cpu.stat.connection.request.timeout.millisecond");
+    String cpuStatConnectTimeoutMillisecond = getProperty("monitor.cloud.client.host.cpu.stat.connect.timeout.millisecond");
+    String cpuStatSocketTimeoutMillisecond = getProperty("monitor.cloud.client.host.cpu.stat.socket.timeout.millisecond");
 
-    String cpuCoreUsageEnable = getProperty("monitor.cloud.client.cpu.core.usage.enable");
-    String cpuCoreUsageRateSecond = getProperty("monitor.cloud.client.cpu.core.usage.rate.second");
-    String cpuCoreUsageUrl = getProperty("monitor.cloud.client.cpu.core.usage.url");
-    String cpuCoreUsageConnectionRequestTimeoutMillisecond = getProperty("monitor.cloud.client.cpu.core.usage.connection.request.timeout.millisecond");
-    String cpuCoreUsageConnectTimeoutMillisecond = getProperty("monitor.cloud.client.cpu.core.usage.connect.timeout.millisecond");
-    String cpuCoreUsageSocketTimeoutMillisecond = getProperty("monitor.cloud.client.cpu.core.usage.socket.timeout.millisecond");
-
-    String diskEnable = getProperty("monitor.cloud.client.disk.enable");
-    String diskRateSecond = getProperty("monitor.cloud.client.disk.rate.second");
-    String diskUrl = getProperty("monitor.cloud.client.disk.url");
-    String diskConnectionRequestTimeoutMillisecond = getProperty("monitor.cloud.client.disk.connection.request.timeout.millisecond");
-    String diskConnectTimeoutMillisecond = getProperty("monitor.cloud.client.disk.connect.timeout.millisecond");
-    String diskSocketTimeoutMillisecond = getProperty("monitor.cloud.client.disk.socket.timeout.millisecond");
-
-    String diskUsageEnable = getProperty("monitor.cloud.client.disk.usage.enable");
-    String diskUsageRateSecond = getProperty("monitor.cloud.client.disk.usage.rate.second");
-    String diskUsageUrl = getProperty("monitor.cloud.client.disk.usage.url");
-    String diskUsageConnectionRequestTimeoutMillisecond = getProperty("monitor.cloud.client.disk.usage.connection.request.timeout.millisecond");
-    String diskUsageConnectTimeoutMillisecond = getProperty("monitor.cloud.client.disk.usage.connect.timeout.millisecond");
-    String diskUsageSocketTimeoutMillisecond = getProperty("monitor.cloud.client.disk.usage.socket.timeout.millisecond");
+    String diskStatEnable = getProperty("monitor.cloud.client.host.disk.stat.enable");
+    String diskStatRateSecond = getProperty("monitor.cloud.client.host.disk.stat.rate.second");
+    String diskStatUrl = getProperty("monitor.cloud.client.host.disk.stat.url");
+    String diskStatConnectionRequestTimeoutMillisecond = getProperty("monitor.cloud.client.host.disk.stat.connection.request.timeout.millisecond");
+    String diskStatConnectTimeoutMillisecond = getProperty("monitor.cloud.client.host.disk.stat.connect.timeout.millisecond");
+    String diskStatSocketTimeoutMillisecond = getProperty("monitor.cloud.client.host.disk.stat.socket.timeout.millisecond");
 
     String ethernetEnable = getProperty("monitor.cloud.client.ethernet.enable");
     String ethernetRateSecond = getProperty("monitor.cloud.client.ethernet.rate.second");
@@ -164,26 +152,19 @@ public class MonitorClientAutoConfiguration {
     instance.setCpuConnectTimeoutMillisecond(StringUtils.isBlank(cpuConnectTimeoutMillisecond) ? instance.getConnectTimeoutMillisecond() : Integer.parseInt(cpuConnectTimeoutMillisecond));
     instance.setCpuSocketTimeoutMillisecond(StringUtils.isBlank(cpuSocketTimeoutMillisecond) ? instance.getSocketTimeoutMillisecond() : Integer.parseInt(cpuSocketTimeoutMillisecond));
 
-    instance.setCpuStatEnable(StringUtils.isBlank(cpuCoreEnable) ? instance.isEnable() : Boolean.parseBoolean(cpuCoreEnable));
-    instance.setCpuStatRateSecond(StringUtils.isBlank(cpuCoreRateSecond) ? instance.getRateSecond() : Integer.parseInt(cpuCoreRateSecond));
-    instance.setCpuStatUrl(StringUtils.isBlank(cpuCoreUrl) ? url : cpuCoreUrl);
-    instance.setCpuStatConnectionRequestTimeoutMillisecond(StringUtils.isBlank(cpuCoreConnectionRequestTimeoutMillisecond) ? instance.getConnectionRequestTimeoutMillisecond() : Integer.parseInt(cpuCoreConnectionRequestTimeoutMillisecond));
-    instance.setCpuStatConnectTimeoutMillisecond(StringUtils.isBlank(cpuCoreConnectTimeoutMillisecond) ? instance.getConnectTimeoutMillisecond() : Integer.parseInt(cpuCoreConnectTimeoutMillisecond));
-    instance.setCpuStatSocketTimeoutMillisecond(StringUtils.isBlank(cpuCoreSocketTimeoutMillisecond) ? instance.getSocketTimeoutMillisecond() : Integer.parseInt(cpuCoreSocketTimeoutMillisecond));
+    instance.setCpuStatEnable(StringUtils.isBlank(cpuStatEnable) ? instance.isEnable() : Boolean.parseBoolean(cpuStatEnable));
+    instance.setCpuStatRateSecond(StringUtils.isBlank(cpuStatRateSecond) ? instance.getRateSecond() : Integer.parseInt(cpuStatRateSecond));
+    instance.setCpuStatUrl(StringUtils.isBlank(cpuStatUrl) ? url : cpuStatUrl);
+    instance.setCpuStatConnectionRequestTimeoutMillisecond(StringUtils.isBlank(cpuStatConnectionRequestTimeoutMillisecond) ? instance.getConnectionRequestTimeoutMillisecond() : Integer.parseInt(cpuStatConnectionRequestTimeoutMillisecond));
+    instance.setCpuStatConnectTimeoutMillisecond(StringUtils.isBlank(cpuStatConnectTimeoutMillisecond) ? instance.getConnectTimeoutMillisecond() : Integer.parseInt(cpuStatConnectTimeoutMillisecond));
+    instance.setCpuStatSocketTimeoutMillisecond(StringUtils.isBlank(cpuStatSocketTimeoutMillisecond) ? instance.getSocketTimeoutMillisecond() : Integer.parseInt(cpuStatSocketTimeoutMillisecond));
 
-    instance.setDiskEnable(StringUtils.isBlank(diskEnable) ? instance.isEnable() : Boolean.parseBoolean(diskEnable));
-    instance.setDiskRateSecond(StringUtils.isBlank(diskRateSecond) ? instance.getRateSecond() : Integer.parseInt(diskRateSecond));
-    instance.setDiskUrl(StringUtils.isBlank(diskUrl) ? url : diskUrl);
-    instance.setDiskConnectionRequestTimeoutMillisecond(StringUtils.isBlank(diskConnectionRequestTimeoutMillisecond) ? instance.getConnectionRequestTimeoutMillisecond() : Integer.parseInt(diskConnectionRequestTimeoutMillisecond));
-    instance.setDiskConnectTimeoutMillisecond(StringUtils.isBlank(diskConnectTimeoutMillisecond) ? instance.getConnectTimeoutMillisecond() : Integer.parseInt(diskConnectTimeoutMillisecond));
-    instance.setDiskSocketTimeoutMillisecond(StringUtils.isBlank(diskSocketTimeoutMillisecond) ? instance.getSocketTimeoutMillisecond() : Integer.parseInt(diskSocketTimeoutMillisecond));
-
-    instance.setDiskUsageEnable(StringUtils.isBlank(diskUsageEnable) ? instance.isEnable() : Boolean.parseBoolean(diskUsageEnable));
-    instance.setDiskUsageRateSecond(StringUtils.isBlank(diskUsageRateSecond) ? instance.getRateSecond() : Integer.parseInt(diskUsageRateSecond));
-    instance.setDiskUsageUrl(StringUtils.isBlank(diskUsageUrl) ? url : diskUsageUrl);
-    instance.setDiskUsageConnectionRequestTimeoutMillisecond(StringUtils.isBlank(diskUsageConnectionRequestTimeoutMillisecond) ? instance.getConnectionRequestTimeoutMillisecond() : Integer.parseInt(diskUsageConnectionRequestTimeoutMillisecond));
-    instance.setDiskUsageConnectTimeoutMillisecond(StringUtils.isBlank(diskUsageConnectTimeoutMillisecond) ? instance.getConnectTimeoutMillisecond() : Integer.parseInt(diskUsageConnectTimeoutMillisecond));
-    instance.setDiskUsageSocketTimeoutMillisecond(StringUtils.isBlank(diskUsageSocketTimeoutMillisecond) ? instance.getSocketTimeoutMillisecond() : Integer.parseInt(diskUsageSocketTimeoutMillisecond));
+    instance.setDiskStatEnable(StringUtils.isBlank(diskStatEnable) ? instance.isEnable() : Boolean.parseBoolean(diskStatEnable));
+    instance.setDiskStatRateSecond(StringUtils.isBlank(diskStatRateSecond) ? instance.getRateSecond() : Integer.parseInt(diskStatRateSecond));
+    instance.setDiskStatUrl(StringUtils.isBlank(diskStatUrl) ? url : diskStatUrl);
+    instance.setDiskStatConnectionRequestTimeoutMillisecond(StringUtils.isBlank(diskStatConnectionRequestTimeoutMillisecond) ? instance.getConnectionRequestTimeoutMillisecond() : Integer.parseInt(diskStatConnectionRequestTimeoutMillisecond));
+    instance.setDiskStatConnectTimeoutMillisecond(StringUtils.isBlank(diskStatConnectTimeoutMillisecond) ? instance.getConnectTimeoutMillisecond() : Integer.parseInt(diskStatConnectTimeoutMillisecond));
+    instance.setDiskStatSocketTimeoutMillisecond(StringUtils.isBlank(diskStatSocketTimeoutMillisecond) ? instance.getSocketTimeoutMillisecond() : Integer.parseInt(diskStatSocketTimeoutMillisecond));
 
     instance.setEthernetEnable(StringUtils.isBlank(ethernetEnable) ? instance.isEnable() : Boolean.parseBoolean(ethernetEnable));
     instance.setEthernetRateSecond(StringUtils.isBlank(ethernetRateSecond) ? instance.getRateSecond() : Integer.parseInt(ethernetRateSecond));
@@ -252,6 +233,17 @@ public class MonitorClientAutoConfiguration {
     }
     throw new RuntimeException("incompatible OS " + OSUtil.getOSName());
   }
+
+  @Bean
+  @ConditionalOnProperty(value = "monitor.cloud.client.host.disk.stat.enable", matchIfMissing = true)
+  public MonitorClient diskStatClient(MonitorClientConfig monitorClientConfig) {
+    if (OSUtil.isLinux()) {
+      return new HostDiskStatClientOnLinux(monitorClientConfig);
+    } else if (OSUtil.isWindows()) {
+      return new HostDiskStatClientOnWin(monitorClientConfig);
+    }
+    throw new RuntimeException("incompatible OS " + OSUtil.getOSName());
+  }
 //
 //  @Bean
 //  @ConditionalOnProperty(value = "monitor.cloud.client.who.enable", matchIfMissing = true)
@@ -276,7 +268,7 @@ public class MonitorClientAutoConfiguration {
 //  @Bean
 //  @ConditionalOnProperty(value = "monitor.cloud.client.disk.enable", matchIfMissing = true)
 //  public MonitorClient diskClient(MonitorClientConfig monitorClientConfig) {
-//    return new DiskClient(monitorClientConfig);
+//    return new HostDiskStatClientOnLinux(monitorClientConfig);
 //  }
 //
 //  @Bean
