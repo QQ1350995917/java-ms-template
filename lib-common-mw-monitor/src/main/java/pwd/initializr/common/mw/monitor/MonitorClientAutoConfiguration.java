@@ -14,10 +14,12 @@ import pwd.initializr.common.mw.monitor.client.linux.HostClientOnLinux;
 import pwd.initializr.common.mw.monitor.client.linux.HostCpuClientOnLinux;
 import pwd.initializr.common.mw.monitor.client.linux.HostCpuStatClientOnLinux;
 import pwd.initializr.common.mw.monitor.client.linux.HostDiskStatClientOnLinux;
+import pwd.initializr.common.mw.monitor.client.linux.HostEthernetStatClientOnLinux;
 import pwd.initializr.common.mw.monitor.client.win.HostClientOnWin;
 import pwd.initializr.common.mw.monitor.client.win.HostCpuClientOnWin;
 import pwd.initializr.common.mw.monitor.client.win.HostCpuStatClientOnWin;
 import pwd.initializr.common.mw.monitor.client.win.HostDiskStatClientOnWin;
+import pwd.initializr.common.mw.monitor.client.win.HostEthernetStatClientOnWin;
 import pwd.initializr.common.utils.OSUtil;
 
 /**
@@ -95,19 +97,12 @@ public class MonitorClientAutoConfiguration {
     String diskStatConnectTimeoutMillisecond = getProperty("monitor.cloud.client.host.disk.stat.connect.timeout.millisecond");
     String diskStatSocketTimeoutMillisecond = getProperty("monitor.cloud.client.host.disk.stat.socket.timeout.millisecond");
 
-    String ethernetEnable = getProperty("monitor.cloud.client.ethernet.enable");
-    String ethernetRateSecond = getProperty("monitor.cloud.client.ethernet.rate.second");
-    String ethernetUrl = getProperty("monitor.cloud.client.ethernet.url");
-    String ethernetConnectionRequestTimeoutMillisecond = getProperty("monitor.cloud.client.ethernet.connection.request.timeout.millisecond");
-    String ethernetConnectTimeoutMillisecond = getProperty("monitor.cloud.client.ethernet.connect.timeout.millisecond");
-    String ethernetSocketTimeoutMillisecond = getProperty("monitor.cloud.client.ethernet.socket.timeout.millisecond");
-
-    String ethernetStatEnable = getProperty("monitor.cloud.client.ethernet.stat.enable");
-    String ethernetStatRateSecond = getProperty("monitor.cloud.client.ethernet.stat.rate.second");
-    String ethernetStatUrl = getProperty("monitor.cloud.client.ethernet.stat.url");
-    String ethernetStatConnectionRequestTimeoutMillisecond = getProperty("monitor.cloud.client.ethernet.stat.connection.request.timeout.millisecond");
-    String ethernetStatConnectTimeoutMillisecond = getProperty("monitor.cloud.client.ethernet.stat.connect.timeout.millisecond");
-    String ethernetStatSocketTimeoutMillisecond = getProperty("monitor.cloud.client.ethernet.stat.socket.timeout.millisecond");
+    String ethernetStatEnable = getProperty("monitor.cloud.client.host.ethernet.stat.enable");
+    String ethernetStatRateSecond = getProperty("monitor.cloud.client.host.ethernet.stat.rate.second");
+    String ethernetStatUrl = getProperty("monitor.cloud.client.host.ethernet.stat.url");
+    String ethernetStatConnectionRequestTimeoutMillisecond = getProperty("monitor.cloud.client.host.ethernet.stat.connection.request.timeout.millisecond");
+    String ethernetStatConnectTimeoutMillisecond = getProperty("monitor.cloud.client.host.ethernet.stat.connect.timeout.millisecond");
+    String ethernetStatSocketTimeoutMillisecond = getProperty("monitor.cloud.client.host.ethernet.stat.socket.timeout.millisecond");
 
     String memoryEnable = getProperty("monitor.cloud.client.memory.enable");
     String memoryRateSecond = getProperty("monitor.cloud.client.memory.rate.second");
@@ -165,13 +160,6 @@ public class MonitorClientAutoConfiguration {
     instance.setDiskStatConnectionRequestTimeoutMillisecond(StringUtils.isBlank(diskStatConnectionRequestTimeoutMillisecond) ? instance.getConnectionRequestTimeoutMillisecond() : Integer.parseInt(diskStatConnectionRequestTimeoutMillisecond));
     instance.setDiskStatConnectTimeoutMillisecond(StringUtils.isBlank(diskStatConnectTimeoutMillisecond) ? instance.getConnectTimeoutMillisecond() : Integer.parseInt(diskStatConnectTimeoutMillisecond));
     instance.setDiskStatSocketTimeoutMillisecond(StringUtils.isBlank(diskStatSocketTimeoutMillisecond) ? instance.getSocketTimeoutMillisecond() : Integer.parseInt(diskStatSocketTimeoutMillisecond));
-
-    instance.setEthernetEnable(StringUtils.isBlank(ethernetEnable) ? instance.isEnable() : Boolean.parseBoolean(ethernetEnable));
-    instance.setEthernetRateSecond(StringUtils.isBlank(ethernetRateSecond) ? instance.getRateSecond() : Integer.parseInt(ethernetRateSecond));
-    instance.setEthernetUrl(StringUtils.isBlank(ethernetUrl) ? url : ethernetUrl);
-    instance.setEthernetConnectionRequestTimeoutMillisecond(StringUtils.isBlank(ethernetConnectionRequestTimeoutMillisecond) ? instance.getConnectionRequestTimeoutMillisecond() : Integer.parseInt(ethernetConnectionRequestTimeoutMillisecond));
-    instance.setEthernetConnectTimeoutMillisecond(StringUtils.isBlank(ethernetConnectTimeoutMillisecond) ? instance.getConnectTimeoutMillisecond() : Integer.parseInt(ethernetConnectTimeoutMillisecond));
-    instance.setEthernetSocketTimeoutMillisecond(StringUtils.isBlank(ethernetSocketTimeoutMillisecond) ? instance.getSocketTimeoutMillisecond() : Integer.parseInt(ethernetSocketTimeoutMillisecond));
 
     instance.setEthernetStatEnable(StringUtils.isBlank(ethernetStatEnable) ? instance.isEnable() : Boolean.parseBoolean(ethernetStatEnable));
     instance.setEthernetStatRateSecond(StringUtils.isBlank(ethernetStatRateSecond) ? instance.getRateSecond() : Integer.parseInt(ethernetStatRateSecond));
@@ -244,39 +232,18 @@ public class MonitorClientAutoConfiguration {
     }
     throw new RuntimeException("incompatible OS " + OSUtil.getOSName());
   }
-//
-//  @Bean
-//  @ConditionalOnProperty(value = "monitor.cloud.client.who.enable", matchIfMissing = true)
-//  public MonitorClient whoClient(MonitorClientConfig monitorClientConfig) {
-//    return new WhoClient(monitorClientConfig);
-//  }
-//
 
-//
-//  @Bean
-//  @ConditionalOnProperty(value = "monitor.cloud.client.cpu.core.enable", matchIfMissing = true)
-//  public MonitorClient cpuCoreClient(MonitorClientConfig monitorClientConfig) {
-//    return new CpuCoreClient(monitorClientConfig);
-//  }
-//
-//  @Bean
-//  @ConditionalOnProperty(value = "monitor.cloud.client.cpu.core.usage.enable", matchIfMissing = true)
-//  public MonitorClient cpuCoreUsageClient(MonitorClientConfig monitorClientConfig) {
-//    return new CpuCoreUsageClient(monitorClientConfig);
-//  }
-//
-//  @Bean
-//  @ConditionalOnProperty(value = "monitor.cloud.client.disk.enable", matchIfMissing = true)
-//  public MonitorClient diskClient(MonitorClientConfig monitorClientConfig) {
-//    return new HostDiskStatClientOnLinux(monitorClientConfig);
-//  }
-//
-//  @Bean
-//  @ConditionalOnProperty(value = "monitor.cloud.client.disk.usage.enable", matchIfMissing = true)
-//  public MonitorClient diskUsageClient(MonitorClientConfig monitorClientConfig) {
-//    return new DiskUsageClient(monitorClientConfig);
-//  }
-//
+  @Bean
+  @ConditionalOnProperty(value = "monitor.cloud.client.host.ethernet.stat.enable", matchIfMissing = true)
+  public MonitorClient ethernetStatClient(MonitorClientConfig monitorClientConfig) {
+    if (OSUtil.isLinux()) {
+      return new HostEthernetStatClientOnLinux(monitorClientConfig);
+    } else if (OSUtil.isWindows()) {
+      return new HostEthernetStatClientOnWin(monitorClientConfig);
+    }
+    throw new RuntimeException("incompatible OS " + OSUtil.getOSName());
+  }
+
 //  @Bean
 //  @ConditionalOnProperty(value = "monitor.cloud.client.ethernet.enable", matchIfMissing = true)
 //  public MonitorClient ethernetClient(MonitorClientConfig monitorClientConfig) {

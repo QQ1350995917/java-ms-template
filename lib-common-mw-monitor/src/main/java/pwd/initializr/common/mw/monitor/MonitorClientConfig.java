@@ -66,13 +66,6 @@ public class MonitorClientConfig implements EnvironmentAware {
     private int diskStatConnectTimeoutMillisecond;
     private int diskStatSocketTimeoutMillisecond;
 
-    private boolean ethernetEnable;
-    private int ethernetRateSecond;
-    private String ethernetUrl;
-    private int ethernetConnectionRequestTimeoutMillisecond;
-    private int ethernetConnectTimeoutMillisecond;
-    private int ethernetSocketTimeoutMillisecond;
-
     private boolean ethernetStatEnable;
     private int ethernetStatRateSecond;
     private String ethernetStatUrl;
@@ -265,39 +258,6 @@ public class MonitorClientConfig implements EnvironmentAware {
         this.diskStatUrl = diskStatUrl;
     }
 
-    public int getEthernetConnectTimeoutMillisecond() {
-        return ethernetConnectTimeoutMillisecond;
-    }
-
-    public void setEthernetConnectTimeoutMillisecond(int ethernetConnectTimeoutMillisecond) {
-        this.ethernetConnectTimeoutMillisecond = ethernetConnectTimeoutMillisecond;
-    }
-
-    public int getEthernetConnectionRequestTimeoutMillisecond() {
-        return ethernetConnectionRequestTimeoutMillisecond;
-    }
-
-    public void setEthernetConnectionRequestTimeoutMillisecond(
-        int ethernetConnectionRequestTimeoutMillisecond) {
-        this.ethernetConnectionRequestTimeoutMillisecond = ethernetConnectionRequestTimeoutMillisecond;
-    }
-
-    public int getEthernetRateSecond() {
-        return ethernetRateSecond;
-    }
-
-    public void setEthernetRateSecond(int ethernetRateSecond) {
-        this.ethernetRateSecond = ethernetRateSecond;
-    }
-
-    public int getEthernetSocketTimeoutMillisecond() {
-        return ethernetSocketTimeoutMillisecond;
-    }
-
-    public void setEthernetSocketTimeoutMillisecond(int ethernetSocketTimeoutMillisecond) {
-        this.ethernetSocketTimeoutMillisecond = ethernetSocketTimeoutMillisecond;
-    }
-
     public int getEthernetStatConnectTimeoutMillisecond() {
         return ethernetStatConnectTimeoutMillisecond;
     }
@@ -338,14 +298,6 @@ public class MonitorClientConfig implements EnvironmentAware {
 
     public void setEthernetStatUrl(String ethernetStatUrl) {
         this.ethernetStatUrl = ethernetStatUrl;
-    }
-
-    public String getEthernetUrl() {
-        return ethernetUrl;
-    }
-
-    public void setEthernetUrl(String ethernetUrl) {
-        this.ethernetUrl = ethernetUrl;
     }
 
     public int getMemoryConnectTimeoutMillisecond() {
@@ -568,22 +520,6 @@ public class MonitorClientConfig implements EnvironmentAware {
         this.enable = enable;
     }
 
-    public boolean isEthernetEnable() {
-        return ethernetEnable;
-    }
-
-    public void setEthernetEnable(boolean ethernetEnable) {
-        this.ethernetEnable = ethernetEnable;
-    }
-
-    public boolean isEthernetStatEnable() {
-        return ethernetStatEnable;
-    }
-
-    public void setEthernetStatEnable(boolean ethernetStatEnable) {
-        this.ethernetStatEnable = ethernetStatEnable;
-    }
-
     public boolean isMemoryEnable() {
         return memoryEnable;
     }
@@ -614,6 +550,18 @@ public class MonitorClientConfig implements EnvironmentAware {
 
     public void setWhoEnable(boolean whoEnable) {
         this.whoEnable = whoEnable;
+    }
+
+    public boolean isHostEnable() {
+        return hostEnable;
+    }
+
+    public boolean isEthernetStatEnable() {
+        return ethernetStatEnable;
+    }
+
+    public void setEthernetStatEnable(boolean ethernetStatEnable) {
+        this.ethernetStatEnable = ethernetStatEnable;
     }
 
     @Override
