@@ -1,9 +1,14 @@
-package pwd.initializr.common.mw.monitor.client;
+package pwd.initializr.common.mw.monitor.client.linux;
 
+import com.alibaba.fastjson.JSON;
+import java.util.List;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import pwd.initializr.common.mw.monitor.MonitorClient;
 import pwd.initializr.common.mw.monitor.MonitorClientConfig;
+import pwd.initializr.common.mw.monitor.index.MonitorByShellOnLinux;
+import pwd.initializr.monitor.rpc.ICpuCore;
+import pwd.initializr.monitor.rpc.IHost;
 
 /**
  * pwd.initializr.common.mw.monitor.client@ms-web-initializr
@@ -18,9 +23,9 @@ import pwd.initializr.common.mw.monitor.MonitorClientConfig;
  */
 @Singleton
 @Slf4j
-public class CpuClient extends MonitorClient {
+public class HostCpuClientOnLinux extends MonitorClient {
 
-  public CpuClient(MonitorClientConfig monitorClientConfig) {
+  public HostCpuClientOnLinux(MonitorClientConfig monitorClientConfig) {
     super(monitorClientConfig);
   }
 
@@ -37,9 +42,10 @@ public class CpuClient extends MonitorClient {
   @Override
   protected void refresh() {
     try {
-//      RPCHostCpu cpu = MonitorBySigar.cpu();
-//      String jsonString = JSON.toJSONString(cpu);
-//      httpX.putJson(monitorClientConfig.getCpuUrl(), jsonString);
+        MonitorByShellOnLinux monitorByShellOnLinux = new MonitorByShellOnLinux();
+        List<ICpuCore> cpuCore = monitorByShellOnLinux.getCpuCore();
+        String jsonString = JSON.toJSONString(cpuCore);
+        httpX.putJson(monitorClientConfig.getCpuUrl(), jsonString);
     } catch (Exception e) {
       throw new RuntimeException(e);
     }

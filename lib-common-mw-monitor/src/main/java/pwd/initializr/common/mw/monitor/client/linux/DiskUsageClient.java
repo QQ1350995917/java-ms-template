@@ -1,4 +1,4 @@
-package pwd.initializr.common.mw.monitor.client;
+package pwd.initializr.common.mw.monitor.client.linux;
 
 import pwd.initializr.common.mw.monitor.MonitorClient;
 import pwd.initializr.common.mw.monitor.MonitorClientConfig;
@@ -14,28 +14,28 @@ import pwd.initializr.common.mw.monitor.MonitorClientConfig;
  * @version 1.0.0
  * @since DistributionVersion
  */
-public class EthernetClient extends MonitorClient {
+public class DiskUsageClient extends MonitorClient {
 
-  public EthernetClient(MonitorClientConfig monitorClientConfig) {
+  public DiskUsageClient(MonitorClientConfig monitorClientConfig) {
     super(monitorClientConfig);
   }
 
   @Override
   protected String getScheduleName() {
-    return "Monitor-Ethernet-Client";
+    return "Monitor-Disk-Usage-Client";
   }
 
   @Override
   protected int getScheduleSecondRate() {
-    return monitorClientConfig.getEthernetRateSecond();
+    return monitorClientConfig.getDiskUsageRateSecond();
   }
 
   @Override
   protected void refresh() {
     try {
-//      List<RPCHostEthernet> ethernet = MonitorBySigar.ethernet();
-//      String jsonString = JSON.toJSONString(ethernet);
-//      httpX.putJson(monitorClientConfig.getEthernetUrl(), jsonString);
+//      List<RPCHostDiskUsage> rpcHostDiskUsages = MonitorBySigar.diskUsage();
+//      String jsonString = JSON.toJSONString(rpcHostDiskUsages);
+//      httpX.postJson(monitorClientConfig.getDiskUsageUrl(), jsonString);
     } catch (Exception e) {
       throw new RuntimeException(e);
     }

@@ -1,4 +1,4 @@
-package pwd.initializr.common.mw.monitor.client;
+package pwd.initializr.common.mw.monitor.client.linux;
 
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +25,7 @@ public class WhoClient extends MonitorClient {
   }
 
   public static void main(String[] args) throws Exception {
-    new OSClient(null);
+    new HostClientOnLinux(null);
     Thread.sleep(Integer.MAX_VALUE);
   }
 

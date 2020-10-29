@@ -22,6 +22,8 @@ import lombok.ToString;
 @ToString
 public class RPCDiskStat implements IDiskStat {
 
+    private String groupName;
+    private String nodeName;
     public long majorDeviceNumber;
     public long minorDeviceNumber;
     public String deviceName;
@@ -105,5 +107,15 @@ public class RPCDiskStat implements IDiskStat {
     @Override
     public long getIoSpentAllMilliseconds() {
         return ioSpentAllMilliseconds;
+    }
+
+    @Override
+    public String getGroupName() {
+        return groupName;
+    }
+
+    @Override
+    public String getNodeName() {
+        return nodeName;
     }
 }

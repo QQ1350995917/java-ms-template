@@ -23,6 +23,8 @@ import lombok.ToString;
 @ToString
 public class RPCCpuStat implements ICpuStat {
 
+    private String groupName;
+    private String nodeName;
     private ICpuCoreStat cpuStat;
     private LinkedList<ICpuCoreStat> cpuCoreStat;
 
@@ -34,5 +36,15 @@ public class RPCCpuStat implements ICpuStat {
     @Override
     public LinkedList<ICpuCoreStat> getCpuCoreStat() {
         return cpuCoreStat;
+    }
+
+    @Override
+    public String getGroupName() {
+        return groupName;
+    }
+
+    @Override
+    public String getNodeName() {
+        return nodeName;
     }
 }

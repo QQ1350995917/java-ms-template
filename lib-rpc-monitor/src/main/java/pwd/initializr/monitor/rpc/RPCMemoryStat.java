@@ -22,6 +22,8 @@ import lombok.ToString;
 @ToString
 public class RPCMemoryStat implements IMemoryStat {
 
+    private String groupName;
+    private String nodeName;
     private long memTotal;
     private long memFree;
     private long memAvailable;
@@ -65,6 +67,16 @@ public class RPCMemoryStat implements IMemoryStat {
     private long hugePagesize;
     private long directMap4k;
     private long directMap2M;
+
+    @Override
+    public String getGroupName() {
+        return groupName;
+    }
+
+    @Override
+    public String getNodeName() {
+        return nodeName;
+    }
 
     @Override
     public long getMemTotal() {

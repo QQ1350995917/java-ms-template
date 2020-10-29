@@ -156,7 +156,7 @@ public class OSHIClient {
             100d * user / totalCpu, 100d * nice / totalCpu, 100d * sys / totalCpu, 100d * idle / totalCpu,
             100d * iowait / totalCpu, 100d * irq / totalCpu, 100d * softirq / totalCpu, 100d * steal / totalCpu);
 //        System.out.format("CPU load: %.1f%% (counting ticks)%n", processor.getSystemCpuLoadBetweenTicks() * 100);
-        System.out.format("CPU load: %.1f%% (OS MXBean)%n", processor.getSystemCpuLoadTicks());
+        System.out.format("CPU load: %.1f%% (OSUtil MXBean)%n", processor.getSystemCpuLoadTicks());
         double[] loadAverage = processor.getSystemLoadAverage(3);
         System.out.println("CPU load averages:" + (loadAverage[0] < 0 ? " N/A" : String.format(" %.2f", loadAverage[0]))
             + (loadAverage[1] < 0 ? " N/A" : String.format(" %.2f", loadAverage[1]))
@@ -228,7 +228,7 @@ public class OSHIClient {
                 readwrite ? disk.getTransferTime() : "?");
             List<HWPartition> partitions = disk.getPartitions();
             if (partitions == null) {
-                // TODO Remove when all OS's implemented
+                // TODO Remove when all OSUtil's implemented
                 continue;
             }
             for (HWPartition part : partitions) {

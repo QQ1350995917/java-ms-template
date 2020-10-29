@@ -15,7 +15,6 @@ import org.springframework.core.env.Environment;
  * @version 1.0.0
  * @since DistributionVersion
  */
-@ConfigurationProperties(MonitorClientConfig.PREFIX)
 public class MonitorClientConfig implements EnvironmentAware {
 
   public static final String PREFIX = "monitor.cloud.client";
@@ -33,12 +32,12 @@ public class MonitorClientConfig implements EnvironmentAware {
   private int connectTimeoutMillisecond;
   private int socketTimeoutMillisecond;
 
-  private boolean osEnable;
-  private int osRateSecond;
-  private String osUrl;
-  private int osConnectionRequestTimeoutMillisecond;
-  private int osConnectTimeoutMillisecond;
-  private int osSocketTimeoutMillisecond;
+  private boolean hostEnable;
+  private int hostRateSecond;
+  private String hostUrl;
+  private int hostConnectionRequestTimeoutMillisecond;
+  private int hostConnectTimeoutMillisecond;
+  private int hostSocketTimeoutMillisecond;
 
   private boolean whoEnable;
   private int whoRateSecond;
@@ -527,44 +526,44 @@ public class MonitorClientConfig implements EnvironmentAware {
     this.memoryUrl = memoryUrl;
   }
 
-  public int getOsConnectTimeoutMillisecond() {
-    return osConnectTimeoutMillisecond;
+  public int getHostConnectTimeoutMillisecond() {
+    return hostConnectTimeoutMillisecond;
   }
 
-  public void setOsConnectTimeoutMillisecond(int osConnectTimeoutMillisecond) {
-    this.osConnectTimeoutMillisecond = osConnectTimeoutMillisecond;
+  public void setHostConnectTimeoutMillisecond(int hostConnectTimeoutMillisecond) {
+    this.hostConnectTimeoutMillisecond = hostConnectTimeoutMillisecond;
   }
 
-  public int getOsConnectionRequestTimeoutMillisecond() {
-    return osConnectionRequestTimeoutMillisecond;
+  public int getHostConnectionRequestTimeoutMillisecond() {
+    return hostConnectionRequestTimeoutMillisecond;
   }
 
-  public void setOsConnectionRequestTimeoutMillisecond(int osConnectionRequestTimeoutMillisecond) {
-    this.osConnectionRequestTimeoutMillisecond = osConnectionRequestTimeoutMillisecond;
+  public void setHostConnectionRequestTimeoutMillisecond(int hostConnectionRequestTimeoutMillisecond) {
+    this.hostConnectionRequestTimeoutMillisecond = hostConnectionRequestTimeoutMillisecond;
   }
 
-  public int getOsRateSecond() {
-    return osRateSecond;
+  public int getHostRateSecond() {
+    return hostRateSecond;
   }
 
-  public void setOsRateSecond(int osRateSecond) {
-    this.osRateSecond = osRateSecond;
+  public void setHostRateSecond(int hostRateSecond) {
+    this.hostRateSecond = hostRateSecond;
   }
 
-  public int getOsSocketTimeoutMillisecond() {
-    return osSocketTimeoutMillisecond;
+  public int getHostSocketTimeoutMillisecond() {
+    return hostSocketTimeoutMillisecond;
   }
 
-  public void setOsSocketTimeoutMillisecond(int osSocketTimeoutMillisecond) {
-    this.osSocketTimeoutMillisecond = osSocketTimeoutMillisecond;
+  public void setHostSocketTimeoutMillisecond(int hostSocketTimeoutMillisecond) {
+    this.hostSocketTimeoutMillisecond = hostSocketTimeoutMillisecond;
   }
 
-  public String getOsUrl() {
-    return osUrl;
+  public String getHostUrl() {
+    return hostUrl;
   }
 
-  public void setOsUrl(String osUrl) {
-    this.osUrl = osUrl;
+  public void setHostUrl(String hostUrl) {
+    this.hostUrl = hostUrl;
   }
 
   public int getRateSecond() {
@@ -713,11 +712,11 @@ public class MonitorClientConfig implements EnvironmentAware {
   }
 
   public boolean isOsEnable() {
-    return osEnable;
+    return hostEnable;
   }
 
-  public void setOsEnable(boolean osEnable) {
-    this.osEnable = osEnable;
+  public void setHostEnable(boolean hostEnable) {
+    this.hostEnable = hostEnable;
   }
 
   public boolean isWhoEnable() {

@@ -22,6 +22,8 @@ import lombok.ToString;
 @ToString
 public class RPCCpuCore implements ICpuCore {
 
+    private String groupName;
+    private String nodeName;
     private String processor;
     private String vendorId;
     private String cpuFamily;
@@ -47,6 +49,16 @@ public class RPCCpuCore implements ICpuCore {
     private String cacheAlignment;
     private String addressSizes;
     private String powerManagement;
+
+    @Override
+    public String getGroupName() {
+        return groupName;
+    }
+
+    @Override
+    public String getNodeName() {
+        return nodeName;
+    }
 
     @Override
     public String getProcessor() {

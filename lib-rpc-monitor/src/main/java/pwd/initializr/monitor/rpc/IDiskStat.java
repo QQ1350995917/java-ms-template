@@ -22,6 +22,16 @@ import java.io.Serializable;
 public interface IDiskStat extends Serializable {
 
     /**
+     * 逻辑组名
+     */
+    String getGroupName();
+
+    /**
+     * 主机名 network node hostname
+     */
+    String getNodeName();
+
+    /**
      * 主设备号
      */
     long getMajorDeviceNumber();

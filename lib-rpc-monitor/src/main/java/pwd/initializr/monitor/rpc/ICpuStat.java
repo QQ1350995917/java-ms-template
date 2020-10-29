@@ -17,6 +17,16 @@ import java.util.LinkedList;
 public interface ICpuStat extends Serializable {
 
     /**
+     * 逻辑组名
+     */
+    String getGroupName();
+
+    /**
+     * 主机名 network node hostname
+     */
+    String getNodeName();
+
+    /**
      * CPU总体状态
      */
     ICpuCoreStat getCpuStat();

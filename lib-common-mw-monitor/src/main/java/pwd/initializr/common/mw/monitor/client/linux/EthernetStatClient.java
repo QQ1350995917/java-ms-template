@@ -1,4 +1,4 @@
-package pwd.initializr.common.mw.monitor.client;
+package pwd.initializr.common.mw.monitor.client.linux;
 
 import pwd.initializr.common.mw.monitor.MonitorClient;
 import pwd.initializr.common.mw.monitor.MonitorClientConfig;

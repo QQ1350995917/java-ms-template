@@ -22,6 +22,17 @@ import java.io.Serializable;
  */
 public interface ILoadStat extends Serializable {
 
+
+    /**
+     * 逻辑组名
+     */
+    String getGroupName();
+
+    /**
+     * 主机名 network node hostname
+     */
+    String getNodeName();
+
     /**
      * 1分钟平均负载
      */

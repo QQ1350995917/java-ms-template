@@ -21,12 +21,23 @@ import lombok.ToString;
 @Setter
 @ToString
 public class RPCLoadStat implements ILoadStat {
-
+    private String groupName;
+    private String nodeName;
     private String loadIn1m;
     private String loadIn5m;
     private String loadIn15m;
     private String processRate;
     private String lastProcessId;
+
+    @Override
+    public String getGroupName() {
+        return groupName;
+    }
+
+    @Override
+    public String getNodeName() {
+        return nodeName;
+    }
 
     @Override
     public String getLoadIn1m() {

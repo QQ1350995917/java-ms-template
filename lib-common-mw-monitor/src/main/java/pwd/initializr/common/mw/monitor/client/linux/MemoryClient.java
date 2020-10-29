@@ -1,4 +1,4 @@
-package pwd.initializr.common.mw.monitor.client;
+package pwd.initializr.common.mw.monitor.client.linux;
 
 import pwd.initializr.common.mw.monitor.MonitorClient;
 import pwd.initializr.common.mw.monitor.MonitorClientConfig;
@@ -8,34 +8,34 @@ import pwd.initializr.common.mw.monitor.MonitorClientConfig;
  *
  * <h1>TODO what you want to do?</h1>
  *
- * date 2020-10-25 13:56
+ * date 2020-10-25 13:59
  *
- * @author DingPengwei[www¡.dingpengwei@foxmail.com]
+ * @author DingPengwei[www.dingpengwei@foxmail.com]
  * @version 1.0.0
  * @since DistributionVersion
  */
-public class CpuCoreClient extends MonitorClient {
+public class MemoryClient extends MonitorClient {
 
-  public CpuCoreClient(MonitorClientConfig monitorClientConfig) {
+  public MemoryClient(MonitorClientConfig monitorClientConfig) {
     super(monitorClientConfig);
   }
 
   @Override
   protected String getScheduleName() {
-    return "Monitor-CPU-Core-Client";
+    return "Monitor-Memory-Client";
   }
 
   @Override
   protected int getScheduleSecondRate() {
-    return monitorClientConfig.getCpuCoreRateSecond();
+    return monitorClientConfig.getMemoryRateSecond();
   }
 
   @Override
   protected void refresh() {
     try {
-//      LinkedList<RPCHostCpuCore> rpcHostCpuCores = MonitorBySigar.cpuCore();
-//      String jsonString = JSON.toJSONString(rpcHostCpuCores);
-//      httpX.putJson(monitorClientConfig.getCpuCoreUrl(), jsonString);
+//      RPCHostMemory memory = MonitorBySigar.memory();
+//      String jsonString = JSON.toJSONString(memory);
+//      httpX.postJson(monitorClientConfig.getMemoryUrl(), jsonString);
     } catch (Exception e) {
       throw new RuntimeException(e);
     }

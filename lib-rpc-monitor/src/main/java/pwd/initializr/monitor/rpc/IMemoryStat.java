@@ -15,6 +15,16 @@ import java.io.Serializable;
  */
 public interface IMemoryStat extends Serializable {
 
+    /**
+     * 逻辑组名
+     */
+    String getGroupName();
+
+    /**
+     * 主机名 network node hostname
+     */
+    String getNodeName();
+
     long getMemTotal();
 
     long getMemFree();

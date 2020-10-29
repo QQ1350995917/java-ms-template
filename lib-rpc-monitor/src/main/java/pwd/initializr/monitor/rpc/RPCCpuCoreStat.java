@@ -22,6 +22,8 @@ import lombok.ToString;
 @ToString
 public class RPCCpuCoreStat implements ICpuCoreStat {
 
+    private String groupName;
+    private String nodeName;
     private long user;
     private long nice;
     private long system;
@@ -81,5 +83,15 @@ public class RPCCpuCoreStat implements ICpuCoreStat {
     @Override
     public long getGuestNice() {
         return guestNice;
+    }
+
+    @Override
+    public String getGroupName() {
+        return groupName;
+    }
+
+    @Override
+    public String getNodeName() {
+        return nodeName;
     }
 }

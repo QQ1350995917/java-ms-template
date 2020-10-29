@@ -10,17 +10,11 @@ import org.springframework.core.env.ConfigurableEnvironment;
 import pwd.initializr.common.http.HttpX;
 import pwd.initializr.common.http.HttpXByHttpClient;
 import pwd.initializr.common.http.HttpXConfig;
-import pwd.initializr.common.mw.monitor.client.CpuClient;
-import pwd.initializr.common.mw.monitor.client.CpuCoreClient;
-import pwd.initializr.common.mw.monitor.client.CpuCoreUsageClient;
-import pwd.initializr.common.mw.monitor.client.DiskClient;
-import pwd.initializr.common.mw.monitor.client.DiskUsageClient;
-import pwd.initializr.common.mw.monitor.client.EthernetClient;
-import pwd.initializr.common.mw.monitor.client.EthernetStatClient;
-import pwd.initializr.common.mw.monitor.client.MemoryClient;
-import pwd.initializr.common.mw.monitor.client.MemorySwapClient;
-import pwd.initializr.common.mw.monitor.client.OSClient;
-import pwd.initializr.common.mw.monitor.client.WhoClient;
+import pwd.initializr.common.mw.monitor.client.linux.HostClientOnLinux;
+import pwd.initializr.common.mw.monitor.client.linux.HostCpuClientOnLinux;
+import pwd.initializr.common.mw.monitor.client.win.HostClientOnWin;
+import pwd.initializr.common.mw.monitor.client.win.HostCpuClientOnWin;
+import pwd.initializr.common.utils.OSUtil;
 
 /**
  * pwd.initializr.common.mw.montor@ms-web-initializr
@@ -69,12 +63,19 @@ public class MonitorClientAutoConfiguration {
     String connectTimeoutMillisecond = getProperty("monitor.cloud.client.connect.timeout.millisecond");
     String socketTimeoutMillisecond = getProperty("monitor.cloud.client.socket.timeout.millisecond");
 
-    String osEnable = getProperty("monitor.cloud.client.os.enable");
-    String osRateSecond = getProperty("monitor.cloud.client.os.rate.second");
-    String osUrl = getProperty("monitor.cloud.client.os.url");
-    String osConnectionRequestTimeoutMillisecond = getProperty("monitor.cloud.client.os.connection.request.timeout.millisecond");
-    String osConnectTimeoutMillisecond = getProperty("monitor.cloud.client.os.connect.timeout.millisecond");
-    String osSocketTimeoutMillisecond = getProperty("monitor.cloud.client.os.socket.timeout.millisecond");
+    String hostEnable = getProperty("monitor.cloud.client.host.enable");
+    String hostRateSecond = getProperty("monitor.cloud.client.host.rate.second");
+    String hostUrl = getProperty("monitor.cloud.client.host.url");
+    String hostConnectionRequestTimeoutMillisecond = getProperty("monitor.cloud.client.host.connection.request.timeout.millisecond");
+    String hostConnectTimeoutMillisecond = getProperty("monitor.cloud.client.host.connect.timeout.millisecond");
+    String hostSocketTimeoutMillisecond = getProperty("monitor.cloud.client.host.socket.timeout.millisecond");
+
+    String cpuEnable = getProperty("monitor.cloud.client.host.cpu.enable");
+    String cpuRateSecond = getProperty("monitor.cloud.client.host.cpu.rate.second");
+    String cpuUrl = getProperty("monitor.cloud.client.host.cpu.url");
+    String cpuConnectionRequestTimeoutMillisecond = getProperty("monitor.cloud.client.host.cpu.connection.request.timeout.millisecond");
+    String cpuConnectTimeoutMillisecond = getProperty("monitor.cloud.client.host.cpu.connect.timeout.millisecond");
+    String cpuSocketTimeoutMillisecond = getProperty("monitor.cloud.client.host.cpu.socket.timeout.millisecond");
 
     String whoEnable = getProperty("monitor.cloud.client.who.enable");
     String whoRateSecond = getProperty("monitor.cloud.client.who.rate.second");
@@ -82,13 +83,6 @@ public class MonitorClientAutoConfiguration {
     String whoConnectionRequestTimeoutMillisecond = getProperty("monitor.cloud.client.who.connection.request.timeout.millisecond");
     String whoConnectTimeoutMillisecond = getProperty("monitor.cloud.client.who.connect.timeout.millisecond");
     String whoSocketTimeoutMillisecond = getProperty("monitor.cloud.client.who.socket.timeout.millisecond");
-
-    String cpuEnable = getProperty("monitor.cloud.client.cpu.enable");
-    String cpuRateSecond = getProperty("monitor.cloud.client.cpu.rate.second");
-    String cpuUrl = getProperty("monitor.cloud.client.cpu.url");
-    String cpuConnectionRequestTimeoutMillisecond = getProperty("monitor.cloud.client.cpu.connection.request.timeout.millisecond");
-    String cpuConnectTimeoutMillisecond = getProperty("monitor.cloud.client.cpu.connect.timeout.millisecond");
-    String cpuSocketTimeoutMillisecond = getProperty("monitor.cloud.client.cpu.socket.timeout.millisecond");
 
     String cpuCoreEnable = getProperty("monitor.cloud.client.cpu.core.enable");
     String cpuCoreRateSecond = getProperty("monitor.cloud.client.cpu.core.rate.second");
@@ -161,19 +155,12 @@ public class MonitorClientAutoConfiguration {
     instance.setConnectTimeoutMillisecond(Integer.parseInt(StringUtils.isBlank(connectTimeoutMillisecond) ? "3000" : connectTimeoutMillisecond));
     instance.setSocketTimeoutMillisecond(Integer.parseInt(StringUtils.isBlank(socketTimeoutMillisecond) ? "2000" : socketTimeoutMillisecond));
 
-    instance.setOsEnable(StringUtils.isBlank(osEnable) ? instance.isEnable() : Boolean.parseBoolean(osEnable));
-    instance.setOsRateSecond(StringUtils.isBlank(osRateSecond) ? instance.getRateSecond() : Integer.parseInt(osRateSecond));
-    instance.setOsUrl(StringUtils.isBlank(osUrl) ? url : osUrl);
-    instance.setOsConnectionRequestTimeoutMillisecond(StringUtils.isBlank(osConnectionRequestTimeoutMillisecond) ? instance.getConnectionRequestTimeoutMillisecond() : Integer.parseInt(osConnectionRequestTimeoutMillisecond));
-    instance.setOsConnectTimeoutMillisecond(StringUtils.isBlank(osConnectTimeoutMillisecond) ? instance.getConnectTimeoutMillisecond() : Integer.parseInt(osConnectTimeoutMillisecond));
-    instance.setOsSocketTimeoutMillisecond(StringUtils.isBlank(osSocketTimeoutMillisecond) ? instance.getSocketTimeoutMillisecond() : Integer.parseInt(osSocketTimeoutMillisecond));
-
-    instance.setWhoEnable(StringUtils.isBlank(whoEnable) ? instance.isEnable() : Boolean.parseBoolean(whoEnable));
-    instance.setWhoRateSecond(StringUtils.isBlank(whoRateSecond) ? instance.getRateSecond() : Integer.parseInt(whoRateSecond));
-    instance.setWhoUrl(StringUtils.isBlank(whoUrl) ? url : whoUrl);
-    instance.setWhoConnectionRequestTimeoutMillisecond(StringUtils.isBlank(whoConnectionRequestTimeoutMillisecond) ? instance.getConnectionRequestTimeoutMillisecond() : Integer.parseInt(whoConnectionRequestTimeoutMillisecond));
-    instance.setWhoConnectTimeoutMillisecond(StringUtils.isBlank(whoConnectTimeoutMillisecond) ? instance.getConnectTimeoutMillisecond() : Integer.parseInt(whoConnectTimeoutMillisecond));
-    instance.setWhoSocketTimeoutMillisecond(StringUtils.isBlank(whoSocketTimeoutMillisecond) ? instance.getSocketTimeoutMillisecond() : Integer.parseInt(whoSocketTimeoutMillisecond));
+    instance.setHostEnable(StringUtils.isBlank(hostEnable) ? instance.isEnable() : Boolean.parseBoolean(hostEnable));
+    instance.setHostRateSecond(StringUtils.isBlank(hostRateSecond) ? instance.getRateSecond() : Integer.parseInt(hostRateSecond));
+    instance.setHostUrl(StringUtils.isBlank(hostUrl) ? url : hostUrl);
+    instance.setHostConnectionRequestTimeoutMillisecond(StringUtils.isBlank(hostConnectionRequestTimeoutMillisecond) ? instance.getConnectionRequestTimeoutMillisecond() : Integer.parseInt(hostConnectionRequestTimeoutMillisecond));
+    instance.setHostConnectTimeoutMillisecond(StringUtils.isBlank(hostConnectTimeoutMillisecond) ? instance.getConnectTimeoutMillisecond() : Integer.parseInt(hostConnectTimeoutMillisecond));
+    instance.setHostSocketTimeoutMillisecond(StringUtils.isBlank(hostSocketTimeoutMillisecond) ? instance.getSocketTimeoutMillisecond() : Integer.parseInt(hostSocketTimeoutMillisecond));
 
     instance.setCpuEnable(StringUtils.isBlank(cpuEnable) ? instance.isEnable() : Boolean.parseBoolean(cpuEnable));
     instance.setCpuRateSecond(StringUtils.isBlank(cpuRateSecond) ? instance.getRateSecond() : Integer.parseInt(cpuRateSecond));
@@ -181,6 +168,13 @@ public class MonitorClientAutoConfiguration {
     instance.setCpuConnectionRequestTimeoutMillisecond(StringUtils.isBlank(cpuConnectionRequestTimeoutMillisecond) ? instance.getConnectionRequestTimeoutMillisecond() : Integer.parseInt(cpuConnectionRequestTimeoutMillisecond));
     instance.setCpuConnectTimeoutMillisecond(StringUtils.isBlank(cpuConnectTimeoutMillisecond) ? instance.getConnectTimeoutMillisecond() : Integer.parseInt(cpuConnectTimeoutMillisecond));
     instance.setCpuSocketTimeoutMillisecond(StringUtils.isBlank(cpuSocketTimeoutMillisecond) ? instance.getSocketTimeoutMillisecond() : Integer.parseInt(cpuSocketTimeoutMillisecond));
+
+    instance.setWhoEnable(StringUtils.isBlank(whoEnable) ? instance.isEnable() : Boolean.parseBoolean(whoEnable));
+    instance.setWhoRateSecond(StringUtils.isBlank(whoRateSecond) ? instance.getRateSecond() : Integer.parseInt(whoRateSecond));
+    instance.setWhoUrl(StringUtils.isBlank(whoUrl) ? url : whoUrl);
+    instance.setWhoConnectionRequestTimeoutMillisecond(StringUtils.isBlank(whoConnectionRequestTimeoutMillisecond) ? instance.getConnectionRequestTimeoutMillisecond() : Integer.parseInt(whoConnectionRequestTimeoutMillisecond));
+    instance.setWhoConnectTimeoutMillisecond(StringUtils.isBlank(whoConnectTimeoutMillisecond) ? instance.getConnectTimeoutMillisecond() : Integer.parseInt(whoConnectTimeoutMillisecond));
+    instance.setWhoSocketTimeoutMillisecond(StringUtils.isBlank(whoSocketTimeoutMillisecond) ? instance.getSocketTimeoutMillisecond() : Integer.parseInt(whoSocketTimeoutMillisecond));
 
     instance.setCpuCoreEnable(StringUtils.isBlank(cpuCoreEnable) ? instance.isEnable() : Boolean.parseBoolean(cpuCoreEnable));
     instance.setCpuCoreRateSecond(StringUtils.isBlank(cpuCoreRateSecond) ? instance.getRateSecond() : Integer.parseInt(cpuCoreRateSecond));
@@ -245,71 +239,82 @@ public class MonitorClientAutoConfiguration {
     return this.env.containsProperty(property) ? this.env.getProperty(property) : "";
   }
 
-
   @Bean
-  @ConditionalOnProperty(value = "monitor.cloud.client.os.enable", matchIfMissing = true)
-  public MonitorClient osClient(MonitorClientConfig monitorClientConfig) {
-    return new OSClient(monitorClientConfig);
+  @ConditionalOnProperty(value = "monitor.cloud.client.host.enable", matchIfMissing = true)
+  public MonitorClient hostClient(MonitorClientConfig monitorClientConfig) {
+    if (OSUtil.isLinux()) {
+      return new HostClientOnLinux(monitorClientConfig);
+    } else if (OSUtil.isWindows()) {
+      return new HostClientOnWin(monitorClientConfig);
+    }
+    throw new RuntimeException("incompatible OS " + OSUtil.getOSName());
   }
 
   @Bean
-  @ConditionalOnProperty(value = "monitor.cloud.client.who.enable", matchIfMissing = true)
-  public MonitorClient whoClient(MonitorClientConfig monitorClientConfig) {
-    return new WhoClient(monitorClientConfig);
-  }
-
-  @Bean
-  @ConditionalOnProperty(value = "monitor.cloud.client.cpu.enable", matchIfMissing = true)
+  @ConditionalOnProperty(value = "monitor.cloud.client.host.cpu.enable", matchIfMissing = true)
   public MonitorClient cpuClient(MonitorClientConfig monitorClientConfig) {
-    return new CpuClient(monitorClientConfig);
+    if (OSUtil.isLinux()) {
+      return new HostCpuClientOnLinux(monitorClientConfig);
+    } else if (OSUtil.isWindows()) {
+      return new HostCpuClientOnWin(monitorClientConfig);
+    }
+    throw new RuntimeException("incompatible OS " + OSUtil.getOSName());
   }
+//
+//  @Bean
+//  @ConditionalOnProperty(value = "monitor.cloud.client.who.enable", matchIfMissing = true)
+//  public MonitorClient whoClient(MonitorClientConfig monitorClientConfig) {
+//    return new WhoClient(monitorClientConfig);
+//  }
+//
 
-  @Bean
-  @ConditionalOnProperty(value = "monitor.cloud.client.cpu.core.enable", matchIfMissing = true)
-  public MonitorClient cpuCoreClient(MonitorClientConfig monitorClientConfig) {
-    return new CpuCoreClient(monitorClientConfig);
-  }
-
-  @Bean
-  @ConditionalOnProperty(value = "monitor.cloud.client.cpu.core.usage.enable", matchIfMissing = true)
-  public MonitorClient cpuCoreUsageClient(MonitorClientConfig monitorClientConfig) {
-    return new CpuCoreUsageClient(monitorClientConfig);
-  }
-
-  @Bean
-  @ConditionalOnProperty(value = "monitor.cloud.client.disk.enable", matchIfMissing = true)
-  public MonitorClient diskClient(MonitorClientConfig monitorClientConfig) {
-    return new DiskClient(monitorClientConfig);
-  }
-
-  @Bean
-  @ConditionalOnProperty(value = "monitor.cloud.client.disk.usage.enable", matchIfMissing = true)
-  public MonitorClient diskUsageClient(MonitorClientConfig monitorClientConfig) {
-    return new DiskUsageClient(monitorClientConfig);
-  }
-
-  @Bean
-  @ConditionalOnProperty(value = "monitor.cloud.client.ethernet.enable", matchIfMissing = true)
-  public MonitorClient ethernetClient(MonitorClientConfig monitorClientConfig) {
-    return new EthernetClient(monitorClientConfig);
-  }
-
-  @Bean
-  @ConditionalOnProperty(value = "monitor.cloud.client.ethernet.stat.enable", matchIfMissing = true)
-  public MonitorClient ethernetStatClient(MonitorClientConfig monitorClientConfig) {
-    return new EthernetStatClient(monitorClientConfig);
-  }
-
-  @Bean
-  @ConditionalOnProperty(value = "monitor.cloud.client.memory.enable", matchIfMissing = true)
-  public MonitorClient memoryClient(MonitorClientConfig monitorClientConfig) {
-    return new MemoryClient(monitorClientConfig);
-  }
-
-  @Bean
-  @ConditionalOnProperty(value = "monitor.cloud.client.memory.swap.enable", matchIfMissing = true)
-  public MonitorClient memorySwapClient(MonitorClientConfig monitorClientConfig) {
-    return new MemorySwapClient(monitorClientConfig);
-  }
+//
+//  @Bean
+//  @ConditionalOnProperty(value = "monitor.cloud.client.cpu.core.enable", matchIfMissing = true)
+//  public MonitorClient cpuCoreClient(MonitorClientConfig monitorClientConfig) {
+//    return new CpuCoreClient(monitorClientConfig);
+//  }
+//
+//  @Bean
+//  @ConditionalOnProperty(value = "monitor.cloud.client.cpu.core.usage.enable", matchIfMissing = true)
+//  public MonitorClient cpuCoreUsageClient(MonitorClientConfig monitorClientConfig) {
+//    return new CpuCoreUsageClient(monitorClientConfig);
+//  }
+//
+//  @Bean
+//  @ConditionalOnProperty(value = "monitor.cloud.client.disk.enable", matchIfMissing = true)
+//  public MonitorClient diskClient(MonitorClientConfig monitorClientConfig) {
+//    return new DiskClient(monitorClientConfig);
+//  }
+//
+//  @Bean
+//  @ConditionalOnProperty(value = "monitor.cloud.client.disk.usage.enable", matchIfMissing = true)
+//  public MonitorClient diskUsageClient(MonitorClientConfig monitorClientConfig) {
+//    return new DiskUsageClient(monitorClientConfig);
+//  }
+//
+//  @Bean
+//  @ConditionalOnProperty(value = "monitor.cloud.client.ethernet.enable", matchIfMissing = true)
+//  public MonitorClient ethernetClient(MonitorClientConfig monitorClientConfig) {
+//    return new EthernetClient(monitorClientConfig);
+//  }
+//
+//  @Bean
+//  @ConditionalOnProperty(value = "monitor.cloud.client.ethernet.stat.enable", matchIfMissing = true)
+//  public MonitorClient ethernetStatClient(MonitorClientConfig monitorClientConfig) {
+//    return new EthernetStatClient(monitorClientConfig);
+//  }
+//
+//  @Bean
+//  @ConditionalOnProperty(value = "monitor.cloud.client.memory.enable", matchIfMissing = true)
+//  public MonitorClient memoryClient(MonitorClientConfig monitorClientConfig) {
+//    return new MemoryClient(monitorClientConfig);
+//  }
+//
+//  @Bean
+//  @ConditionalOnProperty(value = "monitor.cloud.client.memory.swap.enable", matchIfMissing = true)
+//  public MonitorClient memorySwapClient(MonitorClientConfig monitorClientConfig) {
+//    return new MemorySwapClient(monitorClientConfig);
+//  }
 
 }

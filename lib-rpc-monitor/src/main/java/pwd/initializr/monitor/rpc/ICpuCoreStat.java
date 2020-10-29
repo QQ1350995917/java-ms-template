@@ -15,6 +15,17 @@ import java.io.Serializable;
  */
 public interface ICpuCoreStat extends Serializable {
 
+
+    /**
+     * 逻辑组名
+     */
+    String getGroupName();
+
+    /**
+     * 主机名 network node hostname
+     */
+    String getNodeName();
+
     /**
      * 用户态时间（单位：jiffies）
      */

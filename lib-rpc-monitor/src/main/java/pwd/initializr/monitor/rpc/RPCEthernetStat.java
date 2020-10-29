@@ -23,6 +23,8 @@ import lombok.ToString;
 @ToString
 public class RPCEthernetStat implements IEthernetStat {
 
+    private String groupName;
+    private String nodeName;
     private String interFace;
     private long receiveBytes;
     private long receivePackets;
@@ -124,5 +126,15 @@ public class RPCEthernetStat implements IEthernetStat {
     @Override
     public long getTransmitCompressed() {
         return transmitCompressed;
+    }
+
+    @Override
+    public String getGroupName() {
+        return groupName;
+    }
+
+    @Override
+    public String getNodeName() {
+        return nodeName;
     }
 }

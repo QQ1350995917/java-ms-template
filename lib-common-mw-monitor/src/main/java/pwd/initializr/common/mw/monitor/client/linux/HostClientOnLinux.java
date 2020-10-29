@@ -1,9 +1,12 @@
-package pwd.initializr.common.mw.monitor.client;
+package pwd.initializr.common.mw.monitor.client.linux;
 
+import com.alibaba.fastjson.JSON;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import pwd.initializr.common.mw.monitor.MonitorClient;
 import pwd.initializr.common.mw.monitor.MonitorClientConfig;
+import pwd.initializr.common.mw.monitor.index.MonitorByShellOnLinux;
+import pwd.initializr.monitor.rpc.IHost;
 
 /**
  * pwd.initializr.common.mw.monitor.client@ms-web-initializr
@@ -18,33 +21,34 @@ import pwd.initializr.common.mw.monitor.MonitorClientConfig;
  */
 @Singleton
 @Slf4j
-public class OSClient extends MonitorClient {
+public class HostClientOnLinux extends MonitorClient {
 
-  public OSClient(MonitorClientConfig monitorClientConfig) {
+  public HostClientOnLinux(MonitorClientConfig monitorClientConfig) {
     super(monitorClientConfig);
   }
 
   public static void main(String[] args) throws Exception {
-    new OSClient(null);
+    new HostClientOnLinux(null);
     Thread.sleep(Integer.MAX_VALUE);
   }
 
   @Override
   protected String getScheduleName() {
-    return "Monitor-OS-Client";
+    return "Monitor-Host-Client";
   }
 
   @Override
   protected int getScheduleSecondRate() {
-    return monitorClientConfig.getOsRateSecond();
+    return monitorClientConfig.getHostRateSecond();
   }
 
   @Override
   protected void refresh() {
     try {
-//      RPCHostOS os = MonitorBySigar.os();
-//      String jsonString = JSON.toJSONString(os);
-//      httpX.putJson(monitorClientConfig.getOsUrl(), jsonString);
+      MonitorByShellOnLinux monitorByShellOnLinux = new MonitorByShellOnLinux();
+      IHost host = monitorByShellOnLinux.getHost();
+      String jsonString = JSON.toJSONString(host);
+      httpX.putJson(monitorClientConfig.getHostUrl(), jsonString);
     } catch (Exception e) {
       throw new RuntimeException(e);
     }

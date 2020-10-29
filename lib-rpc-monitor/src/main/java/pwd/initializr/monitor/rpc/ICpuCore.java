@@ -15,6 +15,17 @@ import java.io.Serializable;
  */
 public interface ICpuCore extends Serializable {
 
+
+    /**
+     * 逻辑组名 联合主键
+     */
+    String getGroupName();
+
+    /**
+     * 主机名 联合主键 network node hostname
+     */
+    String getNodeName();
+
     String getProcessor();
 
     String getVendorId();

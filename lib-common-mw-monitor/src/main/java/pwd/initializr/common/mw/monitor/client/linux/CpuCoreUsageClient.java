@@ -1,4 +1,4 @@
-package pwd.initializr.common.mw.monitor.client;
+package pwd.initializr.common.mw.monitor.client.linux;
 
 import pwd.initializr.common.mw.monitor.MonitorClient;
 import pwd.initializr.common.mw.monitor.MonitorClientConfig;
@@ -8,34 +8,34 @@ import pwd.initializr.common.mw.monitor.MonitorClientConfig;
  *
  * <h1>TODO what you want to do?</h1>
  *
- * date 2020-10-25 13:58
+ * date 2020-10-25 13:57
  *
  * @author DingPengwei[www.dingpengwei@foxmail.com]
  * @version 1.0.0
  * @since DistributionVersion
  */
-public class DiskUsageClient extends MonitorClient {
+public class CpuCoreUsageClient extends MonitorClient {
 
-  public DiskUsageClient(MonitorClientConfig monitorClientConfig) {
+  public CpuCoreUsageClient(MonitorClientConfig monitorClientConfig) {
     super(monitorClientConfig);
   }
 
   @Override
   protected String getScheduleName() {
-    return "Monitor-Disk-Usage-Client";
+    return "Monitor-CPU-Core-Usage-Client";
   }
 
   @Override
   protected int getScheduleSecondRate() {
-    return monitorClientConfig.getDiskUsageRateSecond();
+    return monitorClientConfig.getCpuCoreUsageRateSecond();
   }
 
   @Override
   protected void refresh() {
     try {
-//      List<RPCHostDiskUsage> rpcHostDiskUsages = MonitorBySigar.diskUsage();
-//      String jsonString = JSON.toJSONString(rpcHostDiskUsages);
-//      httpX.postJson(monitorClientConfig.getDiskUsageUrl(), jsonString);
+//      LinkedList<RPCHostCpuCoreUsage> rpcHostCpuCoreUsages = MonitorBySigar.cpuCoreUsage();
+//      String jsonString = JSON.toJSONString(rpcHostCpuCoreUsages);
+//      httpX.postJson(monitorClientConfig.getCpuCoreUsageUrl(), jsonString);
     } catch (Exception e) {
       throw new RuntimeException(e);
     }

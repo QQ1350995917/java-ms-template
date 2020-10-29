@@ -22,6 +22,8 @@ import lombok.ToString;
 @ToString
 public class RPCLoggedStat implements ILoggedStat {
 
+    private String groupName;
+    private String nodeName;
     private String user;
     private String tty;
     private String from;
@@ -30,6 +32,16 @@ public class RPCLoggedStat implements ILoggedStat {
     private String jcpu;
     private String pcpu;
     private String what;
+
+    @Override
+    public String getGroupName() {
+        return groupName;
+    }
+
+    @Override
+    public String getNodeName() {
+        return nodeName;
+    }
 
     @Override
     public String getUser() {

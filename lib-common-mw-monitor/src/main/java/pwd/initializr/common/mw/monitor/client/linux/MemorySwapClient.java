@@ -1,4 +1,4 @@
-package pwd.initializr.common.mw.monitor.client;
+package pwd.initializr.common.mw.monitor.client.linux;
 
 import pwd.initializr.common.mw.monitor.MonitorClient;
 import pwd.initializr.common.mw.monitor.MonitorClientConfig;
@@ -8,34 +8,34 @@ import pwd.initializr.common.mw.monitor.MonitorClientConfig;
  *
  * <h1>TODO what you want to do?</h1>
  *
- * date 2020-10-25 13:57
+ * date 2020-10-25 13:59
  *
  * @author DingPengwei[www.dingpengwei@foxmail.com]
  * @version 1.0.0
  * @since DistributionVersion
  */
-public class CpuCoreUsageClient extends MonitorClient {
+public class MemorySwapClient extends MonitorClient {
 
-  public CpuCoreUsageClient(MonitorClientConfig monitorClientConfig) {
+  public MemorySwapClient(MonitorClientConfig monitorClientConfig) {
     super(monitorClientConfig);
   }
 
   @Override
   protected String getScheduleName() {
-    return "Monitor-CPU-Core-Usage-Client";
+    return "Monitor-Memory-Swap-Client";
   }
 
   @Override
   protected int getScheduleSecondRate() {
-    return monitorClientConfig.getCpuCoreUsageRateSecond();
+    return monitorClientConfig.getMemorySwapRateSecond();
   }
 
   @Override
   protected void refresh() {
     try {
-//      LinkedList<RPCHostCpuCoreUsage> rpcHostCpuCoreUsages = MonitorBySigar.cpuCoreUsage();
-//      String jsonString = JSON.toJSONString(rpcHostCpuCoreUsages);
-//      httpX.postJson(monitorClientConfig.getCpuCoreUsageUrl(), jsonString);
+//      RPCHostMemorySwap rpcHostMemorySwap = MonitorBySigar.memorySwap();
+//      String jsonString = JSON.toJSONString(rpcHostMemorySwap);
+//      httpX.postJson(monitorClientConfig.getMemorySwapUrl(), jsonString);
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
