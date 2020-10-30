@@ -287,7 +287,7 @@ public class MonitorClientAutoConfiguration {
   }
 
   @Bean
-  @ConditionalOnProperty(value = "monitor.cloud.client.host.memory.state.enable", matchIfMissing = true)
+  @ConditionalOnProperty(value = "monitor.cloud.client.host.memory.stat.enable", matchIfMissing = true)
   public MonitorClient memoryStatClient(MonitorClientConfig monitorClientConfig) {
     if (OSUtil.isLinux()) {
       return new HostMemoryStatClientOnLinux(monitorClientConfig);

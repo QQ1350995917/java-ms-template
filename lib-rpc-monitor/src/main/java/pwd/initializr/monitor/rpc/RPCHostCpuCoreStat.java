@@ -24,6 +24,7 @@ public class RPCHostCpuCoreStat implements IHostCpuCoreStat {
 
     private String groupName;
     private String nodeName;
+    private String cpuCoreName;
     private long user;
     private long nice;
     private long system;
@@ -34,6 +35,11 @@ public class RPCHostCpuCoreStat implements IHostCpuCoreStat {
     private long steal;
     private long guest;
     private long guestNice;
+
+    @Override
+    public String getCpuCoreName() {
+        return cpuCoreName;
+    }
 
     @Override
     public long getUser() {

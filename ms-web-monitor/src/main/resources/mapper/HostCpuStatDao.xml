@@ -6,16 +6,17 @@
   <resultMap id="HostCpuStatMap" type="pwd.initializr.monitor.persistence.entity.HostCpuStatEntity">
     <result column="group_name" jdbcType="VARCHAR" property="groupName"/>
     <result column="node_name" jdbcType="VARCHAR" property="nodeName"/>
-    <result column="user" jdbcType="INTEGER" property="user"/>
-    <result column="nice" jdbcType="INTEGER" property="nice"/>
-    <result column="system" jdbcType="INTEGER" property="system"/>
-    <result column="idle" jdbcType="INTEGER" property="idle"/>
-    <result column="iowait" jdbcType="INTEGER" property="iowait"/>
-    <result column="irq" jdbcType="INTEGER" property="irq"/>
-    <result column="softirq" jdbcType="INTEGER" property="softirq"/>
-    <result column="steal" jdbcType="INTEGER" property="steal"/>
-    <result column="guest" jdbcType="INTEGER" property="guest"/>
-    <result column="guest_nice" jdbcType="INTEGER" property="guestNice"/>
+    <result column="cpu_core_name" jdbcType="VARCHAR" property="cpuCoreName"/>
+    <result column="user" jdbcType="BIGINT" property="user"/>
+    <result column="nice" jdbcType="BIGINT" property="nice"/>
+    <result column="system" jdbcType="BIGINT" property="system"/>
+    <result column="idle" jdbcType="BIGINT" property="idle"/>
+    <result column="iowait" jdbcType="BIGINT" property="iowait"/>
+    <result column="irq" jdbcType="BIGINT" property="irq"/>
+    <result column="softirq" jdbcType="BIGINT" property="softirq"/>
+    <result column="steal" jdbcType="BIGINT" property="steal"/>
+    <result column="guest" jdbcType="BIGINT" property="guest"/>
+    <result column="guest_nice" jdbcType="BIGINT" property="guestNice"/>
     <result column="able" jdbcType="INTEGER" property="able"/>
     <result column="del" jdbcType="INTEGER" property="del"/>
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
@@ -27,6 +28,7 @@
     SELECT
       `group_name`,
       `node_name`,
+      `cpu_core_name`,
       `user`,
       `nice`,
       `system`,
@@ -58,6 +60,7 @@
     SELECT
       `group_name`,
       `node_name`,
+      `cpu_core_name`,
       `user`,
       `nice`,
       `system`,
@@ -86,6 +89,7 @@
       (
         `group_name`,
         `node_name`,
+        `cpu_core_name`,
         `user`,
         `nice`,
         `system`,
@@ -105,6 +109,7 @@
       (
         #{entity.groupName},
         #{entity.nodeName},
+        #{entity.cpuCoreName},
         #{entity.user},
         #{entity.nice},
         #{entity.system},
@@ -128,6 +133,7 @@
     (
         `group_name`,
         `node_name`,
+        `cpu_core_name`,
         `user`,
         `nice`,
         `system`,
@@ -148,6 +154,7 @@
     (
         #{entity.groupName},
         #{entity.nodeName},
+        #{entity.cpuCoreName},
         #{entity.user},
         #{entity.nice},
         #{entity.system},
@@ -172,6 +179,7 @@
     (
         `group_name`,
         `node_name`,
+        `cpu_core_name`,
         `user`,
         `nice`,
         `system`,
@@ -191,6 +199,7 @@
     (
         #{entity.groupName},
         #{entity.nodeName},
+        #{entity.cpuCoreName},
         #{entity.user},
         #{entity.nice},
         #{entity.system},
@@ -214,6 +223,7 @@
     (
         `group_name`,
         `node_name`,
+        `cpu_core_name`,
         `user`,
         `nice`,
         `system`,
@@ -234,6 +244,7 @@
       (
         #{entity.groupName},
         #{entity.nodeName},
+        #{entity.cpuCoreName},
         #{entity.user},
         #{entity.nice},
         #{entity.system},
@@ -261,6 +272,9 @@
       </if>
       <if test="entity.nodeName != null and entity.nodeName != ''">
         `node_name` = #{entity.nodeName},
+      </if>
+      <if test="entity.cpuCoreName != null and entity.cpuCoreName != ''">
+        ``cpu_core_name`,` = #{entity.cpuCoreName},
       </if>
       <if test="entity.user != null and entity.user != ''">
         `user` = #{entity.user},

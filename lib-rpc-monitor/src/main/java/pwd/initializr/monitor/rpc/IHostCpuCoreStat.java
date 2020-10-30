@@ -27,6 +27,12 @@ public interface IHostCpuCoreStat extends Serializable {
     String getNodeName();
 
     /**
+     * cpu编号
+     * @return
+     */
+    String getCpuCoreName();
+
+    /**
      * 用户态时间（单位：jiffies）
      */
     long getUser();

@@ -24,82 +24,85 @@ public class HostCpuStatEntity implements Serializable {
 
   private static final long serialVersionUID = 1L;
   /**
-    * 
+    *
     * 逻辑组名
     */
   private String groupName;
   /**
-    * 
+    *
     * 主机名
     */
   private String nodeName;
+
+  private String cpuCoreName;
+
   /**
-    * 
-    * 
+    *
+    *
     */
-  private Integer user;
+  private Long user;
   /**
-    * 
-    * 
+    *
+    *
     */
-  private Integer nice;
+  private Long nice;
   /**
-    * 
-    * 
+    *
+    *
     */
-  private Integer system;
+  private Long system;
   /**
-    * 
-    * 
+    *
+    *
     */
-  private Integer idle;
+  private Long idle;
   /**
-    * 
-    * 
+    *
+    *
     */
-  private Integer iowait;
+  private Long iowait;
   /**
-    * 
-    * 
+    *
+    *
     */
-  private Integer irq;
+  private Long irq;
   /**
-    * 
-    * 
+    *
+    *
     */
-  private Integer softirq;
+  private Long softirq;
   /**
-    * 
-    * 
+    *
+    *
     */
-  private Integer steal;
+  private Long steal;
   /**
-    * 
-    * 
+    *
+    *
     */
-  private Integer guest;
+  private Long guest;
   /**
-    * 
-    * 
+    *
+    *
     */
-  private Integer guestNice;
+  private Long guestNice;
   /**
-    * 
+    *
     * 可用状态：0:不可用；1:可用
     */
   private Integer able;
   /**
-    * 
+    *
     * 删除状态：0:未删除；1:已删除
     */
   private Integer del;
   /**
-    * 
+    *
     * 数据创建时间
     */
   private Date createTime;
   /**
-    * 
+    *
     * 最近更新时间
     */
   private Date updateTime;

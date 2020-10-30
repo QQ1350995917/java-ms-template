@@ -4,19 +4,19 @@ import java.util.LinkedList;
 import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import pwd.initializr.common.shell.ShellOnLinux;
+import pwd.initializr.monitor.rpc.IHost;
 import pwd.initializr.monitor.rpc.IHostCpuCore;
 import pwd.initializr.monitor.rpc.IHostCpuCoreStat;
 import pwd.initializr.monitor.rpc.IHostDiskStat;
 import pwd.initializr.monitor.rpc.IHostEthernetStat;
-import pwd.initializr.monitor.rpc.IHost;
 import pwd.initializr.monitor.rpc.IHostLoadStat;
 import pwd.initializr.monitor.rpc.IHostLoggedStat;
 import pwd.initializr.monitor.rpc.IHostMemoryStat;
+import pwd.initializr.monitor.rpc.RPCHost;
 import pwd.initializr.monitor.rpc.RPCHostCpuCore;
 import pwd.initializr.monitor.rpc.RPCHostCpuCoreStat;
 import pwd.initializr.monitor.rpc.RPCHostDiskStat;
 import pwd.initializr.monitor.rpc.RPCHostEthernetStat;
-import pwd.initializr.monitor.rpc.RPCHost;
 import pwd.initializr.monitor.rpc.RPCHostLoadStat;
 import pwd.initializr.monitor.rpc.RPCHostLoggedStat;
 import pwd.initializr.monitor.rpc.RPCHostMemoryStat;
@@ -39,42 +39,63 @@ public class MonitorByShellOnLinux extends ShellOnLinux implements Index {
     @Override
     public IHost getHost() {
         if (rpcHost == null) {
-            ShellResult groupNameShellResult = this
-                .execForResult(getCommandForResultArray(new String[]{"cat /etc/groupname"}));
-            ShellResult nodeNameShellResult = this.execForResult(getCommandForResultArray(new String[]{"uname -n"}));
-            ShellResult operatingSystemShellResult = this.execForResult(getCommandForResultArray(new String[]{"uname -o"}));
-            ShellResult hardwarePlatformShellResult = this.execForResult(getCommandForResultArray(new String[]{"uname -i"}));
-            ShellResult systemUpSinceShellResult = this.execForResult(getCommandForResultArray(new String[]{"uptime -s"}));
-            ShellResult kernelNameShellResult = this.execForResult(getCommandForResultArray(new String[]{"uname -s"}));
-            ShellResult kernelVersionShellResult = this.execForResult(getCommandForResultArray(new String[]{"uname -v"}));
-            ShellResult kernelReleaseShellResult = this.execForResult(getCommandForResultArray(new String[]{"uname -r"}));
-            ShellResult machineShellResult = this.execForResult(getCommandForResultArray(new String[]{"uname -m"}));
-            ShellResult processorShellResult = this.execForResult(getCommandForResultArray(new String[]{"uname -p"}));
-            rpcHost.setGroupName(groupNameShellResult.getLines().size() > 0 ? groupNameShellResult.getLines().get(0) : "unnamed");
-            rpcHost.setNodeName(nodeNameShellResult.getLines().size() > 0 ? nodeNameShellResult.getLines().get(0) : "unnamed");
-            rpcHost.setOperatingSystem(operatingSystemShellResult.getLines().get(0));
-            rpcHost.setHardwarePlatform(hardwarePlatformShellResult.getLines().get(0));
-            rpcHost.setSystemUpSince(systemUpSinceShellResult.getLines().get(0));
-            rpcHost.setKernelName(kernelNameShellResult.getLines().get(0));
-            rpcHost.setKernelVersion(kernelVersionShellResult.getLines().get(0));
-            rpcHost.setKernelRelease(kernelReleaseShellResult.getLines().get(0));
-            rpcHost.setMachine(machineShellResult.getLines().get(0));
-            rpcHost.setProcessor(processorShellResult.getLines().get(0));
-            return rpcHost;
-        } else {
-            return rpcHost;
+            synchronized (MonitorByShellOnLinux.class) {
+                if (rpcHost == null) {
+                    rpcHost = new RPCHost();
+                    ShellResult groupNameShellResult = this
+                        .execForResult(
+                            getCommandForResultArray(new String[]{"cat /etc/groupname"}));
+                    ShellResult nodeNameShellResult = this
+                        .execForResult(getCommandForResultArray(new String[]{"uname -n"}));
+                    ShellResult operatingSystemShellResult = this
+                        .execForResult(getCommandForResultArray(new String[]{"uname -o"}));
+                    ShellResult hardwarePlatformShellResult = this
+                        .execForResult(getCommandForResultArray(new String[]{"uname -i"}));
+                    ShellResult systemUpSinceShellResult = this
+                        .execForResult(getCommandForResultArray(new String[]{"uptime -s"}));
+                    ShellResult kernelNameShellResult = this
+                        .execForResult(getCommandForResultArray(new String[]{"uname -s"}));
+                    ShellResult kernelVersionShellResult = this
+                        .execForResult(getCommandForResultArray(new String[]{"uname -v"}));
+                    ShellResult kernelReleaseShellResult = this
+                        .execForResult(getCommandForResultArray(new String[]{"uname -r"}));
+                    ShellResult machineShellResult = this
+                        .execForResult(getCommandForResultArray(new String[]{"uname -m"}));
+                    ShellResult processorShellResult = this
+                        .execForResult(getCommandForResultArray(new String[]{"uname -p"}));
+                    rpcHost.setGroupName(
+                        groupNameShellResult.getLines().size() > 0 ? groupNameShellResult.getLines()
+                            .get(0) : "unnamed");
+                    rpcHost.setNodeName(
+                        nodeNameShellResult.getLines().size() > 0 ? nodeNameShellResult.getLines()
+                            .get(0) : "unnamed");
+                    rpcHost.setOperatingSystem(operatingSystemShellResult.getLines().get(0));
+                    rpcHost.setHardwarePlatform(hardwarePlatformShellResult.getLines().get(0));
+                    rpcHost.setSystemUpSince(systemUpSinceShellResult.getLines().get(0));
+                    rpcHost.setKernelName(kernelNameShellResult.getLines().get(0));
+                    rpcHost.setKernelVersion(kernelVersionShellResult.getLines().get(0));
+                    rpcHost.setKernelRelease(kernelReleaseShellResult.getLines().get(0));
+                    rpcHost.setMachine(machineShellResult.getLines().get(0));
+                    rpcHost.setProcessor(processorShellResult.getLines().get(0));
+                }
+            }
+
         }
+        return rpcHost;
     }
 
     @Override
     public IHostLoadStat getLoadStat() {
-        ShellResult loadavgShellResult = this.execForResult(getCommandForResultArray(new String[]{"cat /proc/loadavg"}));
+        ShellResult loadavgShellResult = this
+            .execForResult(getCommandForResultArray(new String[]{"cat /proc/loadavg"}));
         /**
          * 0.42 0.37 0.31 1/2663 8452
          */
         String loadavg = loadavgShellResult.getLines().get(0);
-        String[] load = loadavg.split(" ");
+        String[] load = loadavg.replaceAll("\\s{2,}"," ").split(" ");
         RPCHostLoadStat rpcLoad = new RPCHostLoadStat();
+        rpcLoad.setGroupName(getHost().getGroupName());
+        rpcLoad.setNodeName(getHost().getNodeName());
         rpcLoad.setLoadIn1m(load[0]);
         rpcLoad.setLoadIn5m(load[1]);
         rpcLoad.setLoadIn15m(load[2]);
@@ -85,7 +106,8 @@ public class MonitorByShellOnLinux extends ShellOnLinux implements Index {
 
     @Override
     public List<IHostLoggedStat> getLoggedStat() {
-        ShellResult loadShellResult = this.execForResult(getCommandForResultArray(new String[]{"w -h"}));
+        ShellResult loadShellResult = this
+            .execForResult(getCommandForResultArray(new String[]{"w -h"}));
         /**
          * USER     TTY      FROM             LOGIN@   IDLE   JCPU   PCPU WHAT
          * root     pts/0    192.168.47.39    10:43    6:59m  7:45   0.03s -bash
@@ -98,8 +120,10 @@ public class MonitorByShellOnLinux extends ShellOnLinux implements Index {
         List<String> lines = loadShellResult.getLines();
         List<IHostLoggedStat> loggedStats = new LinkedList<>();
         for (String line : lines) {
-            String[] s = line.split(" ");
+            String[] s = line.trim().replaceAll("\\s{2,}"," ").split(" ");
             RPCHostLoggedStat rpcLoggedStat = new RPCHostLoggedStat();
+            rpcLoggedStat.setGroupName(getHost().getGroupName());
+            rpcLoggedStat.setNodeName(getHost().getNodeName());
             rpcLoggedStat.setUser(s[0]);
             rpcLoggedStat.setTty(s[1]);
             rpcLoggedStat.setFrom(s[2]);
@@ -115,7 +139,8 @@ public class MonitorByShellOnLinux extends ShellOnLinux implements Index {
 
     @Override
     public List<IHostCpuCore> getCpuCore() {
-        ShellResult cpuinfoShellResult = this.execForResult(getCommandForResultArray(new String[]{"cat /proc/cpuinfo"}));
+        ShellResult cpuinfoShellResult = this
+            .execForResult(getCommandForResultArray(new String[]{"cat /proc/cpuinfo"}));
         /**
          * processor	: 0
          * vendor_id	: GenuineIntel
@@ -173,6 +198,8 @@ public class MonitorByShellOnLinux extends ShellOnLinux implements Index {
         List<String> lines = cpuinfoShellResult.getLines();
         List<IHostCpuCore> cpuCores = new LinkedList<>();
         RPCHostCpuCore rpcCpuCore = new RPCHostCpuCore();
+        rpcCpuCore.setGroupName(getHost().getGroupName());
+        rpcCpuCore.setNodeName(getHost().getNodeName());
         int index = 0;
         for (String line : lines) {
             String[] split = line.split(":");
@@ -235,15 +262,24 @@ public class MonitorByShellOnLinux extends ShellOnLinux implements Index {
             if (StringUtils.isBlank(line)) {
                 cpuCores.add(rpcCpuCore);
                 rpcCpuCore = new RPCHostCpuCore();
+                rpcCpuCore.setGroupName(getHost().getGroupName());
+                rpcCpuCore.setNodeName(getHost().getNodeName());
                 index = 0;
             }
         }
         return cpuCores;
     }
 
+    public static void main(String[] args) {
+        String line = "   8       0 sda 17901464 2276295 4360396473 31628468 33779408 2746750 1439523404 630945667 0 216680376 662544172";
+        String[] split = line.trim().replaceAll("\\s{2,}", " ").split(" ");
+        System.out.println();
+    }
+
     @Override
     public List<IHostCpuCoreStat> getCpuCoreStat() {
-        ShellResult cpuStatShellResult = this.execForResult(getCommandForResultArray(new String[]{"cat /proc/stat"}));
+        ShellResult cpuStatShellResult = this
+            .execForResult(getCommandForResultArray(new String[]{"cat /proc/stat"}));
         /**
          * cpu  44770555 640 15844690 2752674416 4186605 0 188012 0 0 0
          * cpu0 6678535 71 2225148 342394287 314029 0 25595 0 0 0
@@ -266,26 +302,32 @@ public class MonitorByShellOnLinux extends ShellOnLinux implements Index {
         LinkedList<IHostCpuCoreStat> cpuCoreStats = new LinkedList<>();
         List<String> lines = cpuStatShellResult.getLines();
         for (String line : lines) {
-            String[] split = line.split(" ");
-            RPCHostCpuCoreStat rpcCpuCoreStat = new RPCHostCpuCoreStat();
-            rpcCpuCoreStat.setUser(Long.parseLong(split[0]));
-            rpcCpuCoreStat.setNice(Long.parseLong(split[1]));
-            rpcCpuCoreStat.setSystem(Long.parseLong(split[2]));
-            rpcCpuCoreStat.setIdle(Long.parseLong(split[3]));
-            rpcCpuCoreStat.setIowait(Long.parseLong(split[4]));
-            rpcCpuCoreStat.setIrq(Long.parseLong(split[5]));
-            rpcCpuCoreStat.setSoftirq(Long.parseLong(split[6]));
-            rpcCpuCoreStat.setSteal(Long.parseLong(split[7]));
-            rpcCpuCoreStat.setGuest(Long.parseLong(split[8]));
-            rpcCpuCoreStat.setGuestNice(Long.parseLong(split[9]));
-            cpuCoreStats.add(rpcCpuCoreStat);
+            if (line.startsWith("cpu")) {
+                String[] split = line.trim().replaceAll("\\s{2,}", " ").split(" ");
+                RPCHostCpuCoreStat rpcCpuCoreStat = new RPCHostCpuCoreStat();
+                rpcCpuCoreStat.setGroupName(getHost().getGroupName());
+                rpcCpuCoreStat.setNodeName(getHost().getNodeName());
+                rpcCpuCoreStat.setCpuCoreName(split[0]);
+                rpcCpuCoreStat.setUser(Long.parseLong(split[1]));
+                rpcCpuCoreStat.setNice(Long.parseLong(split[2]));
+                rpcCpuCoreStat.setSystem(Long.parseLong(split[3]));
+                rpcCpuCoreStat.setIdle(Long.parseLong(split[4]));
+                rpcCpuCoreStat.setIowait(Long.parseLong(split[5]));
+                rpcCpuCoreStat.setIrq(Long.parseLong(split[6]));
+                rpcCpuCoreStat.setSoftirq(Long.parseLong(split[7]));
+                rpcCpuCoreStat.setSteal(Long.parseLong(split[8]));
+                rpcCpuCoreStat.setGuest(Long.parseLong(split[9]));
+                rpcCpuCoreStat.setGuestNice(Long.parseLong(split[10]));
+                cpuCoreStats.add(rpcCpuCoreStat);
+            }
         }
         return cpuCoreStats;
     }
 
     @Override
     public IHostMemoryStat getMemoryStat() {
-        ShellResult meminfoShellResult = this.execForResult(getCommandForResultArray(new String[]{"cat /proc/meminfo"}));
+        ShellResult meminfoShellResult = this
+            .execForResult(getCommandForResultArray(new String[]{"cat /proc/meminfo"}));
         /**
          * MemTotal:       32754328 kB
          * MemFree:          227844 kB
@@ -380,10 +422,12 @@ public class MonitorByShellOnLinux extends ShellOnLinux implements Index {
          */
         List<String> lines = meminfoShellResult.getLines();
         RPCHostMemoryStat rpcMemory = new RPCHostMemoryStat();
+        rpcMemory.setGroupName(getHost().getGroupName());
+        rpcMemory.setNodeName(getHost().getNodeName());
         int index = 0;
         for (String line : lines) {
-            String[] split = line.split(":");
-            String stringValue = split[1].replace("KB","").trim();
+            String[] split = line.trim().split(":");
+            String stringValue = split[1].replace("KB", "").trim();
             long longValue = Long.parseLong(stringValue);
             if (index == 0) {
                 rpcMemory.setMemTotal(longValue);
@@ -472,14 +516,15 @@ public class MonitorByShellOnLinux extends ShellOnLinux implements Index {
             } else if (index == 42) {
                 rpcMemory.setDirectMap2M(longValue);
             }
-            index ++;
+            index++;
         }
         return rpcMemory;
     }
 
     @Override
     public List<IHostDiskStat> getDiskStat() {
-        ShellResult diskstatsShellResult = this.execForResult(getCommandForResultArray(new String[]{"cat /proc/diskstats"}));
+        ShellResult diskstatsShellResult = this
+            .execForResult(getCommandForResultArray(new String[]{"cat /proc/diskstats"}));
         /**
          *    8       0 sda 17901464 2276295 4360396473 31628468 33779408 2746750 1439523404 630945667 0 216680376 662544172
          *    8       1 sda1 1180 3 58995 2160 13 0 4236 1219 0 2050 3373
@@ -492,7 +537,9 @@ public class MonitorByShellOnLinux extends ShellOnLinux implements Index {
         LinkedList<IHostDiskStat> iHostDiskStats = new LinkedList<>();
         for (String line : lines) {
             RPCHostDiskStat rpcDiskStat = new RPCHostDiskStat();
-            String[] split = line.split(" ");
+            rpcDiskStat.setGroupName(getHost().getGroupName());
+            rpcDiskStat.setNodeName(getHost().getNodeName());
+            String[] split = line.trim().replaceAll("\\s{2,}"," ").split(" ");
             rpcDiskStat.setMajorDeviceNumber(Long.parseLong(split[0]));
             rpcDiskStat.setMinorDeviceNumber(Long.parseLong(split[1]));
             rpcDiskStat.setDeviceName(split[2]);
@@ -514,7 +561,8 @@ public class MonitorByShellOnLinux extends ShellOnLinux implements Index {
 
     @Override
     public List<IHostEthernetStat> getEthernetStat() {
-        ShellResult ethernetStatShellResult = this.execForResult(getCommandForResultArray(new String[]{"cat /proc/net/dev"}));
+        ShellResult ethernetStatShellResult = this
+            .execForResult(getCommandForResultArray(new String[]{"cat /proc/net/dev"}));
         /**
          * Inter-|   Receive                                                |  Transmit
          *  face |bytes    packets errs drop fifo frame compressed multicast|bytes    packets errs drop fifo colls carrier compressed
@@ -535,9 +583,11 @@ public class MonitorByShellOnLinux extends ShellOnLinux implements Index {
             if (index < 2) {
                 continue;
             }
-            String[] split = line.split(" ");
+            String[] split = line.trim().replaceAll("\\s{2,}"," ").split(" ");
             RPCHostEthernetStat rpcEthernetStat = new RPCHostEthernetStat();
-            rpcEthernetStat.setInterFace(split[0].replace(":",""));
+            rpcEthernetStat.setGroupName(getHost().getGroupName());
+            rpcEthernetStat.setNodeName(getHost().getNodeName());
+            rpcEthernetStat.setInterFace(split[0].replace(":", ""));
             rpcEthernetStat.setReceiveBytes(Long.parseLong(split[1]));
             rpcEthernetStat.setReceivePackets(Long.parseLong(split[2]));
             rpcEthernetStat.setReceiveErrs(Long.parseLong(split[3]));
@@ -555,7 +605,7 @@ public class MonitorByShellOnLinux extends ShellOnLinux implements Index {
             rpcEthernetStat.setTransmitCarrier(Long.parseLong(split[15]));
             rpcEthernetStat.setTransmitCompressed(Long.parseLong(split[16]));
             ethernetStats.add(rpcEthernetStat);
-            index ++;
+            index++;
         }
         return null;
     }
