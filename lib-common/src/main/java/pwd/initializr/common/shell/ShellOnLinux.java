@@ -1,7 +1,6 @@
 package pwd.initializr.common.shell;
 
-import java.util.Arrays;
-import pwd.initializr.common.utils.ArrayUtils;
+import pwd.initializr.common.utils.ArrayUtil;
 
 /**
  * pwd.initializr.common.shell@ms-web-initializr
@@ -21,16 +20,24 @@ public class ShellOnLinux extends ShellDefault {
   @Override
   protected String[] getCommandArray() {
     String[] linuxCommandArray = getLinuxCommandArray();
-    return ArrayUtils.addAll(command,linuxCommandArray);
+    return this.getCommandArray(linuxCommandArray);
+  }
+
+  @Override
+  protected String[] getCommandArray(String[] commands) {
+    return ArrayUtil.addAll(command,commands);
   }
 
   @Override
   protected String[] getCommandForResultArray() {
     String[] linuxCommandForResultArray = getLinuxCommandForResultArray();
-    return ArrayUtils.addAll(command,linuxCommandForResultArray);
+    return this.getCommandForResultArray(linuxCommandForResultArray);
   }
 
-
+  @Override
+  protected String[] getCommandForResultArray(String[] commands) {
+    return ArrayUtil.addAll(command,commands);
+  }
 
   protected String[] getLinuxCommandArray(){
     return new String[]{"date"};

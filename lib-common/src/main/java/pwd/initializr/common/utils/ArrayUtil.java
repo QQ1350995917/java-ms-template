@@ -11,7 +11,7 @@ package pwd.initializr.common.utils;
  * @version 1.0.0
  * @since DistributionVersion
  */
-public class ArrayUtils extends org.apache.commons.lang.ArrayUtils{
+public class ArrayUtil extends org.apache.commons.lang.ArrayUtils{
 
     public static String[] addAll(String[] strings0, String[] strings1) {
         int length0 = strings0.length;

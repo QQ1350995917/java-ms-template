@@ -80,7 +80,7 @@ public class Test {
 
     public static void main(String[] args) {
         long start = System.currentTimeMillis();
-        String[] command = {"/bin/sh", "-c", "ping baidu.com"};
+        String[] command = {"/bin/sh", "-c", "cat /proc/cpuinfo"};
         ShellResult shellResult = execForResult(command);
         System.out.println(shellResult);
         executorService.shutdown();

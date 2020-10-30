@@ -96,8 +96,10 @@ public abstract class ShellDefault implements Shell {
     }
 
     protected abstract String[] getCommandArray();
+    protected abstract String[] getCommandArray(String[] commands);
 
     protected abstract String[] getCommandForResultArray();
+    protected abstract String[] getCommandForResultArray(String[] commands);
 
     protected int getTimeout() {
         return 1;

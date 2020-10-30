@@ -40,16 +40,16 @@ public class MonitorByShellOnLinux extends ShellOnLinux implements Index {
     public IHost getHost() {
         if (rpcHost == null) {
             ShellResult groupNameShellResult = this
-                .execForResult(new String[]{"cat /etc/groupname"});
-            ShellResult nodeNameShellResult = this.execForResult(new String[]{"uname -n"});
-            ShellResult operatingSystemShellResult = this.execForResult(new String[]{"uname -o"});
-            ShellResult hardwarePlatformShellResult = this.execForResult(new String[]{"uname -i"});
-            ShellResult systemUpSinceShellResult = this.execForResult(new String[]{"uptime -s"});
-            ShellResult kernelNameShellResult = this.execForResult(new String[]{"uname -s"});
-            ShellResult kernelVersionShellResult = this.execForResult(new String[]{"uname -v"});
-            ShellResult kernelReleaseShellResult = this.execForResult(new String[]{"uname -r"});
-            ShellResult machineShellResult = this.execForResult(new String[]{"uname -m"});
-            ShellResult processorShellResult = this.execForResult(new String[]{"uname -p"});
+                .execForResult(getCommandForResultArray(new String[]{"cat /etc/groupname"}));
+            ShellResult nodeNameShellResult = this.execForResult(getCommandForResultArray(new String[]{"uname -n"}));
+            ShellResult operatingSystemShellResult = this.execForResult(getCommandForResultArray(new String[]{"uname -o"}));
+            ShellResult hardwarePlatformShellResult = this.execForResult(getCommandForResultArray(new String[]{"uname -i"}));
+            ShellResult systemUpSinceShellResult = this.execForResult(getCommandForResultArray(new String[]{"uptime -s"}));
+            ShellResult kernelNameShellResult = this.execForResult(getCommandForResultArray(new String[]{"uname -s"}));
+            ShellResult kernelVersionShellResult = this.execForResult(getCommandForResultArray(new String[]{"uname -v"}));
+            ShellResult kernelReleaseShellResult = this.execForResult(getCommandForResultArray(new String[]{"uname -r"}));
+            ShellResult machineShellResult = this.execForResult(getCommandForResultArray(new String[]{"uname -m"}));
+            ShellResult processorShellResult = this.execForResult(getCommandForResultArray(new String[]{"uname -p"}));
             rpcHost.setGroupName(groupNameShellResult.getLines().size() > 0 ? groupNameShellResult.getLines().get(0) : "unnamed");
             rpcHost.setNodeName(nodeNameShellResult.getLines().size() > 0 ? nodeNameShellResult.getLines().get(0) : "unnamed");
             rpcHost.setOperatingSystem(operatingSystemShellResult.getLines().get(0));
@@ -68,7 +68,7 @@ public class MonitorByShellOnLinux extends ShellOnLinux implements Index {
 
     @Override
     public IHostLoadStat getLoadStat() {
-        ShellResult loadavgShellResult = this.execForResult(new String[]{"cat /proc/loadavg"});
+        ShellResult loadavgShellResult = this.execForResult(getCommandForResultArray(new String[]{"cat /proc/loadavg"}));
         /**
          * 0.42 0.37 0.31 1/2663 8452
          */
@@ -85,7 +85,7 @@ public class MonitorByShellOnLinux extends ShellOnLinux implements Index {
 
     @Override
     public List<IHostLoggedStat> getLoggedStat() {
-        ShellResult loadShellResult = this.execForResult(new String[]{"w -h"});
+        ShellResult loadShellResult = this.execForResult(getCommandForResultArray(new String[]{"w -h"}));
         /**
          * USER     TTY      FROM             LOGIN@   IDLE   JCPU   PCPU WHAT
          * root     pts/0    192.168.47.39    10:43    6:59m  7:45   0.03s -bash
@@ -115,7 +115,7 @@ public class MonitorByShellOnLinux extends ShellOnLinux implements Index {
 
     @Override
     public List<IHostCpuCore> getCpuCore() {
-        ShellResult cpuinfoShellResult = this.execForResult(new String[]{"cat /proc/cpuinfo"});
+        ShellResult cpuinfoShellResult = this.execForResult(getCommandForResultArray(new String[]{"cat /proc/cpuinfo"}));
         /**
          * processor	: 0
          * vendor_id	: GenuineIntel
@@ -243,7 +243,7 @@ public class MonitorByShellOnLinux extends ShellOnLinux implements Index {
 
     @Override
     public List<IHostCpuCoreStat> getCpuCoreStat() {
-        ShellResult cpuStatShellResult = this.execForResult(new String[]{"cat /proc/stat"});
+        ShellResult cpuStatShellResult = this.execForResult(getCommandForResultArray(new String[]{"cat /proc/stat"}));
         /**
          * cpu  44770555 640 15844690 2752674416 4186605 0 188012 0 0 0
          * cpu0 6678535 71 2225148 342394287 314029 0 25595 0 0 0
@@ -285,7 +285,7 @@ public class MonitorByShellOnLinux extends ShellOnLinux implements Index {
 
     @Override
     public IHostMemoryStat getMemoryStat() {
-        ShellResult meminfoShellResult = this.execForResult(new String[]{"cat /proc/meminfo"});
+        ShellResult meminfoShellResult = this.execForResult(getCommandForResultArray(new String[]{"cat /proc/meminfo"}));
         /**
          * MemTotal:       32754328 kB
          * MemFree:          227844 kB
@@ -479,7 +479,7 @@ public class MonitorByShellOnLinux extends ShellOnLinux implements Index {
 
     @Override
     public List<IHostDiskStat> getDiskStat() {
-        ShellResult diskstatsShellResult = this.execForResult(new String[]{"cat /proc/diskstats"});
+        ShellResult diskstatsShellResult = this.execForResult(getCommandForResultArray(new String[]{"cat /proc/diskstats"}));
         /**
          *    8       0 sda 17901464 2276295 4360396473 31628468 33779408 2746750 1439523404 630945667 0 216680376 662544172
          *    8       1 sda1 1180 3 58995 2160 13 0 4236 1219 0 2050 3373
@@ -514,7 +514,7 @@ public class MonitorByShellOnLinux extends ShellOnLinux implements Index {
 
     @Override
     public List<IHostEthernetStat> getEthernetStat() {
-        ShellResult ethernetStatShellResult = this.execForResult(new String[]{"cat /proc/net/dev"});
+        ShellResult ethernetStatShellResult = this.execForResult(getCommandForResultArray(new String[]{"cat /proc/net/dev"}));
         /**
          * Inter-|   Receive                                                |  Transmit
          *  face |bytes    packets errs drop fifo frame compressed multicast|bytes    packets errs drop fifo colls carrier compressed
