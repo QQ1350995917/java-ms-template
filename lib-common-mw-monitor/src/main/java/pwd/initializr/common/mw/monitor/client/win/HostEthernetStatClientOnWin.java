@@ -4,8 +4,7 @@ import com.alibaba.fastjson.JSON;
 import java.util.LinkedList;
 import pwd.initializr.common.mw.monitor.MonitorClient;
 import pwd.initializr.common.mw.monitor.MonitorClientConfig;
-import pwd.initializr.monitor.rpc.RPCDiskStat;
-import pwd.initializr.monitor.rpc.RPCEthernetStat;
+import pwd.initializr.monitor.rpc.RPCHostEthernetStat;
 
 /**
  * pwd.initializr.common.mw.monitor.client@ms-web-initializr
@@ -43,9 +42,9 @@ public class HostEthernetStatClientOnWin extends MonitorClient {
   protected void refresh() {
     try {
       int ethernet = 4;
-      LinkedList<RPCEthernetStat> rpcEthernetStats = new LinkedList<>();
+      LinkedList<RPCHostEthernetStat> rpcEthernetStats = new LinkedList<>();
       for (int i = 0; i < ethernet; i++) {
-        RPCEthernetStat rpcEthernetStat = new RPCEthernetStat();
+        RPCHostEthernetStat rpcEthernetStat = new RPCHostEthernetStat();
         rpcEthernetStat.setGroupName("test-group");
         rpcEthernetStat.setNodeName("test-nodename");
         rpcEthernetStat.setInterFace("eth" + i);

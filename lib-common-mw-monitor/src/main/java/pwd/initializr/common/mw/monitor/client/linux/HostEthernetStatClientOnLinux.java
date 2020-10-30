@@ -6,7 +6,7 @@ import pwd.initializr.common.mw.monitor.MonitorClient;
 import pwd.initializr.common.mw.monitor.MonitorClientConfig;
 import pwd.initializr.common.mw.monitor.client.win.HostClientOnWin;
 import pwd.initializr.common.mw.monitor.index.MonitorByShellOnLinux;
-import pwd.initializr.monitor.rpc.IEthernetStat;
+import pwd.initializr.monitor.rpc.IHostEthernetStat;
 
 /**
  * pwd.initializr.common.mw.monitor.client@ms-web-initializr
@@ -44,7 +44,7 @@ public class HostEthernetStatClientOnLinux extends MonitorClient {
     protected void refresh() {
         try {
             MonitorByShellOnLinux monitorByShellOnLinux = new MonitorByShellOnLinux();
-            List<IEthernetStat> ethernetStat = monitorByShellOnLinux.getEthernetStat();
+            List<IHostEthernetStat> ethernetStat = monitorByShellOnLinux.getEthernetStat();
             String jsonString = JSON.toJSONString(ethernetStat);
             httpX.postJson(monitorClientConfig.getEthernetStatUrl(), jsonString);
         } catch (Exception e) {

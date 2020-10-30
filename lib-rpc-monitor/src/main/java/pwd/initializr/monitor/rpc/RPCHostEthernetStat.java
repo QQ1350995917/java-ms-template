@@ -1,7 +1,6 @@
 package pwd.initializr.monitor.rpc;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
@@ -21,7 +20,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @Setter
 @ToString
-public class RPCEthernetStat implements IEthernetStat {
+public class RPCHostEthernetStat implements IHostEthernetStat {
 
     private String groupName;
     private String nodeName;

@@ -4,22 +4,22 @@ import java.util.LinkedList;
 import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import pwd.initializr.common.shell.ShellOnLinux;
-import pwd.initializr.monitor.rpc.ICpuCore;
-import pwd.initializr.monitor.rpc.ICpuCoreStat;
-import pwd.initializr.monitor.rpc.IDiskStat;
-import pwd.initializr.monitor.rpc.IEthernetStat;
+import pwd.initializr.monitor.rpc.IHostCpuCore;
+import pwd.initializr.monitor.rpc.IHostCpuCoreStat;
+import pwd.initializr.monitor.rpc.IHostDiskStat;
+import pwd.initializr.monitor.rpc.IHostEthernetStat;
 import pwd.initializr.monitor.rpc.IHost;
-import pwd.initializr.monitor.rpc.ILoadStat;
-import pwd.initializr.monitor.rpc.ILoggedStat;
-import pwd.initializr.monitor.rpc.IMemoryStat;
-import pwd.initializr.monitor.rpc.RPCCpuCore;
-import pwd.initializr.monitor.rpc.RPCCpuCoreStat;
-import pwd.initializr.monitor.rpc.RPCDiskStat;
-import pwd.initializr.monitor.rpc.RPCEthernetStat;
+import pwd.initializr.monitor.rpc.IHostLoadStat;
+import pwd.initializr.monitor.rpc.IHostLoggedStat;
+import pwd.initializr.monitor.rpc.IHostMemoryStat;
+import pwd.initializr.monitor.rpc.RPCHostCpuCore;
+import pwd.initializr.monitor.rpc.RPCHostCpuCoreStat;
+import pwd.initializr.monitor.rpc.RPCHostDiskStat;
+import pwd.initializr.monitor.rpc.RPCHostEthernetStat;
 import pwd.initializr.monitor.rpc.RPCHost;
-import pwd.initializr.monitor.rpc.RPCLoadStat;
-import pwd.initializr.monitor.rpc.RPCLoggedStat;
-import pwd.initializr.monitor.rpc.RPCMemoryStat;
+import pwd.initializr.monitor.rpc.RPCHostLoadStat;
+import pwd.initializr.monitor.rpc.RPCHostLoggedStat;
+import pwd.initializr.monitor.rpc.RPCHostMemoryStat;
 
 /**
  * pwd.initializr.common.mw.monitor.index@ms-web-initializr
@@ -67,14 +67,14 @@ public class MonitorByShellOnLinux extends ShellOnLinux implements Index {
     }
 
     @Override
-    public ILoadStat getLoadStat() {
+    public IHostLoadStat getLoadStat() {
         ShellResult loadavgShellResult = this.execForResult(new String[]{"cat /proc/loadavg"});
         /**
          * 0.42 0.37 0.31 1/2663 8452
          */
         String loadavg = loadavgShellResult.getLines().get(0);
         String[] load = loadavg.split(" ");
-        RPCLoadStat rpcLoad = new RPCLoadStat();
+        RPCHostLoadStat rpcLoad = new RPCHostLoadStat();
         rpcLoad.setLoadIn1m(load[0]);
         rpcLoad.setLoadIn5m(load[1]);
         rpcLoad.setLoadIn15m(load[2]);
@@ -84,7 +84,7 @@ public class MonitorByShellOnLinux extends ShellOnLinux implements Index {
     }
 
     @Override
-    public List<ILoggedStat> getLoggedStat() {
+    public List<IHostLoggedStat> getLoggedStat() {
         ShellResult loadShellResult = this.execForResult(new String[]{"w -h"});
         /**
          * USER     TTY      FROM             LOGIN@   IDLE   JCPU   PCPU WHAT
@@ -96,10 +96,10 @@ public class MonitorByShellOnLinux extends ShellOnLinux implements Index {
          * root     pts/5    192.168.50.237   17:37    5:59   0.04s  0.04s -bash
          */
         List<String> lines = loadShellResult.getLines();
-        List<ILoggedStat> loggedStats = new LinkedList<>();
+        List<IHostLoggedStat> loggedStats = new LinkedList<>();
         for (String line : lines) {
             String[] s = line.split(" ");
-            RPCLoggedStat rpcLoggedStat = new RPCLoggedStat();
+            RPCHostLoggedStat rpcLoggedStat = new RPCHostLoggedStat();
             rpcLoggedStat.setUser(s[0]);
             rpcLoggedStat.setTty(s[1]);
             rpcLoggedStat.setFrom(s[2]);
@@ -114,7 +114,7 @@ public class MonitorByShellOnLinux extends ShellOnLinux implements Index {
     }
 
     @Override
-    public List<ICpuCore> getCpuCore() {
+    public List<IHostCpuCore> getCpuCore() {
         ShellResult cpuinfoShellResult = this.execForResult(new String[]{"cat /proc/cpuinfo"});
         /**
          * processor	: 0
@@ -171,8 +171,8 @@ public class MonitorByShellOnLinux extends ShellOnLinux implements Index {
          *
          */
         List<String> lines = cpuinfoShellResult.getLines();
-        List<ICpuCore> cpuCores = new LinkedList<>();
-        RPCCpuCore rpcCpuCore = new RPCCpuCore();
+        List<IHostCpuCore> cpuCores = new LinkedList<>();
+        RPCHostCpuCore rpcCpuCore = new RPCHostCpuCore();
         int index = 0;
         for (String line : lines) {
             String[] split = line.split(":");
@@ -234,7 +234,7 @@ public class MonitorByShellOnLinux extends ShellOnLinux implements Index {
             index++;
             if (StringUtils.isBlank(line)) {
                 cpuCores.add(rpcCpuCore);
-                rpcCpuCore = new RPCCpuCore();
+                rpcCpuCore = new RPCHostCpuCore();
                 index = 0;
             }
         }
@@ -242,7 +242,7 @@ public class MonitorByShellOnLinux extends ShellOnLinux implements Index {
     }
 
     @Override
-    public List<ICpuCoreStat> getCpuCoreStat() {
+    public List<IHostCpuCoreStat> getCpuCoreStat() {
         ShellResult cpuStatShellResult = this.execForResult(new String[]{"cat /proc/stat"});
         /**
          * cpu  44770555 640 15844690 2752674416 4186605 0 188012 0 0 0
@@ -263,11 +263,11 @@ public class MonitorByShellOnLinux extends ShellOnLinux implements Index {
          * softirq 2914150691 4 1323483050 712067 203001674 56992397 0 748102 794580919 0 534632478
          */
 
-        LinkedList<ICpuCoreStat> cpuCoreStats = new LinkedList<>();
+        LinkedList<IHostCpuCoreStat> cpuCoreStats = new LinkedList<>();
         List<String> lines = cpuStatShellResult.getLines();
         for (String line : lines) {
             String[] split = line.split(" ");
-            RPCCpuCoreStat rpcCpuCoreStat = new RPCCpuCoreStat();
+            RPCHostCpuCoreStat rpcCpuCoreStat = new RPCHostCpuCoreStat();
             rpcCpuCoreStat.setUser(Long.parseLong(split[0]));
             rpcCpuCoreStat.setNice(Long.parseLong(split[1]));
             rpcCpuCoreStat.setSystem(Long.parseLong(split[2]));
@@ -284,7 +284,7 @@ public class MonitorByShellOnLinux extends ShellOnLinux implements Index {
     }
 
     @Override
-    public IMemoryStat getMemoryStat() {
+    public IHostMemoryStat getMemoryStat() {
         ShellResult meminfoShellResult = this.execForResult(new String[]{"cat /proc/meminfo"});
         /**
          * MemTotal:       32754328 kB
@@ -379,7 +379,7 @@ public class MonitorByShellOnLinux extends ShellOnLinux implements Index {
          * DirectMap2M:    33382400 kB
          */
         List<String> lines = meminfoShellResult.getLines();
-        RPCMemoryStat rpcMemory = new RPCMemoryStat();
+        RPCHostMemoryStat rpcMemory = new RPCHostMemoryStat();
         int index = 0;
         for (String line : lines) {
             String[] split = line.split(":");
@@ -478,7 +478,7 @@ public class MonitorByShellOnLinux extends ShellOnLinux implements Index {
     }
 
     @Override
-    public List<IDiskStat> getDiskStat() {
+    public List<IHostDiskStat> getDiskStat() {
         ShellResult diskstatsShellResult = this.execForResult(new String[]{"cat /proc/diskstats"});
         /**
          *    8       0 sda 17901464 2276295 4360396473 31628468 33779408 2746750 1439523404 630945667 0 216680376 662544172
@@ -489,9 +489,9 @@ public class MonitorByShellOnLinux extends ShellOnLinux implements Index {
          *  253       2 dm-2 17387670 0 4322420593 31444783 21604537 0 1320032276 613350422 0 208845612 644801680
          */
         List<String> lines = diskstatsShellResult.getLines();
-        LinkedList<IDiskStat> iDiskStats = new LinkedList<>();
+        LinkedList<IHostDiskStat> iHostDiskStats = new LinkedList<>();
         for (String line : lines) {
-            RPCDiskStat rpcDiskStat = new RPCDiskStat();
+            RPCHostDiskStat rpcDiskStat = new RPCHostDiskStat();
             String[] split = line.split(" ");
             rpcDiskStat.setMajorDeviceNumber(Long.parseLong(split[0]));
             rpcDiskStat.setMinorDeviceNumber(Long.parseLong(split[1]));
@@ -507,13 +507,13 @@ public class MonitorByShellOnLinux extends ShellOnLinux implements Index {
             rpcDiskStat.setIoRequest(Long.parseLong(split[11]));
             rpcDiskStat.setIoSpentMilliseconds(Long.parseLong(split[12]));
             rpcDiskStat.setIoSpentAllMilliseconds(Long.parseLong(split[13]));
-            iDiskStats.add(rpcDiskStat);
+            iHostDiskStats.add(rpcDiskStat);
         }
-        return iDiskStats;
+        return iHostDiskStats;
     }
 
     @Override
-    public List<IEthernetStat> getEthernetStat() {
+    public List<IHostEthernetStat> getEthernetStat() {
         ShellResult ethernetStatShellResult = this.execForResult(new String[]{"cat /proc/net/dev"});
         /**
          * Inter-|   Receive                                                |  Transmit
@@ -528,7 +528,7 @@ public class MonitorByShellOnLinux extends ShellOnLinux implements Index {
          * docker_gwbridge:       0       0    0    0    0     0          0         0 15918816  379012    0    0    0     0       0          0
          * docker0: 2317138351 19909357    0    0    0     0          0         0 2393929244 17465644    0    0    0     0       0          0
          */
-        List<IEthernetStat> ethernetStats = new LinkedList<>();
+        List<IHostEthernetStat> ethernetStats = new LinkedList<>();
         List<String> lines = ethernetStatShellResult.getLines();
         int index = 0;
         for (String line : lines) {
@@ -536,7 +536,7 @@ public class MonitorByShellOnLinux extends ShellOnLinux implements Index {
                 continue;
             }
             String[] split = line.split(" ");
-            RPCEthernetStat rpcEthernetStat = new RPCEthernetStat();
+            RPCHostEthernetStat rpcEthernetStat = new RPCHostEthernetStat();
             rpcEthernetStat.setInterFace(split[0].replace(":",""));
             rpcEthernetStat.setReceiveBytes(Long.parseLong(split[1]));
             rpcEthernetStat.setReceivePackets(Long.parseLong(split[2]));

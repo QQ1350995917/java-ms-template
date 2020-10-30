@@ -6,7 +6,7 @@ import pwd.initializr.common.mw.monitor.MonitorClient;
 import pwd.initializr.common.mw.monitor.MonitorClientConfig;
 import pwd.initializr.common.mw.monitor.client.win.HostClientOnWin;
 import pwd.initializr.common.mw.monitor.index.MonitorByShellOnLinux;
-import pwd.initializr.monitor.rpc.ICpuCoreStat;
+import pwd.initializr.monitor.rpc.IHostCpuCoreStat;
 
 /**
  * pwd.initializr.common.mw.monitor.client.win@ms-web-initializr
@@ -44,7 +44,7 @@ public class HostCpuStatClientOnLinux extends MonitorClient {
     protected void refresh() {
         try {
             MonitorByShellOnLinux monitorByShellOnLinux = new MonitorByShellOnLinux();
-            List<ICpuCoreStat> cpuCoreStat = monitorByShellOnLinux.getCpuCoreStat();
+            List<IHostCpuCoreStat> cpuCoreStat = monitorByShellOnLinux.getCpuCoreStat();
             String jsonString = JSON.toJSONString(cpuCoreStat);
             httpX.postJson(monitorClientConfig.getCpuStatUrl(), jsonString);
         } catch (Exception e) {

@@ -20,7 +20,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @Setter
 @ToString
-public class RPCCpuCore implements ICpuCore {
+public class RPCHostCpuCore implements IHostCpuCore {
 
     private String groupName;
     private String nodeName;

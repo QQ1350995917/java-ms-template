@@ -20,7 +20,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @Setter
 @ToString
-public class RPCLoadStat implements ILoadStat {
+public class RPCHostLoadStat implements IHostLoadStat {
     private String groupName;
     private String nodeName;
     private String loadIn1m;

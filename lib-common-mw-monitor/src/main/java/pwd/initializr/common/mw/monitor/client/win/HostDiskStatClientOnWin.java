@@ -2,12 +2,9 @@ package pwd.initializr.common.mw.monitor.client.win;
 
 import com.alibaba.fastjson.JSON;
 import java.util.LinkedList;
-import java.util.List;
 import pwd.initializr.common.mw.monitor.MonitorClient;
 import pwd.initializr.common.mw.monitor.MonitorClientConfig;
-import pwd.initializr.common.mw.monitor.index.MonitorByShellOnLinux;
-import pwd.initializr.monitor.rpc.IDiskStat;
-import pwd.initializr.monitor.rpc.RPCDiskStat;
+import pwd.initializr.monitor.rpc.RPCHostDiskStat;
 
 /**
  * pwd.initializr.common.mw.monitor.client@ms-web-initializr
@@ -44,7 +41,7 @@ public class HostDiskStatClientOnWin extends MonitorClient {
   @Override
   protected void refresh() {
     try {
-      RPCDiskStat rpcDiskStat0 = new RPCDiskStat();
+      RPCHostDiskStat rpcDiskStat0 = new RPCHostDiskStat();
       rpcDiskStat0.setGroupName("test-group");
       rpcDiskStat0.setNodeName("test-nodename");
       rpcDiskStat0.setMajorDeviceNumber(8);
@@ -58,7 +55,7 @@ public class HostDiskStatClientOnWin extends MonitorClient {
       rpcDiskStat0.setIoSpentMilliseconds(2746750);
       rpcDiskStat0.setIoSpentAllMilliseconds(1439523404);
 
-      RPCDiskStat rpcDiskStat1 = new RPCDiskStat();
+      RPCHostDiskStat rpcDiskStat1 = new RPCHostDiskStat();
       rpcDiskStat1.setGroupName("test-group");
       rpcDiskStat1.setNodeName("test-nodename");
       rpcDiskStat1.setMajorDeviceNumber(8);
@@ -72,7 +69,7 @@ public class HostDiskStatClientOnWin extends MonitorClient {
       rpcDiskStat1.setIoSpentMilliseconds(0);
       rpcDiskStat1.setIoSpentAllMilliseconds(123);
 
-      RPCDiskStat rpcDiskStat2 = new RPCDiskStat();
+      RPCHostDiskStat rpcDiskStat2 = new RPCHostDiskStat();
       rpcDiskStat2.setGroupName("test-group");
       rpcDiskStat2.setNodeName("test-nodename");
       rpcDiskStat2.setMajorDeviceNumber(8);
@@ -86,7 +83,7 @@ public class HostDiskStatClientOnWin extends MonitorClient {
       rpcDiskStat2.setIoSpentMilliseconds(0);
       rpcDiskStat2.setIoSpentAllMilliseconds(12312);
 
-      LinkedList<RPCDiskStat> rpcDiskStats = new LinkedList<>();
+      LinkedList<RPCHostDiskStat> rpcDiskStats = new LinkedList<>();
       rpcDiskStats.add(rpcDiskStat0);
       rpcDiskStats.add(rpcDiskStat1);
       rpcDiskStats.add(rpcDiskStat2);

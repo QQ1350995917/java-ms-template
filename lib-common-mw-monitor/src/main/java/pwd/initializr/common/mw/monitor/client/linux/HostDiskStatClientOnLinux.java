@@ -6,8 +6,7 @@ import pwd.initializr.common.mw.monitor.MonitorClient;
 import pwd.initializr.common.mw.monitor.MonitorClientConfig;
 import pwd.initializr.common.mw.monitor.client.win.HostClientOnWin;
 import pwd.initializr.common.mw.monitor.index.MonitorByShellOnLinux;
-import pwd.initializr.monitor.rpc.ICpuCoreStat;
-import pwd.initializr.monitor.rpc.IDiskStat;
+import pwd.initializr.monitor.rpc.IHostDiskStat;
 
 /**
  * pwd.initializr.common.mw.monitor.client@ms-web-initializr
@@ -45,7 +44,7 @@ public class HostDiskStatClientOnLinux extends MonitorClient {
   protected void refresh() {
     try {
       MonitorByShellOnLinux monitorByShellOnLinux = new MonitorByShellOnLinux();
-      List<IDiskStat> diskStat = monitorByShellOnLinux.getDiskStat();
+      List<IHostDiskStat> diskStat = monitorByShellOnLinux.getDiskStat();
       String jsonString = JSON.toJSONString(diskStat);
       httpX.postJson(monitorClientConfig.getDiskStatUrl(), jsonString);
     } catch (Exception e) {

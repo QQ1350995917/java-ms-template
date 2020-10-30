@@ -20,7 +20,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @Setter
 @ToString
-public class RPCMemoryStat implements IMemoryStat {
+public class RPCHostMemoryStat implements IHostMemoryStat {
 
     private String groupName;
     private String nodeName;

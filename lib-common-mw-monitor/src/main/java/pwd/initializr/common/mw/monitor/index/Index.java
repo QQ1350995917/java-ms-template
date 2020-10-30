@@ -1,14 +1,14 @@
 package pwd.initializr.common.mw.monitor.index;
 
 import java.util.List;
-import pwd.initializr.monitor.rpc.ICpuCore;
-import pwd.initializr.monitor.rpc.ICpuCoreStat;
-import pwd.initializr.monitor.rpc.IDiskStat;
-import pwd.initializr.monitor.rpc.IEthernetStat;
+import pwd.initializr.monitor.rpc.IHostCpuCore;
+import pwd.initializr.monitor.rpc.IHostCpuCoreStat;
+import pwd.initializr.monitor.rpc.IHostDiskStat;
+import pwd.initializr.monitor.rpc.IHostEthernetStat;
 import pwd.initializr.monitor.rpc.IHost;
-import pwd.initializr.monitor.rpc.ILoadStat;
-import pwd.initializr.monitor.rpc.ILoggedStat;
-import pwd.initializr.monitor.rpc.IMemoryStat;
+import pwd.initializr.monitor.rpc.IHostLoadStat;
+import pwd.initializr.monitor.rpc.IHostLoggedStat;
+import pwd.initializr.monitor.rpc.IHostMemoryStat;
 
 /**
  * pwd.initializr.common.mw.monitor.index@ms-web-initializr
@@ -26,18 +26,18 @@ public interface Index {
 
     IHost getHost();
 
-    ILoadStat getLoadStat();
+    IHostLoadStat getLoadStat();
 
-    List<ILoggedStat> getLoggedStat();
+    List<IHostLoggedStat> getLoggedStat();
 
-    List<ICpuCore> getCpuCore();
+    List<IHostCpuCore> getCpuCore();
 
-    List<ICpuCoreStat> getCpuCoreStat();
+    List<IHostCpuCoreStat> getCpuCoreStat();
 
-    IMemoryStat getMemoryStat();
+    IHostMemoryStat getMemoryStat();
 
-    List<IDiskStat> getDiskStat();
+    List<IHostDiskStat> getDiskStat();
 
-    List<IEthernetStat> getEthernetStat();
+    List<IHostEthernetStat> getEthernetStat();
 
 }

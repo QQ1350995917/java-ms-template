@@ -13,7 +13,7 @@ import java.io.Serializable;
  * @version 1.0.0
  * @since DistributionVersion
  */
-public interface ICpuCore extends Serializable {
+public interface IHostCpuCore extends Serializable {
 
 
     /**

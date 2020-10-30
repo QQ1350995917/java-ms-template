@@ -20,7 +20,7 @@ import java.io.Serializable;
  * @version 1.0.0
  * @since DistributionVersion
  */
-public interface ILoadStat extends Serializable {
+public interface IHostLoadStat extends Serializable {
 
 
     /**

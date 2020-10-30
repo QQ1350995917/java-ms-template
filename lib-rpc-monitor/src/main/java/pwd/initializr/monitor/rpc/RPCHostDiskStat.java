@@ -20,7 +20,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @Setter
 @ToString
-public class RPCDiskStat implements IDiskStat {
+public class RPCHostDiskStat implements IHostDiskStat {
 
     private String groupName;
     private String nodeName;

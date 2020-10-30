@@ -13,7 +13,7 @@ import java.io.Serializable;
  * @version 1.0.0
  * @since DistributionVersion
  */
-public interface IEthernetStat extends Serializable {
+public interface IHostEthernetStat extends Serializable {
 
     /**
      * 逻辑组名

@@ -5,8 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import pwd.initializr.common.mw.monitor.MonitorClient;
 import pwd.initializr.common.mw.monitor.MonitorClientConfig;
-import pwd.initializr.monitor.rpc.RPCCpuCore;
-import pwd.initializr.monitor.rpc.RPCCpuCoreStat;
+import pwd.initializr.monitor.rpc.RPCHostCpuCoreStat;
 
 /**
  * pwd.initializr.common.mw.monitor.client.win@ms-web-initializr
@@ -44,9 +43,9 @@ public class HostCpuStatClientOnWin extends MonitorClient {
     protected void refresh() {
         try {
             int cores = 4;
-            List<RPCCpuCoreStat> cpuCoreStatList = new LinkedList<>();
+            List<RPCHostCpuCoreStat> cpuCoreStatList = new LinkedList<>();
             for (int i = 0; i < 4; i++) {
-                RPCCpuCoreStat rpcCpuCoreStat = new RPCCpuCoreStat();
+                RPCHostCpuCoreStat rpcCpuCoreStat = new RPCHostCpuCoreStat();
                 rpcCpuCoreStat.setGroupName("test-group");
                 rpcCpuCoreStat.setNodeName("test-nodename");
                 rpcCpuCoreStat.setUser(((Double) (Math.random() * 100)).longValue());

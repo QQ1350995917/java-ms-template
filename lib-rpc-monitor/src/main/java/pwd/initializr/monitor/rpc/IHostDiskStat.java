@@ -19,7 +19,7 @@ import java.io.Serializable;
  * @version 1.0.0
  * @since DistributionVersion
  */
-public interface IDiskStat extends Serializable {
+public interface IHostDiskStat extends Serializable {
 
     /**
      * 逻辑组名

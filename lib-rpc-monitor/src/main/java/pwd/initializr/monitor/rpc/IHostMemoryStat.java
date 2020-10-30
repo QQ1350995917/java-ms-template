@@ -13,7 +13,7 @@ import java.io.Serializable;
  * @version 1.0.0
  * @since DistributionVersion
  */
-public interface IMemoryStat extends Serializable {
+public interface IHostMemoryStat extends Serializable {
 
     /**
      * 逻辑组名

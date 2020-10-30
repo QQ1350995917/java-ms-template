@@ -20,7 +20,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @Setter
 @ToString
-public class RPCLoggedStat implements ILoggedStat {
+public class RPCHostLoggedStat implements IHostLoggedStat {
 
     private String groupName;
     private String nodeName;

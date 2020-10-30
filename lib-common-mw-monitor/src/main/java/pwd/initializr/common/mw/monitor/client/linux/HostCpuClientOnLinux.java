@@ -7,8 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import pwd.initializr.common.mw.monitor.MonitorClient;
 import pwd.initializr.common.mw.monitor.MonitorClientConfig;
 import pwd.initializr.common.mw.monitor.index.MonitorByShellOnLinux;
-import pwd.initializr.monitor.rpc.ICpuCore;
-import pwd.initializr.monitor.rpc.IHost;
+import pwd.initializr.monitor.rpc.IHostCpuCore;
 
 /**
  * pwd.initializr.common.mw.monitor.client@ms-web-initializr
@@ -43,7 +42,7 @@ public class HostCpuClientOnLinux extends MonitorClient {
   protected void refresh() {
     try {
         MonitorByShellOnLinux monitorByShellOnLinux = new MonitorByShellOnLinux();
-        List<ICpuCore> cpuCore = monitorByShellOnLinux.getCpuCore();
+        List<IHostCpuCore> cpuCore = monitorByShellOnLinux.getCpuCore();
         String jsonString = JSON.toJSONString(cpuCore);
         httpX.putJson(monitorClientConfig.getCpuUrl(), jsonString);
     } catch (Exception e) {
