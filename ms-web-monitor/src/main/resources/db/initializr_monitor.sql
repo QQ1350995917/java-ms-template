@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : localhost
+ Source Server         : 192.168.200.60-测试库
  Source Server Type    : MySQL
- Source Server Version : 50727
- Source Host           : localhost:3306
+ Source Server Version : 50723
+ Source Host           : 192.168.200.60:3306
  Source Schema         : initializr_monitor
 
  Target Server Type    : MySQL
- Target Server Version : 50727
+ Target Server Version : 50723
  File Encoding         : 65001
 
- Date: 29/10/2020 21:00:14
+ Date: 30/10/2020 18:02:39
 */
 
 SET NAMES utf8mb4;
@@ -65,7 +65,7 @@ CREATE TABLE `host_cpu`  (
   `fpu_exception` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `cpuid_level` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `wp` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `flags` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `flags` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
   `bogomips` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `clflush_size` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `cache_alignment` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
@@ -83,18 +83,19 @@ CREATE TABLE `host_cpu`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `host_cpu_stat`;
 CREATE TABLE `host_cpu_stat`  (
-  `group_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '逻辑组名，逻辑主键',
+  `group_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '逻辑组名，逻辑主键',
   `node_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '主机名，逻辑主键',
-  `user` int(11) NULL DEFAULT 0,
-  `nice` int(11) NULL DEFAULT 0,
-  `system` int(11) NULL DEFAULT 0,
-  `idle` int(11) NULL DEFAULT 0,
-  `iowait` int(11) NULL DEFAULT 0,
-  `irq` int(11) NULL DEFAULT 0,
-  `softirq` int(11) NULL DEFAULT 0,
-  `steal` int(11) NULL DEFAULT 0,
-  `guest` int(11) NULL DEFAULT 0,
-  `guest_nice` int(11) NULL DEFAULT 0,
+  `cpu_core_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `user` bigint(11) NULL DEFAULT 0,
+  `nice` bigint(11) NULL DEFAULT 0,
+  `system` bigint(11) NULL DEFAULT 0,
+  `idle` bigint(11) NULL DEFAULT 0,
+  `iowait` bigint(11) NULL DEFAULT 0,
+  `irq` bigint(11) NULL DEFAULT 0,
+  `softirq` bigint(11) NULL DEFAULT 0,
+  `steal` bigint(11) NULL DEFAULT 0,
+  `guest` bigint(11) NULL DEFAULT 0,
+  `guest_nice` bigint(11) NULL DEFAULT 0,
   `able` int(4) NULL DEFAULT 0 COMMENT '可用状态：0:不可用；1:可用',
   `del` int(4) NULL DEFAULT 0 COMMENT '删除状态：0:未删除；1:已删除',
   `create_time` datetime(0) NULL DEFAULT NULL COMMENT '数据创建时间',
@@ -227,26 +228,26 @@ CREATE TABLE `host_memory_stat`  (
   `shmem` int(11) NULL DEFAULT 0,
   `slab` int(11) NULL DEFAULT 0,
   `s_reclaimable` int(11) NULL DEFAULT 0,
-  `s_unreclaim` int(11) NOT NULL DEFAULT 0,
-  `kernel_stack` int(11) NOT NULL DEFAULT 0,
-  `page_tables` int(11) NOT NULL DEFAULT 0,
-  `n_fSUnstable` int(11) NOT NULL DEFAULT 0,
-  `bounce` int(11) NOT NULL DEFAULT 0,
-  `writeback_tmp` int(11) NOT NULL DEFAULT 0,
-  `commit_limit` int(11) NOT NULL DEFAULT 0,
-  `committed_aS` int(11) NOT NULL DEFAULT 0,
-  `vmalloc_total` int(11) NOT NULL DEFAULT 0,
-  `vmalloc_used` int(11) NOT NULL DEFAULT 0,
-  `vmalloc_chunk` int(11) NOT NULL DEFAULT 0,
-  `hardware_corrupted` int(11) NOT NULL DEFAULT 0,
-  `anon_huge_pages` int(11) NOT NULL DEFAULT 0,
-  `huge_pages_total` int(11) NOT NULL DEFAULT 0,
-  `huge_pages_free` int(11) NOT NULL DEFAULT 0,
-  `huge_pages_rsvd` int(11) NOT NULL DEFAULT 0,
-  `huge_pages_surp` int(11) NOT NULL DEFAULT 0,
-  `huge_pagesize` int(11) NOT NULL DEFAULT 0,
-  `direct_map4k` int(11) NOT NULL DEFAULT 0,
-  `direct_map2M` int(11) NOT NULL DEFAULT 0,
+  `s_unreclaim` int(11) NULL DEFAULT 0,
+  `kernel_stack` int(11) NULL DEFAULT 0,
+  `page_tables` int(11) NULL DEFAULT 0,
+  `n_fSUnstable` int(11) NULL DEFAULT 0,
+  `bounce` int(11) NULL DEFAULT 0,
+  `writeback_tmp` int(11) NULL DEFAULT 0,
+  `commit_limit` int(11) NULL DEFAULT 0,
+  `committed_aS` int(11) NULL DEFAULT 0,
+  `vmalloc_total` int(11) NULL DEFAULT 0,
+  `vmalloc_used` int(11) NULL DEFAULT 0,
+  `vmalloc_chunk` int(11) NULL DEFAULT 0,
+  `hardware_corrupted` int(11) NULL DEFAULT 0,
+  `anon_huge_pages` int(11) NULL DEFAULT 0,
+  `huge_pages_total` int(11) NULL DEFAULT 0,
+  `huge_pages_free` int(11) NULL DEFAULT 0,
+  `huge_pages_rsvd` int(11) NULL DEFAULT 0,
+  `huge_pages_surp` int(11) NULL DEFAULT 0,
+  `huge_pagesize` int(11) NULL DEFAULT 0,
+  `direct_map4k` int(11) NULL DEFAULT 0,
+  `direct_map2M` int(11) NULL DEFAULT 0,
   `able` int(4) NOT NULL DEFAULT 0 COMMENT '可用状态：0:不可用；1:可用',
   `del` int(4) NOT NULL DEFAULT 0 COMMENT '删除状态：0:未删除；1:已删除',
   `create_time` datetime(0) NOT NULL COMMENT '数据创建时间',
