@@ -73,19 +73,42 @@ public class MonitorClientConfig implements EnvironmentAware {
     private int ethernetStatConnectTimeoutMillisecond;
     private int ethernetStatSocketTimeoutMillisecond;
 
-    private boolean memoryEnable;
-    private int memoryRateSecond;
-    private String memoryUrl;
-    private int memoryConnectionRequestTimeoutMillisecond;
-    private int memoryConnectTimeoutMillisecond;
-    private int memorySocketTimeoutMillisecond;
+    private boolean loadStatEnable;
+    private int loadStatRateSecond;
+    private String loadStatUrl;
+    private int loadStatConnectionRequestTimeoutMillisecond;
+    private int loadStatConnectTimeoutMillisecond;
+    private int loadStatSocketTimeoutMillisecond;
 
-    private boolean memorySwapEnable;
-    private int memorySwapRateSecond;
-    private String memorySwapUrl;
-    private int memorySwapConnectionRequestTimeoutMillisecond;
-    private int memorySwapConnectTimeoutMillisecond;
-    private int memorySwapSocketTimeoutMillisecond;
+    private boolean loggedStatEnable;
+    private int loggedStatRateSecond;
+    private String loggedStatUrl;
+    private int loggedStatConnectionRequestTimeoutMillisecond;
+    private int loggedStatConnectTimeoutMillisecond;
+    private int loggedStatSocketTimeoutMillisecond;
+
+    private boolean memoryStatEnable;
+    private int memoryStatRateSecond;
+    private String memoryStatUrl;
+    private int memoryStatConnectionRequestTimeoutMillisecond;
+    private int memoryStatConnectTimeoutMillisecond;
+    private int memoryStatSocketTimeoutMillisecond;
+
+    public boolean isEnable() {
+        return enable;
+    }
+
+    public void setEnable(boolean enable) {
+        this.enable = enable;
+    }
+
+    public int getRateSecond() {
+        return rateSecond;
+    }
+
+    public void setRateSecond(int rateSecond) {
+        this.rateSecond = rateSecond;
+    }
 
     public int getThreadMaxTotal() {
         return threadMaxTotal;
@@ -119,12 +142,12 @@ public class MonitorClientConfig implements EnvironmentAware {
         this.retryCount = retryCount;
     }
 
-    public int getConnectTimeoutMillisecond() {
-        return connectTimeoutMillisecond;
+    public String getUrl() {
+        return url;
     }
 
-    public void setConnectTimeoutMillisecond(int connectTimeoutMillisecond) {
-        this.connectTimeoutMillisecond = connectTimeoutMillisecond;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public int getConnectionRequestTimeoutMillisecond() {
@@ -135,259 +158,44 @@ public class MonitorClientConfig implements EnvironmentAware {
         this.connectionRequestTimeoutMillisecond = connectionRequestTimeoutMillisecond;
     }
 
-    public int getCpuConnectTimeoutMillisecond() {
-        return cpuConnectTimeoutMillisecond;
+    public int getConnectTimeoutMillisecond() {
+        return connectTimeoutMillisecond;
     }
 
-    public void setCpuConnectTimeoutMillisecond(int cpuConnectTimeoutMillisecond) {
-        this.cpuConnectTimeoutMillisecond = cpuConnectTimeoutMillisecond;
+    public void setConnectTimeoutMillisecond(int connectTimeoutMillisecond) {
+        this.connectTimeoutMillisecond = connectTimeoutMillisecond;
     }
 
-    public int getCpuConnectionRequestTimeoutMillisecond() {
-        return cpuConnectionRequestTimeoutMillisecond;
+    public int getSocketTimeoutMillisecond() {
+        return socketTimeoutMillisecond;
     }
 
-    public void setCpuConnectionRequestTimeoutMillisecond(
-        int cpuConnectionRequestTimeoutMillisecond) {
-        this.cpuConnectionRequestTimeoutMillisecond = cpuConnectionRequestTimeoutMillisecond;
+    public void setSocketTimeoutMillisecond(int socketTimeoutMillisecond) {
+        this.socketTimeoutMillisecond = socketTimeoutMillisecond;
     }
 
-    public int getCpuStatConnectTimeoutMillisecond() {
-        return cpuStatConnectTimeoutMillisecond;
+    public boolean isHostEnable() {
+        return hostEnable;
     }
 
-    public void setCpuStatConnectTimeoutMillisecond(int cpuStatConnectTimeoutMillisecond) {
-        this.cpuStatConnectTimeoutMillisecond = cpuStatConnectTimeoutMillisecond;
+    public void setHostEnable(boolean hostEnable) {
+        this.hostEnable = hostEnable;
     }
 
-    public int getCpuStatConnectionRequestTimeoutMillisecond() {
-        return cpuStatConnectionRequestTimeoutMillisecond;
+    public int getHostRateSecond() {
+        return hostRateSecond;
     }
 
-    public void setCpuStatConnectionRequestTimeoutMillisecond(
-        int cpuStatConnectionRequestTimeoutMillisecond) {
-        this.cpuStatConnectionRequestTimeoutMillisecond = cpuStatConnectionRequestTimeoutMillisecond;
+    public void setHostRateSecond(int hostRateSecond) {
+        this.hostRateSecond = hostRateSecond;
     }
 
-    public int getCpuStatRateSecond() {
-        return cpuStatRateSecond;
+    public String getHostUrl() {
+        return hostUrl;
     }
 
-    public void setCpuStatRateSecond(int cpuStatRateSecond) {
-        this.cpuStatRateSecond = cpuStatRateSecond;
-    }
-
-    public int getCpuStatSocketTimeoutMillisecond() {
-        return cpuStatSocketTimeoutMillisecond;
-    }
-
-    public void setCpuStatSocketTimeoutMillisecond(int cpuStatSocketTimeoutMillisecond) {
-        this.cpuStatSocketTimeoutMillisecond = cpuStatSocketTimeoutMillisecond;
-    }
-
-    public String getCpuStatUrl() {
-        return cpuStatUrl;
-    }
-
-    public void setCpuStatUrl(String cpuStatUrl) {
-        this.cpuStatUrl = cpuStatUrl;
-    }
-
-    public int getCpuRateSecond() {
-        return cpuRateSecond;
-    }
-
-    public void setCpuRateSecond(int cpuRateSecond) {
-        this.cpuRateSecond = cpuRateSecond;
-    }
-
-    public int getCpuSocketTimeoutMillisecond() {
-        return cpuSocketTimeoutMillisecond;
-    }
-
-    public void setCpuSocketTimeoutMillisecond(int cpuSocketTimeoutMillisecond) {
-        this.cpuSocketTimeoutMillisecond = cpuSocketTimeoutMillisecond;
-    }
-
-    public String getCpuUrl() {
-        return cpuUrl;
-    }
-
-    public void setCpuUrl(String cpuUrl) {
-        this.cpuUrl = cpuUrl;
-    }
-
-    public int getDiskStatConnectTimeoutMillisecond() {
-        return diskStatConnectTimeoutMillisecond;
-    }
-
-    public void setDiskStatConnectTimeoutMillisecond(int diskStatConnectTimeoutMillisecond) {
-        this.diskStatConnectTimeoutMillisecond = diskStatConnectTimeoutMillisecond;
-    }
-
-    public int getDiskStatConnectionRequestTimeoutMillisecond() {
-        return diskStatConnectionRequestTimeoutMillisecond;
-    }
-
-    public void setDiskStatConnectionRequestTimeoutMillisecond(
-        int diskStatConnectionRequestTimeoutMillisecond) {
-        this.diskStatConnectionRequestTimeoutMillisecond = diskStatConnectionRequestTimeoutMillisecond;
-    }
-
-    public int getDiskStatRateSecond() {
-        return diskStatRateSecond;
-    }
-
-    public void setDiskStatRateSecond(int diskStatRateSecond) {
-        this.diskStatRateSecond = diskStatRateSecond;
-    }
-
-    public int getDiskStatSocketTimeoutMillisecond() {
-        return diskStatSocketTimeoutMillisecond;
-    }
-
-    public void setDiskStatSocketTimeoutMillisecond(int diskStatSocketTimeoutMillisecond) {
-        this.diskStatSocketTimeoutMillisecond = diskStatSocketTimeoutMillisecond;
-    }
-
-    public String getDiskStatUrl() {
-        return diskStatUrl;
-    }
-
-    public void setDiskStatUrl(String diskStatUrl) {
-        this.diskStatUrl = diskStatUrl;
-    }
-
-    public int getEthernetStatConnectTimeoutMillisecond() {
-        return ethernetStatConnectTimeoutMillisecond;
-    }
-
-    public void setEthernetStatConnectTimeoutMillisecond(
-        int ethernetStatConnectTimeoutMillisecond) {
-        this.ethernetStatConnectTimeoutMillisecond = ethernetStatConnectTimeoutMillisecond;
-    }
-
-    public int getEthernetStatConnectionRequestTimeoutMillisecond() {
-        return ethernetStatConnectionRequestTimeoutMillisecond;
-    }
-
-    public void setEthernetStatConnectionRequestTimeoutMillisecond(
-        int ethernetStatConnectionRequestTimeoutMillisecond) {
-        this.ethernetStatConnectionRequestTimeoutMillisecond = ethernetStatConnectionRequestTimeoutMillisecond;
-    }
-
-    public int getEthernetStatRateSecond() {
-        return ethernetStatRateSecond;
-    }
-
-    public void setEthernetStatRateSecond(int ethernetStatRateSecond) {
-        this.ethernetStatRateSecond = ethernetStatRateSecond;
-    }
-
-    public int getEthernetStatSocketTimeoutMillisecond() {
-        return ethernetStatSocketTimeoutMillisecond;
-    }
-
-    public void setEthernetStatSocketTimeoutMillisecond(int ethernetStatSocketTimeoutMillisecond) {
-        this.ethernetStatSocketTimeoutMillisecond = ethernetStatSocketTimeoutMillisecond;
-    }
-
-    public String getEthernetStatUrl() {
-        return ethernetStatUrl;
-    }
-
-    public void setEthernetStatUrl(String ethernetStatUrl) {
-        this.ethernetStatUrl = ethernetStatUrl;
-    }
-
-    public int getMemoryConnectTimeoutMillisecond() {
-        return memoryConnectTimeoutMillisecond;
-    }
-
-    public void setMemoryConnectTimeoutMillisecond(int memoryConnectTimeoutMillisecond) {
-        this.memoryConnectTimeoutMillisecond = memoryConnectTimeoutMillisecond;
-    }
-
-    public int getMemoryConnectionRequestTimeoutMillisecond() {
-        return memoryConnectionRequestTimeoutMillisecond;
-    }
-
-    public void setMemoryConnectionRequestTimeoutMillisecond(
-        int memoryConnectionRequestTimeoutMillisecond) {
-        this.memoryConnectionRequestTimeoutMillisecond = memoryConnectionRequestTimeoutMillisecond;
-    }
-
-    public int getMemoryRateSecond() {
-        return memoryRateSecond;
-    }
-
-    public void setMemoryRateSecond(int memoryRateSecond) {
-        this.memoryRateSecond = memoryRateSecond;
-    }
-
-    public int getMemorySocketTimeoutMillisecond() {
-        return memorySocketTimeoutMillisecond;
-    }
-
-    public void setMemorySocketTimeoutMillisecond(int memorySocketTimeoutMillisecond) {
-        this.memorySocketTimeoutMillisecond = memorySocketTimeoutMillisecond;
-    }
-
-    public int getMemorySwapConnectTimeoutMillisecond() {
-        return memorySwapConnectTimeoutMillisecond;
-    }
-
-    public void setMemorySwapConnectTimeoutMillisecond(int memorySwapConnectTimeoutMillisecond) {
-        this.memorySwapConnectTimeoutMillisecond = memorySwapConnectTimeoutMillisecond;
-    }
-
-    public int getMemorySwapConnectionRequestTimeoutMillisecond() {
-        return memorySwapConnectionRequestTimeoutMillisecond;
-    }
-
-    public void setMemorySwapConnectionRequestTimeoutMillisecond(
-        int memorySwapConnectionRequestTimeoutMillisecond) {
-        this.memorySwapConnectionRequestTimeoutMillisecond = memorySwapConnectionRequestTimeoutMillisecond;
-    }
-
-    public int getMemorySwapRateSecond() {
-        return memorySwapRateSecond;
-    }
-
-    public void setMemorySwapRateSecond(int memorySwapRateSecond) {
-        this.memorySwapRateSecond = memorySwapRateSecond;
-    }
-
-    public int getMemorySwapSocketTimeoutMillisecond() {
-        return memorySwapSocketTimeoutMillisecond;
-    }
-
-    public void setMemorySwapSocketTimeoutMillisecond(int memorySwapSocketTimeoutMillisecond) {
-        this.memorySwapSocketTimeoutMillisecond = memorySwapSocketTimeoutMillisecond;
-    }
-
-    public String getMemorySwapUrl() {
-        return memorySwapUrl;
-    }
-
-    public void setMemorySwapUrl(String memorySwapUrl) {
-        this.memorySwapUrl = memorySwapUrl;
-    }
-
-    public String getMemoryUrl() {
-        return memoryUrl;
-    }
-
-    public void setMemoryUrl(String memoryUrl) {
-        this.memoryUrl = memoryUrl;
-    }
-
-    public int getHostConnectTimeoutMillisecond() {
-        return hostConnectTimeoutMillisecond;
-    }
-
-    public void setHostConnectTimeoutMillisecond(int hostConnectTimeoutMillisecond) {
-        this.hostConnectTimeoutMillisecond = hostConnectTimeoutMillisecond;
+    public void setHostUrl(String hostUrl) {
+        this.hostUrl = hostUrl;
     }
 
     public int getHostConnectionRequestTimeoutMillisecond() {
@@ -399,12 +207,12 @@ public class MonitorClientConfig implements EnvironmentAware {
         this.hostConnectionRequestTimeoutMillisecond = hostConnectionRequestTimeoutMillisecond;
     }
 
-    public int getHostRateSecond() {
-        return hostRateSecond;
+    public int getHostConnectTimeoutMillisecond() {
+        return hostConnectTimeoutMillisecond;
     }
 
-    public void setHostRateSecond(int hostRateSecond) {
-        this.hostRateSecond = hostRateSecond;
+    public void setHostConnectTimeoutMillisecond(int hostConnectTimeoutMillisecond) {
+        this.hostConnectTimeoutMillisecond = hostConnectTimeoutMillisecond;
     }
 
     public int getHostSocketTimeoutMillisecond() {
@@ -415,44 +223,28 @@ public class MonitorClientConfig implements EnvironmentAware {
         this.hostSocketTimeoutMillisecond = hostSocketTimeoutMillisecond;
     }
 
-    public String getHostUrl() {
-        return hostUrl;
+    public boolean isWhoEnable() {
+        return whoEnable;
     }
 
-    public void setHostUrl(String hostUrl) {
-        this.hostUrl = hostUrl;
+    public void setWhoEnable(boolean whoEnable) {
+        this.whoEnable = whoEnable;
     }
 
-    public int getRateSecond() {
-        return rateSecond;
+    public int getWhoRateSecond() {
+        return whoRateSecond;
     }
 
-    public void setRateSecond(int rateSecond) {
-        this.rateSecond = rateSecond;
+    public void setWhoRateSecond(int whoRateSecond) {
+        this.whoRateSecond = whoRateSecond;
     }
 
-    public int getSocketTimeoutMillisecond() {
-        return socketTimeoutMillisecond;
+    public String getWhoUrl() {
+        return whoUrl;
     }
 
-    public void setSocketTimeoutMillisecond(int socketTimeoutMillisecond) {
-        this.socketTimeoutMillisecond = socketTimeoutMillisecond;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public int getWhoConnectTimeoutMillisecond() {
-        return whoConnectTimeoutMillisecond;
-    }
-
-    public void setWhoConnectTimeoutMillisecond(int whoConnectTimeoutMillisecond) {
-        this.whoConnectTimeoutMillisecond = whoConnectTimeoutMillisecond;
+    public void setWhoUrl(String whoUrl) {
+        this.whoUrl = whoUrl;
     }
 
     public int getWhoConnectionRequestTimeoutMillisecond() {
@@ -464,12 +256,12 @@ public class MonitorClientConfig implements EnvironmentAware {
         this.whoConnectionRequestTimeoutMillisecond = whoConnectionRequestTimeoutMillisecond;
     }
 
-    public int getWhoRateSecond() {
-        return whoRateSecond;
+    public int getWhoConnectTimeoutMillisecond() {
+        return whoConnectTimeoutMillisecond;
     }
 
-    public void setWhoRateSecond(int whoRateSecond) {
-        this.whoRateSecond = whoRateSecond;
+    public void setWhoConnectTimeoutMillisecond(int whoConnectTimeoutMillisecond) {
+        this.whoConnectTimeoutMillisecond = whoConnectTimeoutMillisecond;
     }
 
     public int getWhoSocketTimeoutMillisecond() {
@@ -480,12 +272,53 @@ public class MonitorClientConfig implements EnvironmentAware {
         this.whoSocketTimeoutMillisecond = whoSocketTimeoutMillisecond;
     }
 
-    public String getWhoUrl() {
-        return whoUrl;
+    public boolean isCpuEnable() {
+        return cpuEnable;
     }
 
-    public void setWhoUrl(String whoUrl) {
-        this.whoUrl = whoUrl;
+    public void setCpuEnable(boolean cpuEnable) {
+        this.cpuEnable = cpuEnable;
+    }
+
+    public int getCpuRateSecond() {
+        return cpuRateSecond;
+    }
+
+    public void setCpuRateSecond(int cpuRateSecond) {
+        this.cpuRateSecond = cpuRateSecond;
+    }
+
+    public String getCpuUrl() {
+        return cpuUrl;
+    }
+
+    public void setCpuUrl(String cpuUrl) {
+        this.cpuUrl = cpuUrl;
+    }
+
+    public int getCpuConnectionRequestTimeoutMillisecond() {
+        return cpuConnectionRequestTimeoutMillisecond;
+    }
+
+    public void setCpuConnectionRequestTimeoutMillisecond(
+        int cpuConnectionRequestTimeoutMillisecond) {
+        this.cpuConnectionRequestTimeoutMillisecond = cpuConnectionRequestTimeoutMillisecond;
+    }
+
+    public int getCpuConnectTimeoutMillisecond() {
+        return cpuConnectTimeoutMillisecond;
+    }
+
+    public void setCpuConnectTimeoutMillisecond(int cpuConnectTimeoutMillisecond) {
+        this.cpuConnectTimeoutMillisecond = cpuConnectTimeoutMillisecond;
+    }
+
+    public int getCpuSocketTimeoutMillisecond() {
+        return cpuSocketTimeoutMillisecond;
+    }
+
+    public void setCpuSocketTimeoutMillisecond(int cpuSocketTimeoutMillisecond) {
+        this.cpuSocketTimeoutMillisecond = cpuSocketTimeoutMillisecond;
     }
 
     public boolean isCpuStatEnable() {
@@ -496,12 +329,45 @@ public class MonitorClientConfig implements EnvironmentAware {
         this.cpuStatEnable = cpuStatEnable;
     }
 
-    public boolean isCpuEnable() {
-        return cpuEnable;
+    public int getCpuStatRateSecond() {
+        return cpuStatRateSecond;
     }
 
-    public void setCpuEnable(boolean cpuEnable) {
-        this.cpuEnable = cpuEnable;
+    public void setCpuStatRateSecond(int cpuStatRateSecond) {
+        this.cpuStatRateSecond = cpuStatRateSecond;
+    }
+
+    public String getCpuStatUrl() {
+        return cpuStatUrl;
+    }
+
+    public void setCpuStatUrl(String cpuStatUrl) {
+        this.cpuStatUrl = cpuStatUrl;
+    }
+
+    public int getCpuStatConnectionRequestTimeoutMillisecond() {
+        return cpuStatConnectionRequestTimeoutMillisecond;
+    }
+
+    public void setCpuStatConnectionRequestTimeoutMillisecond(
+        int cpuStatConnectionRequestTimeoutMillisecond) {
+        this.cpuStatConnectionRequestTimeoutMillisecond = cpuStatConnectionRequestTimeoutMillisecond;
+    }
+
+    public int getCpuStatConnectTimeoutMillisecond() {
+        return cpuStatConnectTimeoutMillisecond;
+    }
+
+    public void setCpuStatConnectTimeoutMillisecond(int cpuStatConnectTimeoutMillisecond) {
+        this.cpuStatConnectTimeoutMillisecond = cpuStatConnectTimeoutMillisecond;
+    }
+
+    public int getCpuStatSocketTimeoutMillisecond() {
+        return cpuStatSocketTimeoutMillisecond;
+    }
+
+    public void setCpuStatSocketTimeoutMillisecond(int cpuStatSocketTimeoutMillisecond) {
+        this.cpuStatSocketTimeoutMillisecond = cpuStatSocketTimeoutMillisecond;
     }
 
     public boolean isDiskStatEnable() {
@@ -512,48 +378,45 @@ public class MonitorClientConfig implements EnvironmentAware {
         this.diskStatEnable = diskStatEnable;
     }
 
-    public boolean isEnable() {
-        return enable;
+    public int getDiskStatRateSecond() {
+        return diskStatRateSecond;
     }
 
-    public void setEnable(boolean enable) {
-        this.enable = enable;
+    public void setDiskStatRateSecond(int diskStatRateSecond) {
+        this.diskStatRateSecond = diskStatRateSecond;
     }
 
-    public boolean isMemoryEnable() {
-        return memoryEnable;
+    public String getDiskStatUrl() {
+        return diskStatUrl;
     }
 
-    public void setMemoryEnable(boolean memoryEnable) {
-        this.memoryEnable = memoryEnable;
+    public void setDiskStatUrl(String diskStatUrl) {
+        this.diskStatUrl = diskStatUrl;
     }
 
-    public boolean isMemorySwapEnable() {
-        return memorySwapEnable;
+    public int getDiskStatConnectionRequestTimeoutMillisecond() {
+        return diskStatConnectionRequestTimeoutMillisecond;
     }
 
-    public void setMemorySwapEnable(boolean memorySwapEnable) {
-        this.memorySwapEnable = memorySwapEnable;
+    public void setDiskStatConnectionRequestTimeoutMillisecond(
+        int diskStatConnectionRequestTimeoutMillisecond) {
+        this.diskStatConnectionRequestTimeoutMillisecond = diskStatConnectionRequestTimeoutMillisecond;
     }
 
-    public boolean isOsEnable() {
-        return hostEnable;
+    public int getDiskStatConnectTimeoutMillisecond() {
+        return diskStatConnectTimeoutMillisecond;
     }
 
-    public void setHostEnable(boolean hostEnable) {
-        this.hostEnable = hostEnable;
+    public void setDiskStatConnectTimeoutMillisecond(int diskStatConnectTimeoutMillisecond) {
+        this.diskStatConnectTimeoutMillisecond = diskStatConnectTimeoutMillisecond;
     }
 
-    public boolean isWhoEnable() {
-        return whoEnable;
+    public int getDiskStatSocketTimeoutMillisecond() {
+        return diskStatSocketTimeoutMillisecond;
     }
 
-    public void setWhoEnable(boolean whoEnable) {
-        this.whoEnable = whoEnable;
-    }
-
-    public boolean isHostEnable() {
-        return hostEnable;
+    public void setDiskStatSocketTimeoutMillisecond(int diskStatSocketTimeoutMillisecond) {
+        this.diskStatSocketTimeoutMillisecond = diskStatSocketTimeoutMillisecond;
     }
 
     public boolean isEthernetStatEnable() {
@@ -562,6 +425,195 @@ public class MonitorClientConfig implements EnvironmentAware {
 
     public void setEthernetStatEnable(boolean ethernetStatEnable) {
         this.ethernetStatEnable = ethernetStatEnable;
+    }
+
+    public int getEthernetStatRateSecond() {
+        return ethernetStatRateSecond;
+    }
+
+    public void setEthernetStatRateSecond(int ethernetStatRateSecond) {
+        this.ethernetStatRateSecond = ethernetStatRateSecond;
+    }
+
+    public String getEthernetStatUrl() {
+        return ethernetStatUrl;
+    }
+
+    public void setEthernetStatUrl(String ethernetStatUrl) {
+        this.ethernetStatUrl = ethernetStatUrl;
+    }
+
+    public int getEthernetStatConnectionRequestTimeoutMillisecond() {
+        return ethernetStatConnectionRequestTimeoutMillisecond;
+    }
+
+    public void setEthernetStatConnectionRequestTimeoutMillisecond(
+        int ethernetStatConnectionRequestTimeoutMillisecond) {
+        this.ethernetStatConnectionRequestTimeoutMillisecond = ethernetStatConnectionRequestTimeoutMillisecond;
+    }
+
+    public int getEthernetStatConnectTimeoutMillisecond() {
+        return ethernetStatConnectTimeoutMillisecond;
+    }
+
+    public void setEthernetStatConnectTimeoutMillisecond(
+        int ethernetStatConnectTimeoutMillisecond) {
+        this.ethernetStatConnectTimeoutMillisecond = ethernetStatConnectTimeoutMillisecond;
+    }
+
+    public int getEthernetStatSocketTimeoutMillisecond() {
+        return ethernetStatSocketTimeoutMillisecond;
+    }
+
+    public void setEthernetStatSocketTimeoutMillisecond(int ethernetStatSocketTimeoutMillisecond) {
+        this.ethernetStatSocketTimeoutMillisecond = ethernetStatSocketTimeoutMillisecond;
+    }
+
+    public boolean isLoadStatEnable() {
+        return loadStatEnable;
+    }
+
+    public void setLoadStatEnable(boolean loadStatEnable) {
+        this.loadStatEnable = loadStatEnable;
+    }
+
+    public int getLoadStatRateSecond() {
+        return loadStatRateSecond;
+    }
+
+    public void setLoadStatRateSecond(int loadStatRateSecond) {
+        this.loadStatRateSecond = loadStatRateSecond;
+    }
+
+    public String getLoadStatUrl() {
+        return loadStatUrl;
+    }
+
+    public void setLoadStatUrl(String loadStatUrl) {
+        this.loadStatUrl = loadStatUrl;
+    }
+
+    public int getLoadStatConnectionRequestTimeoutMillisecond() {
+        return loadStatConnectionRequestTimeoutMillisecond;
+    }
+
+    public void setLoadStatConnectionRequestTimeoutMillisecond(
+        int loadStatConnectionRequestTimeoutMillisecond) {
+        this.loadStatConnectionRequestTimeoutMillisecond = loadStatConnectionRequestTimeoutMillisecond;
+    }
+
+    public int getLoadStatConnectTimeoutMillisecond() {
+        return loadStatConnectTimeoutMillisecond;
+    }
+
+    public void setLoadStatConnectTimeoutMillisecond(int loadStatConnectTimeoutMillisecond) {
+        this.loadStatConnectTimeoutMillisecond = loadStatConnectTimeoutMillisecond;
+    }
+
+    public int getLoadStatSocketTimeoutMillisecond() {
+        return loadStatSocketTimeoutMillisecond;
+    }
+
+    public void setLoadStatSocketTimeoutMillisecond(int loadStatSocketTimeoutMillisecond) {
+        this.loadStatSocketTimeoutMillisecond = loadStatSocketTimeoutMillisecond;
+    }
+
+    public boolean isLoggedStatEnable() {
+        return loggedStatEnable;
+    }
+
+    public void setLoggedStatEnable(boolean loggedStatEnable) {
+        this.loggedStatEnable = loggedStatEnable;
+    }
+
+    public int getLoggedStatRateSecond() {
+        return loggedStatRateSecond;
+    }
+
+    public void setLoggedStatRateSecond(int loggedStatRateSecond) {
+        this.loggedStatRateSecond = loggedStatRateSecond;
+    }
+
+    public String getLoggedStatUrl() {
+        return loggedStatUrl;
+    }
+
+    public void setLoggedStatUrl(String loggedStatUrl) {
+        this.loggedStatUrl = loggedStatUrl;
+    }
+
+    public int getLoggedStatConnectionRequestTimeoutMillisecond() {
+        return loggedStatConnectionRequestTimeoutMillisecond;
+    }
+
+    public void setLoggedStatConnectionRequestTimeoutMillisecond(
+        int loggedStatConnectionRequestTimeoutMillisecond) {
+        this.loggedStatConnectionRequestTimeoutMillisecond = loggedStatConnectionRequestTimeoutMillisecond;
+    }
+
+    public int getLoggedStatConnectTimeoutMillisecond() {
+        return loggedStatConnectTimeoutMillisecond;
+    }
+
+    public void setLoggedStatConnectTimeoutMillisecond(int loggedStatConnectTimeoutMillisecond) {
+        this.loggedStatConnectTimeoutMillisecond = loggedStatConnectTimeoutMillisecond;
+    }
+
+    public int getLoggedStatSocketTimeoutMillisecond() {
+        return loggedStatSocketTimeoutMillisecond;
+    }
+
+    public void setLoggedStatSocketTimeoutMillisecond(int loggedStatSocketTimeoutMillisecond) {
+        this.loggedStatSocketTimeoutMillisecond = loggedStatSocketTimeoutMillisecond;
+    }
+
+    public boolean isMemoryStatEnable() {
+        return memoryStatEnable;
+    }
+
+    public void setMemoryStatEnable(boolean memoryStatEnable) {
+        this.memoryStatEnable = memoryStatEnable;
+    }
+
+    public int getMemoryStatRateSecond() {
+        return memoryStatRateSecond;
+    }
+
+    public void setMemoryStatRateSecond(int memoryStatRateSecond) {
+        this.memoryStatRateSecond = memoryStatRateSecond;
+    }
+
+    public String getMemoryStatUrl() {
+        return memoryStatUrl;
+    }
+
+    public void setMemoryStatUrl(String memoryStatUrl) {
+        this.memoryStatUrl = memoryStatUrl;
+    }
+
+    public int getMemoryStatConnectionRequestTimeoutMillisecond() {
+        return memoryStatConnectionRequestTimeoutMillisecond;
+    }
+
+    public void setMemoryStatConnectionRequestTimeoutMillisecond(
+        int memoryStatConnectionRequestTimeoutMillisecond) {
+        this.memoryStatConnectionRequestTimeoutMillisecond = memoryStatConnectionRequestTimeoutMillisecond;
+    }
+
+    public int getMemoryStatConnectTimeoutMillisecond() {
+        return memoryStatConnectTimeoutMillisecond;
+    }
+
+    public void setMemoryStatConnectTimeoutMillisecond(int memoryStatConnectTimeoutMillisecond) {
+        this.memoryStatConnectTimeoutMillisecond = memoryStatConnectTimeoutMillisecond;
+    }
+
+    public int getMemoryStatSocketTimeoutMillisecond() {
+        return memoryStatSocketTimeoutMillisecond;
+    }
+
+    public void setMemoryStatSocketTimeoutMillisecond(int memoryStatSocketTimeoutMillisecond) {
+        this.memoryStatSocketTimeoutMillisecond = memoryStatSocketTimeoutMillisecond;
     }
 
     @Override

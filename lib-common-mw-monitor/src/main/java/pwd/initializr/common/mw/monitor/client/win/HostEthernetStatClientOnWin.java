@@ -35,7 +35,7 @@ public class HostEthernetStatClientOnWin extends MonitorClient {
 
   @Override
   protected int getScheduleSecondRate() {
-    return monitorClientConfig.getDiskStatRateSecond();
+    return monitorClientConfig.getEthernetStatRateSecond();
   }
 
   @Override

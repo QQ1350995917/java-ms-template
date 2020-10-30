@@ -15,11 +15,17 @@ import pwd.initializr.common.mw.monitor.client.linux.HostCpuClientOnLinux;
 import pwd.initializr.common.mw.monitor.client.linux.HostCpuStatClientOnLinux;
 import pwd.initializr.common.mw.monitor.client.linux.HostDiskStatClientOnLinux;
 import pwd.initializr.common.mw.monitor.client.linux.HostEthernetStatClientOnLinux;
+import pwd.initializr.common.mw.monitor.client.linux.HostLoadStatClientOnLinux;
+import pwd.initializr.common.mw.monitor.client.linux.HostLoggedStatClientOnLinux;
+import pwd.initializr.common.mw.monitor.client.linux.HostMemoryStatClientOnLinux;
 import pwd.initializr.common.mw.monitor.client.win.HostClientOnWin;
 import pwd.initializr.common.mw.monitor.client.win.HostCpuClientOnWin;
 import pwd.initializr.common.mw.monitor.client.win.HostCpuStatClientOnWin;
 import pwd.initializr.common.mw.monitor.client.win.HostDiskStatClientOnWin;
 import pwd.initializr.common.mw.monitor.client.win.HostEthernetStatClientOnWin;
+import pwd.initializr.common.mw.monitor.client.win.HostLoadStatClientOnWin;
+import pwd.initializr.common.mw.monitor.client.win.HostLoggedStatClientOnWin;
+import pwd.initializr.common.mw.monitor.client.win.HostMemoryStatClientOnWin;
 import pwd.initializr.common.utils.OSUtil;
 
 /**
@@ -104,19 +110,26 @@ public class MonitorClientAutoConfiguration {
     String ethernetStatConnectTimeoutMillisecond = getProperty("monitor.cloud.client.host.ethernet.stat.connect.timeout.millisecond");
     String ethernetStatSocketTimeoutMillisecond = getProperty("monitor.cloud.client.host.ethernet.stat.socket.timeout.millisecond");
 
-    String memoryEnable = getProperty("monitor.cloud.client.memory.enable");
-    String memoryRateSecond = getProperty("monitor.cloud.client.memory.rate.second");
-    String memoryUrl = getProperty("monitor.cloud.client.memory.url");
-    String memoryConnectionRequestTimeoutMillisecond = getProperty("monitor.cloud.client.memory.connection.request.timeout.millisecond");
-    String memoryConnectTimeoutMillisecond = getProperty("monitor.cloud.client.memory.connect.timeout.millisecond");
-    String memorySocketTimeoutMillisecond = getProperty("monitor.cloud.client.memory.socket.timeout.millisecond");
+    String loadStatEnable = getProperty("monitor.cloud.client.host.load.stat.enable");
+    String loadStatRateSecond = getProperty("monitor.cloud.client.host.load.stat.rate.second");
+    String loadStatUrl = getProperty("monitor.cloud.client.host.load.stat.url");
+    String loadStatConnectionRequestTimeoutMillisecond = getProperty("monitor.cloud.client.host.load.stat.connection.request.timeout.millisecond");
+    String loadStatConnectTimeoutMillisecond = getProperty("monitor.cloud.client.host.load.stat.connect.timeout.millisecond");
+    String loadStatSocketTimeoutMillisecond = getProperty("monitor.cloud.client.host.load.stat.socket.timeout.millisecond");
 
-    String memorySwapEnable = getProperty("monitor.cloud.client.memory.swap.enable");
-    String memorySwapRateSecond = getProperty("monitor.cloud.client.memory.swap.rate.second");
-    String memorySwapUrl = getProperty("monitor.cloud.client.memory.swap.url");
-    String memorySwapConnectionRequestTimeoutMillisecond = getProperty("monitor.cloud.client.memory.swap.connection.request.timeout.millisecond");
-    String memorySwapConnectTimeoutMillisecond = getProperty("monitor.cloud.client.memory.swap.connect.timeout.millisecond");
-    String memorySwapSocketTimeoutMillisecond = getProperty("monitor.cloud.client.memory.swap.socket.timeout.millisecond");
+    String loggedStatEnable = getProperty("monitor.cloud.client.host.logged.stat.enable");
+    String loggedStatRateSecond = getProperty("monitor.cloud.client.host.logged.stat.rate.second");
+    String loggedStatUrl = getProperty("monitor.cloud.client.host.logged.stat.url");
+    String loggedStatConnectionRequestTimeoutMillisecond = getProperty("monitor.cloud.client.host.logged.stat.connection.request.timeout.millisecond");
+    String loggedStatConnectTimeoutMillisecond = getProperty("monitor.cloud.client.host.logged.stat.connect.timeout.millisecond");
+    String loggedStatSocketTimeoutMillisecond = getProperty("monitor.cloud.client.host.logged.stat.socket.timeout.millisecond");
+
+    String memoryStatEnable = getProperty("monitor.cloud.client.host.memory.stat.enable");
+    String memoryStatRateSecond = getProperty("monitor.cloud.client.host.memory.stat.rate.second");
+    String memoryStatUrl = getProperty("monitor.cloud.client.host.memory.stat.url");
+    String memoryStatConnectionRequestTimeoutMillisecond = getProperty("monitor.cloud.client.host.memory.stat.connection.request.timeout.millisecond");
+    String memoryStatConnectTimeoutMillisecond = getProperty("monitor.cloud.client.host.memory.stat.connect.timeout.millisecond");
+    String memoryStatSocketTimeoutMillisecond = getProperty("monitor.cloud.client.host.memory.stat.socket.timeout.millisecond");
 
     MonitorClientConfig instance = new MonitorClientConfig();
 
@@ -168,19 +181,26 @@ public class MonitorClientAutoConfiguration {
     instance.setEthernetStatConnectTimeoutMillisecond(StringUtils.isBlank(ethernetStatConnectTimeoutMillisecond) ? instance.getConnectTimeoutMillisecond() : Integer.parseInt(ethernetStatConnectTimeoutMillisecond));
     instance.setEthernetStatSocketTimeoutMillisecond(StringUtils.isBlank(ethernetStatSocketTimeoutMillisecond) ? instance.getSocketTimeoutMillisecond() : Integer.parseInt(ethernetStatSocketTimeoutMillisecond));
 
-    instance.setMemoryEnable(StringUtils.isBlank(memoryEnable) ? instance.isEnable() : Boolean.parseBoolean(memoryEnable));
-    instance.setMemoryRateSecond(StringUtils.isBlank(memoryRateSecond) ? instance.getRateSecond() : Integer.parseInt(memoryRateSecond));
-    instance.setMemoryUrl(StringUtils.isBlank(memoryUrl) ? url : memoryUrl);
-    instance.setMemoryConnectionRequestTimeoutMillisecond(StringUtils.isBlank(memoryConnectionRequestTimeoutMillisecond) ? instance.getConnectionRequestTimeoutMillisecond() : Integer.parseInt(memoryConnectionRequestTimeoutMillisecond));
-    instance.setMemoryConnectTimeoutMillisecond(StringUtils.isBlank(memoryConnectTimeoutMillisecond) ? instance.getConnectTimeoutMillisecond() : Integer.parseInt(memoryConnectTimeoutMillisecond));
-    instance.setMemorySocketTimeoutMillisecond(StringUtils.isBlank(memorySocketTimeoutMillisecond) ? instance.getSocketTimeoutMillisecond() : Integer.parseInt(memorySocketTimeoutMillisecond));
+    instance.setLoadStatEnable(StringUtils.isBlank(loadStatEnable) ? instance.isEnable() : Boolean.parseBoolean(loadStatEnable));
+    instance.setLoadStatRateSecond(StringUtils.isBlank(loadStatRateSecond) ? instance.getRateSecond() : Integer.parseInt(loadStatRateSecond));
+    instance.setLoadStatUrl(StringUtils.isBlank(loadStatUrl) ? url : loadStatUrl);
+    instance.setLoadStatConnectionRequestTimeoutMillisecond(StringUtils.isBlank(loadStatConnectionRequestTimeoutMillisecond) ? instance.getConnectionRequestTimeoutMillisecond() : Integer.parseInt(loadStatConnectionRequestTimeoutMillisecond));
+    instance.setLoadStatConnectTimeoutMillisecond(StringUtils.isBlank(loadStatConnectTimeoutMillisecond) ? instance.getConnectTimeoutMillisecond() : Integer.parseInt(loadStatConnectTimeoutMillisecond));
+    instance.setLoadStatSocketTimeoutMillisecond(StringUtils.isBlank(loadStatSocketTimeoutMillisecond) ? instance.getSocketTimeoutMillisecond() : Integer.parseInt(loadStatSocketTimeoutMillisecond));
 
-    instance.setMemorySwapEnable(StringUtils.isBlank(memorySwapEnable) ? instance.isEnable() : Boolean.parseBoolean(memorySwapEnable));
-    instance.setMemorySwapRateSecond(StringUtils.isBlank(memorySwapRateSecond) ? instance.getRateSecond() : Integer.parseInt(memorySwapRateSecond));
-    instance.setMemorySwapUrl(StringUtils.isBlank(memorySwapUrl) ? url : memorySwapUrl);
-    instance.setMemorySwapConnectionRequestTimeoutMillisecond(StringUtils.isBlank(memorySwapConnectionRequestTimeoutMillisecond) ? instance.getConnectionRequestTimeoutMillisecond() : Integer.parseInt(memorySwapConnectionRequestTimeoutMillisecond));
-    instance.setMemorySwapConnectTimeoutMillisecond(StringUtils.isBlank(memorySwapConnectTimeoutMillisecond) ? instance.getConnectTimeoutMillisecond() : Integer.parseInt(memorySwapConnectTimeoutMillisecond));
-    instance.setMemorySwapSocketTimeoutMillisecond(StringUtils.isBlank(memorySwapSocketTimeoutMillisecond) ? instance.getSocketTimeoutMillisecond() : Integer.parseInt(memorySwapSocketTimeoutMillisecond));
+    instance.setLoggedStatEnable(StringUtils.isBlank(loggedStatEnable) ? instance.isEnable() : Boolean.parseBoolean(loggedStatEnable));
+    instance.setLoggedStatRateSecond(StringUtils.isBlank(loggedStatRateSecond) ? instance.getRateSecond() : Integer.parseInt(loggedStatRateSecond));
+    instance.setLoggedStatUrl(StringUtils.isBlank(loggedStatUrl) ? url : loggedStatUrl);
+    instance.setLoggedStatConnectionRequestTimeoutMillisecond(StringUtils.isBlank(loggedStatConnectionRequestTimeoutMillisecond) ? instance.getConnectionRequestTimeoutMillisecond() : Integer.parseInt(loggedStatConnectionRequestTimeoutMillisecond));
+    instance.setLoggedStatConnectTimeoutMillisecond(StringUtils.isBlank(loggedStatConnectTimeoutMillisecond) ? instance.getConnectTimeoutMillisecond() : Integer.parseInt(loggedStatConnectTimeoutMillisecond));
+    instance.setLoggedStatSocketTimeoutMillisecond(StringUtils.isBlank(loggedStatSocketTimeoutMillisecond) ? instance.getSocketTimeoutMillisecond() : Integer.parseInt(loggedStatSocketTimeoutMillisecond));
+
+    instance.setMemoryStatEnable(StringUtils.isBlank(memoryStatEnable) ? instance.isEnable() : Boolean.parseBoolean(memoryStatEnable));
+    instance.setMemoryStatRateSecond(StringUtils.isBlank(memoryStatRateSecond) ? instance.getRateSecond() : Integer.parseInt(memoryStatRateSecond));
+    instance.setMemoryStatUrl(StringUtils.isBlank(memoryStatUrl) ? url : memoryStatUrl);
+    instance.setMemoryStatConnectionRequestTimeoutMillisecond(StringUtils.isBlank(memoryStatConnectionRequestTimeoutMillisecond) ? instance.getConnectionRequestTimeoutMillisecond() : Integer.parseInt(memoryStatConnectionRequestTimeoutMillisecond));
+    instance.setMemoryStatConnectTimeoutMillisecond(StringUtils.isBlank(memoryStatConnectTimeoutMillisecond) ? instance.getConnectTimeoutMillisecond() : Integer.parseInt(memoryStatConnectTimeoutMillisecond));
+    instance.setMemoryStatSocketTimeoutMillisecond(StringUtils.isBlank(memoryStatSocketTimeoutMillisecond) ? instance.getSocketTimeoutMillisecond() : Integer.parseInt(memoryStatSocketTimeoutMillisecond));
 
     return instance;
   }
@@ -244,28 +264,37 @@ public class MonitorClientAutoConfiguration {
     throw new RuntimeException("incompatible OS " + OSUtil.getOSName());
   }
 
-//  @Bean
-//  @ConditionalOnProperty(value = "monitor.cloud.client.ethernet.enable", matchIfMissing = true)
-//  public MonitorClient ethernetClient(MonitorClientConfig monitorClientConfig) {
-//    return new EthernetClient(monitorClientConfig);
-//  }
-//
-//  @Bean
-//  @ConditionalOnProperty(value = "monitor.cloud.client.ethernet.stat.enable", matchIfMissing = true)
-//  public MonitorClient ethernetStatClient(MonitorClientConfig monitorClientConfig) {
-//    return new EthernetStatClient(monitorClientConfig);
-//  }
-//
-//  @Bean
-//  @ConditionalOnProperty(value = "monitor.cloud.client.memory.enable", matchIfMissing = true)
-//  public MonitorClient memoryClient(MonitorClientConfig monitorClientConfig) {
-//    return new MemoryClient(monitorClientConfig);
-//  }
-//
-//  @Bean
-//  @ConditionalOnProperty(value = "monitor.cloud.client.memory.swap.enable", matchIfMissing = true)
-//  public MonitorClient memorySwapClient(MonitorClientConfig monitorClientConfig) {
-//    return new MemorySwapClient(monitorClientConfig);
-//  }
+  @Bean
+  @ConditionalOnProperty(value = "monitor.cloud.client.host.load.stat.enable", matchIfMissing = true)
+  public MonitorClient loadStatClient(MonitorClientConfig monitorClientConfig) {
+    if (OSUtil.isLinux()) {
+      return new HostLoadStatClientOnLinux(monitorClientConfig);
+    } else if (OSUtil.isWindows()) {
+      return new HostLoadStatClientOnWin(monitorClientConfig);
+    }
+    throw new RuntimeException("incompatible OS " + OSUtil.getOSName());
+  }
+
+  @Bean
+  @ConditionalOnProperty(value = "monitor.cloud.client.host.logged.stat.enable", matchIfMissing = true)
+  public MonitorClient loggedStatClient(MonitorClientConfig monitorClientConfig) {
+    if (OSUtil.isLinux()) {
+      return new HostLoggedStatClientOnLinux(monitorClientConfig);
+    } else if (OSUtil.isWindows()) {
+      return new HostLoggedStatClientOnWin(monitorClientConfig);
+    }
+    throw new RuntimeException("incompatible OS " + OSUtil.getOSName());
+  }
+
+  @Bean
+  @ConditionalOnProperty(value = "monitor.cloud.client.host.memory.state.enable", matchIfMissing = true)
+  public MonitorClient memoryStatClient(MonitorClientConfig monitorClientConfig) {
+    if (OSUtil.isLinux()) {
+      return new HostMemoryStatClientOnLinux(monitorClientConfig);
+    } else if (OSUtil.isWindows()) {
+      return new HostMemoryStatClientOnWin(monitorClientConfig);
+    }
+    throw new RuntimeException("incompatible OS " + OSUtil.getOSName());
+  }
 
 }
