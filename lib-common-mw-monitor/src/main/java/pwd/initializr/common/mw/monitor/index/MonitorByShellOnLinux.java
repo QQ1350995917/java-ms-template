@@ -51,7 +51,7 @@ public class MonitorByShellOnLinux extends ShellOnLinux implements Index {
             ShellResult machineShellResult = this.execForResult(new String[]{"uname -m"});
             ShellResult processorShellResult = this.execForResult(new String[]{"uname -p"});
             rpcHost.setGroupName(groupNameShellResult.getLines().size() > 0 ? groupNameShellResult.getLines().get(0) : "unnamed");
-            rpcHost.setNodeName(nodeNameShellResult.getLines().get(0));
+            rpcHost.setNodeName(nodeNameShellResult.getLines().size() > 0 ? nodeNameShellResult.getLines().get(0) : "unnamed");
             rpcHost.setOperatingSystem(operatingSystemShellResult.getLines().get(0));
             rpcHost.setHardwarePlatform(hardwarePlatformShellResult.getLines().get(0));
             rpcHost.setSystemUpSince(systemUpSinceShellResult.getLines().get(0));
