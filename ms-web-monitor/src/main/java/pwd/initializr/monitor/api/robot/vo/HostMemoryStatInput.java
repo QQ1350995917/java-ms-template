@@ -3,7 +3,6 @@ package pwd.initializr.monitor.api.robot.vo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
-import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -51,343 +50,300 @@ public class HostMemoryStatInput implements Serializable {
     * 
     */
    @ApiModelProperty(name = "memTotal", value = "", required = true, example = "0")
-   @Digits(integer = 10, fraction = 0, message = "memTotal须为整数")
-   private Integer memTotal;
+   private Long memTotal;
 
    /**
     * 
     * 
     */
    @ApiModelProperty(name = "memFree", value = "", required = true, example = "0")
-   @Digits(integer = 10, fraction = 0, message = "memFree须为整数")
-   private Integer memFree;
+   private Long memFree;
 
    /**
     * 
     * 
     */
    @ApiModelProperty(name = "memAvailable", value = "", required = true, example = "0")
-   @Digits(integer = 10, fraction = 0, message = "memAvailable须为整数")
-   private Integer memAvailable;
+   private Long memAvailable;
 
    /**
     * 
     * 
     */
    @ApiModelProperty(name = "buffers", value = "", required = true, example = "0")
-   @Digits(integer = 10, fraction = 0, message = "buffers须为整数")
-   private Integer buffers;
+   private Long buffers;
 
    /**
     * 
     * 
     */
    @ApiModelProperty(name = "cached", value = "", required = true, example = "0")
-   @Digits(integer = 10, fraction = 0, message = "cached须为整数")
-   private Integer cached;
+   private Long cached;
 
    /**
     * 
     * 
     */
    @ApiModelProperty(name = "swapCached", value = "", required = true, example = "0")
-   @Digits(integer = 10, fraction = 0, message = "swapCached须为整数")
-   private Integer swapCached;
+   private Long swapCached;
 
    /**
     * 
     * 
     */
    @ApiModelProperty(name = "active", value = "", required = true, example = "0")
-   @Digits(integer = 10, fraction = 0, message = "active须为整数")
-   private Integer active;
+   private Long active;
 
    /**
     * 
     * 
     */
    @ApiModelProperty(name = "inactive", value = "", required = true, example = "0")
-   @Digits(integer = 10, fraction = 0, message = "inactive须为整数")
-   private Integer inactive;
+   private Long inactive;
 
    /**
     * 
     * 
     */
    @ApiModelProperty(name = "activeAnon", value = "", required = true, example = "0")
-   @Digits(integer = 10, fraction = 0, message = "activeAnon须为整数")
-   private Integer activeAnon;
+   private Long activeAnon;
 
    /**
     * 
     * 
     */
    @ApiModelProperty(name = "inactiveAnon", value = "", required = true, example = "0")
-   @Digits(integer = 10, fraction = 0, message = "inactiveAnon须为整数")
-   private Integer inactiveAnon;
+   private Long inactiveAnon;
 
    /**
     * 
     * 
     */
    @ApiModelProperty(name = "activeFile", value = "", required = true, example = "0")
-   @Digits(integer = 10, fraction = 0, message = "activeFile须为整数")
-   private Integer activeFile;
+   private Long activeFile;
 
    /**
     * 
     * 
     */
    @ApiModelProperty(name = "inactiveFile", value = "", required = true, example = "0")
-   @Digits(integer = 10, fraction = 0, message = "inactiveFile须为整数")
-   private Integer inactiveFile;
+   private Long inactiveFile;
 
    /**
     * 
     * 
     */
    @ApiModelProperty(name = "unevictable", value = "", required = true, example = "0")
-   @Digits(integer = 10, fraction = 0, message = "unevictable须为整数")
-   private Integer unevictable;
+   private Long unevictable;
 
    /**
     * 
     * 
     */
    @ApiModelProperty(name = "mlocked", value = "", required = true, example = "0")
-   @Digits(integer = 10, fraction = 0, message = "mlocked须为整数")
-   private Integer mlocked;
+   private Long mlocked;
 
    /**
     * 
     * 
     */
    @ApiModelProperty(name = "swapTotal", value = "", required = true, example = "0")
-   @Digits(integer = 10, fraction = 0, message = "swapTotal须为整数")
-   private Integer swapTotal;
+   private Long swapTotal;
 
    /**
     * 
     * 
     */
    @ApiModelProperty(name = "swapFree", value = "", required = true, example = "0")
-   @Digits(integer = 10, fraction = 0, message = "swapFree须为整数")
-   private Integer swapFree;
+   private Long swapFree;
 
    /**
     * 
     * 
     */
    @ApiModelProperty(name = "dirty", value = "", required = true, example = "0")
-   @Digits(integer = 10, fraction = 0, message = "dirty须为整数")
-   private Integer dirty;
+   private Long dirty;
 
    /**
     * 
     * 
     */
    @ApiModelProperty(name = "writeback", value = "", required = true, example = "0")
-   @Digits(integer = 10, fraction = 0, message = "writeback须为整数")
-   private Integer writeback;
+   private Long writeback;
 
    /**
     * 
     * 
     */
    @ApiModelProperty(name = "anonPages", value = "", required = true, example = "0")
-   @Digits(integer = 10, fraction = 0, message = "anonPages须为整数")
-   private Integer anonPages;
+   private Long anonPages;
 
    /**
     * 
     * 
     */
    @ApiModelProperty(name = "mapped", value = "", required = true, example = "0")
-   @Digits(integer = 10, fraction = 0, message = "mapped须为整数")
-   private Integer mapped;
+   private Long mapped;
 
    /**
     * 
     * 
     */
    @ApiModelProperty(name = "shmem", value = "", required = true, example = "0")
-   @Digits(integer = 10, fraction = 0, message = "shmem须为整数")
-   private Integer shmem;
+   private Long shmem;
 
    /**
     * 
     * 
     */
    @ApiModelProperty(name = "slab", value = "", required = true, example = "0")
-   @Digits(integer = 10, fraction = 0, message = "slab须为整数")
-   private Integer slab;
+   private Long slab;
 
    /**
     * 
     * 
     */
    @ApiModelProperty(name = "sReclaimable", value = "", required = true, example = "0")
-   @Digits(integer = 10, fraction = 0, message = "sReclaimable须为整数")
-   private Integer sReclaimable;
+   private Long sReclaimable;
 
    /**
     * 
     * 
     */
    @ApiModelProperty(name = "sUnreclaim", value = "", required = true, example = "0")
-   @Digits(integer = 10, fraction = 0, message = "sUnreclaim须为整数")
-   private Integer sUnreclaim;
+   private Long sUnreclaim;
 
    /**
     * 
     * 
     */
    @ApiModelProperty(name = "kernelStack", value = "", required = true, example = "0")
-   @Digits(integer = 10, fraction = 0, message = "kernelStack须为整数")
-   private Integer kernelStack;
+   private Long kernelStack;
 
    /**
     * 
     * 
     */
    @ApiModelProperty(name = "pageTables", value = "", required = true, example = "0")
-   @Digits(integer = 10, fraction = 0, message = "pageTables须为整数")
-   private Integer pageTables;
+   private Long pageTables;
 
    /**
     * 
     * 
     */
    @ApiModelProperty(name = "nFsunstable", value = "", required = true, example = "0")
-   @Digits(integer = 10, fraction = 0, message = "nFsunstable须为整数")
-   private Integer nFsunstable;
+   private Long nFsunstable;
 
    /**
     * 
     * 
     */
    @ApiModelProperty(name = "bounce", value = "", required = true, example = "0")
-   @Digits(integer = 10, fraction = 0, message = "bounce须为整数")
-   private Integer bounce;
+   private Long bounce;
 
    /**
     * 
     * 
     */
    @ApiModelProperty(name = "writebackTmp", value = "", required = true, example = "0")
-   @Digits(integer = 10, fraction = 0, message = "writebackTmp须为整数")
-   private Integer writebackTmp;
+   private Long writebackTmp;
 
    /**
     * 
     * 
     */
    @ApiModelProperty(name = "commitLimit", value = "", required = true, example = "0")
-   @Digits(integer = 10, fraction = 0, message = "commitLimit须为整数")
-   private Integer commitLimit;
+   private Long commitLimit;
 
    /**
     * 
     * 
     */
    @ApiModelProperty(name = "committedAs", value = "", required = true, example = "0")
-   @Digits(integer = 10, fraction = 0, message = "committedAs须为整数")
-   private Integer committedAs;
+   private Long committedAs;
 
    /**
     * 
     * 
     */
    @ApiModelProperty(name = "vmallocTotal", value = "", required = true, example = "0")
-   @Digits(integer = 10, fraction = 0, message = "vmallocTotal须为整数")
-   private Integer vmallocTotal;
+   private Long vmallocTotal;
 
    /**
     * 
     * 
     */
    @ApiModelProperty(name = "vmallocUsed", value = "", required = true, example = "0")
-   @Digits(integer = 10, fraction = 0, message = "vmallocUsed须为整数")
-   private Integer vmallocUsed;
+   private Long vmallocUsed;
 
    /**
     * 
     * 
     */
    @ApiModelProperty(name = "vmallocChunk", value = "", required = true, example = "0")
-   @Digits(integer = 10, fraction = 0, message = "vmallocChunk须为整数")
-   private Integer vmallocChunk;
+   private Long vmallocChunk;
 
    /**
     * 
     * 
     */
    @ApiModelProperty(name = "hardwareCorrupted", value = "", required = true, example = "0")
-   @Digits(integer = 10, fraction = 0, message = "hardwareCorrupted须为整数")
-   private Integer hardwareCorrupted;
+   private Long hardwareCorrupted;
 
    /**
     * 
     * 
     */
    @ApiModelProperty(name = "anonHugePages", value = "", required = true, example = "0")
-   @Digits(integer = 10, fraction = 0, message = "anonHugePages须为整数")
-   private Integer anonHugePages;
+   private Long anonHugePages;
 
    /**
     * 
     * 
     */
    @ApiModelProperty(name = "hugePagesTotal", value = "", required = true, example = "0")
-   @Digits(integer = 10, fraction = 0, message = "hugePagesTotal须为整数")
-   private Integer hugePagesTotal;
+   private Long hugePagesTotal;
 
    /**
     * 
     * 
     */
    @ApiModelProperty(name = "hugePagesFree", value = "", required = true, example = "0")
-   @Digits(integer = 10, fraction = 0, message = "hugePagesFree须为整数")
-   private Integer hugePagesFree;
+   private Long hugePagesFree;
 
    /**
     * 
     * 
     */
    @ApiModelProperty(name = "hugePagesRsvd", value = "", required = true, example = "0")
-   @Digits(integer = 10, fraction = 0, message = "hugePagesRsvd须为整数")
-   private Integer hugePagesRsvd;
+   private Long hugePagesRsvd;
 
    /**
     * 
     * 
     */
    @ApiModelProperty(name = "hugePagesSurp", value = "", required = true, example = "0")
-   @Digits(integer = 10, fraction = 0, message = "hugePagesSurp须为整数")
-   private Integer hugePagesSurp;
+   private Long hugePagesSurp;
 
    /**
     * 
     * 
     */
    @ApiModelProperty(name = "hugePagesize", value = "", required = true, example = "0")
-   @Digits(integer = 10, fraction = 0, message = "hugePagesize须为整数")
-   private Integer hugePagesize;
+   private Long hugePagesize;
 
    /**
     * 
     * 
     */
    @ApiModelProperty(name = "directMap4k", value = "", required = true, example = "0")
-   @Digits(integer = 10, fraction = 0, message = "directMap4k须为整数")
-   private Integer directMap4k;
+   private Long directMap4k;
 
    /**
     * 
     * 
     */
    @ApiModelProperty(name = "directMap2m", value = "", required = true, example = "0")
-   @Digits(integer = 10, fraction = 0, message = "directMap2m须为整数")
-   private Integer directMap2m;
+   private Long directMap2m;
 
 }

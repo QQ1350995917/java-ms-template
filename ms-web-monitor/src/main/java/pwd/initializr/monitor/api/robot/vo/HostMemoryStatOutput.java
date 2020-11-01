@@ -50,315 +50,315 @@ public class HostMemoryStatOutput implements Serializable {
    */
   @ApiModelProperty(name = "memTotal", value = "", required = true, example = "0")
    @NotBlank(message = "memTotal不能为空")
-  private Integer memTotal;
+  private Long memTotal;
   /**
    * 
    * 
    */
   @ApiModelProperty(name = "memFree", value = "", required = true, example = "0")
    @NotBlank(message = "memFree不能为空")
-  private Integer memFree;
+  private Long memFree;
   /**
    * 
    * 
    */
   @ApiModelProperty(name = "memAvailable", value = "", required = true, example = "0")
    @NotBlank(message = "memAvailable不能为空")
-  private Integer memAvailable;
+  private Long memAvailable;
   /**
    * 
    * 
    */
   @ApiModelProperty(name = "buffers", value = "", required = true, example = "0")
    @NotBlank(message = "buffers不能为空")
-  private Integer buffers;
+  private Long buffers;
   /**
    * 
    * 
    */
   @ApiModelProperty(name = "cached", value = "", required = true, example = "0")
    @NotBlank(message = "cached不能为空")
-  private Integer cached;
+  private Long cached;
   /**
    * 
    * 
    */
   @ApiModelProperty(name = "swapCached", value = "", required = true, example = "0")
    @NotBlank(message = "swapCached不能为空")
-  private Integer swapCached;
+  private Long swapCached;
   /**
    * 
    * 
    */
   @ApiModelProperty(name = "active", value = "", required = true, example = "0")
    @NotBlank(message = "active不能为空")
-  private Integer active;
+  private Long active;
   /**
    * 
    * 
    */
   @ApiModelProperty(name = "inactive", value = "", required = true, example = "0")
    @NotBlank(message = "inactive不能为空")
-  private Integer inactive;
+  private Long inactive;
   /**
    * 
    * 
    */
   @ApiModelProperty(name = "activeAnon", value = "", required = true, example = "0")
    @NotBlank(message = "activeAnon不能为空")
-  private Integer activeAnon;
+  private Long activeAnon;
   /**
    * 
    * 
    */
   @ApiModelProperty(name = "inactiveAnon", value = "", required = true, example = "0")
    @NotBlank(message = "inactiveAnon不能为空")
-  private Integer inactiveAnon;
+  private Long inactiveAnon;
   /**
    * 
    * 
    */
   @ApiModelProperty(name = "activeFile", value = "", required = true, example = "0")
    @NotBlank(message = "activeFile不能为空")
-  private Integer activeFile;
+  private Long activeFile;
   /**
    * 
    * 
    */
   @ApiModelProperty(name = "inactiveFile", value = "", required = true, example = "0")
    @NotBlank(message = "inactiveFile不能为空")
-  private Integer inactiveFile;
+  private Long inactiveFile;
   /**
    * 
    * 
    */
   @ApiModelProperty(name = "unevictable", value = "", required = true, example = "0")
    @NotBlank(message = "unevictable不能为空")
-  private Integer unevictable;
+  private Long unevictable;
   /**
    * 
    * 
    */
   @ApiModelProperty(name = "mlocked", value = "", required = true, example = "0")
    @NotBlank(message = "mlocked不能为空")
-  private Integer mlocked;
+  private Long mlocked;
   /**
    * 
    * 
    */
   @ApiModelProperty(name = "swapTotal", value = "", required = true, example = "0")
    @NotBlank(message = "swapTotal不能为空")
-  private Integer swapTotal;
+  private Long swapTotal;
   /**
    * 
    * 
    */
   @ApiModelProperty(name = "swapFree", value = "", required = true, example = "0")
    @NotBlank(message = "swapFree不能为空")
-  private Integer swapFree;
+  private Long swapFree;
   /**
    * 
    * 
    */
   @ApiModelProperty(name = "dirty", value = "", required = true, example = "0")
    @NotBlank(message = "dirty不能为空")
-  private Integer dirty;
+  private Long dirty;
   /**
    * 
    * 
    */
   @ApiModelProperty(name = "writeback", value = "", required = true, example = "0")
    @NotBlank(message = "writeback不能为空")
-  private Integer writeback;
+  private Long writeback;
   /**
    * 
    * 
    */
   @ApiModelProperty(name = "anonPages", value = "", required = true, example = "0")
    @NotBlank(message = "anonPages不能为空")
-  private Integer anonPages;
+  private Long anonPages;
   /**
    * 
    * 
    */
   @ApiModelProperty(name = "mapped", value = "", required = true, example = "0")
    @NotBlank(message = "mapped不能为空")
-  private Integer mapped;
+  private Long mapped;
   /**
    * 
    * 
    */
   @ApiModelProperty(name = "shmem", value = "", required = true, example = "0")
    @NotBlank(message = "shmem不能为空")
-  private Integer shmem;
+  private Long shmem;
   /**
    * 
    * 
    */
   @ApiModelProperty(name = "slab", value = "", required = true, example = "0")
    @NotBlank(message = "slab不能为空")
-  private Integer slab;
+  private Long slab;
   /**
    * 
    * 
    */
   @ApiModelProperty(name = "sReclaimable", value = "", required = true, example = "0")
    @NotBlank(message = "sReclaimable不能为空")
-  private Integer sReclaimable;
+  private Long sReclaimable;
   /**
    * 
    * 
    */
   @ApiModelProperty(name = "sUnreclaim", value = "", required = true, example = "0")
    @NotBlank(message = "sUnreclaim不能为空")
-  private Integer sUnreclaim;
+  private Long sUnreclaim;
   /**
    * 
    * 
    */
   @ApiModelProperty(name = "kernelStack", value = "", required = true, example = "0")
    @NotBlank(message = "kernelStack不能为空")
-  private Integer kernelStack;
+  private Long kernelStack;
   /**
    * 
    * 
    */
   @ApiModelProperty(name = "pageTables", value = "", required = true, example = "0")
    @NotBlank(message = "pageTables不能为空")
-  private Integer pageTables;
+  private Long pageTables;
   /**
    * 
    * 
    */
   @ApiModelProperty(name = "nFsunstable", value = "", required = true, example = "0")
    @NotBlank(message = "nFsunstable不能为空")
-  private Integer nFsunstable;
+  private Long nFsunstable;
   /**
    * 
    * 
    */
   @ApiModelProperty(name = "bounce", value = "", required = true, example = "0")
    @NotBlank(message = "bounce不能为空")
-  private Integer bounce;
+  private Long bounce;
   /**
    * 
    * 
    */
   @ApiModelProperty(name = "writebackTmp", value = "", required = true, example = "0")
    @NotBlank(message = "writebackTmp不能为空")
-  private Integer writebackTmp;
+  private Long writebackTmp;
   /**
    * 
    * 
    */
   @ApiModelProperty(name = "commitLimit", value = "", required = true, example = "0")
    @NotBlank(message = "commitLimit不能为空")
-  private Integer commitLimit;
+  private Long commitLimit;
   /**
    * 
    * 
    */
   @ApiModelProperty(name = "committedAs", value = "", required = true, example = "0")
    @NotBlank(message = "committedAs不能为空")
-  private Integer committedAs;
+  private Long committedAs;
   /**
    * 
    * 
    */
   @ApiModelProperty(name = "vmallocTotal", value = "", required = true, example = "0")
    @NotBlank(message = "vmallocTotal不能为空")
-  private Integer vmallocTotal;
+  private Long vmallocTotal;
   /**
    * 
    * 
    */
   @ApiModelProperty(name = "vmallocUsed", value = "", required = true, example = "0")
    @NotBlank(message = "vmallocUsed不能为空")
-  private Integer vmallocUsed;
+  private Long vmallocUsed;
   /**
    * 
    * 
    */
   @ApiModelProperty(name = "vmallocChunk", value = "", required = true, example = "0")
    @NotBlank(message = "vmallocChunk不能为空")
-  private Integer vmallocChunk;
+  private Long vmallocChunk;
   /**
    * 
    * 
    */
   @ApiModelProperty(name = "hardwareCorrupted", value = "", required = true, example = "0")
    @NotBlank(message = "hardwareCorrupted不能为空")
-  private Integer hardwareCorrupted;
+  private Long hardwareCorrupted;
   /**
    * 
    * 
    */
   @ApiModelProperty(name = "anonHugePages", value = "", required = true, example = "0")
    @NotBlank(message = "anonHugePages不能为空")
-  private Integer anonHugePages;
+  private Long anonHugePages;
   /**
    * 
    * 
    */
   @ApiModelProperty(name = "hugePagesTotal", value = "", required = true, example = "0")
    @NotBlank(message = "hugePagesTotal不能为空")
-  private Integer hugePagesTotal;
+  private Long hugePagesTotal;
   /**
    * 
    * 
    */
   @ApiModelProperty(name = "hugePagesFree", value = "", required = true, example = "0")
    @NotBlank(message = "hugePagesFree不能为空")
-  private Integer hugePagesFree;
+  private Long hugePagesFree;
   /**
    * 
    * 
    */
   @ApiModelProperty(name = "hugePagesRsvd", value = "", required = true, example = "0")
    @NotBlank(message = "hugePagesRsvd不能为空")
-  private Integer hugePagesRsvd;
+  private Long hugePagesRsvd;
   /**
    * 
    * 
    */
   @ApiModelProperty(name = "hugePagesSurp", value = "", required = true, example = "0")
    @NotBlank(message = "hugePagesSurp不能为空")
-  private Integer hugePagesSurp;
+  private Long hugePagesSurp;
   /**
    * 
    * 
    */
   @ApiModelProperty(name = "hugePagesize", value = "", required = true, example = "0")
    @NotBlank(message = "hugePagesize不能为空")
-  private Integer hugePagesize;
+  private Long hugePagesize;
   /**
    * 
    * 
    */
   @ApiModelProperty(name = "directMap4k", value = "", required = true, example = "0")
    @NotBlank(message = "directMap4k不能为空")
-  private Integer directMap4k;
+  private Long directMap4k;
   /**
    * 
    * 
    */
   @ApiModelProperty(name = "directMap2m", value = "", required = true, example = "0")
    @NotBlank(message = "directMap2m不能为空")
-  private Integer directMap2m;
+  private Long directMap2m;
   /**
    * 
    * 可用状态：0:不可用；1:可用
    */
   @ApiModelProperty(name = "able", value = "可用状态：0:不可用；1:可用", required = true, example = "0")
    @NotBlank(message = "able不能为空")
-  private Integer able;
+  private Long able;
   /**
    * 
    * 删除状态：0:未删除；1:已删除
    */
   @ApiModelProperty(name = "del", value = "删除状态：0:未删除；1:已删除", required = true, example = "0")
    @NotBlank(message = "del不能为空")
-  private Integer del;
+  private Long del;
   /**
    * 
    * 数据创建时间

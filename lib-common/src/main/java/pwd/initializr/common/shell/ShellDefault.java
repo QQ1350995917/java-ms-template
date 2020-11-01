@@ -89,18 +89,6 @@ public abstract class ShellDefault implements Shell {
             } else {
                 process.destroy();
             }
-
-            for (String command : commands) {
-                System.out.print(command + " ");
-            }
-            System.out.println();
-            for (String line : lines) {
-                System.out.println("line: "+ line);
-            }
-
-            for (String error : errors) {
-                System.out.println("error: " + error);
-            }
             return new Shell.ShellResult(exitValue, exitMessage, lines, errors);
         } catch (Exception e) {
             throw new RuntimeException(e);

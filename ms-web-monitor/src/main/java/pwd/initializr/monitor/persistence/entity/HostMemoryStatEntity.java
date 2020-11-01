@@ -37,217 +37,217 @@ public class HostMemoryStatEntity implements Serializable {
     * 
     * 
     */
-  private Integer memTotal;
+  private Long memTotal;
   /**
     * 
     * 
     */
-  private Integer memFree;
+  private Long memFree;
   /**
     * 
     * 
     */
-  private Integer memAvailable;
+  private Long memAvailable;
   /**
     * 
     * 
     */
-  private Integer buffers;
+  private Long buffers;
   /**
     * 
     * 
     */
-  private Integer cached;
+  private Long cached;
   /**
     * 
     * 
     */
-  private Integer swapCached;
+  private Long swapCached;
   /**
     * 
     * 
     */
-  private Integer active;
+  private Long active;
   /**
     * 
     * 
     */
-  private Integer inactive;
+  private Long inactive;
   /**
     * 
     * 
     */
-  private Integer activeAnon;
+  private Long activeAnon;
   /**
     * 
     * 
     */
-  private Integer inactiveAnon;
+  private Long inactiveAnon;
   /**
     * 
     * 
     */
-  private Integer activeFile;
+  private Long activeFile;
   /**
     * 
     * 
     */
-  private Integer inactiveFile;
+  private Long inactiveFile;
   /**
     * 
     * 
     */
-  private Integer unevictable;
+  private Long unevictable;
   /**
     * 
     * 
     */
-  private Integer mlocked;
+  private Long mlocked;
   /**
     * 
     * 
     */
-  private Integer swapTotal;
+  private Long swapTotal;
   /**
     * 
     * 
     */
-  private Integer swapFree;
+  private Long swapFree;
   /**
     * 
     * 
     */
-  private Integer dirty;
+  private Long dirty;
   /**
     * 
     * 
     */
-  private Integer writeback;
+  private Long writeback;
   /**
     * 
     * 
     */
-  private Integer anonPages;
+  private Long anonPages;
   /**
     * 
     * 
     */
-  private Integer mapped;
+  private Long mapped;
   /**
     * 
     * 
     */
-  private Integer shmem;
+  private Long shmem;
   /**
     * 
     * 
     */
-  private Integer slab;
+  private Long slab;
   /**
     * 
     * 
     */
-  private Integer sReclaimable;
+  private Long sReclaimable;
   /**
     * 
     * 
     */
-  private Integer sUnreclaim;
+  private Long sUnreclaim;
   /**
     * 
     * 
     */
-  private Integer kernelStack;
+  private Long kernelStack;
   /**
     * 
     * 
     */
-  private Integer pageTables;
+  private Long pageTables;
   /**
     * 
     * 
     */
-  private Integer nFsunstable;
+  private Long nFsunstable;
   /**
     * 
     * 
     */
-  private Integer bounce;
+  private Long bounce;
   /**
     * 
     * 
     */
-  private Integer writebackTmp;
+  private Long writebackTmp;
   /**
     * 
     * 
     */
-  private Integer commitLimit;
+  private Long commitLimit;
   /**
     * 
     * 
     */
-  private Integer committedAs;
+  private Long committedAs;
   /**
     * 
     * 
     */
-  private Integer vmallocTotal;
+  private Long vmallocTotal;
   /**
     * 
     * 
     */
-  private Integer vmallocUsed;
+  private Long vmallocUsed;
   /**
     * 
     * 
     */
-  private Integer vmallocChunk;
+  private Long vmallocChunk;
   /**
     * 
     * 
     */
-  private Integer hardwareCorrupted;
+  private Long hardwareCorrupted;
   /**
     * 
     * 
     */
-  private Integer anonHugePages;
+  private Long anonHugePages;
   /**
     * 
     * 
     */
-  private Integer hugePagesTotal;
+  private Long hugePagesTotal;
   /**
     * 
     * 
     */
-  private Integer hugePagesFree;
+  private Long hugePagesFree;
   /**
     * 
     * 
     */
-  private Integer hugePagesRsvd;
+  private Long hugePagesRsvd;
   /**
     * 
     * 
     */
-  private Integer hugePagesSurp;
+  private Long hugePagesSurp;
   /**
     * 
     * 
     */
-  private Integer hugePagesize;
+  private Long hugePagesize;
   /**
     * 
     * 
     */
-  private Integer directMap4k;
+  private Long directMap4k;
   /**
     * 
     * 
     */
-  private Integer directMap2m;
+  private Long directMap2m;
   /**
     * 
     * 可用状态：0:不可用；1:可用

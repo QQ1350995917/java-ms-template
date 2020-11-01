@@ -32,13 +32,6 @@
       <artifactId>spring-aspects</artifactId>
     </dependency>
 
-    <dependency>
-      <groupId>pwd.initializr</groupId>
-      <artifactId>lib-common-mw-redis</artifactId>
-      <version>0.0.1-SNAPSHOT</version>
-      <scope>test</scope>
-    </dependency>
-
   </dependencies>
 
 
