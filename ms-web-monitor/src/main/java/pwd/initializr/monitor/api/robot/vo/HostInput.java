@@ -40,6 +40,14 @@ public class HostInput implements Serializable {
     @ApiModelProperty(name = "nodeName", value = "主机名称", required = true, example = "")
     @NotBlank(message = "nodeName不能为空")
     private String nodeName;
+
+    private String distributeId;
+    private String distributeName;
+    private String distributeIdLike;
+    private String distributeVersion;
+    private String distributeCodeName;
+    private String distributeDescription;
+
     /**
      * 操作系统名称
      */

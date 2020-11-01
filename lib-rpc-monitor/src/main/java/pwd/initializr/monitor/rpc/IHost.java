@@ -15,57 +15,92 @@ import java.io.Serializable;
  */
 public interface IHost extends Serializable {
 
-    /**
-     * 逻辑组名 联合主键
-     */
-    String getGroupName();
+  /**
+   * 逻辑组名 联合主键
+   */
+  String getGroupName();
 
-    /**
-     * 主机名 联合主键 network node hostname
-     */
-    String getNodeName();
+  /**
+   * 主机名 联合主键 network node hostname
+   */
+  String getNodeName();
 
-    /**
-     * operating system
-     */
-    String getOperatingSystem();
+  /**
+   * 发行版本ID
+   */
+  String getDistributeId();
 
-    /**
-     * machine hardware name
-     * x86_64
-     */
-    String getMachine();
+  /**
+   *
+   * @return
+   */
+  String getDistributeName();
 
-    /**
-     * 操作系统启动时间点
-     *
-     * 2020-09-17 15:43:39
-     */
-    String getSystemUpSince();
+  /**
+   *
+   * @return
+   */
+  String getDistributeIdLike();
 
-    /**
-     * kernel name
-     */
-    String getKernelName();
+  /**
+   *
+   * @return
+   */
+  String getDistributeVersion();
 
-    /**
-     * kernel release
-     */
-    String getKernelRelease();
+  /**
+   *
+   * @return
+   */
+  String getDistributeCodeName();
 
-    /**
-     * kernel version
-     */
-    String getKernelVersion();
+  /**
+   *
+   * @return
+   */
+  String getDistributeDescription();
 
-    /**
-     * processor type or "unknown"
-     */
-    String getProcessor();
+  /**
+   * operating system
+   */
+  String getOperatingSystem();
 
-    /**
-     * hardware platform or "unknown"
-     */
-    String getHardwarePlatform();
+  /**
+   * machine hardware name
+   * x86_64
+   */
+  String getMachine();
+
+  /**
+   * 操作系统启动时间点
+   *
+   * 2020-09-17 15:43:39
+   */
+  String getSystemUpSince();
+
+  /**
+   * kernel name
+   */
+  String getKernelName();
+
+  /**
+   * kernel release
+   */
+  String getKernelRelease();
+
+  /**
+   * kernel version
+   */
+  String getKernelVersion();
+
+  /**
+   * processor type or "unknown"
+   */
+  String getProcessor();
+
+  /**
+   * hardware platform or "unknown"
+   */
+  String getHardwarePlatform();
 
 }

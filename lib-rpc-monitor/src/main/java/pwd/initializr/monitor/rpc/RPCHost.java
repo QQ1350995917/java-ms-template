@@ -24,6 +24,12 @@ public class RPCHost implements IHost {
 
     private String groupName;
     private String nodeName;
+    private String distributeId;
+    private String distributeName;
+    private String distributeIdLike;
+    private String distributeVersion;
+    private String distributeCodeName;
+    private String distributeDescription;
     private String operatingSystem;
     private String hardwarePlatform;
     private String systemUpSince;
@@ -41,6 +47,36 @@ public class RPCHost implements IHost {
     @Override
     public String getNodeName() {
         return nodeName;
+    }
+
+    @Override
+    public String getDistributeId() {
+        return distributeId;
+    }
+
+    @Override
+    public String getDistributeName() {
+        return distributeName;
+    }
+
+    @Override
+    public String getDistributeIdLike() {
+        return distributeIdLike;
+    }
+
+    @Override
+    public String getDistributeVersion() {
+        return distributeVersion;
+    }
+
+    @Override
+    public String getDistributeCodeName() {
+        return distributeCodeName;
+    }
+
+    @Override
+    public String getDistributeDescription() {
+        return distributeDescription;
     }
 
     @Override

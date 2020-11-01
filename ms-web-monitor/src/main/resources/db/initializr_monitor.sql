@@ -20,24 +20,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 -- Table structure for host
 -- ----------------------------
-DROP TABLE IF EXISTS `host`;
-CREATE TABLE `host`  (
-  `group_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '逻辑组名，逻辑主键',
-  `node_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '主机名',
-  `operating_system` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '操作系统名称',
-  `hardware_platform` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '硬件平台（x86_64）',
-  `system_up_since` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '启动时间',
-  `kernel_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '内核名称',
-  `kernel_version` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '内核版本',
-  `kernel_release` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '内核发布',
-  `machine` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '型号',
-  `processor` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '类型',
-  `able` int(4) NULL DEFAULT 0 COMMENT '可用状态：0:不可用；1:可用',
-  `del` int(4) NULL DEFAULT 0 COMMENT '删除状态：0:未删除；1:已删除',
-  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '数据创建时间',
-  `update_time` datetime(0) NULL DEFAULT NULL COMMENT '最近更新时间',
-  PRIMARY KEY (`node_name`, `group_name`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
 
 -- ----------------------------
 -- Table structure for host_cpu

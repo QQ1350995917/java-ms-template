@@ -36,14 +36,14 @@ public class MonitorByShellOnLinux extends ShellOnLinux implements Index {
 
   public static void main(String[] args) {
     MonitorByShellOnLinux monitorByShellOnLinux = new MonitorByShellOnLinux();
-//    IHost host = monitorByShellOnLinux.getHost();
+    IHost host = monitorByShellOnLinux.getHost();
 //    IHostLoadStat loadStat = monitorByShellOnLinux.getLoadStat();
 //    List<IHostLoggedStat> loggedStat = monitorByShellOnLinux.getLoggedStat();
 //    List<IHostCpuCore> cpuCore = monitorByShellOnLinux.getCpuCore();
 //    List<IHostCpuCoreStat> cpuCoreStat = monitorByShellOnLinux.getCpuCoreStat();
 //    List<IHostDiskStat> diskStat = monitorByShellOnLinux.getDiskStat();
 //    List<IHostEthernetStat> ethernetStat = monitorByShellOnLinux.getEthernetStat();
-    IHostMemoryStat memoryStat = monitorByShellOnLinux.getMemoryStat();
+//    IHostMemoryStat memoryStat = monitorByShellOnLinux.getMemoryStat();
     System.out.println();
   }
 
@@ -54,12 +54,14 @@ public class MonitorByShellOnLinux extends ShellOnLinux implements Index {
     if (rpcHost == null) {
       synchronized (MonitorByShellOnLinux.class) {
         if (rpcHost == null) {
-          rpcHost = new RPCHost();
+
           ShellResult groupNameShellResult = this
               .execForResult(
                   getCommandForResultArray(new String[]{"cat /etc/groupname"}));
           ShellResult nodeNameShellResult = this
               .execForResult(getCommandForResultArray(new String[]{"uname -n"}));
+          ShellResult distributeShellResult = this
+              .execForResult(getCommandForResultArray(new String[]{"cat /etc/os-release"}));
           ShellResult operatingSystemShellResult = this
               .execForResult(getCommandForResultArray(new String[]{"uname -o"}));
           ShellResult hardwarePlatformShellResult = this
@@ -76,12 +78,49 @@ public class MonitorByShellOnLinux extends ShellOnLinux implements Index {
               .execForResult(getCommandForResultArray(new String[]{"uname -m"}));
           ShellResult processorShellResult = this
               .execForResult(getCommandForResultArray(new String[]{"uname -p"}));
+
+          rpcHost = new RPCHost();
           rpcHost.setGroupName(
               groupNameShellResult.getLines().size() > 0 ? groupNameShellResult.getLines()
                   .get(0) : "unnamed");
           rpcHost.setNodeName(
               nodeNameShellResult.getLines().size() > 0 ? nodeNameShellResult.getLines()
                   .get(0) : "unnamed");
+
+          List<String> lines = distributeShellResult.getLines();
+          /**
+           * NAME="Ubuntu"
+           * VERSION="18.04.4 LTS (Bionic Beaver)"
+           * ID=ubuntu
+           * ID_LIKE=debian
+           * PRETTY_NAME="Ubuntu 18.04.4 LTS"
+           * VERSION_ID="18.04"
+           * HOME_URL="https://www.ubuntu.com/"
+           * SUPPORT_URL="https://help.ubuntu.com/"
+           * BUG_REPORT_URL="https://bugs.launchpad.net/ubuntu/"
+           * PRIVACY_POLICY_URL="https://www.ubuntu.com/legal/terms-and-policies/privacy-policy"
+           * VERSION_CODENAME=bionic
+           * UBUNTU_CODENAME=bionic
+           */
+          for (String line : lines) {
+            String[] split = line.split("=");
+            String key = split[0];
+            String value = split[1];
+            if ("ID".equalsIgnoreCase(key)) {
+              rpcHost.setDistributeId(value);
+            } else if ("ID_LIKE".equalsIgnoreCase(key)) {
+              rpcHost.setDistributeIdLike(value);
+            } else if ("NAME".equalsIgnoreCase(key)) {
+              rpcHost.setDistributeName(value.replace("\"",""));
+            } else if ("VERSION_ID".equalsIgnoreCase(key)) {
+              rpcHost.setDistributeVersion(value.replace("\"",""));
+            } else if ("VERSION_CODENAME".equalsIgnoreCase(key)) {
+              rpcHost.setDistributeCodeName(value);
+            } else if ("VERSION".equalsIgnoreCase(key)) {
+              rpcHost.setDistributeDescription(value.replace("\"",""));
+            }
+          }
+
           rpcHost.setOperatingSystem(operatingSystemShellResult.getLines().get(0));
           rpcHost.setHardwarePlatform(hardwarePlatformShellResult.getLines().get(0));
           rpcHost.setSystemUpSince(systemUpSinceShellResult.getLines().get(0));

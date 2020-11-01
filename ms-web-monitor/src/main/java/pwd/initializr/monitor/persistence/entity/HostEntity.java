@@ -33,6 +33,14 @@ public class HostEntity implements Serializable {
     * 主机名
     */
   private String nodeName;
+
+  private String distributeId;
+  private String distributeName;
+  private String distributeIdLike;
+  private String distributeVersion;
+  private String distributeCodeName;
+  private String distributeDescription;
+
   /**
     * 
     * 操作系统名称

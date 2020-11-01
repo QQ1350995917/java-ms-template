@@ -49,6 +49,12 @@ public class HostClientOnWin extends MonitorClient {
       RPCHost host = new RPCHost();
       host.setGroupName("test-group");
       host.setNodeName("test-nodename");
+      host.setDistributeId("windows");
+      host.setDistributeIdLike("windows");
+      host.setDistributeName("windows");
+      host.setDistributeVersion("10");
+      host.setDistributeCodeName("windows");
+      host.setDistributeDescription("windows 10");
       host.setOperatingSystem("windows 10");
       host.setHardwarePlatform("x86_64");
       host.setSystemUpSince("2020-02-02 02:02:02");

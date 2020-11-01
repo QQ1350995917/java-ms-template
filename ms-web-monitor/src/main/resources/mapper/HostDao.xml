@@ -6,6 +6,12 @@
   <resultMap id="HostMap" type="pwd.initializr.monitor.persistence.entity.HostEntity">
     <result column="group_name" jdbcType="VARCHAR" property="groupName"/>
     <result column="node_name" jdbcType="VARCHAR" property="nodeName"/>
+    <result column="distribute_id" jdbcType="VARCHAR" property="distributeId"/>
+    <result column="distribute_name" jdbcType="VARCHAR" property="distributeName"/>
+    <result column="distribute_id_like" jdbcType="VARCHAR" property="distributeIdLike"/>
+    <result column="distribute_version" jdbcType="VARCHAR" property="distributeVersion"/>
+    <result column="distribute_code_name" jdbcType="VARCHAR" property="distributeCodeName"/>
+    <result column="distribute_description" jdbcType="VARCHAR" property="distributeDescription"/>
     <result column="operating_system" jdbcType="VARCHAR" property="operatingSystem"/>
     <result column="hardware_platform" jdbcType="VARCHAR" property="hardwarePlatform"/>
     <result column="system_up_since" jdbcType="VARCHAR" property="systemUpSince"/>
@@ -25,6 +31,12 @@
     SELECT
       `group_name`,
       `node_name`,
+      `distribute_id`,
+      `distribute_name`,
+      `distribute_id_like`,
+      `distribute_version`,
+      `distribute_code_name`,
+      `distribute_description`,
       `operating_system`,
       `hardware_platform`,
       `system_up_since`,
@@ -54,6 +66,12 @@
     SELECT
       `group_name`,
       `node_name`,
+      `distribute_id`,
+      `distribute_name`,
+      `distribute_id_like`,
+      `distribute_version`,
+      `distribute_code_name`,
+      `distribute_description`,
       `operating_system`,
       `hardware_platform`,
       `system_up_since`,
@@ -80,6 +98,12 @@
       (
         `group_name`,
         `node_name`,
+        `distribute_id`,
+        `distribute_name`,
+        `distribute_id_like`,
+        `distribute_version`,
+        `distribute_code_name`,
+        `distribute_description`,
         `operating_system`,
         `hardware_platform`,
         `system_up_since`,
@@ -97,6 +121,12 @@
       (
         #{entity.groupName},
         #{entity.nodeName},
+        #{entity.distributeId},
+        #{entity.distributeName},
+        #{entity.distributeIdLike},
+        #{entity.distributeVersion},
+        #{entity.distributeCodeName},
+        #{entity.distributeDescription},
         #{entity.operatingSystem},
         #{entity.hardwarePlatform},
         #{entity.systemUpSince},
@@ -118,6 +148,12 @@
     (
         `group_name`,
         `node_name`,
+        `distribute_id`,
+        `distribute_name`,
+        `distribute_id_like`,
+        `distribute_version`,
+        `distribute_code_name`,
+        `distribute_description`,
         `operating_system`,
         `hardware_platform`,
         `system_up_since`,
@@ -136,6 +172,12 @@
     (
         #{entity.groupName},
         #{entity.nodeName},
+        #{entity.distributeId},
+        #{entity.distributeName},
+        #{entity.distributeIdLike},
+        #{entity.distributeVersion},
+        #{entity.distributeCodeName},
+        #{entity.distributeDescription},
         #{entity.operatingSystem},
         #{entity.hardwarePlatform},
         #{entity.systemUpSince},
@@ -153,11 +195,17 @@
   </insert>
 
   <!--新增或者替换所有列-->
-  <insert id="insertOrReplace" keyProperty="id" useGeneratedKeys="true">
+  <insert id="insertOrReplace" parameterType="pwd.initializr.monitor.persistence.entity.HostEntity">
     REPLACE INTO host
     (
         `group_name`,
         `node_name`,
+        `distribute_id`,
+        `distribute_name`,
+        `distribute_id_like`,
+        `distribute_version`,
+        `distribute_code_name`,
+        `distribute_description`,
         `operating_system`,
         `hardware_platform`,
         `system_up_since`,
@@ -175,6 +223,12 @@
     (
         #{entity.groupName},
         #{entity.nodeName},
+        #{entity.distributeId},
+        #{entity.distributeName},
+        #{entity.distributeIdLike},
+        #{entity.distributeVersion},
+        #{entity.distributeCodeName},
+        #{entity.distributeDescription},
         #{entity.operatingSystem},
         #{entity.hardwarePlatform},
         #{entity.systemUpSince},
@@ -196,6 +250,12 @@
     (
         `group_name`,
         `node_name`,
+        `distribute_id`,
+        `distribute_name`,
+        `distribute_id_like`,
+        `distribute_version`,
+        `distribute_code_name`,
+        `distribute_description`,
         `operating_system`,
         `hardware_platform`,
         `system_up_since`,
@@ -214,6 +274,12 @@
       (
         #{entity.groupName},
         #{entity.nodeName},
+        #{entity.distributeId},
+        #{entity.distributeName},
+        #{entity.distributeIdLike},
+        #{entity.distributeVersion},
+        #{entity.distributeCodeName},
+        #{entity.distributeDescription},
         #{entity.operatingSystem},
         #{entity.hardwarePlatform},
         #{entity.systemUpSince},
@@ -239,6 +305,24 @@
       </if>
       <if test="entity.nodeName != null and entity.nodeName != ''">
         `node_name` = #{entity.nodeName},
+      </if>
+      <if test="entity.distributeId != null and entity.distributeId != ''">
+        `distribute_id` = #{entity.distributeId},
+      </if>
+      <if test="entity.distributeName != null and entity.distributeName != ''">
+        `distribute_name` = #{entity.distributeName},
+      </if>
+      <if test="entity.distributeIdLike != null and entity.distributeIdLike != ''">
+        `distribute_id_like` = #{entity.distributeIdLike},
+      </if>
+      <if test="entity.distributeVersion != null and entity.distributeVersion != ''">
+        `distribute_version` = #{entity.distributeVersion},
+      </if>
+      <if test="entity.distributeCodeName != null and entity.distributeCodeName != ''">
+        `distribute_code_name` = #{entity.distributeCodeName},
+      </if>
+      <if test="entity.distributeDescription != null and entity.distributeDescription != ''">
+        `distribute_description` = #{entity.distributeDescription},
       </if>
       <if test="entity.operatingSystem != null and entity.operatingSystem != ''">
         `operating_system` = #{entity.operatingSystem},
