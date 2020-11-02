@@ -102,7 +102,7 @@
   </select>
 
   <!--新增所有列-->
-  <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+  <insert id="insert" keyProperty="id" useGeneratedKeys="true" parameterType="pwd.initializr.monitor.persistence.entity.HostEthernetStatEntity">
     INSERT INTO host_ethernet_stat
       (
         `group_name`,
@@ -158,7 +158,7 @@
   </insert>
 
   <!--新增所有列（批量新增）-->
-  <insert id="insertByBatch" keyProperty="id" useGeneratedKeys="true">
+  <insert id="insertByBatch" keyProperty="id" useGeneratedKeys="true" parameterType="pwd.initializr.monitor.persistence.entity.HostEthernetStatEntity">
     INSERT INTO host_ethernet_stat
     (
         `group_name`,
@@ -216,7 +216,7 @@
   </insert>
 
   <!--新增或者替换所有列-->
-  <insert id="insertOrReplace" keyProperty="id" useGeneratedKeys="true">
+  <insert id="insertOrReplace" keyProperty="id" useGeneratedKeys="true" parameterType="pwd.initializr.monitor.persistence.entity.HostEthernetStatEntity">
     REPLACE INTO host_ethernet_stat
     (
         `group_name`,
@@ -272,7 +272,7 @@
   </insert>
 
   <!--新增或者替换所有列（批量新增或者替换）-->
-  <insert id="insertOrReplaceByBatch" keyProperty="id" useGeneratedKeys="true">
+  <insert id="insertOrReplaceByBatch" keyProperty="id" useGeneratedKeys="true" parameterType="pwd.initializr.monitor.persistence.entity.HostEthernetStatEntity">
     REPLACE INTO host_ethernet_stat
     (
         `group_name`,
@@ -330,7 +330,7 @@
   </insert>
 
   <!--通过主键修改数据-->
-  <update id="updateById">
+  <update id="updateById" parameterType="pwd.initializr.monitor.persistence.entity.HostEthernetStatEntity">
     UPDATE host_ethernet_stat
     <set>
       <if test="entity.groupName != null and entity.groupName != ''">
