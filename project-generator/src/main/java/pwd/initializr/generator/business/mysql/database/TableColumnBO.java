@@ -62,6 +62,7 @@ public class TableColumnBO {
         Map<String, String> typeMapping = new HashMap<>();
         typeMapping.put("CHAR", "String");
         typeMapping.put("VARCHAR", "String");
+        typeMapping.put("TEXT", "String");
         typeMapping.put("LONGVARCHAR", "String");
         typeMapping.put("NUMERIC", "BigDecimal");
         typeMapping.put("DECIMAL", "BigDecimal");

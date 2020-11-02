@@ -60,7 +60,7 @@
   </select>
 
   <!--新增所有列-->
-  <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+  <insert id="insert" keyProperty="id" useGeneratedKeys="true" parameterType="${projectPackage}.persistence.entity.${className}Entity">
     INSERT INTO ${tableName}
       (
   <#if columns?exists>
@@ -88,7 +88,7 @@
   </insert>
 
   <!--新增所有列（批量新增）-->
-  <insert id="insertByBatch" keyProperty="id" useGeneratedKeys="true">
+  <insert id="insertByBatch" keyProperty="id" useGeneratedKeys="true" parameterType="${projectPackage}.persistence.entity.${className}Entity">
     INSERT INTO ${tableName}
     (
   <#if columns?exists>
@@ -118,7 +118,7 @@
   </insert>
 
   <!--新增或者替换所有列-->
-  <insert id="insertOrReplace" keyProperty="id" useGeneratedKeys="true">
+  <insert id="insertOrReplace" keyProperty="id" useGeneratedKeys="true" parameterType="${projectPackage}.persistence.entity.${className}Entity">
     REPLACE INTO ${tableName}
     (
   <#if columns?exists>
@@ -146,7 +146,7 @@
   </insert>
 
   <!--新增或者替换所有列（批量新增或者替换）-->
-  <insert id="insertOrReplaceByBatch" keyProperty="id" useGeneratedKeys="true">
+  <insert id="insertOrReplaceByBatch" keyProperty="id" useGeneratedKeys="true" parameterType="${projectPackage}.persistence.entity.${className}Entity">
     REPLACE INTO ${tableName}
     (
   <#if columns?exists>
@@ -176,7 +176,7 @@
   </insert>
 
   <!--通过主键修改数据-->
-  <update id="updateById">
+  <update id="updateById" parameterType="${projectPackage}.persistence.entity.${className}Entity">
     UPDATE ${tableName}
     <set>
   <#if columns?exists>
