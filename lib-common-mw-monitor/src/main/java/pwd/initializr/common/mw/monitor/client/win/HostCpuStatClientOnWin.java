@@ -44,10 +44,11 @@ public class HostCpuStatClientOnWin extends MonitorClient {
         try {
             int cores = 4;
             List<RPCHostCpuCoreStat> cpuCoreStatList = new LinkedList<>();
-            for (int i = 0; i < 4; i++) {
+            for (int i = 0; i < cores; i++) {
                 RPCHostCpuCoreStat rpcCpuCoreStat = new RPCHostCpuCoreStat();
                 rpcCpuCoreStat.setGroupName("test-group");
                 rpcCpuCoreStat.setNodeName("test-nodename");
+                rpcCpuCoreStat.setCpuCoreName(i + "");
                 rpcCpuCoreStat.setUser(((Double) (Math.random() * 100)).longValue());
                 rpcCpuCoreStat.setNice(((Double) (Math.random() * 100)).longValue());
                 rpcCpuCoreStat.setSystem(((Double) (Math.random() * 100)).longValue());

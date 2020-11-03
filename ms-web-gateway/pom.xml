@@ -45,12 +45,19 @@
     </dependency>
     <dependency>
       <groupId>pwd.initializr</groupId>
-      <artifactId>lib-rpc-account</artifactId>
+      <artifactId>lib-common-mw-redis</artifactId>
       <version>0.0.1-SNAPSHOT</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-web</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-data-redis</artifactId>
+      <groupId>pwd.initializr</groupId>
+      <artifactId>lib-rpc-account</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
     </dependency>
   </dependencies>
 
