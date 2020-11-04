@@ -86,4 +86,10 @@ public class OSUtil {
     public static String getOSName() {
         return OS;
     }
+
+    public static void main(String[] args) {
+        boolean macOS = isMacOS();
+        boolean macOSX = isMacOSX();
+        System.out.println();
+    }
 }

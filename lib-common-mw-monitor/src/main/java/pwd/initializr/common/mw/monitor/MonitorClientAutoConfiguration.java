@@ -216,6 +216,8 @@ public class MonitorClientAutoConfiguration {
       return new HostClientOnLinux(monitorClientConfig);
     } else if (OSUtil.isWindows()) {
       return new HostClientOnWin(monitorClientConfig);
+    } else if (OSUtil.isMacOSX()) {
+      return new HostClientOnWin(monitorClientConfig);
     }
     throw new RuntimeException("incompatible OS " + OSUtil.getOSName());
   }
@@ -226,6 +228,8 @@ public class MonitorClientAutoConfiguration {
     if (OSUtil.isLinux()) {
       return new HostCpuClientOnLinux(monitorClientConfig);
     } else if (OSUtil.isWindows()) {
+      return new HostCpuClientOnWin(monitorClientConfig);
+    } else if (OSUtil.isMacOSX()) {
       return new HostCpuClientOnWin(monitorClientConfig);
     }
     throw new RuntimeException("incompatible OS " + OSUtil.getOSName());
@@ -238,6 +242,8 @@ public class MonitorClientAutoConfiguration {
       return new HostCpuStatClientOnLinux(monitorClientConfig);
     } else if (OSUtil.isWindows()) {
       return new HostCpuStatClientOnWin(monitorClientConfig);
+    } else if (OSUtil.isMacOSX()) {
+      return new HostCpuStatClientOnWin(monitorClientConfig);
     }
     throw new RuntimeException("incompatible OS " + OSUtil.getOSName());
   }
@@ -248,6 +254,8 @@ public class MonitorClientAutoConfiguration {
     if (OSUtil.isLinux()) {
       return new HostDiskStatClientOnLinux(monitorClientConfig);
     } else if (OSUtil.isWindows()) {
+      return new HostDiskStatClientOnWin(monitorClientConfig);
+    } else if (OSUtil.isMacOSX()) {
       return new HostDiskStatClientOnWin(monitorClientConfig);
     }
     throw new RuntimeException("incompatible OS " + OSUtil.getOSName());
@@ -260,6 +268,8 @@ public class MonitorClientAutoConfiguration {
       return new HostEthernetStatClientOnLinux(monitorClientConfig);
     } else if (OSUtil.isWindows()) {
       return new HostEthernetStatClientOnWin(monitorClientConfig);
+    } else if (OSUtil.isMacOSX()) {
+      return new HostEthernetStatClientOnWin(monitorClientConfig);
     }
     throw new RuntimeException("incompatible OS " + OSUtil.getOSName());
   }
@@ -270,6 +280,8 @@ public class MonitorClientAutoConfiguration {
     if (OSUtil.isLinux()) {
       return new HostLoadStatClientOnLinux(monitorClientConfig);
     } else if (OSUtil.isWindows()) {
+      return new HostLoadStatClientOnWin(monitorClientConfig);
+    } else if (OSUtil.isMacOSX()) {
       return new HostLoadStatClientOnWin(monitorClientConfig);
     }
     throw new RuntimeException("incompatible OS " + OSUtil.getOSName());
@@ -282,6 +294,8 @@ public class MonitorClientAutoConfiguration {
       return new HostLoggedStatClientOnLinux(monitorClientConfig);
     } else if (OSUtil.isWindows()) {
       return new HostLoggedStatClientOnWin(monitorClientConfig);
+    } else if (OSUtil.isMacOSX()) {
+      return new HostLoggedStatClientOnWin(monitorClientConfig);
     }
     throw new RuntimeException("incompatible OS " + OSUtil.getOSName());
   }
@@ -292,6 +306,8 @@ public class MonitorClientAutoConfiguration {
     if (OSUtil.isLinux()) {
       return new HostMemoryStatClientOnLinux(monitorClientConfig);
     } else if (OSUtil.isWindows()) {
+      return new HostMemoryStatClientOnWin(monitorClientConfig);
+    } else if (OSUtil.isMacOSX()) {
       return new HostMemoryStatClientOnWin(monitorClientConfig);
     }
     throw new RuntimeException("incompatible OS " + OSUtil.getOSName());
