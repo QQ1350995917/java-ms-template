@@ -32,11 +32,11 @@ import pwd.initializr.monitor.api.robot.vo.HostMemoryStatInput;
  * @since 0.0.1-SNAPSHOT
  */
 @Api(
-  tags = "HostMemoryStat信息结构",
-  value = "HostMemoryStatManageApi",
+  tags = "RobotHostMemoryStat信息结构",
+  value = "RobotHostMemoryStatManageApi",
   description = "[列表查询，详情查询，启/禁用，删除，新增，修改]"
 )
-@RestController(value = "HostMemoryStat")
+@RestController(value = "RobotHostMemoryStat")
 @RequestMapping(value = "/api/robot/host/memory/stat")
 public interface HostMemoryStatApi {
 

@@ -37,11 +37,11 @@ import pwd.initializr.monitor.business.bo.HostBO;
 * @since 0.0.1-SNAPSHOT
 */
 @Api(
-  tags = "Host信息结构",
-  value = "HostManageApi",
+  tags = "RobotHost信息结构",
+  value = "RobotHostManageApi",
   description = "[列表查询，详情查询，启/禁用，删除，新增，修改]"
 )
-@RestController(value = "Host")
+@RestController(value = "RobotHost")
 @RequestMapping(value = "/api/robot/host")
 @Slf4j
 public class HostController extends pwd.initializr.common.web.api.admin.AdminController implements HostApi {

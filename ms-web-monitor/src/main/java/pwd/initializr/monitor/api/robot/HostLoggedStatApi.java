@@ -32,11 +32,11 @@ import pwd.initializr.monitor.api.robot.vo.HostLoggedStatInput;
  * @since 0.0.1-SNAPSHOT
  */
 @Api(
-  tags = "HostLoggedStat信息结构",
-  value = "HostLoggedStatManageApi",
+  tags = "RobotHostLoggedStat信息结构",
+  value = "RobotHostLoggedStatManageApi",
   description = "[列表查询，详情查询，启/禁用，删除，新增，修改]"
 )
-@RestController(value = "HostLoggedStat")
+@RestController(value = "RobotHostLoggedStat")
 @RequestMapping(value = "/api/robot/host/logged/stat")
 public interface HostLoggedStatApi {
 

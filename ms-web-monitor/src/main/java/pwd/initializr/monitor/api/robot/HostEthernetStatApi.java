@@ -32,11 +32,11 @@ import pwd.initializr.monitor.api.robot.vo.HostEthernetStatInput;
  * @since 0.0.1-SNAPSHOT
  */
 @Api(
-  tags = "HostEthernetStat信息结构",
-  value = "HostEthernetStatManageApi",
+  tags = "RobotHostEthernetStat信息结构",
+  value = "RobotHostEthernetStatManageApi",
   description = "[列表查询，详情查询，启/禁用，删除，新增，修改]"
 )
-@RestController(value = "HostEthernetStat")
+@RestController(value = "RobotHostEthernetStat")
 @RequestMapping(value = "/api/robot/host/ethernet/stat")
 public interface HostEthernetStatApi {
 

@@ -37,11 +37,11 @@ import pwd.initializr.monitor.business.bo.HostCpuStatBO;
 * @since 0.0.1-SNAPSHOT
 */
 @Api(
-  tags = "HostCpuStat信息结构",
-  value = "HostCpuStatManageApi",
+  tags = "RobotHostCpuStat信息结构",
+  value = "RobotHostCpuStatManageApi",
   description = "[列表查询，详情查询，启/禁用，删除，新增，修改]"
 )
-@RestController(value = "HostCpuStat")
+@RestController(value = "RobotHostCpuStat")
 @RequestMapping(value = "/api/robot/host/cpu/stat")
 @Slf4j
 public class HostCpuStatController extends pwd.initializr.common.web.api.admin.AdminController implements HostCpuStatApi {

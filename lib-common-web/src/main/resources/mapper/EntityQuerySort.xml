@@ -11,7 +11,7 @@
       </foreach>
     </if>
     <if test="sorts == null or sorts.size &lt; 1">
-      order by id desc
+      order by create_time desc
     </if>
   </sql>
 </mapper>

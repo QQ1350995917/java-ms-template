@@ -32,11 +32,11 @@ import pwd.initializr.monitor.api.robot.vo.HostDiskStatInput;
  * @since 0.0.1-SNAPSHOT
  */
 @Api(
-  tags = "HostDiskStat信息结构",
-  value = "HostDiskStatManageApi",
+  tags = "RobotHostDiskStat信息结构",
+  value = "RobotHostDiskStatManageApi",
   description = "[列表查询，详情查询，启/禁用，删除，新增，修改]"
 )
-@RestController(value = "HostDiskStat")
+@RestController(value = "RobotHostDiskStat")
 @RequestMapping(value = "/api/robot/host/disk/stat")
 public interface HostDiskStatApi {
 

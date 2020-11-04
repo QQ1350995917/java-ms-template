@@ -37,11 +37,11 @@ import pwd.initializr.monitor.business.bo.HostDiskStatBO;
 * @since 0.0.1-SNAPSHOT
 */
 @Api(
-  tags = "HostDiskStat信息结构",
-  value = "HostDiskStatManageApi",
+  tags = "RobotHostDiskStat信息结构",
+  value = "RobotHostDiskStatManageApi",
   description = "[列表查询，详情查询，启/禁用，删除，新增，修改]"
 )
-@RestController(value = "HostDiskStat")
+@RestController(value = "RobotHostDiskStat")
 @RequestMapping(value = "/api/robot/host/disk/stat")
 @Slf4j
 public class HostDiskStatController extends pwd.initializr.common.web.api.admin.AdminController implements HostDiskStatApi {

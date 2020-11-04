@@ -32,11 +32,11 @@ import pwd.initializr.monitor.api.robot.vo.HostLoadStatInput;
  * @since 0.0.1-SNAPSHOT
  */
 @Api(
-  tags = "HostLoadStat信息结构",
-  value = "HostLoadStatManageApi",
+  tags = "RobotHostLoadStat信息结构",
+  value = "RobotHostLoadStatManageApi",
   description = "[列表查询，详情查询，启/禁用，删除，新增，修改]"
 )
-@RestController(value = "HostLoadStat")
+@RestController(value = "RobotHostLoadStat")
 @RequestMapping(value = "/api/robot/host/load/stat")
 public interface HostLoadStatApi {
 

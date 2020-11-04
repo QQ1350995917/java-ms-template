@@ -37,11 +37,11 @@ import pwd.initializr.monitor.business.bo.HostLoggedStatBO;
 * @since 0.0.1-SNAPSHOT
 */
 @Api(
-  tags = "HostLoggedStat信息结构",
-  value = "HostLoggedStatManageApi",
+  tags = "RobotHostLoggedStat信息结构",
+  value = "RobotHostLoggedStatManageApi",
   description = "[列表查询，详情查询，启/禁用，删除，新增，修改]"
 )
-@RestController(value = "HostLoggedStat")
+@RestController(value = "RobotHostLoggedStat")
 @RequestMapping(value = "/api/robot/host/logged/stat")
 @Slf4j
 public class HostLoggedStatController extends pwd.initializr.common.web.api.admin.AdminController implements HostLoggedStatApi {
