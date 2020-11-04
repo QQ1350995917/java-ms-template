@@ -31,7 +31,7 @@ import lombok.ToString;
 public class HostDiskStatInput implements Serializable {
 
    /**
-    * 
+    *
     * 逻辑组名
     */
    @ApiModelProperty(name = "groupName", value = "逻辑组名", required = true, example = "")
@@ -39,7 +39,7 @@ public class HostDiskStatInput implements Serializable {
    private String groupName;
 
    /**
-    * 
+    *
     * 主机名
     */
    @ApiModelProperty(name = "nodeName", value = "主机名", required = true, example = "")
@@ -47,115 +47,104 @@ public class HostDiskStatInput implements Serializable {
    private String nodeName;
 
    /**
-    * 
-    * 
+    *
+    *
     */
    @ApiModelProperty(name = "majorDeviceNumber", value = "", required = true, example = "0")
    @Digits(integer = 10, fraction = 0, message = "majorDeviceNumber须为整数")
    private Integer majorDeviceNumber;
 
    /**
-    * 
-    * 
+    *
+    *
     */
    @ApiModelProperty(name = "minorDeviceNumber", value = "", required = true, example = "0")
    @Digits(integer = 10, fraction = 0, message = "minorDeviceNumber须为整数")
    private Integer minorDeviceNumber;
 
    /**
-    * 
-    * 
+    *
+    *
     */
    @ApiModelProperty(name = "deviceName", value = "", required = true, example = "")
    @NotBlank(message = "deviceName不能为空")
    private String deviceName;
 
    /**
-    * 
-    * 
+    *
+    *
     */
    @ApiModelProperty(name = "read", value = "", required = true, example = "0")
-   @Digits(integer = 10, fraction = 0, message = "read须为整数")
-   private Integer read;
+   private Double read;
 
    /**
-    * 
-    * 
+    *
+    *
     */
    @ApiModelProperty(name = "readMerge", value = "", required = true, example = "0")
-   @Digits(integer = 10, fraction = 0, message = "readMerge须为整数")
-   private Integer readMerge;
+   private Double readMerge;
 
    /**
-    * 
-    * 
+    *
+    *
     */
    @ApiModelProperty(name = "readSector", value = "", required = true, example = "0")
-   @Digits(integer = 10, fraction = 0, message = "readSector须为整数")
-   private Integer readSector;
+   private Double readSector;
 
    /**
-    * 
-    * 
+    *
+    *
     */
    @ApiModelProperty(name = "readSpentMilliseconds", value = "", required = true, example = "0")
-   @Digits(integer = 10, fraction = 0, message = "readSpentMilliseconds须为整数")
-   private Integer readSpentMilliseconds;
+   private Double readSpentMilliseconds;
 
    /**
-    * 
-    * 
+    *
+    *
     */
    @ApiModelProperty(name = "write", value = "", required = true, example = "0")
-   @Digits(integer = 10, fraction = 0, message = "write须为整数")
-   private Integer write;
+   private Double write;
 
    /**
-    * 
-    * 
+    *
+    *
     */
    @ApiModelProperty(name = "writeMerge", value = "", required = true, example = "0")
-   @Digits(integer = 10, fraction = 0, message = "writeMerge须为整数")
-   private Integer writeMerge;
+   private Double writeMerge;
 
    /**
-    * 
-    * 
+    *
+    *
     */
    @ApiModelProperty(name = "writeSector", value = "", required = true, example = "0")
-   @Digits(integer = 10, fraction = 0, message = "writeSector须为整数")
-   private Integer writeSector;
+   private Double writeSector;
 
    /**
-    * 
-    * 
+    *
+    *
     */
    @ApiModelProperty(name = "writeSpentMilliseconds", value = "", required = true, example = "0")
-   @Digits(integer = 10, fraction = 0, message = "writeSpentMilliseconds须为整数")
-   private Integer writeSpentMilliseconds;
+   private Double writeSpentMilliseconds;
 
    /**
-    * 
-    * 
+    *
+    *
     */
    @ApiModelProperty(name = "ioRequest", value = "", required = true, example = "0")
-   @Digits(integer = 10, fraction = 0, message = "ioRequest须为整数")
-   private Integer ioRequest;
+   private Double ioRequest;
 
    /**
-    * 
-    * 
+    *
+    *
     */
    @ApiModelProperty(name = "ioSpentMilliseconds", value = "", required = true, example = "0")
-   @Digits(integer = 10, fraction = 0, message = "ioSpentMilliseconds须为整数")
-   private Integer ioSpentMilliseconds;
+   private Double ioSpentMilliseconds;
 
    /**
-    * 
-    * 
+    *
+    *
     */
    @ApiModelProperty(name = "ioSpentAllMilliseconds", value = "", required = true, example = "0")
-   @Digits(integer = 10, fraction = 0, message = "ioSpentAllMilliseconds须为整数")
-   private Integer ioSpentAllMilliseconds;
+   private Double ioSpentAllMilliseconds;
 
 }

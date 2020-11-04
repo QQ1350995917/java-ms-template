@@ -9,17 +9,17 @@
     <result column="major_device_number" jdbcType="INTEGER" property="majorDeviceNumber"/>
     <result column="minor_device_number" jdbcType="INTEGER" property="minorDeviceNumber"/>
     <result column="device_name" jdbcType="VARCHAR" property="deviceName"/>
-    <result column="read" jdbcType="INTEGER" property="read"/>
-    <result column="read_merge" jdbcType="INTEGER" property="readMerge"/>
-    <result column="read_sector" jdbcType="INTEGER" property="readSector"/>
-    <result column="read_spent_milliseconds" jdbcType="INTEGER" property="readSpentMilliseconds"/>
-    <result column="write" jdbcType="INTEGER" property="write"/>
-    <result column="write_merge" jdbcType="INTEGER" property="writeMerge"/>
-    <result column="write_sector" jdbcType="INTEGER" property="writeSector"/>
-    <result column="write_spent_milliseconds" jdbcType="INTEGER" property="writeSpentMilliseconds"/>
-    <result column="io_request" jdbcType="INTEGER" property="ioRequest"/>
-    <result column="io_spent_milliseconds" jdbcType="INTEGER" property="ioSpentMilliseconds"/>
-    <result column="io_spent_all_milliseconds" jdbcType="INTEGER" property="ioSpentAllMilliseconds"/>
+    <result column="read" jdbcType="DOUBLE" property="read"/>
+    <result column="read_merge" jdbcType="DOUBLE" property="readMerge"/>
+    <result column="read_sector" jdbcType="DOUBLE" property="readSector"/>
+    <result column="read_spent_milliseconds" jdbcType="DOUBLE" property="readSpentMilliseconds"/>
+    <result column="write" jdbcType="DOUBLE" property="write"/>
+    <result column="write_merge" jdbcType="DOUBLE" property="writeMerge"/>
+    <result column="write_sector" jdbcType="DOUBLE" property="writeSector"/>
+    <result column="write_spent_milliseconds" jdbcType="DOUBLE" property="writeSpentMilliseconds"/>
+    <result column="io_request" jdbcType="DOUBLE" property="ioRequest"/>
+    <result column="io_spent_milliseconds" jdbcType="DOUBLE" property="ioSpentMilliseconds"/>
+    <result column="io_spent_all_milliseconds" jdbcType="DOUBLE" property="ioSpentAllMilliseconds"/>
     <result column="able" jdbcType="INTEGER" property="able"/>
     <result column="del" jdbcType="INTEGER" property="del"/>
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>

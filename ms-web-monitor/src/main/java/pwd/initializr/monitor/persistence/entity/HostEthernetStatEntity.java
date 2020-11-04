@@ -24,117 +24,117 @@ public class HostEthernetStatEntity implements Serializable {
 
   private static final long serialVersionUID = 1L;
   /**
-    * 
+    *
     * 逻辑组名
     */
   private String groupName;
   /**
-    * 
+    *
     * 主机名
     */
   private String nodeName;
   /**
-    * 
-    * 
+    *
+    *
     */
   private String interFace;
   /**
-    * 
-    * 
+    *
+    *
     */
-  private Integer receiveBytes;
+  private Long receiveBytes;
   /**
-    * 
-    * 
+    *
+    *
     */
-  private Integer receivePackets;
+  private Long receivePackets;
   /**
-    * 
-    * 
+    *
+    *
     */
-  private Integer receiveErrs;
+  private Long receiveErrs;
   /**
-    * 
-    * 
+    *
+    *
     */
-  private Integer receiveDrop;
+  private Long receiveDrop;
   /**
-    * 
-    * 
+    *
+    *
     */
-  private Integer receiveFifo;
+  private Long receiveFifo;
   /**
-    * 
-    * 
+    *
+    *
     */
-  private Integer receiveFrame;
+  private Long receiveFrame;
   /**
-    * 
-    * 
+    *
+    *
     */
-  private Integer receiveCompressed;
+  private Long receiveCompressed;
   /**
-    * 
-    * 
+    *
+    *
     */
-  private Integer receiveMulticast;
+  private Long receiveMulticast;
   /**
-    * 
-    * 
+    *
+    *
     */
-  private Integer transmitBytes;
+  private Long transmitBytes;
   /**
-    * 
-    * 
+    *
+    *
     */
-  private Integer transmitPackets;
+  private Long transmitPackets;
   /**
-    * 
-    * 
+    *
+    *
     */
-  private Integer transmitErrs;
+  private Long transmitErrs;
   /**
-    * 
-    * 
+    *
+    *
     */
-  private Integer transmitDrop;
+  private Long transmitDrop;
   /**
-    * 
-    * 
+    *
+    *
     */
-  private Integer transmitFifo;
+  private Long transmitFifo;
   /**
-    * 
-    * 
+    *
+    *
     */
-  private Integer transmitColls;
+  private Long transmitColls;
   /**
-    * 
-    * 
+    *
+    *
     */
-  private Integer transmitCarrier;
+  private Long transmitCarrier;
   /**
-    * 
-    * 
+    *
+    *
     */
-  private Integer transmitCompressed;
+  private Long transmitCompressed;
   /**
-    * 
+    *
     * 可用状态：0:不可用；1:可用
     */
   private Integer able;
   /**
-    * 
+    *
     * 删除状态：0:未删除；1:已删除
     */
   private Integer del;
   /**
-    * 
+    *
     * 数据创建时间
     */
   private Date createTime;
   /**
-    * 
+    *
     * 最近更新时间
     */
   private Date updateTime;

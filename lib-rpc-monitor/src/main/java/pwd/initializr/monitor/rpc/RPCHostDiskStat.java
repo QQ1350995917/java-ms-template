@@ -27,17 +27,27 @@ public class RPCHostDiskStat implements IHostDiskStat {
     public long majorDeviceNumber;
     public long minorDeviceNumber;
     public String deviceName;
-    public long read;
-    public long readMerge;
-    public long readSector;
-    public long readSpentMilliseconds;
-    public long write;
-    public long writeMerge;
-    public long writeSector;
-    public long writeSpentMilliseconds;
-    public long ioRequest;
-    public long ioSpentMilliseconds;
-    public long ioSpentAllMilliseconds;
+    public Double read;
+    public Double readMerge;
+    public Double readSector;
+    public Double readSpentMilliseconds;
+    public Double write;
+    public Double writeMerge;
+    public Double writeSector;
+    public Double writeSpentMilliseconds;
+    public Double ioRequest;
+    public Double ioSpentMilliseconds;
+    public Double ioSpentAllMilliseconds;
+
+    @Override
+    public String getGroupName() {
+        return groupName;
+    }
+
+    @Override
+    public String getNodeName() {
+        return nodeName;
+    }
 
     @Override
     public long getMajorDeviceNumber() {
@@ -55,67 +65,57 @@ public class RPCHostDiskStat implements IHostDiskStat {
     }
 
     @Override
-    public long getRead() {
+    public Double getRead() {
         return read;
     }
 
     @Override
-    public long getReadMerge() {
+    public Double getReadMerge() {
         return readMerge;
     }
 
     @Override
-    public long getReadSector() {
+    public Double getReadSector() {
         return readSector;
     }
 
     @Override
-    public long getReadSpentMilliseconds() {
+    public Double getReadSpentMilliseconds() {
         return readSpentMilliseconds;
     }
 
     @Override
-    public long getWrite() {
+    public Double getWrite() {
         return write;
     }
 
     @Override
-    public long getWriteMerge() {
+    public Double getWriteMerge() {
         return writeMerge;
     }
 
     @Override
-    public long getWriteSector() {
+    public Double getWriteSector() {
         return writeSector;
     }
 
     @Override
-    public long getWriteSpentMilliseconds() {
+    public Double getWriteSpentMilliseconds() {
         return writeSpentMilliseconds;
     }
 
     @Override
-    public long getIoRequest() {
+    public Double getIoRequest() {
         return ioRequest;
     }
 
     @Override
-    public long getIoSpentMilliseconds() {
+    public Double getIoSpentMilliseconds() {
         return ioSpentMilliseconds;
     }
 
     @Override
-    public long getIoSpentAllMilliseconds() {
+    public Double getIoSpentAllMilliseconds() {
         return ioSpentAllMilliseconds;
-    }
-
-    @Override
-    public String getGroupName() {
-        return groupName;
-    }
-
-    @Override
-    public String getNodeName() {
-        return nodeName;
     }
 }

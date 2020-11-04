@@ -47,13 +47,13 @@ public class HostDiskStatClientOnWin extends MonitorClient {
       rpcDiskStat0.setMajorDeviceNumber(8);
       rpcDiskStat0.setMinorDeviceNumber(0);
       rpcDiskStat0.setDeviceName("sda");
-      rpcDiskStat0.setRead(17901464);
-      rpcDiskStat0.setReadMerge(2276295);
-      rpcDiskStat0.setReadSector(436039647);
-      rpcDiskStat0.setReadSpentMilliseconds(31628468);
-      rpcDiskStat0.setIoRequest(33779408);
-      rpcDiskStat0.setIoSpentMilliseconds(2746750);
-      rpcDiskStat0.setIoSpentAllMilliseconds(1439523404);
+      rpcDiskStat0.setRead(17901464.00);
+      rpcDiskStat0.setReadMerge(2276295.00);
+      rpcDiskStat0.setReadSector(436039647.00);
+      rpcDiskStat0.setReadSpentMilliseconds(31628468.00);
+      rpcDiskStat0.setIoRequest(33779408.00);
+      rpcDiskStat0.setIoSpentMilliseconds(2746750.00);
+      rpcDiskStat0.setIoSpentAllMilliseconds(1439523404.00);
 
       RPCHostDiskStat rpcDiskStat1 = new RPCHostDiskStat();
       rpcDiskStat1.setGroupName("test-group");
@@ -61,13 +61,13 @@ public class HostDiskStatClientOnWin extends MonitorClient {
       rpcDiskStat1.setMajorDeviceNumber(8);
       rpcDiskStat1.setMinorDeviceNumber(1);
       rpcDiskStat1.setDeviceName("sda1");
-      rpcDiskStat1.setRead(1180);
-      rpcDiskStat1.setReadMerge(3);
-      rpcDiskStat1.setReadSector(58995);
-      rpcDiskStat1.setReadSpentMilliseconds(2160);
-      rpcDiskStat1.setIoRequest(13);
-      rpcDiskStat1.setIoSpentMilliseconds(0);
-      rpcDiskStat1.setIoSpentAllMilliseconds(123);
+      rpcDiskStat1.setRead(1180.00);
+      rpcDiskStat1.setReadMerge(3.00);
+      rpcDiskStat1.setReadSector(58995.00);
+      rpcDiskStat1.setReadSpentMilliseconds(2160.00);
+      rpcDiskStat1.setIoRequest(13.00);
+      rpcDiskStat1.setIoSpentMilliseconds(0.00);
+      rpcDiskStat1.setIoSpentAllMilliseconds(123.00);
 
       RPCHostDiskStat rpcDiskStat2 = new RPCHostDiskStat();
       rpcDiskStat2.setGroupName("test-group");
@@ -75,13 +75,13 @@ public class HostDiskStatClientOnWin extends MonitorClient {
       rpcDiskStat2.setMajorDeviceNumber(8);
       rpcDiskStat2.setMinorDeviceNumber(2);
       rpcDiskStat2.setDeviceName("sda2");
-      rpcDiskStat2.setRead(17900206);
-      rpcDiskStat2.setReadMerge(2276292);
-      rpcDiskStat2.setReadSector(436033297);
-      rpcDiskStat2.setReadSpentMilliseconds(31625254);
-      rpcDiskStat2.setIoRequest(1399);
-      rpcDiskStat2.setIoSpentMilliseconds(0);
-      rpcDiskStat2.setIoSpentAllMilliseconds(12312);
+      rpcDiskStat2.setRead(17900206.00);
+      rpcDiskStat2.setReadMerge(2276292.00);
+      rpcDiskStat2.setReadSector(436033297.00);
+      rpcDiskStat2.setReadSpentMilliseconds(31625254.00);
+      rpcDiskStat2.setIoRequest(1399.00);
+      rpcDiskStat2.setIoSpentMilliseconds(0.00);
+      rpcDiskStat2.setIoSpentAllMilliseconds(12312.00);
 
       LinkedList<RPCHostDiskStat> rpcDiskStats = new LinkedList<>();
       rpcDiskStats.add(rpcDiskStat0);

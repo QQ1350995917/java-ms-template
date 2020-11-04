@@ -31,7 +31,7 @@ import lombok.ToString;
 public class HostEthernetStatInput implements Serializable {
 
    /**
-    * 
+    *
     * 逻辑组名
     */
    @ApiModelProperty(name = "groupName", value = "逻辑组名", required = true, example = "")
@@ -39,7 +39,7 @@ public class HostEthernetStatInput implements Serializable {
    private String groupName;
 
    /**
-    * 
+    *
     * 主机名
     */
    @ApiModelProperty(name = "nodeName", value = "主机名", required = true, example = "")
@@ -47,139 +47,123 @@ public class HostEthernetStatInput implements Serializable {
    private String nodeName;
 
    /**
-    * 
-    * 
+    *
+    *
     */
    @ApiModelProperty(name = "interFace", value = "", required = true, example = "")
    @NotBlank(message = "interFace不能为空")
    private String interFace;
 
    /**
-    * 
-    * 
+    *
+    *
     */
    @ApiModelProperty(name = "receiveBytes", value = "", required = true, example = "0")
-   @Digits(integer = 10, fraction = 0, message = "receiveBytes须为整数")
-   private Integer receiveBytes;
+   private Long receiveBytes;
 
    /**
-    * 
-    * 
+    *
+    *
     */
    @ApiModelProperty(name = "receivePackets", value = "", required = true, example = "0")
-   @Digits(integer = 10, fraction = 0, message = "receivePackets须为整数")
-   private Integer receivePackets;
+   private Long receivePackets;
 
    /**
-    * 
-    * 
+    *
+    *
     */
    @ApiModelProperty(name = "receiveErrs", value = "", required = true, example = "0")
-   @Digits(integer = 10, fraction = 0, message = "receiveErrs须为整数")
-   private Integer receiveErrs;
+   private Long receiveErrs;
 
    /**
-    * 
-    * 
+    *
+    *
     */
    @ApiModelProperty(name = "receiveDrop", value = "", required = true, example = "0")
-   @Digits(integer = 10, fraction = 0, message = "receiveDrop须为整数")
-   private Integer receiveDrop;
+   private Long receiveDrop;
 
    /**
-    * 
-    * 
+    *
+    *
     */
    @ApiModelProperty(name = "receiveFifo", value = "", required = true, example = "0")
-   @Digits(integer = 10, fraction = 0, message = "receiveFifo须为整数")
-   private Integer receiveFifo;
+   private Long receiveFifo;
 
    /**
-    * 
-    * 
+    *
+    *
     */
    @ApiModelProperty(name = "receiveFrame", value = "", required = true, example = "0")
-   @Digits(integer = 10, fraction = 0, message = "receiveFrame须为整数")
-   private Integer receiveFrame;
+   private Long receiveFrame;
 
    /**
-    * 
-    * 
+    *
+    *
     */
    @ApiModelProperty(name = "receiveCompressed", value = "", required = true, example = "0")
-   @Digits(integer = 10, fraction = 0, message = "receiveCompressed须为整数")
-   private Integer receiveCompressed;
+   private Long receiveCompressed;
 
    /**
-    * 
-    * 
+    *
+    *
     */
    @ApiModelProperty(name = "receiveMulticast", value = "", required = true, example = "0")
-   @Digits(integer = 10, fraction = 0, message = "receiveMulticast须为整数")
-   private Integer receiveMulticast;
+   private Long receiveMulticast;
 
    /**
-    * 
-    * 
+    *
+    *
     */
    @ApiModelProperty(name = "transmitBytes", value = "", required = true, example = "0")
-   @Digits(integer = 10, fraction = 0, message = "transmitBytes须为整数")
-   private Integer transmitBytes;
+   private Long transmitBytes;
 
    /**
-    * 
-    * 
+    *
+    *
     */
    @ApiModelProperty(name = "transmitPackets", value = "", required = true, example = "0")
-   @Digits(integer = 10, fraction = 0, message = "transmitPackets须为整数")
-   private Integer transmitPackets;
+   private Long transmitPackets;
 
    /**
-    * 
-    * 
+    *
+    *
     */
    @ApiModelProperty(name = "transmitErrs", value = "", required = true, example = "0")
-   @Digits(integer = 10, fraction = 0, message = "transmitErrs须为整数")
-   private Integer transmitErrs;
+   private Long transmitErrs;
 
    /**
-    * 
-    * 
+    *
+    *
     */
    @ApiModelProperty(name = "transmitDrop", value = "", required = true, example = "0")
-   @Digits(integer = 10, fraction = 0, message = "transmitDrop须为整数")
-   private Integer transmitDrop;
+   private Long transmitDrop;
 
    /**
-    * 
-    * 
+    *
+    *
     */
    @ApiModelProperty(name = "transmitFifo", value = "", required = true, example = "0")
-   @Digits(integer = 10, fraction = 0, message = "transmitFifo须为整数")
-   private Integer transmitFifo;
+   private Long transmitFifo;
 
    /**
-    * 
-    * 
+    *
+    *
     */
    @ApiModelProperty(name = "transmitColls", value = "", required = true, example = "0")
-   @Digits(integer = 10, fraction = 0, message = "transmitColls须为整数")
-   private Integer transmitColls;
+   private Long transmitColls;
 
    /**
-    * 
-    * 
+    *
+    *
     */
    @ApiModelProperty(name = "transmitCarrier", value = "", required = true, example = "0")
-   @Digits(integer = 10, fraction = 0, message = "transmitCarrier须为整数")
-   private Integer transmitCarrier;
+   private Long transmitCarrier;
 
    /**
-    * 
-    * 
+    *
+    *
     */
    @ApiModelProperty(name = "transmitCompressed", value = "", required = true, example = "0")
-   @Digits(integer = 10, fraction = 0, message = "transmitCompressed须为整数")
-   private Integer transmitCompressed;
+   private Long transmitCompressed;
 
 }

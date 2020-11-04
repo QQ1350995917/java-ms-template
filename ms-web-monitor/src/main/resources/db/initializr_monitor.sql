@@ -11,7 +11,7 @@
  Target Server Version : 50723
  File Encoding         : 65001
 
- Date: 30/10/2020 18:02:39
+ Date: 04/11/2020 16:25:36
 */
 
 SET NAMES utf8mb4;
@@ -20,7 +20,30 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 -- Table structure for host
 -- ----------------------------
-
+DROP TABLE IF EXISTS `host`;
+CREATE TABLE `host`  (
+  `group_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '逻辑组名，逻辑主键',
+  `node_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '主机名',
+  `distribute_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `distribute_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `distribute_id_like` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `distribute_version` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `distribute_code_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `distribute_description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `operating_system` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '操作系统名称',
+  `hardware_platform` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '硬件平台（x86_64）',
+  `system_up_since` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '启动时间',
+  `kernel_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '内核名称',
+  `kernel_version` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '内核版本',
+  `kernel_release` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '内核发布',
+  `machine` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '型号',
+  `processor` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '类型',
+  `able` int(4) NULL DEFAULT 0 COMMENT '可用状态：0:不可用；1:可用',
+  `del` int(4) NULL DEFAULT 0 COMMENT '删除状态：0:未删除；1:已删除',
+  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '数据创建时间',
+  `update_time` datetime(0) NULL DEFAULT NULL COMMENT '最近更新时间',
+  PRIMARY KEY (`node_name`, `group_name`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for host_cpu
@@ -95,17 +118,17 @@ CREATE TABLE `host_disk_stat`  (
   `major_device_number` int(11) NULL DEFAULT 0,
   `minor_device_number` int(11) NULL DEFAULT 0,
   `device_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `read` int(11) NULL DEFAULT 0,
-  `read_merge` int(11) NULL DEFAULT 0,
-  `read_sector` int(11) NULL DEFAULT 0,
-  `read_spent_milliseconds` int(11) NULL DEFAULT 0,
-  `write` int(11) NULL DEFAULT 0,
-  `write_merge` int(11) NULL DEFAULT 0,
-  `write_sector` int(11) NULL DEFAULT 0,
-  `write_spent_milliseconds` int(11) NULL DEFAULT 0,
-  `io_request` int(11) NULL DEFAULT 0,
-  `io_spent_milliseconds` int(11) NULL DEFAULT 0,
-  `io_spent_all_milliseconds` int(11) NULL DEFAULT 0,
+  `read` double(11, 0) NULL DEFAULT 0,
+  `read_merge` double(11, 0) NULL DEFAULT 0,
+  `read_sector` double(11, 0) NULL DEFAULT 0,
+  `read_spent_milliseconds` double(11, 0) NULL DEFAULT 0,
+  `write` double(11, 0) NULL DEFAULT 0,
+  `write_merge` double(11, 0) NULL DEFAULT 0,
+  `write_sector` double(11, 0) NULL DEFAULT 0,
+  `write_spent_milliseconds` double(11, 0) NULL DEFAULT 0,
+  `io_request` double(11, 0) NULL DEFAULT 0,
+  `io_spent_milliseconds` double(11, 0) NULL DEFAULT 0,
+  `io_spent_all_milliseconds` double(11, 0) NULL DEFAULT 0,
   `able` int(4) NULL DEFAULT 0 COMMENT '可用状态：0:不可用；1:可用',
   `del` int(4) NULL DEFAULT 0 COMMENT '删除状态：0:未删除；1:已删除',
   `create_time` datetime(0) NULL DEFAULT NULL COMMENT '数据创建时间',
@@ -120,22 +143,22 @@ CREATE TABLE `host_ethernet_stat`  (
   `group_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '逻辑组名，逻辑主键',
   `node_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '主机名，逻辑主键',
   `inter_face` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `receive_bytes` int(11) NULL DEFAULT 0,
-  `receive_packets` int(11) NULL DEFAULT 0,
-  `receive_errs` int(11) NULL DEFAULT 0,
-  `receive_drop` int(11) NULL DEFAULT 0,
-  `receive_fifo` int(11) NULL DEFAULT 0,
-  `receive_frame` int(11) NULL DEFAULT 0,
-  `receive_compressed` int(11) NULL DEFAULT 0,
-  `receive_multicast` int(11) NULL DEFAULT 0,
-  `transmit_bytes` int(11) NULL DEFAULT 0,
-  `transmit_packets` int(11) NULL DEFAULT 0,
-  `transmit_errs` int(11) NULL DEFAULT 0,
-  `transmit_drop` int(11) NULL DEFAULT 0,
-  `transmit_fifo` int(11) NULL DEFAULT 0,
-  `transmit_colls` int(11) NULL DEFAULT 0,
-  `transmit_carrier` int(11) NULL DEFAULT 0,
-  `transmit_compressed` int(11) NULL DEFAULT 0,
+  `receive_bytes` bigint(11) NULL DEFAULT 0,
+  `receive_packets` bigint(11) NULL DEFAULT 0,
+  `receive_errs` bigint(11) NULL DEFAULT 0,
+  `receive_drop` bigint(11) NULL DEFAULT 0,
+  `receive_fifo` bigint(11) NULL DEFAULT 0,
+  `receive_frame` bigint(11) NULL DEFAULT 0,
+  `receive_compressed` bigint(11) NULL DEFAULT 0,
+  `receive_multicast` bigint(11) NULL DEFAULT 0,
+  `transmit_bytes` bigint(11) NULL DEFAULT 0,
+  `transmit_packets` bigint(11) NULL DEFAULT 0,
+  `transmit_errs` bigint(11) NULL DEFAULT 0,
+  `transmit_drop` bigint(11) NULL DEFAULT 0,
+  `transmit_fifo` bigint(11) NULL DEFAULT 0,
+  `transmit_colls` bigint(11) NULL DEFAULT 0,
+  `transmit_carrier` bigint(11) NULL DEFAULT 0,
+  `transmit_compressed` bigint(11) NULL DEFAULT 0,
   `able` int(4) NULL DEFAULT 0 COMMENT '可用状态：0:不可用；1:可用',
   `del` int(4) NULL DEFAULT 0 COMMENT '删除状态：0:未删除；1:已删除',
   `create_time` datetime(0) NULL DEFAULT NULL COMMENT '数据创建时间',

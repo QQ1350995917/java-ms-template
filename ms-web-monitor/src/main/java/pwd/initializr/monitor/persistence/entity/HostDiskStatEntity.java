@@ -24,102 +24,102 @@ public class HostDiskStatEntity implements Serializable {
 
   private static final long serialVersionUID = 1L;
   /**
-    * 
+    *
     * 逻辑组名
     */
   private String groupName;
   /**
-    * 
+    *
     * 主机名
     */
   private String nodeName;
   /**
-    * 
-    * 
+    *
+    *
     */
   private Integer majorDeviceNumber;
   /**
-    * 
-    * 
+    *
+    *
     */
   private Integer minorDeviceNumber;
   /**
-    * 
-    * 
+    *
+    *
     */
   private String deviceName;
   /**
-    * 
-    * 
+    *
+    *
     */
-  private Integer read;
+  private Double read;
   /**
-    * 
-    * 
+    *
+    *
     */
-  private Integer readMerge;
+  private Double readMerge;
   /**
-    * 
-    * 
+    *
+    *
     */
-  private Integer readSector;
+  private Double readSector;
   /**
-    * 
-    * 
+    *
+    *
     */
-  private Integer readSpentMilliseconds;
+  private Double readSpentMilliseconds;
   /**
-    * 
-    * 
+    *
+    *
     */
-  private Integer write;
+  private Double write;
   /**
-    * 
-    * 
+    *
+    *
     */
-  private Integer writeMerge;
+  private Double writeMerge;
   /**
-    * 
-    * 
+    *
+    *
     */
-  private Integer writeSector;
+  private Double writeSector;
   /**
-    * 
-    * 
+    *
+    *
     */
-  private Integer writeSpentMilliseconds;
+  private Double writeSpentMilliseconds;
   /**
-    * 
-    * 
+    *
+    *
     */
-  private Integer ioRequest;
+  private Double ioRequest;
   /**
-    * 
-    * 
+    *
+    *
     */
-  private Integer ioSpentMilliseconds;
+  private Double ioSpentMilliseconds;
   /**
-    * 
-    * 
+    *
+    *
     */
-  private Integer ioSpentAllMilliseconds;
+  private Double ioSpentAllMilliseconds;
   /**
-    * 
+    *
     * 可用状态：0:不可用；1:可用
     */
   private Integer able;
   /**
-    * 
+    *
     * 删除状态：0:未删除；1:已删除
     */
   private Integer del;
   /**
-    * 
+    *
     * 数据创建时间
     */
   private Date createTime;
   /**
-    * 
+    *
     * 最近更新时间
     */
   private Date updateTime;

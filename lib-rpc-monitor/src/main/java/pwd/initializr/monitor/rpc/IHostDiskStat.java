@@ -49,55 +49,55 @@ public interface IHostDiskStat extends Serializable {
     /**
      * 读完成次数
      */
-    long getRead();
+    Double getRead();
 
     /**
      * 读合并完成次数
      */
-    long getReadMerge();
+    Double getReadMerge();
 
     /**
      * 读扇区次数
      */
-    long getReadSector();
+    Double getReadSector();
 
     /**
      * 读操作花费毫秒数
      */
-    long getReadSpentMilliseconds();
+    Double getReadSpentMilliseconds();
 
     /**
      * 写完成次数
      */
-    long getWrite();
+    Double getWrite();
 
     /**
      * 写合并次数
      */
-    long getWriteMerge();
+    Double getWriteMerge();
 
     /**
      * 写扇区次数
      */
-    long getWriteSector();
+    Double getWriteSector();
 
     /**
      * 写操作花费的毫秒数
      */
-    long getWriteSpentMilliseconds();
+    Double getWriteSpentMilliseconds();
 
     /**
      * 正在处理的输入/输出请求数
      */
-    long getIoRequest();
+    Double getIoRequest();
 
     /**
      * 输入/输出操作花费的毫秒数
      */
-    long getIoSpentMilliseconds();
+    Double getIoSpentMilliseconds();
 
     /**
      * 输入/输出操作花费的加权毫秒数
      */
-    long getIoSpentAllMilliseconds();
+    Double getIoSpentAllMilliseconds();
 }

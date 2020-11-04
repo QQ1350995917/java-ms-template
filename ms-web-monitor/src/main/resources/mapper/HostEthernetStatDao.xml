@@ -7,24 +7,24 @@
     <result column="group_name" jdbcType="VARCHAR" property="groupName"/>
     <result column="node_name" jdbcType="VARCHAR" property="nodeName"/>
     <result column="inter_face" jdbcType="VARCHAR" property="interFace"/>
-    <result column="receive_bytes" jdbcType="INTEGER" property="receiveBytes"/>
-    <result column="receive_packets" jdbcType="INTEGER" property="receivePackets"/>
-    <result column="receive_errs" jdbcType="INTEGER" property="receiveErrs"/>
-    <result column="receive_drop" jdbcType="INTEGER" property="receiveDrop"/>
-    <result column="receive_fifo" jdbcType="INTEGER" property="receiveFifo"/>
-    <result column="receive_frame" jdbcType="INTEGER" property="receiveFrame"/>
-    <result column="receive_compressed" jdbcType="INTEGER" property="receiveCompressed"/>
-    <result column="receive_multicast" jdbcType="INTEGER" property="receiveMulticast"/>
-    <result column="transmit_bytes" jdbcType="INTEGER" property="transmitBytes"/>
-    <result column="transmit_packets" jdbcType="INTEGER" property="transmitPackets"/>
-    <result column="transmit_errs" jdbcType="INTEGER" property="transmitErrs"/>
-    <result column="transmit_drop" jdbcType="INTEGER" property="transmitDrop"/>
-    <result column="transmit_fifo" jdbcType="INTEGER" property="transmitFifo"/>
-    <result column="transmit_colls" jdbcType="INTEGER" property="transmitColls"/>
-    <result column="transmit_carrier" jdbcType="INTEGER" property="transmitCarrier"/>
-    <result column="transmit_compressed" jdbcType="INTEGER" property="transmitCompressed"/>
-    <result column="able" jdbcType="INTEGER" property="able"/>
-    <result column="del" jdbcType="INTEGER" property="del"/>
+    <result column="receive_bytes" jdbcType="BIGINT" property="receiveBytes"/>
+    <result column="receive_packets" jdbcType="BIGINT" property="receivePackets"/>
+    <result column="receive_errs" jdbcType="BIGINT" property="receiveErrs"/>
+    <result column="receive_drop" jdbcType="BIGINT" property="receiveDrop"/>
+    <result column="receive_fifo" jdbcType="BIGINT" property="receiveFifo"/>
+    <result column="receive_frame" jdbcType="BIGINT" property="receiveFrame"/>
+    <result column="receive_compressed" jdbcType="BIGINT" property="receiveCompressed"/>
+    <result column="receive_multicast" jdbcType="BIGINT" property="receiveMulticast"/>
+    <result column="transmit_bytes" jdbcType="BIGINT" property="transmitBytes"/>
+    <result column="transmit_packets" jdbcType="BIGINT" property="transmitPackets"/>
+    <result column="transmit_errs" jdbcType="BIGINT" property="transmitErrs"/>
+    <result column="transmit_drop" jdbcType="BIGINT" property="transmitDrop"/>
+    <result column="transmit_fifo" jdbcType="BIGINT" property="transmitFifo"/>
+    <result column="transmit_colls" jdbcType="BIGINT" property="transmitColls"/>
+    <result column="transmit_carrier" jdbcType="BIGINT" property="transmitCarrier"/>
+    <result column="transmit_compressed" jdbcType="BIGINT" property="transmitCompressed"/>
+    <result column="able" jdbcType="BIGINT" property="able"/>
+    <result column="del" jdbcType="BIGINT" property="del"/>
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
   </resultMap>

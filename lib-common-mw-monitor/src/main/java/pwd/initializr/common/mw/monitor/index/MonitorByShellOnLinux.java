@@ -103,6 +103,9 @@ public class MonitorByShellOnLinux extends ShellOnLinux implements Index {
            * UBUNTU_CODENAME=bionic
            */
           for (String line : lines) {
+            if (StringUtils.isBlank(line)) {
+              continue;
+            }
             String[] split = line.split("=");
             String key = split[0];
             String value = split[1];
@@ -143,6 +146,10 @@ public class MonitorByShellOnLinux extends ShellOnLinux implements Index {
     /**
      * 0.42 0.37 0.31 1/2663 8452
      */
+    if (loadavgShellResult.getLines().size() < 1){
+      return null;
+    }
+
     String loadavg = loadavgShellResult.getLines().get(0);
     String[] load = loadavg.replaceAll("\\s{2,}", " ").split(" ");
     RPCHostLoadStat rpcLoad = new RPCHostLoadStat();
@@ -542,17 +549,17 @@ public class MonitorByShellOnLinux extends ShellOnLinux implements Index {
       rpcDiskStat.setMajorDeviceNumber(Long.parseLong(split[0]));
       rpcDiskStat.setMinorDeviceNumber(Long.parseLong(split[1]));
       rpcDiskStat.setDeviceName(split[2]);
-      rpcDiskStat.setRead(Long.parseLong(split[3]));
-      rpcDiskStat.setReadMerge(Long.parseLong(split[4]));
-      rpcDiskStat.setReadSector(Long.parseLong(split[5]));
-      rpcDiskStat.setReadSpentMilliseconds(Long.parseLong(split[6]));
-      rpcDiskStat.setWrite(Long.parseLong(split[7]));
-      rpcDiskStat.setWriteMerge(Long.parseLong(split[8]));
-      rpcDiskStat.setWriteSector(Long.parseLong(split[9]));
-      rpcDiskStat.setWriteSpentMilliseconds(Long.parseLong(split[10]));
-      rpcDiskStat.setIoRequest(Long.parseLong(split[11]));
-      rpcDiskStat.setIoSpentMilliseconds(Long.parseLong(split[12]));
-      rpcDiskStat.setIoSpentAllMilliseconds(Long.parseLong(split[13]));
+      rpcDiskStat.setRead(Double.parseDouble(split[3]));
+      rpcDiskStat.setReadMerge(Double.parseDouble(split[4]));
+      rpcDiskStat.setReadSector(Double.parseDouble(split[5]));
+      rpcDiskStat.setReadSpentMilliseconds(Double.parseDouble(split[6]));
+      rpcDiskStat.setWrite(Double.parseDouble(split[7]));
+      rpcDiskStat.setWriteMerge(Double.parseDouble(split[8]));
+      rpcDiskStat.setWriteSector(Double.parseDouble(split[9]));
+      rpcDiskStat.setWriteSpentMilliseconds(Double.parseDouble(split[10]));
+      rpcDiskStat.setIoRequest(Double.parseDouble(split[11]));
+      rpcDiskStat.setIoSpentMilliseconds(Double.parseDouble(split[12]));
+      rpcDiskStat.setIoSpentAllMilliseconds(Double.parseDouble(split[13]));
       iHostDiskStats.add(rpcDiskStat);
     }
     return iHostDiskStats;

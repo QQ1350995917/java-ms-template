@@ -44,6 +44,9 @@ public class HostLoadStatClientOnLinux extends MonitorClient {
         try {
             MonitorByShellOnLinux monitorByShellOnLinux = new MonitorByShellOnLinux();
             IHostLoadStat loadStat = monitorByShellOnLinux.getLoadStat();
+            if (loadStat == null) {
+                return;
+            }
             String jsonString = JSON.toJSONString(loadStat);
             httpX.postJson(monitorClientConfig.getLoadStatUrl(), jsonString);
         } catch (Exception e) {
