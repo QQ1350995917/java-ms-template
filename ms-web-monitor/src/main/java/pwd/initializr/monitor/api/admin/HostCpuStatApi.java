@@ -92,4 +92,12 @@ public interface HostCpuStatApi {
       @ApiParam(name = "sorts", value = "[{\"fieldName\":\"指定排序字段\",\"sort\":\"[desc|asc]\"}]") @RequestParam(value = "sorts", required = false) String sorts,
       @ApiParam(name = "page", value = "{\"index\":0,\"size\":12}") @RequestParam(value = "page", required = false) String page);
 
+
+  @ApiOperation(value = "CPU状态统计")
+  @GetMapping(value = {"/statistics/{groupName}/{nodeName}/{times}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  void statistics(
+      @ApiParam(name = "groupName", value = "分组名") @PathVariable(value = "groupName", required = true) @Valid @NotNull(message = "参数不能为空") String groupName,
+      @ApiParam(name = "nodeName", value = "主机名") @PathVariable(value = "nodeName", required = true) @Valid @NotNull(message = "参数不能为空") String nodeName,
+      @ApiParam(name = "times", value = "时间维度的频次") @PathVariable(value = "times", required = true) @Valid @NotNull(message = "参数不能为空") Integer times);
+
 }

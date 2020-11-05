@@ -38,7 +38,7 @@
   </resultMap>
 
   <!--根据主键查询查询-->
-  <select id="queryById" resultMap="HostCpuMap">
+  <select id="queryById" parameterType="java.lang.String" resultMap="HostCpuMap">
     SELECT
       `group_name`,
       `node_name`,
@@ -74,7 +74,7 @@
     FROM
       host_cpu
     WHERE
-      id = #{id}
+      group_name = #{groupName} AND node_name = #{nodeName} AND core_id = #{coreId}
   </select>
 
   <!--查询指定行数据-->

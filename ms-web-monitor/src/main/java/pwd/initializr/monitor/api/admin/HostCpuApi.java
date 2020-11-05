@@ -65,14 +65,17 @@ public interface HostCpuApi {
    * <h2>根据ID查询详情</h2>
    * date 2020-10-29 11:44
    *
-   * @param id 请求参数
+   * @param groupName 请求参数
+   * @param nodeName 请求参数
    * @return void
    * @author Automatic[www.dingpengwei@foxmail.com]
    * @since 0.0.1-SNAPSHOT
    */
   @ApiOperation(value = "根据ID查询详情")
-  @GetMapping(value = {"/{id}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  void detail(@PathVariable("id") @Valid @NotNull(message = "参数不能为空") Long id);
+  @GetMapping(value = {"/{groupName}/{nodeName}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  void detail(
+      @PathVariable("groupName") @Valid @NotNull(message = "参数不能为空") String groupName,
+      @PathVariable("nodeName") @Valid @NotNull(message = "参数不能为空") String nodeName);
 
   /**
    * <h2>根据分页信息以及分页条件以列表形式查询</h2>

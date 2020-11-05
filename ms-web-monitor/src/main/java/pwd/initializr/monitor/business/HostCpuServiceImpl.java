@@ -126,8 +126,8 @@ public class HostCpuServiceImpl implements HostCpuService {
   }
 
   @Override
-  public HostCpuBO queryById(Long id) {
-    HostCpuEntity entity = this.dao.queryById(id);
+  public HostCpuBO queryById(String groupName,String nodeName,String coreId) {
+    HostCpuEntity entity = this.dao.queryById(groupName,nodeName,coreId);
     if (entity == null) {
       return null;
     }

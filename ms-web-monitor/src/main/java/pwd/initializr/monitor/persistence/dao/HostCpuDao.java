@@ -136,16 +136,18 @@ public interface HostCpuDao {
       @Param("sorts") LinkedHashSet<? extends SortEntity> sorts,
       @Param("offset") Long offset, @Param("limit") Long limit);
 
-  /**
+ /**
    * <h2>根据主键进行查询</h2>
    * date 2020-10-29 11:44
    *
-   * @param id 主键
+   * @param groupName 主键
+   * @param nodeName 主键
+   * @param coreId 主键
    * @return HostCpuEntity
    * @author Automatic[www.dingpengwei@foxmail.com]
    * @since 0.0.1-SNAPSHOT
    */
-  HostCpuEntity queryById(@Param("id") Long id);
+  HostCpuEntity queryById(@Param("groupName") String groupName,@Param("nodeName") String nodeName,@Param("coreId") String coreId);
 
 
   /**

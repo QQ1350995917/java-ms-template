@@ -127,12 +127,14 @@ public interface HostCpuService {
    * <h2>通过ID查询单条数据</h2>
    * date 2020-10-29 11:44
    *
-   * @param id 主键
+   * @param groupName 主键
+   * @param nodeName 主键
+   * @param coreId 主键
    * @return pwd.initializr.monitor.business.bo.HostCpuBO 业务对象
    * @author Automatic[www.dingpengwei@foxmail.com]
    * @since 2020-10-29 11:44
    */
-  HostCpuBO queryById(Long id);
+  HostCpuBO queryById(String groupName,String nodeName,String coreId);
 
   /**
    * <h2>根据ID更新数据</h2>

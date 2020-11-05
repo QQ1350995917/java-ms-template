@@ -1,5 +1,6 @@
 package pwd.initializr.monitor.api.robot;
 
+import com.alibaba.fastjson.JSON;
 import io.swagger.annotations.Api;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
@@ -69,11 +70,22 @@ public class HostCpuController extends pwd.initializr.common.web.api.admin.Admin
   }
 
   @Override
-  public void detail(@Valid @NotNull(message = "参数不能为空") Long id) {
-    HostCpuBO bo = service.queryById(id);
-    HostCpuOutput output = new HostCpuOutput();
-    BeanUtils.copyProperties(bo,output);
-    outputData(output);
+  public void detail(@Valid @NotNull(message = "参数不能为空") String groupName,
+      @Valid @NotNull(message = "参数不能为空") String nodeName) {
+    LinkedHashSet<ScopeBO> scopeBOS = new LinkedHashSet<>();
+    ScopeBO groupNameScopeBO = new ScopeBO();
+    groupNameScopeBO.setFieldName("group_name");
+    groupNameScopeBO.setFieldValue(groupName);
+    groupNameScopeBO.setHit("E");
+    scopeBOS.add(groupNameScopeBO);
+
+    ScopeBO nodeNameScopeBO = new ScopeBO();
+    nodeNameScopeBO.setFieldName("node_name");
+    nodeNameScopeBO.setFieldValue(nodeName);
+    nodeNameScopeBO.setHit("E");
+    scopeBOS.add(nodeNameScopeBO);
+
+    this.list(JSON.toJSONString(scopeBOS),null,null);
   }
 
   @Override
