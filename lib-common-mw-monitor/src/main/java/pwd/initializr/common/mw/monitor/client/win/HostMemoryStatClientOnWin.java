@@ -44,9 +44,9 @@ public class HostMemoryStatClientOnWin extends MonitorClient {
             RPCHostMemoryStat rpcHostMemoryStat = new RPCHostMemoryStat();
             rpcHostMemoryStat.setGroupName("test-group");
             rpcHostMemoryStat.setNodeName("test-nodename");
-            rpcHostMemoryStat.setMemTotal(((long) ((Math.random() * 1000000) + 1L)));
-            rpcHostMemoryStat.setMemFree(((long) ((Math.random() * 1000000) + 1L)));
-            rpcHostMemoryStat.setMemAvailable(((long) ((Math.random() * 1000000) + 1L)));
+            rpcHostMemoryStat.setMemTotal((((1000000) + 2L)));
+            rpcHostMemoryStat.setMemFree(((long) ((Math.random() * 500000) + 1L)));
+            rpcHostMemoryStat.setMemAvailable(((long) ((Math.random() * 500000) + 1L)));
             rpcHostMemoryStat.setBuffers(((long) ((Math.random() * 1000000) + 1L)));
             rpcHostMemoryStat.setCached(((long) ((Math.random() * 1000000) + 1L)));
             rpcHostMemoryStat.setSwapCached(((long) ((Math.random() * 1000000) + 1L)));
@@ -58,8 +58,8 @@ public class HostMemoryStatClientOnWin extends MonitorClient {
             rpcHostMemoryStat.setInactiveFile(((long) ((Math.random() * 1000000) + 1L)));
             rpcHostMemoryStat.setUnevictable(((long) ((Math.random() * 1000000) + 1L)));
             rpcHostMemoryStat.setMlocked(((long) ((Math.random() * 1000000) + 1L)));
-            rpcHostMemoryStat.setSwapTotal(((long) ((Math.random() * 1000000) + 1L)));
-            rpcHostMemoryStat.setSwapFree(((long) ((Math.random() * 1000000) + 1L)));
+            rpcHostMemoryStat.setSwapTotal(((long) ((Math.random() * 10000) + 1L)));
+            rpcHostMemoryStat.setSwapFree(((long) ((Math.random() * 1000) + 1L)));
             rpcHostMemoryStat.setDirty(((long) ((Math.random() * 1000000) + 1L)));
             rpcHostMemoryStat.setWriteback(((long) ((Math.random() * 1000000) + 1L)));
             rpcHostMemoryStat.setAnonPages(((long) ((Math.random() * 1000000) + 1L)));

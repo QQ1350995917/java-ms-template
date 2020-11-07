@@ -12,9 +12,9 @@ import lombok.ToString;
  *
  * <h1>TODO what you want to do?</h1>
  *
- * date 2020-11-05 16:57
+ * date 2020-11-06 22:43
  *
- * @author DingPengwei[dingpengwei@foxmail.com]
+ * @author DingPengwei[www.dingpengwei@foxmail.com]
  * @version 1.0.0
  * @since DistributionVersion
  */
@@ -23,8 +23,8 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class HostCpuStatStatisticsOutput {
+public class HostDiskStatStatisticsOutput {
 
-  private String cpuCoreName;
-  private List<HostCpuStatOutput> cpuStats;
+  private String deviceName;
+  private List<HostDiskStatOutput> diskStats;
 }
