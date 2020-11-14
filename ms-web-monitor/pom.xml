@@ -43,6 +43,16 @@
       <artifactId>mybatis-plus-boot-starter</artifactId>
       <version>3.2.0</version>
     </dependency>
+    <!--<dependency>-->
+      <!--<groupId>com.alibaba</groupId>-->
+      <!--<artifactId>druid</artifactId>-->
+      <!--<version>1.1.9</version>-->
+    <!--</dependency>-->
+    <!--<dependency>-->
+      <!--<groupId>com.dangdang</groupId>-->
+      <!--<artifactId>sharding-jdbc-core</artifactId>-->
+      <!--<version>1.5.4</version>-->
+    <!--</dependency>-->
     <dependency>
       <groupId>pwd.initializr</groupId>
       <artifactId>lib-common-web</artifactId>
