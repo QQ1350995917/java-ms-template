@@ -38,7 +38,7 @@
     <!--<module>ms-web-search</module>-->
     <!--<module>ms-web-storage</module>-->
     <!--<module>ms-web-typeface</module>-->
-    <!--<module>project-generator</module>-->
+    <module>project-generator</module>
     <!--<module>project-generator-test</module>-->
     <!--<module>widget-tool</module>-->
   </modules>
