@@ -166,7 +166,7 @@
         this.$http.get(
             '/api/admin/database?name=' + this.databaseName + '&url=' + this.databaseUrl
             + '&driver='
-            + this.databaseDriver + '&user=' + this.databaseUser + '&pwd=' + this.databasePwd).then(
+            + this.databaseDriver + '&user=' + this.databaseUser + '&pwd=' + encodeURIComponent(this.databasePwd)).then(
             function (res) {
               var body = res.body;
               var meta = body.meta;
