@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.apache.commons.lang.StringUtils;
 import pwd.initializr.generator.util.VariableName;
 
 /**
@@ -54,7 +55,7 @@ public class TableColumnBO {
     }
 
     public String getJavaType() {
-        return dabaseTypeToJavaType(this.getJdbcType());
+        return StringUtils.isBlank(dabaseTypeToJavaType(this.getJdbcType()))? "String":dabaseTypeToJavaType(this.getJdbcType());
     }
 
     protected String dabaseTypeToJavaType(String jdbcType) {
@@ -63,6 +64,9 @@ public class TableColumnBO {
         typeMapping.put("CHAR", "String");
         typeMapping.put("VARCHAR", "String");
         typeMapping.put("TEXT", "String");
+        typeMapping.put("TINYTEXT", "String");
+        typeMapping.put("LONGTEXT", "String");
+        typeMapping.put("MEDIUMTEXT", "String");
         typeMapping.put("LONGVARCHAR", "String");
         typeMapping.put("NUMERIC", "BigDecimal");
         typeMapping.put("DECIMAL", "BigDecimal");

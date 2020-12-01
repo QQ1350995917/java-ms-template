@@ -121,7 +121,7 @@ public class GeneratorController extends AdminController {
     @ApiOperation(value = "工程代码下载")
     @GetMapping(value = {"/{filename}"})
     public void download(@PathVariable("filename") @NotNull(message = "参数不能为空") String filename) {
-        File file = new File(filename + ".zip");
+        File file = new File(projectGeneratorStorage + File.separator + filename + ".zip");
         try {
             this.outputAttachmentFile(file);
         } catch (Exception e) {
