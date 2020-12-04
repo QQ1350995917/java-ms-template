@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pwd.initializr.email.persistence.dao.AdminContactDao">
+
+  <resultMap id="AdminContactMap"
+    type="pwd.initializr.email.persistence.entity.AdminContactEntity">
+    <result column="id" jdbcType="BIGINT" property="id"/>
+    <result column="uid" jdbcType="BIGINT" property="uid"/>
+    <result column="type" jdbcType="INTEGER" property="type"/>
+    <result column="value" jdbcType="VARCHAR" property="value"/>
+    <result column="mark" jdbcType="VARCHAR" property="mark"/>
+    <result column="able" jdbcType="INTEGER" property="able"/>
+    <result column="del" jdbcType="INTEGER" property="del"/>
+    <result column="create_time" jdbcType="INTEGER" property="createTime"/>
+    <result column="update_time" jdbcType="INTEGER" property="updateTime"/>
+    <result column="version" jdbcType="BIGINT" property="version"/>
+  </resultMap>
+
+  <!--查询单个-->
+  <select id="queryById" resultMap="AdminContactMap">
+        select
+          id, uid, type, value, mark, able, del, create_time, update_time, version
+        from initializr_account.admin_contact
+        where id = #{id}
+    </select>
+
+  <!--查询指定行数据-->
+  <select id="countAllByCondition" resultMap="AdminContactMap">
+    select count(*) from initializr_account.admin_contact
+    <include refid="countAndQueryAllByCondition"></include>
+  </select>
+
+  <!--通过实体作为筛选条件查询-->
+  <select id="queryAllByCondition" resultMap="AdminContactMap">
+    select
+    id, uid, type, value, mark, able, del, create_time, update_time
+    from initializr_account.admin_contact
+    <include refid="countAndQueryAllByCondition"></include>
+    limit #{offset}, #{limit}
+  </select>
+
+  <select id="queryAllByUid" resultMap="AdminContactMap">
+    select
+    id, uid, type, value, mark, able, del, create_time, update_time
+    from initializr_account.admin_contact
+    where uId = #{uid}
+  </select>
+
+  <sql id="countAndQueryAllByCondition">
+    <where>
+      <if test="adminContactEntity.id != null">
+        and id = #{adminContactEntity.id}
+      </if>
+      <if test="adminContactEntity.uid != null">
+        and uid = #{adminContactEntity.uid}
+      </if>
+      <if test="adminContactEntity.type != null">
+        and type = #{adminContactEntity.type}
+      </if>
+      <if test="adminContactEntity.value != null and adminContactEntity.value != ''">
+        and value = #{adminContactEntity.value}
+      </if>
+      <if test="adminContactEntity.mark != null and adminContactEntity.mark != ''">
+        and mark = #{adminContactEntity.mark}
+      </if>
+      <if test="adminContactEntity.able != null">
+        and able = #{adminContactEntity.able}
+      </if>
+      <if test="adminContactEntity.del != null">
+        and del = #{adminContactEntity.del}
+      </if>
+      <if test="adminContactEntity.createTime != null">
+        and create_time = #{adminContactEntity.createTime}
+      </if>
+      <if test="adminContactEntity.updateTime != null">
+        and update_time = #{adminContactEntity.updateTime}
+      </if>
+    </where>
+  </sql>
+
+  <!--新增所有列-->
+  <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into initializr_account.admin_contact(uid, type, value, mark, able, del, create_time, update_time)
+        values (#{uid}, #{type}, #{value}, #{mark}, #{able}, #{del}, #{createTime}, #{updateTime})
+    </insert>
+
+  <!--通过主键修改数据-->
+  <update id="update">
+    update initializr_account.admin_contact
+    <set>
+      <if test="uid != null">
+        uid = #{uid},
+      </if>
+      <if test="type != null">
+        type = #{type},
+      </if>
+      <if test="value != null and value != ''">
+        value = #{value},
+      </if>
+      <if test="mark != null and mark != ''">
+        mark = #{mark},
+      </if>
+      <if test="able != null">
+        able = #{able},
+      </if>
+      <if test="del != null">
+        del = #{del},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+
+  <!--通过主键删除-->
+  <delete id="deleteById">
+    update initializr_account.admin_contact set del = 1, update_time = now() where id = #{id}
+  </delete>
+
+  <!--通过主键删除-->
+  <delete id="deleteByIds">
+    update initializr_account.admin_contact set del = 1, update_time = now() where id in
+    <foreach close=")" collection="ids" index="index" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </delete>
+</mapper>

@@ -37,7 +37,7 @@ import ${projectPackage}.api.vo.${className}Input;
   description = "[列表查询，详情查询，启/禁用，删除，新增，修改]"
 )
 @RestController(value = "${className}")
-@RequestMapping(value = "/api/${className}")
+@RequestMapping(value = "/api/${className?lower_case}")
 public interface ${className}Api {
 
   /**

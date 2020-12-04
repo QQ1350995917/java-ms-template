@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pwd.initializr.email.persistence.dao.UserAccountDao">
+
+  <resultMap id="UserAccountMap" type="pwd.initializr.email.persistence.entity.UserAccountEntity">
+    <result column="id" jdbcType="BIGINT" property="id"/>
+    <result column="uid" jdbcType="BIGINT" property="uid"/>
+    <result column="login_name" jdbcType="VARCHAR" property="loginName"/>
+    <result column="login_pwd" jdbcType="VARCHAR" property="loginPwd"/>
+    <result column="pwd_time" jdbcType="TIMESTAMP" property="pwdTime"/>
+    <result column="type" jdbcType="INTEGER" property="type"/>
+    <result column="able" jdbcType="INTEGER" property="able"/>
+    <result column="del" jdbcType="INTEGER" property="del"/>
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    <result column="version" jdbcType="BIGINT" property="version"/>
+  </resultMap>
+
+  <!--查询单个-->
+  <select id="queryById" resultMap="UserAccountMap">
+        select
+          id, uid, login_name, login_pwd, pwd_time, type, able, del, create_time, update_time, version
+        from initializr_account.user_account
+        where id = #{id} and uid = #{uid}
+    </select>
+
+  <!--登录查询-->
+  <select id="queryByLoginNameAndPwd" resultMap="UserAccountMap">
+        select
+          id, uid, login_name, login_pwd, pwd_time, type, able, del, create_time, update_time
+        from initializr_account.user_account
+        where login_name = #{loginName} and login_pwd = #{loginPwd}
+  </select>
+
+  <!--通过实体作为筛选条件统计-->
+  <select id="countAllByCondition" resultType="java.lang.Long">
+    select count(*) from initializr_account.user_account
+    <include refid="pwd.initializr.common.web.persistence.entity.ScopeEntity.entityQueryScope"></include>
+  </select>
+
+  <!--通过实体作为筛选条件查询-->
+  <select id="queryAllByCondition" resultMap="UserAccountMap">
+    select
+    id, uid, login_name, login_pwd, pwd_time, type, able, del, create_time, update_time
+    from initializr_account.user_account
+    <include refid="pwd.initializr.common.web.persistence.entity.ScopeEntity.entityQueryScope"></include>
+    <include refid="pwd.initializr.common.web.persistence.entity.SortEntity.entityQuerySort"></include>
+    limit #{offset}, #{limit}
+  </select>
+
+  <select id="queryAllByUid" resultMap="UserAccountMap">
+    select
+    id, uid, login_name, login_pwd, pwd_time, type, able, del, create_time, update_time
+    from initializr_account.user_account
+    where uId = #{uid}
+  </select>
+
+  <select id="existLoginName" resultMap="UserAccountMap">
+    SELECT login_name from user_account WHERE login_name = #{loginName}
+  </select>
+
+  <!--新增所有列-->
+  <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into initializr_account.user_account(uid, login_name, login_pwd, pwd_time, type, able, del, create_time, update_time)
+        values (#{uid}, #{loginName}, #{loginPwd}, #{pwdTime}, #{type}, #{able}, #{del}, #{createTime}, #{updateTime})
+  </insert>
+
+  <!--通过主键修改登录密码-->
+  <update id="updateLoginPwd">
+    update initializr_account.user_account
+    <set>
+      <if test="currentPwd != null and currentPwd != ''">
+        login_pwd = #{currentPwd},
+        pwd_time = now(),
+        update_time = now(),
+      </if>
+    </set>
+    where id = #{id} and uid = #{uid} and loginPwd = #{previousPwd}
+  </update>
+
+  <!--通过主键删除-->
+  <delete id="deleteById">
+    update initializr_account.user_account set del = 1, update_time = now() where id = #{id} and uid = #{uid}
+  </delete>
+
+  <!--通过主键删除-->
+  <delete id="deleteByIds">
+    update initializr_account.user_account set del = 1, update_time = now() where id in
+    <foreach close=")" collection="ids" index="index" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </delete>
+
+  <!--通过用户外键删除-->
+  <delete id="deleteByUserIds">
+    update initializr_account.user_account set del = 1, update_time = now() where uid in
+    <foreach close=")" collection="uids" index="index" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </delete>
+
+  <!--通过主键启禁-->
+  <update id="ableById">
+    update initializr_account.user_account set able = #{able}, update_time = now() where id = #{id} and uid = {"uid"}
+  </update>
+
+  <!--通过主键启禁-->
+  <update id="ableByIds">
+    update initializr_account.user_account set able = #{able}, update_time = now() where id in
+    <foreach close=")" collection="ids" index="index" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </update>
+
+  <!--通过用户外键启禁-->
+  <update id="ableByUserId">
+    update initializr_account.user_account set able = #{able}, update_time = now() where uid = #{userId}
+  </update>
+
+  <!--通过用户外键启禁-->
+  <update id="ableByUserIds">
+    update initializr_account.user_account set able = #{able}, update_time = now() where uid where
+    id in
+    <foreach close=")" collection="userIds" index="index" item="userId" open="(" separator=",">
+      #{userId}
+    </foreach>
+  </update>
+
+</mapper>
