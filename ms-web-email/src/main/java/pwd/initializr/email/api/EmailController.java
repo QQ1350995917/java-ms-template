@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pwd.initializr.email.api.vo.EmailInput;
+import pwd.initializr.email.api.vo.SendEmailInput;
 
 /**
  * pwd.initializr.account.api.admin@ms-web-initializr
@@ -36,7 +36,7 @@ public class EmailController extends pwd.initializr.common.web.api.admin.AdminCo
 
 
   @Override
-  public void create(@Valid @NotNull(message = "参数不能为空") EmailInput input) {
+  public void create(@Valid @NotNull(message = "参数不能为空") SendEmailInput input) {
   }
 
   @Override
@@ -93,12 +93,12 @@ public class EmailController extends pwd.initializr.common.web.api.admin.AdminCo
   }
 
   @Override
-  public void updateAccount(@PathVariable("id") Long id, @RequestBody EmailInput input) {
+  public void updateAccount(@PathVariable("id") Long id, @RequestBody SendEmailInput input) {
 
   }
 
   @Override
-  public void updateUser(@PathVariable("uid") Long id, @RequestBody EmailInput input) {
+  public void updateUser(@PathVariable("uid") Long id, @RequestBody SendEmailInput input) {
 
   }
 }

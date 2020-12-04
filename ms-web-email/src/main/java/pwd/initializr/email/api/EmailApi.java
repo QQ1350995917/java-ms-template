@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import pwd.initializr.email.api.vo.EmailInput;
+import pwd.initializr.email.api.vo.SendEmailInput;
 
 /**
  * pwd.initializr.account.api.admin@ms-web-initializr
@@ -43,7 +43,7 @@ public interface EmailApi {
   @ApiOperation(value = "创建管理员用户信息以及账户信息")
   @PostMapping(value = {
       ""}, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  void create(@RequestBody @Valid @NotNull(message = "参数不能为空") EmailInput input);
+  void create(@RequestBody @Valid @NotNull(message = "参数不能为空") SendEmailInput input);
 
   @ApiOperation(value = "删除账户，最后一个可用账户不可被删除")
   @DeleteMapping(value = {"/account"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -117,11 +117,11 @@ public interface EmailApi {
   @ApiOperation(value = "更新账户信息")
   @PutMapping(value = {"/account/{id}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   void updateAccount(@PathVariable("id") @Valid @NotNull(message = "参数不能为空") Long id,
-      @RequestBody @Valid @NotNull(message = "参数不能为空") EmailInput input);
+      @RequestBody @Valid @NotNull(message = "参数不能为空") SendEmailInput input);
 
   @ApiOperation(value = "更新用户信息")
   @PutMapping(value = {"/user/{uid}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   void updateUser(@PathVariable("uid") @Valid @NotNull(message = "参数不能为空") Long id,
-      @RequestBody @Valid @NotNull(message = "参数不能为空") EmailInput input);
+      @RequestBody @Valid @NotNull(message = "参数不能为空") SendEmailInput input);
 
 }

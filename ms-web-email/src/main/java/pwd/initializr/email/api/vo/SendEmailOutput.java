@@ -1,7 +1,6 @@
 package pwd.initializr.email.api.vo;
 
 import io.swagger.annotations.ApiModel;
-import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +10,7 @@ import lombok.ToString;
 /**
  * pwd.initializr.account.api.admin.vo@ms-web-initializr
  *
- * <h1>请求参数：管理员账户参数</h1>
+ * <h1>响应参数：发送邮件参数</h1>
  *
  * date 2020-07-27 16:43
  *
@@ -24,11 +23,8 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-@ApiModel(value = "adminAccountOutput", description = "管理员账户响应参数")
-public class EmailOutput extends EmailInput {
+@ApiModel(value = "sendEmailOutput", description = "发送邮件响应参数")
+public class SendEmailOutput extends SendEmailInput {
 
   private Long id;
-  private Integer able;
-  private Date createTime;
-  private Date updateTime;
 }

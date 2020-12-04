@@ -1,9 +1,8 @@
 package pwd.initializr.account.test.business;
 
 import java.util.LinkedList;
-import pwd.initializr.email.business.EmailClient;
+import pwd.initializr.email.business.EmailClientServiceImpl;
 import pwd.initializr.email.business.bo.Email;
-import pwd.initializr.email.business.bo.EmailBO;
 
 /**
  * pwd.initializr.account.test.business@ms-web-initializr
@@ -18,44 +17,94 @@ import pwd.initializr.email.business.bo.EmailBO;
  */
 public class EmailServiceTestMain {
 
-    public static void main(String[] args) throws Exception {
-        new EmailClient().mail(new Email() {
-            @Override
-            public String getFrom() {
-                return "dingpengwei@eversec.cn";
-            }
+  public static void main(String[] args) throws Exception {
+    new EmailClientServiceImpl().send(new Email() {
+      @Override
+      public String getFrom() {
+        return "dingpengwei@eversec.cn";
+      }
 
-            @Override
-            public String getTo() {
-                return "www.dingpengwei@foxmail.com";
-            }
+      @Override
+      public String getTo() {
+        return "www.dingpengwei@foxmail.com";
+      }
 
-            @Override
-            public String getCc() {
-                return null;
-            }
+      @Override
+      public String getCc() {
+        return null;
+      }
 
-            @Override
-            public String getBcc() {
-                return null;
-            }
+      @Override
+      public String getBcc() {
+        return null;
+      }
 
-            @Override
-            public String getSubject() {
-                return "hello word";
-            }
+      @Override
+      public String getSubject() {
+        return "hello word";
+      }
 
-            @Override
-            public String getHtml() {
-                return "<h1>Hello Word x x</h1>\" + \"<p>显示图片<img src='cid:abcx.jpg'>1.jpg</p>";
-            }
+      @Override
+      public String getHtml() {
+        return "<h1>Hello Word x x</h1>\" + \"<p>显示图片<img src='cid:a.png'>1.jpg</p>";
+      }
 
-            @Override
-            public LinkedList<Attachment> getAttachments() {
-                return null;
-            }
+      @Override
+      public LinkedList<Attachment> getAttachments() {
+        LinkedList<Attachment> attachments = new LinkedList<>();
+        attachments.add(new Attachment() {
+          @Override
+          public String getCid() {
+            return "a";
+          }
+
+          @Override
+          public String getContentType() {
+            return "image/jpeg";
+          }
+
+          @Override
+          public String getUrl() {
+            return "/Users/pwd/Documents/minio/xresources/thumb/351.png";
+          }
+        });
+        attachments.add(new Attachment() {
+          @Override
+          public String getCid() {
+            return "b";
+          }
+
+          @Override
+          public String getContentType() {
+            return "image/jpeg";
+          }
+
+          @Override
+          public String getUrl() {
+            return "/Users/pwd/Documents/minio/xresources/thumb/345.png";
+          }
+        });
+        attachments.add(new Attachment() {
+          @Override
+          public String getCid() {
+            return "c";
+          }
+
+          @Override
+          public String getContentType() {
+            return "image/jpeg";
+          }
+
+          @Override
+          public String getUrl() {
+            return "/Users/pwd/Documents/minio/xresources/thumb/392.png";
+          }
         });
 
-    }
+        return attachments;
+      }
+    });
+
+  }
 
 }
