@@ -61,6 +61,10 @@ public class Snowflake {
     this.machineId = machineId;
   }
 
+  public Snowflake(){
+    this(2,3);
+  }
+
   public static void main(String[] args) {
     Snowflake snowflake = new Snowflake(2, 3);
 

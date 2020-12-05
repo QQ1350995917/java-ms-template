@@ -29,6 +29,11 @@ public class DateTimeUtil {
 
   }
 
+  public static String getCurrent() {
+    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+    return dateFormat.format(new Date());
+  }
+
   public static String getCurrent(String formater) {
     DateFormat dateFormat = new SimpleDateFormat(formater);
     return dateFormat.format(new Date());

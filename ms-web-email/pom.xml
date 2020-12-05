@@ -40,14 +40,14 @@
       <version>0.0.1-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>mysql</groupId>
-      <artifactId>mysql-connector-java</artifactId>
-      <version>5.1.48</version>
+      <groupId>pwd.initializr</groupId>
+      <artifactId>lib-rpc-email</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>com.baomidou</groupId>
-      <artifactId>mybatis-plus-boot-starter</artifactId>
-      <version>3.2.0</version>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-mongodb</artifactId>
+      <version>2.1.6.RELEASE</version>
     </dependency>
   </dependencies>
 

@@ -1,8 +1,10 @@
 package pwd.initializr.email.business;
 
+import java.security.Security;
 import java.util.Properties;
 import javax.mail.Session;
 import javax.mail.Transport;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import pwd.initializr.email.business.bo.Email;
@@ -18,19 +20,31 @@ import pwd.initializr.email.business.bo.Email;
  * @version 1.0.0
  * @since DistributionVersion
  */
-@Service
-public abstract class EmailClientService {
+public abstract class EmailClientAbs {
 
-  private static final String EMAIL_SERVER_HOST = "email.server.host";
-  private static final String EMAIL_SERVER_PASSWORD = "email.server.password";
-  private static final String EMAIL_SERVER_USER = "email.server.user";
-
-  @Value("{email.server.host}")
+  private Boolean debug;
   private String mailServerHost;
-  @Value("{email.server.user}")
+  private String mailServerPort;
+  private String mailServerProtocol;
+  private Boolean mailServerAuth;
   private String mailServerUser;
-  @Value("{email.server.password}")
   private String mailServerPassword;
+
+  protected EmailClientAbs() {
+    super();
+  }
+
+  protected EmailClientAbs(Boolean debug, String mailServerHost, String mailServerPort,
+      String mailServerProtocol, Boolean mailServerAuth, String mailServerUser,
+      String mailServerPassword) {
+    this.debug = debug;
+    this.mailServerHost = mailServerHost;
+    this.mailServerPort = mailServerPort;
+    this.mailServerProtocol = mailServerProtocol;
+    this.mailServerAuth = mailServerAuth;
+    this.mailServerUser = mailServerUser;
+    this.mailServerPassword = mailServerPassword;
+  }
 
   private Session session;
   private Transport transport;
@@ -44,7 +58,7 @@ public abstract class EmailClientService {
    */
   public abstract void send(Email email) throws Exception;
 
-  protected void destoryTransport() throws Exception {
+  protected void destroyTransport() throws Exception {
     if (transport != null && transport.isConnected()) {
       transport.close();
     }
@@ -52,16 +66,12 @@ public abstract class EmailClientService {
 
   protected Transport getTransport() throws Exception {
     if (this.transport == null) {
-      synchronized (EmailClientService.class) {
+      synchronized (EmailClientAbs.class) {
         if (this.transport == null) {
-          Properties env = System.getProperties();
+
           this.transport = getSession().getTransport();
           // 连上邮件服务器
-          this.transport.connect(
-              env.getProperty(EMAIL_SERVER_HOST, mailServerHost),
-              env.getProperty(EMAIL_SERVER_USER, mailServerUser),
-              env.getProperty(EMAIL_SERVER_PASSWORD, mailServerPassword)
-          );
+          this.transport.connect(this.mailServerHost,this.mailServerUser,this.mailServerPassword);
         }
       }
     }
@@ -70,15 +80,18 @@ public abstract class EmailClientService {
 
   protected Session getSession() {
     if (this.session == null) {
-      synchronized (EmailClientService.class) {
+      synchronized (EmailClientAbs.class) {
         if (this.session == null) {
           Properties env = System.getProperties();
           // 1、创建session
           Properties prop = new Properties();
-          prop.setProperty("mail.debug", "true");
-          prop.setProperty("mail.host", env.getProperty(EMAIL_SERVER_HOST, mailServerHost));
-          prop.setProperty("mail.transport.protocol", "smtp");
-          prop.setProperty("mail.smtp.auth", "true");
+          prop.setProperty("mail.debug", this.debug == null ? "false":this.debug.toString());
+          prop.setProperty("mail.host", this.mailServerHost);
+          if (StringUtils.isNotBlank(this.mailServerPort)){
+            prop.setProperty("mail.port", this.mailServerPort);
+          }
+          prop.setProperty("mail.transport.protocol", this.mailServerProtocol);
+          prop.setProperty("mail.smtp.auth", this.mailServerAuth == null ? "false":this.mailServerAuth.toString());
           this.session = Session.getInstance(prop);
         }
       }

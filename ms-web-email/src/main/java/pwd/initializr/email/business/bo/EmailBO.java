@@ -1,5 +1,8 @@
 package pwd.initializr.email.business.bo;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

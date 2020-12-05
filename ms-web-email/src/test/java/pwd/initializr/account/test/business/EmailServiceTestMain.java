@@ -1,8 +1,13 @@
 package pwd.initializr.account.test.business;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.LinkedList;
-import pwd.initializr.email.business.EmailClientServiceImpl;
+import java.util.Properties;
+import pwd.initializr.common.utils.DateTimeUtil;
+import pwd.initializr.email.business.EmailClientDefault;
 import pwd.initializr.email.business.bo.Email;
+import pwd.initializr.email.business.bo.EmailAttachment;
 
 /**
  * pwd.initializr.account.test.business@ms-web-initializr
@@ -16,94 +21,36 @@ import pwd.initializr.email.business.bo.Email;
  * @since DistributionVersion
  */
 public class EmailServiceTestMain {
+  private static final String EMAIL_SERVER_PASSWORD = "email.server.password";
+  private static final String EMAIL_SERVER_USER = "email.server.user";
 
   public static void main(String[] args) throws Exception {
-    new EmailClientServiceImpl().send(new Email() {
-      @Override
-      public String getFrom() {
-        return "dingpengwei@eversec.cn";
-      }
+    Properties env = System.getProperties();
+    // smtp.exmail.qq.com(使用SSL，端口号465)
+    String host = "smtp.exmail.qq.com";
+    String port = "465";
+    String protocol = "smtp";
+    String user = env.getProperty(EMAIL_SERVER_USER, null);
+    String password = env.getProperty(EMAIL_SERVER_PASSWORD, null);
 
-      @Override
-      public String getTo() {
-        return "www.dingpengwei@foxmail.com";
-      }
+    String current = DateTimeUtil.getCurrent();
 
-      @Override
-      public String getCc() {
-        return null;
-      }
+    String subject = "hello word:" + current;
+    String content = "<h1>Hello Word: " + current + " </h1><p>显示图片<img src='cid:a.png'>1.jpg</p>";
 
-      @Override
-      public String getBcc() {
-        return null;
-      }
+    LinkedList<EmailAttachment> attachments = new LinkedList<>();
+    //String file1 = "/Users/pwd/Documents/minio/xresources/thumb/351.png";
+    String file1 = "C:\\Users\\Administrator\\Pictures\\1.jpg";
+    attachments.add(new EmailAttachment("快.jpg","a","image/jpeg",Files.readAllBytes(Paths.get(file1))));
+    //String file2 = "/Users/pwd/Documents/minio/xresources/thumb/345.png";
+    String file2 = "C:\\Users\\Administrator\\Pictures\\2.jpg";
+    attachments.add(new EmailAttachment("必.jpg","b","image/jpeg",Files.readAllBytes(Paths.get(file2))));
+    //String file3 = "/Users/pwd/Documents/minio/xresources/thumb/392.png";
+    String file3 = "C:\\Users\\Administrator\\Pictures\\3.jpg";
+    attachments.add(new EmailAttachment("达.jpg","c","image/jpeg",Files.readAllBytes(Paths.get(file3))));
 
-      @Override
-      public String getSubject() {
-        return "hello word";
-      }
-
-      @Override
-      public String getHtml() {
-        return "<h1>Hello Word x x</h1>\" + \"<p>显示图片<img src='cid:a.png'>1.jpg</p>";
-      }
-
-      @Override
-      public LinkedList<Attachment> getAttachments() {
-        LinkedList<Attachment> attachments = new LinkedList<>();
-        attachments.add(new Attachment() {
-          @Override
-          public String getCid() {
-            return "a";
-          }
-
-          @Override
-          public String getContentType() {
-            return "image/jpeg";
-          }
-
-          @Override
-          public String getUrl() {
-            return "/Users/pwd/Documents/minio/xresources/thumb/351.png";
-          }
-        });
-        attachments.add(new Attachment() {
-          @Override
-          public String getCid() {
-            return "b";
-          }
-
-          @Override
-          public String getContentType() {
-            return "image/jpeg";
-          }
-
-          @Override
-          public String getUrl() {
-            return "/Users/pwd/Documents/minio/xresources/thumb/345.png";
-          }
-        });
-        attachments.add(new Attachment() {
-          @Override
-          public String getCid() {
-            return "c";
-          }
-
-          @Override
-          public String getContentType() {
-            return "image/jpeg";
-          }
-
-          @Override
-          public String getUrl() {
-            return "/Users/pwd/Documents/minio/xresources/thumb/392.png";
-          }
-        });
-
-        return attachments;
-      }
-    });
+    EmailClientDefault.getInstance(true,host,port,protocol,true,user,password)
+      .send(new Email("dingpengwei@eversec.cn","www.dingpengwei@foxmail.com",null,null,subject,content,attachments));
 
   }
 
