@@ -86,10 +86,12 @@ public abstract class EmailClientAbs {
           // 1、创建session
           Properties prop = new Properties();
           prop.setProperty("mail.debug", this.debug == null ? "false":this.debug.toString());
-          prop.setProperty("mail.host", this.mailServerHost);
+          prop.setProperty("mail.smtp.host", this.mailServerHost);
           if (StringUtils.isNotBlank(this.mailServerPort)){
             prop.setProperty("mail.port", this.mailServerPort);
           }
+//          prop.put("mail.smtp.ssl.enable", "true");
+          prop.put("mail.smtp.timeout", "3000");
           prop.setProperty("mail.transport.protocol", this.mailServerProtocol);
           prop.setProperty("mail.smtp.auth", this.mailServerAuth == null ? "false":this.mailServerAuth.toString());
           this.session = Session.getInstance(prop);
