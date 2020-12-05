@@ -7,6 +7,7 @@
 |account|11230| 
 |article|11231| 
 |typeface|11232| 
+|email|11233| 
 |etl|11234| 
 |organization|11238| 
 |search|11239| 

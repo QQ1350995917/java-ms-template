@@ -1,6 +1,5 @@
 package pwd.initializr.email;
 
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
@@ -9,8 +8,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pwd.initializr.common.captcha.CaptchaArithmetic;
-import pwd.initializr.common.captcha.CaptchaHelper;
 
 /**
  * pwd.initializr.account@ms-web-initializr
@@ -28,11 +25,8 @@ import pwd.initializr.common.captcha.CaptchaHelper;
 @EnableDiscoveryClient
 @RestController
 @EnableTransactionManagement
-@ComponentScan(basePackages = {"pwd.initializr.common.web", "pwd.initializr.account"})
-@MapperScan("pwd.initializr.account.persistence")
+@ComponentScan(basePackages = {"pwd.initializr.common.web", "pwd.initializr.email"})
 public class EmailApplication {
-
-  private CaptchaHelper captchaHelper = new CaptchaArithmetic();
 
   public static void main(String[] args) {
     SpringApplication.run(EmailApplication.class, args);
@@ -40,16 +34,16 @@ public class EmailApplication {
 
   @GetMapping(value = "")
   public String index0() {
-    return "this is account 0 index";
+    return "this is email 0 index";
   }
 
   @GetMapping(value = "/")
   public String index1() {
-    return "this is account 1 index";
+    return "this is email 1 index";
   }
 
   @GetMapping(value = "/account")
   public String index2() {
-    return "this is account 2 index";
+    return "this is email 2 index";
   }
 }

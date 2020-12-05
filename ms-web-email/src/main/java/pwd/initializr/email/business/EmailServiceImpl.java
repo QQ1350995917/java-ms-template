@@ -25,19 +25,19 @@ import pwd.initializr.email.persistence.entity.EmailEntity;
 @Service
 @Slf4j
 public class EmailServiceImpl implements EmailService {
-    @Value("{email.debug}")
+    @Value("${email.debug}")
     private Boolean emailDebug;
-    @Value("{email.server.host}")
+    @Value("${email.server.host}")
     private String emailServerHost;
-    @Value("{email.server.port}")
+    @Value("${email.server.port}")
     private String emailServerPort;
-    @Value("{email.server.protocol}")
+    @Value("${email.server.protocol}")
     private String emailServerProtocol;
-    @Value("{email.server.auth}")
+    @Value("${email.server.auth}")
     private Boolean emailServerAuth;
-    @Value("{email.server.user}")
+    @Value("${email.server.user}")
     private String emailServerUser;
-    @Value("{email.server.password}")
+    @Value("${email.server.password}")
     private String emailServerPassword;
 
 

@@ -19,23 +19,23 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  */
 @Configuration
 @EnableSwagger2
-@ComponentScan(basePackages = "pwd.initializr.account.api")
+@ComponentScan(basePackages = "pwd.initializr.email.api")
 public class Swagger2 extends ApiSwagger2 {
 
   @Override
   protected Customer adminApiCustomer() {
-    return new Customer("EmailApi", "EmailApi", "管理接口", "pwd.initializr.account.api.admin");
+    return new Customer("EmailApi", "EmailApi", "管理接口", "pwd.initializr.email.api.admin");
   }
 
   @Override
   protected Customer robotApiCustomer() {
-    return new Customer("RobotApi", "RobotApi", "机器接口", "pwd.initializr.account.api.robot");
+    return new Customer("RobotApi", "RobotApi", "机器接口", "pwd.initializr.email.api.robot");
   }
 
 
   @Override
   protected Customer userApiCustomer() {
-    return new Customer("UserApi", "UserApi", "用户接口", "pwd.initializr.account.api.user");
+    return new Customer("UserApi", "UserApi", "用户接口", "pwd.initializr.email.api.user");
   }
 
   @Override
