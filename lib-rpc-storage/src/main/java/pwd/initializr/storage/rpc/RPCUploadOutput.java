@@ -23,9 +23,8 @@ import lombok.ToString;
 @Getter
 @ToString
 public class RPCUploadOutput {
-  private String bucketName;
-  private String objectName;
+
+  private String id;
   private String url;
   private Long createTime;
-  private Long updateTime;
 }

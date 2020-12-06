@@ -1,12 +1,8 @@
 package pwd.initializr.storage;
 
 import javax.servlet.MultipartConfigElement;
-import org.apache.coyote.http11.AbstractHttp11Protocol;
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.web.embedded.tomcat.TomcatConnectorCustomizer;
-import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
@@ -38,11 +34,27 @@ import pwd.initializr.common.web.api.FullPathNameGenerator;
 @RestController
 @EnableDiscoveryClient
 @ComponentScan(nameGenerator = FullPathNameGenerator.class)
-@MapperScan("pwd.initializr.storage.persistence.dao")
 public class StorageApplication implements WebMvcConfigurer {
 
   public static void main(String[] args) throws Exception {
     SpringApplication.run(StorageApplication.class, args);
+  }
+
+  @Override
+  public void addResourceHandlers(ResourceHandlerRegistry registry) {
+    registry.addResourceHandler("swagger-ui.html")
+        .addResourceLocations("classpath:/META-INF/resources/");
+    registry.addResourceHandler("/webjars/**")
+        .addResourceLocations("classpath:/META-INF/resources/webjars/");
+  }
+
+  @Override
+  public void addViewControllers(ViewControllerRegistry registry) {
+//    registry.addViewController("/").setViewName("login");
+//    registry.addViewController("/login.html").setViewName("login");
+//    registry.addViewController("/websocket.html").setViewName("websocket");
+//    registry.addViewController("/error.html").setViewName("error");
+//    registry.addViewController("/file.html").setViewName("file");
   }
 
   @GetMapping(value = "")
@@ -58,23 +70,6 @@ public class StorageApplication implements WebMvcConfigurer {
   @GetMapping(value = "/account")
   public String index2() {
     return "this is storage 2 index";
-  }
-
-  @Override
-  public void addViewControllers(ViewControllerRegistry registry) {
-//    registry.addViewController("/").setViewName("login");
-//    registry.addViewController("/login.html").setViewName("login");
-//    registry.addViewController("/websocket.html").setViewName("websocket");
-//    registry.addViewController("/error.html").setViewName("error");
-//    registry.addViewController("/file.html").setViewName("file");
-  }
-
-  @Override
-  public void addResourceHandlers(ResourceHandlerRegistry registry) {
-    registry.addResourceHandler("swagger-ui.html")
-        .addResourceLocations("classpath:/META-INF/resources/");
-    registry.addResourceHandler("/webjars/**")
-        .addResourceLocations("classpath:/META-INF/resources/webjars/");
   }
 
   @Bean

@@ -1,7 +1,4 @@
-package pwd.initializr.storage.persistence.mapper;
-
-import org.apache.ibatis.annotations.Mapper;
-import pwd.initializr.storage.persistence.dao.StorageEntity;
+package pwd.initializr.storage.persistence.dao;
 
 /**
  * pwd.initializr.storage.persistence.entity@ms-web-initializr
@@ -14,8 +11,6 @@ import pwd.initializr.storage.persistence.dao.StorageEntity;
  * @version 1.0.0
  * @since DistributionVersion
  */
-@Mapper
 public interface StorageMapper {
 
-  void insertFile(StorageEntity storageEntity);
 }

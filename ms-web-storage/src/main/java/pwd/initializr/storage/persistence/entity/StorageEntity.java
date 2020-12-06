@@ -1,11 +1,10 @@
-package pwd.initializr.storage.persistence.dao;
+package pwd.initializr.storage.persistence.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import net.bytebuddy.description.field.FieldDescription.InGenericShape;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -26,16 +25,20 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @Setter
 @Getter
 @ToString
-@Document(collection = "file")
+@Document(collection = "storage")
 public class StorageEntity {
 
   @Id
   @Field("id")
   private String id;
-  @Field("uid")
-  private Long userId;
+  @Field("app")
+  private String app;
   @Field("fn")
-  private String filename;
+  private String fileName;
+  @Field("fs")
+  private String fileSuffix;
+  @Field("ft")
+  private String fileType;
   @Field("bn")
   private String bucketName;
   @Field("on")

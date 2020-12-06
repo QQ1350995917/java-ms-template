@@ -3,25 +3,26 @@ package pwd.initializr.storage.api.user;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.io.InputStream;
-import java.io.OutputStream;
+import java.util.LinkedList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.servlet.ModelAndView;
 import pwd.initializr.common.web.api.user.UserController;
 import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.storage.api.user.vo.DownloadInput;
-import pwd.initializr.storage.api.user.vo.ListInput;
-import pwd.initializr.storage.business.QueryService;
-import pwd.initializr.storage.business.StorageServiceImpl;
+import pwd.initializr.storage.business.StorageService;
 import pwd.initializr.storage.business.bo.StorageBO;
+import pwd.initializr.storage.rpc.RPCUploadOutput;
 
 /**
  * pwd.initializr.storage.api.user@ms-web-initializr
@@ -40,18 +41,36 @@ import pwd.initializr.storage.business.bo.StorageBO;
     description = "文件上传API"
 )
 @Controller(value = "uploadApiByUser")
-@RequestMapping(value = "/api/file")
+@RequestMapping(value = "/index")
 public class FileController extends UserController implements FileApi {
 
   @Value("${spring.minio.bucket_name}")
   private String bucketName;
   @Autowired
-  private QueryService queryService;
-  @Autowired
-  private StorageServiceImpl storageService;
+  private StorageService storageService;
+
+  @ApiOperation(value = "文件列表")
+  @GetMapping(value = {"/{index}/{size}"})
+  public void list(@PathVariable("index") int pageIndex, @PathVariable("size") Integer pageSize) {
+    PageableQueryResult<StorageBO> storagePageableQuery = storageService
+        .listFile(pageIndex, pageSize);
+    List<StorageBO> elements = storagePageableQuery.getElements();
+    List<RPCUploadOutput> resultElements = new LinkedList<>();
+    elements.forEach(element -> {
+      RPCUploadOutput rpcUploadOutput = new RPCUploadOutput();
+      BeanUtils.copyProperties(element,rpcUploadOutput);
+      resultElements.add(rpcUploadOutput);
+    });
+    PageableQueryResult<RPCUploadOutput> result = new PageableQueryResult<>();
+    BeanUtils.copyProperties(storagePageableQuery,result);
+    result.setElements(resultElements);
+    super.outputData(result);
+  }
 
   @PostMapping("/upload/batch")
-  public String handleFileUpload(HttpServletRequest request, Model model) {
+  @Override
+  public ModelAndView upload(HttpServletRequest request) {
+    ModelAndView modelAndView = new ModelAndView();
     StringBuffer resultMessage = new StringBuffer();
     List<MultipartFile> files = ((MultipartHttpServletRequest) request).getFiles("file");
     MultipartFile file;
@@ -60,8 +79,7 @@ public class FileController extends UserController implements FileApi {
       if (!file.isEmpty()) {
         String name = file.getOriginalFilename();
         try {
-          InputStream inputStream = file.getInputStream();
-          storageService.uploadFile(bucketName, name, inputStream);
+          upload0(file);
           resultMessage.append("第 " + i + " 个文件[" + name + "]上传成功");
         } catch (Exception e) {
           resultMessage.append("第 " + i + " 个文件[" + name + "]上传失败");
@@ -71,88 +89,76 @@ public class FileController extends UserController implements FileApi {
         resultMessage.append("第 " + i + " 个文件为空");
       }
     }
-    model.addAttribute("message", resultMessage.toString());
-    return "upload";
+    modelAndView.addObject("message", resultMessage.toString());
+    modelAndView.setViewName("upload");
+    return modelAndView;
   }
 
   @ApiOperation(value = "文件上传")
   @PostMapping(value = {"/upload"})
-  public String upload(MultipartFile file, Model model) {
+  @Override
+  public ModelAndView upload(MultipartFile file) {
+    ModelAndView modelAndView = new ModelAndView();
     String name = file.getOriginalFilename();
     try {
-      InputStream inputStream = file.getInputStream();
-      storageService.uploadFile(bucketName, name, inputStream);
-      model.addAttribute("message", "单文件上传[" + name + "]成功");
+      upload0(file);
+      modelAndView.addObject("message", "单文件上传[" + name + "]成功");
     } catch (Exception e) {
+      modelAndView.addObject("message", "单文件上传[" + name + "]失败");
       e.printStackTrace();
-      model.addAttribute("message", "单文件上传[" + name + "]失败");
     } finally {
-      return "upload";
+      modelAndView.setViewName("upload");
     }
+    return modelAndView;
   }
-
-  @ApiOperation(value = "文件上传页面")
-  @GetMapping(value = {"/upload"})
-  public String upload(Model model) {
-    model.addAttribute("message", "");
-    return "upload";
-  }
-
-  @Override
-  public void upload(HttpServletRequest request) {
-
-  }
-
-  @Override
-  public void upload(MultipartFile file) {
-
-  }
-
 
   @ApiOperation(value = "文件下载")
   @GetMapping(value = {"/download"})
   @Override
   public void download(DownloadInput input) {
-    StorageBO oneByUrl = queryService.findOneByUrl(input.getUrl());
+    StorageBO oneByUrl = storageService.findOneByUrl(input.getUrl());
     getResponse().reset();
     getResponse().setContentType("application/octet-stream");
-    getResponse().addHeader("Content-Disposition", "attachment;fileName=" + oneByUrl.getFilename());
-    OutputStream outputStream = null;
-    InputStream inputStream = null;
-    try {
-      outputStream = getResponse().getOutputStream();
-      inputStream = queryService.getObject(oneByUrl);
-      int len = 0;
-      byte[] buffer = new byte[1024];
-      while ((len = inputStream.read(buffer)) > 0) {
-        outputStream.write(buffer, 0, len);
-      }
-      outputStream.flush();
+    getResponse().addHeader("Content-Disposition", "attachment;fileName=" + oneByUrl.getFileName() + "." + oneByUrl.getFileSuffix());
+    try (InputStream inputStream = storageService.getObject(oneByUrl)) {
+      this.outputAttachmentFile(inputStream);
     } catch (Exception e) {
       e.printStackTrace();
-    } finally {
-      if (inputStream != null) {
-        try {
-          inputStream.close();
-        } catch (Exception e) {
-          throw new RuntimeException(e);
-        }
-      }
-      if (outputStream != null) {
-        try {
-          outputStream.close();
-        } catch (Exception e) {
-          e.printStackTrace();
-        }
-      }
     }
   }
 
-  @ApiOperation(value = "文件列表")
-  @GetMapping(value = {"/list"})
+  @ApiOperation(value = "文件列表页面")
+  @GetMapping(value = {""})
   @Override
-  public void list(ListInput input) {
-    PageableQueryResult<StorageBO> storagePageableQueryResult = queryService.listFile();
-    super.outputData(storagePageableQueryResult);
+  public ModelAndView list() {
+    ModelAndView modelAndView = new ModelAndView();
+    modelAndView.setViewName("index");
+    modelAndView.addObject("attributeName", "");
+    return modelAndView;
+  }
+
+  private void upload0(MultipartFile file) throws Exception {
+    String originalFilename = file.getOriginalFilename();
+    String fileName = originalFilename.substring(0,originalFilename.lastIndexOf("."));
+    String suffix = originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
+    String contentType = file.getContentType();
+    try (InputStream inputStream = file.getInputStream()) {
+      StorageBO storageBO = new StorageBO();
+      storageBO.setApp(bucketName);
+      storageBO.setFileName(fileName);
+      storageBO.setFileSuffix(suffix);
+      storageBO.setFileType(contentType);
+      storageBO.setBucketName(bucketName);
+      storageService.uploadFile(storageBO, inputStream);
+    }
+  }
+
+  @ApiOperation(value = "文件上传页面")
+  @GetMapping(value = {"/upload"})
+  public ModelAndView upload() {
+    ModelAndView modelAndView = new ModelAndView();
+    modelAndView.setViewName("upload");
+    modelAndView.addObject("attributeName", "");
+    return modelAndView;
   }
 }

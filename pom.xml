@@ -19,7 +19,7 @@
     <module>lib-common-web</module>
     <!--<module>lib-etl-core</module>-->
     <!--<module>lib-etl-core-plugin</module>-->
-    <!--<module>lib-rpc-storage</module>-->
+    <module>lib-rpc-storage</module>
     <!--<module>lib-rpc-account</module>-->
     <module>lib-rpc-email</module>
     <!--<module>lib-rpc-monitor</module>-->
@@ -38,7 +38,7 @@
     <!--<module>ms-web-registry</module>-->
     <!--<module>ms-web-schedule</module>-->
     <!--<module>ms-web-search</module>-->
-    <!--<module>ms-web-storage</module>-->
+    <module>ms-web-storage</module>
     <!--<module>ms-web-typeface</module>-->
     <!--<module>project-generator</module>-->
     <!--<module>project-generator-test</module>-->

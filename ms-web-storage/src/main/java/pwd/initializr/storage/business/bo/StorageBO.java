@@ -1,10 +1,10 @@
 package pwd.initializr.storage.business.bo;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import pwd.initializr.storage.persistence.entity.StorageEntity;
 
 /**
  * pwd.initializr.storage.business.bo@ms-web-initializr
@@ -21,31 +21,6 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class StorageBO {
+public class StorageBO extends StorageEntity {
 
-  private String id;
-  private Long userId;
-  private String filename;
-  private String bucketName;
-  private String objectName;
-  private String url;
-  private String path;
-  private Integer status;
-  private Long createTime;
-  private Long updateTime;
-
-  public StorageBO(String id, Long userId, String filename, String bucketName,
-      String objectName, String url, String path, Integer status, Long createTime,
-      Long updateTime) {
-    this.id = id;
-    this.userId = userId;
-    this.filename = filename;
-    this.bucketName = bucketName;
-    this.objectName = objectName;
-    this.url = url;
-    this.path = path;
-    this.status = status;
-    this.createTime = createTime;
-    this.updateTime = updateTime;
-  }
 }

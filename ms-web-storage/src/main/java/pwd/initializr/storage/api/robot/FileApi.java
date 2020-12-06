@@ -1,8 +1,7 @@
 package pwd.initializr.storage.api.robot;
 
-import java.util.List;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,9 +18,12 @@ import org.springframework.web.multipart.MultipartFile;
  */
 public interface FileApi {
 
-  void delete(@PathVariable("appName") String appName,
-      @PathVariable("bucketName") String bucketName, @RequestBody List<String> objectNames);
 
-  void upload(@PathVariable("appName") String appName,
-      @PathVariable("bucketName") String bucketName, @RequestPart("file") MultipartFile file);
+  void download(@RequestParam("url") String url);
+
+  void upload(
+      @PathVariable("appName") String appName,
+      @PathVariable("bucketName") String bucketName,
+      @PathVariable("fileName") String fileName,
+      @RequestPart("file") MultipartFile file);
 }

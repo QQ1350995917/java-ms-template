@@ -1,30 +1,20 @@
 package pwd.initializr.storage.api.robot;
 
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import java.io.InputStream;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Controller;
-import org.springframework.util.AntPathMatcher;
-import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.HandlerMapping;
 import pwd.initializr.common.web.api.robot.RobotController;
-import pwd.initializr.storage.api.robot.vo.FileDelErrorVO;
-import pwd.initializr.storage.business.StorageServiceImpl;
-import pwd.initializr.storage.business.bo.ObjectDelErrorBO;
+import pwd.initializr.storage.business.StorageService;
 import pwd.initializr.storage.business.bo.StorageBO;
 import pwd.initializr.storage.rpc.RPCUploadOutput;
 
@@ -44,47 +34,48 @@ import pwd.initializr.storage.rpc.RPCUploadOutput;
     value = "文件Api",
     description = "文件API"
 )
-@Controller(value = "fileApiByRobot")
+@RestController(value = "fileApiByRobot")
 @RequestMapping(value = "/api/robot/file")
 public class FileController extends RobotController implements FileApi {
 
   @Autowired
-  private StorageServiceImpl storageService;
+  private StorageService storageService;
 
-  @DeleteMapping(value = "/{appName}/{bucketName}", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
-  public void delete(@PathVariable("appName") String appName,
-      @PathVariable("bucketName") String bucketName, @RequestBody List<String> objectNames) {
-    try {
-      List<ObjectDelErrorBO> objBO = storageService.delete(bucketName, objectNames);
-
-      List<FileDelErrorVO> collect = objBO.stream().flatMap(
-          obj -> Stream.of(new FileDelErrorVO(obj.getCode(), obj.getMessage(), obj.getBucketName(),
-              obj.getObjectName(), obj.getResource(), obj.getRequestId(), obj.getHostId(),
-              obj.getErrorCode()))).collect(Collectors.toList());
-
-      outputData(collect);
+  public void download(@RequestParam("url") String url) {
+    StorageBO oneByUrl = storageService.findOneByUrl(url);
+    getResponse().reset();
+    getResponse().setContentType("application/octet-stream");
+    getResponse().addHeader("Content-Disposition",
+        "attachment;fileName=" + oneByUrl.getFileName() + "." + oneByUrl.getFileSuffix());
+    try (InputStream inputStream = storageService.getObject(oneByUrl)) {
+      this.outputAttachmentFile(inputStream);
     } catch (Exception e) {
       e.printStackTrace();
-      outputException(500, e.getMessage());
     }
   }
 
-  @ApiResponses({
-      @ApiResponse(code = 200, message = "ok", response = RPCUploadOutput.class)
-  })
-  @PostMapping(value = "/{appName}/{bucketName}/**", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @PostMapping(value = "/{appName}/{bucketName}/{fileName}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
-  public void upload(@PathVariable("appName") String appName,
-      @PathVariable("bucketName") String bucketName, @RequestPart("file") MultipartFile file) {
-    String objectName = getObjectName(this.requestLocal.get());
+  public void upload(
+      @PathVariable("appName") String appName,
+      @PathVariable("bucketName") String bucketName,
+      @PathVariable("fileName") String fileName,
+      @RequestPart("file") MultipartFile file) {
     String contentType = file.getContentType();
-    try {
-      InputStream inputStream = file.getInputStream();
-      StorageBO storageBO = storageService
-          .uploadFile(bucketName, objectName, inputStream, contentType);
+    String name = file.getOriginalFilename();
+    String suffix = name.substring(name.lastIndexOf(".") + 1);
+    try (InputStream inputStream = file.getInputStream()) {
+      StorageBO storageBO = new StorageBO();
+      storageBO.setApp(appName);
+      storageBO.setFileName(fileName);
+      storageBO.setFileSuffix(suffix);
+      storageBO.setFileType(contentType);
+      storageBO.setBucketName(bucketName);
+      StorageBO result = storageService.uploadFile(storageBO, inputStream);
       RPCUploadOutput RPCUploadOutput = new RPCUploadOutput();
-      BeanUtils.copyProperties(storageBO, RPCUploadOutput);
+      BeanUtils.copyProperties(result, RPCUploadOutput);
       outputData(RPCUploadOutput);
     } catch (Exception e) {
       e.printStackTrace();
@@ -92,14 +83,4 @@ public class FileController extends RobotController implements FileApi {
     }
   }
 
-
-  private String getObjectName(HttpServletRequest httpServletRequest) {
-    // TODO 测试通配符性能
-    String path = (String) httpServletRequest
-        .getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
-    String bestMatchPattern = (String) httpServletRequest
-        .getAttribute(HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE);
-    String objectName = new AntPathMatcher().extractPathWithinPattern(bestMatchPattern, path);
-    return objectName;
-  }
 }

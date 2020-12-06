@@ -81,7 +81,7 @@ public class Snowflake {
   /**
    * 产生下一个ID
    */
-  public synchronized long nextId() {
+  public synchronized Long nextId() {
     long currStamp = getNewStamp();
     if (currStamp < lastStamp) {
       throw new RuntimeException("Clock moved backwards.  Refusing to generate id");

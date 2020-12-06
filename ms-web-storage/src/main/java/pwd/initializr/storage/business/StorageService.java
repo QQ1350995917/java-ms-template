@@ -2,6 +2,7 @@ package pwd.initializr.storage.business;
 
 import java.io.InputStream;
 import java.util.List;
+import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.storage.business.bo.ObjectDelErrorBO;
 import pwd.initializr.storage.business.bo.StorageBO;
 
@@ -22,18 +23,13 @@ public interface StorageService {
 
   List<ObjectDelErrorBO> delete(String bucketName, List<String> objectNames) throws Exception;
 
-  StorageBO uploadFile(String bucketName, String objectName, InputStream inputStream,
-      String contentType)
-      throws Exception;
+  StorageBO uploadFile(StorageBO bo, InputStream inputStream) throws Exception;
 
-  StorageBO uploadFile(String bucketName, String objectName, InputStream inputStream)
-      throws Exception;
+  StorageBO uploadText(StorageBO bo, String text) throws Exception;
 
-  StorageBO uploadHtml(String bucketName, String objectName, String html) throws Exception;
+  PageableQueryResult<StorageBO> listFile(Integer pageIndex,Integer pageSize);
 
-  StorageBO uploadImage(String bucketName, String objectName, InputStream inputStream)
-      throws Exception;
+  StorageBO findOneByUrl(String url);
 
-  StorageBO uploadVideo(String bucketName, String objectName, InputStream inputStream)
-      throws Exception;
+  InputStream getObject(StorageBO storageBO) throws Exception;
 }

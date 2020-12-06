@@ -1,7 +1,9 @@
 package pwd.initializr.storage.api.user;
 
 import javax.servlet.http.HttpServletRequest;
+import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 import pwd.initializr.storage.api.user.vo.DownloadInput;
 import pwd.initializr.storage.api.user.vo.ListInput;
 
@@ -19,12 +21,12 @@ import pwd.initializr.storage.api.user.vo.ListInput;
 public interface FileApi {
 
 
-  void upload(HttpServletRequest request);
+  ModelAndView upload(HttpServletRequest request);
 
-  void upload(MultipartFile file);
+  ModelAndView upload(MultipartFile file);
 
   void download(DownloadInput input);
 
-  void list(ListInput input);
+  ModelAndView list();
 
 }
