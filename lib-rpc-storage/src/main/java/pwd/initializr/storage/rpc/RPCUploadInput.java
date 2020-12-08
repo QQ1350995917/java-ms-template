@@ -2,13 +2,12 @@ package pwd.initializr.storage.rpc;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.multipart.MultipartFile;
 
 /**
  * pwd.initializr.storage.api.robot.vo@ms-web-initializr
@@ -26,12 +25,13 @@ import org.springframework.web.multipart.MultipartFile;
 @Setter
 @Getter
 @ToString
-public class RPCUploadInput {
+@ApiModel
+public class RPCUploadInput implements Serializable {
 
-  @ApiModelProperty(name = "appName", value = "appName", required = true, example = "appName")
-  private String appName;
-  @ApiModelProperty(name = "bucketName", value = "bucketName", required = true, example = "bucketName")
+  @ApiModelProperty(name = "app", value = "服务名称", required = true, example = "app")
+  private String app;
+  @ApiModelProperty(name = "bucketName", value = "文件桶名称", required = true, example = "bucketName")
   private String bucketName;
-  @ApiModelProperty(name = "objectName", value = "objectName", required = true, example = "objectName")
-  private String objectName;
+  @ApiModelProperty(name = "fileName", value = "文件名称，该名称将会作为下载的文件名", required = true, example = "objectName")
+  private String fileName;
 }

@@ -29,6 +29,8 @@ public interface StorageService {
 
   PageableQueryResult<StorageBO> listFile(Integer pageIndex,Integer pageSize);
 
+  StorageBO findOneById(String id);
+
   StorageBO findOneByUrl(String url);
 
   InputStream getObject(StorageBO storageBO) throws Exception;

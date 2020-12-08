@@ -102,6 +102,15 @@ public class StorageServiceImpl implements StorageService {
   }
 
   @Override
+  public StorageBO findOneById(String id) {
+    Query query = new Query(Criteria.where("id").is(id));
+    StorageEntity one = mongoTemplate.findOne(query, StorageEntity.class);
+    StorageBO storageBO = new StorageBO();
+    BeanUtils.copyProperties(one, storageBO);
+    return storageBO;
+  }
+
+  @Override
   public StorageBO findOneByUrl(String url) {
     Query query = new Query(Criteria.where("url").is(url));
     StorageEntity one = mongoTemplate.findOne(query, StorageEntity.class);

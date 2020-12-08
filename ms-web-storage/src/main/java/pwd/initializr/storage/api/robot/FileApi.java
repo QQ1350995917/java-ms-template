@@ -22,7 +22,7 @@ public interface FileApi {
   void download(@RequestParam("url") String url);
 
   void upload(
-      @PathVariable("appName") String appName,
+      @PathVariable("app") String app,
       @PathVariable("bucketName") String bucketName,
       @PathVariable("fileName") String fileName,
       @RequestPart("file") MultipartFile file);

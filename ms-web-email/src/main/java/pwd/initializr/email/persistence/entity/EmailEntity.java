@@ -78,7 +78,7 @@ public class EmailEntity implements Serializable {
    * 附件内容
    */
   @Field("attachments")
-  private List<Map<String,String>> attachments;
+  private List<EmailAttachmentEntity> attachments;
 
   /**
    * 扩展内容

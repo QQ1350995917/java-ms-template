@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import pwd.initializr.common.web.api.robot.RobotController;
+import pwd.initializr.storage.api.robot.vo.UploadOutput;
 import pwd.initializr.storage.business.StorageService;
 import pwd.initializr.storage.business.bo.StorageBO;
-import pwd.initializr.storage.rpc.RPCUploadOutput;
 
 /**
  * pwd.initializr.storage.api.robot@ms-web-initializr
@@ -74,7 +74,7 @@ public class FileController extends RobotController implements FileApi {
       storageBO.setFileType(contentType);
       storageBO.setBucketName(bucketName);
       StorageBO result = storageService.uploadFile(storageBO, inputStream);
-      RPCUploadOutput RPCUploadOutput = new RPCUploadOutput();
+      UploadOutput RPCUploadOutput = new UploadOutput();
       BeanUtils.copyProperties(result, RPCUploadOutput);
       outputData(RPCUploadOutput);
     } catch (Exception e) {

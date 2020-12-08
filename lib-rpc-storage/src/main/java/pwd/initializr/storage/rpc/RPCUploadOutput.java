@@ -1,5 +1,8 @@
 package pwd.initializr.storage.rpc;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,9 +25,13 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class RPCUploadOutput {
+@ApiModel
+public class RPCUploadOutput implements Serializable {
 
+  @ApiModelProperty(name = "id", value = "文件ID", required = true, example = "id")
   private String id;
+  @ApiModelProperty(name = "url", value = "文件访问url", required = true, example = "url")
   private String url;
+  @ApiModelProperty(name = "createTime", value = "文件存储时间", required = true, example = "createTime")
   private Long createTime;
 }
