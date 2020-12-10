@@ -61,6 +61,7 @@ public abstract class EmailClientAbs {
   protected void destroyTransport() throws Exception {
     if (transport != null && transport.isConnected()) {
       transport.close();
+      transport = null;
     }
   }
 

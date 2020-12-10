@@ -100,5 +100,9 @@ public class EmailClientDefault extends EmailClientAbs {
     message.saveChanges();
     // 发送邮件
     this.getTransport().sendMessage(message, message.getAllRecipients());
+    this.destroyTransport();
   }
+
+
+
 }

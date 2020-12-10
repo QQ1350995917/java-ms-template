@@ -23,6 +23,6 @@ public interface EmailService {
      * @author DingPengwei[www.dingpengwei@foxmail.com]
      * @since DistributionVersion
      */
-    Long sendEmail(EmailBO bo);
+    EmailBO sendEmail(EmailBO bo);
 
 }

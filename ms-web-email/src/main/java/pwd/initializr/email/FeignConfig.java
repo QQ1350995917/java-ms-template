@@ -2,6 +2,7 @@ package pwd.initializr.email;
 
 import feign.Feign;
 import feign.Logger;
+import feign.Logger.Level;
 import java.util.concurrent.TimeUnit;
 import okhttp3.ConnectionPool;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
@@ -47,6 +48,6 @@ public class FeignConfig {
 
   @Bean
   Logger.Level feignLevel() {
-    return Logger.Level.FULL;
+    return Level.FULL;
   }
 }

@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -23,15 +24,16 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @Setter
 @Getter
 @ToString
-@Document(collection = "article")
+@Document(collection = "email")
 public class EmailEntity implements Serializable {
 
   private static final long serialVersionUID = 864136679056019403L;
   /**
    * 主键
    */
-  @Field("_id")
-  private Long id;
+  @Id
+  @Field("id")
+  private String id;
   /**
    * 发邮件的服务
    */
@@ -78,7 +80,7 @@ public class EmailEntity implements Serializable {
    * 附件内容
    */
   @Field("attachments")
-  private List<EmailAttachmentEntity> attachments;
+  private List<? extends EmailAttachmentEntity> attachments;
 
   /**
    * 扩展内容

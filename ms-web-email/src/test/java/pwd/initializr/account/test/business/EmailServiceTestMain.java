@@ -50,7 +50,7 @@ public class EmailServiceTestMain {
     attachments.add(new EmailAttachment("达.jpg","c","image/jpeg",Files.readAllBytes(Paths.get(file3))));
 
     EmailClientDefault.getInstance(true,host,port,protocol,true,user,password)
-      .send(new Email("dingpengwei@eversec.cn","www.dingpengwei@foxmail.com",null,null,subject,content,attachments));
+      .send(new Email("eversec@eversec.cn","www.dingpengwei@foxmail.com",null,null,subject,content,attachments));
 
   }
 

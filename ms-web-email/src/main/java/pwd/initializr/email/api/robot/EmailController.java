@@ -1,6 +1,8 @@
 package pwd.initializr.email.api.robot;
 
 import io.swagger.annotations.Api;
+import java.util.LinkedList;
+import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
@@ -9,8 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.email.api.robot.vo.SendEmailInput;
+import pwd.initializr.email.api.robot.vo.SendEmailOutput;
 import pwd.initializr.email.business.EmailService;
+import pwd.initializr.email.business.bo.EmailAttachmentBO;
 import pwd.initializr.email.business.bo.EmailBO;
+import pwd.initializr.email.rpc.RPCEmailAttachmentVO;
+import pwd.initializr.email.rpc.RPCEmailContentVO;
+import pwd.initializr.email.rpc.RPCEmailHeaderVO;
 
 /**
  * pwd.initializr.account.api.admin@ms-web-initializr
@@ -34,19 +41,41 @@ import pwd.initializr.email.business.bo.EmailBO;
 public class EmailController extends pwd.initializr.common.web.api.admin.AdminController implements
     EmailApi {
 
-  @Autowired
-  private EmailService emailService;
+    @Autowired
+    private EmailService emailService;
 
-  @Override
-  public void create(@Valid @NotNull(message = "参数不能为空") SendEmailInput input) {
-    EmailBO emailBO = new EmailBO();
-    BeanUtils.copyProperties(input,emailBO);
-    Long id = emailService.sendEmail(emailBO);
-    if (id == null) {
-      this.outputException(500,"请检查邮箱地址并重试");
-    } else {
-      this.outputData(200,id);
+    @Override
+    public void create(@Valid @NotNull(message = "参数不能为空") SendEmailInput input) {
+        EmailBO emailBO = new EmailBO();
+        BeanUtils.copyProperties(input, emailBO);
+        RPCEmailHeaderVO header = input.getHeader();
+        BeanUtils.copyProperties(header, emailBO);
+        RPCEmailContentVO content = input.getContent();
+        BeanUtils.copyProperties(content, emailBO);
+
+        List<RPCEmailAttachmentVO> attachments = input.getAttachments();
+        if (attachments != null && !attachments.isEmpty()) {
+            LinkedList<EmailAttachmentBO> emailAttachmentBOS = new LinkedList<>();
+            attachments.forEach(attachment -> {
+                EmailAttachmentBO emailAttachmentBO = new EmailAttachmentBO();
+                BeanUtils.copyProperties(attachment, emailAttachmentBO);
+                emailAttachmentBOS.add(emailAttachmentBO);
+            });
+            emailBO.setAttachments(emailAttachmentBOS);
+        }
+
+        // fixme: 附件有bug
+        emailBO.setAttachments(null);
+
+        EmailBO result = emailService.sendEmail(emailBO);
+
+        if (result == null) {
+            this.outputException(500, "请联系客服人员");
+        } else {
+            SendEmailOutput sendEmailOutput = new SendEmailOutput();
+            BeanUtils.copyProperties(result, sendEmailOutput);
+            this.outputData(200, sendEmailOutput);
+        }
     }
-  }
 
 }

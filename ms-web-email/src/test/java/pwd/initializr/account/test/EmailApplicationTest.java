@@ -1,8 +1,6 @@
 package pwd.initializr.account.test;
 
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import pwd.initializr.common.mw.redis.RedisClient;
 
 /**
  * pwd.initializr.account@ms-web-initializr
@@ -20,16 +18,12 @@ import pwd.initializr.common.mw.redis.RedisClient;
 public class EmailApplicationTest {
 
 
-  @Autowired
-  private RedisClient redisClient;
+    @Test
+    public void contextLoads() {
+    }
 
-  @Test
-  public void contextLoads() {
-  }
-
-  @Test
-  public void testRedisClient() {
-    redisClient.set("pwd", "xxx", 0);
-  }
+    @Test
+    public void testRedisClient() {
+    }
 
 }

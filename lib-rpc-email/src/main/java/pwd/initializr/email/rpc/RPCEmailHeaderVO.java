@@ -28,8 +28,6 @@ public class RPCEmailHeaderVO implements Serializable {
 
     private static final long serialVersionUID = -1659590069838613585L;
 
-    @ApiModelProperty(name = "from", value = "from", required = true, dataType = "java.lang.String")
-    private String from;
     @ApiModelProperty(name = "to", value = "to", required = true, dataType = "java.lang.String")
     private String to;
     @ApiModelProperty(name = "cc", value = "cc", required = true, dataType = "java.lang.String")

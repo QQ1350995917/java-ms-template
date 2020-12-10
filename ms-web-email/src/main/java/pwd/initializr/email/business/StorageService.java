@@ -21,7 +21,7 @@ import pwd.initializr.email.FeignConfig;
  * @version 1.0.0
  * @since DistributionVersion
  */
-@FeignClient(value = "storage", configuration = FeignConfig.class, fallback = StorageServiceFallbackImpl.class)
+@FeignClient(url = "http://192.168.105.26:11270", configuration = FeignConfig.class, fallback = StorageServiceFallbackImpl.class)
 public interface StorageService {
 
     @GetMapping(value = "/api/robot/file", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})

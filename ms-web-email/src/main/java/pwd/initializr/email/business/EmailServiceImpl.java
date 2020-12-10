@@ -3,6 +3,7 @@ package pwd.initializr.email.business;
 import feign.Response;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
@@ -55,19 +56,19 @@ public class EmailServiceImpl implements EmailService {
 
 
     @Override
-    public Long sendEmail(EmailBO bo) {
+    public EmailBO sendEmail(EmailBO bo) {
         // 初始化邮件发送对象
         Email email = new Email();
+        bo.setFrom(emailServerUser);
         BeanUtils.copyProperties(bo, email);
 
         // 构建邮件发送附件对象
-        LinkedList<EmailAttachment> emailAttachments = new LinkedList<>();
-        email.setAttachments(emailAttachments);
-        List<EmailAttachmentEntity> attachments = bo.getAttachments();
+        List<? extends EmailAttachmentEntity> attachments = bo.getAttachments();
         if (attachments != null && !attachments.isEmpty()) {
-            attachments.forEach(attachment -> {
+            LinkedList<EmailAttachment> emailAttachments = new LinkedList<>();
+            for (EmailAttachmentEntity attachment : attachments) {
                 EmailAttachment emailAttachment = new EmailAttachment();
-                BeanUtils.copyProperties(attachment,emailAttachment);
+                BeanUtils.copyProperties(attachment, emailAttachment);
                 // Fixme: 重新设计，记录每个附件的读取状态，以便于追踪
                 Response response = storageService.download(attachment.getUrl());
                 if (response != null && response.status() == 200) {
@@ -81,7 +82,9 @@ public class EmailServiceImpl implements EmailService {
                     }
                 }
                 emailAttachments.add(emailAttachment);
-            });
+            }
+
+            email.setAttachments(emailAttachments);
         }
 
         // 构建邮件发送数据存储对象
@@ -93,13 +96,18 @@ public class EmailServiceImpl implements EmailService {
             getEmailClient().send(email);
             emailEntity.setSent(1);
         } catch (Exception e) {
-            emailEntity.setSent(1);
+            emailEntity.setSent(0);
             log.error(e.getMessage());
         }
 
+        emailEntity.setDel(0);
+        emailEntity.setCreateTime(new Date());
+        emailEntity.setUpdateTime(new Date());
         // 数据存储
         EmailEntity save = mongoTemplate.save(emailEntity);
-        return save.getId();
+        EmailBO emailBO = new EmailBO();
+        BeanUtils.copyProperties(save,emailBO);
+        return emailBO;
     }
 
 

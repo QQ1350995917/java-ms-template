@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import pwd.initializr.email.rpc.RPCEmailOutput;
 
 /**
  * pwd.initializr.account.api.admin.vo@ms-web-initializr
@@ -19,12 +20,10 @@ import lombok.ToString;
  * @since DistributionVersion
  */
 @AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
 @ToString
 @ApiModel(value = "sendEmailOutput", description = "发送邮件响应参数")
-public class SendEmailOutput extends SendEmailInput {
+public class SendEmailOutput extends RPCEmailOutput {
 
-  private Long id;
 }

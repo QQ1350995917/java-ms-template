@@ -23,16 +23,16 @@ import pwd.initializr.email.api.robot.vo.SendEmailInput;
  * @since DistributionVersion
  */
 @Api(
-    tags = "管理员管理",
-    value = "adminManageApi",
-    description = "[创建管理员/账号，人员/账号列表，人员/账号启/禁用，人员/账号删除]"
+    tags = "邮件管理API",
+    value = "emailPosterApi",
+    description = "[邮件创建[发送]]"
 )
 @RestController(value = "robotEmailApi")
 @RequestMapping(value = "/api/robot/email")
 public interface EmailApi {
 
-  @ApiOperation(value = "发送邮件")
-  @PostMapping(value = {
-      ""}, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  void create(@RequestBody @Valid @NotNull(message = "参数不能为空") SendEmailInput input);
+    @ApiOperation(value = "发送邮件")
+    @PostMapping(value = {
+        ""}, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    void create(@RequestBody @Valid @NotNull(message = "参数不能为空") SendEmailInput input);
 }
