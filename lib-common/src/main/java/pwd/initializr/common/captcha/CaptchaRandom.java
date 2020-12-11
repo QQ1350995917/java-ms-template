@@ -67,6 +67,7 @@ public class CaptchaRandom extends CaptchaHelper {
       presentedStringBuilder.append(code);
     }
     this.presented = presentedStringBuilder.toString();
+    this.expected = presentedStringBuilder.toString();
   }
 
   @Override

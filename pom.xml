@@ -19,19 +19,19 @@
     <module>lib-common-web</module>
     <!--<module>lib-etl-core</module>-->
     <!--<module>lib-etl-core-plugin</module>-->
-    <module>lib-rpc-storage</module>
+    <!--<module>lib-rpc-storage</module>-->
     <!--<module>lib-rpc-account</module>-->
-    <module>lib-rpc-email</module>
+    <!--<module>lib-rpc-email</module>-->
     <!--<module>lib-rpc-monitor</module>-->
     <!--<module>lib-rpc-search</module>-->
     <!--<module>ms-web-access</module>-->
     <!--<module>ms-web-account</module>-->
     <!--<module>ms-web-book</module>-->
     <!--<module>ms-web-configure</module>-->
-    <module>ms-web-email</module>
+    <!--<module>ms-web-email</module>-->
     <!--<module>ms-web-etl</module>-->
     <!--<module>ms-web-etl-plugin</module>-->
-    <!--<module>ms-web-gateway</module>-->
+    <module>ms-web-gateway</module>
     <!--<module>ms-web-logger</module>-->
     <!--<module>ms-web-monitor</module>-->
     <!--<module>ms-web-organization</module>-->
@@ -78,6 +78,7 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
       <version>2.1.8.RELEASE</version>
+      <scope>optional</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>

@@ -5,7 +5,6 @@ import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
-import org.springframework.util.Assert;
 
 /**
  * pwd.initializr.common.utils@ms-web-initializr
@@ -21,8 +20,6 @@ import org.springframework.util.Assert;
 public class Cryptographer {
 
   public static String decrypt(String cipherText, String salt) {
-    Assert.notNull(cipherText, "cipherText should not be empty");
-    Assert.notNull(salt, "salt should not be empty");
 //    KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
 //    keyGenerator.init(128, new SecureRandom(salt.getBytes()));
 //    SecretKey secretKey = keyGenerator.generateKey();
@@ -36,8 +33,6 @@ public class Cryptographer {
   }
 
   public static String encrypt(String clearText, String salt) {
-    Assert.notNull(clearText, "clearText should not be empty");
-    Assert.notNull(salt, "salt should not be empty");
 //    KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
 //    keyGenerator.init(128, new SecureRandom(salt.getBytes()));
 //    SecretKey secretKey = keyGenerator.generateKey();
