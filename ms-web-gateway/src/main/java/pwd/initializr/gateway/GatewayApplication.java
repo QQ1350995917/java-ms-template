@@ -1,12 +1,15 @@
 package pwd.initializr.gateway;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.listener.ChannelTopic;
+import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import pwd.initializr.gateway.limiter.IPKeyResolver;
 
 /**
  * pwd.initializr.gateway@ms-web-initializr
@@ -19,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @version 1.0.0
  * @since DistributionVersion
  */
+@Configuration
 @SpringBootApplication
 @EnableDiscoveryClient
 @RestController
@@ -28,9 +32,6 @@ public class GatewayApplication {
     SpringApplication.run(GatewayApplication.class, args);
   }
 
-//  @Autowired
-//  DynamicGatewayService dynamicGatewayService;
-
   @GetMapping(value = "")
   public String index0() {
     return "this is gateway 0 index";
@@ -38,7 +39,6 @@ public class GatewayApplication {
 
   @GetMapping(value = "/")
   public String index1() {
-//    dynamicGatewayService.save();
     return "this is gateway 1 index";
   }
 
@@ -46,4 +46,8 @@ public class GatewayApplication {
   public String index2() {
     return "this is gateway 2 index";
   }
+
+
+
+
 }
