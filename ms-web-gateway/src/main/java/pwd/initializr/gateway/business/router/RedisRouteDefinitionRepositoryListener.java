@@ -1,4 +1,4 @@
-package pwd.initializr.gateway.router;
+package pwd.initializr.gateway.business.router;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.connection.Message;
@@ -6,7 +6,7 @@ import org.springframework.data.redis.connection.MessageListener;
 import org.springframework.stereotype.Component;
 
 /**
- * pwd.initializr.gateway.router@ms-web-initializr
+ * pwd.initializr.gateway.business.router@ms-web-initializr
  *
  * <h1>TODO what you want to do?</h1>
  *

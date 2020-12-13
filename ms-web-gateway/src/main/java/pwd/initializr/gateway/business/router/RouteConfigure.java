@@ -1,4 +1,4 @@
-package pwd.initializr.gateway.router;
+package pwd.initializr.gateway.business.router;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.listener.ChannelTopic;
@@ -6,7 +6,7 @@ import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
 /**
- * pwd.initializr.gateway.router@ms-web-initializr
+ * pwd.initializr.gateway.business.router@ms-web-initializr
  *
  * <h1>TODO what you want to do?</h1>
  *

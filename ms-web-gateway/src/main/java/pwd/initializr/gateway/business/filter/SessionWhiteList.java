@@ -1,4 +1,4 @@
-package pwd.initializr.gateway.list;
+package pwd.initializr.gateway.business.filter;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
  * @since DistributionVersion
  */
 @Component
-public class KeyValueList extends HashMap implements InitializingBean {
+public class SessionWhiteList extends HashMap implements InitializingBean {
 
   private static final Map<String, String> withoutTokenUrl = new HashMap<>();
 

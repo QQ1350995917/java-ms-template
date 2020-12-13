@@ -1,4 +1,4 @@
-package pwd.initializr.gateway.filter;
+package pwd.initializr.gateway.business.filter;
 
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
@@ -7,7 +7,7 @@ import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 /**
- * pwd.initializr.gateway.filter@ms-web-initializr
+ * pwd.initializr.gateway.business.filter@ms-web-initializr
  *
  * <h1>TODO what you want to do?</h1>
  *

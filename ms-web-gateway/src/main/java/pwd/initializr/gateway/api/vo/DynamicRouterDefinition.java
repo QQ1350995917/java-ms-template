@@ -1,4 +1,4 @@
-package pwd.initializr.gateway.router.vo;
+package pwd.initializr.gateway.api.vo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,9 +7,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.cloud.gateway.filter.FilterDefinition;
+import org.springframework.cloud.gateway.handler.predicate.PredicateDefinition;
 
 /**
- * pwd.initializr.gateway.router@ms-web-initializr
+ * pwd.initializr.gateway.business.router@ms-web-initializr
  *
  * <h1>TODO what you want to do?</h1>
  *

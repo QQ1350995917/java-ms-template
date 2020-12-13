@@ -1,4 +1,4 @@
-package pwd.initializr.gateway.router.vo;
+package pwd.initializr.gateway.api.vo;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -9,7 +9,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * pwd.initializr.gateway.router.vo@ms-web-initializr
+ * pwd.initializr.gateway.api.vo@ms-web-initializr
  *
  * <h1>TODO what you want to do?</h1>
  *

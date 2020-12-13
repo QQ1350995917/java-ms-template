@@ -1,12 +1,9 @@
-package pwd.initializr.gateway.limiter;
+package pwd.initializr.gateway.business.limiter;
 
-import org.springframework.cloud.gateway.filter.ratelimit.KeyResolver;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import reactor.core.publisher.Mono;
 
 /**
- * pwd.initializr.gateway.limiter@ms-web-initializr
+ * pwd.initializr.gateway.business.limiter@ms-web-initializr
  *
  * <h1>TODO what you want to do?</h1>
  *

@@ -1,4 +1,4 @@
-package pwd.initializr.gateway.filter;
+package pwd.initializr.gateway.business.filter;
 
 import java.nio.charset.Charset;
 import org.springframework.beans.factory.annotation.Value;

@@ -1,20 +1,22 @@
 package pwd.initializr.gateway;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.listener.ChannelTopic;
-import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pwd.initializr.gateway.limiter.IPKeyResolver;
+import springfox.documentation.oas.annotations.EnableOpenApi;
 
 /**
  * pwd.initializr.gateway@ms-web-initializr
  *
  * <h1>TODO what you want to do?</h1>
+ *
+ *
+ * https://www.cnblogs.com/qianwei/p/10127700.html
+ * https://www.cnblogs.com/crazymakercircle/p/11704077.html
+ * https://cloud.spring.io/spring-cloud-static/spring-cloud-gateway/2.1.0.RC2/single/spring-cloud-gateway.html#gateway-how-it-works
  *
  * date 2019-09-15 17:52
  *
@@ -22,10 +24,11 @@ import pwd.initializr.gateway.limiter.IPKeyResolver;
  * @version 1.0.0
  * @since DistributionVersion
  */
-@Configuration
+@RestController
 @SpringBootApplication
 @EnableDiscoveryClient
-@RestController
+@EnableOpenApi
+@MapperScan("pwd.initializr.gateway.persistence")
 public class GatewayApplication {
 
   public static void main(String[] args) {
@@ -42,12 +45,8 @@ public class GatewayApplication {
     return "this is gateway 1 index";
   }
 
-  @GetMapping(value = "/gateway")
+  @GetMapping(value = "/account")
   public String index2() {
     return "this is gateway 2 index";
   }
-
-
-
-
 }

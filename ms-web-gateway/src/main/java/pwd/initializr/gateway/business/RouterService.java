@@ -1,4 +1,4 @@
-package pwd.initializr.gateway.router;
+package pwd.initializr.gateway.business;
 
 import java.net.URI;
 import java.util.Arrays;
@@ -30,7 +30,7 @@ import reactor.core.publisher.Mono;
  * https://my.oschina.net/tongyufu/blog/1844573
  */
 @Service
-public class DynamicRouterService implements ApplicationEventPublisherAware {
+public class RouterService implements ApplicationEventPublisherAware {
   @Autowired
   private RouteDefinitionWriter routeDefinitionWriter;
   private ApplicationEventPublisher applicationEventPublisher;
