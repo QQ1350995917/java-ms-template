@@ -5,22 +5,19 @@ import java.util.List;
 import java.util.Set;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.beans.BeanUtils;
-import pwd.initializr.email.business.bo.EmailContentBO;
-import pwd.initializr.email.persistence.entity.EmailContentEntity;
-import pwd.initializr.email.persistence.entity.EmailEntity;
+import pwd.initializr.email.persistence.entity.EmailExtendEntity;
 import pwd.initializr.common.web.persistence.entity.ScopeEntity;
 import pwd.initializr.common.web.persistence.entity.SortEntity;
 
 /**
- * <h2>email数据表操作</h2>
+ * <h2>email_extend数据表操作</h2>
  * date 2020-12-14 16:13
  *
  * @author Automatic[www.dingpengwei@foxmail.com]
  * @since 0.0.1-SNAPSHOT
  */
 @Mapper
-public interface EmailDao {
+public interface EmailExtendDao {
 
   /**
    * <h2>通过主键启用/禁用数据</h2>
@@ -87,7 +84,7 @@ public interface EmailDao {
    * @author Automatic[www.dingpengwei@foxmail.com]
    * @since 0.0.1-SNAPSHOT
    */
-  Integer insert(@Param("entity") EmailEntity entity);
+  Integer insert(@Param("entity") EmailExtendEntity entity);
 
   /**
    * <h2>新增数据（批量新增）</h2>
@@ -98,7 +95,7 @@ public interface EmailDao {
    * @author Automatic[www.dingpengwei@foxmail.com]
    * @since 0.0.1-SNAPSHOT
    */
-  Integer insertByBatch(@Param("entities") List<EmailEntity> entities);
+  Integer insertByBatch(@Param("entities") List<EmailExtendEntity> entities);
 
   /**
    * <h2>新增或者替换数据</h2>
@@ -109,7 +106,7 @@ public interface EmailDao {
    * @author Automatic[www.dingpengwei@foxmail.com]
    * @since 0.0.1-SNAPSHOT
    */
-  Integer insertOrReplace(@Param("entity") EmailEntity entity);
+  Integer insertOrReplace(@Param("entity") EmailExtendEntity entity);
 
   /**
    * <h2>新增或者替换数据（批量新增或者替换）</h2>
@@ -120,7 +117,7 @@ public interface EmailDao {
    * @author Automatic[www.dingpengwei@foxmail.com]
    * @since 0.0.1-SNAPSHOT
    */
-  Integer insertOrReplaceByBatch(@Param("entities") List<EmailEntity> entities);
+  Integer insertOrReplaceByBatch(@Param("entities") List<EmailExtendEntity> entities);
 
   /**
    * <h2>在指定的条件下查询数据</h2>
@@ -134,32 +131,21 @@ public interface EmailDao {
    * @author Automatic[www.dingpengwei@foxmail.com]
    * @since 0.0.1-SNAPSHOT
    */
-  List<EmailEntity> queryByCondition(
+  List<EmailExtendEntity> queryByCondition(
       @Param("scopes") LinkedHashSet<? extends ScopeEntity> scopes,
       @Param("sorts") LinkedHashSet<? extends SortEntity> sorts,
       @Param("offset") Long offset, @Param("limit") Long limit);
-
-  /**
-   * <h2>在同步条件条查询尚未发送的数据</h2>
-   * date 2020-12-14 16:13
-   *
-   * @param limit 查询条数
-   * @return 对象列表
-   * @author Automatic[www.dingpengwei@foxmail.com]
-   * @since 0.0.1-SNAPSHOT
-   */
-  List<EmailEntity> queryBySynchronizationForSender(@Param("limit") Long limit);
 
   /**
    * <h2>根据主键进行查询</h2>
    * date 2020-12-14 16:13
    *
    * @param id 主键
-   * @return EmailEntity
+   * @return EmailExtendEntity
    * @author Automatic[www.dingpengwei@foxmail.com]
    * @since 0.0.1-SNAPSHOT
    */
-  EmailEntity queryById(@Param("id") Long id);
+  EmailExtendEntity queryById(@Param("id") Long id);
 
 
   /**
@@ -171,17 +157,5 @@ public interface EmailDao {
    * @author Automatic[www.dingpengwei@foxmail.com]
    * @since 0.0.1-SNAPSHOT
    */
-  Integer updateById(@Param("entity") EmailEntity entity);
-
-  /**
-   * <h2>通过主键更新数据</h2>
-   * date 2020-12-14 16:13
-   *
-   * @param ids 实例对象
-   * @param sent 实例对象
-   * @return java.lang.Integer 影响行数
-   * @author Automatic[www.dingpengwei@foxmail.com]
-   * @since 0.0.1-SNAPSHOT
-   */
-  Integer updateSentStatusByBatch(@Param("ids") Set<Long> ids,@Param("sent")Integer sent);
+  Integer updateById(@Param("entity") EmailExtendEntity entity);
 }

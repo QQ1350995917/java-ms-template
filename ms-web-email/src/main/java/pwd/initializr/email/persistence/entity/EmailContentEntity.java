@@ -9,7 +9,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * <h2>email数据表实体类</h2>
+ * <h2>email_content数据表实体类</h2>
  * date 2020-12-14 16:13
  *
  * @author Automatic[www.dingpengwei@foxmail.com]
@@ -20,29 +20,24 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class EmailEntity implements Serializable {
+public class EmailContentEntity implements Serializable {
 
   private static final long serialVersionUID = 1L;
   /**
     * 主键
-    * 主键
+    * email表外键，同时作为主键
     */
-  private Long id;
+  private Long emailId;
   /**
     * 
-    * 发送邮件的服务名
+    * 邮件标题
     */
-  private String app;
+  private String subject;
   /**
     * 
-    * 邮件发送状态，0：未发送；1：发送中；2：发送成功；3：发送失败
+    * 邮件内容
     */
-  private Integer sent;
-  /**
-    * 
-    * 数据删除状态，0：未删除；1：已删除
-    */
-  private Integer del;
+  private String content;
   /**
     * 
     * 创建时间
@@ -60,7 +55,7 @@ public class EmailEntity implements Serializable {
     if (obj == null) {
       return false;
     }
-    if (!(obj instanceof EmailEntity)) {
+    if (!(obj instanceof EmailContentEntity)) {
       return false;
     }
     return super.equals(obj);

@@ -18,6 +18,6 @@ import pwd.initializr.email.EmailApplication;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {EmailApplication.class})
-public class EmailClientAbsServiceTest {
+public class EmailClientServiceServiceTest {
 
 }

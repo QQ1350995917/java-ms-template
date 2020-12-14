@@ -1,6 +1,5 @@
-package pwd.initializr.email.business.bo;
+package pwd.initializr.common.email;
 
-import java.util.LinkedList;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +11,7 @@ import lombok.ToString;
  *
  * <h1>TODO what you want to do?</h1>
  *
- * date 2020-12-04 16:04
+ * date 2020-12-05 15:32
  *
  * @author DingPengwei[dingpengwei@foxmail.com]
  * @version 1.0.0
@@ -23,14 +22,9 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class Email {
-
-    private String from;
-    private String to;
-    private String cc;
-    private String bcc;
-    private String subject;
-    private String content;
-    LinkedList<EmailAttachment> attachments;
-
+public class EmailAttachment {
+    private String fileName;
+    private String cid;
+    private String contentType;
+    private byte[] bytes;
 }

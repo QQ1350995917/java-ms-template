@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pwd.initializr.email.persistence.dao.EmailContentDao">
+
+  <resultMap id="EmailContentMap" type="pwd.initializr.email.persistence.entity.EmailContentEntity">
+    <result column="email_id" jdbcType="BIGINT" property="emailId"/>
+    <result column="subject" jdbcType="TEXT" property="subject"/>
+    <result column="content" jdbcType="LONGTEXT" property="content"/>
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+  </resultMap>
+
+  <!--根据主键查询查询-->
+  <select id="queryById" resultMap="EmailContentMap">
+    SELECT
+      `email_id`,
+      `subject`,
+      `content`,
+      `create_time`,
+      `update_time`
+    FROM
+      email_content
+    WHERE
+      id = #{id}
+  </select>
+
+  <!--查询指定行数据-->
+  <select id="countByCondition" resultType="java.lang.Long">
+    SELECT COUNT(*) FROM email_content
+    <include refid="pwd.initializr.common.web.persistence.entity.ScopeEntity.entityQueryScope"></include>
+  </select>
+
+  <!--通过实体作为筛选条件查询-->
+  <select id="queryByCondition" resultMap="EmailContentMap">
+    SELECT
+      `email_id`,
+      `subject`,
+      `content`,
+      `create_time`,
+      `update_time`
+    FROM
+      email_content
+    <include refid="pwd.initializr.common.web.persistence.entity.ScopeEntity.entityQueryScope"></include>
+    <include refid="pwd.initializr.common.web.persistence.entity.SortEntity.entityQuerySort"></include>
+    LIMIT
+      #{offset}, #{limit}
+  </select>
+
+  <!--新增所有列-->
+  <insert id="insert" keyProperty="id" useGeneratedKeys="true" parameterType="pwd.initializr.email.persistence.entity.EmailContentEntity">
+    INSERT INTO email_content
+      (
+        `email_id`,
+        `subject`,
+        `content`,
+        `create_time`,
+        `update_time`
+      )
+    VALUES
+      (
+        #{entity.emailId},
+        #{entity.subject},
+        #{entity.content},
+        #{entity.createTime},
+        #{entity.updateTime}
+      )
+  </insert>
+
+  <!--新增所有列（批量新增）-->
+  <insert id="insertByBatch" keyProperty="id" useGeneratedKeys="true" parameterType="pwd.initializr.email.persistence.entity.EmailContentEntity">
+    INSERT INTO email_content
+    (
+        `email_id`,
+        `subject`,
+        `content`,
+        `create_time`,
+        `update_time`
+    )
+    VALUES
+    <foreach collection="entities" item="entity" separator=",">
+    (
+        #{entity.emailId},
+        #{entity.subject},
+        #{entity.content},
+        #{entity.createTime},
+        #{entity.updateTime}
+    )
+    </foreach>
+  </insert>
+
+  <!--新增或者替换所有列-->
+  <insert id="insertOrReplace" keyProperty="id" useGeneratedKeys="true" parameterType="pwd.initializr.email.persistence.entity.EmailContentEntity">
+    REPLACE INTO email_content
+    (
+        `email_id`,
+        `subject`,
+        `content`,
+        `create_time`,
+        `update_time`
+    )
+    VALUES
+    (
+        #{entity.emailId},
+        #{entity.subject},
+        #{entity.content},
+        #{entity.createTime},
+        #{entity.updateTime}
+    )
+  </insert>
+
+  <!--新增或者替换所有列（批量新增或者替换）-->
+  <insert id="insertOrReplaceByBatch" keyProperty="id" useGeneratedKeys="true" parameterType="pwd.initializr.email.persistence.entity.EmailContentEntity">
+    REPLACE INTO email_content
+    (
+        `email_id`,
+        `subject`,
+        `content`,
+        `create_time`,
+        `update_time`
+    )
+    VALUES
+    <foreach collection="entities" item="entity" separator=",">
+      (
+        #{entity.emailId},
+        #{entity.subject},
+        #{entity.content},
+        #{entity.createTime},
+        #{entity.updateTime}
+      )
+    </foreach>
+  </insert>
+
+  <!--通过主键修改数据-->
+  <update id="updateById" parameterType="pwd.initializr.email.persistence.entity.EmailContentEntity">
+    UPDATE email_content
+    <set>
+      <if test="entity.emailId != null and entity.emailId != ''">
+        `email_id` = #{entity.emailId},
+      </if>
+      <if test="entity.subject != null and entity.subject != ''">
+        `subject` = #{entity.subject},
+      </if>
+      <if test="entity.content != null and entity.content != ''">
+        `content` = #{entity.content},
+      </if>
+      <if test="entity.createTime != null and entity.createTime != ''">
+        `create_time` = #{entity.createTime},
+      </if>
+      <if test="entity.updateTime != null and entity.updateTime != ''">
+        `update_time` = #{entity.updateTime},
+      </if>
+    </set>
+    WHERE
+      id = #{entity.id}
+  </update>
+
+  <!--通过主键删除-->
+  <update id="deleteById">
+    UPDATE email_content
+    SET
+      del = 1,
+      update_time = now()
+    WHERE
+      id = #{id}
+  </update>
+
+  <!--通过主键批量删除-->
+  <update id="deleteByIds">
+    UPDATE email_content
+    SET
+      del = 1,
+      update_time = now()
+    WHERE
+      id in
+    <foreach close=")" collection="ids" index="index" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </update>
+
+  <!--通过主键启禁-->
+  <update id="ableById">
+    UPDATE email_content
+    SET
+      able = #{able},
+      update_time = now()
+    WHERE
+      id = #{id}
+  </update>
+
+  <!--通过主键批量启禁-->
+  <update id="ableByIds">
+    UPDATE email_content
+    SET
+      able = #{able},
+      update_time = now()
+    WHERE
+      id in
+    <foreach close=")" collection="ids" index="index" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </update>
+
+</mapper>

@@ -5,9 +5,6 @@ import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.Properties;
 import pwd.initializr.common.utils.DateTimeUtil;
-import pwd.initializr.email.business.EmailClientDefault;
-import pwd.initializr.email.business.bo.Email;
-import pwd.initializr.email.business.bo.EmailAttachment;
 
 /**
  * pwd.initializr.account.test.business@ms-web-initializr
@@ -49,7 +46,7 @@ public class EmailServiceTestMain {
     String file3 = "C:\\Users\\Administrator\\Pictures\\3.jpg";
     attachments.add(new EmailAttachment("达.jpg","c","image/jpeg",Files.readAllBytes(Paths.get(file3))));
 
-    EmailClientDefault.getInstance(true,host,port,protocol,true,user,password)
+    EmailClientServiceImpl.getInstance(true,host,port,protocol,true,user,password)
       .send(new Email("eversec@eversec.cn","www.dingpengwei@foxmail.com",null,null,subject,content,attachments));
 
   }

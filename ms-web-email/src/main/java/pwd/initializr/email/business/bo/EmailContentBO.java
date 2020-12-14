@@ -4,10 +4,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import pwd.initializr.email.persistence.entity.EmailAttachmentEntity;
+import pwd.initializr.email.persistence.entity.EmailContentEntity;
 
 /**
- * <h2>服务层逻辑对象封装：EmailAttachmentEntity信息</h2>
+ * <h2>服务层逻辑对象封装：EmailContentEntity信息</h2>
  * date 2020-12-14 15:55
  *
  * @author Automatic[www.dingpengwei@foxmail.com]
@@ -17,6 +17,6 @@ import pwd.initializr.email.persistence.entity.EmailAttachmentEntity;
 @Setter
 @ToString
 @NoArgsConstructor
-public class EmailAttachmentBO extends EmailAttachmentEntity {
+public class EmailContentBO extends EmailContentEntity {
 
 }

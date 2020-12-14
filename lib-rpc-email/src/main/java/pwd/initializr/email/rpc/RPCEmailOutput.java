@@ -1,8 +1,10 @@
 package pwd.initializr.email.rpc;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import java.util.Date;
+import javax.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,10 +27,13 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
+@ApiModel("发送邮件响应参数")
 public class RPCEmailOutput implements Serializable {
 
     @ApiModelProperty(name = "id", value = "邮件ID", required = true, dataType = "java.lang.String")
-    String id;
+    @NotBlank(message = "id不能为空")
+    private String id;
     @ApiModelProperty(name = "createTime", value = "发送时间", required = true, dataType = "java.util.Date")
-    Date createTime;
+    @NotBlank(message = "创建时间不能为空")
+    private Date createTime;
 }

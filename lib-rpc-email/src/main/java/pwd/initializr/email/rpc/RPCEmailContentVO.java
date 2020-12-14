@@ -1,8 +1,9 @@
 package pwd.initializr.email.rpc;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
-import java.util.List;
+import javax.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,13 +26,17 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
+@ApiModel("发送邮件的内容参数")
 public class RPCEmailContentVO implements Serializable {
 
     private static final long serialVersionUID = -1659590069838613585L;
 
     @ApiModelProperty(name = "subject", value = "subject", required = true, dataType = "java.lang.String")
+    @NotBlank(message = "标题不能为空")
     private String subject;
+
     @ApiModelProperty(name = "content", value = "content", required = true, dataType = "java.lang.String")
+    @NotBlank(message = "主题内容不能为空")
     private String content;
 
 }
