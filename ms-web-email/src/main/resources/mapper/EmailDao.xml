@@ -58,11 +58,11 @@
     email
     WHERE
     `sent` = 0
-    FOR UPDATE
     ORDER BY
     `id` ASC
     LIMIT
     #{limit}
+    FOR UPDATE
   </select>
 
   <!--新增所有列-->
@@ -161,9 +161,6 @@
   <update id="updateById" parameterType="pwd.initializr.email.persistence.entity.EmailEntity">
     UPDATE email
     <set>
-      <if test="entity.id != null and entity.id != ''">
-        `id` = #{entity.id},
-      </if>
       <if test="entity.app != null and entity.app != ''">
         `app` = #{entity.app},
       </if>
@@ -176,7 +173,7 @@
       <if test="entity.createTime != null and entity.createTime != ''">
         `create_time` = #{entity.createTime},
       </if>
-      <if test="entity.updateTime != null and entity.updateTime != ''">
+      <if test="entity.updateTime != null ">
         `update_time` = #{entity.updateTime},
       </if>
     </set>

@@ -146,6 +146,21 @@ public class EmailBoxServiceImpl implements EmailBoxService {
   }
 
   @Override
+  public List<EmailBoxBO> queryByEmailId(Long emailId) {
+    List<EmailBoxEntity> emailBoxEntities = this.dao.queryByEmailId(emailId);
+    if (emailBoxEntities == null) {
+      return null;
+    }
+    LinkedList<EmailBoxBO> emailBoxBOS = new LinkedList<>();
+    emailBoxEntities.forEach(entity -> {
+      EmailBoxBO resultItem = new EmailBoxBO();
+      BeanUtils.copyProperties(entity, resultItem);
+      emailBoxBOS.add(resultItem);
+    });
+    return emailBoxBOS;
+  }
+
+  @Override
   public Integer updateById(EmailBoxBO bo){
     EmailBoxEntity entity = new EmailBoxEntity();
     BeanUtils.copyProperties(bo, entity);

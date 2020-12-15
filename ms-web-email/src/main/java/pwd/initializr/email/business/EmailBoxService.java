@@ -147,6 +147,17 @@ public interface EmailBoxService {
   EmailBoxBO queryById(Long id);
 
   /**
+   * <h2>根据邮件ID查询</h2>
+   * date 2020-12-15 14:56
+   *
+   * @param emailId 邮件ID
+   * @return pwd.initializr.email.business.bo.EmailBoxBO
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  List<EmailBoxBO> queryByEmailId(Long emailId);
+
+  /**
    * <h2>根据ID更新数据</h2>
    * date 2020-12-14 15:55
    *

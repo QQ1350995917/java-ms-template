@@ -129,6 +129,17 @@ public class EmailContentServiceImpl implements EmailContentService {
   }
 
   @Override
+  public EmailContentBO queryByEmailId(Long emailId) {
+    EmailContentEntity entity = this.dao.queryByEmailId(emailId);
+    if (entity == null) {
+      return null;
+    }
+    EmailContentBO bo = new EmailContentBO();
+    BeanUtils.copyProperties(entity, bo);
+    return bo;
+  }
+
+  @Override
   public Integer updateById(EmailContentBO bo){
     EmailContentEntity entity = new EmailContentEntity();
     BeanUtils.copyProperties(bo, entity);

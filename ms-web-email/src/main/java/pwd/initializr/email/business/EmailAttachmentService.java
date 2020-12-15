@@ -147,6 +147,17 @@ public interface EmailAttachmentService {
   EmailAttachmentBO queryById(Long id);
 
   /**
+   * <h2>通过emailId查询数据</h2>
+   * date 2020-12-15 15:10
+   *
+   * @param emailId emailID
+   * @return pwd.initializr.email.business.bo.EmailAttachmentBO
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  List<EmailAttachmentBO> queryByEmailId(Long emailId);
+
+  /**
    * <h2>根据ID更新数据</h2>
    * date 2020-12-14 15:55
    *

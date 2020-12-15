@@ -41,10 +41,6 @@ public class EmailClient {
     private Session session;
     private Transport transport;
 
-    public EmailClient() {
-        super();
-    }
-
     public EmailClient(Boolean debug, String mailServerHost, String mailServerPort,
         String mailServerProtocol, Boolean mailServerAuth, String mailServerUser,
         String mailServerPassword) {

@@ -147,6 +147,16 @@ public interface EmailAttachmentDao {
    */
   EmailAttachmentEntity queryById(@Param("id") Long id);
 
+  /**
+   * <h2>根据Email ID查询</h2>
+   * date 2020-12-15 15:00
+   *
+   * @param emailId
+   * @return pwd.initializr.email.persistence.entity.EmailBoxEntity
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  List<EmailAttachmentEntity> queryByEmailId(@Param("emailId") Long emailId);
 
   /**
    * <h2>通过主键更新数据</h2>

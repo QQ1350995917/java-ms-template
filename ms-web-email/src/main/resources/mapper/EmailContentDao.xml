@@ -5,8 +5,8 @@
 
   <resultMap id="EmailContentMap" type="pwd.initializr.email.persistence.entity.EmailContentEntity">
     <result column="email_id" jdbcType="BIGINT" property="emailId"/>
-    <result column="subject" jdbcType="TEXT" property="subject"/>
-    <result column="content" jdbcType="LONGTEXT" property="content"/>
+    <result column="subject" jdbcType="LONGVARCHAR" property="subject"/>
+    <result column="content" jdbcType="LONGVARCHAR" property="content"/>
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
   </resultMap>
@@ -22,7 +22,21 @@
     FROM
       email_content
     WHERE
-      id = #{id}
+      `email_id` = #{id}
+  </select>
+
+  <!--根据外键查询查询-->
+  <select id="queryByEmailId" resultMap="EmailContentMap">
+    SELECT
+      `email_id`,
+      `subject`,
+      `content`,
+      `create_time`,
+      `update_time`
+    FROM
+      email_content
+    WHERE
+      `email_id` = #{emailId}
   </select>
 
   <!--查询指定行数据-->

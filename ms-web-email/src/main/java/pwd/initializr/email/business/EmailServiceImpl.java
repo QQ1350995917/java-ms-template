@@ -49,7 +49,7 @@ public class EmailServiceImpl implements EmailService {
     }
 
     @Override
-    public void insert(EmailBO bo) {
+    public EmailBO insert(EmailBO bo) {
         EmailEntity entity = new EmailEntity();
         BeanUtils.copyProperties(bo, entity);
         entity.setSent(EmailSendType.WAITING.getType());
@@ -57,6 +57,10 @@ public class EmailServiceImpl implements EmailService {
         entity.setCreateTime(new Date());
         entity.setUpdateTime(new Date());
         this.dao.insert(entity);
+
+        EmailBO emailBO = new EmailBO();
+        BeanUtils.copyProperties(entity,emailBO);
+        return emailBO;
     }
 
     @Override
@@ -152,6 +156,7 @@ public class EmailServiceImpl implements EmailService {
     public Integer updateById(EmailBO bo){
         EmailEntity entity = new EmailEntity();
         BeanUtils.copyProperties(bo, entity);
+        entity.setUpdateTime(new Date());
         return this.dao.updateById(entity);
     }
 

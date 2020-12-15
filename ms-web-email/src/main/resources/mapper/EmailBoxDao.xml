@@ -27,6 +27,21 @@
       id = #{id}
   </select>
 
+  <!--根据外键查询查询-->
+  <select id="queryByEmailId" resultMap="EmailBoxMap">
+    SELECT
+      `id`,
+      `email_id`,
+      `type`,
+      `mailbox`,
+      `create_time`,
+      `update_time`
+    FROM
+      email_box
+    WHERE
+      `email_id` = #{emailId}
+  </select>
+
   <!--查询指定行数据-->
   <select id="countByCondition" resultType="java.lang.Long">
     SELECT COUNT(*) FROM email_box

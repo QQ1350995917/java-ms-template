@@ -135,6 +135,17 @@ public interface EmailContentService {
   EmailContentBO queryById(Long id);
 
   /**
+   * <h2>根据emailID进行查询</h2>
+   * date 2020-12-15 15:09
+   *
+   * @param email
+   * @return pwd.initializr.email.business.bo.EmailContentBO
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  EmailContentBO queryByEmailId(Long email);
+
+  /**
    * <h2>根据ID更新数据</h2>
    * date 2020-12-14 15:55
    *

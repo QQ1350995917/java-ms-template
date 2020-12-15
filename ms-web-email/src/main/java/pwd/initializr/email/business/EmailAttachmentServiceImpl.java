@@ -145,6 +145,21 @@ public class EmailAttachmentServiceImpl implements EmailAttachmentService {
   }
 
   @Override
+  public List<EmailAttachmentBO> queryByEmailId(Long emailId) {
+    List<EmailAttachmentEntity> emailAttachmentEntities = this.dao.queryByEmailId(emailId);
+    if (emailAttachmentEntities == null) {
+      return null;
+    }
+    LinkedList<EmailAttachmentBO> emailAttachmentBOS = new LinkedList<>();
+    emailAttachmentEntities.forEach(entity -> {
+      EmailAttachmentBO resultItem = new EmailAttachmentBO();
+      BeanUtils.copyProperties(entity, resultItem);
+      emailAttachmentBOS.add(resultItem);
+    });
+    return emailAttachmentBOS;
+  }
+
+  @Override
   public Integer updateById(EmailAttachmentBO bo){
     EmailAttachmentEntity entity = new EmailAttachmentEntity();
     BeanUtils.copyProperties(bo, entity);

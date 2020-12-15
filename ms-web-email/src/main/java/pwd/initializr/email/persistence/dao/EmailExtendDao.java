@@ -147,6 +147,16 @@ public interface EmailExtendDao {
    */
   EmailExtendEntity queryById(@Param("id") Long id);
 
+  /**
+   * <h2>根据emailId查找</h2>
+   * date 2020-12-15 15:33
+   *
+   * @param emailId emailID
+   * @return java.util.List<pwd.initializr.email.persistence.entity.EmailExtendEntity>
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  List<EmailExtendEntity> queryByEmailId(@Param("emailId") Long emailId);
 
   /**
    * <h2>通过主键更新数据</h2>

@@ -55,7 +55,7 @@ public interface EmailService {
      * @author Automatic[www.dingpengwei@foxmail.com]
      * @since 2020-12-14 15:55
      */
-    void insert(EmailBO bo);
+    EmailBO insert(EmailBO bo);
 
     /**
      * <h2>新增数据（批量操作）</h2>
@@ -106,7 +106,7 @@ public interface EmailService {
         LinkedHashSet<SortBO> sorts, Long pageIndex, Long pageSize);
 
     /**
-     * <h2>异步发送邮件查询接口，阻塞式查询</h2>
+     * <h2>异步发送邮件查询接口，阻塞式查询，使用该接口前最好清楚业务正在做什么</h2>
      * date 2020-12-14 19:15
      *
      * @param pageSize 查询条数

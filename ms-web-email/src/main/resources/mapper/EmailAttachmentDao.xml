@@ -31,6 +31,23 @@
       id = #{id}
   </select>
 
+  <!--根据外键查询查询-->
+  <select id="queryByEmailId" resultMap="EmailAttachmentMap">
+    SELECT
+      `id`,
+      `email_id`,
+      `file_name`,
+      `cid`,
+      `content_type`,
+      `url`,
+      `create_time`,
+      `update_time`
+    FROM
+      email_attachment
+    WHERE
+      `email_id` = #{emailId}
+  </select>
+
   <!--查询指定行数据-->
   <select id="countByCondition" resultType="java.lang.Long">
     SELECT COUNT(*) FROM email_attachment
