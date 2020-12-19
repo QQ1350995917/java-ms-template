@@ -25,8 +25,8 @@ public class PaintingBO extends PaintingEntity {
 
   public PaintingBO(Long id, Long userId, Long fontId, Float fontSize, String content,
       String background, String foreground, Integer width, Integer height, String imageUrl,
-      String bucketName,String objectName, Integer status, Long createTime, Long updateTime) {
+      Integer status, Long createTime, Long updateTime) {
     super(id, userId, fontId, fontSize, content, background, foreground, width, height, imageUrl,
-        bucketName,objectName,status, createTime, updateTime);
+        status, createTime, updateTime);
   }
 }

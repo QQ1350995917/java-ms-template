@@ -3,7 +3,6 @@ package pwd.initializr.storage.api.robot.vo;
 import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import pwd.initializr.storage.rpc.RPCUploadInput;
@@ -20,7 +19,6 @@ import pwd.initializr.storage.rpc.RPCUploadInput;
  * @since DistributionVersion
  */
 @AllArgsConstructor
-@NoArgsConstructor
 @Setter
 @Getter
 @ToString

@@ -33,15 +33,13 @@ public class PaintingEntity implements Serializable {
   private Integer width;
   private Integer height;
   private String imageUrl;
-  private String bucketName;
-  private String objectName;
   private Integer status;
   private Long createTime;
   private Long updateTime;
 
   public PaintingEntity(Long id, Long userId, Long fontId, Float fontSize, String content,
       String background, String foreground, Integer width, Integer height, String imageUrl,
-      String bucketName,String objectName, Integer status, Long createTime, Long updateTime) {
+      Integer status, Long createTime, Long updateTime) {
     this.id = id;
     this.userId = userId;
     this.fontId = fontId;

@@ -25,15 +25,10 @@ import pwd.initializr.typeface.FeignConfig;
 @FeignClient(value = "storage", configuration = FeignConfig.class, fallback = StorageServiceFallbackImpl.class)
 public interface StorageService {
 
-  @DeleteMapping(value = "/api/robot/file/{appName}/{bucketName}", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = {
-      MediaType.APPLICATION_JSON_UTF8_VALUE})
-  String delete(@PathVariable("appName") String appName,
-      @PathVariable("bucketName") String bucketName, @RequestBody List<String> objectNames);
-
-  @PostMapping(value = "/api/robot/file/{appName}/{bucketName}/{objectName}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = {
+  @PostMapping(value = "/api/robot/file/{appName}/{bucketName}/{fileName}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = {
       MediaType.APPLICATION_JSON_UTF8_VALUE})
   String upload(@PathVariable("appName") String appName,
-      @PathVariable("bucketName") String bucketName, @PathVariable("objectName") String objectName,
+      @PathVariable("bucketName") String bucketName, @PathVariable("fileName") String fileName,
       @RequestPart MultipartFile file);
 
 

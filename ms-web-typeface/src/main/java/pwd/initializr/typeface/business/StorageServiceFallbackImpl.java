@@ -22,12 +22,7 @@ import pwd.initializr.common.web.api.vo.Output;
 public class StorageServiceFallbackImpl implements StorageService {
 
   @Override
-  public String delete(String appName, String bucketName, List<String> objectNames) {
-    return JSON.toJSONString(new Output(new Meta(504)));
-  }
-
-  @Override
-  public String upload(String appName, String bucketName, String objectName, MultipartFile file) {
+  public String upload(String appName, String bucketName, String fileName, MultipartFile file) {
     return JSON.toJSONString(new Output(new Meta(504)));
   }
 }

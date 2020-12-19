@@ -19,7 +19,7 @@
     <module>lib-common-web</module>
     <!--<module>lib-etl-core</module>-->
     <!--<module>lib-etl-core-plugin</module>-->
-    <!--<module>lib-rpc-storage</module>-->
+    <module>lib-rpc-storage</module>
     <!--<module>lib-rpc-account</module>-->
     <module>lib-rpc-email</module>
     <!--<module>lib-rpc-monitor</module>-->
@@ -38,8 +38,8 @@
     <module>ms-web-registry</module>
     <!--<module>ms-web-schedule</module>-->
     <!--<module>ms-web-search</module>-->
-    <!--<module>ms-web-storage</module>-->
-    <!--<module>ms-web-typeface</module>-->
+    <module>ms-web-storage</module>
+    <module>ms-web-typeface</module>
     <!--<module>project-generator</module>-->
     <!--<module>project-generator-test</module>-->
     <!--<module>widget-tool</module>-->
@@ -78,7 +78,6 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
       <version>2.1.8.RELEASE</version>
-      <scope>optional</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>

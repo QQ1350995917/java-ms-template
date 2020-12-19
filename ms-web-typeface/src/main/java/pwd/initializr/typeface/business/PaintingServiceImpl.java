@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import javax.imageio.ImageIO;
@@ -29,8 +28,8 @@ import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.storage.rpc.RPCUploadOutput;
 import pwd.initializr.typeface.business.bo.FontBO;
 import pwd.initializr.typeface.business.bo.PaintingBO;
-import pwd.initializr.typeface.persistence.entity.PaintingEntity;
 import pwd.initializr.typeface.persistence.dao.PaintingMapper;
+import pwd.initializr.typeface.persistence.entity.PaintingEntity;
 import pwd.initializr.typeface.util.Painter;
 
 /**
@@ -97,8 +96,6 @@ public class PaintingServiceImpl implements PaintingService {
       if (200 == output.getMeta().getCode()) {
         RPCUploadOutput RPCUploadOutput = output.getData();
         paintingBO.setImageUrl(RPCUploadOutput.getUrl());
-        paintingBO.setBucketName(RPCUploadOutput.getBucketName());
-        paintingBO.setObjectName(RPCUploadOutput.getObjectName());
         paintingBO.setCreateTime(System.currentTimeMillis());
         paintingBO.setUpdateTime(System.currentTimeMillis());
         PaintingEntity paintingEntity = new PaintingEntity();
@@ -118,26 +115,7 @@ public class PaintingServiceImpl implements PaintingService {
 
   @Override
   public Integer deleteByIds(List<Long> ids) {
-    // TODO 外部变量如何对lambda计数
-    Integer result = 0;
-    List<PaintingEntity> deletion = paintingMapper.findByIds(ids);
-    Map<String, List<PaintingEntity>> collect = deletion.stream()
-        .collect(Collectors.groupingBy(obj -> obj.getBucketName()));
-    collect.forEach((key, values) -> {
-      String delete = storageService
-          .delete(applicationName, key, values.stream().map(value -> value.getObjectName())
-              .collect(Collectors.toList()));
-      Output<RPCUploadOutput> output = JSON
-          .parseObject(delete, new TypeReference<Output<RPCUploadOutput>>() {
-          });
-      if (200 == output.getMeta().getCode()) {
-        Integer integer = paintingMapper
-            .deleteByIds(deletion.stream().map(obj -> obj.getId()).collect(Collectors.toList()));
-      } else {
-        log.error("{}", output);
-      }
-    });
-    return result;
+    return 0;
   }
 
   @Override
@@ -154,8 +132,7 @@ public class PaintingServiceImpl implements PaintingService {
     List<PaintingBO> collect = findByCondition.stream().map(
         obj -> new PaintingBO(obj.getId(), obj.getUserId(), obj.getFontId(), obj.getFontSize(),
             obj.getContent(), obj.getBackground(), obj.getForeground(), obj.getWidth(),
-            obj.getHeight(), obj.getImageUrl(), obj.getBucketName(), obj.getObjectName(),
-            obj.getStatus(), obj.getCreateTime(),
+            obj.getHeight(), obj.getImageUrl(), obj.getStatus(), obj.getCreateTime(),
             obj.getUpdateTime()))
         .collect(Collectors.toList());
 
