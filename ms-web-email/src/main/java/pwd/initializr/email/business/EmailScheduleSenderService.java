@@ -1,12 +1,16 @@
 package pwd.initializr.email.business;
 
+import feign.Response;
+import java.io.InputStream;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,6 +18,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import pwd.initializr.common.email.Email;
+import pwd.initializr.common.email.EmailAttachment;
 import pwd.initializr.common.email.EmailClient;
 import pwd.initializr.email.business.bo.EmailAttachmentBO;
 import pwd.initializr.email.business.bo.EmailBO;
@@ -146,7 +151,25 @@ public class EmailScheduleSenderService {
 
             List<EmailAttachmentBO> emailAttachmentBOS = emailWrapBO.getEmailAttachmentBOS();
             if (emailAttachmentBOS != null && !emailAttachmentBOS.isEmpty()) {
-                // TODO 构建附件
+                LinkedList<EmailAttachment> attachments = new LinkedList<>();
+                EmailAttachment emailAttachment = new EmailAttachment();
+                emailAttachmentBOS.forEach(emailAttachmentBO -> {
+                    BeanUtils.copyProperties(emailAttachmentBO, emailAttachment);
+                    Response response = storageService.download(emailAttachmentBO.getUrl());
+                    if (response == null) {
+                        log.info("邮件附件下载异常，Response为空");
+                        return;
+                    }
+                    try (InputStream inputStream = response.body().asInputStream()){
+                        byte[] bytes = new byte[inputStream.available()];
+                        inputStream.read(bytes);
+                        emailAttachment.setBytes(bytes);
+                    } catch (Exception e){
+                        log.error("邮件附件读取异常，{}", e.getMessage());
+                    }
+                    attachments.add(emailAttachment);
+                });
+                email.setAttachments(attachments);
             }
 
             EmailClient emailClient = new EmailClient(emailDebug, emailServerHost, emailServerPort,

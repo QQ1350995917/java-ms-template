@@ -36,9 +36,9 @@ public class RPCEmailBoxVO implements Serializable {
     @ApiModelProperty(name = "to", value = "to", required = true, dataType = "java.util.Set<java.lang.String>")
     @NotEmpty(message = "邮件发送对象至少有一个")
     private Set<String> to;
-    @ApiModelProperty(name = "cc", value = "cc", required = true, dataType = "java.util.Set<java.lang.String>")
+    @ApiModelProperty(name = "cc", value = "cc", required = false, dataType = "java.util.Set<java.lang.String>")
     private Set<String> cc;
-    @ApiModelProperty(name = "bcc", value = "bcc", required = true, dataType = "java.util.Set<java.lang.String>")
+    @ApiModelProperty(name = "bcc", value = "bcc", required = false, dataType = "java.util.Set<java.lang.String>")
     private Set<String> bcc;
 
 }

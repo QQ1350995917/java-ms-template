@@ -33,10 +33,10 @@ public class RPCEmailAttachmentVO implements Serializable {
 
     private static final long serialVersionUID = -4291776028708567323L;
 
-    @ApiModelProperty(name = "fileName", value = "fileName", required = true, dataType = "java.lang.String")
+    @ApiModelProperty(name = "fileName", value = "fileName", required = false, dataType = "java.lang.String")
     @NotBlank(message = "fileName不能为空")
     private String fileName;
-    @ApiModelProperty(name = "cid", value = "cid", required = true, dataType = "java.lang.String")
+    @ApiModelProperty(name = "cid", value = "cid", required = false, dataType = "java.lang.String")
     private String cid;
     @ApiModelProperty(name = "contentType", value = "contentType", required = true, dataType = "java.lang.String")
     @NotBlank(message = "contentType不能为空")
