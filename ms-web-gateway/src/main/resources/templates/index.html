@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Gateway Router</title>
@@ -12,42 +12,39 @@
 <el-container id="container">
   <el-header style="padding: 0px;height: 42px">
     <el-row>
-      <el-col :span="12" :offset="6">
+      <el-col :span="16" :offset="4">
         <el-button @click="onCreate()">Create</el-button>
       </el-col>
     </el-row>
   </el-header>
   <el-main style="padding: 0px;height: 650px">
     <el-row>
-      <el-col :span="12" :offset="6">
+      <el-col :span="16" :offset="4">
         <el-table
             :data="list"
             style="width: 100%;"
             max-height="600">
           <el-table-column
-              prop="id"
+              prop="route_id"
               label="ID"
-              width="180">
+              width="360">
           </el-table-column>
           <el-table-column
-              prop="url"
-              label="Url"
-              width="340">
+              prop="route_definition.uri"
+              label="URI"
+              width="360">
           </el-table-column>
           <el-table-column
-              prop="createTime"
-              label="CreateTime"
-              width="120">
+              prop="order"
+              label="ORDER"
+              width="100">
           </el-table-column>
           <el-table-column
               fixed="right"
               label="Operations"
-              width="140">
+              width="220">
             <template slot-scope="scope">
-              <el-button
-                  @click.native.prevent="onDetail(scope.row.url)"
-                  type="text"
-                  size="small">
+              <el-button type="text" size="small" @click="detailDialogVisible = false">
                 Detail
               </el-button>
               <el-button
@@ -71,16 +68,20 @@
             </template>
           </el-table-column>
         </el-table>
-        <div class="block">
-          <el-pagination
-              layout="prev, pager, next"
-              @current-change="onRequestForFiles"
-              :page-size="pageSize"
-              :total="total">
-          </el-pagination>
-        </div>
       </el-col>
     </el-row>
+
+    <el-dialog
+        title="Tips"
+        :visible.sync="detailDialogVisible"
+        width="30%">
+      <span>This is a message</span>
+      <span slot="footer" class="dialog-footer">
+       <el-button @click="detailDialogVisible = false">Cancel</el-button>
+       <el-button type="primary" @click="detailDialogVisible = false">Confirm</el-button>
+      </span>
+    </el-dialog>
+
   </el-main>
   <el-footer>
     <el-row>
@@ -97,43 +98,19 @@
     data: function() {
       return {
         list: [],
-        pageIndex: 1,
-        pageSize: 12,
-        total: 0
+        detailDialogVisible: false
       };
     },
     created() {
-      this.onRequestForList(this.pageIndex);
+      this.onRequestForList();
     },
     methods: {
-      onRequestForList(pageIndex) {
-        this.$http.get('/index/' + (pageIndex - 1) + '/' + this.pageSize).then(
+      onRequestForList() {
+        this.$http.get('/actuator/gateway/routes').then(
             function(res) {
-              var body = res.body;
-              var meta = body.meta;
-              var code = meta.code;
-              var data = body.data;
-              var elements = data.elements;
-              if (elements == undefined || elements.length == 0) {
-                this.$message({
-                  message: '没有找到数据表',
-                  type: 'warning'
-                });
-              } else {
-                this.files = data.elements;
-                this.filesTotal = data.total;
-              }
+              this.list = res.body;
             }, function(e) {
-              var body = e.body;
-              var meta = body.meta;
-              var code = meta.code;
-              if (code == 400) {
-                this.$message.error('参数错误');
-              } else if (code == 500) {
-                this.$message.error('服务异常');
-              } else {
-                this.$message.error('未知异常');
-              }
+              this.$message.error('服务异常');
             });
       },
       onCreate(url) {
