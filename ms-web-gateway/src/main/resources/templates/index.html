@@ -7,13 +7,20 @@
   <script src="https://unpkg.com/vue/dist/vue.js"></script>
   <script src="https://unpkg.com/element-ui/lib/index.js"></script>
   <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+
+  <script src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
+
+  <!-- JSON Viewer -->
+  <link href="css/jquery.json-viewer.css" rel="stylesheet">
+  <!-- JSON viewer -->
+  <script src="js/jquery.json-viewer.js"></script>
 </head>
 <body>
 <el-container id="container">
   <el-header style="padding: 0px;height: 42px">
     <el-row>
       <el-col :span="16" :offset="4">
-        <el-button @click="onCreate()">Create</el-button>
+        <el-button @click="detailDialogVisible = true">Create</el-button>
       </el-col>
     </el-row>
   </el-header>
@@ -44,14 +51,8 @@
               label="Operations"
               width="220">
             <template slot-scope="scope">
-              <el-button type="text" size="small" @click="detailDialogVisible = false">
+              <el-button type="text" size="small" @click="onDetail(scope.$index, scope.row);detailDialogVisible = true">
                 Detail
-              </el-button>
-              <el-button
-                  @click.native.prevent="onUpdate(scope.row.url)"
-                  type="text"
-                  size="small">
-                Update
               </el-button>
               <el-button
                   @click.native.prevent="onDelete(scope.row.url)"
@@ -72,13 +73,18 @@
     </el-row>
 
     <el-dialog
-        title="Tips"
+        title="RouteDefinition"
         :visible.sync="detailDialogVisible"
         width="30%">
-      <span>This is a message</span>
+      <el-input
+          type="textarea"
+          autosize
+          placeholder="Please input"
+          v-model="currentItemJson">
+      </el-input>
       <span slot="footer" class="dialog-footer">
        <el-button @click="detailDialogVisible = false">Cancel</el-button>
-       <el-button type="primary" @click="detailDialogVisible = false">Confirm</el-button>
+       <el-button type="primary" @click="detailDialogVisible = false">Update</el-button>
       </span>
     </el-dialog>
 
@@ -92,13 +98,20 @@
     </el-row>
   </el-footer>
 </el-container>
+
+<style>
+  .el-slot {
+    width: 120px;
+  }
+</style>
 <script>
   new Vue({
     el: '#container',
     data: function() {
       return {
         list: [],
-        detailDialogVisible: false
+        detailDialogVisible: false,
+        currentItemJson: ''
       };
     },
     created() {
@@ -115,7 +128,22 @@
       },
       onCreate(url) {
       },
-      onDetail(url) {
+      onDetail(index, row) {
+        this.currentItemJson = JSON.stringify(row);
+        try {
+          // this.currentItemJson = eval('(' + JSON.stringify(row) + ')');
+
+          // $('#original').hide();
+          // $('#json-renderer').show();
+          //
+          // $('#btn-json-viewer').hide();
+          // $('#btn-json-viewer1').show();
+          //
+          // $('#json-renderer').jsonViewer(input, {collapsed: false, withQuotes: true});
+
+        } catch (error) {
+          this.$message.error('JSON EXCEPTION');
+        }
       },
       onUpdate(url) {
       },
