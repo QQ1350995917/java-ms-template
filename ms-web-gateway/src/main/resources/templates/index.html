@@ -51,7 +51,8 @@
               label="Operations"
               width="220">
             <template slot-scope="scope">
-              <el-button type="text" size="small" @click="onDetail(scope.$index, scope.row);detailDialogVisible = true">
+              <el-button type="text" size="small"
+                         @click="onDetail(scope.$index, scope.row);detailDialogVisible = true">
                 Detail
               </el-button>
               <el-button
@@ -76,15 +77,18 @@
         title="RouteDefinition"
         :visible.sync="detailDialogVisible"
         width="30%">
-      <el-input
+      <div
+          id="json-renderer"
           type="textarea"
           autosize
+          readonly="false"
+          contenteditable="true"
           placeholder="Please input"
-          v-model="currentItemJson">
-      </el-input>
+          v-html="JSON.stringify(currentItemJson)">
+      </div>
       <span slot="footer" class="dialog-footer">
        <el-button @click="detailDialogVisible = false">Cancel</el-button>
-       <el-button type="primary" @click="detailDialogVisible = false">Update</el-button>
+       <el-button type="primary" @click="onUpdate()">Update</el-button>
       </span>
     </el-dialog>
 
@@ -111,7 +115,7 @@
       return {
         list: [],
         detailDialogVisible: false,
-        currentItemJson: ''
+        currentItemJson: {}
       };
     },
     created() {
@@ -129,23 +133,18 @@
       onCreate(url) {
       },
       onDetail(index, row) {
-        this.currentItemJson = JSON.stringify(row);
-        try {
-          // this.currentItemJson = eval('(' + JSON.stringify(row) + ')');
-
-          // $('#original').hide();
-          // $('#json-renderer').show();
-          //
-          // $('#btn-json-viewer').hide();
-          // $('#btn-json-viewer1').show();
-          //
-          // $('#json-renderer').jsonViewer(input, {collapsed: false, withQuotes: true});
-
-        } catch (error) {
-          this.$message.error('JSON EXCEPTION');
-        }
+        this.currentItemJson = row;
       },
-      onUpdate(url) {
+      onUpdate() {
+        console.log(this.currentItemJson.route_id)
+        this.$http.post('/actuator/gateway/routes/' + this.currentItemJson.route_id, this.currentItemJson).then(
+            function(res) {
+              this.list = res.body;
+              this.detailDialogVisible = false;
+              this.$message.success('变更成功');
+            }, function(e) {
+              this.$message.error('服务异常');
+            });
       },
       onDelete() {
       },
