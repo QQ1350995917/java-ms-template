@@ -32,12 +32,12 @@
             style="width: 100%;"
             max-height="600">
           <el-table-column
-              prop="route_id"
+              prop="id"
               label="ID"
               width="360">
           </el-table-column>
           <el-table-column
-              prop="route_definition.uri"
+              prop="uri"
               label="URI"
               width="360">
           </el-table-column>
@@ -123,7 +123,7 @@
     },
     methods: {
       onRequestForList() {
-        this.$http.get('/actuator/gateway/routes').then(
+        this.$http.get('/router').then(
             function(res) {
               this.list = res.body;
             }, function(e) {
@@ -137,7 +137,7 @@
       },
       onUpdate() {
         console.log(this.currentItemJson.route_id)
-        this.$http.post('/actuator/gateway/routes/' + this.currentItemJson.route_id, this.currentItemJson).then(
+        this.$http.post('/router', this.currentItemJson).then(
             function(res) {
               this.list = res.body;
               this.detailDialogVisible = false;
