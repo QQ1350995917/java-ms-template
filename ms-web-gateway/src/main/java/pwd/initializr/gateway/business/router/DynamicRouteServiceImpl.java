@@ -94,6 +94,7 @@ public class DynamicRouteServiceImpl implements ApplicationEventPublisherAware {
     routeDefinition.setOrder(route.getOrder());
     routeDefinition.setUri(route.getUri());
 
+
 //    routeDefinition.setPredicates();
     ArrayList<FilterDefinition> filters = new ArrayList<>();
     for (int i = 0; i < route.getFilters().size(); i++) {

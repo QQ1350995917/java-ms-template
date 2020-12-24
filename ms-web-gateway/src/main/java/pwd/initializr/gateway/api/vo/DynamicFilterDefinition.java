@@ -25,9 +25,12 @@ import lombok.ToString;
 @Setter
 @ToString
 public class DynamicFilterDefinition {
-    //Filter Name
+    /**
+     * Filter Name
+     */
     private String name;
-    //对应的路由规则
+    /**
+     * 对应的路由规则
+     */
     private Map<String, String> args = new LinkedHashMap<>();
-    //此处省略Get和Set方法
 }

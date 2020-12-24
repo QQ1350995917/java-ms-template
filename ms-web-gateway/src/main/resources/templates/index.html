@@ -139,7 +139,6 @@
         console.log(this.currentItemJson.route_id)
         this.$http.post('/router', this.currentItemJson).then(
             function(res) {
-              this.list = res.body;
               this.detailDialogVisible = false;
               this.$message.success('变更成功');
             }, function(e) {
