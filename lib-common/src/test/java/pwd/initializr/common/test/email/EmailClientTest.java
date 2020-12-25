@@ -40,7 +40,7 @@ public class EmailClientTest {
 
         String subject = "hello word:" + current;
         String content =
-            "<h1>Hello Word: " + current + " </h1><p>显示图片<img src='cid:a.png'>1.jpg</p>";
+            "<h1>Hello Word: " + current + " </h1><p>显示图片<img src='cid:a'>1.jpg</p>";
 
         LinkedList<EmailAttachment> attachments = new LinkedList<>();
         //String file1 = "/Users/pwd/Documents/minio/xresources/thumb/351.png";

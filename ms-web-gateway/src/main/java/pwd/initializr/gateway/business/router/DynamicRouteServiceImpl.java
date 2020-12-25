@@ -6,13 +6,17 @@ import java.util.List;
 import javax.annotation.Resource;
 import org.springframework.cloud.gateway.event.RefreshRoutesEvent;
 import org.springframework.cloud.gateway.filter.FilterDefinition;
+import org.springframework.cloud.gateway.handler.AsyncPredicate;
+import org.springframework.cloud.gateway.handler.predicate.PredicateDefinition;
 import org.springframework.cloud.gateway.route.Route;
 import org.springframework.cloud.gateway.route.RouteDefinition;
+import org.springframework.cloud.gateway.route.RouteDefinitionLocator;
 import org.springframework.cloud.gateway.route.RouteDefinitionWriter;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -31,7 +35,7 @@ import reactor.core.publisher.Mono;
 public class DynamicRouteServiceImpl implements ApplicationEventPublisherAware {
 
   @Resource
-  protected RouteLocator routeLocator;
+  protected RouteDefinitionLocator routeLocator;
   @Resource
   private RouteDefinitionWriter routeDefinitionWriter;
   private ApplicationEventPublisher publisher;
@@ -52,7 +56,7 @@ public class DynamicRouteServiceImpl implements ApplicationEventPublisherAware {
   }
 
   public Flux<RouteDefinition> list() {
-    return this.routeLocator.getRoutes().map(this::serialize);
+    return this.routeLocator.getRouteDefinitions().map(this::serialize);
   }
 
   @Override
@@ -88,19 +92,7 @@ public class DynamicRouteServiceImpl implements ApplicationEventPublisherAware {
     return Mono.just(definition);
   }
 
-  RouteDefinition serialize(Route route) {
-    RouteDefinition routeDefinition = new RouteDefinition();
-    routeDefinition.setId(route.getId());
-    routeDefinition.setOrder(route.getOrder());
-    routeDefinition.setUri(route.getUri());
-
-
-//    routeDefinition.setPredicates();
-    ArrayList<FilterDefinition> filters = new ArrayList<>();
-    for (int i = 0; i < route.getFilters().size(); i++) {
-      FilterDefinition filterDefinition = new FilterDefinition();
-    }
-    routeDefinition.setFilters(filters);
+  RouteDefinition serialize(RouteDefinition routeDefinition) {
     return routeDefinition;
   }
 }

@@ -21,6 +21,7 @@
     <el-row>
       <el-col :span="16" :offset="4">
         <el-button @click="detailDialogVisible = true">Create</el-button>
+        <el-button @click="onRefresh()" style="float: right">Refresh</el-button>
       </el-col>
     </el-row>
   </el-header>
@@ -77,15 +78,14 @@
         title="RouteDefinition"
         :visible.sync="detailDialogVisible"
         width="30%">
-      <div
+      <el-input
           id="json-renderer"
           type="textarea"
           autosize
-          readonly="false"
           contenteditable="true"
           placeholder="Please input"
-          v-html="JSON.stringify(currentItemJson)">
-      </div>
+          v-model="currentItemJson">
+      </el-input >
       <span slot="footer" class="dialog-footer">
        <el-button @click="detailDialogVisible = false">Cancel</el-button>
        <el-button type="primary" @click="onUpdate()">Update</el-button>
@@ -115,7 +115,7 @@
       return {
         list: [],
         detailDialogVisible: false,
-        currentItemJson: {}
+        currentItemJson: null
       };
     },
     created() {
@@ -126,23 +126,26 @@
         this.$http.get('/router').then(
             function(res) {
               this.list = res.body;
+              this.$message.success('List Success');
             }, function(e) {
-              this.$message.error('服务异常');
+              this.$message.error('List Exception');
             });
       },
       onCreate(url) {
       },
+      onRefresh(){
+        this.onRequestForList();
+      },
       onDetail(index, row) {
-        this.currentItemJson = row;
+        this.currentItemJson = JSON.stringify(row,null,2);
       },
       onUpdate() {
-        console.log(this.currentItemJson.route_id)
         this.$http.post('/router', this.currentItemJson).then(
             function(res) {
               this.detailDialogVisible = false;
-              this.$message.success('变更成功');
+              this.$message.success('Update Success');
             }, function(e) {
-              this.$message.error('服务异常');
+              this.$message.error('Update Exception');
             });
       },
       onDelete() {
