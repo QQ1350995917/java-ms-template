@@ -1,12 +1,16 @@
 package pwd.initializr.gateway.business.router;
 
+import java.util.concurrent.TimeUnit;
 import javax.annotation.Resource;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.event.RefreshRoutesEvent;
 import org.springframework.cloud.gateway.route.RouteDefinition;
 import org.springframework.cloud.gateway.route.RouteDefinitionLocator;
 import org.springframework.cloud.gateway.route.RouteDefinitionWriter;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import pwd.initializr.gateway.business.router.bo.RouteDefinitionBO;
 import reactor.core.publisher.Mono;
@@ -25,10 +29,21 @@ import reactor.core.publisher.Mono;
 @Service
 public class DynamicRouteServiceImpl implements ApplicationEventPublisherAware {
 
+  @Value("${gateway.router.in.redis.sync.topic}")
+  public String GATEWAY_ROUTES_IN_REDIS_SYNC_TOPIC;
+  @Value("${gateway.router.in.redis.locker.name}")
+  public String GATEWAY_ROUTES_IN_REDIS_LOCKER_NAME;
+  @Value("${gateway.router.in.redis.locked.milliseconds}")
+  public Integer GATEWAY_ROUTES_IN_REDIS_LOCKER_MILLISECONDS;
+  @Value("${gateway.router.in.redis.version.name}")
+  public String GATEWAY_ROUTES_IN_REDIS_VERSION_NAME;
   @Resource
   protected RouteDefinitionLocator routeLocator;
   @Resource
   private RouteDefinitionWriter routeDefinitionWriter;
+  @Resource
+  private RedisTemplate<String, String> redisTemplate;
+
   private ApplicationEventPublisher publisher;
   private Long serialNumber = 0L;
 
@@ -51,6 +66,10 @@ public class DynamicRouteServiceImpl implements ApplicationEventPublisherAware {
     return this.routeLocator.getRouteDefinitions()
         .map(this::serialize).collectList()
         .map(routeDefinitions -> new RouteDefinitionBO(serialNumber, routeDefinitions));
+  }
+
+  public void publish(Long serialNumber) {
+    redisTemplate.convertAndSend(GATEWAY_ROUTES_IN_REDIS_SYNC_TOPIC, serialNumber);
   }
 
   @Override
@@ -90,6 +109,31 @@ public class DynamicRouteServiceImpl implements ApplicationEventPublisherAware {
 
   RouteDefinition serialize(RouteDefinition routeDefinition) {
     return routeDefinition;
+  }
+
+  private boolean editable() {
+
+    return false;
+  }
+
+  private boolean lock() {
+    Boolean locked = redisTemplate.opsForValue()
+        .setIfAbsent(GATEWAY_ROUTES_IN_REDIS_LOCKER_NAME, "locked",
+            GATEWAY_ROUTES_IN_REDIS_LOCKER_MILLISECONDS,
+            TimeUnit.MILLISECONDS);
+    return locked != null && locked;
+  }
+
+  private void releaseLock() {
+    redisTemplate.delete(GATEWAY_ROUTES_IN_REDIS_LOCKER_NAME);
+  }
+
+  private Long getLastVersion() {
+    String version = redisTemplate.opsForValue().get(GATEWAY_ROUTES_IN_REDIS_VERSION_NAME);
+    if (StringUtils.isBlank(version)) {
+      return null;
+    }
+    return Long.parseLong(version);
   }
 
 

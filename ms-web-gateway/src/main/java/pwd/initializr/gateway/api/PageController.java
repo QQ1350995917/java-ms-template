@@ -19,7 +19,7 @@ import reactor.core.publisher.Mono;
  */
 @Controller()
 @RequestMapping("/index")
-public class ViewController {
+public class PageController {
 
   @GetMapping("")
   public Mono<String> indexPage(final Model model) {
