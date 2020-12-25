@@ -1,23 +1,14 @@
 package pwd.initializr.gateway.business.router;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
 import javax.annotation.Resource;
 import org.springframework.cloud.gateway.event.RefreshRoutesEvent;
-import org.springframework.cloud.gateway.filter.FilterDefinition;
-import org.springframework.cloud.gateway.handler.AsyncPredicate;
-import org.springframework.cloud.gateway.handler.predicate.PredicateDefinition;
-import org.springframework.cloud.gateway.route.Route;
 import org.springframework.cloud.gateway.route.RouteDefinition;
 import org.springframework.cloud.gateway.route.RouteDefinitionLocator;
 import org.springframework.cloud.gateway.route.RouteDefinitionWriter;
-import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ServerWebExchange;
-import reactor.core.publisher.Flux;
+import pwd.initializr.gateway.business.router.bo.RouteDefinitionBO;
 import reactor.core.publisher.Mono;
 
 /**
@@ -39,6 +30,7 @@ public class DynamicRouteServiceImpl implements ApplicationEventPublisherAware {
   @Resource
   private RouteDefinitionWriter routeDefinitionWriter;
   private ApplicationEventPublisher publisher;
+  private Long serialNumber = 0L;
 
   /**
    * <h2>删除路由</h2>
@@ -55,8 +47,10 @@ public class DynamicRouteServiceImpl implements ApplicationEventPublisherAware {
     return Mono.just(id);
   }
 
-  public Flux<RouteDefinition> list() {
-    return this.routeLocator.getRouteDefinitions().map(this::serialize);
+  public Mono<RouteDefinitionBO> list() {
+    return this.routeLocator.getRouteDefinitions()
+        .map(this::serialize).collectList()
+        .map(routeDefinitions -> new RouteDefinitionBO(serialNumber, routeDefinitions));
   }
 
   @Override
@@ -68,31 +62,35 @@ public class DynamicRouteServiceImpl implements ApplicationEventPublisherAware {
    * <h2>更新路由</h2>
    * date 2020-12-23 22:25
    *
+   * @param serialNumber 路由版本
    * @param definition 路由对象
    * @return reactor.core.publisher.Mono<org.springframework.cloud.gateway.route.RouteDefinition>
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  public Mono<RouteDefinition> update(RouteDefinition definition) {
-    return create(definition);
+  public Mono<Long> update(Long serialNumber, RouteDefinition definition) {
+    return create(serialNumber, definition);
   }
 
   /**
    * <h2>新增路由</h2>
    * date 2020-12-23 22:22
    *
+   * @param serialNumber 路由版本
    * @param definition 路由对象
    * @return reactor.core.publisher.Mono<org.springframework.cloud.gateway.route.RouteDefinition>
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  public Mono<RouteDefinition> create(RouteDefinition definition) {
+  public Mono<Long> create(Long serialNumber, RouteDefinition definition) {
     routeDefinitionWriter.save(Mono.just(definition)).subscribe();
     this.publisher.publishEvent(new RefreshRoutesEvent(this));
-    return Mono.just(definition);
+    return Mono.just(++serialNumber);
   }
 
   RouteDefinition serialize(RouteDefinition routeDefinition) {
     return routeDefinition;
   }
+
+
 }

@@ -3,12 +3,17 @@ package pwd.initializr.gateway;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.concurrent.Executors;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.listener.ChannelTopic;
+import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
+import pwd.initializr.gateway.business.router.RedisRouteDefinitionRepositoryListener;
 
 /**
  * pwd.initializr.gateway@ms-web-initializr
@@ -40,6 +45,15 @@ public class BeanConfiguration {
         template.setHashValueSerializer(new StringRedisSerializer());
         template.afterPropertiesSet();
         return template;
+    }
 
+    @Bean
+    public RedisMessageListenerContainer initRedisContainer(RedisRouteDefinitionRepositoryListener listener,RedisConnectionFactory connectionFactory) {
+        RedisMessageListenerContainer container = new RedisMessageListenerContainer();
+        container.setConnectionFactory(connectionFactory);
+        ChannelTopic topic = new ChannelTopic("topic1");
+        container.addMessageListener(listener,topic);
+        container.setTaskExecutor(Executors.newFixedThreadPool(20));
+        return container;
     }
 }
