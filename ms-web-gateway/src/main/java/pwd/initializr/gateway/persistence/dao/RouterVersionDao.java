@@ -1,6 +1,8 @@
 package pwd.initializr.gateway.persistence.dao;
 
-import pwd.initializr.gateway.persistence.entity.RouterEntity;
+import java.util.List;
+import org.apache.ibatis.annotations.Mapper;
+import pwd.initializr.gateway.persistence.entity.RouterVersionEntity;
 
 /**
  * pwd.initializr.gateway.persistence.dao@ms-web-initializr
@@ -13,15 +15,15 @@ import pwd.initializr.gateway.persistence.entity.RouterEntity;
  * @version 1.0.0
  * @since DistributionVersion
  */
-public interface RouterDao {
+@Mapper
+public interface RouterVersionDao {
 
-    void createRouterTable();
+  int create(RouterVersionEntity entity);
 
-    RouterEntity query();
+  void createTable();
 
-    int delete();
+  int delete();
 
-    int create(RouterEntity routerEntity);
-
+  RouterVersionEntity query();
 
 }

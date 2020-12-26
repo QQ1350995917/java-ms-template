@@ -36,17 +36,17 @@ public class RouterController {
    * <h2>新增路由</h2>
    * date 2020-12-23 22:18
    *
-   * @param serialNumber 路由版本
+   * @param version 路由版本
    * @param routeDefinition 路由对象
-   * @return reactor.core.publisher.Flux<java.util.List                                                                                                                               <
-               *       org.springframework.cloud.gateway.route.RouteDefinition>>
+   * @return reactor.core.publisher.Flux<java.util.List
+               *       <       org.springframework.cloud.gateway.route.RouteDefinition>>
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  @PostMapping(value = "/{serialNumber}", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  public Flux<Long> craete(@PathVariable("serialNumber") Long serialNumber,
+  @PostMapping(value = "/{version}", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  public Flux<Long> create(@PathVariable("version") Long version,
       @RequestBody RouteDefinition routeDefinition) {
-    return dynamicRouteService.create(serialNumber, routeDefinition).flux();
+    return dynamicRouteService.createOrUpdate(version, routeDefinition).flux();
   }
 
   @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

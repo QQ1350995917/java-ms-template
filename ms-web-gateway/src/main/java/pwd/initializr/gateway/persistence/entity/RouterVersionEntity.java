@@ -22,9 +22,8 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class RouterEntity {
+public class RouterVersionEntity {
 
-    private Long serialNumber = 0L;
-    private String routerJson;
-    private String createTime;
+  private Long version = 0L;
+  private String createTime;
 }

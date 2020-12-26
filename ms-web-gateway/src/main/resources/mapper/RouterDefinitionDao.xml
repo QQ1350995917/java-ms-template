@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pwd.initializr.gateway.persistence.dao.RouterDefinitionDao">
+
+  <resultMap id="RouterDefinitionEntityMap"
+    type="pwd.initializr.gateway.persistence.entity.RouterDefinitionEntity">
+    <result column="id" jdbcType="VARCHAR" property="id"/>
+    <result column="uri" jdbcType="VARCHAR" property="url"/>
+    <result column="order" jdbcType="BIGINT" property="order"/>
+    <result column="predicates_json_string" jdbcType="LONGVARCHAR" property="predicatesJsonString"/>
+    <result column="filters_json_string" jdbcType="LONGVARCHAR" property="filtersJsonString"/>
+
+  </resultMap>
+
+  <select id="createTable">
+    CREATE TABLE IF NOT EXISTS router_definition(
+     id                         VARCHAR PRIMARY KEY     NOT NULL,
+     uri                        VARCHAR                 NOT NULL,
+     `order`                    INT                     NOT NULL,
+     predicates_json_string     TEXT                    NOT NULL,
+     filters_json_string        TEXT                    NOT NULL
+    );
+  </select>
+
+  <!--查询-->
+  <select id="queryAll" resultMap="RouterDefinitionEntityMap">
+    SELECT id,uri,`order` predicates_json_string, filters_json_string FROM router_definition;
+  </select>
+
+  <!--删除-->
+  <delete id="deleteAll">
+    DELETE FROM router_definition;
+  </delete>
+
+  <!--删除-->
+  <delete id="deleteById">
+    DELETE FROM router_definition WHERE id = #{id};
+  </delete>
+
+  <!--新增-->
+  <insert id="create" keyColumn="serial_number" keyProperty="serialNumber"
+    parameterType="pwd.initializr.gateway.persistence.entity.RouterDefinitionEntity">
+    REPLACE INTO router_definition(id,uri,`order`,predicates_json_string,filters_json_string)
+    VALUES (#{id},#{url},#{order},#{predicatesJsonString},#{filtersJsonString});
+  </insert>
+
+  <!--新增-->
+  <insert id="createByBatch" keyColumn="serial_number" keyProperty="serialNumber"
+    parameterType="pwd.initializr.gateway.persistence.entity.RouterVersionEntity">
+    INSERT INTO router_definition(id,uri,`order`,predicates_json_string,filters_json_string)
+    VALUES
+    <foreach item="entity" collection="entities" separator="," open="(" close=")" index="">
+      #{entity.id},
+      #{entity.url},
+      #{entity.order},
+      #{entity.predicatesJsonString},
+      #{entity.filtersJsonString}
+    </foreach>
+
+  </insert>
+
+  <update id="updateById">
+    UPDATE router_definition SET
+    uri = #{url},
+    `order` = #{order},
+    predicates_json_string = #{predicatesJsonString},
+    filters_json_string = #{filtersJsonString}
+    WHERE id = #{id}
+  </update>
+
+
+</mapper>
