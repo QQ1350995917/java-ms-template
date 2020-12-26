@@ -1,5 +1,11 @@
 package pwd.initializr.gateway.persistence.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
 /**
  * pwd.initializr.gateway.persistence.entity@ms-web-initializr
  *
@@ -11,6 +17,14 @@ package pwd.initializr.gateway.persistence.entity;
  * @version 1.0.0
  * @since DistributionVersion
  */
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString
 public class RouterEntity {
 
+    private Long serialNumber = 0L;
+    private String routerJson;
+    private String createTime;
 }

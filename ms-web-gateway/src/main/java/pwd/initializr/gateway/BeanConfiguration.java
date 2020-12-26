@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.concurrent.Executors;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -12,8 +13,7 @@ import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
-import pwd.initializr.gateway.business.router.RedisRouteDefinitionRepositoryListener;
+import pwd.initializr.gateway.business.router.DynamicRouteServiceImpl;
 
 /**
  * pwd.initializr.gateway@ms-web-initializr
@@ -28,6 +28,9 @@ import pwd.initializr.gateway.business.router.RedisRouteDefinitionRepositoryList
  */
 @Configuration
 public class BeanConfiguration {
+
+    @Value("${gateway.router.in.redis.sync.topic}")
+    public String GATEWAY_ROUTES_IN_REDIS_SYNC_TOPIC;
 
     @Bean
     public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory connectionFactory) {
@@ -48,12 +51,13 @@ public class BeanConfiguration {
     }
 
     @Bean
-    public RedisMessageListenerContainer initRedisContainer(RedisRouteDefinitionRepositoryListener listener,RedisConnectionFactory connectionFactory) {
+    public RedisMessageListenerContainer initRedisContainer(
+        DynamicRouteServiceImpl listener, RedisConnectionFactory connectionFactory) {
         RedisMessageListenerContainer container = new RedisMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
-        ChannelTopic topic = new ChannelTopic("topic1");
-        container.addMessageListener(listener,topic);
-        container.setTaskExecutor(Executors.newFixedThreadPool(20));
+        ChannelTopic topic = new ChannelTopic(GATEWAY_ROUTES_IN_REDIS_SYNC_TOPIC);
+        container.addMessageListener(listener, topic);
+        container.setTaskExecutor(Executors.newFixedThreadPool(2));
         return container;
     }
 }

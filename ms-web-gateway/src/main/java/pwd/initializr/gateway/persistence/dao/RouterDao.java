@@ -1,5 +1,7 @@
 package pwd.initializr.gateway.persistence.dao;
 
+import pwd.initializr.gateway.persistence.entity.RouterEntity;
+
 /**
  * pwd.initializr.gateway.persistence.dao@ms-web-initializr
  *
@@ -12,5 +14,14 @@ package pwd.initializr.gateway.persistence.dao;
  * @since DistributionVersion
  */
 public interface RouterDao {
+
+    void createRouterTable();
+
+    RouterEntity query();
+
+    int delete();
+
+    int create(RouterEntity routerEntity);
+
 
 }
