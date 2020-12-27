@@ -67,6 +67,7 @@ public class DynamicRouteServiceImpl implements ApplicationEventPublisherAware, 
 
   @Resource
   private RedisRouteDefinitionRepository redisRouteDefinitionRepository;
+
   /**
    * <h2>新增或者替换路由</h2>
    * date 2020-12-23 22:22
@@ -229,6 +230,36 @@ public class DynamicRouteServiceImpl implements ApplicationEventPublisherAware, 
     String topic = new String(pattern);
     log.info("接收到消息：{}", body);
     log.info("由{}渠道发送而来", topic);
+    if (GATEWAY_ROUTES_IN_REDIS_SYNC_TOPIC.equals(topic)) {
+      long remoteVersion = Long.parseLong(body);
+      RouterVersionEntity localRouterVersionEntity = routerVersionDao.query();
+      log.info("最新版本{},本地版本{},最新版本大于本地版本则更新", remoteVersion, localRouterVersionEntity.getVersion());
+      if (remoteVersion > localRouterVersionEntity.getVersion()) {
+        log.info("开始更新");
+        // 公共Redis库中有新版本的数据同步到本地
+        upgradeLocalRouter(remoteVersion);
+      }
+    }
+  }
+
+  /**
+   * <h2>更新本地数据库中的路由</h2>
+   * date 2020-12-26 17:19
+   *
+   * @param remoteVersion 中央仓库路由版本
+   * @param routerDefinitionEntities 中央仓库路由
+   * @return void
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  @Transactional(rollbackFor = RuntimeException.class)
+  public void upgradeLocalRouter(Long remoteVersion,
+      List<RouterDefinitionEntity> routerDefinitionEntities) {
+    this.routerVersionDao.delete();
+    this.routerVersionDao.create(new RouterVersionEntity(remoteVersion, new Date().toString()));
+
+    this.routerDefinitionDao.deleteAll();
+    this.routerDefinitionDao.createByBatch(routerDefinitionEntities);
   }
 
   @Override
@@ -262,6 +293,7 @@ public class DynamicRouteServiceImpl implements ApplicationEventPublisherAware, 
         .doOnNext(remoteRouterVersionEntities -> upgradeLocalRouter(remoteVersion,
             remoteRouterVersionEntities)).subscribe();
   }
+
 
   /**
    * <h2>使用本地路由更新远端路由</h2>
@@ -297,26 +329,6 @@ public class DynamicRouteServiceImpl implements ApplicationEventPublisherAware, 
       releaseLock();
     }
     return result;
-  }
-
-  /**
-   * <h2>更新本地数据库中的路由</h2>
-   * date 2020-12-26 17:19
-   *
-   * @param remoteVersion 中央仓库路由版本
-   * @param routerDefinitionEntities 中央仓库路由
-   * @return void
-   * @author DingPengwei[www.dingpengwei@foxmail.com]
-   * @since DistributionVersion
-   */
-  @Transactional(rollbackFor = RuntimeException.class)
-  public void upgradeLocalRouter(Long remoteVersion,
-      List<RouterDefinitionEntity> routerDefinitionEntities) {
-    this.routerVersionDao.delete();
-    this.routerVersionDao.create(new RouterVersionEntity(remoteVersion, new Date().toString()));
-
-    this.routerDefinitionDao.deleteAll();
-    this.routerDefinitionDao.createByBatch(routerDefinitionEntities);
   }
 
   @Override
