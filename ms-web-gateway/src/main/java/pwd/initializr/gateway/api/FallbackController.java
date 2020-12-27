@@ -1,9 +1,11 @@
 package pwd.initializr.gateway.api;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Flux;
 
 /**
  * pwd.initializr.gateway.api@ms-web-initializr
@@ -19,10 +21,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class FallbackController {
   @GetMapping("/fallback")
-  @ResponseBody
-  @ResponseStatus()
-  public String fallback() {
+  @ResponseStatus(code = HttpStatus.SERVICE_UNAVAILABLE)
+  public Flux<Integer> fallback() {
 
-    return "fallback";
+    return Flux.just(HttpStatus.SERVICE_UNAVAILABLE.value());
   }
 }

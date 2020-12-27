@@ -134,6 +134,16 @@
                 "regexp": "/serviceName/(?<remaining>.*)",
                 "replacement": "/${remaining}"
               }
+            },
+            {
+              "name": "RateLimiter"
+            },
+            {
+              "name": "Hystrix",
+              "args": {
+                "name": "fallbackcmd",
+                "fallbackUri": "forward:/fallback"
+              }
             }
           ],
           "uri": "lb://serviceName",
