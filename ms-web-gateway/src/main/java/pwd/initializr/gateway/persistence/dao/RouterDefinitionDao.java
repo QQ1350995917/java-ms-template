@@ -2,6 +2,7 @@ package pwd.initializr.gateway.persistence.dao;
 
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import pwd.initializr.gateway.persistence.entity.RouterDefinitionEntity;
 
 /**
@@ -18,18 +19,16 @@ import pwd.initializr.gateway.persistence.entity.RouterDefinitionEntity;
 @Mapper
 public interface RouterDefinitionDao {
 
-  int create(RouterDefinitionEntity entity);
-
-  int createByBatch(List<RouterDefinitionEntity> entities);
+  int createByBatch(@Param("entities") List<RouterDefinitionEntity> entities);
 
   void createTable();
 
   int deleteAll();
 
-  int deleteById(String id);
+  int deleteById(@Param("id") String id);
 
   List<RouterDefinitionEntity> queryAll();
 
-  int updateById(String id);
+  int replace(@Param("entity") RouterDefinitionEntity entity);
 
 }

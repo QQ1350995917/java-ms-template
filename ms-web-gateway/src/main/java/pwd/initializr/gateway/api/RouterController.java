@@ -3,6 +3,7 @@ package pwd.initializr.gateway.api;
 import javax.annotation.Resource;
 import org.springframework.cloud.gateway.route.RouteDefinition;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -55,6 +56,12 @@ public class RouterController {
         routeDefinitionBO -> new RouterDefinitionVO(routeDefinitionBO.getSerialNumber(),
             routeDefinitionBO.getRouteDefinitions())
     );
+  }
+
+  @DeleteMapping(value = "/{version}/{id}", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  public Flux<Long> delete(@PathVariable("version") Long version,
+      @PathVariable("id") String id) {
+    return dynamicRouteService.delete(version, id).flux();
   }
 
 }

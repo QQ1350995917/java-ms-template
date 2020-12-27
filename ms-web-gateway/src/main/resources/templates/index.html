@@ -20,7 +20,7 @@
   <el-header style="padding: 0px;height: 42px">
     <el-row>
       <el-col :span="16" :offset="4">
-        <el-button @click="detailDialogVisible = true">Create</el-button>
+        <el-button @click="onDetail(-1, {});detailDialogVisible = true">Create</el-button>
         <el-button @click="onRefresh()" style="float: right">Refresh</el-button>
       </el-col>
     </el-row>
@@ -35,12 +35,12 @@
           <el-table-column
               prop="id"
               label="ID"
-              width="360">
+              width="380">
           </el-table-column>
           <el-table-column
               prop="uri"
               label="URI"
-              width="360">
+              width="380">
           </el-table-column>
           <el-table-column
               prop="order"
@@ -50,24 +50,24 @@
           <el-table-column
               fixed="right"
               label="Operations"
-              width="220">
+              width="100">
             <template slot-scope="scope">
-              <el-button type="text" size="small"
-                         @click="onDetail(scope.$index, scope.row);detailDialogVisible = true">
-                Detail
+              <el-button
+                  type="text"
+                  icon="el-icon-edit"
+                  @click="onDetail(scope.$index, scope.row);detailDialogVisible = true">
               </el-button>
               <el-button
-                  @click.native.prevent="onDelete(scope.row.url)"
                   type="text"
-                  size="small">
-                Delete
+                  icon="el-icon-delete"
+                  @click="onDelete(scope.$index, scope.row)">
               </el-button>
-              <el-button
-                  @click.native.prevent="onTest(scope.row.url)"
-                  type="text"
-                  size="small">
-                Test
-              </el-button>
+              <!--<el-button-->
+                  <!--@click.native.prevent="onTest(scope.row.url)"-->
+                  <!--type="text"-->
+                  <!--size="small">-->
+                <!--Test-->
+              <!--</el-button>-->
             </template>
           </el-table-column>
         </el-table>
@@ -116,7 +116,29 @@
         serialNumber: 0,
         routeDefinitions: [],
         detailDialogVisible: false,
-        currentItemJson: null
+        currentItemJson: null,
+        templateItemJson: {
+          "id": "newRouterId",
+          "predicates": [
+            {
+              "name": "Path",
+              "args": {
+                "pattern": "/serviceName/**"
+              }
+            }
+          ],
+          "filters": [
+            {
+              "name": "RewritePath",
+              "args": {
+                "regexp": "/serviceName/(?<remaining>.*)",
+                "replacement": "/${remaining}"
+              }
+            }
+          ],
+          "uri": "lb://serviceName",
+          "order": 0
+        }
       };
     },
     created() {
@@ -139,9 +161,17 @@
         this.onRequestForList();
       },
       onDetail(index, row) {
-        this.currentItemJson = JSON.stringify(row, null, 2);
+        if (index == -1) {
+          this.currentItemJson = JSON.stringify(this.templateItemJson, null, 2);
+        } else {
+          this.currentItemJson = JSON.stringify(row, null, 2);
+        }
+
       },
       onUpdate() {
+        this.doUpdate()
+      },
+      doUpdate(){
         this.$http.post('/router/' + this.serialNumber, this.currentItemJson).then(
             function(res) {
               var newSerialNumber = res.body;
@@ -156,7 +186,33 @@
               this.$message.error('Update Exception');
             });
       },
-      onDelete() {
+      onDelete(index, row) {
+        this.$prompt('Please input DELETE', 'Delete router', {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+          inputPattern: /^DELETE$/,
+          inputErrorMessage: 'Please input DELETE'
+        })
+        .then(({ value }) => {
+          this.doDelete(index, row)
+        })
+        .catch(() => {
+
+        });
+      },
+      doDelete(index, row){
+        this.$http.delete('/router/' + this.serialNumber + "/" + row.id).then(
+            function(res) {
+              var newSerialNumber = res.body;
+              if (newSerialNumber - this.serialNumber == 1) {
+                this.$message.success('Delete Success');
+                this.onRequestForList();
+              } else {
+                this.$message.warn('Found New Version,Delete Failed');
+              }
+            }, function(e) {
+              this.$message.error('Delete Exception');
+            });
       },
       onTest() {
       }

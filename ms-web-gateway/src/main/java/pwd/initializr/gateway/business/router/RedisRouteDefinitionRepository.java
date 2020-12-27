@@ -1,11 +1,11 @@
 package pwd.initializr.gateway.business.router;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializeFilter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import javax.annotation.Resource;
-import org.apache.commons.lang.StringUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.route.RouteDefinition;
 import org.springframework.cloud.gateway.route.RouteDefinitionRepository;
@@ -27,11 +27,11 @@ import reactor.core.publisher.Mono;
  * @since DistributionVersion
  */
 @Component
+@Slf4j
 public class RedisRouteDefinitionRepository implements RouteDefinitionRepository {
 
   @Value("${gateway.router.in.redis.key.name}")
   public String GATEWAY_ROUTES_IN_REDIS_KEY_NAME;
-
 
   @Resource
   private RedisTemplate<String, String> redisTemplate;
@@ -47,25 +47,19 @@ public class RedisRouteDefinitionRepository implements RouteDefinitionRepository
 
   @Override
   public Mono<Void> save(Mono<RouteDefinition> route) {
-    return route.flatMap(routeDefinition -> {
+    route.flatMap(routeDefinition -> {
+      log.info(routeDefinition.toString());
       redisTemplate.opsForHash()
           .put(GATEWAY_ROUTES_IN_REDIS_KEY_NAME, routeDefinition.getId(),
-              JSON.toJSONString(routeDefinition));
+              JSON.toJSONString(routeDefinition, new SerializeFilter[]{}));
       return Mono.empty();
-    });
+    }).subscribe();
+    return Mono.empty();
   }
 
   @Override
   public Mono<Void> delete(Mono<String> routeId) {
-    return routeId.flatMap(id -> {
-      boolean remove = redisTemplate.opsForHash().values(GATEWAY_ROUTES_IN_REDIS_KEY_NAME)
-          .remove(id);
-      if (remove) {
-        return Mono.empty();
-      }
-      return Mono.defer(() -> Mono.error(
-          new NotFoundException("RouteDefinition not found: " + routeId)));
-    });
+    routeId.map(id -> redisTemplate.opsForHash().delete(GATEWAY_ROUTES_IN_REDIS_KEY_NAME,id)).subscribe();
+    return Mono.empty();
   }
-
 }

@@ -25,7 +25,7 @@
 
   <!--查询-->
   <select id="queryAll" resultMap="RouterDefinitionEntityMap">
-    SELECT id,uri,`order` predicates_json_string, filters_json_string FROM router_definition;
+    SELECT id,uri,`order`, predicates_json_string, filters_json_string FROM router_definition;
   </select>
 
   <!--删除-->
@@ -39,10 +39,10 @@
   </delete>
 
   <!--新增-->
-  <insert id="create" keyColumn="serial_number" keyProperty="serialNumber"
+  <insert id="replace" keyColumn="serial_number" keyProperty="serialNumber"
     parameterType="pwd.initializr.gateway.persistence.entity.RouterDefinitionEntity">
     REPLACE INTO router_definition(id,uri,`order`,predicates_json_string,filters_json_string)
-    VALUES (#{id},#{url},#{order},#{predicatesJsonString},#{filtersJsonString});
+    VALUES (#{entity.id},#{entity.url},#{entity.order},#{entity.predicatesJsonString},#{entity.filtersJsonString});
   </insert>
 
   <!--新增-->
@@ -50,24 +50,15 @@
     parameterType="pwd.initializr.gateway.persistence.entity.RouterVersionEntity">
     INSERT INTO router_definition(id,uri,`order`,predicates_json_string,filters_json_string)
     VALUES
-    <foreach item="entity" collection="entities" separator="," open="(" close=")" index="">
+    <foreach item="entity" collection="entities" separator=",">
+      (
       #{entity.id},
       #{entity.url},
       #{entity.order},
       #{entity.predicatesJsonString},
       #{entity.filtersJsonString}
+      )
     </foreach>
-
   </insert>
-
-  <update id="updateById">
-    UPDATE router_definition SET
-    uri = #{url},
-    `order` = #{order},
-    predicates_json_string = #{predicatesJsonString},
-    filters_json_string = #{filtersJsonString}
-    WHERE id = #{id}
-  </update>
-
 
 </mapper>

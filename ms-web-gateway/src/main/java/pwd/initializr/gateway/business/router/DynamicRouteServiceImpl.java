@@ -65,6 +65,8 @@ public class DynamicRouteServiceImpl implements ApplicationEventPublisherAware, 
   @Resource
   private RouterDefinitionDao routerDefinitionDao;
 
+  @Resource
+  private RedisRouteDefinitionRepository redisRouteDefinitionRepository;
   /**
    * <h2>新增或者替换路由</h2>
    * date 2020-12-23 22:22
@@ -85,6 +87,7 @@ public class DynamicRouteServiceImpl implements ApplicationEventPublisherAware, 
           // 二次识别本地版本是否大于远端版本
           if (expiredVersion > this.getRemoteVersion()) {
             // 首先写入数据
+            // TODO 具体如何写入
             routeDefinitionWriter.save(Mono.just(definition));
             // 其次更新版本
             redisTemplate.opsForValue()
@@ -128,7 +131,7 @@ public class DynamicRouteServiceImpl implements ApplicationEventPublisherAware, 
       RouterDefinitionEntity routerDefinitionEntity) {
     this.routerVersionDao.delete();
     this.routerVersionDao.create(new RouterVersionEntity(expiredVersion, new Date().toString()));
-    this.routerDefinitionDao.create(routerDefinitionEntity);
+    this.routerDefinitionDao.replace(routerDefinitionEntity);
   }
 
   /**
@@ -169,6 +172,7 @@ public class DynamicRouteServiceImpl implements ApplicationEventPublisherAware, 
           if (expiredVersion > this.getRemoteVersion()) {
             // 首先写入数据
             routeDefinitionWriter.delete(Mono.just(id));
+
             // 其次更新版本
             redisTemplate.opsForValue()
                 .set(GATEWAY_ROUTES_IN_REDIS_VERSION_NAME, String.valueOf(expiredVersion));
@@ -251,7 +255,7 @@ public class DynamicRouteServiceImpl implements ApplicationEventPublisherAware, 
   }
 
   private void upgradeLocalRouter(final Long remoteVersion) {
-    routeLocator
+    redisRouteDefinitionRepository
         .getRouteDefinitions()
         .map(this::parse)
         .collectList()

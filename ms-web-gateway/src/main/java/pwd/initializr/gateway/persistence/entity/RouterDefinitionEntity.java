@@ -2,6 +2,7 @@ package pwd.initializr.gateway.persistence.entity;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
+import com.alibaba.fastjson.annotation.JSONField;
 import java.net.URI;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -9,7 +10,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.cloud.gateway.filter.FilterDefinition;
 import org.springframework.cloud.gateway.handler.predicate.PredicateDefinition;
 import org.springframework.cloud.gateway.route.RouteDefinition;
@@ -33,59 +33,45 @@ import org.springframework.cloud.gateway.route.RouteDefinition;
 public class RouterDefinitionEntity extends RouteDefinition {
 
   private String url;
+  @JSONField(serialize = false)
   private String predicatesJsonString;
+  @JSONField(serialize = false)
   private String filtersJsonString;
 
-  public String getFiltersJsonString() {
-    if (StringUtils.isBlank(filtersJsonString)) {
-      return JSON.toJSONString(getFilters());
-    } else {
-      return filtersJsonString;
-    }
-  }
-
-  public String getPredicatesJsonString() {
-    if (StringUtils.isBlank(predicatesJsonString)) {
-      return JSON.toJSONString(getPredicates());
-    } else {
-      return predicatesJsonString;
-    }
+  public void setFiltersJsonString(String filtersJsonString) {
+    this.filtersJsonString = filtersJsonString;
+    super.setFilters(
+        JSON.parseObject(filtersJsonString, new TypeReference<List<FilterDefinition>>() {
+        }));
   }
 
   @Override
-  public List<PredicateDefinition> getPredicates() {
-    if (StringUtils.isBlank(predicatesJsonString)) {
-      return super.getPredicates();
-    } else {
-      return JSON.parseObject(predicatesJsonString, new TypeReference<List<PredicateDefinition>>() {
-      });
-    }
+  public void setPredicates(List<PredicateDefinition> predicates) {
+    super.setPredicates(predicates);
+    this.predicatesJsonString = JSON.toJSONString(predicates);
   }
 
   @Override
-  public List<FilterDefinition> getFilters() {
-    if (StringUtils.isBlank(filtersJsonString)) {
-      return super.getFilters();
-    } else {
-      return JSON.parseObject(filtersJsonString, new TypeReference<List<FilterDefinition>>() {
-      });
-    }
+  public void setFilters(List<FilterDefinition> filters) {
+    super.setFilters(filters);
+    this.filtersJsonString = JSON.toJSONString(filters);
   }
 
   @Override
-  public URI getUri() {
-    if (StringUtils.isBlank(this.url)) {
-      return super.getUri();
-    } else {
-      return URI.create(this.getUrl());
-    }
-
+  public void setUri(URI uri) {
+    super.setUri(uri);
+    this.url = uri.toString();
   }
 
-  public String getUrl() {
-    if (StringUtils.isBlank(url)) {
-      return getUri().toString();
-    }
-    return url;
+  public void setPredicatesJsonString(String predicatesJsonString) {
+    this.predicatesJsonString = predicatesJsonString;
+    super.setPredicates(
+        JSON.parseObject(predicatesJsonString, new TypeReference<List<PredicateDefinition>>() {
+        }));
+  }
+
+  public void setUrl(String url) {
+    this.url = url;
+    super.setUri(URI.create(url));
   }
 }
