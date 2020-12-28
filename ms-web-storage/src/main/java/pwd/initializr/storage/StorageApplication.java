@@ -1,5 +1,6 @@
 package pwd.initializr.storage;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.MultipartConfigFactory;
@@ -10,6 +11,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.unit.DataSize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.common.web.api.FullPathNameGenerator;
 
@@ -24,6 +26,7 @@ import pwd.initializr.common.web.api.FullPathNameGenerator;
  * @version 1.0.0
  * @since DistributionVersion
  */
+@Slf4j
 @Configuration
 @SpringBootApplication
 @EnableEurekaClient
@@ -50,6 +53,18 @@ public class StorageApplication {
   @GetMapping(value = "/account")
   public String index2() {
     return "this is storage 2 index";
+  }
+
+  @GetMapping(value = "/timeout/{duration}")
+  public String index2(@PathVariable("duration") Long duration) {
+    log.info("Thread sleep {} milliseconds start",duration);
+    try {
+      Thread.sleep(duration);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
+    log.info("Thread sleep {} milliseconds end",duration);
+    return "this is storage sleep " + duration;
   }
 
 }

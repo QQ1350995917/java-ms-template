@@ -45,7 +45,7 @@ public class GatewayApplication {
     return "this is gateway 1 index";
   }
 
-  @GetMapping(value = "/account")
+  @GetMapping(value = "/gateway")
   public String index2() {
     return "this is gateway 2 index";
   }
