@@ -193,6 +193,7 @@
                 this.$message.warn('Found New Version,Update Failed');
               }
             }, function(e) {
+              console.error(e)
               this.$message.error('Update Exception');
             });
       },

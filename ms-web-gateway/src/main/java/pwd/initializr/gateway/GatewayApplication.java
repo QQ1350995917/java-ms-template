@@ -3,6 +3,7 @@ package pwd.initializr.gateway;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.SpringCloudApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,6 +29,7 @@ import springfox.documentation.oas.annotations.EnableOpenApi;
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableOpenApi
+@SpringCloudApplication
 @MapperScan("pwd.initializr.gateway.persistence")
 public class GatewayApplication {
 
