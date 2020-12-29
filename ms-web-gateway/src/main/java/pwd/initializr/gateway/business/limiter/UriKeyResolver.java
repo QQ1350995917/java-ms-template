@@ -2,6 +2,8 @@ package pwd.initializr.gateway.business.limiter;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cloud.gateway.filter.ratelimit.KeyResolver;
+import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
@@ -17,6 +19,8 @@ import reactor.core.publisher.Mono;
  * @version 1.0.0
  * @since DistributionVersion
  */
+@Primary
+@Component("uriKeyResolver")
 public class UriKeyResolver implements KeyResolver {
 
     @Override

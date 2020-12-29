@@ -3,19 +3,24 @@ package pwd.initializr.gateway;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.List;
 import java.util.concurrent.Executors;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cloud.gateway.filter.ratelimit.KeyResolver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.core.ReactiveRedisTemplate;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.script.RedisScript;
 import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+import org.springframework.validation.Validator;
+import pwd.initializr.gateway.business.limiter.CustomerRedisRateLimiter;
 import pwd.initializr.gateway.business.router.DynamicRouteServiceImpl;
-import reactor.core.publisher.Mono;
 
 /**
  * pwd.initializr.gateway@ms-web-initializr
@@ -61,6 +66,15 @@ public class BeanConfiguration {
         container.addMessageListener(listener, topic);
         container.setTaskExecutor(Executors.newFixedThreadPool(2));
         return container;
+    }
+
+    @Bean
+    @Primary
+    public CustomerRedisRateLimiter customRedisRateLimiter(
+        ReactiveRedisTemplate<String, String> redisTemplate,
+        @Qualifier(CustomerRedisRateLimiter.REDIS_SCRIPT_NAME) RedisScript<List<Long>> redisScript,
+        Validator validator) {
+        return new CustomerRedisRateLimiter(redisTemplate, redisScript, validator);
     }
 
 //    @Bean("ipKeyResolver")
