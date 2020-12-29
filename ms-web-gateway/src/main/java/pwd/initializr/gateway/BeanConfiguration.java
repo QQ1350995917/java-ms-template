@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.concurrent.Executors;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.gateway.filter.ratelimit.KeyResolver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -14,6 +15,7 @@ import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import pwd.initializr.gateway.business.router.DynamicRouteServiceImpl;
+import reactor.core.publisher.Mono;
 
 /**
  * pwd.initializr.gateway@ms-web-initializr
@@ -60,4 +62,15 @@ public class BeanConfiguration {
         container.setTaskExecutor(Executors.newFixedThreadPool(2));
         return container;
     }
+
+//    @Bean("ipKeyResolver")
+//    public KeyResolver ipKeyResolver() {
+//        return exchange -> Mono.just(exchange.getRequest().getRemoteAddress().getHostName());
+//    }
+//
+//    @Bean("userKeyResolver")
+//    public KeyResolver userKeyResolver() {
+//        return exchange -> Mono.just(exchange.getRequest().getQueryParams().getFirst("xxx"));
+//    }
+
 }

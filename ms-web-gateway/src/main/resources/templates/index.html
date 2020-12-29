@@ -136,7 +136,12 @@
               }
             },
             {
-              "name": "RateLimiter"
+              "name": "RequestRateLimiter",
+              "args": {
+                "redis-rate-limiter.replenishRate": 1,
+                "redis-rate-limiter.burstCapacity": 1,
+                "key-resolver": "#{@ipKeyResolver}"
+              }
             },
             {
               "name": "Hystrix",
