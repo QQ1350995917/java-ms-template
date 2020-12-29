@@ -77,7 +77,8 @@
     <el-dialog
         title="RouteDefinition"
         :visible.sync="detailDialogVisible"
-        width="30%">
+        width="30%"
+        :before-close="handleCloseDetailDialog">
       <el-input
           id="json-renderer"
           type="textarea"
@@ -129,18 +130,18 @@
           ],
           "filters": [
             {
-              "name": "RewritePath",
-              "args": {
-                "regexp": "/serviceName/(?<remaining>.*)",
-                "replacement": "/${remaining}"
-              }
-            },
-            {
               "name": "RequestRateLimiter",
               "args": {
                 "redis-rate-limiter.replenishRate": 1,
                 "redis-rate-limiter.burstCapacity": 1,
-                "key-resolver": "#{@ipKeyResolver}"
+                "key-resolver": "#{@ipKeyResolver} || #{@appKeyResolver}  || #{@uriKeyResolver} || #{@userKeyResolver}"
+              }
+            },
+            {
+              "name": "RewritePath",
+              "args": {
+                "regexp": "/serviceName/(?<remaining>.*)",
+                "replacement": "/${remaining}"
               }
             },
             {
@@ -181,7 +182,13 @@
         } else {
           this.currentItemJson = JSON.stringify(row, null, 2);
         }
-
+      },
+      handleCloseDetailDialog(done){
+        // this.$confirm('确认关闭？')
+        // .then(_ => {
+        //   done();
+        // })
+        // .catch(_ => {});
       },
       onUpdate() {
         this.doUpdate()
