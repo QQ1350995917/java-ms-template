@@ -1,7 +1,6 @@
 package pwd.initializr.gateway.business.limiter;
 
 import org.springframework.cloud.gateway.filter.ratelimit.KeyResolver;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
@@ -19,9 +18,10 @@ import reactor.core.publisher.Mono;
  */
 @Component("userKeyResolver")
 public class UserKeyResolver implements KeyResolver {
+
     @Override
     public Mono<String> resolve(ServerWebExchange exchange) {
-        return Mono.just(exchange.getRequest().getQueryParams().getFirst("xxx"));
+        return Mono.just(exchange.getRequest().getHeaders().getFirst("x-uid"));
     }
 
 }
