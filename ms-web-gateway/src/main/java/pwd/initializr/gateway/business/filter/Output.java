@@ -2,7 +2,6 @@ package pwd.initializr.gateway.business.filter;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import java.io.Serializable;
-import pwd.initializr.common.web.api.BaseException;
 
 /**
  * pwd.initializr.common.web.api@ms-web-initializr
@@ -42,10 +41,6 @@ public class Output<T> implements Serializable {
 
   public static Output output(Object data) {
     return new Output(Meta.successMeta(), data);
-  }
-
-  public static Output error(int code, String errorMessage, Object data) {
-    throw new BaseException(code, errorMessage);
   }
 
   public T getData() {
