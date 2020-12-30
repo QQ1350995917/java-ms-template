@@ -11,14 +11,11 @@ import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.RequestPath;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.request.RequestAttributes;
-import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.server.ServerWebExchange;
 import pwd.initializr.account.rpc.RPCSession;
 import pwd.initializr.account.rpc.RPCToken;
@@ -50,17 +47,17 @@ public class SessionFilter implements GlobalFilter, Ordered {
   private String ACCOUNT_SECRET;
   @Value("${gateway.filter.global.session.redis.key.prefix}")
   private String SESSION_PREFIX_USER;
-  @Value("${gateway.filter.global.session.token.skip.all}")
-  private Boolean filterSkipAll;
-  @Value("${gateway.filter.global.session.redis.key.timeout.secodes}")
-  private Long sessionKeyInReidsTimoutSeconds;
+  @Value("${gateway.filter.global.session.redis.key.timeout.seconds}")
+  private Long sessionKeyInRedisTimeoutSeconds;
 
   @Resource
   private RedisTemplate<String,String> redisTemplate;
+  @Resource
+  private SessionFilterServiceImpl sessionFilterService;
 
   @Override
   public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-    if (filterSkipAll) {
+    if (sessionFilterService.getSkipSessionFilter()) {
       return chain.filter(exchange);
     }
     ServerHttpRequest request = exchange.getRequest();
@@ -68,7 +65,7 @@ public class SessionFilter implements GlobalFilter, Ordered {
     String method = request.getMethodValue();
     String path = request.getURI().getPath();
 
-    if (SessionWhiteList.skipToken(path, method)) {
+    if (sessionFilterService.skipToken(path, method)) {
       // 白名单
       return chain.filter(exchange);
     }
@@ -96,7 +93,7 @@ public class SessionFilter implements GlobalFilter, Ordered {
       return buildSessionErrorMono(request, response, "请求参数错误");
     }
 
-    redisTemplate.expire(key,sessionKeyInReidsTimoutSeconds, TimeUnit.SECONDS);
+    redisTemplate.expire(key, sessionKeyInRedisTimeoutSeconds, TimeUnit.SECONDS);
 
 //  request.getHeaders().add(ApiConstant.HTTP_HEADER_KEY_UID, uid);
     ServerHttpRequest serverHttpRequest = exchange.getRequest().mutate()
@@ -112,10 +109,10 @@ public class SessionFilter implements GlobalFilter, Ordered {
     RequestPath path = request.getPath();
     String url = request.getURI().getPath();
     String redirect;
-    if (path.value().contains(SessionWhiteList.adminPath)) {
-      redirect = SessionWhiteList.adminLogin;
+    if (path.value().contains(SessionFilterServiceImpl.adminPath)) {
+      redirect = SessionFilterServiceImpl.adminLogin;
     } else {
-      redirect = SessionWhiteList.userLogin;
+      redirect = SessionFilterServiceImpl.userLogin;
     }
 //    String method = request.getMethodValue();
     response.setStatusCode(HttpStatus.resolve(401));

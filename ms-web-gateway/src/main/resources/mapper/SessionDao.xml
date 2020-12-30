@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pwd.initializr.gateway.persistence.dao.SessionDao">
+
+  <resultMap id="SessionEntityMap"
+    type="pwd.initializr.gateway.persistence.entity.SessionEntity">
+    <result column="id" jdbcType="BIGINT" property="id"/>
+    <result column="version" jdbcType="BIGINT" property="version"/>
+    <result column="weight" jdbcType="BIGINT" property="weight"/>
+    <result column="expression" jdbcType="VARCHAR" property="expression"/>
+    <result column="create_time" jdbcType="VARCHAR" property="createTime"/>
+  </resultMap>
+
+  <select id="createTable">
+    CREATE TABLE IF NOT EXISTS filter_session(
+     id            INT PRIMARY KEY     NOT NULL,
+     version       INT PRIMARY KEY     NOT NULL,
+     weight        INT PRIMARY KEY     NOT NULL,
+     expression    VARCHAR(255)        NOT NULL,
+     create_time   CHAR(20)            NOT NULL
+    );
+  </select>
+
+  <!--查询-->
+  <select id="queryVersion" returnType="java.lang.Long">
+    SELECT version FROM filter_session limit 1;
+  </select>
+
+  <!--查询-->
+  <select id="queryAll" resultMap="SessionEntityMap">
+    SELECT id,version,weight,method,expression,create_time FROM filter_session;
+  </select>
+
+  <!--删除-->
+  <delete id="delete">
+    DELETE FROM filter_session;
+  </delete>
+
+  <!--删除-->
+  <delete id="deleteById">
+    DELETE FROM filter_session WHERE id = #{id};
+  </delete>
+
+  <!--新增-->
+  <insert id="replaceById" keyColumn="id" keyProperty="id"
+    parameterType="pwd.initializr.gateway.persistence.entity.SessionEntity">
+    REPLACE INTO filter_session(id,version,weight,method,expression,create_time)
+    VALUES (#{entity.id},#{entity.version},#{entity.weight},#{entity.method},#{entity.expression},#{entity.createTime});
+  </insert>
+
+  <!--新增-->
+  <insert id="createByBatch" keyColumn="id" keyProperty="id"
+    parameterType="pwd.initializr.gateway.persistence.entity.SessionEntity">
+    INSERT INTO filter_session(id,version,weight,method,expression,create_time)
+    VALUES
+    <foreach item="entity" collection="entities" separator=",">
+      (
+      #{entity.id},
+      #{entity.version},
+      #{entity.weight},
+      #{entity.method},
+      #{entity.expression},
+      #{entity.createTime}
+      )
+    </foreach>
+  </insert>
+
+
+</mapper>
