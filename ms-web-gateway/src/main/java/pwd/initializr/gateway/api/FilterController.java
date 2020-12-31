@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import pwd.initializr.gateway.api.vo.FilterSessionWhiteVO;
 import pwd.initializr.gateway.business.filter.SessionBO;
 import pwd.initializr.gateway.business.filter.SessionFilterServiceImpl;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
@@ -45,7 +46,7 @@ public class FilterController {
   }
 
   @GetMapping(value = "/session/white", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  public Mono<FilterSessionWhiteVO> queryFilterSessionWhite() {
+  public Flux<FilterSessionWhiteVO> queryFilterSessionWhite() {
     return sessionFilterService.list().map(this::convertBoToVo);
   }
 

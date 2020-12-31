@@ -15,18 +15,18 @@
   <select id="createTable">
     CREATE TABLE IF NOT EXISTS filter_session(
      id            INTEGER PRIMARY KEY AUTOINCREMENT    NOT NULL,
-     version       INTEGER                              NOT NULL,
+     version       INTEGER                              NOT NULL DEFAULT 0,
      weight        INTEGER                              NOT NULL,
      method        CHAR(20)                             NOT NULL,
      expression    VARCHAR(255)                         NOT NULL,
      create_time   CHAR(20)                             NOT NULL,
-     UNIQUE KEY `inion-unique` (`weight`,`method`)
+     UNIQUE (`weight`,`method`)
     );
   </select>
 
   <!--查询-->
-  <select id="queryVersion" resultType="java.lang.Long">
-    SELECT version FROM filter_session limit 1;
+  <select id="queryVersion" resultType="int">
+    SELECT IFNULL(MIN(version),0) AS version FROM filter_session limit 1;
   </select>
 
   <!--查询-->

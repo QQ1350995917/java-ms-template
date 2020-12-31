@@ -29,7 +29,7 @@ public interface SessionDao {
 
   List<SessionEntity> queryAll();
 
-  Long queryVersion();
+  int queryVersion();
 
   int create(@Param("entity") SessionEntity entity);
 

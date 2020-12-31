@@ -28,4 +28,13 @@ public class PageController {
     return Mono.create(mono -> mono.success("index"));
   }
 
+  @GetMapping("/router")
+  public Mono<String> routerPage(final Model model) {
+    return Mono.create(mono -> mono.success("router"));
+  }
+
+  @GetMapping("/session")
+  public Mono<String> sessionPage(final Model model) {
+    return Mono.create(mono -> mono.success("session"));
+  }
 }

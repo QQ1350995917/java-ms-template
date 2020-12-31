@@ -2,6 +2,7 @@ package pwd.initializr.gateway.business.filter;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -24,6 +26,7 @@ import org.springframework.stereotype.Service;
 import pwd.initializr.gateway.persistence.dao.SessionDao;
 import pwd.initializr.gateway.persistence.entity.RouterVersionEntity;
 import pwd.initializr.gateway.persistence.entity.SessionEntity;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
@@ -41,7 +44,7 @@ import reactor.core.publisher.Mono;
 @Slf4j
 public class SessionFilterServiceImpl implements ApplicationRunner, MessageListener {
 
-  private static final Map<String, String> withoutTokenUrl = new HashMap<>();
+  private static Set<SessionBO> whiteList = new LinkedHashSet<>();
   /**
    * 管理员url中path特征
    */
@@ -56,9 +59,9 @@ public class SessionFilterServiceImpl implements ApplicationRunner, MessageListe
   public static String userLogin = "/account/api/session";
 
   static {
-    withoutTokenUrl.put("/account/api/admin/session", "PUT");
-    withoutTokenUrl.put("/account/api/session", "PUT");
-    withoutTokenUrl.put("/book/api/book", "GET");
+    whiteList.add(new SessionBO(0L,0L,0,"PUT","/account/api/admin/session",new Date().toString()));
+    whiteList.add(new SessionBO(1L,0L,0,"PUT","/account/api/session",new Date().toString()));
+    whiteList.add(new SessionBO(2L,0L,0,"GET","/book/api/book",new Date().toString()));
   }
 
   @Resource
@@ -66,7 +69,7 @@ public class SessionFilterServiceImpl implements ApplicationRunner, MessageListe
   @Resource
   private RedisTemplate<String, String> redisTemplate;
 
-  private Set<SessionBO> whiteList = new LinkedHashSet<>();
+
   @Value("${gateway.filter.global.session.token.skip.all:false}")
   private Boolean skipSessionFilter = false;
   @Value("${gateway.filter.global.session.in.redis.sync.topic}")
@@ -94,12 +97,12 @@ public class SessionFilterServiceImpl implements ApplicationRunner, MessageListe
     log.info("由{}渠道发送而来", topic);
     if (GATEWAY_FILTER_GLOBAL_SESSION_IN_REDIS_SYNC_TOPIC.equals(topic)) {
       long remoteVersion = Long.parseLong(body);
-      Long localVersion = sessionDao.queryVersion();
+      long localVersion = sessionDao.queryVersion();
       log.info("最新版本{},本地版本{},最新版本大于本地版本则更新", remoteVersion, localVersion);
       if (remoteVersion > localVersion) {
         log.info("开始更新");
         // 公共Redis库中有新版本的数据同步到本地
-        this.whiteList = upgradeLocalSessionWhiteList(remoteVersion);
+        whiteList = upgradeLocalSessionWhiteList(remoteVersion);
       }
     }
   }
@@ -110,20 +113,20 @@ public class SessionFilterServiceImpl implements ApplicationRunner, MessageListe
 
     // 查询中央仓库版本
     Long remoteVersion = this.getRemoteVersion();
-    Long localVersion = sessionDao.queryVersion();
+    long localVersion = sessionDao.queryVersion();
     if (remoteVersion > localVersion) {
       // 公共Redis库中有新版本的数据同步到本地
-      this.whiteList = upgradeLocalSessionWhiteList(remoteVersion);
+      whiteList = upgradeLocalSessionWhiteList(remoteVersion);
     } else if (remoteVersion < localVersion) {
       // 本地库中有新版本数据同步到公共Redis库
-      this.whiteList = upgradeRemoteSessionWhiteList(localVersion);
+      whiteList = upgradeRemoteSessionWhiteList(localVersion);
     } else {
       // remoteVersion == localVersion to do nothing
     }
   }
 
-  public Mono<SessionBO> list() {
-    return Mono.empty();
+  public Flux<SessionBO> list() {
+    return Mono.just(whiteList).flatMapMany(Flux::fromIterable);
   }
 
   public Mono<Integer> update(SessionBO sessionBO) {

@@ -1,5 +1,10 @@
 package pwd.initializr.gateway.business.filter;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import pwd.initializr.gateway.persistence.entity.SessionEntity;
 
 /**
@@ -13,6 +18,24 @@ import pwd.initializr.gateway.persistence.entity.SessionEntity;
  * @version 1.0.0
  * @since DistributionVersion
  */
+@AllArgsConstructor
+@Getter
+@Setter
+@ToString
 public class SessionBO extends SessionEntity {
 
+    public SessionBO(Long id, Long version, Integer weight, String method, String expression,
+        String createTime) {
+        super(id, version, weight, method, expression, createTime);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
 }
