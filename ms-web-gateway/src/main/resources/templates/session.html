@@ -7,11 +7,208 @@
   <script src="https://unpkg.com/vue/dist/vue.js"></script>
   <script src="https://unpkg.com/element-ui/lib/index.js"></script>
   <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
-
-  <script src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
-
 </head>
 <body>
+<el-container id="container">
+  <el-header style="padding: 0px;height: 42px">
+    <el-row>
+      <el-col :span="16" :offset="4">
+        <el-button @click="onCreate(-1, {});detailDialogVisible = true">Create</el-button>
+        <el-button @click="onRefresh()" style="float: right">Refresh</el-button>
+      </el-col>
+    </el-row>
+  </el-header>
+  <el-main style="padding: 0px;height: 650px">
+    <el-row>
+      <el-col :span="16" :offset="4">
+        <el-table
+            :data="whiteList"
+            style="width: 100%;"
+            max-height="600">
+          <el-table-column
+              prop="id"
+              label="ID"
+              width="80">
+          </el-table-column>
+          <el-table-column
+              prop="weight"
+              label="WEIGHT"
+              width="80">
+          </el-table-column>
+          <el-table-column
+              prop="method"
+              label="METHOD"
+              width="120">
+          </el-table-column>
+          <el-table-column
+              prop="expression"
+              label="EXPRESSION">
+          </el-table-column>
+          <el-table-column
+              prop="createTime"
+              label="CREATE-TIME"
+              width="260">
+          </el-table-column>
+          <el-table-column
+              fixed="right"
+              label="Operations"
+              width="100">
+            <template slot-scope="scope">
+              <el-button
+                  type="text"
+                  icon="el-icon-edit"
+                  @click="onDetail(scope.$index, scope.row);detailDialogVisible = true">
+              </el-button>
+              <el-button
+                  type="text"
+                  icon="el-icon-delete"
+                  @click="onDelete(scope.$index, scope.row)">
+              </el-button>
+              <!--<el-button-->
+              <!--@click.native.prevent="onTest(scope.row.url)"-->
+              <!--type="text"-->
+              <!--size="small">-->
+              <!--Test-->
+              <!--</el-button>-->
+            </template>
+          </el-table-column>
+        </el-table>
+      </el-col>
+    </el-row>
 
+    <el-dialog
+        title="RouteDefinition"
+        :visible.sync="detailDialogVisible"
+        width="30%"
+        :before-close="handleCloseDetailDialog">
+      <el-input placeholder="weight" v-model="currentWhite.weight">
+        <template slot="prepend">Http://</template>
+      </el-input>
+      <el-input placeholder="method" v-model="currentWhite.method">
+        <template slot="prepend">Http://</template>
+      </el-input>
+      <el-input placeholder="expression" v-model="currentWhite.expression">
+        <template slot="prepend">Http://</template>
+      </el-input>
+      <span slot="footer" class="dialog-footer">
+       <el-button @click="detailDialogVisible = false">Cancel</el-button>
+       <el-button type="primary" @click="onUpdate()">Update</el-button>
+      </span>
+    </el-dialog>
+
+  </el-main>
+  <el-footer>
+    <el-row>
+      <el-col :span="12" :offset="6">
+        <p>Powered by www.dingpengwei@foxmail.com</p>
+        <p>copyright©2020</p>
+      </el-col>
+    </el-row>
+  </el-footer>
+</el-container>
+
+<style>
+  .el-slot {
+    width: 120px;
+  }
+</style>
+<script>
+  new Vue({
+    el: '#container',
+    data: function() {
+      return {
+        serialNumber: 0,
+        whiteList: [],
+        detailDialogVisible: false,
+        currentWhite:''
+      };
+    },
+    created() {
+      this.onRequestForList();
+    },
+    methods: {
+      onRequestForList() {
+        this.$http.get('/filter/session/white').then(
+            function(res) {
+              if (this.whiteList === undefined || this.whiteList.length < 1) {
+
+              } else {
+                this.version = this.whiteList[0].version
+                this.whiteList = res.body
+              }
+              this.$message({
+                message: 'List Success',
+                type: 'success'
+              });
+            }, function(e) {
+              this.$message.error('List Exception');
+            });
+      },
+      onCreate() {
+
+      },
+      onRefresh() {
+        this.onRequestForList();
+      },
+      onDetail(index, row) {
+
+      },
+      handleCloseDetailDialog(done){
+        // this.$confirm('确认关闭？')
+        // .then(_ => {
+        //   done();
+        // })
+        // .catch(_ => {});
+      },
+      onUpdate() {
+        this.doUpdate()
+      },
+      doUpdate(){
+        // this.$http.post('/filter/session/white/' + this.serialNumber, this.currentItemJson).then(
+        //     function(res) {
+        //       var newSerialNumber = res.body;
+        //       if (newSerialNumber - this.serialNumber == 1) {
+        //         this.detailDialogVisible = false;
+        //         this.$message.success('Update Success');
+        //         this.onRequestForList();
+        //       } else {
+        //         this.$message.warn('Found New Version,Update Failed');
+        //       }
+        //     }, function(e) {
+        //       console.error(e)
+        //       this.$message.error('Update Exception');
+        //     });
+      },
+      onDelete(index, row) {
+        // this.$prompt('Please input DELETE', 'Delete router', {
+        //   confirmButtonText: 'OK',
+        //   cancelButtonText: 'Cancel',
+        //   inputPattern: /^DELETE$/,
+        //   inputErrorMessage: 'Please input DELETE'
+        // })
+        // .then(({ value }) => {
+        //   this.doDelete(router, row)
+        // })
+        // .catch(() => {
+        //
+        // });
+      },
+      doDelete(index, row){
+        // this.$http.delete('/router/' + this.serialNumber + "/" + row.id).then(
+        //     function(res) {
+        //       var newSerialNumber = res.body;
+        //       if (newSerialNumber - this.serialNumber == 1) {
+        //         this.$message.success('Delete Success');
+        //         this.onRequestForList();
+        //       } else {
+        //         this.$message.warn('Found New Version,Delete Failed');
+        //       }
+        //     }, function(e) {
+        //       this.$message.error('Delete Exception');
+        //     });
+      }
+    }
+  });
+</script>
 </body>
 </html>

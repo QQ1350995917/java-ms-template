@@ -1,5 +1,9 @@
 package pwd.initializr.gateway.api.vo;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import pwd.initializr.gateway.business.filter.SessionBO;
 
 /**
@@ -13,6 +17,10 @@ import pwd.initializr.gateway.business.filter.SessionBO;
  * @version 1.0.0
  * @since DistributionVersion
  */
-public class FilterSessionWhiteVO extends SessionBO {
+@AllArgsConstructor
+@Getter
+@Setter
+@ToString
+public class SessionWhiteOutput extends SessionBO {
 
 }
