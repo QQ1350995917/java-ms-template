@@ -31,6 +31,8 @@ public interface SessionDao {
 
   Long queryVersion();
 
-  int replaceById(@Param("id") Long id);
+  int create(@Param("entity") SessionEntity entity);
+
+  int update(@Param("entity") SessionEntity entity);
 
 }

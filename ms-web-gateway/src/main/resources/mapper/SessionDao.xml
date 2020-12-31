@@ -14,16 +14,18 @@
 
   <select id="createTable">
     CREATE TABLE IF NOT EXISTS filter_session(
-     id            INT PRIMARY KEY     NOT NULL,
-     version       INT PRIMARY KEY     NOT NULL,
-     weight        INT PRIMARY KEY     NOT NULL,
-     expression    VARCHAR(255)        NOT NULL,
-     create_time   CHAR(20)            NOT NULL
+     id            INTEGER PRIMARY KEY AUTOINCREMENT    NOT NULL,
+     version       INTEGER                              NOT NULL,
+     weight        INTEGER                              NOT NULL,
+     method        CHAR(20)                             NOT NULL,
+     expression    VARCHAR(255)                         NOT NULL,
+     create_time   CHAR(20)                             NOT NULL,
+     UNIQUE KEY `inion-unique` (`weight`,`method`)
     );
   </select>
 
   <!--查询-->
-  <select id="queryVersion" returnType="java.lang.Long">
+  <select id="queryVersion" resultType="java.lang.Long">
     SELECT version FROM filter_session limit 1;
   </select>
 
@@ -43,9 +45,16 @@
   </delete>
 
   <!--新增-->
-  <insert id="replaceById" keyColumn="id" keyProperty="id"
+  <insert id="create" keyColumn="id" keyProperty="id"
     parameterType="pwd.initializr.gateway.persistence.entity.SessionEntity">
-    REPLACE INTO filter_session(id,version,weight,method,expression,create_time)
+    INSERT INTO filter_session(id,version,weight,method,expression,create_time)
+    VALUES (#{entity.id},#{entity.version},#{entity.weight},#{entity.method},#{entity.expression},#{entity.createTime});
+  </insert>
+
+  <!--新增-->
+  <insert id="update" keyColumn="id" keyProperty="id"
+    parameterType="pwd.initializr.gateway.persistence.entity.SessionEntity">
+    INSERT INTO filter_session(id,version,weight,method,expression,create_time)
     VALUES (#{entity.id},#{entity.version},#{entity.weight},#{entity.method},#{entity.expression},#{entity.createTime});
   </insert>
 
