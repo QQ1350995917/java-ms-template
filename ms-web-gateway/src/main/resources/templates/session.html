@@ -77,21 +77,21 @@
     </el-row>
 
     <el-dialog
-        title="RouteDefinition"
+        title="SessionWhite"
         :visible.sync="detailDialogVisible"
         width="30%"
         :before-close="handleCloseDetailDialog">
       <el-input placeholder="weight" v-model="currentWhite.weight">
-        <template slot="prepend">Http://</template>
+        <template slot="prepend">Weight</template>
       </el-input>
       <el-input placeholder="method" v-model="currentWhite.method">
-        <template slot="prepend">Http://</template>
+        <template slot="prepend">Method</template>
       </el-input>
       <el-input placeholder="expression" v-model="currentWhite.expression">
-        <template slot="prepend">Http://</template>
+        <template slot="prepend">Expression</template>
       </el-input>
       <span slot="footer" class="dialog-footer">
-       <el-button @click="detailDialogVisible = false">Cancel</el-button>
+       <el-button @click="onDialogCancel();detailDialogVisible = false">Cancel</el-button>
        <el-button type="primary" @click="onUpdate()">Update</el-button>
       </span>
     </el-dialog>
@@ -120,7 +120,7 @@
         serialNumber: 0,
         whiteList: [],
         detailDialogVisible: false,
-        currentWhite:''
+        currentWhite: {}
       };
     },
     created() {
@@ -130,8 +130,8 @@
       onRequestForList() {
         this.$http.get('/filter/session/white').then(
             function(res) {
+              this.whiteList = res.body;
               if (this.whiteList === undefined || this.whiteList.length < 1) {
-
               } else {
                 this.version = this.whiteList[0].version
                 this.whiteList = res.body
@@ -151,7 +151,7 @@
         this.onRequestForList();
       },
       onDetail(index, row) {
-
+        this.currentWhite = row;
       },
       handleCloseDetailDialog(done){
         // this.$confirm('确认关闭？')
@@ -180,18 +180,18 @@
         //     });
       },
       onDelete(index, row) {
-        // this.$prompt('Please input DELETE', 'Delete router', {
-        //   confirmButtonText: 'OK',
-        //   cancelButtonText: 'Cancel',
-        //   inputPattern: /^DELETE$/,
-        //   inputErrorMessage: 'Please input DELETE'
-        // })
-        // .then(({ value }) => {
-        //   this.doDelete(router, row)
-        // })
-        // .catch(() => {
-        //
-        // });
+        this.$prompt('Please input DELETE', 'Delete router', {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+          inputPattern: /^DELETE$/,
+          inputErrorMessage: 'Please input DELETE'
+        })
+        .then(({ value }) => {
+          this.doDelete(router, row)
+        })
+        .catch(() => {
+
+        });
       },
       doDelete(index, row){
         // this.$http.delete('/router/' + this.serialNumber + "/" + row.id).then(
@@ -206,6 +206,9 @@
         //     }, function(e) {
         //       this.$message.error('Delete Exception');
         //     });
+      },
+      onDialogCancel(){
+        this.currentWhite = {}
       }
     }
   });
