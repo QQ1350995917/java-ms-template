@@ -1,6 +1,7 @@
 package pwd.initializr.gateway.persistence.dao;
 
 import java.util.List;
+import java.util.Set;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import pwd.initializr.gateway.persistence.entity.SessionEntity;
@@ -27,7 +28,7 @@ public interface SessionDao {
 
   int deleteById(@Param("id") Long id);
 
-  List<SessionEntity> queryAll();
+  Set<SessionEntity> queryAll();
 
   int queryVersion();
 
@@ -35,4 +36,5 @@ public interface SessionDao {
 
   int update(@Param("entity") SessionEntity entity);
 
+  int upgradeVersion(@Param("version") Integer version);
 }

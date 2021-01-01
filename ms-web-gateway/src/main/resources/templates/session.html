@@ -7,13 +7,15 @@
   <script src="https://unpkg.com/vue/dist/vue.js"></script>
   <script src="https://unpkg.com/element-ui/lib/index.js"></script>
   <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+  <script src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
 </head>
 <body>
 <el-container id="container">
   <el-header style="padding: 0px;height: 42px">
     <el-row>
       <el-col :span="16" :offset="4">
-        <el-button @click="onCreate(-1, {});detailDialogVisible = true">Create</el-button>
+        <el-button @click="onCreate(-1, {});isCreateDialog=true;detailDialogVisible = true">Create
+        </el-button>
         <el-button @click="onRefresh()" style="float: right">Refresh</el-button>
       </el-col>
     </el-row>
@@ -57,7 +59,7 @@
               <el-button
                   type="text"
                   icon="el-icon-edit"
-                  @click="onDetail(scope.$index, scope.row);detailDialogVisible = true">
+                  @click="onUpdate(scope.$index, scope.row);isCreateDialog=false;detailDialogVisible = true">
               </el-button>
               <el-button
                   type="text"
@@ -92,7 +94,8 @@
       </el-input>
       <span slot="footer" class="dialog-footer">
        <el-button @click="onDialogCancel();detailDialogVisible = false">Cancel</el-button>
-       <el-button type="primary" @click="onUpdate()">Update</el-button>
+       <el-button type="primary" v-if="!isCreateDialog" @click="doUpdate()">Update</el-button>
+       <el-button type="primary" v-if="isCreateDialog" @click="doCreate()">Create</el-button>
       </span>
     </el-dialog>
 
@@ -115,12 +118,13 @@
 <script>
   new Vue({
     el: '#container',
-    data: function() {
+    data: function () {
       return {
-        serialNumber: 0,
+        version: 0,
         whiteList: [],
         detailDialogVisible: false,
-        currentWhite: {}
+        currentWhite: {},
+        isCreateDialog: false
       };
     },
     created() {
@@ -129,55 +133,84 @@
     methods: {
       onRequestForList() {
         this.$http.get('/filter/session/white').then(
-            function(res) {
+            function (res) {
               this.whiteList = res.body;
               if (this.whiteList === undefined || this.whiteList.length < 1) {
               } else {
                 this.version = this.whiteList[0].version
+                console.log("currentVersion=" + this.version)
                 this.whiteList = res.body
               }
               this.$message({
                 message: 'List Success',
                 type: 'success'
               });
-            }, function(e) {
+            }, function (e) {
               this.$message.error('List Exception');
             });
-      },
-      onCreate() {
-
       },
       onRefresh() {
         this.onRequestForList();
       },
-      onDetail(index, row) {
-        this.currentWhite = row;
+      onCreate() {
+        this.currentWhite = {}
       },
-      handleCloseDetailDialog(done){
+      doCreate() {
+        this.$http.post('/filter/session/white', this.currentWhite).then(
+            function (res) {
+              var newVersion = res.body;
+              if (newVersion === -1) {
+                this.$message({
+                  message: 'Found Repetition ,Create Failed',
+                  type: 'warning'
+                });
+              } else if (newVersion - this.version === 1) {
+                this.detailDialogVisible = false;
+                this.currentWhite = {}
+                this.$message.success('Create Success');
+                this.onRequestForList();
+              } else {
+                this.$message({
+                  message: 'Found New Version,Create Failed',
+                  type: 'warning'
+                });
+              }
+            }, function (e) {
+              this.$message.error('Create Exception');
+            });
+      },
+      onUpdate(index, row) {
+        this.currentWhite = JSON.parse(JSON.stringify(row));
+      },
+      handleCloseDetailDialog(done) {
         // this.$confirm('确认关闭？')
         // .then(_ => {
         //   done();
         // })
         // .catch(_ => {});
       },
-      onUpdate() {
-        this.doUpdate()
-      },
-      doUpdate(){
-        // this.$http.post('/filter/session/white/' + this.serialNumber, this.currentItemJson).then(
-        //     function(res) {
-        //       var newSerialNumber = res.body;
-        //       if (newSerialNumber - this.serialNumber == 1) {
-        //         this.detailDialogVisible = false;
-        //         this.$message.success('Update Success');
-        //         this.onRequestForList();
-        //       } else {
-        //         this.$message.warn('Found New Version,Update Failed');
-        //       }
-        //     }, function(e) {
-        //       console.error(e)
-        //       this.$message.error('Update Exception');
-        //     });
+      doUpdate() {
+        this.$http.put('/filter/session/white/' + this.currentWhite.id, this.currentWhite).then(
+            function (res) {
+              var newVersion = res.body;
+              if (newVersion === -1) {
+                this.$message({
+                  message: 'Nothing Changed,Update Failed',
+                  type: 'warning'
+                });
+              } else if (newVersion - this.version === 1) {
+                this.detailDialogVisible = false;
+                this.$message.success('Update Success');
+                this.onRequestForList();
+              } else {
+                this.$message({
+                  message: 'Found New Version,Update Failed',
+                  type: 'warning'
+                });
+              }
+            }, function (e) {
+              this.$message.error('Update Exception');
+            });
       },
       onDelete(index, row) {
         this.$prompt('Please input DELETE', 'Delete router', {
@@ -186,28 +219,31 @@
           inputPattern: /^DELETE$/,
           inputErrorMessage: 'Please input DELETE'
         })
-        .then(({ value }) => {
-          this.doDelete(router, row)
+        .then(({value}) => {
+          this.doDelete(index, row)
         })
         .catch(() => {
 
         });
       },
-      doDelete(index, row){
-        // this.$http.delete('/router/' + this.serialNumber + "/" + row.id).then(
-        //     function(res) {
-        //       var newSerialNumber = res.body;
-        //       if (newSerialNumber - this.serialNumber == 1) {
-        //         this.$message.success('Delete Success');
-        //         this.onRequestForList();
-        //       } else {
-        //         this.$message.warn('Found New Version,Delete Failed');
-        //       }
-        //     }, function(e) {
-        //       this.$message.error('Delete Exception');
-        //     });
+      doDelete(index, row) {
+        this.$http.delete('/filter/session/white/' + row.id).then(
+            function (res) {
+              var newSerialNumber = res.body;
+              if (newSerialNumber - this.version === 1) {
+                this.$message.success('Delete Success');
+                this.onRequestForList();
+              } else {
+                this.$message({
+                  message: 'Found New Version,Delete Failed',
+                  type: 'warning'
+                });
+              }
+            }, function (e) {
+              this.$message.error('Delete Exception');
+            });
       },
-      onDialogCancel(){
+      onDialogCancel() {
         this.currentWhite = {}
       }
     }

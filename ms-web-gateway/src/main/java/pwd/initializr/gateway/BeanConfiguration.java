@@ -3,6 +3,8 @@ package pwd.initializr.gateway;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Executors;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -19,6 +21,7 @@ import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.validation.Validator;
+import pwd.initializr.gateway.business.filter.SessionFilterServiceImpl;
 import pwd.initializr.gateway.business.limiter.CustomerRedisRateLimiter;
 import pwd.initializr.gateway.business.router.DynamicRouteServiceImpl;
 
@@ -38,6 +41,8 @@ public class BeanConfiguration {
 
     @Value("${gateway.router.in.redis.sync.topic}")
     public String GATEWAY_ROUTES_IN_REDIS_SYNC_TOPIC;
+    @Value("${gateway.filter.global.session.in.redis.sync.topic}")
+    public String GATEWAY_FILTER_GLOBAL_SESSION_IN_REDIS_SYNC_TOPIC;
 
     @Bean
     public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory connectionFactory) {
@@ -59,11 +64,15 @@ public class BeanConfiguration {
 
     @Bean
     public RedisMessageListenerContainer initRedisContainer(
-        DynamicRouteServiceImpl listener, RedisConnectionFactory connectionFactory) {
+        DynamicRouteServiceImpl dynamicRouteService,
+        SessionFilterServiceImpl sessionFilterService,
+        RedisConnectionFactory connectionFactory) {
         RedisMessageListenerContainer container = new RedisMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
-        ChannelTopic topic = new ChannelTopic(GATEWAY_ROUTES_IN_REDIS_SYNC_TOPIC);
-        container.addMessageListener(listener, topic);
+        ChannelTopic routerTopic = new ChannelTopic(GATEWAY_ROUTES_IN_REDIS_SYNC_TOPIC);
+        ChannelTopic sessionTopic = new ChannelTopic(GATEWAY_ROUTES_IN_REDIS_SYNC_TOPIC);
+        container.addMessageListener(dynamicRouteService, routerTopic);
+        container.addMessageListener(sessionFilterService, sessionTopic);
         container.setTaskExecutor(Executors.newFixedThreadPool(2));
         return container;
     }

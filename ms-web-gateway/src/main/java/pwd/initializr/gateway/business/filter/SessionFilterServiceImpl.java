@@ -3,16 +3,16 @@ package pwd.initializr.gateway.business.filter;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import java.util.Date;
-import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -24,7 +24,6 @@ import org.springframework.data.redis.connection.MessageListener;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import pwd.initializr.gateway.persistence.dao.SessionDao;
-import pwd.initializr.gateway.persistence.entity.RouterVersionEntity;
 import pwd.initializr.gateway.persistence.entity.SessionEntity;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -44,31 +43,12 @@ import reactor.core.publisher.Mono;
 @Slf4j
 public class SessionFilterServiceImpl implements ApplicationRunner, MessageListener {
 
-  private static Set<SessionBO> whiteList = new LinkedHashSet<>();
-  /**
-   * 管理员url中path特征
-   */
-  public static String adminPath = "/api/admin";
-  /**
-   * 管理员登录页面
-   */
-  public static String adminLogin = "/account/api/admin/session";
-  /**
-   * 用户登录页面
-   */
-  public static String userLogin = "/account/api/session";
-
-  static {
-    whiteList.add(new SessionBO(0L,0L,0,"PUT","/account/api/admin/session",new Date().toString()));
-    whiteList.add(new SessionBO(1L,0L,0,"PUT","/account/api/session",new Date().toString()));
-    whiteList.add(new SessionBO(2L,0L,0,"GET","/book/api/book",new Date().toString()));
-  }
+  private static Set<SessionBO> whiteList = new TreeSet<>(((o1, o2) ->Integer.compare(o2.getWeight(), o1.getWeight())));
 
   @Resource
   private SessionDao sessionDao;
   @Resource
   private RedisTemplate<String, String> redisTemplate;
-
 
   @Value("${gateway.filter.global.session.token.skip.all:false}")
   private Boolean skipSessionFilter = false;
@@ -96,8 +76,8 @@ public class SessionFilterServiceImpl implements ApplicationRunner, MessageListe
     log.info("接收到消息：{}", body);
     log.info("由{}渠道发送而来", topic);
     if (GATEWAY_FILTER_GLOBAL_SESSION_IN_REDIS_SYNC_TOPIC.equals(topic)) {
-      long remoteVersion = Long.parseLong(body);
-      long localVersion = sessionDao.queryVersion();
+      int remoteVersion = Integer.parseInt(body);
+      int localVersion = sessionDao.queryVersion();
       log.info("最新版本{},本地版本{},最新版本大于本地版本则更新", remoteVersion, localVersion);
       if (remoteVersion > localVersion) {
         log.info("开始更新");
@@ -112,8 +92,8 @@ public class SessionFilterServiceImpl implements ApplicationRunner, MessageListe
     sessionDao.createTable();
 
     // 查询中央仓库版本
-    Long remoteVersion = this.getRemoteVersion();
-    long localVersion = sessionDao.queryVersion();
+    int remoteVersion = this.getRemoteVersion();
+    int localVersion = sessionDao.queryVersion();
     if (remoteVersion > localVersion) {
       // 公共Redis库中有新版本的数据同步到本地
       whiteList = upgradeLocalSessionWhiteList(remoteVersion);
@@ -121,7 +101,8 @@ public class SessionFilterServiceImpl implements ApplicationRunner, MessageListe
       // 本地库中有新版本数据同步到公共Redis库
       whiteList = upgradeRemoteSessionWhiteList(localVersion);
     } else {
-      // remoteVersion == localVersion to do nothing
+      whiteList = this.sessionDao.queryAll().stream().map(this::convertEntityToBo).collect(
+          Collectors.toSet());
     }
   }
 
@@ -130,19 +111,121 @@ public class SessionFilterServiceImpl implements ApplicationRunner, MessageListe
   }
 
   public Mono<Integer> update(SessionBO sessionBO) {
-    return Mono.just(sessionDao.update(this.convertBoToEntity(sessionBO)));
+    if (whiteList.stream().anyMatch(
+        bo -> bo.getId().equals(sessionBO.getId())
+            && bo.getWeight().equals(sessionBO.getWeight())
+            && Objects.equals(bo, sessionBO))) {
+      return Mono.just(-1);
+    }
+
+    int localVersion = sessionDao.queryVersion();
+    int remoteVersion = getRemoteVersion();
+    int expiredVersion = localVersion + 1;
+    boolean editable = false;
+    if (remoteVersion < expiredVersion) {
+      try {
+        if (lock()) {
+          // 二次识别本地版本是否大于远端版本
+          if (expiredVersion > this.getRemoteVersion()) {
+            whiteList.stream()
+                .map(bo -> {
+                  if (bo.getId().equals(sessionBO.getId())){
+                    bo.setWeight(sessionBO.getWeight());
+                    bo.setMethod(sessionBO.getMethod());
+                    bo.setExpression(sessionBO.getExpression());
+                    bo.setCreateTime(new Date().toString());
+                  }
+                  return bo;
+                })
+                .forEach(bo -> bo.setVersion(expiredVersion));
+            writeUpgradePublic(expiredVersion);
+            editable = true;
+          }
+        }
+      } catch (Exception e) {
+        log.error(e.getMessage());
+      } finally {
+        releaseLock();
+      }
+    }
+    if (editable) {
+      upgradeLocalSessionWhiteList(expiredVersion);
+    }
+    return Mono.just(editable ? expiredVersion : localVersion);
   }
 
   public Mono<Integer> delete(Long id) {
-    return Mono.just(sessionDao.deleteById(id));
+    int localVersion = sessionDao.queryVersion();
+    int remoteVersion = getRemoteVersion();
+    int expiredVersion = localVersion + 1;
+    boolean editable = false;
+    if (remoteVersion < expiredVersion) {
+      try {
+        if (lock()) {
+          // 二次识别本地版本是否大于远端版本
+          if (expiredVersion > this.getRemoteVersion()) {
+            Iterator<SessionBO> iterator = whiteList.iterator();
+            if (iterator.hasNext()) {
+              SessionBO next = iterator.next();
+              if (next.getId().equals(id)) {
+                whiteList.remove(next);
+              }
+            }
+            writeUpgradePublic(expiredVersion);
+            sessionDao.deleteById(id);
+            editable = true;
+          }
+        }
+      } catch (Exception e) {
+        log.error(e.getMessage());
+      } finally {
+        releaseLock();
+      }
+    }
+    if (editable) {
+      upgradeLocalSessionWhiteList(expiredVersion);
+    }
+    return Mono.just(editable ? expiredVersion : localVersion);
   }
 
-  public Mono<Long> create(SessionBO sessionBO) {
-    sessionDao.create(sessionBO);
-    return Mono.just(sessionBO.getId());
+  public boolean contains(SessionBO sessionBO){
+    return whiteList.contains(sessionBO);
   }
 
-  private Set<SessionBO> upgradeLocalSessionWhiteList(Long remoteVersion){
+  public Mono<Integer> create(SessionBO sessionBO) {
+    sessionBO.setCreateTime(new Date().toString());
+    int localVersion = sessionDao.queryVersion();
+    int remoteVersion = getRemoteVersion();
+    int expiredVersion = localVersion + 1;
+    boolean editable = false;
+    if (remoteVersion < expiredVersion) {
+      try {
+        if (lock()) {
+          // 二次识别本地版本是否大于远端版本
+          if (expiredVersion > this.getRemoteVersion()) {
+            if (!whiteList.contains(sessionBO)) {
+              Long maxId = getMaxIdInWhiteList();
+              sessionBO.setId(maxId + 1);
+              whiteList.add(sessionBO);
+              whiteList.stream().forEach(bo -> bo.setVersion(expiredVersion));
+              writeUpgradePublic(expiredVersion);
+              editable = true;
+            }
+          }
+        }
+      } catch (Exception e) {
+        log.error(e.getMessage());
+      } finally {
+        releaseLock();
+      }
+    }
+    if (editable) {
+      upgradeLocalSessionWhiteList(expiredVersion);
+    }
+    return Mono.just(editable ? expiredVersion : localVersion);
+  }
+
+  private Set<SessionBO> upgradeLocalSessionWhiteList(Integer remoteVersion){
     String sessionFilterWhiteListJsonString = redisTemplate.opsForValue().get(GATEWAY_FILTER_GLOBAL_SESSION_IN_REDIS_KEY_NAME);
     LinkedHashSet<SessionBO> sessionBOS = JSON.parseObject(sessionFilterWhiteListJsonString,
         new TypeReference<LinkedHashSet<SessionBO>>() {
@@ -156,18 +239,20 @@ public class SessionFilterServiceImpl implements ApplicationRunner, MessageListe
           .map(this::convertBoToEntity)
           .collect(Collectors.toList());
       sessionDao.delete();
-      sessionDao.createByBatch(collect);
+      if (collect.size() > 0) {
+        sessionDao.createByBatch(collect);
+      }
     }
     return sessionBOS;
   }
 
-  private Set<SessionBO> upgradeRemoteSessionWhiteList(Long localVersion){
+  private Set<SessionBO> upgradeRemoteSessionWhiteList(Integer localVersion){
     Set<SessionBO> collect = new LinkedHashSet<>();
     try {
       if (lock()) {
         // 二次识别本地版本是否大于远端版本
         if (localVersion > this.getRemoteVersion()) {
-          List<SessionEntity> sessionEntities = sessionDao.queryAll();
+          Set<SessionEntity> sessionEntities = sessionDao.queryAll();
           // 首先写入数据
           redisTemplate.opsForValue().set(GATEWAY_FILTER_GLOBAL_SESSION_IN_REDIS_KEY_NAME,JSON.toJSONString(sessionEntities));
           // 其次更新版本
@@ -197,14 +282,13 @@ public class SessionFilterServiceImpl implements ApplicationRunner, MessageListe
     return locked != null && locked;
   }
 
-  private void publish(Long serialNumber) {
+  private void publish(Integer serialNumber) {
     redisTemplate.convertAndSend(GATEWAY_FILTER_GLOBAL_SESSION_IN_REDIS_SYNC_TOPIC, serialNumber);
   }
 
   private void releaseLock() {
     redisTemplate.delete(GATEWAY_FILTER_GLOBAL_SESSION_IN_REDIS_LOCKER_NAME);
   }
-
 
   private SessionEntity convertBoToEntity(SessionBO bo){
     SessionEntity sessionEntity = new SessionEntity();
@@ -218,17 +302,38 @@ public class SessionFilterServiceImpl implements ApplicationRunner, MessageListe
     return sessionBO;
   }
 
-  private Long getRemoteVersion() {
+  private Integer getRemoteVersion() {
     String version = redisTemplate.opsForValue().get(GATEWAY_FILTER_GLOBAL_SESSION_IN_REDIS_VERSION_NAME);
     if (StringUtils.isBlank(version)) {
-      return 0L;
+      return 0;
     }
-    return Long.parseLong(version);
+    return Integer.parseInt(version);
+  }
+
+  private Long getMaxIdInWhiteList(){
+    Long maxId = 0L;
+    Iterator<SessionBO> iterator = whiteList.iterator();
+    while (iterator.hasNext()) {
+      SessionBO next = iterator.next();
+      if (next.getId() > maxId) {
+        maxId = next.getId();
+      }
+    }
+    return maxId;
+  }
+
+  private void writeUpgradePublic(Integer expiredVersion){
+    // 首先写入数据
+    redisTemplate.opsForValue().set(GATEWAY_FILTER_GLOBAL_SESSION_IN_REDIS_KEY_NAME,JSON.toJSONString(whiteList));
+    // 其次更新版本
+    redisTemplate.opsForValue()
+        .set(GATEWAY_FILTER_GLOBAL_SESSION_IN_REDIS_VERSION_NAME, String.valueOf(expiredVersion));
+    // 最后发布版本
+    publish(expiredVersion);
   }
 
   public boolean skipToken(String path, String method) {
     // TODO 更新时候的并发问题
-
     return whiteList.stream().filter(sessionBO -> sessionBO.getMethod().equals(method))
         .anyMatch(sessionBO -> Pattern.matches(sessionBO.getExpression(), path));
   }

@@ -4,7 +4,6 @@ import java.util.List;
 import javax.annotation.Resource;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,8 +36,13 @@ public class FilterController {
   private SessionFilterServiceImpl sessionFilterService;
 
   @PostMapping(value = "/session/white", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  public Mono<Long> createFilterSessionWhite(@RequestBody SessionWhiteOutput input) {
-    return sessionFilterService.create(convertVoToBo(input));
+  public Mono<Integer> createFilterSessionWhite(@RequestBody SessionWhiteOutput input) {
+    SessionBO sessionBO = convertVoToBo(input);
+    if (sessionFilterService.contains(sessionBO)) {
+      return Mono.just(-1);
+    } else {
+      return sessionFilterService.create(sessionBO);
+    }
   }
 
   @DeleteMapping(value = "/session/white/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

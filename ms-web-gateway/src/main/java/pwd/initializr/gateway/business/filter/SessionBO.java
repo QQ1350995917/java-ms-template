@@ -24,7 +24,7 @@ import pwd.initializr.gateway.persistence.entity.SessionEntity;
 @ToString
 public class SessionBO extends SessionEntity {
 
-    public SessionBO(Long id, Long version, Integer weight, String method, String expression,
+    public SessionBO(Long id, Integer version, Integer weight, String method, String expression,
         String createTime) {
         super(id, version, weight, method, expression, createTime);
     }

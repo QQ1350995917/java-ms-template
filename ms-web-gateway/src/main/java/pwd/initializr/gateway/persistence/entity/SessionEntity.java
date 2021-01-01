@@ -26,7 +26,7 @@ import lombok.ToString;
 public class SessionEntity implements Comparable<SessionEntity> {
 
   private Long id;
-  private Long version = 0L;
+  private Integer version = 0;
   private Integer weight;
   private String method;
   private String expression;

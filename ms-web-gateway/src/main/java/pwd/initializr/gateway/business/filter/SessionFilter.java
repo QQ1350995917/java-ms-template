@@ -11,6 +11,7 @@ import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.RequestPath;
 import org.springframework.http.server.reactive.ServerHttpRequest;
@@ -49,6 +50,12 @@ public class SessionFilter implements GlobalFilter, Ordered {
   private String SESSION_PREFIX_USER;
   @Value("${gateway.filter.global.session.redis.key.timeout.seconds}")
   private Long sessionKeyInRedisTimeoutSeconds;
+  @Value("${gateway.filter.global.session.admin.path.features}")
+  private String adminPathFeatures;
+  @Value("${gateway.filter.global.session.admin.login}")
+  private String adminLoginPath;
+  @Value("${gateway.filter.global.session.user.login}")
+  private String userLoginPath;
 
   @Resource
   private RedisTemplate<String,String> redisTemplate;
@@ -109,17 +116,17 @@ public class SessionFilter implements GlobalFilter, Ordered {
     RequestPath path = request.getPath();
     String url = request.getURI().getPath();
     String redirect;
-    if (path.value().contains(SessionFilterServiceImpl.adminPath)) {
-      redirect = SessionFilterServiceImpl.adminLogin;
+    if (path.value().contains(adminPathFeatures)) {
+      redirect = adminLoginPath;
     } else {
-      redirect = SessionFilterServiceImpl.userLogin;
+      redirect = userLoginPath;
     }
 //    String method = request.getMethodValue();
     response.setStatusCode(HttpStatus.resolve(401));
-//    HttpHeaders httpHeaders = response.getHeaders();
+    HttpHeaders httpHeaders = response.getHeaders();
 //    httpHeaders.add("Content-Type", "application/json; charset=UTF-8");
 //    httpHeaders.add("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0");
-//    httpHeaders.add("Location", redirect);
+    httpHeaders.add("Location", redirect);
     Output<Object> objectOutput = new Output<>(new Meta(HttpStatus.UNAUTHORIZED.value(), message));
     String warning = JSON.toJSONString(objectOutput);
     DataBuffer bodyDataBuffer = response.bufferFactory()

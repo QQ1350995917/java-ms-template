@@ -20,7 +20,7 @@
      method        CHAR(20)                             NOT NULL,
      expression    VARCHAR(255)                         NOT NULL,
      create_time   CHAR(20)                             NOT NULL,
-     UNIQUE (`weight`,`method`)
+     UNIQUE (`expression`,`method`)
     );
   </select>
 
@@ -52,11 +52,11 @@
   </insert>
 
   <!--新增-->
-  <insert id="update" keyColumn="id" keyProperty="id"
+  <update id="update" keyColumn="id" keyProperty="id"
     parameterType="pwd.initializr.gateway.persistence.entity.SessionEntity">
     INSERT INTO filter_session(id,version,weight,method,expression,create_time)
     VALUES (#{entity.id},#{entity.version},#{entity.weight},#{entity.method},#{entity.expression},#{entity.createTime});
-  </insert>
+  </update>
 
   <!--新增-->
   <insert id="createByBatch" keyColumn="id" keyProperty="id"
@@ -75,5 +75,11 @@
     </foreach>
   </insert>
 
+
+  <!--升级版本-->
+  <update id="upgradeVersion" parameterType="java.lang.Integer">
+    UPDATE filter_session
+    SET version = #{version}
+  </update>
 
 </mapper>
