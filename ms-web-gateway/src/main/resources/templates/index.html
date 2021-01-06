@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <title>GateWay Index</title>
+  <!-- 引入样式 -->
   <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
-  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <!-- 引入组件库 -->
   <script src="https://unpkg.com/element-ui/lib/index.js"></script>
-  <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
-
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
 </head>
 <body>
 <el-container id="container">
@@ -22,11 +22,11 @@
   <el-main style="padding: 0px;height: 650px">
     <el-row>
       <el-col :span="16" :offset="4">
-        <router-link to='router.html'>
+        <router-link :to="{path:'/router'}">
           <el-button type="primary">Router</el-button>
         </router-link>
 
-        <router-link to='session.html'>
+        <router-link :to="{path:'/session'}">
           <el-button type="primary">SessionWhiteList</el-button>
         </router-link>
       </el-col>

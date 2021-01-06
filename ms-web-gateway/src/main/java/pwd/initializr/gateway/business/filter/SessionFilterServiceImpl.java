@@ -13,6 +13,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -24,7 +25,9 @@ import org.springframework.data.redis.connection.MessageListener;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import pwd.initializr.gateway.persistence.dao.SessionDao;
+import pwd.initializr.gateway.persistence.dao.SessionVersionDao;
 import pwd.initializr.gateway.persistence.entity.SessionEntity;
+import pwd.initializr.gateway.persistence.entity.SessionVersionEntity;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -47,6 +50,8 @@ public class SessionFilterServiceImpl implements ApplicationRunner, MessageListe
 
   @Resource
   private SessionDao sessionDao;
+  @Resource
+  private SessionVersionDao sessionVersionDao;
   @Resource
   private RedisTemplate<String, String> redisTemplate;
 
@@ -77,7 +82,7 @@ public class SessionFilterServiceImpl implements ApplicationRunner, MessageListe
     log.info("由{}渠道发送而来", topic);
     if (GATEWAY_FILTER_GLOBAL_SESSION_IN_REDIS_SYNC_TOPIC.equals(topic)) {
       int remoteVersion = Integer.parseInt(body);
-      int localVersion = sessionDao.queryVersion();
+      int localVersion = getLocalVersion();
       log.info("最新版本{},本地版本{},最新版本大于本地版本则更新", remoteVersion, localVersion);
       if (remoteVersion > localVersion) {
         log.info("开始更新");
@@ -90,10 +95,10 @@ public class SessionFilterServiceImpl implements ApplicationRunner, MessageListe
   @Override
   public void run(ApplicationArguments args) {
     sessionDao.createTable();
-
+    sessionVersionDao.createTable();
     // 查询中央仓库版本
     int remoteVersion = this.getRemoteVersion();
-    int localVersion = sessionDao.queryVersion();
+    int localVersion = getLocalVersion();
     if (remoteVersion > localVersion) {
       // 公共Redis库中有新版本的数据同步到本地
       whiteList = upgradeLocalSessionWhiteList(remoteVersion);
@@ -117,8 +122,7 @@ public class SessionFilterServiceImpl implements ApplicationRunner, MessageListe
             && Objects.equals(bo, sessionBO))) {
       return Mono.just(-1);
     }
-
-    int localVersion = sessionDao.queryVersion();
+    int localVersion = getLocalVersion();
     int remoteVersion = getRemoteVersion();
     int expiredVersion = localVersion + 1;
     boolean editable = false;
@@ -155,7 +159,7 @@ public class SessionFilterServiceImpl implements ApplicationRunner, MessageListe
   }
 
   public Mono<Integer> delete(Long id) {
-    int localVersion = sessionDao.queryVersion();
+    int localVersion = getLocalVersion();
     int remoteVersion = getRemoteVersion();
     int expiredVersion = localVersion + 1;
     boolean editable = false;
@@ -194,7 +198,7 @@ public class SessionFilterServiceImpl implements ApplicationRunner, MessageListe
 
   public Mono<Integer> create(SessionBO sessionBO) {
     sessionBO.setCreateTime(new Date().toString());
-    int localVersion = sessionDao.queryVersion();
+    int localVersion = getLocalVersion();
     int remoteVersion = getRemoteVersion();
     int expiredVersion = localVersion + 1;
     boolean editable = false;
@@ -230,6 +234,8 @@ public class SessionFilterServiceImpl implements ApplicationRunner, MessageListe
     LinkedHashSet<SessionBO> sessionBOS = JSON.parseObject(sessionFilterWhiteListJsonString,
         new TypeReference<LinkedHashSet<SessionBO>>() {
         });
+    sessionVersionDao.delete();
+    sessionVersionDao.create(new SessionVersionEntity(remoteVersion,new Date().toString()));
     if (sessionBOS != null){
       List<SessionEntity> collect = sessionBOS.stream()
           .filter(sessionEntity -> {
@@ -302,7 +308,7 @@ public class SessionFilterServiceImpl implements ApplicationRunner, MessageListe
     return sessionBO;
   }
 
-  private Integer getRemoteVersion() {
+  public Integer getRemoteVersion() {
     String version = redisTemplate.opsForValue().get(GATEWAY_FILTER_GLOBAL_SESSION_IN_REDIS_VERSION_NAME);
     if (StringUtils.isBlank(version)) {
       return 0;
@@ -330,6 +336,14 @@ public class SessionFilterServiceImpl implements ApplicationRunner, MessageListe
         .set(GATEWAY_FILTER_GLOBAL_SESSION_IN_REDIS_VERSION_NAME, String.valueOf(expiredVersion));
     // 最后发布版本
     publish(expiredVersion);
+  }
+
+  public Integer getLocalVersion(){
+    SessionVersionEntity sessionVersionEntity = sessionVersionDao.query();
+    if (sessionVersionEntity == null) {
+      sessionVersionEntity = new SessionVersionEntity();
+    }
+    return sessionVersionEntity.getVersion();
   }
 
   public boolean skipToken(String path, String method) {

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import pwd.initializr.gateway.api.vo.SessionWhiteVO;
 import pwd.initializr.gateway.api.vo.SessionWhiteOutput;
 import pwd.initializr.gateway.business.filter.SessionBO;
 import pwd.initializr.gateway.business.filter.SessionFilterServiceImpl;
@@ -36,7 +37,7 @@ public class FilterController {
   private SessionFilterServiceImpl sessionFilterService;
 
   @PostMapping(value = "/session/white", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  public Mono<Integer> createFilterSessionWhite(@RequestBody SessionWhiteOutput input) {
+  public Mono<Integer> createFilterSessionWhite(@RequestBody SessionWhiteVO input) {
     SessionBO sessionBO = convertVoToBo(input);
     if (sessionFilterService.contains(sessionBO)) {
       return Mono.just(-1);
@@ -51,26 +52,27 @@ public class FilterController {
   }
 
   @GetMapping(value = "/session/white", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  public Mono<List<SessionBO>> queryFilterSessionWhite() {
-    return sessionFilterService.list().collectList();
+  public Mono<SessionWhiteOutput> queryFilterSessionWhite() {
+    return sessionFilterService.list().map(this::convertBoToVo)
+        .collectList().map(list -> new SessionWhiteOutput(sessionFilterService.getRemoteVersion(),list));
   }
 
   @PutMapping(value = "/session/white/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   public Mono<Integer> updateFilterSessionWhite(@PathVariable("id") Long id,
-      @RequestBody SessionWhiteOutput input) {
+      @RequestBody SessionWhiteVO input) {
     input.setId(id);
     return sessionFilterService.update(convertVoToBo(input));
   }
 
-  private SessionWhiteOutput convertBoToVo(SessionBO sessionBO){
-    SessionWhiteOutput sessionWhiteOutput = new SessionWhiteOutput();
-    BeanUtils.copyProperties(sessionBO, sessionWhiteOutput);
-    return sessionWhiteOutput;
+  private SessionWhiteVO convertBoToVo(SessionBO sessionBO){
+    SessionWhiteVO sessionWhiteVO = new SessionWhiteVO();
+    BeanUtils.copyProperties(sessionBO, sessionWhiteVO);
+    return sessionWhiteVO;
   }
 
-  private SessionBO convertVoToBo(SessionWhiteOutput sessionVO){
+  private SessionBO convertVoToBo(SessionWhiteVO sessionWhiteVO){
     SessionBO sessionBO = new SessionBO();
-    BeanUtils.copyProperties(sessionVO,sessionBO);
+    BeanUtils.copyProperties(sessionWhiteVO,sessionBO);
     return sessionBO;
   }
 

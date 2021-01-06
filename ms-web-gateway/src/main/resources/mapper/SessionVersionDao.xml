@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pwd.initializr.gateway.persistence.dao.SessionVersionDao">
+
+  <resultMap id="SessionVersionEntityMap"
+    type="pwd.initializr.gateway.persistence.entity.SessionVersionEntity">
+    <result column="version" jdbcType="BIGINT" property="version"/>
+    <result column="create_time" jdbcType="VARCHAR" property="createTime"/>
+  </resultMap>
+
+  <select id="createTable">
+    CREATE TABLE IF NOT EXISTS session_version(
+     version       INT PRIMARY KEY     NOT NULL,
+     create_time   CHAR(20)            NOT NULL
+    );
+  </select>
+
+  <!--查询-->
+  <select id="query" resultMap="SessionVersionEntityMap">
+    SELECT version, create_time FROM session_version;
+  </select>
+
+  <!--删除-->
+  <delete id="delete">
+    DELETE FROM session_version;
+  </delete>
+
+  <!--新增-->
+  <insert id="create" keyColumn="serial_number" keyProperty="serialNumber"
+    parameterType="pwd.initializr.gateway.persistence.entity.SessionVersionEntity">
+    INSERT INTO session_version(version,create_time)
+    VALUES (#{version},#{createTime});
+  </insert>
+
+
+</mapper>

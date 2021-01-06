@@ -3,11 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <title>GateWay Session White List</title>
+  <!--<link rel="stylesheet" href="/css/element-ui-index.css">-->
+  <!--<script src="/js/element-ui-index.js"></script>-->
+  <!--<script src="/js/vue.js"></script>-->
+  <!-- 引入样式 -->
   <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
-  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <!-- 引入组件库 -->
   <script src="https://unpkg.com/element-ui/lib/index.js"></script>
-  <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
-  <script src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
 </head>
 <body>
 <el-container id="container">
@@ -134,12 +137,12 @@
       onRequestForList() {
         this.$http.get('/filter/session/white').then(
             function (res) {
-              this.whiteList = res.body;
-              if (this.whiteList === undefined || this.whiteList.length < 1) {
+              if (res.body === undefined ) {
+
               } else {
-                this.version = this.whiteList[0].version
+                this.version = res.body.version
                 console.log("currentVersion=" + this.version)
-                this.whiteList = res.body
+                this.whiteList = res.body.sessionWhiteList
               }
               this.$message({
                 message: 'List Success',

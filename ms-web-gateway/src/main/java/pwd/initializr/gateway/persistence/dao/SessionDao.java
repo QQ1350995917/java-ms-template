@@ -30,8 +30,6 @@ public interface SessionDao {
 
   Set<SessionEntity> queryAll();
 
-  int queryVersion();
-
   int create(@Param("entity") SessionEntity entity);
 
   int update(@Param("entity") SessionEntity entity);
