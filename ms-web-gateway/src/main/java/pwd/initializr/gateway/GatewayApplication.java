@@ -18,6 +18,7 @@ import springfox.documentation.oas.annotations.EnableOpenApi;
  * https://www.cnblogs.com/qianwei/p/10127700.html
  * https://www.cnblogs.com/crazymakercircle/p/11704077.html
  * https://cloud.spring.io/spring-cloud-static/spring-cloud-gateway/2.1.0.RC2/single/spring-cloud-gateway.html#gateway-how-it-works
+ * https://github.com/giafei/gateway-request-recorder-starter
  *
  * date 2019-09-15 17:52
  *
