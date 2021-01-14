@@ -1,6 +1,5 @@
 package pwd.initializr.gateway.api;
 
-import java.util.List;
 import javax.annotation.Resource;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.MediaType;
@@ -15,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.gateway.api.vo.SessionWhiteVO;
 import pwd.initializr.gateway.api.vo.SessionWhiteOutput;
 import pwd.initializr.gateway.business.filter.SessionBO;
-import pwd.initializr.gateway.business.filter.SessionFilterServiceImpl;
+import pwd.initializr.gateway.business.filter.SessionWhiteListFilterServiceImpl;
 import reactor.core.publisher.Mono;
 
 /**
@@ -34,7 +33,7 @@ import reactor.core.publisher.Mono;
 public class FilterController {
 
   @Resource
-  private SessionFilterServiceImpl sessionFilterService;
+  private SessionWhiteListFilterServiceImpl sessionFilterService;
 
   @PostMapping(value = "/session/white", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   public Mono<Integer> createFilterSessionWhite(@RequestBody SessionWhiteVO input) {

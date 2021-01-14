@@ -28,37 +28,36 @@ import reactor.core.publisher.Mono;
  * @since DistributionVersion
  */
 public class LoggerUtil {
-    private final static String REQUEST_RECORDER_LOG_BUFFER = "RequestRecorderGlobalFilter.request_recorder_log_buffer";
+
+    private final static String LOGGER_RECORDER_BUFFER = "LoggerRecorderGlobalFilter.logger_recorder_buffer";
 
     private static boolean hasBody(HttpMethod method) {
         //只记录这3种谓词的body
-        if (method == HttpMethod.POST || method == HttpMethod.PUT || method == HttpMethod.PATCH){
+        if (method == HttpMethod.POST || method == HttpMethod.PUT || method == HttpMethod.PATCH) {
             return true;
-
         }
-
         return false;
     }
 
     private static boolean shouldRecordBody(MediaType contentType) {
         String type = contentType.getType();
         String subType = contentType.getSubtype();
-
         if ("application".equals(type)) {
-            return "json".equals(subType) || "x-www-form-urlencoded".equals(subType) || "xml".equals(subType) || "atom+xml".equals(subType) || "rss+xml".equals(subType);
+            return "json".equals(subType) || "x-www-form-urlencoded".equals(subType) || "xml"
+                .equals(subType) || "atom+xml".equals(subType) || "rss+xml".equals(subType);
         } else if ("text".equals(type)) {
             return true;
         }
-
         //form没有记录
         return false;
     }
 
-    private static Mono<Void> doRecordBody(StringBuffer logBuffer, Flux<DataBuffer> body, Charset charset) {
+    private static Mono<Void> doRecordBody(StringBuffer logBuffer, Flux<DataBuffer> body,
+        Charset charset) {
         return LoggerDataBufferUtilFix.join(body)
             .doOnNext(wrapper -> {
                 logBuffer.append(new String(wrapper.getData(), charset));
-                logBuffer.append("\n------------ end ------------\n\n");
+                logBuffer.append("\n------------ end ------------\n");
                 wrapper.clear();
             }).then();
     }
@@ -66,40 +65,42 @@ public class LoggerUtil {
     private static Charset getMediaTypeCharset(@Nullable MediaType mediaType) {
         if (mediaType != null && mediaType.getCharset() != null) {
             return mediaType.getCharset();
-        }
-        else {
+        } else {
             return StandardCharsets.UTF_8;
         }
     }
 
     public static Mono<Void> recorderOriginalRequest(ServerWebExchange exchange) {
         StringBuffer logBuffer = new StringBuffer("\n---------------------------");
-        exchange.getAttributes().put(REQUEST_RECORDER_LOG_BUFFER, logBuffer);
+        exchange.getAttributes().put(LOGGER_RECORDER_BUFFER, logBuffer);
 
         ServerHttpRequest request = exchange.getRequest();
-        return recorderRequest(request, request.getURI(), logBuffer.append("\n原始请求：\n"));
+        return recorderRequest(request, request.getURI(),
+            logBuffer
+                .append("\n").append("origin request")
+                .append("\n").append("timestamp:").append(System.currentTimeMillis()).append("\n"));
     }
 
     public static Mono<Void> recorderRouteRequest(ServerWebExchange exchange) {
         URI requestUrl = exchange.getRequiredAttribute(GATEWAY_REQUEST_URL_ATTR);
-        StringBuffer logBuffer = exchange.getAttribute(REQUEST_RECORDER_LOG_BUFFER);
+        StringBuffer logBuffer = exchange.getAttribute(LOGGER_RECORDER_BUFFER);
 
-        return recorderRequest(exchange.getRequest(), requestUrl, logBuffer.append("代理请求：\n"));
+        return recorderRequest(exchange.getRequest(), requestUrl,
+            logBuffer
+                .append("\n").append("proxy request")
+                .append("\n").append("timestamp:").append(System.currentTimeMillis()).append("\n"));
     }
 
-    private static Mono<Void> recorderRequest(ServerHttpRequest request, URI uri, StringBuffer logBuffer) {
+    private static Mono<Void> recorderRequest(ServerHttpRequest request, URI uri,
+        StringBuffer logBuffer) {
         if (uri == null) {
             uri = request.getURI();
         }
-
         HttpMethod method = request.getMethod();
         HttpHeaders headers = request.getHeaders();
+        logBuffer.append(method.toString()).append(' ').append(uri.toString()).append('\n');
 
-        logBuffer
-            .append(method.toString()).append(' ')
-            .append(uri.toString()).append('\n');
-
-        logBuffer.append("------------请求头------------\n");
+        logBuffer.append("------------request header------------\n");
         headers.forEach((name, values) -> {
             values.forEach(value -> {
                 logBuffer.append(name).append(":").append(value).append('\n');
@@ -110,21 +111,21 @@ public class LoggerUtil {
         if (hasBody(method)) {
             long length = headers.getContentLength();
             if (length <= 0) {
-                logBuffer.append("------------无body------------\n");
+                logBuffer.append("------------without body------------\n");
             } else {
-                logBuffer.append("------------body 长度:").append(length).append(" contentType:");
+                logBuffer.append("------------body length:").append(length).append(" contentType:");
                 MediaType contentType = headers.getContentType();
                 if (contentType == null) {
-                    logBuffer.append("null，不记录body------------\n");
+                    logBuffer.append("null，body should not be recode------------\n");
                 } else if (!shouldRecordBody(contentType)) {
-                    logBuffer.append(contentType.toString()).append("，不记录body------------\n");
+                    logBuffer.append(contentType.toString())
+                        .append("，body should not be recode------------\n");
                 } else {
                     bodyCharset = getMediaTypeCharset(contentType);
                     logBuffer.append(contentType.toString()).append("------------\n");
                 }
             }
         }
-
 
         if (bodyCharset != null) {
             return doRecordBody(logBuffer, request.getBody(), bodyCharset);
@@ -135,19 +136,22 @@ public class LoggerUtil {
     }
 
     public static Mono<Void> recorderResponse(ServerWebExchange exchange) {
-        LoggerRecorderServerHttpResponseDecorator response = (LoggerRecorderServerHttpResponseDecorator)exchange.getResponse();
-        StringBuffer logBuffer = exchange.getAttribute(REQUEST_RECORDER_LOG_BUFFER);
-
+        LoggerRecorderServerHttpResponseDecorator response = (LoggerRecorderServerHttpResponseDecorator) exchange
+            .getResponse();
+        StringBuffer logBuffer = exchange.getAttribute(LOGGER_RECORDER_BUFFER);
+        logBuffer.append("\n").append("timestamp:").append(System.currentTimeMillis()).append("\n");
         HttpStatus code = response.getStatusCode();
         if (code == null) {
-            logBuffer.append("返回异常").append("\n------------ end ------------\n\n");
+            logBuffer.append("response exception").append("\n------------ end ------------\n\n");
             return Mono.empty();
         }
 
-        logBuffer.append("响应：").append(code.value()).append(" ").append(code.getReasonPhrase()).append('\n');
+        logBuffer.append("response：").append(code.value()).append(" ")
+            .append(code.getReasonPhrase())
+            .append('\n');
 
         HttpHeaders headers = response.getHeaders();
-        logBuffer.append("------------响应头------------\n");
+        logBuffer.append("------------response header------------\n");
         headers.forEach((name, values) -> {
             values.forEach(value -> {
                 logBuffer.append(name).append(":").append(value).append('\n');
@@ -157,9 +161,10 @@ public class LoggerUtil {
         Charset bodyCharset = null;
         MediaType contentType = headers.getContentType();
         if (contentType == null) {
-            logBuffer.append("------------ contentType = null，不记录body------------\n");
+            logBuffer
+                .append("------------ contentType = null，body should not be recode------------\n");
         } else if (!shouldRecordBody(contentType)) {
-            logBuffer.append("------------不记录body------------\n");
+            logBuffer.append("------------body should not be recode------------\n");
         } else {
             bodyCharset = getMediaTypeCharset(contentType);
             logBuffer.append("------------body------------\n");
@@ -174,7 +179,7 @@ public class LoggerUtil {
     }
 
     public static String getLogData(ServerWebExchange exchange) {
-        StringBuffer logBuffer = exchange.getAttribute(REQUEST_RECORDER_LOG_BUFFER);
+        StringBuffer logBuffer = exchange.getAttribute(LOGGER_RECORDER_BUFFER);
         return logBuffer.toString();
     }
 }

@@ -4,8 +4,10 @@ import com.alibaba.fastjson.JSON;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeUnit;
 import javax.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
@@ -33,8 +35,10 @@ import reactor.core.publisher.Mono;
  * @version 1.0.0
  * @since DistributionVersion
  */
+@Slf4j
 @Component
-public class SessionFilter implements GlobalFilter, Ordered {
+@ConditionalOnProperty(value = "gateway.filter.global.session.by.token.enable", matchIfMissing = false)
+public class SessionByTokenFilter implements GlobalFilter, Ordered {
 
   final static String HTTP_HEADER_KEY_AID = "x-aid";
   final static String HTTP_HEADER_KEY_OS = "x-os";
@@ -60,7 +64,7 @@ public class SessionFilter implements GlobalFilter, Ordered {
   @Resource
   private RedisTemplate<String,String> redisTemplate;
   @Resource
-  private SessionFilterServiceImpl sessionFilterService;
+  private SessionWhiteListFilterServiceImpl sessionFilterService;
 
   @Override
   public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {

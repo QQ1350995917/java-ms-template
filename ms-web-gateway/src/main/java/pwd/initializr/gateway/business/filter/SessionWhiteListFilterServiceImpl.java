@@ -44,7 +44,7 @@ import reactor.core.publisher.Mono;
  */
 @Service
 @Slf4j
-public class SessionFilterServiceImpl implements ApplicationRunner, MessageListener {
+public class SessionWhiteListFilterServiceImpl implements ApplicationRunner, MessageListener {
 
   private static Set<SessionBO> whiteList = new TreeSet<>(((o1, o2) ->Integer.compare(o2.getWeight(), o1.getWeight())));
 

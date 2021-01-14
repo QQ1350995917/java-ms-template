@@ -19,7 +19,7 @@ import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.validation.Validator;
-import pwd.initializr.gateway.business.filter.SessionFilterServiceImpl;
+import pwd.initializr.gateway.business.filter.SessionWhiteListFilterServiceImpl;
 import pwd.initializr.gateway.business.limiter.CustomerRedisRateLimiter;
 import pwd.initializr.gateway.business.router.DynamicRouteServiceImpl;
 
@@ -63,7 +63,7 @@ public class BeanConfiguration {
     @Bean
     public RedisMessageListenerContainer initRedisContainer(
         DynamicRouteServiceImpl dynamicRouteService,
-        SessionFilterServiceImpl sessionFilterService,
+        SessionWhiteListFilterServiceImpl sessionFilterService,
         RedisConnectionFactory connectionFactory) {
         RedisMessageListenerContainer container = new RedisMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
