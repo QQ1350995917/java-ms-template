@@ -134,7 +134,7 @@
               "args": {
                 "redis-rate-limiter.replenishRate": 1,
                 "redis-rate-limiter.burstCapacity": 1,
-                "key-resolver": "#{@ipKeyResolver} || #{@appKeyResolver}  || #{@uriKeyResolver} || #{@userKeyResolver}"
+                "key-resolver": "#{@ipKeyResolver} || #{@appKeyResolver}  || #{@uriKeyResolver} || #{@userTokenKeyResolver} || #{@userCookieKeyResolver}"
               }
             },
             {

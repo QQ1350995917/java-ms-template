@@ -3,8 +3,6 @@ package pwd.initializr.gateway;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Executors;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -85,15 +83,5 @@ public class BeanConfiguration {
         Validator validator) {
         return new CustomerRedisRateLimiter(redisTemplate, redisScript, validator);
     }
-
-//    @Bean("ipKeyResolver")
-//    public KeyResolver ipKeyResolver() {
-//        return exchange -> Mono.just(exchange.getRequest().getRemoteAddress().getHostName());
-//    }
-//
-//    @Bean("userKeyResolver")
-//    public KeyResolver userKeyResolver() {
-//        return exchange -> Mono.just(exchange.getRequest().getQueryParams().getFirst("xxx"));
-//    }
 
 }
