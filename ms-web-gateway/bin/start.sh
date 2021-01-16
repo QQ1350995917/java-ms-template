@@ -6,10 +6,12 @@ echo "JAR FILE PATH: $JAR_NAME"
 
 # profile
 PROFILE_NAME=$1
+PROFILE_OPTS="--spring.profiles.active=$PROFILE_NAME"
 if [ -z $PROFILE_NAME ]; then
 	PROFILE_NAME="default"
+	PROFILE_OPTS=""
 fi
-PROFILE_OPTS="--spring.profiles.active=$PROFILE_NAME"
+
 
 # 记录pid的文件名
 PID_FILE="$PROFILE_NAME.pid"
@@ -28,7 +30,7 @@ fi
 echo "STDOUT: $STDOUT_FILE"
 
 # 启动内存
-JAVA_MEM_OPTS="-XX:MaxMetaspaceSize=128m -Xms1G -Xms1G -Xmx1G -XX:NewRatio=1 -XX:SurvivorRatio=6 -XX:MaxDirectMemorySize=64m -Xss1024K -XX:ParallelGCThreads=20 -XX:+UseConcMarkSweepGC -XX:+UseParNewGC -XX:+UseCMSCompactAtFullCollection -XX:CMSInitiatingOccupancyFraction=80 -Xloggc:./logs/gc.log"
+JAVA_MEM_OPTS="-XX:MetaspaceSize=32m -XX:MaxMetaspaceSize=128m -Xms256m -Xmn256m -Xmx256m -XX:NewRatio=1 -XX:SurvivorRatio=6 -XX:MaxDirectMemorySize=64m -Xss1024K -XX:ParallelGCThreads=20 -XX:+UseConcMarkSweepGC -XX:+UseParNewGC -XX:+UseCMSCompactAtFullCollection -XX:CMSInitiatingOccupancyFraction=80 -XX:+PrintCommandLineFlags -XX:+PrintGC -XX:+PrintGCDetails -XX:+PrintHeapAtGC -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps -XX:+HeapDumpOnOutOfMemoryError -Xloggc:./logs/gc`date+%Y%m%d`.log -XX:HeapDumpPath=./logs/dump"
 echo "JAVA_MEM_OPTS: $JAVA_MEM_OPTS"
 #JAVA_JMX_OPTS="-Dcom.sun.management.jmxremote -Djava.rmi.server.hostname=0.0.0.0 -Dcom.sun.management.jmxremote.port=11220 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false"
 

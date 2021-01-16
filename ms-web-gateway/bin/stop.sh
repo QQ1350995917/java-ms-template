@@ -3,7 +3,7 @@
 # profile
 PROFILE_NAME=$1
 if [ -z $PROFILE_NAME ]; then
-  PROFILE_NAME="default"
+  PROFILE_NAME="test"
 fi
 
 # 查找pid
