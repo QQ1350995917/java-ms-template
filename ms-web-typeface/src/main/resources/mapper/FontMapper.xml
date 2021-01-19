@@ -3,4 +3,31 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="pwd.initializr.typeface.persistence.dao.FontMapper">
 
+  <!--countAllByCondition-->
+  <select id="countAllByCondition"
+    parameterType="pwd.initializr.typeface.persistence.entity.FontEntity"
+    resultType="java.lang.Long">
+    select count(*)
+    from `font`
+    <include refid="pwd.initializr.common.web.persistence.entity.ScopeEntity.entityQueryScope"></include>
+  </select>
+
+  <!--queryAllByCondition-->
+  <select id="queryAllByCondition"
+    parameterType="pwd.initializr.typeface.persistence.entity.FontEntity"
+    resultType="pwd.initializr.typeface.persistence.entity.FontEntity">
+    select
+    `id` as id,
+    `title` as title,
+    `name` as name,
+    `file_url` as fileUrl,
+    `thumb_url` as thumbUrl,
+    `status` as status,
+    `create_time` as createTime,
+    `update_time` as updateTime
+    from `font`
+    <include refid="pwd.initializr.common.web.persistence.entity.ScopeEntity.entityQueryScope"></include>
+    <include refid="pwd.initializr.common.web.persistence.entity.SortEntity.entityQuerySort"></include>
+    limit #{offset}, #{limit}
+  </select>
 </mapper>

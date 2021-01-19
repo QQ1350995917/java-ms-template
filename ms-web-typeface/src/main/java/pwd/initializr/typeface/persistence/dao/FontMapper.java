@@ -1,10 +1,13 @@
 package pwd.initializr.typeface.persistence.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import java.util.LinkedHashSet;
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
+import pwd.initializr.common.web.persistence.entity.ScopeEntity;
+import pwd.initializr.common.web.persistence.entity.SortEntity;
 import pwd.initializr.typeface.persistence.entity.FontEntity;
 
 /**
@@ -22,12 +25,12 @@ import pwd.initializr.typeface.persistence.entity.FontEntity;
 @Mapper
 public interface FontMapper extends BaseMapper<FontEntity> {
 
-//  Long countByCondition(
-//      @Param("fontEntity") FontEntity fontEntity);
-//
-//  List<FontEntity> findByCondition(@Param("fontEntity") FontEntity fontEntity,
-//      @Param("offset") Long offset, @Param("rows") Long rows);
-//
+  Long countAllByCondition(@Param("scopes") LinkedHashSet<? extends ScopeEntity> scopes);
+
+  List<FontEntity> queryAllByCondition(@Param("scopes") LinkedHashSet<? extends ScopeEntity> scopes,
+      @Param("sorts") LinkedHashSet<? extends SortEntity> sorts,
+      @Param("offset") Long offset, @Param("limit") Long limit);
+
 //  FontEntity findById(@Param("id") Long id);
 //
 //  void insert(@Param("fontEntity") FontEntity fontEntity);

@@ -1,7 +1,10 @@
 package pwd.initializr.typeface.business;
 
+import java.util.LinkedHashSet;
 import org.springframework.stereotype.Service;
 import pwd.initializr.common.web.business.bo.PageableQueryResult;
+import pwd.initializr.common.web.business.bo.ScopeBO;
+import pwd.initializr.common.web.business.bo.SortBO;
 import pwd.initializr.typeface.business.bo.FontBO;
 
 /**
@@ -18,7 +21,8 @@ import pwd.initializr.typeface.business.bo.FontBO;
 @Service
 public interface FontService {
 
-  PageableQueryResult<FontBO> findByCondition(FontBO fontBO, Long pageIndex, Long pageSize);
+  PageableQueryResult<FontBO> queryAllByCondition(LinkedHashSet<ScopeBO> scopes,
+      LinkedHashSet<SortBO> sorts, Long pageIndex, Long pageSize);
 
   FontBO findById(Long id);
 

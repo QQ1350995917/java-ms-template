@@ -7,6 +7,8 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * pwd.initializr.typeface@ms-web-initializr
@@ -19,6 +21,7 @@ import org.springframework.context.annotation.Configuration;
  * @version 1.0.0
  * @since DistributionVersion
  */
+@RestController
 @Configuration
 @SpringBootApplication
 @EnableEurekaClient
@@ -29,6 +32,22 @@ public class TypefaceApplication {
 
   public static void main(String[] args) throws Exception {
     SpringApplication.run(TypefaceApplication.class, args);
+  }
+
+
+  @GetMapping(value = "")
+  public String index0() {
+    return "this is typeface 0 index";
+  }
+
+  @GetMapping(value = "/")
+  public String index1() {
+    return "this is typeface 1 index";
+  }
+
+  @GetMapping(value = "/typeface")
+  public String index2() {
+    return "this is typeface 2 index";
   }
 
 }

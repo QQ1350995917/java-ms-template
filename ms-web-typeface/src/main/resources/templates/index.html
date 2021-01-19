@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Typeface Index</title>
+  <link rel="stylesheet" href="https://unpkg.zhimg.com/element-ui/lib/theme-chalk/index.css">
+  <script src="https://unpkg.zhimg.com/vue/dist/vue.js"></script>
+  <script src="https://unpkg.zhimg.com/element-ui/lib/index.js"></script>
+  <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+</head>
+<body>
+<el-container id="container">
+  <el-header style="padding: 0px;height: 42px">
+    <el-row>
+      <el-col :span="16" :offset="4">
+        <el-button @click="onCreate(-1, {});createDialogVisible = true">Create</el-button>
+        <el-button @click="onRefresh()" style="float: right">Refresh</el-button>
+      </el-col>
+    </el-row>
+  </el-header>
+  <el-main style="padding: 0px">
+    <el-row>
+      <el-col :span="16" :offset="4">
+        <el-card class="box-card" v-for="(item,i) in paints">
+          <div slot="header" class="clearfix">
+            <span>{{item.content}}</span>
+            <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
+          </div>
+          <el-image :src="item.imageUrl">
+            <div slot="error" class="image-slot">
+              <i class="el-icon-picture-outline"></i>
+            </div>
+          </el-image>
+        </el-card>
+        <el-pagination
+            :page-size="20"
+            :pager-count="11"
+            layout="prev, pager, next"
+            :total="100">
+        </el-pagination>
+      </el-col>
+    </el-row>
+
+    <el-dialog
+        title="Painting With Font"
+        :visible.sync="createDialogVisible"
+        width="50%"
+        :before-close="handleCloseDetailDialog">
+      <el-select
+          v-model="value"
+          multiple
+          filterable
+          remote
+          reserve-keyword
+          placeholder="请输入字体关键词以选择"
+          :remote-method="searchFont"
+          :loading="loading">
+        <el-option
+            v-for="item in options"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+        </el-option>
+      </el-select>
+      <el-input
+          type="textarea"
+          :rows="2"
+          placeholder="请输入内容"
+          v-model="textarea">
+      </el-input>
+      <span slot="footer" class="dialog-footer">
+       <el-button @click="createDialogVisible = false">Cancel</el-button>
+       <el-button type="primary" @click="onUpdate()">Update</el-button>
+      </span>
+    </el-dialog>
+
+  </el-main>
+  <el-footer>
+    <el-row>
+      <el-col :span="12" :offset="6">
+        <p>Powered by www.dingpengwei@foxmail.com</p>
+        <p>copyright©2020</p>
+      </el-col>
+    </el-row>
+  </el-footer>
+</el-container>
+
+<style>
+  .text {
+    font-size: 14px;
+  }
+
+  .item {
+    margin-bottom: 18px;
+  }
+
+  .clearfix:before,
+  .clearfix:after {
+    display: table;
+    content: "";
+  }
+  .clearfix:after {
+    clear: both
+  }
+
+  .box-card {
+    width: 100%;
+    margin-bottom: 5px;
+  }
+</style>
+<script>
+  new Vue({
+    el: '#container',
+    data: function() {
+      return {
+        paints: [],
+        createDialogVisible: false,
+        options: [],
+        value: [],
+        list: [],
+        loading: false,
+        states: ["Alabama", "Alaska", "Arizona",
+          "Arkansas", "California", "Colorado",
+          "Connecticut", "Delaware", "Florida",
+          "Georgia", "Hawaii", "Idaho", "Illinois",
+          "Indiana", "Iowa", "Kansas", "Kentucky",
+          "Louisiana", "Maine", "Maryland",
+          "Massachusetts", "Michigan", "Minnesota",
+          "Mississippi", "Missouri", "Montana",
+          "Nebraska", "Nevada", "New Hampshire",
+          "New Jersey", "New Mexico", "New York",
+          "North Carolina", "North Dakota", "Ohio",
+          "Oklahoma", "Oregon", "Pennsylvania",
+          "Rhode Island", "South Carolina",
+          "South Dakota", "Tennessee", "Texas",
+          "Utah", "Vermont", "Virginia",
+          "Washington", "West Virginia", "Wisconsin",
+          "Wyoming"],
+        textarea: ''
+      };
+    },
+    created() {
+      this.onRequestForList();
+    },
+    mounted() {
+      this.list = this.states.map(item => {
+        return { value: `value:${item}`, label: `label:${item}` };
+    });
+    },
+    methods: {
+      onRequestForList() {
+        this.$http.get('/api/painting').then(
+            function(res) {
+              console.log(res)
+              this.paints = res.body.data.elements;
+              this.$message.success('List Success');
+            }, function(e) {
+              this.$message.error('List Exception');
+            });
+      },
+      onCreate() {
+        
+      },
+      onRefresh() {
+
+      },
+      searchFont(query) {
+        if (query !== '') {
+          this.loading = true;
+          setTimeout(() => {
+            this.loading = false;
+            this.options = this.list.filter(item => {
+            return item.label.toLowerCase()
+            .indexOf(query.toLowerCase()) > -1;
+        });
+        }, 200);
+        } else {
+          this.options = [];
+        }
+      },
+      handleCloseDetailDialog(done){
+        // this.$confirm('确认关闭？')
+        // .then(_ => {
+        //   done();
+        // })
+        // .catch(_ => {});
+      },
+      onRequestCreate() {
+        this.doRequestCreate()
+      },
+      doRequestCreate(){
+        this.$http.post('/router/' + this.version, this.currentItemJson).then(
+            function(res) {
+
+            }, function(e) {
+              this.$message.error('Create Exception');
+            });
+      },
+      onDelete(index, row) {
+        this.$prompt('Please input DELETE', 'Delete router', {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+          inputPattern: /^DELETE$/,
+          inputErrorMessage: 'Please input DELETE'
+        })
+        .then(({ value }) => {
+          this.doDelete(router, row)
+        })
+        .catch(() => {
+
+        });
+      },
+      doDelete(index, row){
+        this.$http.delete('/router/' + this.version + "/" + row.id).then(
+            function(res) {
+              var newSerialNumber = res.body;
+              if (newSerialNumber - this.version == 1) {
+                this.$message.success('Delete Success');
+                this.onRequestForList();
+              } else {
+                this.$message.warn('Found New Version,Delete Failed');
+              }
+            }, function(e) {
+              this.$message.error('Delete Exception');
+            });
+      },
+      onTest() {
+      }
+    }
+  });
+</script>
+</body>
+</html>

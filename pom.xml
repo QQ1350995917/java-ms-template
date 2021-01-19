@@ -19,11 +19,11 @@
     <module>lib-common-web</module>
     <!--<module>lib-etl-core</module>-->
     <!--<module>lib-etl-core-plugin</module>-->
-    <!--<module>lib-rpc-storage</module>-->
     <!--<module>lib-rpc-account</module>-->
     <!--<module>lib-rpc-email</module>-->
     <!--<module>lib-rpc-monitor</module>-->
     <!--<module>lib-rpc-search</module>-->
+    <module>lib-rpc-storage</module>
     <!--<module>ms-web-access</module>-->
     <!--<module>ms-web-account</module>-->
     <!--<module>ms-web-book</module>-->

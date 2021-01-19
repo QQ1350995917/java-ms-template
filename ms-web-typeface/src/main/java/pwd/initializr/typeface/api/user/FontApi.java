@@ -15,7 +15,7 @@ import pwd.initializr.typeface.api.user.vo.FontListInput;
  */
 public interface FontApi {
 
-  void listFont(FontListInput input);
+  void listFont(String scopes, String sorts, String page);
 
   void findFont(Long id);
 
