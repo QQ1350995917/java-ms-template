@@ -179,7 +179,7 @@ public class ApiController {
 
   public <T extends ApiController> void outputExceptionToLog(Class<T> clazz, Exception e,
       Object... input) {
-    if (e instanceof BaseException) {
+    if (e instanceof ApiBaseException) {
       // 如果是baseException，是手动抛出，不需要告警，只打印info日志
       log.info(String
           .format("IntervalServerError:className:%s，requestParams:%s，", clazz.getName(),

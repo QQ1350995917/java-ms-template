@@ -31,6 +31,7 @@ public class ApiInputValidate {
   @ExceptionHandler({Exception.class})
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   public Output handle(Exception exception) {
+    int code = 400;
     String message = null;
     if (exception instanceof ConstraintViolationException) {
       ConstraintViolationException constraintViolationException = (ConstraintViolationException) exception;
@@ -52,10 +53,14 @@ public class ApiInputValidate {
         message = String.format("%s:%s", field, msg);
         break;
       }
+    } else if (exception instanceof ApiBaseException){
+      ApiBaseException apiBaseException = (ApiBaseException) exception;
+      code = apiBaseException.getStatusCode();
+      message = apiBaseException.getMessage();
     } else {
       message = exception.getMessage();
     }
     exception.printStackTrace();
-    return new Output(new Meta(400, message));
+    return new Output(new Meta(code, message));
   }
 }

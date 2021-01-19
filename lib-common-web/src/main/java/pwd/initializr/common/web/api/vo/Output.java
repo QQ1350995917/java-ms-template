@@ -2,7 +2,7 @@ package pwd.initializr.common.web.api.vo;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import java.io.Serializable;
-import pwd.initializr.common.web.api.BaseException;
+import pwd.initializr.common.web.api.ApiBaseException;
 
 /**
  * pwd.initializr.common.web.api@ms-web-initializr
@@ -45,7 +45,7 @@ public class Output<T> implements Serializable {
   }
 
   public static Output error(int code, String errorMessage, Object data) {
-    throw new BaseException(code, errorMessage);
+    throw new ApiBaseException(code, errorMessage);
   }
 
   public T getData() {
