@@ -10,7 +10,7 @@
   </resultMap>
 
   <select id="createTable">
-    CREATE TABLE IF NOT EXISTS session_version(
+    CREATE TABLE IF NOT EXISTS filter_session_version(
      version       INT PRIMARY KEY     NOT NULL,
      create_time   CHAR(20)            NOT NULL
     );
@@ -18,18 +18,18 @@
 
   <!--查询-->
   <select id="query" resultMap="SessionVersionEntityMap">
-    SELECT version, create_time FROM session_version;
+    SELECT version, create_time FROM filter_session_version;
   </select>
 
   <!--删除-->
   <delete id="delete">
-    DELETE FROM session_version;
+    DELETE FROM filter_session_version;
   </delete>
 
   <!--新增-->
   <insert id="create" keyColumn="serial_number" keyProperty="serialNumber"
     parameterType="pwd.initializr.gateway.persistence.entity.SessionVersionEntity">
-    INSERT INTO session_version(version,create_time)
+    INSERT INTO filter_session_version(version,create_time)
     VALUES (#{version},#{createTime});
   </insert>
 

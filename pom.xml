@@ -31,7 +31,7 @@
     <!--<module>ms-web-email</module>-->
     <!--<module>ms-web-etl</module>-->
     <!--<module>ms-web-etl-plugin</module>-->
-    <!--<module>ms-web-gateway</module>-->
+    <module>ms-web-gateway</module>
     <!--<module>ms-web-logger</module>-->
     <!--<module>ms-web-monitor</module>-->
     <!--<module>ms-web-organization</module>-->

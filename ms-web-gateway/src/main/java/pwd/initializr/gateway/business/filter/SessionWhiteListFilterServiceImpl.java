@@ -169,7 +169,7 @@ public class SessionWhiteListFilterServiceImpl implements ApplicationRunner, Mes
           // 二次识别本地版本是否大于远端版本
           if (expiredVersion > this.getRemoteVersion()) {
             Iterator<SessionBO> iterator = whiteList.iterator();
-            if (iterator.hasNext()) {
+            while (iterator.hasNext()) {
               SessionBO next = iterator.next();
               if (next.getId().equals(id)) {
                 whiteList.remove(next);
@@ -348,7 +348,7 @@ public class SessionWhiteListFilterServiceImpl implements ApplicationRunner, Mes
 
   public boolean skipToken(String path, String method) {
     // TODO 更新时候的并发问题
-    return whiteList.stream().filter(sessionBO -> sessionBO.getMethod().equals(method))
+    return whiteList.stream().filter(sessionBO -> sessionBO.getMethod().equalsIgnoreCase(method))
         .anyMatch(sessionBO -> Pattern.matches(sessionBO.getExpression(), path));
   }
 }
