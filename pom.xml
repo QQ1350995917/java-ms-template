@@ -31,7 +31,7 @@
     <!--<module>ms-web-email</module>-->
     <!--<module>ms-web-etl</module>-->
     <!--<module>ms-web-etl-plugin</module>-->
-    <module>ms-web-gateway</module>
+    <!--<module>ms-web-gateway</module>-->
     <!--<module>ms-web-logger</module>-->
     <!--<module>ms-web-monitor</module>-->
     <!--<module>ms-web-organization</module>-->
@@ -39,8 +39,8 @@
     <!--<module>ms-web-schedule</module>-->
     <!--<module>ms-web-search</module>-->
     <!--<module>ms-web-storage</module>-->
-    <!--<module>ms-web-typeface</module>-->
-    <module>project-generator</module>
+    <module>ms-web-typeface</module>
+    <!--<module>project-generator</module>-->
     <!--<module>project-generator-test</module>-->
     <!--<module>widget-tool</module>-->
   </modules>

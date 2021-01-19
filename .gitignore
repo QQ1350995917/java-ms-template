@@ -91,10 +91,15 @@ fabric.properties
 
 # Log file
 *.log
+*.logs
 log
+logs
 log/
+logs/
 log/*
+logs/*
 *.log
+*.logs
 z-log
 
 # BlueJ files
