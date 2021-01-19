@@ -65,8 +65,10 @@ public class GeneratorController extends AdminController {
     @ApiOperation(value = "工程代码生成")
     @PostMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public void generate(@RequestBody @NotNull(message = "参数不能为空") GeneratorInput input) {
+        String yyyyMMddHHmmssSSS = DateTimeUtil.getCurrent("yyyyMMddHHmmssSSS");
         ProjectBO projectBO = new ProjectBO();
         BeanUtils.copyProperties(input, projectBO);
+        projectBO.setProjectName(projectBO.getProjectName() + "-" + yyyyMMddHHmmssSSS);
         projectBO.setExportDir(projectGeneratorStorage);
         projectBO.setProjectPort(80);
         ArchitectureBoot architectureBoot = new ArchitectureBoot();
@@ -104,8 +106,9 @@ public class GeneratorController extends AdminController {
             return;
         }
 
+
         String sourceDir = projectGeneratorStorage + File.separator + projectBO.getProjectName();
-        String fileName = projectBO.getProjectName() + "-" + DateTimeUtil.getCurrent("yyyyMMddHHmmssSSS");
+        String fileName = projectBO.getProjectName();
         String fullFileName = fileName + ".zip";
         String targetFile = projectGeneratorStorage + File.separator + fullFileName;
         try {
