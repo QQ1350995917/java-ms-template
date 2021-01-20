@@ -48,7 +48,6 @@
         :before-close="handleCloseDetailDialog">
       <el-select
           v-model="value"
-          multiple
           filterable
           remote
           reserve-keyword
@@ -70,7 +69,7 @@
       </el-input>
       <span slot="footer" class="dialog-footer">
        <el-button @click="createDialogVisible = false">Cancel</el-button>
-       <el-button type="primary" @click="onUpdate()">Update</el-button>
+       <el-button type="primary" @click="onRequestCreate()">Create</el-button>
       </span>
     </el-dialog>
 
@@ -117,35 +116,16 @@
         createDialogVisible: false,
         options: [],
         value: [],
-        list: [],
         loading: false,
-        states: ["Alabama", "Alaska", "Arizona",
-          "Arkansas", "California", "Colorado",
-          "Connecticut", "Delaware", "Florida",
-          "Georgia", "Hawaii", "Idaho", "Illinois",
-          "Indiana", "Iowa", "Kansas", "Kentucky",
-          "Louisiana", "Maine", "Maryland",
-          "Massachusetts", "Michigan", "Minnesota",
-          "Mississippi", "Missouri", "Montana",
-          "Nebraska", "Nevada", "New Hampshire",
-          "New Jersey", "New Mexico", "New York",
-          "North Carolina", "North Dakota", "Ohio",
-          "Oklahoma", "Oregon", "Pennsylvania",
-          "Rhode Island", "South Carolina",
-          "South Dakota", "Tennessee", "Texas",
-          "Utah", "Vermont", "Virginia",
-          "Washington", "West Virginia", "Wisconsin",
-          "Wyoming"],
-        textarea: ''
+        fonts: [],
+        textarea: '研发中心'
       };
     },
     created() {
       this.onRequestForList();
     },
     mounted() {
-      this.list = this.states.map(item => {
-        return { value: `value:${item}`, label: `label:${item}` };
-    });
+
     },
     methods: {
       onRequestForList() {
@@ -159,20 +139,28 @@
             });
       },
       onCreate() {
-        
+        this.options = [];
       },
       onRefresh() {
 
       },
       searchFont(query) {
+        console.log(query)
         if (query !== '') {
           this.loading = true;
           setTimeout(() => {
             this.loading = false;
-            this.options = this.list.filter(item => {
-            return item.label.toLowerCase()
-            .indexOf(query.toLowerCase()) > -1;
-        });
+
+            this.$http.get('/api/font?scopes=' + encodeURIComponent('[{"hit":"AL","fieldName":"title","fieldValue":"' + query + '"}]')).then(
+                function(res) {
+                  this.fonts = res.body.data.elements;
+                  console.log(this.fonts)
+                  this.options = this.fonts.map(item => {
+                    return { value: `${item.id}`, label: `${item.title}` };
+                  });
+                }, function(e) {
+                  console.error(e)
+                });
         }, 200);
         } else {
           this.options = [];
@@ -189,9 +177,9 @@
         this.doRequestCreate()
       },
       doRequestCreate(){
-        this.$http.post('/router/' + this.version, this.currentItemJson).then(
+        this.$http.post('/api/painting', '{"content":"' + this.textarea + '","fontId":"73"}').then(
             function(res) {
-
+              console.log(res)
             }, function(e) {
               this.$message.error('Create Exception');
             });

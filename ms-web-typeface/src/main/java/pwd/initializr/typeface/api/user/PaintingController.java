@@ -54,7 +54,7 @@ public class PaintingController extends UserController implements PaintingApi {
     paintingBO.setUserId(getUid());
     PaintingBO save = paintingService.create(paintingBO);
     if (save == null) {
-      outputData();
+      outputException(500,"服务器异常");
     } else {
       BeanUtils.copyProperties(save, input);
       outputData(input);
