@@ -2,6 +2,7 @@ package pwd.initializr.typeface.api.user;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.BeanUtils;
@@ -59,10 +60,17 @@ public class PaintingController extends UserController implements PaintingApi {
       BeanUtils.copyProperties(save, input);
       outputData(input);
     }
-
   }
 
   @ApiOperation(value = "删除我的图片")
+  @DeleteMapping(value = {"/{id}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @Override
+  public void deleteById(@PathVariable Long id) {
+    Integer integer = paintingService.deleteByIds(Arrays.asList(id));
+    outputData(integer.toString());
+  }
+
+  @ApiOperation(value = "批量删除我的图片")
   @DeleteMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
   public void deleteByIds(@RequestBody List<Long> ids) {

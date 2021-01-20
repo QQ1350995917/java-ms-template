@@ -24,7 +24,7 @@
         <el-card class="box-card" v-for="(item,i) in paints">
           <div slot="header" class="clearfix">
             <span>{{item.content}}</span>
-            <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
+            <el-button style="float: right; padding: 3px 0" type="text" @click="onDelete(item.id)">Delete</el-button>
           </div>
           <el-image :src="item.imageUrl">
             <div slot="error" class="image-slot">
@@ -142,7 +142,7 @@
         this.options = [];
       },
       onRefresh() {
-
+        this.onRequestForList()
       },
       searchFont(query) {
         console.log(query)
@@ -154,7 +154,6 @@
             this.$http.get('/api/font?scopes=' + encodeURIComponent('[{"hit":"AL","fieldName":"title","fieldValue":"' + query + '"}]')).then(
                 function(res) {
                   this.fonts = res.body.data.elements;
-                  console.log(this.fonts)
                   this.options = this.fonts.map(item => {
                     return { value: `${item.id}`, label: `${item.title}` };
                   });
@@ -167,6 +166,7 @@
         }
       },
       handleCloseDetailDialog(done){
+        done();
         // this.$confirm('确认关闭？')
         // .then(_ => {
         //   done();
@@ -179,12 +179,18 @@
       doRequestCreate(){
         this.$http.post('/api/painting', '{"content":"' + this.textarea + '","fontId":"73"}').then(
             function(res) {
-              console.log(res)
+              if (res.body.meta.code === 200){
+                this.$message.success('Create Success');
+                this.createDialogVisible =false
+                this.onRefresh()
+              } else {
+                this.$message.error('Create Exception Code ' + res.body.meta.code);
+              }
             }, function(e) {
               this.$message.error('Create Exception');
             });
       },
-      onDelete(index, row) {
+      onDelete(id) {
         this.$prompt('Please input DELETE', 'Delete router', {
           confirmButtonText: 'OK',
           cancelButtonText: 'Cancel',
@@ -192,27 +198,24 @@
           inputErrorMessage: 'Please input DELETE'
         })
         .then(({ value }) => {
-          this.doDelete(router, row)
+          this.doDelete(id)
         })
         .catch(() => {
 
         });
       },
-      doDelete(index, row){
-        this.$http.delete('/router/' + this.version + "/" + row.id).then(
+      doDelete(id){
+        this.$http.delete('/api/painting/' + id).then(
             function(res) {
-              var newSerialNumber = res.body;
-              if (newSerialNumber - this.version == 1) {
+              if (res.body.meta.code === 200){
                 this.$message.success('Delete Success');
-                this.onRequestForList();
+                this.onRefresh()
               } else {
-                this.$message.warn('Found New Version,Delete Failed');
+                this.$message.error('Delete Exception Code ' + res.body.meta.code);
               }
             }, function(e) {
               this.$message.error('Delete Exception');
             });
-      },
-      onTest() {
       }
     }
   });

@@ -51,19 +51,19 @@ public class PaintingServiceImpl implements PaintingService {
 
   @Value("${spring.application.name}")
   private String applicationName;
-  @Value("${ms.typeface.bucket.name}")
+  @Value("${typeface.bucket.name}")
   private String bucketName;
 
   @Autowired
   private FontService fontService;
   @Autowired
   private PaintingMapper paintingMapper;
-  @Value("${ms.typeface.printer}")
-  private String printer;
+  @Value("${typeface.bucket.object.name.prefix}")
+  private String objectNamePrefix;
   @Autowired
   private StorageService storageService;
 
-  @Value("${ms.typeface.ttf.dir}")
+  @Value("${typeface.ttf.dir}")
   private String ttfDir;
 
   @Override
@@ -72,7 +72,7 @@ public class PaintingServiceImpl implements PaintingService {
     String[] contents = content.split(lineSeparator);
 
     FontBO fontBO = fontService.findById(paintingBO.getFontId());
-    String fontPath = String.join("", ttfDir, fontBO.getName());
+    String fontPath = String.join("/", ttfDir, fontBO.getName());
     BufferedImage bufferedImage = Painter.createImage(contents, fontPath);
     ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
     try {
@@ -82,7 +82,7 @@ public class PaintingServiceImpl implements PaintingService {
     }
     InputStream inputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
     String objectName = String
-        .join("/", printer, String.valueOf(System.currentTimeMillis()), UUID.randomUUID() + ".png");
+        .join("/", objectNamePrefix, String.valueOf(System.currentTimeMillis()), UUID.randomUUID() + ".png");
     try {
       DiskFileItem fileItem = (DiskFileItem) new DiskFileItemFactory().createItem("file",
           MediaType.IMAGE_PNG_VALUE, false, objectName);
@@ -115,7 +115,8 @@ public class PaintingServiceImpl implements PaintingService {
 
   @Override
   public Integer deleteByIds(List<Long> ids) {
-    return 0;
+    Integer integer = paintingMapper.deleteByIds(ids);
+    return integer;
   }
 
   @Override

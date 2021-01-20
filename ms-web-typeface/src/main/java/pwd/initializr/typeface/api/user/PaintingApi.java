@@ -19,6 +19,8 @@ public interface PaintingApi {
 
   void createPainting(PaintingVO input);
 
+  void deleteById(Long id);
+
   void deleteByIds(List<Long> ids);
 
   void findByCondition(PaintingListInput input);
