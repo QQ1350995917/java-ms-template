@@ -8,6 +8,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -25,6 +26,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import pwd.initializr.common.web.api.vo.Output;
 import pwd.initializr.common.web.business.bo.PageableQueryResult;
+import pwd.initializr.common.web.business.bo.ScopeBO;
+import pwd.initializr.common.web.business.bo.SortBO;
 import pwd.initializr.storage.rpc.RPCUploadOutput;
 import pwd.initializr.typeface.business.bo.FontBO;
 import pwd.initializr.typeface.business.bo.PaintingBO;
@@ -120,15 +123,13 @@ public class PaintingServiceImpl implements PaintingService {
   }
 
   @Override
-  public PageableQueryResult<PaintingBO> findByCondition(PaintingBO paintingBO, Long pageIndex,
-      Long pageSize) {
-    PaintingEntity paintingEntity = new PaintingEntity();
-    BeanUtils.copyProperties(paintingBO, paintingEntity);
+  public PageableQueryResult<PaintingBO> findByCondition(LinkedHashSet<ScopeBO> scopes,
+      LinkedHashSet<SortBO> sorts, Long pageIndex, Long pageSize) {
 
-    Long count = paintingMapper.countByCondition(paintingEntity);
+    Long count = paintingMapper.countAllByCondition(scopes);
 
     List<PaintingEntity> findByCondition = paintingMapper
-        .findByCondition(paintingEntity, pageIndex * pageSize, pageSize);
+        .queryAllByCondition(scopes, sorts, pageIndex * pageSize, pageSize);
 
     List<PaintingBO> collect = findByCondition.stream().map(
         obj -> new PaintingBO(obj.getId(), obj.getUserId(), obj.getFontId(), obj.getFontSize(),

@@ -3,6 +3,7 @@ package pwd.initializr.typeface.api.user;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.util.Arrays;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.BeanUtils;
@@ -16,8 +17,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.common.web.api.user.UserController;
+import pwd.initializr.common.web.api.vo.PageInput;
+import pwd.initializr.common.web.api.vo.ScopeInput;
+import pwd.initializr.common.web.api.vo.SortInput;
 import pwd.initializr.common.web.business.bo.PageableQueryResult;
-import pwd.initializr.typeface.api.user.vo.PaintingListInput;
+import pwd.initializr.common.web.business.bo.ScopeBO;
+import pwd.initializr.common.web.business.bo.SortBO;
 import pwd.initializr.typeface.api.user.vo.PaintingListOutput;
 import pwd.initializr.typeface.api.user.vo.PaintingVO;
 import pwd.initializr.typeface.business.PaintingService;
@@ -55,7 +60,7 @@ public class PaintingController extends UserController implements PaintingApi {
     paintingBO.setUserId(getUid());
     PaintingBO save = paintingService.create(paintingBO);
     if (save == null) {
-      outputException(500,"服务器异常");
+      outputException(500, "服务器异常");
     } else {
       BeanUtils.copyProperties(save, input);
       outputData(input);
@@ -81,19 +86,18 @@ public class PaintingController extends UserController implements PaintingApi {
   @ApiOperation(value = "列表我的图片")
   @GetMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
-  public void findByCondition(PaintingListInput input) {
-    PaintingBO paintingBO = new PaintingBO();
-    paintingBO.setUserId(getUid());
-    paintingBO.setContent(input.getContent());
-    paintingBO.setFontId(input.getFontId());
+  public void listMine(String scopes, String sorts, String page) {
+    PageInput pageInput = PageInput.parse(page);
+    LinkedHashSet<ScopeBO> scopeBOS = ScopeInput.parse(scopes);
+    LinkedHashSet<SortBO> sortBOS = SortInput.parse(sorts);
 
     PageableQueryResult<PaintingBO> byCondition = paintingService
-        .findByCondition(paintingBO, input.getIndex().longValue(), input.getSize().longValue());
+        .findByCondition(scopeBOS, sortBOS, pageInput.getIndex(), pageInput.getSize());
 
     PaintingListOutput<PaintingVO> output = new PaintingListOutput<PaintingVO>();
-    BeanUtils.copyProperties(input, output);
     output.setTotal(byCondition.getTotal());
-    output.setTotal(byCondition.getTotal());
+    output.setIndex(byCondition.getIndex());
+    output.setSize(byCondition.getSize());
 
     List<PaintingVO> collect = byCondition.getElements().stream()
         .map(

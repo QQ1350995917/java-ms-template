@@ -33,10 +33,10 @@
           </el-image>
         </el-card>
         <el-pagination
-            :page-size="20"
-            :pager-count="11"
+            @current-change="onPageChange"
+            :page-size="pageSize"
             layout="prev, pager, next"
-            :total="100">
+            :total="pageTotal">
         </el-pagination>
       </el-col>
     </el-row>
@@ -118,21 +118,28 @@
         value: [],
         loading: false,
         fonts: [],
-        textarea: '研发中心'
+        textarea: '研发中心',
+        pageTotal: 0,
+        pageIndex: 0,
+        pageSize: 12,
       };
     },
     created() {
-      this.onRequestForList();
+      this.onRequestForList(this.pageIndex,this.pageSize);
     },
     mounted() {
 
     },
     methods: {
-      onRequestForList() {
-        this.$http.get('/api/painting').then(
+      onPageChange(val) {
+        this.pageIndex = val - 1;
+        this.onRequestForList(this.pageIndex,this.pageSize);
+      },
+      onRequestForList(pageIndex,pageSize) {
+        this.$http.get('/api/painting?page=' + encodeURIComponent('{"index":' + pageIndex + ',"size":' + pageSize + '}')).then(
             function(res) {
-              console.log(res)
               this.paints = res.body.data.elements;
+              this.pageTotal = res.body.data.total;
               this.$message.success('List Success');
             }, function(e) {
               this.$message.error('List Exception');
@@ -142,10 +149,9 @@
         this.options = [];
       },
       onRefresh() {
-        this.onRequestForList()
+        this.onRequestForList(this.pageIndex,this.pageSize)
       },
       searchFont(query) {
-        console.log(query)
         if (query !== '') {
           this.loading = true;
           setTimeout(() => {
@@ -177,7 +183,7 @@
         this.doRequestCreate()
       },
       doRequestCreate(){
-        this.$http.post('/api/painting', '{"content":"' + this.textarea + '","fontId":"73"}').then(
+        this.$http.post('/api/painting', '{"content":"' + this.textarea.replace(/\n/g,"\\n") + '","fontId":"' + this.value + '"}').then(
             function(res) {
               if (res.body.meta.code === 200){
                 this.$message.success('Create Success');

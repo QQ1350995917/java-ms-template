@@ -79,19 +79,17 @@
     </foreach>
   </select>
 
-  <!--countByCondition-->
-  <select id="countByCondition"
+  <!--countAllByCondition-->
+  <select id="countAllByCondition"
     parameterType="pwd.initializr.typeface.persistence.entity.PaintingEntity"
     resultType="java.lang.Long">
     select count(*)
     from `painting`
-    <where>
-      <include refid="whereCondition"></include>
-    </where>
+    <include refid="pwd.initializr.common.web.persistence.entity.ScopeEntity.entityQueryScope"></include>
   </select>
 
-  <!--findByCondition-->
-  <select id="findByCondition"
+  <!--queryAllByCondition-->
+  <select id="queryAllByCondition"
     parameterType="pwd.initializr.typeface.persistence.entity.PaintingEntity"
     resultType="pwd.initializr.typeface.persistence.entity.PaintingEntity">
     select
@@ -109,11 +107,9 @@
     `create_time` as createTime,
     `update_time` as updateTime
     from `painting`
-    <where>
-      <include refid="whereCondition"></include>
-    </where>
-    order by updateTime DESC
-    limit #{offset}, #{rows}
+    <include refid="pwd.initializr.common.web.persistence.entity.ScopeEntity.entityQueryScope"></include>
+    <include refid="pwd.initializr.common.web.persistence.entity.SortEntity.entityQuerySort"></include>
+    limit #{offset}, #{limit}
   </select>
 
   <!--deleteByIds-->
@@ -123,19 +119,5 @@
       #{id}
     </foreach>
   </delete>
-
-  <sql id="whereCondition">
-    1 = 1
-    <if test="paintingEntity.fontId != null">
-      AND `font_id` = #{paintingEntity.fontId}
-    </if>
-    <if test="paintingEntity.content != null and paintingEntity.content != ''">
-      AND `content` like concat('%',#{paintingEntity.content},'%')
-    </if>
-    <if test="paintingEntity.userId != null">
-      AND `user_id` = #{paintingEntity.userId}
-    </if>
-    AND status != -1
-  </sql>
 
 </mapper>

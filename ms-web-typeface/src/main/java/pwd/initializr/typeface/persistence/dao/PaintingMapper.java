@@ -1,9 +1,12 @@
 package pwd.initializr.typeface.persistence.dao;
 
+import java.util.LinkedHashSet;
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
+import pwd.initializr.common.web.persistence.entity.ScopeEntity;
+import pwd.initializr.common.web.persistence.entity.SortEntity;
 import pwd.initializr.typeface.persistence.entity.PaintingEntity;
 
 /**
@@ -21,16 +24,18 @@ import pwd.initializr.typeface.persistence.entity.PaintingEntity;
 @Mapper
 public interface PaintingMapper {
 
-  Long countByCondition(@Param("paintingEntity") PaintingEntity paintingEntity);
+  Long countAllByCondition(@Param("scopes") LinkedHashSet<? extends ScopeEntity> scopes);
 
   Integer deleteByIds(@Param("ids") List<Long> ids);
-
-  List<PaintingEntity> findByCondition(@Param("paintingEntity") PaintingEntity paintingEntity,
-      @Param("offset") Long offset, @Param("rows") Long rows);
 
   PaintingEntity findById(@Param("id") Long id);
 
   List<PaintingEntity> findByIds(@Param("ids") List<Long> ids);
 
   void insert(@Param("paintingEntity") PaintingEntity paintingEntity);
+
+  List<PaintingEntity> queryAllByCondition(
+      @Param("scopes") LinkedHashSet<? extends ScopeEntity> scopes,
+      @Param("sorts") LinkedHashSet<? extends SortEntity> sorts,
+      @Param("offset") Long offset, @Param("limit") Long limit);
 }

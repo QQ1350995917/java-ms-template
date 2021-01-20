@@ -1,8 +1,11 @@
 package pwd.initializr.typeface.business;
 
+import java.util.LinkedHashSet;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import pwd.initializr.common.web.business.bo.PageableQueryResult;
+import pwd.initializr.common.web.business.bo.ScopeBO;
+import pwd.initializr.common.web.business.bo.SortBO;
 import pwd.initializr.typeface.business.bo.PaintingBO;
 
 /**
@@ -23,8 +26,8 @@ public interface PaintingService {
 
   Integer deleteByIds(List<Long> ids);
 
-  PageableQueryResult<PaintingBO> findByCondition(PaintingBO paintingBO, Long pageIndex,
-      Long pageSize);
+  PageableQueryResult<PaintingBO> findByCondition(LinkedHashSet<ScopeBO> scopes,
+      LinkedHashSet<SortBO> sorts, Long pageIndex, Long pageSize);
 
   PaintingBO findById(Long id);
 }

@@ -23,7 +23,7 @@ public interface PaintingApi {
 
   void deleteByIds(List<Long> ids);
 
-  void findByCondition(PaintingListInput input);
+  void listMine(String scopes, String sorts, String page);
 
   void findById(Long id);
 
