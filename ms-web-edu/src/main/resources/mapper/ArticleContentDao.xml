@@ -5,10 +5,10 @@
 
   <resultMap id="ArticleContentMap" type="pwd.initializr.edu.persistence.entity.ArticleContentEntity">
     <result column="id" jdbcType="BIGINT" property="id"/>
-    <result column="pid" jdbcType="BIGINT" property="pid"/>
-    <result column="name" jdbcType="VARCHAR" property="name"/>
-    <result column="data" jdbcType="VARCHAR" property="data"/>
-    <result column="leaf" jdbcType="INTEGER" property="leaf"/>
+    <result column="text" jdbcType="LONGTEXT" property="text"/>
+    <result column="url" jdbcType="VARCHAR" property="url"/>
+    <result column="remark" jdbcType="VARCHAR" property="remark"/>
+    <result column="path" jdbcType="VARCHAR" property="path"/>
     <result column="able" jdbcType="INTEGER" property="able"/>
     <result column="del" jdbcType="INTEGER" property="del"/>
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
@@ -19,10 +19,10 @@
   <select id="queryById" resultMap="ArticleContentMap">
     SELECT
       `id`,
-      `pid`,
-      `name`,
-      `data`,
-      `leaf`,
+      `text`,
+      `url`,
+      `remark`,
+      `path`,
       `able`,
       `del`,
       `create_time`,
@@ -43,10 +43,10 @@
   <select id="queryByCondition" resultMap="ArticleContentMap">
     SELECT
       `id`,
-      `pid`,
-      `name`,
-      `data`,
-      `leaf`,
+      `text`,
+      `url`,
+      `remark`,
+      `path`,
       `able`,
       `del`,
       `create_time`,
@@ -64,10 +64,10 @@
     INSERT INTO article_content
       (
         `id`,
-        `pid`,
-        `name`,
-        `data`,
-        `leaf`,
+        `text`,
+        `url`,
+        `remark`,
+        `path`,
         `able`,
         `del`,
         `create_time`,
@@ -76,10 +76,10 @@
     VALUES
       (
         #{entity.id},
-        #{entity.pid},
-        #{entity.name},
-        #{entity.data},
-        #{entity.leaf},
+        #{entity.text},
+        #{entity.url},
+        #{entity.remark},
+        #{entity.path},
         #{entity.able},
         #{entity.del},
         #{entity.createTime},
@@ -92,10 +92,10 @@
     INSERT INTO article_content
     (
         `id`,
-        `pid`,
-        `name`,
-        `data`,
-        `leaf`,
+        `text`,
+        `url`,
+        `remark`,
+        `path`,
         `able`,
         `del`,
         `create_time`,
@@ -105,10 +105,10 @@
     <foreach collection="entities" item="entity" separator=",">
     (
         #{entity.id},
-        #{entity.pid},
-        #{entity.name},
-        #{entity.data},
-        #{entity.leaf},
+        #{entity.text},
+        #{entity.url},
+        #{entity.remark},
+        #{entity.path},
         #{entity.able},
         #{entity.del},
         #{entity.createTime},
@@ -122,10 +122,10 @@
     REPLACE INTO article_content
     (
         `id`,
-        `pid`,
-        `name`,
-        `data`,
-        `leaf`,
+        `text`,
+        `url`,
+        `remark`,
+        `path`,
         `able`,
         `del`,
         `create_time`,
@@ -134,10 +134,10 @@
     VALUES
     (
         #{entity.id},
-        #{entity.pid},
-        #{entity.name},
-        #{entity.data},
-        #{entity.leaf},
+        #{entity.text},
+        #{entity.url},
+        #{entity.remark},
+        #{entity.path},
         #{entity.able},
         #{entity.del},
         #{entity.createTime},
@@ -150,10 +150,10 @@
     REPLACE INTO article_content
     (
         `id`,
-        `pid`,
-        `name`,
-        `data`,
-        `leaf`,
+        `text`,
+        `url`,
+        `remark`,
+        `path`,
         `able`,
         `del`,
         `create_time`,
@@ -163,10 +163,10 @@
     <foreach collection="entities" item="entity" separator=",">
       (
         #{entity.id},
-        #{entity.pid},
-        #{entity.name},
-        #{entity.data},
-        #{entity.leaf},
+        #{entity.text},
+        #{entity.url},
+        #{entity.remark},
+        #{entity.path},
         #{entity.able},
         #{entity.del},
         #{entity.createTime},
@@ -182,17 +182,17 @@
       <if test="entity.id != null and entity.id != ''">
         `id` = #{entity.id},
       </if>
-      <if test="entity.pid != null and entity.pid != ''">
-        `pid` = #{entity.pid},
+      <if test="entity.text != null and entity.text != ''">
+        `text` = #{entity.text},
       </if>
-      <if test="entity.name != null and entity.name != ''">
-        `name` = #{entity.name},
+      <if test="entity.url != null and entity.url != ''">
+        `url` = #{entity.url},
       </if>
-      <if test="entity.data != null and entity.data != ''">
-        `data` = #{entity.data},
+      <if test="entity.remark != null and entity.remark != ''">
+        `remark` = #{entity.remark},
       </if>
-      <if test="entity.leaf != null and entity.leaf != ''">
-        `leaf` = #{entity.leaf},
+      <if test="entity.path != null and entity.path != ''">
+        `path` = #{entity.path},
       </if>
       <if test="entity.able != null and entity.able != ''">
         `able` = #{entity.able},

@@ -39,7 +39,7 @@ import org.apache.http.ssl.SSLContextBuilder;
  * @version 1.0.0
  * @since DistributionVersion
  */
-class HttpXByHttpClientInit {
+public class HttpXByHttpClientInit {
 
     private TrustManager[] trustAllCerts;
     private ConnectionKeepAliveStrategy keepAliveStrategy;

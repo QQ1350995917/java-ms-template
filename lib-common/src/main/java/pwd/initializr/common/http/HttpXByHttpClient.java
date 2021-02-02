@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.util.Map;
 import org.apache.http.Consts;
 import org.apache.http.HttpEntity;
@@ -103,6 +104,9 @@ public class HttpXByHttpClient extends HttpX {
 
     try (CloseableHttpResponse response = httpXByHttpClientInit.getCloseableHttpClient()
         .execute(httpGet)) {
+      if (response.getStatusLine().getStatusCode() != 200) {
+        throw new RuntimeException(String.valueOf(response.getStatusLine().getStatusCode()));
+      }
       HttpEntity httpEntity = response.getEntity();
       try (InputStream inputStream = httpEntity.getContent();
           FileOutputStream fileOutputStream = new FileOutputStream(localFile)) {
@@ -221,7 +225,7 @@ public class HttpXByHttpClient extends HttpX {
     }
     try (CloseableHttpResponse response = httpXByHttpClientInit.getCloseableHttpClient()
         .execute(httpGet)) {
-      String result = EntityUtils.toString(response.getEntity());
+      String result = EntityUtils.toString(response.getEntity(), Charset.forName("UTF-8"));
       return result;
     } catch (Exception e) {
       throw new RuntimeException(e);

@@ -59,6 +59,24 @@
       #{offset}, #{limit}
   </select>
 
+  <!--通过实体作为筛选条件查询-->
+  <select id="queryAllLeafUsedBySpider" resultMap="ArticleTableMap">
+    SELECT
+      `id`,
+      `pid`,
+      `name`,
+      `data`,
+      `leaf`,
+      `able`,
+      `del`,
+      `create_time`,
+      `update_time`
+    FROM
+      article_table
+    WHERE
+      `leaf` = 1
+  </select>
+
   <!--新增所有列-->
   <insert id="insert" keyProperty="id" useGeneratedKeys="true" parameterType="pwd.initializr.edu.persistence.entity.ArticleTableEntity">
     INSERT INTO article_table
