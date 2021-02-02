@@ -2,9 +2,9 @@ package ${projectPackage}.business;
 
 import java.util.Date;
 import java.util.LinkedHashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -51,54 +51,30 @@ public class ${className}ServiceImpl implements ${className}Service {
   }
 
   @Override
-  public void insert(${className}BO bo) {
-    ${className}Entity entity = new ${className}Entity();
-    BeanUtils.copyProperties(bo, entity);
-    entity.setAble(EntityAble.DISABLE.getNumber());
-    entity.setDel(EntityDel.NO.getNumber());
-    entity.setCreateTime(new Date());
-    entity.setUpdateTime(new Date());
+  public Long insert(${className}BO bo) {
+    ${className}Entity entity = this.convert${className}BO2${className}Entity(bo);
     this.dao.insert(entity);
+    return entity.getId();
   }
 
   @Override
   public void insert(List<${className}BO> bos) {
-    LinkedList<${className}Entity> entities = new LinkedList<>();
-    for (${className}BO bo : bos) {
-      ${className}Entity entity = new ${className}Entity();
-      BeanUtils.copyProperties(bo, entity);
-      entity.setAble(EntityAble.DISABLE.getNumber());
-      entity.setDel(EntityDel.NO.getNumber());
-      entity.setCreateTime(new Date());
-      entity.setUpdateTime(new Date());
-      entities.add(entity);
-    }
+    List<${className}Entity> entities = bos.stream()
+      .map(this::convert${className}BO2${className}Entity).collect(Collectors.toList());
     this.dao.insertByBatch(entities);
   }
 
   @Override
-  public void insertOrReplace(${className}BO bo) {
-    ${className}Entity entity = new ${className}Entity();
-    BeanUtils.copyProperties(bo, entity);
-    entity.setAble(EntityAble.DISABLE.getNumber());
-    entity.setDel(EntityDel.NO.getNumber());
-    entity.setCreateTime(new Date());
-    entity.setUpdateTime(new Date());
+  public Long insertOrReplace(${className}BO bo) {
+    ${className}Entity entity = this.convert${className}BO2${className}Entity(bo);
     this.dao.insertOrReplace(entity);
+    return entity.getId();
   }
 
   @Override
   public void insertOrReplace(List<${className}BO> bos) {
-    LinkedList<${className}Entity> entities = new LinkedList<>();
-    for (${className}BO bo : bos) {
-      ${className}Entity entity = new ${className}Entity();
-      BeanUtils.copyProperties(bo, entity);
-      entity.setAble(EntityAble.DISABLE.getNumber());
-      entity.setDel(EntityDel.NO.getNumber());
-      entity.setCreateTime(new Date());
-      entity.setUpdateTime(new Date());
-      entities.add(entity);
-    }
+    List<${className}Entity> entities = bos.stream()
+      .map(this::convert${className}BO2${className}Entity).collect(Collectors.toList());
     this.dao.insertOrReplaceByBatch(entities);
   }
 
@@ -143,4 +119,13 @@ public class ${className}ServiceImpl implements ${className}Service {
     return this.dao.updateById(entity);
   }
 
+  public ${className}Entity convert${className}BO2${className}Entity(${className}BO bo){
+    ${className}Entity entity = new ${className}Entity();
+    BeanUtils.copyProperties(bo, entity);
+    entity.setAble(EntityAble.DISABLE.getNumber());
+    entity.setDel(EntityDel.NO.getNumber());
+    entity.setCreateTime(new Date());
+    entity.setUpdateTime(new Date());
+    return entity;
+  }
 }

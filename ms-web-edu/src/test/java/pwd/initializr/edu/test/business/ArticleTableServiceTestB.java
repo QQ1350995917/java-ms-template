@@ -32,7 +32,7 @@ import pwd.initializr.edu.business.bo.ArticleTableBO;
 public class ArticleTableServiceTestB {
 
     @Autowired
-    private pwd.initializr.edu.business.ArticleTableService articleContentService;
+    private pwd.initializr.edu.business.ArticleTableService articleTableService;
 
     @Test
     public void articleContent() throws Exception {
@@ -44,7 +44,8 @@ public class ArticleTableServiceTestB {
 
         System.out.println(JSON.toJSONString(articleTableBO));
 
-        articleContentService.insert(articleTableBO);
+        Long articleTableId = articleTableService.insert(articleTableBO);
+
 
         StringBuilder lines = new StringBuilder();
         try (BufferedReader bufferedReader = new BufferedReader(
@@ -68,14 +69,15 @@ public class ArticleTableServiceTestB {
             String title = liChild.getElementsByTag("div").get(0).getElementsByTag("a")
                 .attr("title");
 
-            ArticleTableBO versionArticleTableBO = new ArticleTableBO();
-            versionArticleTableBO.setPid(articleTableBO.getId());
-            versionArticleTableBO.setName(title);
-            versionArticleTableBO.setLeaf(0);
+            ArticleTableBO versionTableContentBO = new ArticleTableBO();
+            versionTableContentBO.setPid(articleTableId);
+            versionTableContentBO.setName(title);
+            versionTableContentBO.setLeaf(0);
 
-            System.out.println("\t" + JSON.toJSON(versionArticleTableBO));
+            System.out.println("\t" + JSON.toJSON(versionTableContentBO));
 
-            articleContentService.insert(versionArticleTableBO);
+            Long versionTableContentId = articleTableService.insert(versionTableContentBO);
+
 
             Element yijiUL = liChild.getElementsByClass("yiji-ul").get(0);
             Elements yijiULChildren = yijiUL.children();
@@ -84,13 +86,14 @@ public class ArticleTableServiceTestB {
                     .getElementsByTag("a").attr("title");
 
                 ArticleTableBO gradeArticleTableBO = new ArticleTableBO();
-                gradeArticleTableBO.setPid(versionArticleTableBO.getId());
+                gradeArticleTableBO.setPid(versionTableContentId);
                 gradeArticleTableBO.setName(grade);
                 gradeArticleTableBO.setLeaf(0);
 
                 System.out.println("\t\t" + JSON.toJSON(gradeArticleTableBO));
 
-                articleContentService.insert(gradeArticleTableBO);
+                Long gradeArticleTableId = articleTableService.insert(gradeArticleTableBO);
+
 
                 Element erjiUL = yijiULChild.getElementsByClass("erji-ul").get(0);
                 Elements erjiULChildren = erjiUL.children();
@@ -100,14 +103,14 @@ public class ArticleTableServiceTestB {
                     String dataTitle = element.attr("title");
 
                     ArticleTableBO unitArticleTableBO = new ArticleTableBO();
-                    unitArticleTableBO.setPid(gradeArticleTableBO.getId());
+                    unitArticleTableBO.setPid(gradeArticleTableId);
                     unitArticleTableBO.setName(dataTitle);
                     unitArticleTableBO.setData(dataId);
                     unitArticleTableBO.setLeaf(1);
 
                     System.out.println("\t\t\t" + JSON.toJSON(unitArticleTableBO));
 
-                    articleContentService.insert(unitArticleTableBO);
+                    articleTableService.insert(unitArticleTableBO);
                 }
 
             }

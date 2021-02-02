@@ -11,7 +11,7 @@ import pwd.initializr.common.web.persistence.entity.SortEntity;
 
 /**
  * <h2>article_table数据表操作</h2>
- * date 2021-02-02 17:10
+ * date 2021-02-02 18:01
  *
  * @author Automatic[www.dingpengwei@foxmail.com]
  * @since 0.0.1-SNAPSHOT
@@ -21,7 +21,7 @@ public interface ArticleTableDao {
 
   /**
    * <h2>通过主键启用/禁用数据</h2>
-   * date 2021-02-02 17:10
+   * date 2021-02-02 18:01
    *
    * @param id 主键
    * @param able 业务数据
@@ -33,7 +33,7 @@ public interface ArticleTableDao {
 
   /**
    * <h2>通过主键批量启用/禁用数据</h2>
-   * date 2021-02-02 17:10
+   * date 2021-02-02 18:01
    *
    * @param ids 主键集合
    * @return java.lang.Integer 受影响行数
@@ -44,7 +44,7 @@ public interface ArticleTableDao {
 
   /**
    * <h2>统计指定条件下命中的数据行数</h2>
-   * date 2021-02-02 17:10
+   * date 2021-02-02 18:01
    *
    * @param scopes 查询条件集合
    * @return java.lang.Long 总行数
@@ -55,7 +55,7 @@ public interface ArticleTableDao {
 
   /**
    * <h2>通过主键删除数据</h2>
-   * date 2021-02-02 17:10
+   * date 2021-02-02 18:01
    *
    * @param id 主键
    * @return java.lang.Integer 影响行数
@@ -66,7 +66,7 @@ public interface ArticleTableDao {
 
   /**
    * <h2>通过主键批量删除数据</h2>
-   * date 2021-02-02 17:10
+   * date 2021-02-02 18:01
    *
    * @param ids 主键集合
    * @return java.lang.Integer 影响行数
@@ -77,7 +77,7 @@ public interface ArticleTableDao {
 
   /**
    * <h2>新增数据</h2>
-   * date 2021-02-02 17:10
+   * date 2021-02-02 18:01
    *
    * @param entity 实例对象
    * @return java.lang.Integer 影响行数
@@ -88,7 +88,7 @@ public interface ArticleTableDao {
 
   /**
    * <h2>新增数据（批量新增）</h2>
-   * date 2021-02-02 17:10
+   * date 2021-02-02 18:01
    *
    * @param entities 实例对象
    * @return java.lang.Integer 影响行数
@@ -99,7 +99,7 @@ public interface ArticleTableDao {
 
   /**
    * <h2>新增或者替换数据</h2>
-   * date 2021-02-02 17:10
+   * date 2021-02-02 18:01
    *
    * @param entity 实例对象
    * @return java.lang.Integer 影响行数
@@ -110,7 +110,7 @@ public interface ArticleTableDao {
 
   /**
    * <h2>新增或者替换数据（批量新增或者替换）</h2>
-   * date 2021-02-02 17:10
+   * date 2021-02-02 18:01
    *
    * @param entities 实例对象
    * @return java.lang.Integer 影响行数
@@ -121,7 +121,7 @@ public interface ArticleTableDao {
 
   /**
    * <h2>在指定的条件下查询数据</h2>
-   * date 2021-02-02 17:10
+   * date 2021-02-02 18:01
    *
    * @param scopes 查询条件
    * @param sorts 排序条件
@@ -138,7 +138,7 @@ public interface ArticleTableDao {
 
   /**
    * <h2>根据主键进行查询</h2>
-   * date 2021-02-02 17:10
+   * date 2021-02-02 18:01
    *
    * @param id 主键
    * @return ArticleTableEntity
@@ -150,7 +150,7 @@ public interface ArticleTableDao {
 
   /**
    * <h2>通过主键更新数据</h2>
-   * date 2021-02-02 17:10
+   * date 2021-02-02 18:01
    *
    * @param entity 实例对象
    * @return java.lang.Integer 影响行数

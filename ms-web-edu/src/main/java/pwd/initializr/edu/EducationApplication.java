@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
- * project-generator-test-20210202171015960@ms-web-initializr
+ * project-generator-test-20210202180117487@ms-web-initializr
  *
- * <h1>project-generator-test-20210202171015960启动</h1>
+ * <h1>project-generator-test-20210202180117487启动</h1>
  *
- * date 2021-02-02 17:10
+ * date 2021-02-02 18:01
  *
  * @author Automatic[www.dingpengwei@foxmail.com]
  * @version 0.0.1-SNAPSHOT

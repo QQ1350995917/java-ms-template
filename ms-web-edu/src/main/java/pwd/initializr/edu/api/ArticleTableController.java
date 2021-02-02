@@ -5,6 +5,7 @@ import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
@@ -26,11 +27,11 @@ import pwd.initializr.common.web.business.bo.SortBO;
 import pwd.initializr.common.web.persistence.entity.EntityAble;
 
 /**
-* project-generator-test-20210202171015960@ms-web-initializr
+* project-generator-test-20210202180117487@ms-web-initializr
 *
 * <h1>ArticleTable控制层接口实现</h1>
 *
-* date 2021-02-02 17:10
+* date 2021-02-02 18:01
 *
 * @author Automatic[dingpengwei@foxmail.com]
 * @version 0.0.1-SNAPSHOT
@@ -116,18 +117,14 @@ public class ArticleTableController extends pwd.initializr.common.web.api.admin.
   public void create(@Valid @NotNull(message = "参数不能为空") ArticleTableInput input) {
     ArticleTableBO bo = new ArticleTableBO();
     BeanUtils.copyProperties(input,bo);
-    service.insert(bo);
-    outputData(200,bo.getId());
+    Long id = service.insert(bo);
+    outputData(200,id);
   }
 
   @Override
   public void create(@Valid @NotNull(message = "参数不能为空") List<ArticleTableInput> input) {
-    LinkedList<ArticleTableBO> bos = new LinkedList<>();
-    for (ArticleTableInput item : input) {
-      ArticleTableBO bo = new ArticleTableBO();
-      BeanUtils.copyProperties(item,bo);
-      bos.add(bo);
-    }
+    List<ArticleTableBO> bos = input.stream().map(this::convertArticleTableInput2ArticleTableBO)
+      .collect(Collectors.toList());
     service.insert(bos);
     outputData(200);
   }
@@ -136,18 +133,14 @@ public class ArticleTableController extends pwd.initializr.common.web.api.admin.
   public void createOrReplace(@Valid @NotNull(message = "参数不能为空") ArticleTableInput input) {
     ArticleTableBO bo = new ArticleTableBO();
     BeanUtils.copyProperties(input,bo);
-    service.insertOrReplace(bo);
-    outputData(200,bo.getId());
+    Long id = service.insertOrReplace(bo);
+    outputData(200,id);
   }
 
   @Override
   public void createOrReplace(@Valid @NotNull(message = "参数不能为空") List<ArticleTableInput> input) {
-    LinkedList<ArticleTableBO> bos = new LinkedList<>();
-    for (ArticleTableInput item : input) {
-      ArticleTableBO bo = new ArticleTableBO();
-      BeanUtils.copyProperties(item,bo);
-      bos.add(bo);
-    }
+    List<ArticleTableBO> bos = input.stream().map(this::convertArticleTableInput2ArticleTableBO)
+      .collect(Collectors.toList());
     service.insertOrReplace(bos);
     outputData(200);
   }
@@ -159,6 +152,12 @@ public class ArticleTableController extends pwd.initializr.common.web.api.admin.
     BeanUtils.copyProperties(input,bo);
     Integer result = service.updateById(bo);
     outputData(200,result);
+  }
+
+  private ArticleTableBO convertArticleTableInput2ArticleTableBO(ArticleTableInput input){
+    ArticleTableBO bo = new ArticleTableBO();
+    BeanUtils.copyProperties(input,bo);
+    return bo;
   }
 
 }

@@ -5,6 +5,7 @@ import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
@@ -116,18 +117,14 @@ public class ${className}Controller extends pwd.initializr.common.web.api.admin.
   public void create(@Valid @NotNull(message = "参数不能为空") ${className}Input input) {
     ${className}BO bo = new ${className}BO();
     BeanUtils.copyProperties(input,bo);
-    service.insert(bo);
-    outputData(200,bo.getId());
+    Long id = service.insert(bo);
+    outputData(200,id);
   }
 
   @Override
   public void create(@Valid @NotNull(message = "参数不能为空") List<${className}Input> input) {
-    LinkedList<${className}BO> bos = new LinkedList<>();
-    for (${className}Input item : input) {
-      ${className}BO bo = new ${className}BO();
-      BeanUtils.copyProperties(item,bo);
-      bos.add(bo);
-    }
+    List<${className}BO> bos = input.stream().map(this::convert${className}Input2${className}BO)
+      .collect(Collectors.toList());
     service.insert(bos);
     outputData(200);
   }
@@ -136,18 +133,14 @@ public class ${className}Controller extends pwd.initializr.common.web.api.admin.
   public void createOrReplace(@Valid @NotNull(message = "参数不能为空") ${className}Input input) {
     ${className}BO bo = new ${className}BO();
     BeanUtils.copyProperties(input,bo);
-    service.insertOrReplace(bo);
-    outputData(200,bo.getId());
+    Long id = service.insertOrReplace(bo);
+    outputData(200,id);
   }
 
   @Override
   public void createOrReplace(@Valid @NotNull(message = "参数不能为空") List<${className}Input> input) {
-    LinkedList<${className}BO> bos = new LinkedList<>();
-    for (${className}Input item : input) {
-      ${className}BO bo = new ${className}BO();
-      BeanUtils.copyProperties(item,bo);
-      bos.add(bo);
-    }
+    List<${className}BO> bos = input.stream().map(this::convert${className}Input2${className}BO)
+      .collect(Collectors.toList());
     service.insertOrReplace(bos);
     outputData(200);
   }
@@ -159,6 +152,12 @@ public class ${className}Controller extends pwd.initializr.common.web.api.admin.
     BeanUtils.copyProperties(input,bo);
     Integer result = service.updateById(bo);
     outputData(200,result);
+  }
+
+  private ${className}BO convert${className}Input2${className}BO(${className}Input input){
+    ${className}BO bo = new ${className}BO();
+    BeanUtils.copyProperties(input,bo);
+    return bo;
   }
 
 }

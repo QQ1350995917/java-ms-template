@@ -69,18 +69,18 @@ public interface ${className}Service {
    * date ${projectCreateDate}
    *
    * @param bo 业务对象
-   * @return java.lang.Integer 影响行数
+   * @return java.lang.Long 数据ID
    * @author Automatic[www.dingpengwei@foxmail.com]
    * @since ${projectCreateDate}
    */
-  void insert(${className}BO bo);
+  Long insert(${className}BO bo);
 
   /**
    * <h2>新增数据（批量操作）</h2>
    * date ${projectCreateDate}
    *
    * @param bos 业务对象
-   * @return java.lang.Integer 影响行数
+   * @return void
    * @author Automatic[www.dingpengwei@foxmail.com]
    * @since ${projectCreateDate}
    */
@@ -91,18 +91,18 @@ public interface ${className}Service {
    * date ${projectCreateDate}
    *
    * @param bo 业务对象
-   * @return java.lang.Integer 影响行数
+   * @return java.lang.Long 数据ID
    * @author Automatic[www.dingpengwei@foxmail.com]
    * @since ${projectCreateDate}
    */
-  void insertOrReplace(${className}BO bo);
+  Long insertOrReplace(${className}BO bo);
 
   /**
    * <h2>新增或者替换数据（批量操作）</h2>
    * date ${projectCreateDate}
    *
    * @param bos 业务对象
-   * @return java.lang.Integer 影响行数
+   * @return void
    * @author Automatic[www.dingpengwei@foxmail.com]
    * @since ${projectCreateDate}
    */
