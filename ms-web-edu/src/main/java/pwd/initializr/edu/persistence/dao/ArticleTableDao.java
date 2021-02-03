@@ -163,5 +163,5 @@ public interface ArticleTableDao {
   Integer updateById(@Param("entity") ArticleTableEntity entity);
 
 
-  public List<ArticleTableEntity> queryAllLeafUsedBySpider();
+  List<ArticleTableEntity> queryAllLeafUsedBySpider();
 }

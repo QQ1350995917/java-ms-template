@@ -158,4 +158,6 @@ public interface ArticleContentDao {
    * @since 0.0.1-SNAPSHOT
    */
   Integer updateById(@Param("entity") ArticleContentEntity entity);
+
+  List<ArticleContentEntity> queryAllBySpider();
 }

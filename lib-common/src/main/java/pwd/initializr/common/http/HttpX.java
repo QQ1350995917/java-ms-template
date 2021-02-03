@@ -1,6 +1,7 @@
 package pwd.initializr.common.http;
 
 import java.io.File;
+import java.net.URLEncoder;
 import java.util.Map;
 
 /**
@@ -45,4 +46,34 @@ public abstract class HttpX {
   public abstract String putJson(String url, String body);
 
   public abstract String putJson(String url, Map<String, String> headers, String body);
+
+  // 编码中文和空格部分
+  public static String urlEncode(String url){
+    String resultURL = "";
+    try {
+      for (int i = 0; i < url.length(); i++) {
+        char charAt = url.charAt(i);
+        //对汉字和空格处理
+        if (isChinese(charAt) || isNbsp(charAt)) {
+          String encode = URLEncoder.encode(charAt+"","UTF-8");
+          resultURL+=encode;
+        }else {
+          resultURL+=charAt;
+        }
+      }
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
+    return resultURL;
+  }
+
+  // 判断汉字的方法,只要编码在\u4e00到\u9fa5之间的都是汉字
+  public static boolean isChinese(char c) {
+    return String.valueOf(c).matches("[\u4e00-\u9fa5]");
+  }
+
+  // 判断空格
+  public static boolean isNbsp(char c){
+    return String.valueOf(c).matches("\u00A0|\u0020|\u3000");
+  }
 }

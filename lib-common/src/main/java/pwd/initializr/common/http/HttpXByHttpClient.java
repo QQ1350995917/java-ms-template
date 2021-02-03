@@ -5,6 +5,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.util.Map;
 import org.apache.http.Consts;
@@ -89,7 +91,7 @@ public class HttpXByHttpClient extends HttpX {
 
   @Override
   public void getFile(String url, Map<String, String> headers, File localFile, int cacheBytes) {
-    HttpGet httpGet = new HttpGet(url);
+    HttpGet httpGet = new HttpGet(urlEncode(url));
     if (headers != null) {
       for (String key : headers.keySet()) {
         String value = headers.get(key);

@@ -59,6 +59,27 @@
       #{offset}, #{limit}
   </select>
 
+  <!--通过实体作为筛选条件查询-->
+  <select id="queryAllBySpider" resultMap="ArticleContentMap">
+    SELECT
+      `id`,
+      `text`,
+      `url`,
+      `remark`,
+      `path`,
+      `able`,
+      `del`,
+      `create_time`,
+      `update_time`
+    FROM
+      article_content
+    WHERE
+      able = 0
+    ORDER BY
+      id
+    ASC
+  </select>
+
   <!--新增所有列-->
   <insert id="insert" keyProperty="id" useGeneratedKeys="true" parameterType="pwd.initializr.edu.persistence.entity.ArticleContentEntity">
     INSERT INTO article_content
