@@ -29,6 +29,6 @@ public class HttpXConfig {
     private int socketTimeout = 2000;
     private boolean retryEnable = false;
     private int retryCount = 0;
-    private int maxTotal = 2;
-    private int defaultMaxPerRoute = 2;
+    private int maxTotal = 1;
+    private int defaultMaxPerRoute = 1;
 }

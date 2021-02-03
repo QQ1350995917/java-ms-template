@@ -27,7 +27,7 @@ public class ArticleContentSpider {
         header.put("Accept-Encoding", "gzip, deflate");
         header.put("Accept-Language", "zh-CN,zh;q=0.9");
         header.put("Connection", "keep-alive");
-        header.put("Cookie", "tianjinandznyy_=0jvqdj2fu9i0pfluq1arj0pki3");
+        header.put("Cookie", SpriderConfig.cookie);
         header.put("Host", "47.92.155.170");
         header.put("Referer",
             "http://47.92.155.170/Web/AiClassroom/tbkw_content/kewenId/6815/edu/4028b4816460a6da016460b2548e0004.html");
@@ -36,7 +36,7 @@ public class ArticleContentSpider {
         header.put("X-Requested-With", "XMLHttpRequest");
 
         String content = httpXByHttpClient
-            .get("http://47.92.155.170/Web/AiClassroom/ajaxGetKewen.html?kewenId=6815", header,
+            .get("http://47.92.155.170/Web/AiClassroom/ajaxGetKewen.html?kewenId=10", header,
                 null);
 
         content = StringEscapeUtils.unescapeJava(content);

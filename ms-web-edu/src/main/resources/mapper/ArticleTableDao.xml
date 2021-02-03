@@ -74,7 +74,9 @@
     FROM
       article_table
     WHERE
-      `leaf` = 1
+      `leaf` = 1 AND `able` = 0
+    ORDER BY
+      `data` ASC
   </select>
 
   <!--新增所有列-->

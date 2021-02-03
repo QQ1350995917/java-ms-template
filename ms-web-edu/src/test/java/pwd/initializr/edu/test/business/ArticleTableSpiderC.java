@@ -5,6 +5,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Random;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -24,6 +25,16 @@ import pwd.initializr.edu.business.bo.ArticleTableBO;
  * @since DistributionVersion
  */
 public class ArticleTableSpiderC {
+
+    public static void main(String[] args) {
+      Random random = new Random(1);
+      for (int i = 0; i < 20; i++) {
+        int a = (random.nextInt(10)) * 300;
+        System.out.println(a);
+
+
+        }
+    }
 
     @Test
     public void articleContent() throws Exception {
