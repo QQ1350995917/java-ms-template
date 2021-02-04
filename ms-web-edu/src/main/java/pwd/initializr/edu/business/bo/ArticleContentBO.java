@@ -8,7 +8,7 @@ import pwd.initializr.edu.persistence.entity.ArticleContentEntity;
 
 /**
  * <h2>服务层逻辑对象封装：ArticleContentEntity信息</h2>
- * date 2021-02-02 18:30
+ * date 2021-02-04 16:07
  *
  * @author Automatic[www.dingpengwei@foxmail.com]
  * @since 0.0.1-SNAPSHOT

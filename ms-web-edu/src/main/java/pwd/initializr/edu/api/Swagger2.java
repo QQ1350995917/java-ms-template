@@ -7,11 +7,11 @@ import springfox.documentation.swagger.web.UiConfigurationBuilder;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
-* project-generator-test-20210202183035372@ms-web-initializr
+* project-generator-test-20210204160711060@ms-web-initializr
 *
-* <h1>project-generator-test-20210202183035372接口文档声明</h1>
+* <h1>project-generator-test-20210204160711060接口文档声明</h1>
 *
-* date 2021-02-02 18:30
+* date 2021-02-04 16:07
 *
 * @author Automatic[www.dingpengwei@foxmail.com]
 * @version 0.0.1-SNAPSHOT

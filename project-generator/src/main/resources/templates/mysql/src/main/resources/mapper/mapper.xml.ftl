@@ -196,7 +196,7 @@
     UPDATE ${tableName}
     SET
       del = 1,
-      update_time = now()
+      update_time = <#noparse>#{date}</#noparse>
     WHERE
       id = <#noparse>#{id}</#noparse>
   </update>
@@ -206,7 +206,7 @@
     UPDATE ${tableName}
     SET
       del = 1,
-      update_time = now()
+      update_time = <#noparse>#{date}</#noparse>
     WHERE
       id in
     <foreach close=")" collection="ids" index="index" item="id" open="(" separator=",">
@@ -222,7 +222,7 @@
     <#noparse>
     SET
       able = #{able},
-      update_time = now()
+      update_time = #{date}
     WHERE
       id = #{id}
     </#noparse>
@@ -234,7 +234,7 @@
     <#noparse>
     SET
       able = #{able},
-      update_time = now()
+      update_time = #{date}
     WHERE
       id in
     <foreach close=")" collection="ids" index="index" item="id" open="(" separator=",">

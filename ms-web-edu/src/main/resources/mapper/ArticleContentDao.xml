@@ -5,7 +5,7 @@
 
   <resultMap id="ArticleContentMap" type="pwd.initializr.edu.persistence.entity.ArticleContentEntity">
     <result column="id" jdbcType="BIGINT" property="id"/>
-    <result column="text" jdbcType="VARCHAR" property="text"/>
+    <result column="text" jdbcType="LONGTEXT" property="text"/>
     <result column="url" jdbcType="VARCHAR" property="url"/>
     <result column="remark" jdbcType="VARCHAR" property="remark"/>
     <result column="path" jdbcType="VARCHAR" property="path"/>
@@ -57,27 +57,6 @@
     <include refid="pwd.initializr.common.web.persistence.entity.SortEntity.entityQuerySort"></include>
     LIMIT
       #{offset}, #{limit}
-  </select>
-
-  <!--通过实体作为筛选条件查询-->
-  <select id="queryAllBySpider" resultMap="ArticleContentMap">
-    SELECT
-      `id`,
-      `text`,
-      `url`,
-      `remark`,
-      `path`,
-      `able`,
-      `del`,
-      `create_time`,
-      `update_time`
-    FROM
-      article_content
-    WHERE
-      able = 0
-    ORDER BY
-      id
-    ASC
   </select>
 
   <!--新增所有列-->
@@ -237,7 +216,7 @@
     UPDATE article_content
     SET
       del = 1,
-      update_time = now()
+      update_time = #{date}
     WHERE
       id = #{id}
   </update>
@@ -247,7 +226,7 @@
     UPDATE article_content
     SET
       del = 1,
-      update_time = now()
+      update_time = #{date}
     WHERE
       id in
     <foreach close=")" collection="ids" index="index" item="id" open="(" separator=",">
@@ -260,7 +239,7 @@
     UPDATE article_content
     SET
       able = #{able},
-      update_time = now()
+      update_time = #{date}
     WHERE
       id = #{id}
   </update>
@@ -270,7 +249,7 @@
     UPDATE article_content
     SET
       able = #{able},
-      update_time = now()
+      update_time = #{date}
     WHERE
       id in
     <foreach close=")" collection="ids" index="index" item="id" open="(" separator=",">

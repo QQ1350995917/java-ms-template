@@ -27,11 +27,11 @@ import pwd.initializr.common.web.business.bo.SortBO;
 import pwd.initializr.common.web.persistence.entity.EntityAble;
 
 /**
-* project-generator-test-20210202180117487@ms-web-initializr
+* project-generator-test-20210204160711060@ms-web-initializr
 *
 * <h1>ArticleTable控制层接口实现</h1>
 *
-* date 2021-02-02 18:01
+* date 2021-02-04 16:07
 *
 * @author Automatic[dingpengwei@foxmail.com]
 * @version 0.0.1-SNAPSHOT

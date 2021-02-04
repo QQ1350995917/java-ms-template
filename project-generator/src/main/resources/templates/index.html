@@ -163,6 +163,8 @@
     },
     methods: {
       onDBConnect() {
+        this.tagName = '提交';
+        this.filename = '';
         this.$http.get(
             '/api/admin/database?name=' + this.databaseName + '&url=' + this.databaseUrl
             + '&driver='
@@ -242,14 +244,9 @@
             });
       },
       onCodeDownload() {
-
         this.$http.get('/api/admin/generator/' + this.filename).then(
             function (res) {
               var body = res.body;
-
-
-
-
             }, function (e) {
               var body = e.body;
               var meta = body.meta;
@@ -268,6 +265,8 @@
         this.isIndeterminate = false;
       },
       handleCheckedCitiesChange(value) {
+        this.tagName = '提交';
+        this.filename = '';
         var checkedCount = value.length;
         this.checkAll = checkedCount === this.tables.length;
         this.isIndeterminate = checkedCount > 0 && checkedCount < this.tables.length;

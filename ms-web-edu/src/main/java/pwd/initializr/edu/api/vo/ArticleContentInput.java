@@ -14,11 +14,11 @@ import lombok.ToString;
 import org.hibernate.validator.constraints.Length;
 
 /**
- * project-generator-test-20210202183035372@ms-web-initializr
+ * project-generator-test-20210204160711060@ms-web-initializr
  *
  * <h1>请求参数封装</h1>
  *
- * date 2021-02-02 18:30
+ * date 2021-02-04 16:07
  *
  * @author Automatic[www.dingpengwei@foxmail.com]
  * @version 0.0.1-SNAPSHOT
@@ -44,8 +44,7 @@ public class ArticleContentInput implements Serializable {
     * 
     * 线上地址
     */
-   @ApiModelProperty(name = "url", value = "线上地址", required = true, example = "")
-   @NotBlank(message = "url不能为空")
+   @ApiModelProperty(name = "url", value = "线上地址", required = false, example = "")
    private String url;
 
    /**
@@ -59,8 +58,7 @@ public class ArticleContentInput implements Serializable {
     * 
     * 存储路径
     */
-   @ApiModelProperty(name = "path", value = "存储路径", required = true, example = "")
-   @NotBlank(message = "path不能为空")
+   @ApiModelProperty(name = "path", value = "存储路径", required = false, example = "")
    private String path;
 
 }

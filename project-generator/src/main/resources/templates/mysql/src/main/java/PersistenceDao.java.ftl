@@ -1,5 +1,6 @@
 package ${projectPackage}.persistence.dao;
 
+import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -25,22 +26,25 @@ public interface ${className}Dao {
    *
    * @param id 主键
    * @param able 业务数据
+   * @param date 更新时间
    * @return java.lang.Integer 受影响行数
    * @author Automatic[www.dingpengwei@foxmail.com]
    * @since ${projectVersion}
    */
-  Integer ableById(@Param("id") Long id, @Param("able") Integer able);
+  Integer ableById(@Param("id") Long id, @Param("able") Integer able, Date date);
 
   /**
    * <h2>通过主键批量启用/禁用数据</h2>
    * date ${projectCreateDate}
    *
    * @param ids 主键集合
+   * @param able 业务数据
+   * @param date 更新时间
    * @return java.lang.Integer 受影响行数
    * @author Automatic[www.dingpengwei@foxmail.com]
    * @since ${projectVersion}
    */
-  Integer ableByIds(Set<Long> ids, int able);
+  Integer ableByIds(Set<Long> ids, int able, Date date);
 
   /**
    * <h2>统计指定条件下命中的数据行数</h2>
@@ -58,22 +62,24 @@ public interface ${className}Dao {
    * date ${projectCreateDate}
    *
    * @param id 主键
+   * @param date 更新时间
    * @return java.lang.Integer 影响行数
    * @author Automatic[www.dingpengwei@foxmail.com]
    * @since ${projectVersion}
    */
-  Integer deleteById(@Param("id") Long id);
+  Integer deleteById(@Param("id") Long id, Date date);
 
   /**
    * <h2>通过主键批量删除数据</h2>
    * date ${projectCreateDate}
    *
    * @param ids 主键集合
+   * @param date 更新时间
    * @return java.lang.Integer 影响行数
    * @author Automatic[www.dingpengwei@foxmail.com]
    * @since ${projectVersion}
    */
-  Integer deleteByIds(@Param("ids") Set<Long> ids);
+  Integer deleteByIds(@Param("ids") Set<Long> ids, Date date);
 
   /**
    * <h2>新增数据</h2>

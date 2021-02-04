@@ -32,22 +32,22 @@ public class ${className}ServiceImpl implements ${className}Service {
 
   @Override
   public Integer ableById(Long id, EntityAble able) {
-    return this.dao.ableById(id, able.getNumber());
+    return this.dao.ableById(id, able.getNumber(), new Date());
   }
 
   @Override
   public Integer ableById(Set<Long> ids, EntityAble able) {
-    return this.dao.ableByIds(ids, able.getNumber());
+    return this.dao.ableByIds(ids, able.getNumber(), new Date());
   }
 
   @Override
   public Integer deleteById(Long id) {
-    return this.dao.deleteById(id);
+    return this.dao.deleteById(id, new Date());
   }
 
   @Override
   public Integer deleteById(Set<Long> ids) {
-    return this.dao.deleteByIds(ids);
+    return this.dao.deleteByIds(ids, new Date());
   }
 
   @Override
@@ -116,6 +116,7 @@ public class ${className}ServiceImpl implements ${className}Service {
   public Integer updateById(${className}BO bo){
     ${className}Entity entity = new ${className}Entity();
     BeanUtils.copyProperties(bo, entity);
+    entity.setUpdateTime(new Date());
     return this.dao.updateById(entity);
   }
 

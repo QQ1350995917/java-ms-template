@@ -2,7 +2,6 @@ package pwd.initializr.edu.business;
 
 import java.util.Date;
 import java.util.LinkedHashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -20,7 +19,7 @@ import pwd.initializr.common.web.persistence.entity.EntityDel;
 
 /**
  * <h2>服务层逻辑接口封装：ArticleContentEntity信息服务接口</h2>
- * date 2021-02-02 18:30
+ * date 2021-02-04 16:07
  *
  * @author Automatic[www.dingpengwei@foxmail.com]
  * @since 0.0.1-SNAPSHOT
@@ -33,22 +32,22 @@ public class ArticleContentServiceImpl implements ArticleContentService {
 
   @Override
   public Integer ableById(Long id, EntityAble able) {
-    return this.dao.ableById(id, able.getNumber());
+    return this.dao.ableById(id, able.getNumber(), new Date());
   }
 
   @Override
   public Integer ableById(Set<Long> ids, EntityAble able) {
-    return this.dao.ableByIds(ids, able.getNumber());
+    return this.dao.ableByIds(ids, able.getNumber(), new Date());
   }
 
   @Override
   public Integer deleteById(Long id) {
-    return this.dao.deleteById(id);
+    return this.dao.deleteById(id, new Date());
   }
 
   @Override
   public Integer deleteById(Set<Long> ids) {
-    return this.dao.deleteByIds(ids);
+    return this.dao.deleteByIds(ids, new Date());
   }
 
   @Override
@@ -117,6 +116,7 @@ public class ArticleContentServiceImpl implements ArticleContentService {
   public Integer updateById(ArticleContentBO bo){
     ArticleContentEntity entity = new ArticleContentEntity();
     BeanUtils.copyProperties(bo, entity);
+    entity.setUpdateTime(new Date());
     return this.dao.updateById(entity);
   }
 

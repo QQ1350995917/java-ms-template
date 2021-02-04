@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
-import pwd.initializr.edu.business.bo.ArticleContentBO;
 import pwd.initializr.edu.business.bo.ArticleTableBO;
 import pwd.initializr.edu.persistence.dao.ArticleTableDao;
 import pwd.initializr.edu.persistence.entity.ArticleTableEntity;
@@ -20,7 +19,7 @@ import pwd.initializr.common.web.persistence.entity.EntityDel;
 
 /**
  * <h2>服务层逻辑接口封装：ArticleTableEntity信息服务接口</h2>
- * date 2021-02-02 18:01
+ * date 2021-02-04 16:07
  *
  * @author Automatic[www.dingpengwei@foxmail.com]
  * @since 0.0.1-SNAPSHOT
@@ -33,22 +32,22 @@ public class ArticleTableServiceImpl implements ArticleTableService {
 
   @Override
   public Integer ableById(Long id, EntityAble able) {
-    return this.dao.ableById(id, able.getNumber());
+    return this.dao.ableById(id, able.getNumber(), new Date());
   }
 
   @Override
   public Integer ableById(Set<Long> ids, EntityAble able) {
-    return this.dao.ableByIds(ids, able.getNumber());
+    return this.dao.ableByIds(ids, able.getNumber(), new Date());
   }
 
   @Override
   public Integer deleteById(Long id) {
-    return this.dao.deleteById(id);
+    return this.dao.deleteById(id, new Date());
   }
 
   @Override
   public Integer deleteById(Set<Long> ids) {
-    return this.dao.deleteByIds(ids);
+    return this.dao.deleteByIds(ids, new Date());
   }
 
   @Override
@@ -117,6 +116,7 @@ public class ArticleTableServiceImpl implements ArticleTableService {
   public Integer updateById(ArticleTableBO bo){
     ArticleTableEntity entity = new ArticleTableEntity();
     BeanUtils.copyProperties(bo, entity);
+    entity.setUpdateTime(new Date());
     return this.dao.updateById(entity);
   }
 

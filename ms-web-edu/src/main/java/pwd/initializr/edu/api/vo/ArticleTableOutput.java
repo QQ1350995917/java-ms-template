@@ -13,11 +13,11 @@ import lombok.ToString;
 import org.hibernate.validator.constraints.Length;
 
 /**
- * project-generator-test-20210202180117487@ms-web-initializr
+ * project-generator-test-20210204160711060@ms-web-initializr
  *
  * <h1>响应参数封装</h1>
  *
- * date 2021-02-02 18:01
+ * date 2021-02-04 16:07
  *
  * @author Automatic[www.dingpengwei@foxmail.com]
  * @version 0.0.1-SNAPSHOT
