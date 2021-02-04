@@ -3,6 +3,8 @@ package pwd.initializr.common.http;
 import java.io.File;
 import java.net.URLEncoder;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * pwd.initializr.common.http@ms-web-initializr
@@ -56,6 +58,7 @@ public abstract class HttpX {
         //对汉字和空格处理
         if (isChinese(charAt) || isNbsp(charAt)) {
           String encode = URLEncoder.encode(charAt+"","UTF-8");
+          encode = encode.replace("+", "%20");
           resultURL+=encode;
         }else {
           resultURL+=charAt;
@@ -68,8 +71,10 @@ public abstract class HttpX {
   }
 
   // 判断汉字的方法,只要编码在\u4e00到\u9fa5之间的都是汉字
+  private static Pattern chinesePattern = Pattern.compile("[\u4E00-\u9FA5|\\！|\\，|\\。|\\（|\\）|\\《|\\》|\\“|\\”|\\？|\\：|\\；|\\－|\\【|\\】]");
   public static boolean isChinese(char c) {
-    return String.valueOf(c).matches("[\u4e00-\u9fa5]");
+    Matcher matcher = chinesePattern.matcher(String.valueOf(c));
+    return matcher.find();
   }
 
   // 判断空格

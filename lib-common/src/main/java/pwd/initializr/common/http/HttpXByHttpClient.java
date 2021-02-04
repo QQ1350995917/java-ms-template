@@ -233,4 +233,10 @@ public class HttpXByHttpClient extends HttpX {
       throw new RuntimeException(e);
     }
   }
+
+  public static void main(String[] args) {
+    String url = "？";
+    String s = urlEncode(url);
+    System.out.println(s);
+  }
 }

@@ -112,7 +112,7 @@ public class ArticleContentServiceTest {
                             articleContentBO.setPath(path);
                             articleContentBO.setAble(EntityAble.ENABLE.getNumber());
                         } catch (Exception e1) {
-                            System.err.println("下载失败：" + obj.getId());
+                            System.err.println("下载失败：" + obj.getId() + ";错误码：" + e.getMessage());
                             articleContentBO.setAble(EntityAble.DISABLE.getNumber());
                         }
                     }
@@ -128,9 +128,9 @@ public class ArticleContentServiceTest {
                         System.out.println("下载成功：" + obj.getId());
                         articleContentBO.setPath(path);
                         articleContentBO.setAble(EntityAble.ENABLE.getNumber());
-                    } catch (Exception e1) {
-                        e1.printStackTrace();
-                        System.err.println("下载失败：" + obj.getId() + ";错误码：" + e1.getMessage());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        System.err.println("下载失败：" + obj.getId() + ";错误码：" + e.getMessage());
                         articleContentBO.setAble(EntityAble.DISABLE.getNumber());
                     }
 
