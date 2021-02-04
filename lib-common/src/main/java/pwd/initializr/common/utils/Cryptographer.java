@@ -45,4 +45,8 @@ public class Cryptographer {
 //    String result = new String(resultByte, "utf-8");
     return clearText;
   }
+
+  public static String decryptByRsa(String cipherText, String publicKey) {
+    return cipherText;
+  }
 }

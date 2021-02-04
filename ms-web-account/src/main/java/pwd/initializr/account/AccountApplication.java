@@ -32,8 +32,6 @@ import pwd.initializr.common.captcha.CaptchaHelper;
 @MapperScan("pwd.initializr.account.persistence")
 public class AccountApplication {
 
-  private CaptchaHelper captchaHelper = new CaptchaArithmetic();
-
   public static void main(String[] args) {
     SpringApplication.run(AccountApplication.class, args);
   }
