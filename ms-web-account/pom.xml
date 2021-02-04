@@ -55,6 +55,16 @@
       <version>3.2.0</version>
     </dependency>
     <dependency>
+      <groupId>com.alibaba</groupId>
+      <artifactId>druid</artifactId>
+      <version>1.1.10</version>
+    </dependency>
+    <dependency>
+      <groupId>com.alibaba</groupId>
+      <artifactId>druid-spring-boot-starter</artifactId>
+      <version>1.1.10</version>
+    </dependency>
+    <dependency>
       <groupId>com.belerweb</groupId>
       <artifactId>pinyin4j</artifactId>
       <version>2.5.1</version>
