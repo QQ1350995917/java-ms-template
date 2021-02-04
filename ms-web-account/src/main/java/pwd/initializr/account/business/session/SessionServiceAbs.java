@@ -11,8 +11,7 @@ import pwd.initializr.account.business.session.bo.CaptchaBO;
 import pwd.initializr.account.business.session.bo.SessionBONamed;
 import pwd.initializr.common.captcha.CaptchaArithmetic;
 import pwd.initializr.common.mw.redis.RedisClient;
-import pwd.initializr.common.utils.Cryptographer;
-import pwd.initializr.common.captcha.CaptchaHelper;
+import pwd.initializr.common.utils.CryptographerAes;
 import pwd.initializr.common.captcha.CaptchaMessage;
 
 /**
@@ -79,7 +78,7 @@ public abstract class SessionServiceAbs implements SessionService {
     long currentTimeMillis = System.currentTimeMillis();
     String uuid = UUID.randomUUID().toString();
     String clearTextToken = currentTimeMillis + ":" + uuid;
-    String encryptTextCookie = Cryptographer.encrypt(clearTextToken, getAnonymousSessionSalt());
+    String encryptTextCookie = CryptographerAes.encrypt(clearTextToken, getAnonymousSessionSalt());
     SessionBOAnonymous sessionBOAnonymous = new SessionBOAnonymous(encryptTextCookie,0, null);
     redisClient.setex(getCookieKeyInRedis(clearTextToken), JSON.toJSONString(sessionBOAnonymous),
         getAnonymousSessionInRedisExpiresSeconds());
@@ -97,7 +96,7 @@ public abstract class SessionServiceAbs implements SessionService {
   @Override
   public Boolean deleteAnonymousToken(String token) {
     Assert.notNull(token, "sessionCookieBO.token should not be empty");
-    String clearTextCookie = Cryptographer.decrypt(token, getAnonymousSessionSalt());
+    String clearTextCookie = CryptographerAes.decrypt(token, getAnonymousSessionSalt());
     redisClient.del(getCookieKeyInRedis(clearTextCookie));
     return true;
   }
@@ -111,7 +110,7 @@ public abstract class SessionServiceAbs implements SessionService {
   @Override
   public SessionBOAnonymous querySessionAnonymous(String token) {
     Assert.notNull(token, "token should not be empty");
-    String clearTextCookie = Cryptographer.decrypt(token, getAnonymousSessionSalt());
+    String clearTextCookie = CryptographerAes.decrypt(token, getAnonymousSessionSalt());
     String sessionCookieJson = redisClient.get(getCookieKeyInRedis(clearTextCookie));
     if (StringUtils.isBlank(sessionCookieJson)) {
       return null;
@@ -131,7 +130,7 @@ public abstract class SessionServiceAbs implements SessionService {
 
   @Override
   public void updateAnonymousSession(String token, SessionBOAnonymous sessionBOAnonymous) {
-    String clearTextCookie = Cryptographer.decrypt(token, getAnonymousSessionSalt());
+    String clearTextCookie = CryptographerAes.decrypt(token, getAnonymousSessionSalt());
     redisClient.del(getCookieKeyInRedis(clearTextCookie));
     redisClient.setex(getCookieKeyInRedis(clearTextCookie), JSON.toJSONString(sessionBOAnonymous),
         getAnonymousSessionInRedisExpiresSeconds());

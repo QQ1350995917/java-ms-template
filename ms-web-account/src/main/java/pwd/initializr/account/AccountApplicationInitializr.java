@@ -3,6 +3,7 @@ package pwd.initializr.account;
 import javax.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import pwd.initializr.account.business.admin.AdminAccountService;
@@ -38,6 +39,11 @@ public class AccountApplicationInitializr {
   @Autowired
   private AdminAccountService adminAccountService;
 
+  @Value("${account.admin.super.init.username}")
+  private String adminInitializrUsername;
+  @Value("${account.admin.super.init.password}")
+  private String adminInitializrPassword;
+
   @PostConstruct
   @Transactional(rollbackFor = RuntimeException.class)
   public void initializr() {
@@ -58,7 +64,7 @@ public class AccountApplicationInitializr {
       // TODO 删除用户表 -> 新增用户表
       AdminUserBO adminUserBO = new AdminUserBO();
       adminUserBO.setPin("0");
-      adminUserBO.setName("LuoGuanZhong");
+      adminUserBO.setName(adminInitializrUsername);
       adminUserBO.setGender("1");
       adminUserBO.setAble(EntityAble.ENABLE.getNumber());
       adminUserBO.setDel(EntityDel.NO.getNumber());
@@ -66,8 +72,8 @@ public class AccountApplicationInitializr {
 
       AdminAccountBO adminAccountBO = new AdminAccountBO();
       adminAccountBO.setUid(adminUserBOResult.getId());
-      adminAccountBO.setLoginName("luoguanzhong");
-      adminAccountBO.setLoginPwd("luoguanzhong");
+      adminAccountBO.setLoginName(adminInitializrUsername);
+      adminAccountBO.setLoginPwd(adminInitializrPassword);
       adminAccountBO.setAble(EntityAble.ENABLE.getNumber());
       adminAccountBO.setDel(EntityDel.NO.getNumber());
       adminAccountService.insert(adminAccountBO);

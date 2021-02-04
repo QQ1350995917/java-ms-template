@@ -12,7 +12,7 @@ import pwd.initializr.account.business.admin.bo.AdminAccountBO;
 import pwd.initializr.account.persistence.dao.AdminAccountDao;
 import pwd.initializr.account.persistence.entity.AdminAccountEntity;
 import pwd.initializr.account.persistence.entity.AdminAccountType;
-import pwd.initializr.common.utils.Cryptographer;
+import pwd.initializr.common.utils.CryptographerAes;
 import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.common.web.business.bo.ScopeBO;
 import pwd.initializr.common.web.business.bo.SortBO;
@@ -146,7 +146,7 @@ public class AdminAccountServiceImpl implements AdminAccountService {
     Assert.notNull(loginName, "Login pwd should not be empty");
     String encrypt = null;
     try {
-      encrypt = Cryptographer.encrypt(loginPwd, loginName);
+      encrypt = CryptographerAes.encrypt(loginPwd, loginName);
     } catch (Exception e) {
       e.printStackTrace();
     }
