@@ -1,10 +1,13 @@
 package pwd.initializr.account.api.admin;
 
 import io.swagger.annotations.Api;
+import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import pwd.initializr.account.business.admin.AdminKeyService;
+import pwd.initializr.account.business.user.UserKeyService;
 import pwd.initializr.common.web.api.admin.AdminController;
 
 /**
@@ -28,13 +31,33 @@ import pwd.initializr.common.web.api.admin.AdminController;
 @Slf4j
 public class KeyApiController extends AdminController implements KeyApi {
 
-    @Override
-    public void refreshKeyPairs() {
+    @Resource
+    private AdminKeyService adminKeyService;
 
+    @Resource
+    private UserKeyService userKeyService;
+
+    @Override
+    public void refreshAdminKeyPairs() {
+        adminKeyService.refreshKeyPairs();
+        outputData(200);
     }
 
     @Override
-    public void getPublishKey() {
+    public void refreshUserKeyPairs() {
+        userKeyService.refreshKeyPairs();
+        outputData(200);
+    }
 
+    @Override
+    public void getAdminPublishKey() {
+        String publicKey = adminKeyService.getPublicKey();
+        outputData(200,publicKey);
+    }
+
+    @Override
+    public void getUserPublishKey() {
+        String publicKey = userKeyService.getPublicKey();
+        outputData(200,publicKey);
     }
 }

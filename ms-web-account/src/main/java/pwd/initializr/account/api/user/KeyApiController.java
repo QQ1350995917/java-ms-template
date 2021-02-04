@@ -1,9 +1,11 @@
 package pwd.initializr.account.api.user;
 
 import io.swagger.annotations.Api;
+import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import pwd.initializr.account.business.user.UserKeyService;
 import pwd.initializr.common.web.api.user.UserController;
 
 /**
@@ -27,8 +29,12 @@ import pwd.initializr.common.web.api.user.UserController;
 @Slf4j
 public class KeyApiController extends UserController implements KeyApi {
 
+    @Resource
+    private UserKeyService userKeyService;
+
     @Override
     public void getPublishKey() {
-
+        String publicKey = userKeyService.getPublicKey();
+        outputData(publicKey);
     }
 }
