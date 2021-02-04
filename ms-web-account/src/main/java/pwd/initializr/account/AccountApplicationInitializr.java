@@ -39,9 +39,9 @@ public class AccountApplicationInitializr {
   @Autowired
   private AdminAccountService adminAccountService;
 
-  @Value("${account.admin.super.init.username}")
+  @Value("${account.admin.super.init.username:admin}")
   private String adminInitializrUsername;
-  @Value("${account.admin.super.init.password}")
+  @Value("${account.admin.super.init.password:admin}")
   private String adminInitializrPassword;
 
   @PostConstruct

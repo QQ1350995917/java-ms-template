@@ -46,12 +46,12 @@ import pwd.initializr.common.web.persistence.entity.EntityAble;
  * @since DistributionVersion
  */
 @Api(
-    tags = "管理员管理",
+    tags = "后台人员管理",
     value = "adminManageApi",
     description = "[创建管理员/账号，人员/账号列表，人员/账号启/禁用，人员/账号删除]"
 )
 @RestController(value = "admin")
-@RequestMapping(value = "/api/admin/admin")
+@RequestMapping(value = "/api/admin")
 @Slf4j
 public class AdminController extends pwd.initializr.common.web.api.admin.AdminController implements
     AdminApi {
@@ -76,20 +76,7 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
   }
 
   @Override
-  public void delAccount(
-      @Valid @NotNull(message = "参数不能为空") Long userId,
-      @Valid @NotNull(message = "参数不能为空") Long accountId) {
-    Integer existedAccountNum = adminAccountService.existedAccountNum(userId);
-    if (existedAccountNum > 1) {
-      Integer result = adminAccountService.deleteById(accountId, userId);
-      super.outputData(200, result);
-    } else {
-      super.outputData(new Meta(412, "用户的最后一个账号不可被删除"));
-    }
-  }
-
-  @Override
-  public void delUser(
+  public void delete(
       @Valid @NotNull(message = "参数不能为空") @Size(message = "参数不能为空") List<Long> ids) {
     // 同时移除 session
     ids.forEach(id -> sessionService.deleteNamedSession(id));
@@ -98,20 +85,7 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
   }
 
   @Override
-  public void disableAccount(
-      @Valid @NotNull(message = "参数不能为空") Long userId,
-      @Valid @NotNull(message = "参数不能为空") Long accountId) {
-    Integer enabledAccountNum = adminAccountService.enabledAccountNum(userId);
-    if (enabledAccountNum > 1) {
-      Integer result = adminAccountService.ableById(accountId, userId, EntityAble.DISABLE);
-      super.outputData(200, result);
-    } else {
-      super.outputData(new Meta(412, "用户的最后一个账号不可被禁用"));
-    }
-  }
-
-  @Override
-  public void disableUser(@Valid @NotNull(message = "参数不能为空") List<Long> ids) {
+  public void disable(@Valid @NotNull(message = "参数不能为空") List<Long> ids) {
     // 同时移除 session
     ids.forEach(id -> sessionService.deleteNamedSession(id));
     Integer able = adminUserService.ableById(ids, EntityAble.DISABLE);
@@ -119,46 +93,22 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
   }
 
   @Override
-  public void enableAccount(
-      @Valid @NotNull(message = "参数不能为空") Long userId,
-      @Valid @NotNull(message = "参数不能为空") Long accountId) {
-    Integer able = adminAccountService.ableById(accountId, userId, EntityAble.ENABLE);
-    outputData(200, able);
-  }
-
-  @Override
-  public void enableUser(@Valid @NotNull(message = "参数不能为空") List<Long> ids) {
+  public void enable(@Valid @NotNull(message = "参数不能为空") List<Long> ids) {
     Integer able = adminUserService.ableById(ids, EntityAble.ENABLE);
     outputData(200, able);
   }
 
   @Override
-  public void getUser(@Valid @NotNull(message = "参数不能为空") Long userId) {
-    AdminUserOutput adminUserOutput = new AdminUserOutput();
-    AdminUserBO adminUserBO = adminUserService.queryById(userId);
-    if (adminUserBO == null) {
-      outputException(401);
-      return;
-    }
-    BeanUtils.copyProperties(adminUserBO, adminUserOutput);
-    outputData(adminUserOutput);
-  }
-
-
-  @Override
-  public void listAccount(@PathVariable("uid") Long userId) {
-    List<AdminAccountBO> adminAccountBOS = adminAccountService.queryByUserId(userId);
-    PageOutput<AdminAccountOutput> result = new PageOutput<>();
-    adminAccountBOS.forEach(adminAccountBO -> {
-      AdminAccountOutput adminAccountOutput = new AdminAccountOutput();
-      BeanUtils.copyProperties(adminAccountBO, adminAccountOutput);
-      result.getElements().add(adminAccountOutput);
-    });
-    outputData(result);
+  public void update(@PathVariable("uid") Long id, @RequestBody AdminUserInput input) {
+    AdminUserBO adminUserBO = new AdminUserBO();
+    BeanUtils.copyProperties(input, adminUserBO);
+    adminUserBO.setId(id);
+    Integer update = adminUserService.update(adminUserBO);
+    outputData(new Meta(), update);
   }
 
   @Override
-  public void listUser(String scopes, String sorts, String page) {
+  public void list(String scopes, String sorts, String page) {
     PageInput pageInput = PageInput.parse(page);
     LinkedHashSet<ScopeBO> scopeBOS = ScopeInput.parse(scopes);
     LinkedHashSet<SortBO> sortBOS = SortInput.parse(sorts);
@@ -177,6 +127,63 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
   }
 
   @Override
+  public void get(@Valid @NotNull(message = "参数不能为空") Long userId) {
+    AdminUserOutput adminUserOutput = new AdminUserOutput();
+    AdminUserBO adminUserBO = adminUserService.queryById(userId);
+    if (adminUserBO == null) {
+      outputException(401);
+      return;
+    }
+    BeanUtils.copyProperties(adminUserBO, adminUserOutput);
+    outputData(adminUserOutput);
+  }
+
+  @Override
+  public void resetPwd(@Valid @NotNull(message = "参数不能为空") Long userId) {
+
+  }
+
+  @Override
+  public void createAccount(@Valid @NotNull(message = "参数不能为空") Long userId,
+      @Valid @NotNull(message = "参数不能为空") Long accountId) {
+
+  }
+
+  @Override
+  public void deleteAccount(
+      @Valid @NotNull(message = "参数不能为空") Long userId,
+      @Valid @NotNull(message = "参数不能为空") Long accountId) {
+    Integer existedAccountNum = adminAccountService.existedAccountNum(userId);
+    if (existedAccountNum > 1) {
+      Integer result = adminAccountService.deleteById(accountId, userId);
+      super.outputData(200, result);
+    } else {
+      super.outputData(new Meta(412, "用户的最后一个账号不可被删除"));
+    }
+  }
+
+  @Override
+  public void disableAccount(
+      @Valid @NotNull(message = "参数不能为空") Long userId,
+      @Valid @NotNull(message = "参数不能为空") Long accountId) {
+    Integer enabledAccountNum = adminAccountService.enabledAccountNum(userId);
+    if (enabledAccountNum > 1) {
+      Integer result = adminAccountService.ableById(accountId, userId, EntityAble.DISABLE);
+      super.outputData(200, result);
+    } else {
+      super.outputData(new Meta(412, "用户的最后一个账号不可被禁用"));
+    }
+  }
+
+  @Override
+  public void enableAccount(
+      @Valid @NotNull(message = "参数不能为空") Long userId,
+      @Valid @NotNull(message = "参数不能为空") Long accountId) {
+    Integer able = adminAccountService.ableById(accountId, userId, EntityAble.ENABLE);
+    outputData(200, able);
+  }
+
+  @Override
   public void updateAccount(@PathVariable("id") Long id, @RequestBody AdminAccountInput input) {
     AdminAccountBO adminAccountBO = new AdminAccountBO();
     adminAccountBO.setId(id);
@@ -186,11 +193,26 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
   }
 
   @Override
-  public void updateUser(@PathVariable("uid") Long id, @RequestBody AdminUserInput input) {
-    AdminUserBO adminUserBO = new AdminUserBO();
-    BeanUtils.copyProperties(input, adminUserBO);
-    adminUserBO.setId(id);
-    Integer update = adminUserService.update(adminUserBO);
-    outputData(new Meta(), update);
+  public void listAccount(@PathVariable("uid") Long userId) {
+    List<AdminAccountBO> adminAccountBOS = adminAccountService.queryByUserId(userId);
+    PageOutput<AdminAccountOutput> result = new PageOutput<>();
+    adminAccountBOS.forEach(adminAccountBO -> {
+      AdminAccountOutput adminAccountOutput = new AdminAccountOutput();
+      BeanUtils.copyProperties(adminAccountBO, adminAccountOutput);
+      result.getElements().add(adminAccountOutput);
+    });
+    outputData(result);
+  }
+
+  @Override
+  public void getAccount(@Valid @NotNull(message = "用户ID不能为空") Long userId,
+      @Valid @NotNull(message = "账号ID不能为空") Long accountId) {
+
+  }
+
+  @Override
+  public void resetAccountPwd(@Valid @NotNull(message = "用户ID不能为空") Long userId,
+      @Valid @NotNull(message = "账号ID不能为空") Long accountId) {
+
   }
 }

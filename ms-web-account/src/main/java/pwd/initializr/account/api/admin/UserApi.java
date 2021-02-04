@@ -31,7 +31,7 @@ import pwd.initializr.account.api.admin.vo.UserCreateInput;
  * @since DistributionVersion
  */
 @Api(
-    tags = "系统用户管理",
+    tags = "前台用户管理",
     value = "userManageApi",
     description = "[用户/账户列表，用户/账户详情，用户/账户禁用/启用，用户/账户删除]"
 )
