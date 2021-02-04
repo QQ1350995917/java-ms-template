@@ -1,12 +1,18 @@
 package pwd.initializr.common.utils;
 
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
+import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.X509EncodedKeySpec;
 import java.util.HashMap;
 import java.util.Map;
+import javax.crypto.Cipher;
+import org.apache.commons.codec.binary.Base64;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
@@ -22,6 +28,7 @@ import sun.misc.BASE64Encoder;
  * @since DistributionVersion
  */
 public class CryptographerRsa {
+
     public static final String KEY_ALGORITHM = "RSA";
     public static final String SIGNATURE_ALGORITHM = "MD5withRSA";
     private static final String PUBLIC_KEY = "RSAPublicKey";
@@ -44,6 +51,7 @@ public class CryptographerRsa {
         //编码返回字符串
         return encryptBASE64(key.getEncoded());
     }
+
     //解码返回byte
     public static byte[] decryptBASE64(String key) throws Exception {
         return (new BASE64Decoder()).decodeBuffer(key);
@@ -72,6 +80,30 @@ public class CryptographerRsa {
         return keyMap;
     }
 
+    public static String encryptByRsa(String clearText, String publicKey) throws Exception {
+        //base64编码的公钥
+        byte[] decoded = decryptBASE64(publicKey);
+        RSAPublicKey rsaPublicKey = (RSAPublicKey) KeyFactory.getInstance(KEY_ALGORITHM).generatePublic(new X509EncodedKeySpec(decoded));
+        //RSA加密
+        Cipher cipher = Cipher.getInstance(KEY_ALGORITHM);
+        cipher.init(Cipher.ENCRYPT_MODE, rsaPublicKey);
+        String cipherText = Base64.encodeBase64String(cipher.doFinal(clearText.getBytes(StandardCharsets.UTF_8)));
+        return cipherText;
+    }
+
+    public static String decryptByRsa(String cipherText, String privateKey) throws Exception {
+        //64位解码加密后的字符串
+        byte[] bytes = decryptBASE64(cipherText);
+        //base64编码的私钥
+        byte[] decodeBase64 = Base64.decodeBase64(privateKey);
+        RSAPrivateKey rsaPrivateKey = (RSAPrivateKey) KeyFactory.getInstance(KEY_ALGORITHM).generatePrivate(new PKCS8EncodedKeySpec(decodeBase64));
+        //RSA解密
+        Cipher cipher = Cipher.getInstance(KEY_ALGORITHM);
+        cipher.init(Cipher.DECRYPT_MODE, rsaPrivateKey);
+        String clearText = new String(cipher.doFinal(bytes));
+        return clearText;
+    }
+
     public static void main(String[] args) {
         Map<String, Object> keyMap;
         try {
@@ -80,9 +112,18 @@ public class CryptographerRsa {
             System.out.println(publicKey);
             String privateKey = getPrivateKey(keyMap);
             System.out.println(privateKey);
+
+            String clearText = "www.dingpengwei@foxmail.com";
+            String cipherText = encryptByRsa(clearText, publicKey);
+            String result = decryptByRsa(cipherText, privateKey);
+
+            System.out.println(result);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
+
 
 }

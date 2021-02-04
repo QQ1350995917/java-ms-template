@@ -3,7 +3,7 @@ package pwd.initializr.account.api.user;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 public interface KeyApi {
 
     @ApiOperation(value = "获取公钥")
-    @PutMapping(value = {"/publish"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value = {"/publish"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     void getPublishKey();
 
 }

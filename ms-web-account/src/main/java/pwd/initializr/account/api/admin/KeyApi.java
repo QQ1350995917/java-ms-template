@@ -3,6 +3,7 @@ package pwd.initializr.account.api.admin;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,11 +37,11 @@ public interface KeyApi {
     void refreshUserKeyPairs();
 
     @ApiOperation(value = "获取管理员公钥")
-    @PutMapping(value = {"/public/admin"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value = {"/public/admin"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     void getAdminPublishKey();
 
     @ApiOperation(value = "获取用户公钥")
-    @PutMapping(value = {"/public/user"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value = {"/public/user"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     void getUserPublishKey();
 
 }

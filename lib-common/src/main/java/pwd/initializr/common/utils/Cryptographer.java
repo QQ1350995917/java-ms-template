@@ -1,10 +1,16 @@
 package pwd.initializr.common.utils;
 
+import java.security.KeyFactory;
 import java.security.SecureRandom;
+import java.security.interfaces.RSAPrivateKey;
+import java.security.interfaces.RSAPublicKey;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.X509EncodedKeySpec;
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+import org.apache.commons.codec.binary.Base64;
 
 /**
  * pwd.initializr.common.utils@ms-web-initializr
@@ -44,9 +50,5 @@ public class Cryptographer {
 //    byte[] resultByte = cipher.doFinal(byteContent);
 //    String result = new String(resultByte, "utf-8");
     return clearText;
-  }
-
-  public static String decryptByRsa(String cipherText, String publicKey) {
-    return cipherText;
   }
 }

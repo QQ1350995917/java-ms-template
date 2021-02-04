@@ -21,6 +21,7 @@ import pwd.initializr.account.api.vo.SessionCreateOutput;
 import pwd.initializr.account.api.vo.SessionInitOutput;
 import pwd.initializr.account.api.vo.SessionStatus;
 import pwd.initializr.account.business.admin.AdminAccountService;
+import pwd.initializr.account.business.admin.AdminKeyService;
 import pwd.initializr.account.business.admin.AdminUserService;
 import pwd.initializr.account.business.session.SessionService;
 import pwd.initializr.account.business.admin.bo.AdminAccountBO;
@@ -30,6 +31,7 @@ import pwd.initializr.account.business.session.bo.SessionBOAnonymous;
 import pwd.initializr.account.business.session.bo.CaptchaBO;
 import pwd.initializr.account.business.session.bo.SessionBONamed;
 import pwd.initializr.account.rpc.RPCToken;
+import pwd.initializr.common.utils.CryptographerRsa;
 import pwd.initializr.common.web.api.admin.AdminController;
 import pwd.initializr.common.web.api.vo.Meta;
 import pwd.initializr.common.web.persistence.entity.EntityAble;
@@ -75,6 +77,9 @@ public class SessionController extends AdminController implements SessionApi {
   @Autowired
   private AdminUserService adminUserService;
 
+  @Autowired
+  private AdminKeyService adminKeyService;
+
   @Override
   public void loginByNameAndPwd(@Valid @NotNull(message = "参数不能为空") SessionCreateInput input) {
     log.info(JSON.toJSONString(input));
@@ -110,9 +115,16 @@ public class SessionController extends AdminController implements SessionApi {
         return;
       }
     }
-
-    AdminAccountBO accountByNameAndPwd = adminAccountService
-        .queryByNameAndPwd(input.getLoginName(), input.getLoginPwd());
+    String loginPwd = input.getLoginPwd();
+    // TODO 使用RSA解密登录密码
+//    try {
+//      loginPwd = CryptographerRsa.decryptByRsa(loginPwd,adminKeyService.getPrivateKey());
+//    } catch (Exception e) {
+//      log.error(e.getMessage());
+//      outputException(400,"登录密码解密异常");
+//      return;
+//    }
+    AdminAccountBO accountByNameAndPwd = adminAccountService.queryByNameAndPwd(input.getLoginName(),loginPwd);
     if (accountByNameAndPwd == null) {
       // 登录失败，更新错误登录次数
       sessionBOAnonymous.setTimes(sessionBOAnonymous.getTimes() + 1);
