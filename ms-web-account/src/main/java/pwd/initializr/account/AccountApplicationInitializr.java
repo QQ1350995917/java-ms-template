@@ -12,6 +12,8 @@ import pwd.initializr.account.business.admin.AdminUserService;
 import pwd.initializr.account.business.admin.bo.AdminAccountBO;
 import pwd.initializr.account.business.admin.bo.AdminConfigBO;
 import pwd.initializr.account.business.admin.bo.AdminUserBO;
+import pwd.initializr.common.utils.CryptographerAes;
+import pwd.initializr.common.utils.CryptographerRsa;
 import pwd.initializr.common.web.persistence.entity.EntityAble;
 import pwd.initializr.common.web.persistence.entity.EntityDel;
 
@@ -43,6 +45,8 @@ public class AccountApplicationInitializr {
   private String adminInitializrUsername;
   @Value("${account.admin.super.init.password:admin}")
   private String adminInitializrPassword;
+  @Value("${account.admin.account.password.secret.key:admin}")
+  private String secretKey;
 
   @PostConstruct
   @Transactional(rollbackFor = RuntimeException.class)
@@ -73,7 +77,7 @@ public class AccountApplicationInitializr {
       AdminAccountBO adminAccountBO = new AdminAccountBO();
       adminAccountBO.setUid(adminUserBOResult.getId());
       adminAccountBO.setLoginName(adminInitializrUsername);
-      adminAccountBO.setLoginPwd(adminInitializrPassword);
+      adminAccountBO.setLoginPwd(CryptographerAes.encrypt(adminInitializrPassword,secretKey));
       adminAccountBO.setAble(EntityAble.ENABLE.getNumber());
       adminAccountBO.setDel(EntityDel.NO.getNumber());
       adminAccountService.insert(adminAccountBO);

@@ -71,6 +71,7 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
     AdminAccountBO adminAccountBO = new AdminAccountBO();
     BeanUtils.copyProperties(input.getUser(), adminUserBO);
     BeanUtils.copyProperties(input.getAccount(), adminAccountBO);
+
     AdminUserBO userBO = adminUserServiceWrap.insert(adminUserBO, adminAccountBO);
     super.outputData(userBO.getId());
   }

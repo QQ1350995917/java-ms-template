@@ -32,16 +32,19 @@ import org.apache.commons.codec.binary.Base64;
 public class CryptographerAes {
 
   public static final String AES = "AES";
+  public static final int LEN = 128;
+
+  public static void main(String[] args) {
+    String slat = "slat";
+    String text1 = "www.dingpengwei@foxmail.com";
+    String text2 = "www.xxx.com";
+    System.out.println(encrypt(text1,slat));
+    System.out.println(encrypt(text2,slat));
+  }
 
   public static String decrypt(String cipherText, String salt) {
     try {
-      KeyGenerator keyGenerator = KeyGenerator.getInstance(AES);
-      keyGenerator.init(128, new SecureRandom(salt.getBytes()));
-      SecretKey secretKey = keyGenerator.generateKey();
-      byte[] enCodeFormat = secretKey.getEncoded();
-      SecretKeySpec key = new SecretKeySpec(enCodeFormat, AES);
-      Cipher cipher = Cipher.getInstance(AES);
-      cipher.init(Cipher.DECRYPT_MODE, key);
+      Cipher cipher = initCipher(Cipher.DECRYPT_MODE,salt);
       byte[] resultByte = cipher.doFinal(cipherText.getBytes("utf-8"));
       String result = new String(resultByte);
       return result;
@@ -52,19 +55,24 @@ public class CryptographerAes {
 
   public static String encrypt(String clearText, String salt) {
     try {
-      KeyGenerator keyGenerator = KeyGenerator.getInstance(AES);
-      keyGenerator.init(128, new SecureRandom(salt.getBytes()));
-      SecretKey secretKey = keyGenerator.generateKey();
-      byte[] enCodeFormat = secretKey.getEncoded();
-      SecretKeySpec key = new SecretKeySpec(enCodeFormat, AES);
-      Cipher cipher = Cipher.getInstance(AES);
+      Cipher cipher = initCipher(Cipher.ENCRYPT_MODE,salt);
       byte[] byteContent = clearText.getBytes("utf-8");
-      cipher.init(Cipher.ENCRYPT_MODE, key);
       byte[] resultByte = cipher.doFinal(byteContent);
       String result = new String(resultByte, "utf-8");
       return result;
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
+  }
+
+  private static Cipher initCipher(int mode,String salt) throws Exception {
+    KeyGenerator keyGenerator = KeyGenerator.getInstance(AES);
+    keyGenerator.init(LEN, new SecureRandom(salt.getBytes()));
+    SecretKey secretKey = keyGenerator.generateKey();
+    byte[] enCodeFormat = secretKey.getEncoded();
+    SecretKeySpec key = new SecretKeySpec(enCodeFormat, AES);
+    Cipher cipher = Cipher.getInstance(AES);
+    cipher.init(mode, key);
+    return cipher;
   }
 }
