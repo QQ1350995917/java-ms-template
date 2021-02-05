@@ -4,6 +4,7 @@ package pwd.initializr.account.business.admin;
 import java.util.LinkedHashSet;
 import java.util.List;
 import pwd.initializr.account.business.admin.bo.AdminAccountBO;
+import pwd.initializr.account.persistence.entity.AccountType;
 import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.common.web.business.bo.ScopeBO;
 import pwd.initializr.common.web.business.bo.SortBO;
@@ -183,5 +184,17 @@ public interface AdminAccountService {
    * @return 实例对象
    */
   Integer updateLoginPwd(Long id, Long uid, String previousPwd, String currentPwd);
+
+  /**
+   * <h2>根据类型，查询用户名下的该类型的账号</h2>
+   * date 2021-02-06 00:04
+   *
+   * @param uid 用户ID
+   * @param accountType 账户类型
+   * @return pwd.initializr.account.business.admin.bo.AdminAccountBO
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  AdminAccountBO queryByAccountTypeUnderUserId(Long uid,AccountType accountType);
 
 }

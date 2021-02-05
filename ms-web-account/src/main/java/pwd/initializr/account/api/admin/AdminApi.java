@@ -91,10 +91,9 @@ public interface AdminApi {
   void resetPwd(@PathVariable("uid") @Valid @NotNull(message = "参数不能为空") Long userId);
 
   @ApiOperation(value = "新增账户，同一种类型的账号只能创建一个")
-  @PostMapping(value = {"/account"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @PostMapping(value = {"/userId"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   void createAccount(
-      @RequestParam("userId") @Valid @NotNull(message = "参数不能为空") Long userId,
-      @RequestParam("accountId") @Valid @NotNull(message = "参数不能为空") Long accountId
+      @RequestParam("userId") @Valid @NotNull(message = "参数不能为空") Long userId
   );
 
   @ApiOperation(value = "删除账户，最后一个可用账户不可被删除")

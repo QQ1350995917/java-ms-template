@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import pwd.initializr.account.business.admin.bo.AdminAccountBO;
 import pwd.initializr.account.persistence.dao.AdminAccountDao;
+import pwd.initializr.account.persistence.entity.AccountType;
 import pwd.initializr.account.persistence.entity.AdminAccountEntity;
 import pwd.initializr.account.persistence.entity.AdminAccountType;
 import pwd.initializr.common.utils.CryptographerAes;
@@ -191,5 +192,10 @@ public class AdminAccountServiceImpl implements AdminAccountService {
   @Override
   public Integer updateLoginPwd(Long id, Long uid, String previousPwd, String currentPwd) {
     return this.adminAccountDao.updateLoginPwd(id,uid,previousPwd,currentPwd, new Date());
+  }
+
+  @Override
+  public AdminAccountBO queryByAccountTypeUnderUserId(Long uid, AccountType accountType) {
+    return null;
   }
 }

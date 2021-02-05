@@ -17,32 +17,28 @@ import lombok.ToString;
  * @version 1.0.0
  * @since DistributionVersion
  */
-@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @ToString
 public enum AccountType {
-  ByAdmin(0, "管理员开通账户"),
-  ByNamePwd(1,"账号密码"),
-  ByPhoneNumber(2, "手机号码注册账户") {
-    @Override
-    public boolean isAdmin() {
-      return super.isAdmin();
-    }
-  },
-  ByEmail(3, "邮箱注册账户");
+  /**
+   *
+   */
+  LoginNameAndLoginPwd(1, "普通登录名+登录密码；"),
+  EmailAndLoginPwd(2,"邮箱登录名+登录密码；"),
+  PhoneAndLoginPwd(3, "电话登录名+登录密码；"),
+  PhoneAndSMC(4, "电话登录名+短信验证码账号"),
+  QQ(5, "QQ账号"),
+  WeChat(6, "微信认证账号"),
+  Weibo(7, "微博认证账号");
 
-  String desc;
   @EnumValue
   Integer type;
+  String desc;
 
   AccountType(Integer type, String desc) {
     this.type = type;
     this.desc = desc;
-  }
-
-  public boolean isAdmin() {
-    return false;
   }
 
 }

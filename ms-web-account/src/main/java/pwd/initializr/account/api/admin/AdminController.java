@@ -9,6 +9,7 @@ import javax.validation.constraints.Size;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +25,8 @@ import pwd.initializr.account.business.admin.AdminUserServiceWrap;
 import pwd.initializr.account.business.admin.bo.AdminAccountBO;
 import pwd.initializr.account.business.admin.bo.AdminUserBO;
 import pwd.initializr.account.business.session.SessionService;
+import pwd.initializr.account.persistence.entity.AccountType;stat
+import pwd.initializr.common.utils.CryptographerPbkdf;
 import pwd.initializr.common.web.api.vo.Meta;
 import pwd.initializr.common.web.api.vo.PageInput;
 import pwd.initializr.common.web.api.vo.PageOutput;
@@ -64,6 +67,8 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
   private AdminAccountService adminAccountService;
   @Autowired
   private SessionService sessionService;
+  @Value("${account.admin.account.password.default}")
+  private String defaultPassword;
 
   @Override
   public void create(@Valid @NotNull(message = "参数不能为空") AdminCreateInput input) {
@@ -71,7 +76,9 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
     AdminAccountBO adminAccountBO = new AdminAccountBO();
     BeanUtils.copyProperties(input.getUser(), adminUserBO);
     BeanUtils.copyProperties(input.getAccount(), adminAccountBO);
-
+    String salt = getDefaultLoginPwdSalt();
+    adminAccountBO.setLoginPwd(getDefaultLoginPwd(salt));
+    adminAccountBO.setPwdSalt(salt);
     AdminUserBO userBO = adminUserServiceWrap.insert(adminUserBO, adminAccountBO);
     super.outputData(userBO.getId());
   }
@@ -141,12 +148,14 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
 
   @Override
   public void resetPwd(@Valid @NotNull(message = "参数不能为空") Long userId) {
+    String salt = getDefaultLoginPwdSalt();
 
   }
 
   @Override
-  public void createAccount(@Valid @NotNull(message = "参数不能为空") Long userId,
-      @Valid @NotNull(message = "参数不能为空") Long accountId) {
+  public void createAccount(@Valid @NotNull(message = "参数不能为空") Long userId) {
+
+    String salt = getDefaultLoginPwdSalt();
 
   }
 
@@ -214,6 +223,15 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
   @Override
   public void resetAccountPwd(@Valid @NotNull(message = "用户ID不能为空") Long userId,
       @Valid @NotNull(message = "账号ID不能为空") Long accountId) {
+    String salt = getDefaultLoginPwdSalt();
 
+  }
+
+  private String getDefaultLoginPwdSalt(){
+    return CryptographerPbkdf.randomSalt();
+  }
+
+  private String getDefaultLoginPwd(String loginPwdSalt){
+    return CryptographerPbkdf.encrypt(defaultPassword,loginPwdSalt);
   }
 }

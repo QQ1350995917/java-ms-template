@@ -44,8 +44,6 @@ public class AccountApplicationInitializr {
   private String adminInitializrUsername;
   @Value("${account.admin.super.init.password:admin}")
   private String adminInitializrPassword;
-  @Value("${account.admin.account.password.secret.key:admin}")
-  private String secretKey;
 
   @PostConstruct
   @Transactional(rollbackFor = RuntimeException.class)
