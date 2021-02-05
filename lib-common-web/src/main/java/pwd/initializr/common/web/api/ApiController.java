@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -228,9 +229,33 @@ public class ApiController {
 
   protected void outputFile(String model, File file, String contentType, String fileName,
       String fileSuffix, int buffBytes) {
-    HttpServletResponse response = getResponse();
-    try (BufferedInputStream bufferedInputStream = new BufferedInputStream(
+    try(BufferedInputStream bufferedInputStream = new BufferedInputStream(
         new FileInputStream(file))) {
+      outputStream(bufferedInputStream,model,contentType,fileName,fileSuffix,buffBytes);
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  protected void outputAttachmentFile(InputStream inputStream,String contentType, String fileName, String fileSuffix){
+    outputAttachmentFile(inputStream,contentType,fileName,fileSuffix,1024 * 4);
+  }
+
+  protected void outputAttachmentFile(InputStream inputStream,String contentType, String fileName,
+      String fileSuffix,int buffBytes){
+    outputAttachmentFile(inputStream,contentType,fileName,fileSuffix,buffBytes,"attachment");
+  }
+
+  protected void outputAttachmentFile(InputStream inputStream,String contentType, String fileName,
+      String fileSuffix, int buffBytes,String model) {
+    BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+    this.outputStream(bufferedInputStream, model,contentType,fileName,fileSuffix,buffBytes);
+  }
+
+  private void outputStream(BufferedInputStream bufferedInputStream,String model,String contentType, String fileName,
+      String fileSuffix, int buffBytes){
+    HttpServletResponse response = getResponse();
+    try (OutputStream outputStream = response.getOutputStream();) {
       response.setCharacterEncoding("utf-8");
       response.setHeader("Content-type", contentType);
       response.setContentType(contentType);
@@ -239,16 +264,7 @@ public class ApiController {
           StringUtils.isBlank(fileSuffix) ? fileName : String.join(".", fileName, fileSuffix);
       String encode = URLEncoder.encode(fullName, "UTF-8");
       response.setHeader("Content-Disposition", model + ";filename=" + encode);
-      outputFile(bufferedInputStream, buffBytes);
-    } catch (Exception e) {
-      throw new RuntimeException(e);
-    }
-  }
 
-  protected void outputFile(InputStream inputStream, int buffBytes) {
-    HttpServletResponse response = getResponse();
-    try (OutputStream outputStream = response.getOutputStream();
-        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream)) {
       if (buffBytes < 1) {
         buffBytes = 1024 * 4;
       }
@@ -261,10 +277,6 @@ public class ApiController {
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
-  }
-
-  protected void outputAttachmentFile(InputStream inputStream) {
-    this.outputFile(inputStream, 1024 * 4);
   }
 
   protected void outputInlineFile(File file) {

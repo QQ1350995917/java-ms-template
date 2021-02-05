@@ -12,8 +12,7 @@ import pwd.initializr.account.business.admin.AdminUserService;
 import pwd.initializr.account.business.admin.bo.AdminAccountBO;
 import pwd.initializr.account.business.admin.bo.AdminConfigBO;
 import pwd.initializr.account.business.admin.bo.AdminUserBO;
-import pwd.initializr.common.utils.CryptographerAes;
-import pwd.initializr.common.utils.CryptographerRsa;
+import pwd.initializr.common.utils.CryptographerPbkdf;
 import pwd.initializr.common.web.persistence.entity.EntityAble;
 import pwd.initializr.common.web.persistence.entity.EntityDel;
 
@@ -74,10 +73,14 @@ public class AccountApplicationInitializr {
       adminUserBO.setDel(EntityDel.NO.getNumber());
       AdminUserBO adminUserBOResult = adminUserService.insert(adminUserBO);
 
+      String randomSalt = CryptographerPbkdf.randomSalt();
+      String encrypt = CryptographerPbkdf.encrypt(adminInitializrPassword, randomSalt);
+
       AdminAccountBO adminAccountBO = new AdminAccountBO();
       adminAccountBO.setUid(adminUserBOResult.getId());
       adminAccountBO.setLoginName(adminInitializrUsername);
-      adminAccountBO.setLoginPwd(CryptographerAes.encrypt(adminInitializrPassword,secretKey));
+      adminAccountBO.setLoginPwd(encrypt);
+      adminAccountBO.setPwdSalt(randomSalt);
       adminAccountBO.setAble(EntityAble.ENABLE.getNumber());
       adminAccountBO.setDel(EntityDel.NO.getNumber());
       adminAccountService.insert(adminAccountBO);

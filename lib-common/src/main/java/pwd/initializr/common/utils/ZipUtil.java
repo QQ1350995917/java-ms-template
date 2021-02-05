@@ -60,6 +60,7 @@ public class ZipUtil {
             while ((len = in.read(buf)) != -1) {
                 zipOutputStream.write(buf, 0, len);
             }
+            zipOutputStream.flush();
             zipOutputStream.closeEntry();
         }
     }
@@ -106,15 +107,15 @@ public class ZipUtil {
             if (sourceFile.isDirectory()) {
                 directory(zipOutputStream, sourceFile, "");
             } else {
-                zipFile(zipOutputStream, sourceFile, "");
+                zipFile(zipOutputStream, sourceFile, sourceFile.getName());
             }
         }
     }
 
     public static void main(String[] args) throws Exception {
-        String source = "E:\\workspace\\github\\ms-web-initializr\\project-generator-test";
+        String source = "C:\\Users\\Administrator\\Downloads\\zip.xml";
         File sourceFile = new File(source);
-        String target = "E:\\workspace\\github\\ms-web-initializr\\project-generator-test.zip";
+        String target = "C:\\Users\\Administrator\\Downloads\\project-generator-test-"+ System.currentTimeMillis() +".zip";
         File targetFile = new File(target);
         if (targetFile.exists()) {
             targetFile.delete();
