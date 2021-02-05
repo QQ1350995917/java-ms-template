@@ -21,13 +21,13 @@
   <select id="queryById" resultMap="AdminUserMap">
         select
           id, pin, name, gender, emp_no, summary, able, del, create_time, update_time, version
-        from initializr_account.admin_user
+        from admin_user
         where id = #{id}
     </select>
 
   <!--查询指定行数据-->
   <select id="countAllByCondition" resultType="java.lang.Long">
-    select count(*) from initializr_account.admin_user
+    select count(*) from admin_user
     <include refid="pwd.initializr.common.web.persistence.entity.ScopeEntity.entityQueryScope"></include>
   </select>
 
@@ -35,7 +35,7 @@
   <select id="queryAllByCondition" resultMap="AdminUserMap">
     select
     id, pin, name, gender, emp_no, summary, able, del, create_time, update_time
-    from initializr_account.admin_user
+    from admin_user
     <include refid="pwd.initializr.common.web.persistence.entity.ScopeEntity.entityQueryScope"></include>
     <include refid="pwd.initializr.common.web.persistence.entity.SortEntity.entityQuerySort"></include>
     limit #{offset}, #{limit}
@@ -43,13 +43,13 @@
 
   <!--新增所有列-->
   <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into initializr_account.admin_user(pin, name, gender, emp_no, summary, able, del, create_time, update_time)
+        insert into admin_user(pin, name, gender, emp_no, summary, able, del, create_time, update_time)
         values (#{pin}, #{name}, #{gender}, #{empNo}, #{summary}, #{able}, #{del}, #{createTime}, #{updateTime})
   </insert>
 
   <!--通过主键修改数据-->
   <update id="update">
-    update initializr_account.admin_user
+    update admin_user
     <set>
       <if test="pin != null and pin != ''">
         pin = #{pin},
@@ -84,12 +84,12 @@
 
   <!--通过主键删除-->
   <update id="deleteById">
-    update initializr_account.admin_user set del = 1, update_time = now() where id = #{id}
+    update admin_user set del = 1, update_time = now() where id = #{id}
   </update>
 
   <!--通过主键删除-->
   <update id="deleteByIds">
-    update initializr_account.admin_user set del = 1, update_time = now() where id in
+    update admin_user set del = 1, update_time = now() where id in
     <foreach close=")" collection="ids" index="index" item="id" open="(" separator=",">
       #{id}
     </foreach>
@@ -97,12 +97,12 @@
 
   <!--通过主键启禁-->
   <update id="ableById">
-    update initializr_account.admin_user set able = #{able}, update_time = now() where id = #{id}
+    update admin_user set able = #{able}, update_time = now() where id = #{id}
   </update>
 
   <!--通过主键启禁-->
   <update id="ableByIds">
-    update initializr_account.admin_user set able = #{able}, update_time = now() where id in
+    update admin_user set able = #{able}, update_time = now() where id in
     <foreach close=")" collection="ids" index="index" item="id" open="(" separator=",">
       #{id}
     </foreach>

@@ -35,6 +35,8 @@ public class UserAccountEntity implements Serializable {
 
   private String loginPwd;
 
+  private String pwdSalt;
+
   private Date pwdTime;
   /**
    * 1:授权账号；2：电话号码+短信验证码账号；3：电话号码+密码账号；4：邮箱账号+直接登录链接账号；5：邮箱账号+验证码账号；6：邮箱账号+密码账号；7：微信认证账号；8：微博认证账号；9：QQ账号；

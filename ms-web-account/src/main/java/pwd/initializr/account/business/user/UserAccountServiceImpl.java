@@ -1,11 +1,9 @@
 package pwd.initializr.account.business.user;
 
-
 import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
 import javax.annotation.Resource;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import pwd.initializr.account.business.user.bo.UserAccountBO;
@@ -32,32 +30,32 @@ public class UserAccountServiceImpl implements UserAccountService {
 
   @Override
   public Integer ableById(List<Long> ids, EntityAble able) {
-    return userAccountDao.ableByIds(ids, able.getNumber());
+    return userAccountDao.ableByIds(ids, able.getNumber(), new Date());
   }
 
   @Override
   public Integer ableByUserId(List<Long> userIds, EntityAble able) {
-    return userAccountDao.ableByUserIds(userIds, able.getNumber());
+    return userAccountDao.ableByUserIds(userIds, able.getNumber(), new Date());
   }
 
   @Override
   public Integer ableByUserId(Long userId, EntityAble able) {
-    return userAccountDao.ableByUserId(userId, able.getNumber());
+    return userAccountDao.ableByUserId(userId, able.getNumber(), new Date());
   }
 
   @Override
   public Integer deleteById(Long id,Long uid) {
-    return userAccountDao.deleteById(id,uid);
+    return userAccountDao.deleteById(id,uid, new Date());
   }
 
   @Override
   public Integer deleteById(List<Long> ids) {
-    return userAccountDao.deleteByIds(ids);
+    return userAccountDao.deleteByIds(ids, new Date());
   }
 
   @Override
   public Integer deleteByUserId(List<Long> uids) {
-    return userAccountDao.deleteByUserIds(uids);
+    return userAccountDao.deleteByUserIds(uids, new Date());
   }
 
   @Override
@@ -126,7 +124,8 @@ public class UserAccountServiceImpl implements UserAccountService {
   @Override
   public UserAccountBO queryByNameAndPwd(String loginName, String loginPwd) {
     UserAccountEntity userAccountEntity = userAccountDao
-        .queryByLoginNameAndPwd(loginName, loginPwd);
+        .queryByLoginNameAndPwd(loginName);
+    // FIXME: 密码问题
     UserAccountBO userAccountBO = new UserAccountBO();
     BeanUtils.copyProperties(userAccountEntity, userAccountBO);
     return userAccountBO;
@@ -134,6 +133,6 @@ public class UserAccountServiceImpl implements UserAccountService {
 
   @Override
   public Integer update(Long id, Long uid, String previousPwd, String currentPwd) {
-    return userAccountDao.updateLoginPwd(id,uid,previousPwd,currentPwd);
+    return userAccountDao.updateLoginPwd(id,uid,previousPwd,currentPwd, new Date());
   }
 }

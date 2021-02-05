@@ -8,6 +8,7 @@
     <result column="uid" jdbcType="BIGINT" property="uid"/>
     <result column="login_name" jdbcType="VARCHAR" property="loginName"/>
     <result column="login_pwd" jdbcType="VARCHAR" property="loginPwd"/>
+    <result column="pwd_salt" jdbcType="CHAR" property="pwdSalt"/>
     <result column="pwd_time" jdbcType="TIMESTAMP" property="pwdTime"/>
     <result column="type" jdbcType="INTEGER" property="type"/>
     <result column="able" jdbcType="INTEGER" property="able"/>
@@ -20,30 +21,30 @@
   <!--查询单个-->
   <select id="queryById" resultMap="UserAccountMap">
         select
-          id, uid, login_name, login_pwd, pwd_time, type, able, del, create_time, update_time, version
-        from initializr_account.user_account
+          id, uid, login_name, login_pwd, pwd_salt, pwd_time, type, able, del, create_time, update_time, version
+        from user_account
         where id = #{id} and uid = #{uid}
     </select>
 
   <!--登录查询-->
   <select id="queryByLoginNameAndPwd" resultMap="UserAccountMap">
         select
-          id, uid, login_name, login_pwd, pwd_time, type, able, del, create_time, update_time
-        from initializr_account.user_account
-        where login_name = #{loginName} and login_pwd = #{loginPwd}
+          id, uid, login_name, login_pwd, pwd_salt, pwd_time, type, able, del, create_time, update_time
+        from user_account
+        where login_name = #{loginName}
   </select>
 
   <!--通过实体作为筛选条件统计-->
   <select id="countAllByCondition" resultType="java.lang.Long">
-    select count(*) from initializr_account.user_account
+    select count(*) from user_account
     <include refid="pwd.initializr.common.web.persistence.entity.ScopeEntity.entityQueryScope"></include>
   </select>
 
   <!--通过实体作为筛选条件查询-->
   <select id="queryAllByCondition" resultMap="UserAccountMap">
     select
-    id, uid, login_name, login_pwd, pwd_time, type, able, del, create_time, update_time
-    from initializr_account.user_account
+    id, uid, login_name, login_pwd, pwd_salt, pwd_time, type, able, del, create_time, update_time
+    from user_account
     <include refid="pwd.initializr.common.web.persistence.entity.ScopeEntity.entityQueryScope"></include>
     <include refid="pwd.initializr.common.web.persistence.entity.SortEntity.entityQuerySort"></include>
     limit #{offset}, #{limit}
@@ -51,8 +52,8 @@
 
   <select id="queryAllByUid" resultMap="UserAccountMap">
     select
-    id, uid, login_name, login_pwd, pwd_time, type, able, del, create_time, update_time
-    from initializr_account.user_account
+    id, uid, login_name, login_pwd, pwd_salt, pwd_time, type, able, del, create_time, update_time
+    from user_account
     where uId = #{uid}
   </select>
 
@@ -62,31 +63,32 @@
 
   <!--新增所有列-->
   <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into initializr_account.user_account(uid, login_name, login_pwd, pwd_time, type, able, del, create_time, update_time)
-        values (#{uid}, #{loginName}, #{loginPwd}, #{pwdTime}, #{type}, #{able}, #{del}, #{createTime}, #{updateTime})
+        insert into user_account(uid, login_name, login_pwd, pwd_salt, pwd_time, type, able, del, create_time, update_time)
+        values (#{uid}, #{loginName}, #{loginPwd}, #{pwdSalt}, #{pwdTime}, #{type}, #{able}, #{del}, #{createTime}, #{updateTime})
   </insert>
 
   <!--通过主键修改登录密码-->
   <update id="updateLoginPwd">
-    update initializr_account.user_account
+    update user_account
     <set>
       <if test="currentPwd != null and currentPwd != ''">
-        login_pwd = #{currentPwd},
-        pwd_time = now(),
-        update_time = now(),
+        login_pwd = #{loginPwd},
+        pwd_salt = #{pwdSalt},
+        pwd_time = #{updateTime},
+        update_time = #{updateTime}
       </if>
     </set>
-    where id = #{id} and uid = #{uid} and loginPwd = #{previousPwd}
+    where id = #{id} and uid = #{uid}
   </update>
 
   <!--通过主键删除-->
   <delete id="deleteById">
-    update initializr_account.user_account set del = 1, update_time = now() where id = #{id} and uid = #{uid}
+    update user_account set del = 1, update_time = #{updateTime} where id = #{id} and uid = #{uid}
   </delete>
 
   <!--通过主键删除-->
   <delete id="deleteByIds">
-    update initializr_account.user_account set del = 1, update_time = now() where id in
+    update user_account set del = 1, update_time = #{updateTime} where id in
     <foreach close=")" collection="ids" index="index" item="id" open="(" separator=",">
       #{id}
     </foreach>
@@ -94,7 +96,7 @@
 
   <!--通过用户外键删除-->
   <delete id="deleteByUserIds">
-    update initializr_account.user_account set del = 1, update_time = now() where uid in
+    update user_account set del = 1, update_time = #{updateTime} where uid in
     <foreach close=")" collection="uids" index="index" item="id" open="(" separator=",">
       #{id}
     </foreach>
@@ -102,12 +104,12 @@
 
   <!--通过主键启禁-->
   <update id="ableById">
-    update initializr_account.user_account set able = #{able}, update_time = now() where id = #{id} and uid = {"uid"}
+    update user_account set able = #{able}, update_time = #{updateTime} where id = #{id} and uid = {"uid"}
   </update>
 
   <!--通过主键启禁-->
   <update id="ableByIds">
-    update initializr_account.user_account set able = #{able}, update_time = now() where id in
+    update user_account set able = #{able}, update_time = #{updateTime} where id in
     <foreach close=")" collection="ids" index="index" item="id" open="(" separator=",">
       #{id}
     </foreach>
@@ -115,12 +117,12 @@
 
   <!--通过用户外键启禁-->
   <update id="ableByUserId">
-    update initializr_account.user_account set able = #{able}, update_time = now() where uid = #{userId}
+    update user_account set able = #{able}, update_time = #{updateTime} where uid = #{userId}
   </update>
 
   <!--通过用户外键启禁-->
   <update id="ableByUserIds">
-    update initializr_account.user_account set able = #{able}, update_time = now() where uid where
+    update user_account set able = #{able}, update_time = #{updateTime} where uid where
     id in
     <foreach close=")" collection="userIds" index="index" item="userId" open="(" separator=",">
       #{userId}

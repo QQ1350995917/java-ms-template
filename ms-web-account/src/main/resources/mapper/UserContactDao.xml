@@ -20,13 +20,13 @@
   <select id="queryById" resultMap="UserContactMap">
         select
           id, uid, type, value, mark, able, del, create_time, update_time, version
-        from initializr_account.user_contact
+        from user_contact
         where id = #{id}
     </select>
 
   <!--查询指定行数据-->
   <select id="countAllByCondition" resultMap="UserContactMap">
-    select count(*) from initializr_account.user_contact
+    select count(*) from user_contact
     <include refid="countAndQueryAllByCondition"></include>
   </select>
 
@@ -34,7 +34,7 @@
   <select id="queryAllByCondition" resultMap="UserContactMap">
     select
     id, uid, type, value, mark, able, del, create_time, update_time
-    from initializr_account.user_contact
+    from user_contact
     <include refid="countAndQueryAllByCondition"></include>
     limit #{offset}, #{limit}
   </select>
@@ -42,7 +42,7 @@
   <select id="queryAllByUid" resultMap="UserContactMap">
     select
     id, uid, type, value, mark, able, del, create_time, update_time
-    from initializr_account.user_contact
+    from user_contact
     where uId = #{uid}
   </select>
 
@@ -80,13 +80,13 @@
 
   <!--新增所有列-->
   <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into initializr_account.user_contact(uid, type, value, mark, able, del, create_time, update_time)
+        insert into user_contact(uid, type, value, mark, able, del, create_time, update_time)
         values (#{uid}, #{type}, #{value}, #{mark}, #{able}, #{del}, #{createTime}, #{updateTime})
     </insert>
 
   <!--通过主键修改数据-->
   <update id="update">
-    update initializr_account.user_contact
+    update user_contact
     <set>
       <if test="uid != null">
         uid = #{uid},
@@ -118,12 +118,12 @@
 
   <!--通过主键删除-->
   <delete id="deleteById">
-    update initializr_account.user_contact set del = 1, update_time = now() where id = #{id}
+    update user_contact set del = 1, update_time = now() where id = #{id}
   </delete>
 
   <!--通过主键删除-->
   <delete id="deleteByIds">
-    update initializr_account.user_contact set del = 1, update_time = now() where id in
+    update user_contact set del = 1, update_time = now() where id in
     <foreach close=")" collection="ids" index="index" item="id" open="(" separator=",">
       #{id}
     </foreach>

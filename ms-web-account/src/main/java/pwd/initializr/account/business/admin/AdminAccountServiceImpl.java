@@ -33,17 +33,17 @@ public class AdminAccountServiceImpl implements AdminAccountService {
 
   @Override
   public Integer ableById(Long id, Long uid, EntityAble able) {
-    return this.adminAccountDao.ableById(id,uid,able.getNumber());
+    return this.adminAccountDao.ableById(id,uid,able.getNumber(), new Date());
   }
 
   @Override
   public Integer ableByIds(List<Long> ids, EntityAble able) {
-    return adminAccountDao.ableByIds(ids, able.getNumber());
+    return adminAccountDao.ableByIds(ids, able.getNumber(), new Date());
   }
 
   @Override
   public Integer ableByUserIds(List<Long> userIds, EntityAble able) {
-    return adminAccountDao.ableByUserIds(userIds, able.getNumber());
+    return adminAccountDao.ableByUserIds(userIds, able.getNumber(), new Date());
   }
 
   /**
@@ -54,17 +54,17 @@ public class AdminAccountServiceImpl implements AdminAccountService {
    */
   @Override
   public Integer deleteById(Long id,Long uid) {
-    return this.adminAccountDao.deleteById(id,uid);
+    return this.adminAccountDao.deleteById(id,uid, new Date());
   }
 
   @Override
   public Integer deleteByUserId(Long userId) {
-    return this.adminAccountDao.deleteByUserId(userId);
+    return this.adminAccountDao.deleteByUserId(userId, new Date());
   }
 
   @Override
   public Integer deleteByUserId(List<Long> userIds) {
-    return this.adminAccountDao.deleteByUserIds(userIds);
+    return this.adminAccountDao.deleteByUserIds(userIds, new Date());
   }
 
   @Override
@@ -151,7 +151,8 @@ public class AdminAccountServiceImpl implements AdminAccountService {
       e.printStackTrace();
     }
     AdminAccountEntity adminAccountEntity = adminAccountDao
-        .queryByLoginNameAndPwd(loginName, encrypt);
+        .queryByLoginNameAndPwd(loginName);
+    // FIXME: 密码问题
     if (adminAccountEntity == null) {
       return null;
     }
@@ -189,6 +190,6 @@ public class AdminAccountServiceImpl implements AdminAccountService {
    */
   @Override
   public Integer updateLoginPwd(Long id, Long uid, String previousPwd, String currentPwd) {
-    return this.adminAccountDao.updateLoginPwd(id,uid,previousPwd,currentPwd);
+    return this.adminAccountDao.updateLoginPwd(id,uid,previousPwd,currentPwd, new Date());
   }
 }

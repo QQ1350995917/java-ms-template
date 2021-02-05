@@ -1,6 +1,7 @@
 package pwd.initializr.account.persistence.dao;
 
 
+import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
@@ -25,44 +26,49 @@ public interface AdminAccountDao {
    * @param id 主键
    * @param uid 外键
    * @param able 业务数据
+   * @param updateTime 更新时间
    * @return java.lang.Integer
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  Integer ableById(@Param("id") Long id,@Param("uid") Long uid, @Param("able") Integer able);
+  Integer ableById(@Param("id") Long id, @Param("uid") Long uid, @Param("able") Integer able, @Param("updateTime") Date updateTime);
 
   /**
    * <h2>通过ID启用/禁用数据</h2>
    * date 2020-07-27 00:01
    *
    * @param ids 主键集合
+   * @param able 业务数据
+   * @param updateTime 更新时间
    * @return java.lang.Integer
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  Integer ableByIds(List<Long> ids, int able);
+  Integer ableByIds(@Param("ids") List<Long> ids, @Param("able") int able, @Param("updateTime") Date updateTime);
 
   /**
    * <h2>通过用户ID启用/禁用数据</h2>
    * date 2020-07-27 00:06
    *
    * @param id 用户ID
+   * @param updateTime 更新时间
    * @return java.lang.Integer
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  Integer ableByUserId(Long id);
+  Integer ableByUserId(@Param("id") Long id, @Param("updateTime") Date updateTime);
 
   /**
    * <h2>通过用户ID启用/禁用数据</h2>
    * date 2020-07-27 00:06
    *
    * @param ids 用户ID集合
+   * @param updateTime 更新时间
    * @return java.lang.Integer
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  Integer ableByUserIds(List<Long> ids, int able);
+  Integer ableByUserIds(@Param("ids") List<Long> ids, @Param("able") int able, @Param("updateTime") Date updateTime);
 
   /**
    * 查询指定行数据
@@ -77,31 +83,37 @@ public interface AdminAccountDao {
    *
    * @param id 主键
    * @param uid 外键
+   * @param updateTime 更新时间
    * @return 影响行数
    */
-  int deleteById(@Param("id") Long id,@Param("uid") Long uid);
+  int deleteById(
+      @Param("id") Long id,
+      @Param("uid") Long uid,
+      @Param("updateTime") Date updateTime);
 
   /**
    * <h2>通过用户外键删除数据</h2>
    * date 2020-07-26 23:41
    *
    * @param userId 用户外键集
+   * @param updateTime 更新时间
    * @return int
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  int deleteByUserId(Long userId);
+  int deleteByUserId(@Param("userId") Long userId, @Param("updateTime") Date updateTime);
 
   /**
    * <h2>通过用户外键删除数据</h2>
    * date 2020-07-26 23:41
    *
    * @param userIds 用户外键集合
+   * @param updateTime 更新时间
    * @return int
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  int deleteByUserIds(@Param("userIds") List<Long> userIds);
+  int deleteByUserIds(@Param("userIds") List<Long> userIds, @Param("updateTime") Date updateTime);
 
   /**
    * <h2>根据用户外键查询可用账号数量</h2>
@@ -167,12 +179,9 @@ public interface AdminAccountDao {
    * 登录查询：通过登录名和密码查询单条数据
    *
    * @param loginName 登录账号
-   * @param loginPwd 登录密码
    * @return 实例对象
    */
-  AdminAccountEntity queryByLoginNameAndPwd(@Param("loginName") String loginName,
-      @Param("loginPwd") String loginPwd);
-
+  AdminAccountEntity queryByLoginNameAndPwd(@Param("loginName") String loginName);
 
   /**
    * <h2>修改密码</h2>
@@ -180,13 +189,19 @@ public interface AdminAccountDao {
    *
    * @param id 账户ID
    * @param uid 用户ID
-   * @param previousPwd 旧版本密码
-   * @param currentPwd 新版本密码
+   * @param loginPwd 登录密码
+   * @param pwdSalt 密码盐
+   * @param updateTime 更新时间
    * @return int
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  int updateLoginPwd(@Param("id") Long id,@Param("uid") Long uid,@Param("previousPwd") String previousPwd, @Param("currentPwd") String currentPwd);
+  int updateLoginPwd(
+      @Param("id") Long id,
+      @Param("uid") Long uid,
+      @Param("loginPwd") String loginPwd,
+      @Param("pwdSalt") String pwdSalt,
+      @Param("updateTime") Date updateTime);
 
 
 }

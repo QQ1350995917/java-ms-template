@@ -9,6 +9,7 @@
     <result column="uid" jdbcType="BIGINT" property="uid"/>
     <result column="login_name" jdbcType="VARCHAR" property="loginName"/>
     <result column="login_pwd" jdbcType="VARCHAR" property="loginPwd"/>
+    <result column="pwd_salt" jdbcType="CHAR" property="pwdSalt"/>
     <result column="pwd_time" jdbcType="TIMESTAMP" property="pwdTime"/>
     <result column="type" jdbcType="INTEGER" property="type"/>
     <result column="able" jdbcType="INTEGER" property="able"/>
@@ -21,30 +22,30 @@
   <!--查询单个-->
   <select id="queryById" resultMap="AdminAccountMap">
         select
-          id, uid, login_name, login_pwd, pwd_time, type, able, del, create_time, update_time, version
-        from initializr_account.admin_account
+          id, uid, login_name, login_pwd, pwd_salt, pwd_time, type, able, del, create_time, update_time, version
+        from admin_account
         where id = #{id} and uid = #{uid}
     </select>
 
   <!--登录查询-->
   <select id="queryByLoginNameAndPwd" resultMap="AdminAccountMap">
         select
-          id, uid, login_name, login_pwd, pwd_time, type, able, del, create_time, update_time
-        from initializr_account.admin_account
-        where login_name = #{loginName} and login_pwd = #{loginPwd}
+          id, uid, login_name, login_pwd, pwd_salt, pwd_time, type, able, del, create_time, update_time
+        from admin_account
+        where login_name = #{loginName}
   </select>
 
   <!--通过实体作为筛选条件统计-->
   <select id="countAllByCondition" resultType="java.lang.Long">
-    select count(*) from initializr_account.admin_account
+    select count(*) from admin_account
     <include refid="pwd.initializr.common.web.persistence.entity.ScopeEntity.entityQueryScope"></include>
   </select>
 
   <!--通过实体作为筛选条件查询-->
   <select id="queryAllByCondition" resultMap="AdminAccountMap">
     select
-    id, uid, login_name, login_pwd, pwd_time, type, able, del, create_time, update_time
-    from initializr_account.admin_account
+    id, uid, login_name, login_pwd, pwd_salt, pwd_time, type, able, del, create_time, update_time
+    from admin_account
     <include refid="pwd.initializr.common.web.persistence.entity.ScopeEntity.entityQueryScope"></include>
     <include refid="pwd.initializr.common.web.persistence.entity.SortEntity.entityQuerySort"></include>
     limit #{offset}, #{limit}
@@ -52,44 +53,45 @@
 
   <select id="queryAllByUid" resultMap="AdminAccountMap">
     select
-    id, uid, login_name, login_pwd, pwd_time, type, able, del, create_time, update_time
-    from initializr_account.admin_account
+    id, uid, login_name, login_pwd, pwd_salt, pwd_time, type, able, del, create_time, update_time
+    from admin_account
     where uId = #{uid} and del = 0
   </select>
 
   <!--新增所有列-->
   <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into initializr_account.admin_account(uid, login_name, login_pwd, pwd_time, type, able, del, create_time, update_time)
-        values (#{uid}, #{loginName}, #{loginPwd}, #{pwdTime}, #{type}, #{able}, #{del}, #{createTime}, #{updateTime})
+        insert into admin_account(uid, login_name, login_pwd, pwd_salt, pwd_time, type, able, del, create_time, update_time)
+        values (#{uid}, #{loginName}, #{loginPwd}, #{pwdSalt}, #{pwdTime}, #{type}, #{able}, #{del}, #{createTime}, #{updateTime})
   </insert>
 
   <!--通过主键修改登录密码-->
   <update id="updateLoginPwd">
-    update initializr_account.admin_account
+    update admin_account
     <set>
       <if test="currentPwd != null and currentPwd != ''">
-        login_pwd = #{currentPwd},
-        pwd_time = now(),
-        update_time = now(),
+        login_pwd = #{loginPwd},
+        pwd_salt = #{pwdSalt},
+        pwd_time = #{updateTime},
+        update_time = #{updateTime}
       </if>
     </set>
-    where id = #{id} and uid = #{uid} and loginPwd = #{previousPwd}
+    where id = #{id} and uid = #{uid}
   </update>
 
 
   <!--通过主键删除-->
   <delete id="deleteById">
-    update initializr_account.admin_account set del = 1, update_time = now() where id = #{id} and uid = #{uid}
+    update admin_account set del = 1, update_time = #{updateTime} where id = #{id} and uid = #{uid}
   </delete>
 
   <!--通过用户外键删除-->
   <update id="deleteByUserId">
-    update initializr_account.admin_account set del = 1, update_time = now() where uid = #{userId}
+    update admin_account set del = 1, update_time = #{updateTime} where uid = #{userId}
   </update>
 
   <!--通过用户外键删除-->
   <update id="deleteByUserIds">
-    update initializr_account.admin_account set del = 1, update_time = now() where uid in
+    update admin_account set del = 1, update_time = #{updateTime} where uid in
     <foreach close=")" collection="userIds" index="index" item="userId" open="(" separator=",">
       #{userId}
     </foreach>
@@ -97,22 +99,22 @@
 
   <!--通过用户外键查询-->
   <select id="enabledAccountNum" resultType="java.lang.Integer">
-    select count(*) from initializr_account.admin_account where able = 1 and uid = #{userId}
+    select count(*) from admin_account where able = 1 and uid = #{userId}
   </select>
 
   <!--通过用户外键查询-->
   <select id="existedAccountNum" resultType="java.lang.Integer">
-    select count(*) from initializr_account.admin_account where del = 0 and uid = #{userId}
+    select count(*) from admin_account where del = 0 and uid = #{userId}
   </select>
 
   <!--通过主键启禁-->
   <update id="ableById">
-    update initializr_account.admin_account set able = #{able}, update_time = now() where id = #{id} and uid = #{uid}
+    update admin_account set able = #{able}, update_time = #{updateTime} where id = #{id} and uid = #{uid}
   </update>
 
   <!--通过主键启禁-->
   <update id="ableByIds">
-    update initializr_account.admin_account set able = #{able}, update_time = now() where id in
+    update admin_account set able = #{able}, update_time = #{updateTime} where id in
     <foreach close=")" collection="ids" index="index" item="id" open="(" separator=",">
       #{id}
     </foreach>
@@ -120,12 +122,12 @@
 
   <!--通过用户外键启禁-->
   <update id="ableByUserId">
-    update initializr_account.admin_account set able = #{able}, update_time = now() where uid = #{userId}
+    update admin_account set able = #{able}, update_time = #{updateTime} where uid = #{userId}
   </update>
 
   <!--通过用户外键启禁-->
   <update id="ableByUserIds">
-    update initializr_account.admin_account set able = #{able}, update_time = now() where uid
+    update admin_account set able = #{able}, update_time = #{updateTime} where uid
     where id in
     <foreach close=")" collection="userIds" index="index" item="userId" open="(" separator=",">
       #{userId}
