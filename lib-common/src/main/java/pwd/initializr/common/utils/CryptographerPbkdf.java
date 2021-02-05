@@ -21,14 +21,13 @@ import org.apache.commons.codec.binary.Hex;
  */
 public class CryptographerPbkdf {
 
-    public static final String PBKDF2_ALGORITHM = "PBKDF2WithHmacSHA1";
-
+    private static final String PBKDF2_ALGORITHM = "PBKDF2WithHmacSHA1";
     //盐的长度
-    public static final int SALT_BYTE_SIZE = 8 / 2;
+    private static final int SALT_BYTE_SIZE = 32 / 2;
     //生成密文的长度
-    public static final int HASH_BIT_SIZE = 128;
+    private static final int HASH_BIT_SIZE = 128 * 4;
     //迭代次数
-    public static final int PBKDF2_ITERATIONS = 1000;
+    private static final int PBKDF2_ITERATIONS = 1000;
 
     private static SecureRandom random;
 
@@ -40,21 +39,17 @@ public class CryptographerPbkdf {
         }
     }
 
-    public static boolean authenticate(String attemptedPassword, String encryptedPassword,
-        String salt) throws Exception {
-        // 用相同的盐值对用户输入的密码进行加密
-        String encryptedAttemptedPassword = encrypt(attemptedPassword, salt);
-        // 把加密后的密文和原密文进行比较，相同则验证成功，否则失败
-        return encryptedAttemptedPassword.equals(encryptedPassword);
+    public static boolean authenticate(String clearText, String cipherText, String salt) throws Exception {
+        String encryptedAttemptedPassword = encrypt(clearText, salt);
+        return encryptedAttemptedPassword.equals(cipherText);
     }
 
     public static String encrypt(String password, String salt) throws Exception {
-        KeySpec spec = new PBEKeySpec(password.toCharArray(), Hex.decodeHex(salt),
-            PBKDF2_ITERATIONS,
-            HASH_BIT_SIZE);
+        KeySpec keySpec = new PBEKeySpec(password.toCharArray(), Hex.decodeHex(salt),
+            PBKDF2_ITERATIONS, HASH_BIT_SIZE);
 
-        SecretKeyFactory f = SecretKeyFactory.getInstance(PBKDF2_ALGORITHM);
-        return Hex.encodeHexString(f.generateSecret(spec).getEncoded());
+        SecretKeyFactory secretKeyFactory = SecretKeyFactory.getInstance(PBKDF2_ALGORITHM);
+        return Hex.encodeHexString(secretKeyFactory.generateSecret(keySpec).getEncoded());
     }
 
     public static String generateSalt() {
@@ -67,14 +62,14 @@ public class CryptographerPbkdf {
         long start0 = System.currentTimeMillis();
         String text1 = "www.dingpengwei@foxmail.com";
         String text2 = "www.xxx.com";
-        for (int i = 0; i < 100000; i++) {
+        for (int i = 0; i < 1; i++) {
             String salt = generateSalt();
         }
         long end0 = System.currentTimeMillis();
         System.out.println(end0 - start0);
 
         long start1 = System.currentTimeMillis();
-        for (int i = 0; i < 100000; i++) {
+        for (int i = 0; i < 1; i++) {
             String salt = generateSalt();
             encrypt(System.currentTimeMillis() + UUID.randomUUID().toString(),salt);
         }

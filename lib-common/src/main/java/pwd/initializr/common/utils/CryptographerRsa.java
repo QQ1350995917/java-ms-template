@@ -29,25 +29,31 @@ import sun.misc.BASE64Encoder;
  */
 public class CryptographerRsa {
 
-    public static final String KEY_ALGORITHM = "RSA";
+    private static final String KEY_ALGORITHM = "RSA";
     private static final String PUBLIC_KEY = "RSAPublicKey";
     private static final String PRIVATE_KEY = "RSAPrivateKey";
 
     private static BASE64Encoder base64Encoder = new BASE64Encoder();
     private static BASE64Decoder base64Decoder = new BASE64Decoder();
+    private static KeyPairGenerator keyPairGenerator;
+    private static Cipher cipher;
 
-    //map对象中存放公私钥
-    private static Map<String, Key> initKey() throws Exception {
-        //获得对象 KeyPairGenerator 参数 RSA 1024个字节
-        KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance(KEY_ALGORITHM);
-        keyPairGen.initialize(1024);
-        //通过对象 KeyPairGenerator 获取对象KeyPair
-        KeyPair keyPair = keyPairGen.generateKeyPair();
+    static {
+        try {
+            //获得对象 KeyPairGenerator 参数 RSA 1024个字节
+            keyPairGenerator = KeyPairGenerator.getInstance(KEY_ALGORITHM);
+            keyPairGenerator.initialize(1024);
 
-        //通过对象 KeyPair 获取RSA公私钥对象RSAPublicKey RSAPrivateKey
+            cipher = Cipher.getInstance(KEY_ALGORITHM);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static Map<String, Key> initKey() {
+        KeyPair keyPair = keyPairGenerator.generateKeyPair();
         RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
         RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
-        //公私钥对象存入map中
         Map<String, Key> keyMap = new HashMap<>(2);
         keyMap.put(PUBLIC_KEY, publicKey);
         keyMap.put(PRIVATE_KEY, privateKey);
@@ -55,50 +61,39 @@ public class CryptographerRsa {
     }
 
     public static String encryptByRsa(String clearText, String publicKey) throws Exception {
-        //base64解码的公钥
         byte[] decoded = base64Decoder.decodeBuffer(publicKey);
         RSAPublicKey rsaPublicKey = (RSAPublicKey) KeyFactory.getInstance(KEY_ALGORITHM)
             .generatePublic(new X509EncodedKeySpec(decoded));
-        //RSA加密
-        Cipher cipher = Cipher.getInstance(KEY_ALGORITHM);
         cipher.init(Cipher.ENCRYPT_MODE, rsaPublicKey);
-        String cipherText = Base64
-            .encodeBase64String(cipher.doFinal(clearText.getBytes(StandardCharsets.UTF_8)));
-        return cipherText;
+        return Base64.encodeBase64String(cipher.doFinal(clearText.getBytes(StandardCharsets.UTF_8)));
     }
 
     public static String decryptByRsa(String cipherText, String privateKey) throws Exception {
-        //64位解码加密后的字符串
         byte[] bytes = base64Decoder.decodeBuffer(cipherText);
-        //base64编码的私钥
         byte[] decodeBase64 = Base64.decodeBase64(privateKey);
         RSAPrivateKey rsaPrivateKey = (RSAPrivateKey) KeyFactory.getInstance(KEY_ALGORITHM)
             .generatePrivate(new PKCS8EncodedKeySpec(decodeBase64));
-        //RSA解密
-        Cipher cipher = Cipher.getInstance(KEY_ALGORITHM);
         cipher.init(Cipher.DECRYPT_MODE, rsaPrivateKey);
-        String clearText = new String(cipher.doFinal(bytes));
-        return clearText;
+        return new String(cipher.doFinal(bytes));
     }
 
     public static void main(String[] args) {
         try {
+            long start = System.currentTimeMillis();
             Map<String, Key> keyMap = initKey();
             String publicKey = base64Encoder.encodeBuffer(keyMap.get(PUBLIC_KEY).getEncoded());
-            System.out.println(publicKey);
             String privateKey = base64Encoder.encodeBuffer(keyMap.get(PRIVATE_KEY).getEncoded());
-            System.out.println(privateKey);
 
-            String clearText = "www.dingpengwei@foxmail.com";
-            String cipherText = encryptByRsa(clearText, publicKey);
-            String result = decryptByRsa(cipherText, privateKey);
+            for (int i = 0; i < 100000; i++) {
+                String clearText = "www.dingpengwei@foxmail.com";
+                String cipherText = encryptByRsa(clearText, publicKey);
+                String result = decryptByRsa(cipherText, privateKey);
+            }
 
-            System.out.println(result);
-
+            long end = System.currentTimeMillis();
+            System.out.println(end - start);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
-
 }
