@@ -7,13 +7,11 @@ import java.util.List;
 import javax.annotation.Resource;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 import pwd.initializr.account.business.admin.bo.AdminAccountBO;
 import pwd.initializr.account.persistence.dao.AdminAccountDao;
 import pwd.initializr.account.persistence.entity.AccountType;
 import pwd.initializr.account.persistence.entity.AdminAccountEntity;
 import pwd.initializr.account.persistence.entity.AdminAccountType;
-import pwd.initializr.common.utils.CryptographerAes;
 import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.common.web.business.bo.ScopeBO;
 import pwd.initializr.common.web.business.bo.SortBO;
@@ -142,30 +140,14 @@ public class AdminAccountServiceImpl implements AdminAccountService {
   }
 
   @Override
-  public AdminAccountBO queryByNameAndPwd(String loginName, String loginPwd) {
-    Assert.notNull(loginName, "Login name should not be empty");
-    Assert.notNull(loginName, "Login pwd should not be empty");
-    String encrypt = null;
-    try {
-      encrypt = CryptographerAes.encrypt(loginPwd, loginName);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-    AdminAccountEntity adminAccountEntity = adminAccountDao
-        .queryByLoginNameAndPwd(loginName);
-    // FIXME: 密码问题
+  public AdminAccountBO queryByName(String loginName) {
+    AdminAccountEntity adminAccountEntity = adminAccountDao.queryByLoginName(loginName);
     if (adminAccountEntity == null) {
       return null;
     }
     AdminAccountBO adminAccountBO = new AdminAccountBO();
     BeanUtils.copyProperties(adminAccountEntity, adminAccountBO);
     return adminAccountBO;
-  }
-
-  @Override
-  public AdminAccountBO queryByPhoneNumberAndSmsCode(String phoneNumber, String smsCode) {
-    // TODO
-    return null;
   }
 
   @Override
@@ -195,7 +177,12 @@ public class AdminAccountServiceImpl implements AdminAccountService {
   }
 
   @Override
-  public AdminAccountBO queryByAccountTypeUnderUserId(Long uid, AccountType accountType) {
+  public Integer resetPwd(Long id, Long uid, String defaultPassword, String salt) {
+    return this.adminAccountDao.updateLoginPwd(id,uid,defaultPassword,salt,new Date());
+  }
+
+  @Override
+  public AdminAccountBO queryByTypeAndUserId(Long uid, AccountType accountType) {
     return null;
   }
 }

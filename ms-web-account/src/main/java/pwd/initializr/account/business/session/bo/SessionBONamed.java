@@ -21,7 +21,7 @@ import pwd.initializr.account.rpc.RPCSession;
 @Getter
 @Setter
 @ToString
-public class SessionBONamed extends RPCSession implements SessionBO {
+public class SessionBONamed extends RPCSession {
 
   public SessionBONamed(Long uid, String uName, Long accountId, String accountName,
       Long timestamp) {

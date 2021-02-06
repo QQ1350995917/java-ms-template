@@ -61,7 +61,7 @@ public interface AdminApi {
 
   @ApiOperation(value = "更新用户信息")
   @PatchMapping(value = {"/{uid}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  void update(@PathVariable("uid") @Valid @NotNull(message = "参数不能为空") Long id,
+  void update(@PathVariable("uid") @Valid @NotNull(message = "参数不能为空") Long uid,
       @RequestBody @Valid @NotNull(message = "参数不能为空") AdminUserInput input);
 
   /**
@@ -84,79 +84,89 @@ public interface AdminApi {
 
   @ApiOperation(value = "用户查询，查询对应的管理员用户")
   @GetMapping(value = {"/{uid}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  void get(@PathVariable("uid") @Valid @NotNull(message = "参数不能为空") Long userId);
+  void get(@PathVariable("uid") @Valid @NotNull(message = "参数不能为空") Long uid);
 
   @ApiOperation(value = "密码重置，重置用户名下静态登录账号的密码为默认密码")
-  @PutMapping(value = {"/reset/pwd"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  void resetPwd(@PathVariable("uid") @Valid @NotNull(message = "参数不能为空") Long userId);
+  @PatchMapping(value = {"/{uid}/pwd/reset"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  void resetPwd(@PathVariable("uid") @Valid @NotNull(message = "参数不能为空") Long uid);
 
   @ApiOperation(value = "新增账户，同一种类型的账号只能创建一个")
-  @PostMapping(value = {"/userId"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @PostMapping(value = {"/{uid}/{type}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   void createAccount(
-      @RequestParam("userId") @Valid @NotNull(message = "参数不能为空") Long userId
+      @RequestParam("uid") @Valid @NotNull(message = "参数不能为空") Long uid,
+      @RequestParam("type") @Valid @NotNull(message = "参数不能为空") Long type
   );
 
   @ApiOperation(value = "删除账户，最后一个可用账户不可被删除")
-  @DeleteMapping(value = {"/account"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @DeleteMapping(value = {"/{uid}/{aid}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   void deleteAccount(
-      @RequestParam("userId") @Valid @NotNull(message = "参数不能为空") Long userId,
-      @RequestParam("accountId") @Valid @NotNull(message = "参数不能为空") Long accountId
+      @RequestParam("uid") @Valid @NotNull(message = "参数不能为空") Long uid,
+      @RequestParam("aid") @Valid @NotNull(message = "参数不能为空") Long aid
   );
 
   @ApiOperation(value = "禁用账户，最后一个可用账户不可被禁用")
-  @PatchMapping(value = {"/account/disable"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @PatchMapping(value = {"/{uid}/{aid}/disable"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   void disableAccount(
-      @RequestParam("userId") @Valid @NotNull(message = "参数不能为空") Long userId,
-      @RequestParam("accountId") @Valid @NotNull(message = "参数不能为空") Long accountId
+      @RequestParam("uid") @Valid @NotNull(message = "参数不能为空") Long uid,
+      @RequestParam("aid") @Valid @NotNull(message = "参数不能为空") Long aid
   );
 
   @ApiOperation(value = "启用账户")
-  @PatchMapping(value = {"/account/enable"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @PatchMapping(value = {"/{uid}/{aid}/enable"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   void enableAccount(
-      @RequestParam("userId") @Valid @NotNull(message = "参数不能为空") Long userId,
-      @RequestParam("accountId") @Valid @NotNull(message = "参数不能为空") Long accountId
+      @RequestParam("uid") @Valid @NotNull(message = "参数不能为空") Long uid,
+      @RequestParam("aid") @Valid @NotNull(message = "参数不能为空") Long aid
   );
 
   @ApiOperation(value = "更新账户信息")
-  @PatchMapping(value = {"/account/{id}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  void updateAccount(@PathVariable("id") @Valid @NotNull(message = "参数不能为空") Long id,
+  @PatchMapping(value = {"/{uid}/{aid}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  void updateAccount(
+      @PathVariable("uid") @Valid @NotNull(message = "参数不能为空") Long uid,
+      @PathVariable("aid") @Valid @NotNull(message = "参数不能为空") Long aid,
+      @RequestBody @Valid @NotNull(message = "参数不能为空") AdminAccountInput input);
+  
+  @ApiOperation(value = "更新账户密码")
+  @PatchMapping(value = {"/{uid}/{aid}/pwd"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  void updateAccountPwd(
+      @PathVariable("uid") @Valid @NotNull(message = "参数不能为空") Long uid,
+      @PathVariable("aid") @Valid @NotNull(message = "参数不能为空") Long aid,
       @RequestBody @Valid @NotNull(message = "参数不能为空") AdminAccountInput input);
 
   /**
    * <h2>根据普通用户ID查询该用户的账号信息</h2>
    * date 2020-08-08 19:39
-   *
-   * @param userId 用户ID
+   *¶
+   * @param uid 用户ID
    * @return void
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
   @ApiOperation(value = "根据用户ID查询账户信息")
-  @GetMapping(value = {"/account/{uid}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  void listAccount(@PathVariable("uid") @Valid @NotNull(message = "参数不能为空") Long userId);
+  @GetMapping(value = {"/{uid}/*"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  void listAccount(@PathVariable("uid") @Valid @NotNull(message = "参数不能为空") Long uid);
 
   /**
    * <h2>根据普通用户ID以及账号ID查询该用户的账号信息</h2>
    * date 2020-08-08 19:39
    *
-   * @param userId 用户ID
-   * @param accountId 账号ID
+   * @param uid 用户ID
+   * @param aid 账号ID
    * @return void
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
   @ApiOperation(value = "根据用户ID查询账户信息")
-  @GetMapping(value = {"/account/{uid}/{aid}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @GetMapping(value = {"/{uid}/{aid}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   void getAccount(
-      @PathVariable("uid") @Valid @NotNull(message = "用户ID不能为空") Long userId,
-      @PathVariable("uid") @Valid @NotNull(message = "账号ID不能为空") Long accountId
+      @PathVariable("uid") @Valid @NotNull(message = "用户ID不能为空") Long uid,
+      @PathVariable("uid") @Valid @NotNull(message = "账号ID不能为空") Long aid
   );
 
   @ApiOperation(value = "密码重置，重置用户名下指定的静态登录账号的密码为默认密码")
-  @PutMapping(value = {"/account/reset/pwd/{uid}/{aid}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @PatchMapping(value = {"/{uid}/{aid}/pwd/reset"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   void resetAccountPwd(
-      @PathVariable("uid") @Valid @NotNull(message = "用户ID不能为空") Long userId,
-      @PathVariable("uid") @Valid @NotNull(message = "账号ID不能为空") Long accountId
+      @PathVariable("uid") @Valid @NotNull(message = "用户ID不能为空") Long uid,
+      @PathVariable("uid") @Valid @NotNull(message = "账号ID不能为空") Long aid
   );
 
 }

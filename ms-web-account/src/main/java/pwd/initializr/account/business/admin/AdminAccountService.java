@@ -138,7 +138,7 @@ public interface AdminAccountService {
   AdminAccountBO queryById(Long id, Long uid);
 
   /**
-   * <h2>session创建接口：管理员通过账号密码登录</h2>
+   * <h2>管理员通过账号密码登录</h2>
    * <p>1：使用既定的加密方式对密码进行加密</p>
    * <p>2：使用登录名和加密的密码进行查找</p>
    * <p>3：找不到对应的账号则抛出异常</p>
@@ -147,24 +147,11 @@ public interface AdminAccountService {
    * date 2020-07-21 22:14
    *
    * @param loginName 登录名
-   * @param loginPwd 登录密码
    * @return pwd.initializr.account.business.admin.bo.AdminAccountBO
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  AdminAccountBO queryByNameAndPwd(String loginName, String loginPwd);
-
-  /**
-   * <h2>TODO session创建接口：管理员通过手机号和短信验证码登录</h2>
-   * date 2020-07-22 16:28
-   *
-   * @param phoneNumber 手机号码
-   * @param smsCode 短信验证码
-   * @return pwd.initializr.account.business.admin.bo.AdminAccountBO
-   * @author DingPengwei[www.dingpengwei@foxmail.com]
-   * @since DistributionVersion
-   */
-  AdminAccountBO queryByPhoneNumberAndSmsCode(String phoneNumber, String smsCode);
+  AdminAccountBO queryByName(String loginName);
 
   /**
    * <h2>通过用户ID查询数据</h2>
@@ -180,10 +167,23 @@ public interface AdminAccountService {
   /**
    * 修改数据
    *
-   * @param id 账户ID
+   * @param uid 用户ID
+   * @param aid 账户ID
+   * @param previousPwd 旧密码
+   * @param currentPwd 新密码
    * @return 实例对象
    */
-  Integer updateLoginPwd(Long id, Long uid, String previousPwd, String currentPwd);
+  Integer updateLoginPwd(Long aid, Long uid, String previousPwd, String currentPwd);
+
+  /**
+   * 重置密码
+   * @param uid 用户ID
+   * @param aid 账户ID
+   * @param defaultPassword 默认密码
+   * @param salt 密码盐
+   * @return 影响行数
+   */
+  Integer resetPwd(Long uid, Long aid, String defaultPassword, String salt);
 
   /**
    * <h2>根据类型，查询用户名下的该类型的账号</h2>
@@ -195,6 +195,6 @@ public interface AdminAccountService {
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  AdminAccountBO queryByAccountTypeUnderUserId(Long uid,AccountType accountType);
+  AdminAccountBO queryByTypeAndUserId(Long uid,AccountType accountType);
 
 }

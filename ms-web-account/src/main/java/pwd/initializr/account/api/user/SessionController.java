@@ -128,7 +128,7 @@ public class SessionController extends UserController implements SessionApi {
     String token = RPCToken.generateToken(sessionBONamed, namedSessionSecret);
     sessionService.createNamedSession(token, sessionBONamed);
     sessionService.deleteAnonymousToken(anonymousToken);
-    outputData(new SessionCreateOkOutput(sessionBONamed.getUid(), sessionBONamed.getAccountId(), token));
+    outputData(new SessionCreateOkOutput(sessionBONamed.getUid(), sessionBONamed.getAid(), token));
   }
 
 

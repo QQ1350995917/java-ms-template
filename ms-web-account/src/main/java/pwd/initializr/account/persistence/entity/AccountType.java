@@ -26,11 +26,10 @@ public enum AccountType {
    */
   LoginNameAndLoginPwd(1, "普通登录名+登录密码；"),
   EmailAndLoginPwd(2,"邮箱登录名+登录密码；"),
-  PhoneAndLoginPwd(3, "电话登录名+登录密码；"),
-  PhoneAndSMC(4, "电话登录名+短信验证码账号"),
-  QQ(5, "QQ账号"),
-  WeChat(6, "微信认证账号"),
-  Weibo(7, "微博认证账号");
+  PhoneAndSMC(3, "电话登录名+短信验证码账号"),
+  QQ(4, "QQ账号"),
+  WeChat(5, "微信认证账号"),
+  Weibo(6, "微博认证账号");
 
   @EnumValue
   Integer type;

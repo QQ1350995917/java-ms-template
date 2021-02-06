@@ -33,17 +33,20 @@ public class RPCSession implements Serializable {
    * 用户名
    */
   private String uName;
-
   /**
    * 登录的账号ID
    */
-  private Long accountId;
+  private Long aid;
   /**
    * 登录账号名
    */
-  private String accountName;
+  private String aName;
   /**
-   * session 创建的时间戳
+   * 生成的token
+   */
+  private String token;
+  /**
+   * 登录时间戳
    */
   private Long timestamp;
 

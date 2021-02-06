@@ -28,7 +28,9 @@ import lombok.ToString;
 public class AdminAccountOutput extends AdminAccountInput {
 
   private Long id;
+  private Integer type;
   private Integer able;
+  private Integer del;
   private Date createTime;
   private Date updateTime;
 }

@@ -1,22 +1,10 @@
 package pwd.initializr.common.utils;
 
-import java.io.UnsupportedEncodingException;
-import java.security.InvalidKeyException;
-import java.security.KeyFactory;
-import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.security.interfaces.RSAPrivateKey;
-import java.security.interfaces.RSAPublicKey;
-import java.security.spec.PKCS8EncodedKeySpec;
-import java.security.spec.X509EncodedKeySpec;
-import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.KeyGenerator;
-import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
-import org.apache.commons.codec.binary.Base64;
 
 /**
  * pwd.initializr.common.utils@ms-web-initializr
@@ -40,6 +28,10 @@ public class CryptographerAes {
     String text2 = "www.xxx.com";
     System.out.println(encrypt(text1,slat));
     System.out.println(encrypt(text2,slat));
+
+    System.out.println("base64:" + CryptographerBase64.encode(encrypt(text1,slat).getBytes()));
+    System.out.println("base64:" + CryptographerBase64.encode(encrypt(text2,slat).getBytes()));
+
   }
 
   public static String decrypt(String cipherText, String salt) {

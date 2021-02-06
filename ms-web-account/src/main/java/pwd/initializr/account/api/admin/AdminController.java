@@ -25,7 +25,7 @@ import pwd.initializr.account.business.admin.AdminUserServiceWrap;
 import pwd.initializr.account.business.admin.bo.AdminAccountBO;
 import pwd.initializr.account.business.admin.bo.AdminUserBO;
 import pwd.initializr.account.business.session.SessionService;
-import pwd.initializr.account.persistence.entity.AccountType;stat
+import pwd.initializr.account.persistence.entity.AccountType;
 import pwd.initializr.common.utils.CryptographerPbkdf;
 import pwd.initializr.common.web.api.vo.Meta;
 import pwd.initializr.common.web.api.vo.PageInput;
@@ -135,9 +135,9 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
   }
 
   @Override
-  public void get(@Valid @NotNull(message = "参数不能为空") Long userId) {
+  public void get(@Valid @NotNull(message = "参数不能为空") Long uid) {
     AdminUserOutput adminUserOutput = new AdminUserOutput();
-    AdminUserBO adminUserBO = adminUserService.queryById(userId);
+    AdminUserBO adminUserBO = adminUserService.queryById(uid);
     if (adminUserBO == null) {
       outputException(401);
       return;
@@ -147,25 +147,30 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
   }
 
   @Override
-  public void resetPwd(@Valid @NotNull(message = "参数不能为空") Long userId) {
-    String salt = getDefaultLoginPwdSalt();
-
+  public void resetPwd(@Valid @NotNull(message = "参数不能为空") Long uid) {
+    AdminAccountBO adminAccountBO = adminAccountService
+        .queryByTypeAndUserId(uid, AccountType.LoginNameAndLoginPwd);
+    if (adminAccountBO == null) {
+      outputException(400,"没有静态类型的账号");
+    } else {
+      this.resetAccountPwd(uid,adminAccountBO.getId());
+    }
   }
 
   @Override
-  public void createAccount(@Valid @NotNull(message = "参数不能为空") Long userId) {
-
-    String salt = getDefaultLoginPwdSalt();
+  public void createAccount(
+      @Valid @NotNull(message = "参数不能为空") Long uid,
+      @Valid @NotNull(message = "参数不能为空") Long type) {
 
   }
 
   @Override
   public void deleteAccount(
-      @Valid @NotNull(message = "参数不能为空") Long userId,
-      @Valid @NotNull(message = "参数不能为空") Long accountId) {
-    Integer existedAccountNum = adminAccountService.existedAccountNum(userId);
+      @Valid @NotNull(message = "参数不能为空") Long uid,
+      @Valid @NotNull(message = "参数不能为空") Long aid) {
+    Integer existedAccountNum = adminAccountService.existedAccountNum(uid);
     if (existedAccountNum > 1) {
-      Integer result = adminAccountService.deleteById(accountId, userId);
+      Integer result = adminAccountService.deleteById(aid, uid);
       super.outputData(200, result);
     } else {
       super.outputData(new Meta(412, "用户的最后一个账号不可被删除"));
@@ -174,11 +179,11 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
 
   @Override
   public void disableAccount(
-      @Valid @NotNull(message = "参数不能为空") Long userId,
-      @Valid @NotNull(message = "参数不能为空") Long accountId) {
-    Integer enabledAccountNum = adminAccountService.enabledAccountNum(userId);
+      @Valid @NotNull(message = "参数不能为空") Long uid,
+      @Valid @NotNull(message = "参数不能为空") Long aid) {
+    Integer enabledAccountNum = adminAccountService.enabledAccountNum(uid);
     if (enabledAccountNum > 1) {
-      Integer result = adminAccountService.ableById(accountId, userId, EntityAble.DISABLE);
+      Integer result = adminAccountService.ableById(aid, uid, EntityAble.DISABLE);
       super.outputData(200, result);
     } else {
       super.outputData(new Meta(412, "用户的最后一个账号不可被禁用"));
@@ -187,24 +192,26 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
 
   @Override
   public void enableAccount(
-      @Valid @NotNull(message = "参数不能为空") Long userId,
-      @Valid @NotNull(message = "参数不能为空") Long accountId) {
-    Integer able = adminAccountService.ableById(accountId, userId, EntityAble.ENABLE);
+      @Valid @NotNull(message = "参数不能为空") Long uid,
+      @Valid @NotNull(message = "参数不能为空") Long aid) {
+    Integer able = adminAccountService.ableById(aid, uid, EntityAble.ENABLE);
     outputData(200, able);
   }
 
   @Override
-  public void updateAccount(@PathVariable("id") Long id, @RequestBody AdminAccountInput input) {
+  public void updateAccount(
+      @Valid @NotNull(message = "参数不能为空") Long uid,
+      @Valid @NotNull(message = "参数不能为空") Long aid,
+      @Valid @NotNull(message = "参数不能为空") AdminAccountInput input) {
     AdminAccountBO adminAccountBO = new AdminAccountBO();
-    adminAccountBO.setId(id);
+    adminAccountBO.setId(aid);
     adminAccountBO.setLoginPwd(input.getLoginPwd());
-    Integer update = adminAccountService.updateLoginPwd(id, 0L, "", "");
-    outputData(new Meta(), update);
+    // TODO
   }
 
   @Override
-  public void listAccount(@PathVariable("uid") Long userId) {
-    List<AdminAccountBO> adminAccountBOS = adminAccountService.queryByUserId(userId);
+  public void listAccount(@PathVariable("uid") Long uid) {
+    List<AdminAccountBO> adminAccountBOS = adminAccountService.queryByUserId(uid);
     PageOutput<AdminAccountOutput> result = new PageOutput<>();
     adminAccountBOS.forEach(adminAccountBO -> {
       AdminAccountOutput adminAccountOutput = new AdminAccountOutput();
@@ -215,16 +222,25 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
   }
 
   @Override
-  public void getAccount(@Valid @NotNull(message = "用户ID不能为空") Long userId,
-      @Valid @NotNull(message = "账号ID不能为空") Long accountId) {
+  public void getAccount(@Valid @NotNull(message = "用户ID不能为空") Long uid,
+      @Valid @NotNull(message = "账号ID不能为空") Long aid) {
+    AdminAccountBO adminAccountBO = adminAccountService.queryById(uid, aid);
+    outputData(this.convertAdminAccountBO2VO(adminAccountBO));
+  }
+
+  @Override
+  public void updateAccountPwd(@Valid @NotNull(message = "参数不能为空") Long uid,
+      @Valid @NotNull(message = "参数不能为空") Long aid,
+      @Valid @NotNull(message = "参数不能为空") AdminAccountInput input) {
 
   }
 
   @Override
-  public void resetAccountPwd(@Valid @NotNull(message = "用户ID不能为空") Long userId,
-      @Valid @NotNull(message = "账号ID不能为空") Long accountId) {
+  public void resetAccountPwd(@Valid @NotNull(message = "用户ID不能为空") Long uid,
+      @Valid @NotNull(message = "账号ID不能为空") Long aid) {
     String salt = getDefaultLoginPwdSalt();
-
+    Integer integer = adminAccountService.resetPwd(uid, aid, getDefaultLoginPwd(salt), salt);
+    outputData(integer);
   }
 
   private String getDefaultLoginPwdSalt(){
@@ -233,5 +249,11 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
 
   private String getDefaultLoginPwd(String loginPwdSalt){
     return CryptographerPbkdf.encrypt(defaultPassword,loginPwdSalt);
+  }
+
+  private AdminAccountOutput convertAdminAccountBO2VO(AdminAccountBO bo){
+    AdminAccountOutput vo = new AdminAccountOutput();
+    BeanUtils.copyProperties(bo,vo);
+    return vo;
   }
 }

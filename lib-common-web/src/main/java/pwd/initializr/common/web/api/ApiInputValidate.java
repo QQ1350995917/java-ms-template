@@ -4,6 +4,7 @@ import java.util.Set;
 import javax.validation.ConstraintDeclarationException;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -26,6 +27,7 @@ import pwd.initializr.common.web.api.vo.Output;
  * @since DistributionVersion
  */
 @RestControllerAdvice
+@Slf4j
 public class ApiInputValidate {
 
   @ExceptionHandler({Exception.class})
@@ -60,7 +62,15 @@ public class ApiInputValidate {
     } else {
       message = exception.getMessage();
     }
-    exception.printStackTrace();
+    log.error(message);
+    StackTraceElement[] stackTrace = exception.getStackTrace();
+    if (stackTrace != null) {
+      StringBuilder stackTraceText = new StringBuilder();
+      for (StackTraceElement stackTraceElement : stackTrace) {
+        stackTraceText.append(stackTraceElement.toString()).append("\r\n");
+      }
+      log.error(stackTraceText.toString());
+    }
     return new Output(new Meta(code, message));
   }
 }

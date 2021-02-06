@@ -26,11 +26,11 @@ import pwd.initializr.account.business.admin.AdminUserService;
 import pwd.initializr.account.business.session.SessionService;
 import pwd.initializr.account.business.admin.bo.AdminAccountBO;
 import pwd.initializr.account.business.admin.bo.AdminUserBO;
-import pwd.initializr.account.business.session.bo.SessionBO;
 import pwd.initializr.account.business.session.bo.SessionBOAnonymous;
 import pwd.initializr.account.business.session.bo.CaptchaBO;
 import pwd.initializr.account.business.session.bo.SessionBONamed;
 import pwd.initializr.account.rpc.RPCToken;
+import pwd.initializr.common.utils.CryptographerPbkdf;
 import pwd.initializr.common.utils.CryptographerRsa;
 import pwd.initializr.common.web.api.admin.AdminController;
 import pwd.initializr.common.web.api.vo.Meta;
@@ -116,16 +116,15 @@ public class SessionController extends AdminController implements SessionApi {
       }
     }
     String loginPwd = input.getLoginPwd();
-    // TODO 使用RSA解密登录密码
-//    try {
-//      loginPwd = CryptographerRsa.decryptByRsa(loginPwd,adminKeyService.getPrivateKey());
-//    } catch (Exception e) {
-//      log.error(e.getMessage());
-//      outputException(400,"登录密码解密异常");
-//      return;
-//    }
-    AdminAccountBO accountByNameAndPwd = adminAccountService.queryByNameAndPwd(input.getLoginName(),loginPwd);
-    if (accountByNameAndPwd == null) {
+    try {
+      loginPwd = CryptographerRsa.decryptByRsa(loginPwd,adminKeyService.getPrivateKey());
+    } catch (Exception e) {
+      log.error(e.getMessage());
+      outputException(400,"登录密码解密异常");
+      return;
+    }
+    AdminAccountBO accountByName = adminAccountService.queryByName(input.getLoginName());
+    if (accountByName == null) {
       // 登录失败，更新错误登录次数
       sessionBOAnonymous.setTimes(sessionBOAnonymous.getTimes() + 1);
       sessionService.updateAnonymousSession(anonymousToken, sessionBOAnonymous);
@@ -138,16 +137,30 @@ public class SessionController extends AdminController implements SessionApi {
       return;
     }
 
-    if (accountByNameAndPwd.getAble() == EntityAble.DISABLE.getNumber()) {
+    if (accountByName.getAble() == EntityAble.DISABLE.getNumber()) {
       outputData(new Meta(403,"该账号已禁用，请联系管理员开启"));
       return;
     }
-    if (accountByNameAndPwd.getDel() == EntityDel.YES.getNumber()) {
+    if (accountByName.getDel() == EntityDel.YES.getNumber()) {
       outputData(new Meta(410,"该账号已删除"));
       return;
     }
+
+    try {
+      boolean authenticate = CryptographerPbkdf
+          .authenticate(loginPwd, accountByName.getLoginPwd(), accountByName.getPwdSalt());
+      if (!authenticate) {
+        outputException(400,"用户名或密码错误");
+        return;
+      }
+    } catch (Exception e) {
+      log.error(e.getMessage());
+      outputException(400,"登录密码解密异常");
+      return;
+    }
+
     // 查询user信息
-    AdminUserBO adminUserBO = adminUserService.queryById(accountByNameAndPwd.getUid());
+    AdminUserBO adminUserBO = adminUserService.queryById(accountByName.getUid());
     if (adminUserBO == null) {
       outputException(500);
       return;
@@ -162,13 +175,14 @@ public class SessionController extends AdminController implements SessionApi {
     }
 
     SessionBONamed sessionBONamed = new SessionBONamed(adminUserBO.getId(), adminUserBO.getName(),
-        accountByNameAndPwd.getId(), accountByNameAndPwd.getLoginName(),
+        accountByName.getId(), accountByName.getLoginName(),
         System.currentTimeMillis());
     String namedToken = RPCToken.generateToken(sessionBONamed, namedSessionSecret);
-    sessionService.createNamedSession(namedToken, sessionBONamed);
-    sessionService.deleteAnonymousToken(anonymousToken);
+    sessionBONamed.setToken(namedToken);
+    sessionService.createNamedSession(sessionBONamed);
+    sessionService.deleteAnonymousToken(getUid());
     outputData(new SessionCreateOutput<>(SessionStatus.NAMED.getNumber(),new SessionCreateOkOutput(
-        sessionBONamed.getUid(), sessionBONamed.getAccountId(), namedToken)));
+        sessionBONamed.getUid(), sessionBONamed.getAid(), namedToken)));
   }
 
 
@@ -180,7 +194,7 @@ public class SessionController extends AdminController implements SessionApi {
       outputException(417);
       return;
     }
-    SessionBOAnonymous sessionBOAnonymous = sessionService.querySessionAnonymous(token);
+    SessionBOAnonymous sessionBOAnonymous = sessionService.querySessionAnonymous(getUid());
     if (sessionBOAnonymous == null) {
       // token 过期
       outputException(417);

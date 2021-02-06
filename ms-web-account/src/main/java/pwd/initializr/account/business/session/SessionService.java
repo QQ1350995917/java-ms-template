@@ -1,6 +1,5 @@
 package pwd.initializr.account.business.session;
 
-import pwd.initializr.account.business.session.bo.SessionBO;
 import pwd.initializr.account.business.session.bo.SessionBOAnonymous;
 import pwd.initializr.account.business.session.bo.CaptchaBO;
 import pwd.initializr.account.business.session.bo.SessionBONamed;
@@ -33,7 +32,7 @@ public interface SessionService {
   CaptchaBO createCaptcha(String token);
 
 
-  SessionBO createSession(String token,Long uid);
+  SessionBONamed createSession(String token,Long uid);
 
   /**
    * <h2>匿名 token 生成接口：管理员登录前调用</h2>
@@ -56,24 +55,23 @@ public interface SessionService {
    * <p>5：返回账号对象</p>
    * date 2020-07-21 22:14
    *
-   * @param token token字符串
    * @param sessionBONamed sessionBo对象
    * @return pwd.initializr.account.business.admin.bo.AdminAccountBO
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  void createNamedSession(String token, SessionBONamed sessionBONamed);
+  void createNamedSession(SessionBONamed sessionBONamed);
 
   /**
    * <h2>token 删除接口，根据 token 删除redis中的 token 信息</h2>
    * date 2020-07-22 23:14
    *
-   * @param token 登录前生成的 token
+   * @param uid 登录前生成的 token
    * @return java.lang.Boolean
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  Boolean deleteAnonymousToken(String token);
+  Boolean deleteAnonymousToken(Long uid);
 
   /**
    * <h2>session删除接口，根据用户ID删除session信息，等同于退出登录</h2>
@@ -91,12 +89,12 @@ public interface SessionService {
    * <h2> token 查询接口，管理员尝试登录次数</h2>
    * date 2020-07-22 23:42
    *
-   * @param token token
+   * @param uid
    * @return pwd.initializr.account.business.session.bo.SessionBOAnonymous
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  SessionBOAnonymous querySessionAnonymous(String token);
+  SessionBOAnonymous querySessionAnonymous(Long uid);
 
   /**
    * <h2>session查询接口，根据用户ID查询session信息</h2>
@@ -119,7 +117,7 @@ public interface SessionService {
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  void updateAnonymousSession(String token, SessionBOAnonymous sessionBOAnonymous);
+  void updateAnonymousSession(SessionBOAnonymous sessionBOAnonymous);
 
   /**
    * <h2>session更新接口，根据用户ID更新session信息</h2>

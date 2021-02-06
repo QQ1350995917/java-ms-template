@@ -13,8 +13,6 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.crypto.Cipher;
 import org.apache.commons.codec.binary.Base64;
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
 
 /**
  * pwd.initializr.common.utils@ms-web-initializr
@@ -33,8 +31,6 @@ public class CryptographerRsa {
     private static final String PUBLIC_KEY = "RSAPublicKey";
     private static final String PRIVATE_KEY = "RSAPrivateKey";
 
-    private static BASE64Encoder base64Encoder = new BASE64Encoder();
-    private static BASE64Decoder base64Decoder = new BASE64Decoder();
     private static KeyPairGenerator keyPairGenerator;
     private static Cipher cipher;
 
@@ -61,7 +57,7 @@ public class CryptographerRsa {
     }
 
     public static String encryptByRsa(String clearText, String publicKey) throws Exception {
-        byte[] decoded = base64Decoder.decodeBuffer(publicKey);
+        byte[] decoded = CryptographerBase64.decode(publicKey);
         RSAPublicKey rsaPublicKey = (RSAPublicKey) KeyFactory.getInstance(KEY_ALGORITHM)
             .generatePublic(new X509EncodedKeySpec(decoded));
         cipher.init(Cipher.ENCRYPT_MODE, rsaPublicKey);
@@ -69,7 +65,7 @@ public class CryptographerRsa {
     }
 
     public static String decryptByRsa(String cipherText, String privateKey) throws Exception {
-        byte[] bytes = base64Decoder.decodeBuffer(cipherText);
+        byte[] bytes = CryptographerBase64.decode(cipherText);
         byte[] decodeBase64 = Base64.decodeBase64(privateKey);
         RSAPrivateKey rsaPrivateKey = (RSAPrivateKey) KeyFactory.getInstance(KEY_ALGORITHM)
             .generatePrivate(new PKCS8EncodedKeySpec(decodeBase64));
@@ -81,8 +77,8 @@ public class CryptographerRsa {
         try {
             long start = System.currentTimeMillis();
             Map<String, Key> keyMap = initKey();
-            String publicKey = base64Encoder.encodeBuffer(keyMap.get(PUBLIC_KEY).getEncoded());
-            String privateKey = base64Encoder.encodeBuffer(keyMap.get(PRIVATE_KEY).getEncoded());
+            String publicKey = CryptographerBase64.encode(keyMap.get(PUBLIC_KEY).getEncoded());
+            String privateKey = CryptographerBase64.encode(keyMap.get(PRIVATE_KEY).getEncoded());
 
             for (int i = 0; i < 100000; i++) {
                 String clearText = "www.dingpengwei@foxmail.com";

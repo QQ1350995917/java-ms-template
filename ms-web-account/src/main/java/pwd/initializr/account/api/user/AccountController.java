@@ -90,7 +90,7 @@ public class AccountController extends UserController implements AccountApi {
     UserAccountBO userAccountBO = new UserAccountBO();
     userAccountBO.setLoginName(input.getLoginName());
     userAccountBO.setLoginPwd(input.getLoginPwd());
-    userAccountBO.setType(AccountType.ByNamePwd.getType());
+    userAccountBO.setType(AccountType.LoginNameAndLoginPwd.getType());
     UserAccountBO insertedUserAccountBO = userUserServiceWrap.insert(userUserBO, userAccountBO);
     if (insertedUserAccountBO == null) {
       // 账号创建失败
@@ -98,13 +98,14 @@ public class AccountController extends UserController implements AccountApi {
       return;
     }
 
+    // TODO: 不一定要登录
     // 账号创建完成后自动登录
     SessionBONamed sessionBONamed = new SessionBONamed(insertedUserAccountBO.getUid(), userUserBO.getName(),
         insertedUserAccountBO.getId(), userAccountBO.getLoginName(),
         System.currentTimeMillis());
     String token = RPCToken.generateToken(sessionBONamed, namedSessionSecret);
     //sessionService.createSession(token, sessionBONamed);
-    outputData(new SessionCreateOkOutput(sessionBONamed.getUid(), sessionBONamed.getAccountId(), token));
+    outputData(new SessionCreateOkOutput(sessionBONamed.getUid(), sessionBONamed.getAid(), token));
   }
 
   @Override
