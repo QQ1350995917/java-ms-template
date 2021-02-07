@@ -28,7 +28,7 @@ import pwd.initializr.common.web.api.vo.Output;
  */
 @RestControllerAdvice
 @Slf4j
-public class ApiInputValidate {
+public class ApiGlobalException {
 
   @ExceptionHandler({Exception.class})
   @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -62,7 +62,7 @@ public class ApiInputValidate {
     } else {
       message = exception.getMessage();
     }
-    log.error(message);
+    log.error(exception.getClass().getCanonicalName());
     StackTraceElement[] stackTrace = exception.getStackTrace();
     if (stackTrace != null) {
       StringBuilder stackTraceText = new StringBuilder();

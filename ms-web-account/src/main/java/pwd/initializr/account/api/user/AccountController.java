@@ -144,6 +144,11 @@ public class AccountController extends UserController implements AccountApi {
       return;
     }
 
+    if (!sessionBO.getToken().equals(token)) {
+      outputException(416);
+      return;
+    }
+
     // 未过期的具名session
     outputException(304);
   }

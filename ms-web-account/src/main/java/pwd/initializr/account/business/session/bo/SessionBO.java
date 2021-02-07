@@ -2,6 +2,7 @@ package pwd.initializr.account.business.session.bo;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import pwd.initializr.account.rpc.RPCSession;
@@ -18,9 +19,10 @@ import pwd.initializr.account.rpc.RPCSession;
  * @since DistributionVersion
  */
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
-@ToString
+@ToString()
 public class SessionBO extends RPCSession {
 
   /**

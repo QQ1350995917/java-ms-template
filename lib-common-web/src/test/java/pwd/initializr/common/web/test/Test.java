@@ -1,5 +1,6 @@
 package pwd.initializr.common.web.test;
 
+import com.alibaba.fastjson.JSON;
 import java.io.File;
 import javax.activation.MimetypesFileTypeMap;
 

@@ -116,7 +116,7 @@ public class SessionController extends UserController implements SessionApi {
     } catch (Exception e) {
       log.error(e.getMessage());
       SessionInitFailOutput sessionInitFailOutput = refreshSessionBOWhenLoginError(sessionBO);
-      outputException(400, sessionInitFailOutput);
+      outputException(400, "用户名或密码错误", sessionInitFailOutput);
       return;
     }
 
@@ -124,7 +124,7 @@ public class SessionController extends UserController implements SessionApi {
     UserAccountBO userAccountBO = userAccountService.queryByName(input.getLoginName());
     if (userAccountBO == null) {
       SessionInitFailOutput sessionInitFailOutput = refreshSessionBOWhenLoginError(sessionBO);
-      outputException(400, sessionInitFailOutput);
+      outputException(400, "用户名或密码错误", sessionInitFailOutput);
       return;
     }
 
@@ -140,7 +140,7 @@ public class SessionController extends UserController implements SessionApi {
     }
     if (!authenticate) {
       SessionInitFailOutput sessionInitFailOutput = refreshSessionBOWhenLoginError(sessionBO);
-      outputException(407, sessionInitFailOutput);
+      outputException(400, "用户名或密码错误", sessionInitFailOutput);
       return;
     }
 
@@ -194,9 +194,9 @@ public class SessionController extends UserController implements SessionApi {
     sessionService.updateAnonymousSession(sessionBO);
     if (sessionBO.getTimes() >= anonymousSessionCaptchaThreshold) {
       sessionService.createLoginCaptcha(sessionBO.getUid());
-      return new SessionInitFailOutput(true,"用户名或密码错误");
+      return new SessionInitFailOutput(true,"");
     } else {
-      return new SessionInitFailOutput(false,"用户名或密码错误");
+      return new SessionInitFailOutput(false,"");
     }
   }
 
@@ -264,6 +264,11 @@ public class SessionController extends UserController implements SessionApi {
       sessionInitOutput.setCaptchaRequired(captchaRequired);
       // TODO 登录方式列表
       outputData(sessionInitOutput);
+      return;
+    }
+
+    if (!sessionBO.getToken().equals(token)) {
+      outputException(416);
       return;
     }
 
