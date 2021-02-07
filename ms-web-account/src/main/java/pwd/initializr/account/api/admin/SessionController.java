@@ -278,6 +278,7 @@ public class SessionController extends AdminController implements SessionApi {
 
   @Override
   public void logout() {
+    // 会话过期校验，uid和token的匹配有网关控制
     if (sessionService.deleteSession(getUid())) {
       outputData(200);
     } else {
@@ -289,18 +290,13 @@ public class SessionController extends AdminController implements SessionApi {
   public void querySessionInfo() {
     // TODO 基本信息
     // TODO 权限信息
-    SessionBO session = sessionService.querySession(getUid());
-    if (session == null) {
-      super.outputException(401);
-      return;
-    } else {
-      JSONObject content = new JSONObject();
-      content.put("roles", new String[]{"admin"});
-      content.put("introduction", "I am a super administrator");
-      content.put("avatar",
-          "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif");
-      content.put("name", "Super Admin");
-      super.outputData(content);
-    }
+    // 会话过期校验，uid和token的匹配有网关控制
+    JSONObject content = new JSONObject();
+    content.put("roles", new String[]{"admin"});
+    content.put("introduction", "I am a super administrator");
+    content.put("avatar",
+        "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif");
+    content.put("name", "Super Admin");
+    super.outputData(content);
   }
 }
