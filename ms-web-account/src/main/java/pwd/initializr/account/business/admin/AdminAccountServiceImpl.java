@@ -83,7 +83,7 @@ public class AdminAccountServiceImpl implements AdminAccountService {
    * @return 实例对象
    */
   @Override
-  public AdminAccountBO insert(AdminAccountBO adminAccountBO) {
+  public Long insert(AdminAccountBO adminAccountBO) {
     AdminAccountEntity adminAccountEntity = new AdminAccountEntity();
     BeanUtils.copyProperties(adminAccountBO, adminAccountEntity);
     adminAccountEntity.setAble(EntityAble.DISABLE.getNumber());
@@ -93,9 +93,7 @@ public class AdminAccountServiceImpl implements AdminAccountService {
     adminAccountEntity.setCreateTime(new Date());
     adminAccountEntity.setUpdateTime(new Date());
     this.adminAccountDao.insert(adminAccountEntity);
-    AdminAccountBO adminAccountBOResult = new AdminAccountBO();
-    BeanUtils.copyProperties(adminAccountEntity, adminAccountBOResult);
-    return adminAccountBOResult;
+    return adminAccountEntity.getId();
   }
 
   @Override

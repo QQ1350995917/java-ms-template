@@ -72,5 +72,5 @@ public interface AdminUserServiceWrap {
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  AdminUserBO insert(AdminUserBO adminUserBO, AdminAccountBO adminAccountBO);
+  Long insert(AdminUserBO adminUserBO, AdminAccountBO adminAccountBO);
 }

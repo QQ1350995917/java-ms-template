@@ -57,10 +57,10 @@ public class AdminUserServiceWrapImpl implements AdminUserServiceWrap {
 
   @Override
   @Transactional(rollbackFor = Exception.class)
-  public AdminUserBO insert(AdminUserBO adminUserBO, AdminAccountBO adminAccountBO) {
-    AdminUserBO insertAdminUserBoResult = adminUserService.insert(adminUserBO);
-    adminAccountBO.setUid(insertAdminUserBoResult.getId());
+  public Long insert(AdminUserBO adminUserBO, AdminAccountBO adminAccountBO) {
+    Long userId = adminUserService.insert(adminUserBO);
+    adminAccountBO.setUid(userId);
     adminAccountService.insert(adminAccountBO);
-    return insertAdminUserBoResult;
+    return userId;
   }
 }

@@ -1,5 +1,6 @@
 package pwd.initializr.account;
 
+import java.util.Arrays;
 import javax.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,19 +70,22 @@ public class AccountApplicationInitializr {
       adminUserBO.setGender("1");
       adminUserBO.setAble(EntityAble.ENABLE.getNumber());
       adminUserBO.setDel(EntityDel.NO.getNumber());
-      AdminUserBO adminUserBOResult = adminUserService.insert(adminUserBO);
+      Long userId = adminUserService.insert(adminUserBO);
 
       String randomSalt = CryptographerPbkdf.randomSalt();
       String encrypt = CryptographerPbkdf.encrypt(adminInitializrPassword, randomSalt);
 
       AdminAccountBO adminAccountBO = new AdminAccountBO();
-      adminAccountBO.setUid(adminUserBOResult.getId());
+      adminAccountBO.setUid(userId);
       adminAccountBO.setLoginName(adminInitializrUsername);
       adminAccountBO.setLoginPwd(encrypt);
       adminAccountBO.setPwdSalt(randomSalt);
       adminAccountBO.setAble(EntityAble.ENABLE.getNumber());
       adminAccountBO.setDel(EntityDel.NO.getNumber());
-      adminAccountService.insert(adminAccountBO);
+      Long accountId = adminAccountService.insert(adminAccountBO);
+
+      adminUserService.ableById(Arrays.asList(new Long[]{userId}),EntityAble.ENABLE);
+      adminAccountService.ableById(accountId,userId,EntityAble.ENABLE);
 
     }
   }

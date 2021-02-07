@@ -27,7 +27,7 @@ public interface AdminAccountService {
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  Integer ableById(Long id, Long uid, EntityAble able);
+  Integer ableById(Long aid, Long uid, EntityAble able);
 
 
   /**
@@ -111,7 +111,7 @@ public interface AdminAccountService {
    * @param adminAccountBO 实例对象
    * @return 实例对象
    */
-  AdminAccountBO insert(AdminAccountBO adminAccountBO);
+  Long insert(AdminAccountBO adminAccountBO);
 
   /**
    * <h2>根据条件查询多条数据</h2>

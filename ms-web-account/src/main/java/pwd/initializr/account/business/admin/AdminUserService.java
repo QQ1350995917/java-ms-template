@@ -51,11 +51,11 @@ public interface AdminUserService {
    * date 2020-07-26 22:34
    *
    * @param adminUserBO 用户实例
-   * @return pwd.initializr.account.business.admin.bo.AdminUserBO
+   * @return java.lang.Long
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  AdminUserBO insert(AdminUserBO adminUserBO);
+  Long insert(AdminUserBO adminUserBO);
 
   /**
    * <h2>根据条件查询多条数据</h2>

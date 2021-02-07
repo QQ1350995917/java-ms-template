@@ -59,7 +59,7 @@ public class AdminUserServiceImpl implements AdminUserService {
    * @return 实例对象
    */
   @Override
-  public AdminUserBO insert(AdminUserBO adminUserBO) {
+  public Long insert(AdminUserBO adminUserBO) {
     AdminUserEntity adminUserEntity = new AdminUserEntity();
     BeanUtils.copyProperties(adminUserBO, adminUserEntity);
     adminUserEntity.setAble(EntityAble.DISABLE.getNumber());
@@ -67,9 +67,7 @@ public class AdminUserServiceImpl implements AdminUserService {
     adminUserEntity.setCreateTime(new Date());
     adminUserEntity.setUpdateTime(new Date());
     this.adminUserDao.insert(adminUserEntity);
-    AdminUserBO adminUserBOResult = new AdminUserBO();
-    BeanUtils.copyProperties(adminUserEntity, adminUserBOResult);
-    return adminUserBOResult;
+    return adminUserEntity.getId();
   }
 
   @Override

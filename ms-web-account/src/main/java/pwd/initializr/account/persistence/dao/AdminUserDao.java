@@ -72,7 +72,7 @@ public interface AdminUserDao {
    * @param adminUserEntity 实例对象
    * @return 影响行数
    */
-  Integer insert(AdminUserEntity adminUserEntity);
+  void insert(AdminUserEntity adminUserEntity);
 
   /**
    * 通过实体作为筛选条件查询

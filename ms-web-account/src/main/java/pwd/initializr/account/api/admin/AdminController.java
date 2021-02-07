@@ -79,8 +79,8 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
     String salt = getDefaultLoginPwdSalt();
     adminAccountBO.setLoginPwd(getDefaultLoginPwd(salt));
     adminAccountBO.setPwdSalt(salt);
-    AdminUserBO userBO = adminUserServiceWrap.insert(adminUserBO, adminAccountBO);
-    super.outputData(userBO.getId());
+    Long userId = adminUserServiceWrap.insert(adminUserBO, adminAccountBO);
+    super.outputData(userId);
   }
 
   @Override
