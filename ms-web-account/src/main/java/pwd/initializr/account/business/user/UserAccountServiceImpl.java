@@ -122,10 +122,8 @@ public class UserAccountServiceImpl implements UserAccountService {
   }
 
   @Override
-  public UserAccountBO queryByNameAndPwd(String loginName, String loginPwd) {
-    UserAccountEntity userAccountEntity = userAccountDao
-        .queryByLoginNameAndPwd(loginName);
-    // FIXME: 密码问题
+  public UserAccountBO queryByName(String loginName) {
+    UserAccountEntity userAccountEntity = userAccountDao.queryByLoginName(loginName);
     UserAccountBO userAccountBO = new UserAccountBO();
     BeanUtils.copyProperties(userAccountEntity, userAccountBO);
     return userAccountBO;

@@ -9,21 +9,17 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pwd.initializr.account.api.vo.SessionCreateOkOutput;
 import pwd.initializr.account.api.admin.vo.UserAccountOutput;
 import pwd.initializr.account.api.vo.SessionInitOutput;
 import pwd.initializr.account.api.user.vo.SignUpByNamePwdInput;
-import pwd.initializr.account.api.vo.SessionStatus;
 import pwd.initializr.account.business.session.SessionService;
 import pwd.initializr.account.business.session.bo.SessionBO;
-import pwd.initializr.account.business.session.bo.SessionBOAnonymous;
-import pwd.initializr.account.business.session.bo.SessionBONamed;
+import pwd.initializr.account.business.session.bo.SessionType;
 import pwd.initializr.account.business.user.UserAccountService;
 import pwd.initializr.account.business.user.UserUserServiceWrap;
 import pwd.initializr.account.business.user.bo.UserAccountBO;
@@ -79,7 +75,6 @@ public class AccountController extends UserController implements AccountApi {
   @Override
   public void createByNameAndPwd(@Valid @NotNull(message = "参数不能为空") SignUpByNamePwdInput input) {
     // TODO 校验验证码
-
     if (userAccountService.existLoginName(input.getLoginName())) {
       // 账号已被占用
       outputException(401);
@@ -100,41 +95,57 @@ public class AccountController extends UserController implements AccountApi {
 
     // TODO: 不一定要登录
     // 账号创建完成后自动登录
-    SessionBONamed sessionBONamed = new SessionBONamed(insertedUserAccountBO.getUid(), userUserBO.getName(),
-        insertedUserAccountBO.getId(), userAccountBO.getLoginName(),
-        System.currentTimeMillis());
-    String token = RPCToken.generateToken(sessionBONamed, namedSessionSecret);
-    //sessionService.createSession(token, sessionBONamed);
-    outputData(new SessionCreateOkOutput(sessionBONamed.getUid(), sessionBONamed.getAid(), token));
+    SessionBO namedSessionBO = new SessionBO(SessionType.NAMED.getType(),0,null);
+    namedSessionBO.setUid(insertedUserAccountBO.getUid());
+    namedSessionBO.setUName(userUserBO.getName());
+    namedSessionBO.setAid(insertedUserAccountBO.getId());
+    namedSessionBO.setAName(userAccountBO.getLoginName());
+    namedSessionBO.setTimestamp(System.currentTimeMillis());
+    String token = RPCToken.generateToken(namedSessionBO, namedSessionSecret);
+    sessionService.createNamedSession(namedSessionBO);
+
+    SessionInitOutput sessionInitOutput = new SessionInitOutput();
+    BeanUtils.copyProperties(namedSessionBO,sessionInitOutput);
+
+    outputData(sessionInitOutput);
   }
 
   @Override
   public void createInitializr(Long aid, Long uid, String token) {
-    SessionBO session = sessionService.createSession(token, uid);
-    if (session instanceof SessionBONamed) {
-      SessionInitOutput loginCookieOutput = new SessionInitOutput();
-      loginCookieOutput.setStatus(SessionStatus.NAMED.getNumber());
-      outputData(202,loginCookieOutput);
+    SessionBO sessionBO = null;
+    if (uid != null) {
+      // 可能是匿名session，也可能是在已经登录状态下访问该接口，提交了具名session
+      sessionBO = sessionService.querySession(uid);
+    }
+
+    if (sessionBO == null) {
+      // uid为空或者session已经过期，则创建匿名session
+      SessionBO anonymousSession = sessionService.createAnonymousSession();
+      SessionInitOutput sessionInitOutput = new SessionInitOutput();
+      BeanUtils.copyProperties(anonymousSession,sessionInitOutput);
+      outputException(410, sessionInitOutput);
       return;
     }
-    if (session instanceof SessionBOAnonymous) {
-      Boolean captchaRequired = false;
+
+    if (SessionType.ANONYMOUS.getType().equals(sessionBO.getType())) {
+      // 匿名session
+      boolean captchaRequired = false;
       // 是否对该匿名 token 产生验证码
-      if (((SessionBOAnonymous) session).getTimes() >= anonymousSessionCaptchaThreshold) {
+      if (sessionBO.getTimes() >= anonymousSessionCaptchaThreshold) {
         captchaRequired = true;
-        sessionService.createCaptcha(token);
+        sessionService.createLoginCaptcha(sessionBO.getUid());
       }
-      SessionInitOutput loginInitOutput = new SessionInitOutput();
-      loginInitOutput.setStatus(SessionStatus.ANONYMOUS.getNumber());
-      loginInitOutput.setToken(token);
-      loginInitOutput.setExpires(anonymousSessionExpiresSeconds);
-      loginInitOutput.setCaptchaRequired(captchaRequired);
+      SessionInitOutput sessionInitOutput = new SessionInitOutput();
+      BeanUtils.copyProperties(sessionBO, sessionInitOutput);
+      sessionInitOutput.setExpires(anonymousSessionExpiresSeconds);
+      sessionInitOutput.setCaptchaRequired(captchaRequired);
       // TODO 登录方式列表
-      outputData(loginInitOutput);
+      outputData(sessionInitOutput);
       return;
     }
-    // 生成匿名token失败
-    outputException(500);
+
+    // 未过期的具名session
+    outputException(304);
   }
 
   @Override

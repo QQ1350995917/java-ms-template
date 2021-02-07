@@ -27,7 +27,7 @@
     </select>
 
   <!--登录查询-->
-  <select id="queryByLoginNameAndPwd" resultMap="UserAccountMap">
+  <select id="queryByLoginName" resultMap="UserAccountMap">
         select
           id, uid, login_name, login_pwd, pwd_salt, pwd_time, type, able, del, create_time, update_time
         from user_account

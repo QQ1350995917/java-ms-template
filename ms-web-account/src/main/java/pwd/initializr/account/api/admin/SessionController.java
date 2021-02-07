@@ -10,25 +10,22 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.account.api.vo.CaptchaOutput;
-import pwd.initializr.account.api.vo.SessionCreateFailOutput;
-import pwd.initializr.account.api.vo.SessionCreateFailOutput.FailType;
-import pwd.initializr.account.api.vo.SessionCreateInput;
-import pwd.initializr.account.api.vo.SessionCreateOkOutput;
-import pwd.initializr.account.api.vo.SessionCreateOutput;
+import pwd.initializr.account.api.vo.SessionInitFailOutput;
+import pwd.initializr.account.api.vo.SessionInitInput;
 import pwd.initializr.account.api.vo.SessionInitOutput;
-import pwd.initializr.account.api.vo.SessionStatus;
 import pwd.initializr.account.business.admin.AdminAccountService;
 import pwd.initializr.account.business.admin.AdminKeyService;
 import pwd.initializr.account.business.admin.AdminUserService;
 import pwd.initializr.account.business.session.SessionService;
 import pwd.initializr.account.business.admin.bo.AdminAccountBO;
 import pwd.initializr.account.business.admin.bo.AdminUserBO;
-import pwd.initializr.account.business.session.bo.SessionBOAnonymous;
 import pwd.initializr.account.business.session.bo.CaptchaBO;
-import pwd.initializr.account.business.session.bo.SessionBONamed;
+import pwd.initializr.account.business.session.bo.SessionBO;
+import pwd.initializr.account.business.session.bo.SessionType;
 import pwd.initializr.account.rpc.RPCToken;
 import pwd.initializr.common.utils.CryptographerPbkdf;
 import pwd.initializr.common.utils.CryptographerRsa;
@@ -81,86 +78,84 @@ public class SessionController extends AdminController implements SessionApi {
   private AdminKeyService adminKeyService;
 
   @Override
-  public void loginByNameAndPwd(@Valid @NotNull(message = "参数不能为空") SessionCreateInput input) {
+  public void loginByNameAndPwd(@Valid @NotNull(message = "参数不能为空") SessionInitInput input) {
     log.info(JSON.toJSONString(input));
+    SessionBO sessionBO = sessionService.querySession(getUid());
+    if (sessionBO == null) {
+      // fixme: 在已经登录的但已过期的session中，请求这个接口，原则上应该相应登录错误和登录正确，此处只能先刷新登录页面即，请求的登录初始化接口
+      // session 过期
+      outputException(408, "会话已经过期");
+      return;
+    }
 
-    String anonymousToken = getToken();
-    if (StringUtils.isBlank(anonymousToken)) {
-      // token 不能为空
-      outputException(407, new SessionCreateOutput<>(SessionStatus.ANONYMOUS.getNumber(),new SessionCreateFailOutput(FailType.TokenISNull)));
+    if (SessionType.NAMED.getType().equals(sessionBO.getType())) {
+      // TODO: session延期
+      // 具名的生效中的session
+      outputException(304);
       return;
     }
-    if (input == null || StringUtils.isBlank(input.getLoginName()) || StringUtils
-        .isBlank(input.getLoginName())) {
-      // 输入不能为空
-      outputException(407, new SessionCreateOutput<>(SessionStatus.ANONYMOUS.getNumber(),new SessionCreateFailOutput(FailType.ParamsISNull)));
-      return;
-    }
-    SessionBOAnonymous sessionBOAnonymous = sessionService.querySessionAnonymous(anonymousToken);
-    if (sessionBOAnonymous == null) {
-      // anonymousToken 过期
-      outputException(408, new SessionCreateOutput<>(SessionStatus.ANONYMOUS.getNumber(),new SessionCreateFailOutput(FailType.TokenISExpires)));
-      return;
-    }
-    if (sessionBOAnonymous.getTimes() >= anonymousSessionCaptchaThreshold) {
+
+    // 匿名session
+    if (sessionBO.getTimes() >= anonymousSessionCaptchaThreshold) {
       // 需要校验验证码
       if (StringUtils.isBlank(input.getCaptcha())) {
         // 识别输入的验证码为空
-        outputException(407, new SessionCreateOutput<>(SessionStatus.ANONYMOUS.getNumber(),new SessionCreateFailOutput(FailType.CaptchaISNull)));
+        outputException(407, "验证码为空");
         return;
       }
-      if (!input.getCaptcha().equals(sessionBOAnonymous.getCaptcha())) {
+      if (!input.getCaptcha().equals(sessionBO.getCaptcha())) {
         // 验证码错误
-        outputException(407, new SessionCreateOutput<>(SessionStatus.ANONYMOUS.getNumber(),new SessionCreateFailOutput(FailType.CaptchaISError)));
+        outputException(407, "验证码错误");
         return;
       }
     }
+
+    // RSA 解密密码，解密的密码不能记录日志
     String loginPwd = input.getLoginPwd();
     try {
       loginPwd = CryptographerRsa.decryptByRsa(loginPwd,adminKeyService.getPrivateKey());
     } catch (Exception e) {
       log.error(e.getMessage());
-      outputException(400,"登录密码解密异常");
-      return;
-    }
-    AdminAccountBO accountByName = adminAccountService.queryByName(input.getLoginName());
-    if (accountByName == null) {
-      // 登录失败，更新错误登录次数
-      sessionBOAnonymous.setTimes(sessionBOAnonymous.getTimes() + 1);
-      sessionService.updateAnonymousSession(anonymousToken, sessionBOAnonymous);
-      if (sessionBOAnonymous.getTimes() >= anonymousSessionCaptchaThreshold) {
-        sessionService.createCaptcha(anonymousToken);
-        outputException(407, new SessionCreateOutput<>(SessionStatus.ANONYMOUS.getNumber(),new SessionCreateFailOutput(true,FailType.ParamsISError)));
-      } else {
-        outputException(407, new SessionCreateOutput<>(SessionStatus.ANONYMOUS.getNumber(),new SessionCreateFailOutput(FailType.ParamsISError)));
-      }
+      SessionInitFailOutput sessionInitFailOutput = refreshSessionBOWhenLoginError(sessionBO);
+      outputException(400, sessionInitFailOutput);
       return;
     }
 
-    if (accountByName.getAble() == EntityAble.DISABLE.getNumber()) {
+    // 由于登录名唯一，密码加密长度较大，故密码不参与查询
+    AdminAccountBO adminAccountBO = adminAccountService.queryByName(input.getLoginName());
+    if (adminAccountBO == null) {
+      SessionInitFailOutput sessionInitFailOutput = refreshSessionBOWhenLoginError(sessionBO);
+      outputException(400, sessionInitFailOutput);
+      return;
+    }
+
+    // 由于数据库密码不可逆，故进行正向验证
+    String loginPwdCryptographer = adminAccountBO.getLoginPwd();
+    String pwdSalt = adminAccountBO.getPwdSalt();
+    boolean authenticate = false;
+    try {
+      authenticate = CryptographerPbkdf
+          .authenticate(loginPwd, loginPwdCryptographer, pwdSalt);
+    } catch (Exception e) {
+      log.error(e.getMessage());
+    }
+    if (!authenticate) {
+      SessionInitFailOutput sessionInitFailOutput = refreshSessionBOWhenLoginError(sessionBO);
+      outputException(407, sessionInitFailOutput);
+      return;
+    }
+
+    // 登录成功
+    if (adminAccountBO.getAble() == EntityAble.DISABLE.getNumber()) {
       outputData(new Meta(403,"该账号已禁用，请联系管理员开启"));
       return;
     }
-    if (accountByName.getDel() == EntityDel.YES.getNumber()) {
+    if (adminAccountBO.getDel() == EntityDel.YES.getNumber()) {
       outputData(new Meta(410,"该账号已删除"));
       return;
     }
-
-    try {
-      boolean authenticate = CryptographerPbkdf
-          .authenticate(loginPwd, accountByName.getLoginPwd(), accountByName.getPwdSalt());
-      if (!authenticate) {
-        outputException(400,"用户名或密码错误");
-        return;
-      }
-    } catch (Exception e) {
-      log.error(e.getMessage());
-      outputException(400,"登录密码解密异常");
-      return;
-    }
-
     // 查询user信息
-    AdminUserBO adminUserBO = adminUserService.queryById(accountByName.getUid());
+    AdminUserBO adminUserBO = adminUserService.queryById(adminAccountBO.getUid());
     if (adminUserBO == null) {
       outputException(500);
       return;
@@ -174,38 +169,60 @@ public class SessionController extends AdminController implements SessionApi {
       return;
     }
 
-    SessionBONamed sessionBONamed = new SessionBONamed(adminUserBO.getId(), adminUserBO.getName(),
-        accountByName.getId(), accountByName.getLoginName(),
-        System.currentTimeMillis());
-    String namedToken = RPCToken.generateToken(sessionBONamed, namedSessionSecret);
-    sessionBONamed.setToken(namedToken);
-    sessionService.createNamedSession(sessionBONamed);
-    sessionService.deleteAnonymousToken(getUid());
-    outputData(new SessionCreateOutput<>(SessionStatus.NAMED.getNumber(),new SessionCreateOkOutput(
-        sessionBONamed.getUid(), sessionBONamed.getAid(), namedToken)));
+    // 删除对应的匿名session
+    sessionService.deleteSession(getUid());
+    // 构建具名session
+    SessionBO namedSessionBO = new SessionBO(SessionType.NAMED.getType(), 0,null);
+    namedSessionBO.setUid(adminUserBO.getId());
+    namedSessionBO.setUName(adminUserBO.getName());
+    namedSessionBO.setAid(adminAccountBO.getId());
+    namedSessionBO.setAName(adminAccountBO.getLoginName());
+    namedSessionBO.setTimestamp(System.currentTimeMillis());
+    // 构建具名sessionToken
+    String namedToken = RPCToken.generateToken(namedSessionBO, namedSessionSecret);
+    namedSessionBO.setToken(namedToken);
+    // 创建对应的具名session
+    sessionService.createNamedSession(namedSessionBO);
+
+    SessionInitOutput sessionInitOutput = new SessionInitOutput();
+    BeanUtils.copyProperties(namedSessionBO,sessionInitOutput);
+
+    outputData(sessionInitOutput);
+  }
+
+  private SessionInitFailOutput refreshSessionBOWhenLoginError(SessionBO sessionBO){
+    sessionBO.setTimes(sessionBO.getTimes() + 1);
+    sessionService.updateAnonymousSession(sessionBO);
+    if (sessionBO.getTimes() >= anonymousSessionCaptchaThreshold) {
+      sessionService.createLoginCaptcha(sessionBO.getUid());
+      return new SessionInitFailOutput(true,"用户名或密码错误");
+    } else {
+      return new SessionInitFailOutput(false,"用户名或密码错误");
+    }
   }
 
 
   @Override
-  public void loginCaptchaRefresh() {
-    String token = getToken();
+  public void loginCaptchaRefresh(
+      @RequestHeader(value = "x-uid", required = false) Long uid,
+      @RequestHeader(value = "x-aid", required = false) Long aid,
+      @RequestHeader(value = "x-token", required = false) String token) {
     if (StringUtils.isBlank(token)) {
-      // 参数不合规
       outputException(417);
       return;
     }
-    SessionBOAnonymous sessionBOAnonymous = sessionService.querySessionAnonymous(getUid());
-    if (sessionBOAnonymous == null) {
+    SessionBO sessionBO = sessionService.querySession(uid);
+    if (sessionBO == null) {
       // token 过期
       outputException(417);
       return;
     }
-    if (sessionBOAnonymous.getTimes() < anonymousSessionCaptchaThreshold) {
+    if (sessionBO.getTimes() < anonymousSessionCaptchaThreshold) {
       // 无需验证码
       outputException(417);
       return;
     }
-    CaptchaBO captchaBO = sessionService.createCaptcha(token);
+    CaptchaBO captchaBO = sessionService.createLoginCaptcha(uid);
     if (captchaBO == null) {
       outputException(500);
       return;
@@ -217,37 +234,46 @@ public class SessionController extends AdminController implements SessionApi {
   }
 
   @Override
-  public void loginInitializr(Long aid, Long uid, String token) {
-    SessionBO session = sessionService.createSession(token, uid);
-    if (session instanceof SessionBONamed) {
-      SessionInitOutput loginCookieOutput = new SessionInitOutput();
-      loginCookieOutput.setStatus(SessionStatus.NAMED.getNumber());
-      outputData(202,loginCookieOutput);
+  public void loginInitializr(Long uid, String token) {
+    SessionBO sessionBO = null;
+    if (uid != null) {
+      // 可能是匿名session，也可能是在已经登录状态下访问该接口，提交了具名session
+      sessionBO = sessionService.querySession(uid);
+    }
+
+    if (sessionBO == null) {
+      // uid为空或者session已经过期，则创建匿名session
+      SessionBO anonymousSession = sessionService.createAnonymousSession();
+      SessionInitOutput sessionInitOutput = new SessionInitOutput();
+      BeanUtils.copyProperties(anonymousSession,sessionInitOutput);
+      outputException(410, sessionInitOutput);
       return;
     }
-    if (session instanceof SessionBOAnonymous) {
-      Boolean captchaRequired = false;
+
+    if (SessionType.ANONYMOUS.getType().equals(sessionBO.getType())) {
+      // 匿名session
+      boolean captchaRequired = false;
       // 是否对该匿名 token 产生验证码
-      if (((SessionBOAnonymous) session).getTimes() >= anonymousSessionCaptchaThreshold) {
+      if (sessionBO.getTimes() >= anonymousSessionCaptchaThreshold) {
         captchaRequired = true;
-        sessionService.createCaptcha(token);
+        sessionService.createLoginCaptcha(sessionBO.getUid());
       }
-      SessionInitOutput loginInitOutput = new SessionInitOutput();
-      loginInitOutput.setStatus(SessionStatus.ANONYMOUS.getNumber());
-      loginInitOutput.setToken(((SessionBOAnonymous) session).getToken());
-      loginInitOutput.setExpires(anonymousSessionExpiresSeconds);
-      loginInitOutput.setCaptchaRequired(captchaRequired);
+      SessionInitOutput sessionInitOutput = new SessionInitOutput();
+      BeanUtils.copyProperties(sessionBO, sessionInitOutput);
+      sessionInitOutput.setExpires(anonymousSessionExpiresSeconds);
+      sessionInitOutput.setCaptchaRequired(captchaRequired);
       // TODO 登录方式列表
-      outputData(loginInitOutput);
+      outputData(sessionInitOutput);
       return;
     }
-    // 生成匿名token失败
-    outputException(500);
+
+    // 未过期的具名session
+    outputException(304);
   }
 
   @Override
   public void logout() {
-    if (sessionService.deleteNamedSession(getUid())) {
+    if (sessionService.deleteSession(getUid())) {
       outputData(200);
     } else {
       outputException(500);
@@ -258,7 +284,7 @@ public class SessionController extends AdminController implements SessionApi {
   public void querySessionInfo() {
     // TODO 基本信息
     // TODO 权限信息
-    SessionBONamed session = sessionService.querySessionNamed(getUid());
+    SessionBO session = sessionService.querySession(getUid());
     if (session == null) {
       super.outputException(401);
       return;

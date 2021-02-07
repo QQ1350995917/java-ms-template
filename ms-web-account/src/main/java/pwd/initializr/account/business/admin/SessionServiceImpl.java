@@ -22,12 +22,10 @@ public class SessionServiceImpl extends SessionServiceAbs {
 
     @Value("${account.admin.session.anonymous.initializr.salt}")
     private String anonymousSessionSalt;
-    @Value("${account.admin.session.anonymous.redis.key.prefix}")
-    private String anonymousSessionInRedisPrefix;
     @Value("${account.admin.session.anonymous.expires.seconds}")
     private Integer anonymousSessionInRedisExpiresSeconds;
-    @Value("${account.admin.session.named.redis.key.prefix}")
-    private String namedSessionInRedisPrefix;
+    @Value("${account.session.redis.key.prefix}")
+    private String sessionInRedisPrefix;
     @Value("${account.admin.session.named.expires.seconds}")
     private Integer namedSessionInRedisExpiresSeconds;
 
@@ -41,10 +39,6 @@ public class SessionServiceImpl extends SessionServiceAbs {
         return anonymousSessionSalt;
     }
 
-    @Override
-    public String getAnonymousSessionInRedisPrefix() {
-        return anonymousSessionInRedisPrefix;
-    }
 
     @Override
     public Integer getAnonymousSessionInRedisExpiresSeconds() {
@@ -52,8 +46,8 @@ public class SessionServiceImpl extends SessionServiceAbs {
     }
 
     @Override
-    public String getNamedSessionInRedisPrefix() {
-        return namedSessionInRedisPrefix;
+    public String getSessionInRedisPrefix() {
+        return sessionInRedisPrefix;
     }
 
     @Override

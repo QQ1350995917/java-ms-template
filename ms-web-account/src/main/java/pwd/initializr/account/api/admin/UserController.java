@@ -71,14 +71,14 @@ public class UserController extends AdminController implements UserApi {
 
   @Override
   public void delUser(@Valid @NotNull(message = "参数不能为空") List<Long> ids) {
-    ids.forEach(id -> sessionService.deleteNamedSession(id));
+    ids.forEach(id -> sessionService.deleteSession(id));
     Integer result = userUserServiceWrap.deleteByUserId(ids);
     outputData(200, result);
   }
 
   @Override
   public void disableUser(@Valid @NotNull(message = "参数不能为空") List<Long> ids) {
-    ids.forEach(id -> sessionService.deleteNamedSession(id));
+    ids.forEach(id -> sessionService.deleteSession(id));
     Integer result = userUserService.ableById(ids, EntityAble.DISABLE);
     outputData(200, result);
   }

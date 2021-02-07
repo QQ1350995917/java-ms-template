@@ -21,10 +21,21 @@ import pwd.initializr.account.rpc.RPCSession;
 @Getter
 @Setter
 @ToString
-public class SessionBONamed extends RPCSession {
+public class SessionBO extends RPCSession {
 
-  public SessionBONamed(Long uid, String uName, Long accountId, String accountName,
-      Long timestamp) {
-    super(uid, uName, accountId, accountName, timestamp);
-  }
+  /**
+   * session类型
+   * 0:匿名session
+   * 1:具名session
+   */
+  private Integer type;
+  /**
+   * 匿名session变成具名session过程中已经尝试登录次数
+   */
+  private Integer times;
+  /**
+   * 期望验证码值
+   */
+  private String captcha;
+
 }

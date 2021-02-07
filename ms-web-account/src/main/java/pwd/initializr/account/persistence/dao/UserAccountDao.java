@@ -157,7 +157,7 @@ public interface UserAccountDao {
    * @param loginName 登录账号
    * @return 实例对象
    */
-  UserAccountEntity queryByLoginNameAndPwd(@Param("loginName") String loginName);
+  UserAccountEntity queryByLoginName(@Param("loginName") String loginName);
 
   /**
    * <h2>修改密码</h2>

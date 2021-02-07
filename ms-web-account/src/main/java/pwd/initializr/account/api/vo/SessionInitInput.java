@@ -4,7 +4,6 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,7 +27,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @ApiModel(value = "loginInput", description = "管理员登录请求参数")
-public class SessionCreateInput implements Serializable {
+public class SessionInitInput implements Serializable {
 
   @ApiModelProperty(name = "loginName", value = "登录名称", required = true, example = "pwd")
   @NotNull(message = "0")
@@ -38,7 +37,5 @@ public class SessionCreateInput implements Serializable {
   private String loginPwd;
   @ApiModelProperty(name = "captcha", value = "图形验证码识别值", required = false, example = "pwd")
   private String captcha;
-  @ApiModelProperty(name = "smsCode", value = "短信验证码", required = false, example = "123456")
-  private String smsCode;
 
 }

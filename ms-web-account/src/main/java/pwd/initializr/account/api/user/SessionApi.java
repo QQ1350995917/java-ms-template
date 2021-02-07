@@ -56,7 +56,11 @@ public interface SessionApi {
    */
   @ApiOperation(value = "获取验证码")
   @GetMapping(value = {"/captcha"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  void loginCaptchaRefresh();
+  void loginCaptchaRefresh(
+      @RequestHeader(value = "x-uid", required = false) Long uid,
+      @RequestHeader(value = "x-aid", required = false) Long aid,
+      @RequestHeader(value = "x-token", required = false) String token
+  );
 
   /**
    * <h2>登录页面中的信息</h2>

@@ -87,7 +87,7 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
   public void delete(
       @Valid @NotNull(message = "参数不能为空") @Size(message = "参数不能为空") List<Long> ids) {
     // 同时移除 session
-    ids.forEach(id -> sessionService.deleteNamedSession(id));
+    ids.forEach(id -> sessionService.deleteSession(id));
     Integer del = adminUserServiceWrap.deleteByUserId(ids);
     outputData(del);
   }
@@ -95,7 +95,7 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
   @Override
   public void disable(@Valid @NotNull(message = "参数不能为空") List<Long> ids) {
     // 同时移除 session
-    ids.forEach(id -> sessionService.deleteNamedSession(id));
+    ids.forEach(id -> sessionService.deleteSession(id));
     Integer able = adminUserService.ableById(ids, EntityAble.DISABLE);
     outputData(200, able);
   }

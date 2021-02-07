@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pwd.initializr.account.api.vo.SessionCreateInput;
+import pwd.initializr.account.api.vo.SessionInitInput;
 
 /**
  * pwd.initializr.account.api.admin@ms-web-initializr
@@ -52,7 +52,7 @@ public interface SessionApi {
    */
   @ApiOperation(value = "登录")
   @PutMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  void loginByNameAndPwd(@RequestBody @Valid @NotNull(message = "参数不能为空") SessionCreateInput input);
+  void loginByNameAndPwd(@RequestBody @Valid @NotNull(message = "参数不能为空") SessionInitInput input);
 
   /**
    * <h2>用户登录验证码刷新</h2>
@@ -66,7 +66,10 @@ public interface SessionApi {
    */
   @ApiOperation(value = "获取验证码")
   @GetMapping(value = {"/captcha"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  void loginCaptchaRefresh();
+  void loginCaptchaRefresh(
+      @RequestHeader(value = "x-uid", required = false) Long uid,
+      @RequestHeader(value = "x-aid", required = false) Long aid,
+      @RequestHeader(value = "x-token", required = false) String token);
 
   /**
    * <h2>登录页面中的信息</h2>
@@ -82,7 +85,6 @@ public interface SessionApi {
   @ApiOperation(value = "登录页面初始化")
   @GetMapping(value = {"/init"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   void loginInitializr(
-      @RequestHeader(value = "x-aid", required = false) Long aid,
       @RequestHeader(value = "x-uid", required = false) Long uid,
       @RequestHeader(value = "x-token", required = false) String token);
 

@@ -125,12 +125,11 @@ public interface UserAccountService {
    * date 2020-07-21 22:08
    *
    * @param loginName 登录名
-   * @param loginPwd 登录密码
    * @return pwd.initializr.account.business.admin.bo.AdminUserBO
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  UserAccountBO queryByNameAndPwd(String loginName, String loginPwd);
+  UserAccountBO queryByName(String loginName);
 
   /**
    * 修改数据
