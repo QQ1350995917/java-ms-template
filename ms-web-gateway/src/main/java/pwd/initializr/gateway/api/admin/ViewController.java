@@ -1,4 +1,4 @@
-package pwd.initializr.gateway.api;
+package pwd.initializr.gateway.api.admin;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,8 +18,8 @@ import reactor.core.publisher.Mono;
  * @since DistributionVersion
  */
 @Controller()
-@RequestMapping("/index")
-public class PageController {
+@RequestMapping("")
+public class ViewController {
 
   @GetMapping("")
   public Mono<String> indexPage(final Model model) {

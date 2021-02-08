@@ -54,10 +54,4 @@ public class KeyApiController extends AdminController implements KeyApi {
         String publicKey = adminKeyService.getPublicKey();
         outputData(200,publicKey);
     }
-
-    @Override
-    public void getUserPublishKey() {
-        String publicKey = userKeyService.getPublicKey();
-        outputData(200,publicKey);
-    }
 }

@@ -1,4 +1,4 @@
-package pwd.initializr.gateway.api;
+package pwd.initializr.gateway.api.admin;
 
 import javax.annotation.Resource;
 import org.springframework.beans.BeanUtils;
@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pwd.initializr.gateway.api.vo.SessionWhiteVO;
-import pwd.initializr.gateway.api.vo.SessionWhiteOutput;
+import pwd.initializr.gateway.api.admin.vo.SessionWhiteVO;
+import pwd.initializr.gateway.api.admin.vo.SessionWhiteOutput;
 import pwd.initializr.gateway.business.filter.SessionBO;
 import pwd.initializr.gateway.business.filter.SessionWhiteListFilterServiceImpl;
 import reactor.core.publisher.Mono;

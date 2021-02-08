@@ -1,4 +1,4 @@
-package pwd.initializr.gateway.api;
+package pwd.initializr.gateway.api.admin;
 
 import javax.annotation.Resource;
 import org.springframework.cloud.gateway.route.RouteDefinition;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pwd.initializr.gateway.api.vo.RouterDefinitionVO;
+import pwd.initializr.gateway.api.admin.vo.RouterDefinitionVO;
 import pwd.initializr.gateway.business.router.DynamicRouteServiceImpl;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;

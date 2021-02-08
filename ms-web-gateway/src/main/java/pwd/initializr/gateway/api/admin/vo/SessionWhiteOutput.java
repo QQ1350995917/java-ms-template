@@ -1,8 +1,7 @@
-package pwd.initializr.gateway.api.vo;
+package pwd.initializr.gateway.api.admin.vo;
 
 import java.io.Serializable;
 import java.util.List;
-import javax.sql.rowset.serial.SerialArray;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +10,7 @@ import lombok.ToString;
 import pwd.initializr.gateway.business.filter.SessionBO;
 
 /**
- * pwd.initializr.gateway.api.vo@ms-web-initializr
+ * pwd.initializr.gateway.api.admin.vo@ms-web-initializr
  *
  * <h1>TODO what you want to do?</h1>
  *

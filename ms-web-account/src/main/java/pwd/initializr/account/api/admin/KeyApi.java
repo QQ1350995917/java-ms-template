@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 public interface KeyApi {
 
     @ApiOperation(value = "刷新管理员的KEY")
-    @PutMapping(value = {"/refresh/admin"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PutMapping(value = {"/refresh"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     void refreshAdminKeyPairs();
 
     @ApiOperation(value = "刷新用户的KEY")
@@ -37,11 +37,7 @@ public interface KeyApi {
     void refreshUserKeyPairs();
 
     @ApiOperation(value = "获取管理员公钥")
-    @GetMapping(value = {"/public/admin"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value = {"/public"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     void getAdminPublishKey();
-
-    @ApiOperation(value = "获取用户公钥")
-    @GetMapping(value = {"/public/user"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    void getUserPublishKey();
 
 }

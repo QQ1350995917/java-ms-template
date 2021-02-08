@@ -1,4 +1,4 @@
-package pwd.initializr.gateway.api.vo;
+package pwd.initializr.gateway.api.admin.vo;
 
 import java.util.List;
 import lombok.AllArgsConstructor;

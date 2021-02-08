@@ -26,7 +26,6 @@ import springfox.documentation.oas.annotations.EnableOpenApi;
  * @version 1.0.0
  * @since DistributionVersion
  */
-@RestController
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableOpenApi
@@ -36,20 +35,5 @@ public class GatewayApplication {
 
   public static void main(String[] args) {
     SpringApplication.run(GatewayApplication.class, args);
-  }
-
-  @GetMapping(value = "")
-  public String index0() {
-    return "this is gateway 0 index";
-  }
-
-  @GetMapping(value = "/")
-  public String index1() {
-    return "this is gateway 1 index";
-  }
-
-  @GetMapping(value = "/gateway")
-  public String index2() {
-    return "this is gateway 2 index";
   }
 }
