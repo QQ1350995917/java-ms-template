@@ -25,7 +25,7 @@ import lombok.ToString;
 @ToString
 public class ScopeEntity implements Serializable {
 
-    // 指定查询方式[E:精确,AL:前后模糊,LL:左模糊,RL:右模糊,S:范围
+    // 指定查询方式[EM:精确,ENM:精确非,AL:前后模糊,LL:左模糊,RL:右模糊,SM:范围
     /**
      * @see EntityScopeHit
      */

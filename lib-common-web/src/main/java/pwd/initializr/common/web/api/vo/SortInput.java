@@ -48,6 +48,7 @@ public class SortInput implements Serializable {
                     });
             } catch (Exception e) {
                 log.error("格式化" + sortsJson + "JSON" + "发生异常", e);
+                throw new RuntimeException(e);
             }
         }
         LinkedHashSet<SortBO> sortBOS = new LinkedHashSet<>();

@@ -56,6 +56,7 @@ public class ScopeInput implements Serializable {
                     });
             } catch (Exception e) {
                 log.error("格式化" + scopeJson + "JSON" + "发生异常", e);
+                throw new RuntimeException(e);
             }
         }
         LinkedHashSet<ScopeBO> scopeBOS = new LinkedHashSet<>();
