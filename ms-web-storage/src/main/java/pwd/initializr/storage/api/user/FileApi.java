@@ -1,11 +1,14 @@
 package pwd.initializr.storage.api.user;
 
-import javax.servlet.http.HttpServletRequest;
-import org.springframework.ui.Model;
+import io.swagger.annotations.Api;
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
-import pwd.initializr.storage.api.user.vo.DownloadInput;
-import pwd.initializr.storage.api.user.vo.ListInput;
 
 /**
  * pwd.initializr.storage.api.user@ms-web-initializr
@@ -18,15 +21,21 @@ import pwd.initializr.storage.api.user.vo.ListInput;
  * @version 1.0.0
  * @since DistributionVersion
  */
+@Api(
+    tags = "文件上传",
+    value = "文件上传Api",
+    description = "文件上传API"
+)
+@Controller(value = "uploadApiByUser")
+@RequestMapping(value = "/api/file")
 public interface FileApi {
 
+  @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  void download(@PathVariable("id") String id);
 
-  ModelAndView upload(HttpServletRequest request);
-
-  ModelAndView upload(MultipartFile file);
-
-  void download(DownloadInput input);
-
-  ModelAndView list();
-
+  @PostMapping(value = "/{appName}/{bucketName}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  void upload(
+      @PathVariable("app") String app,
+      @PathVariable("bucketName") String bucketName,
+      @RequestPart("file") MultipartFile file);
 }

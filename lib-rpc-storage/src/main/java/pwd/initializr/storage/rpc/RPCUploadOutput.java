@@ -30,8 +30,15 @@ public class RPCUploadOutput implements Serializable {
 
   @ApiModelProperty(name = "id", value = "文件ID", required = true, example = "id")
   private String id;
+  @ApiModelProperty(name = "fileName", value = "文件名称", required = true, example = "fileName")
+  private String fileName;
+  @ApiModelProperty(name = "fileSuffix", value = "文件后缀", required = true, example = "fileSuffix")
+  private String fileSuffix;
+  @ApiModelProperty(name = "fileType", value = "文件类型", required = true, example = "contentType")
+  private String fileType;
   @ApiModelProperty(name = "url", value = "文件访问url", required = true, example = "url")
   private String url;
   @ApiModelProperty(name = "createTime", value = "文件存储时间", required = true, example = "createTime")
   private Long createTime;
+
 }

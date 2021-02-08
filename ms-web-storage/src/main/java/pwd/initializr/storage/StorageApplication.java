@@ -30,7 +30,6 @@ import pwd.initializr.common.web.api.FullPathNameGenerator;
 @Configuration
 @SpringBootApplication
 @EnableEurekaClient
-@RestController
 @EnableDiscoveryClient
 @ComponentScan(nameGenerator = FullPathNameGenerator.class)
 public class StorageApplication {
@@ -38,33 +37,4 @@ public class StorageApplication {
   public static void main(String[] args) throws Exception {
     SpringApplication.run(StorageApplication.class, args);
   }
-
-
-  @GetMapping(value = "")
-  public String index0() {
-    return "this is storage 0 index";
-  }
-
-  @GetMapping(value = "/")
-  public String index1() {
-    return "this is storage 1 index";
-  }
-
-  @GetMapping(value = "/account")
-  public String index2() {
-    return "this is storage 2 index";
-  }
-
-  @GetMapping(value = "/timeout/{duration}")
-  public String index2(@PathVariable("duration") Long duration) {
-    log.info("Thread sleep {} milliseconds start",duration);
-    try {
-      Thread.sleep(duration);
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    }
-    log.info("Thread sleep {} milliseconds end",duration);
-    return "this is storage sleep " + duration;
-  }
-
 }
