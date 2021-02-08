@@ -1,6 +1,5 @@
-package pwd.initializr.edu.api.vo;
+package pwd.initializr.edu.api.admin.vo;
 
-import java.util.Date;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
@@ -11,7 +10,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.validator.constraints.Length;
 
 /**
  * project-generator-test-20210204160711060@ms-web-initializr
@@ -33,7 +31,7 @@ import org.hibernate.validator.constraints.Length;
 public class ArticleTableInput implements Serializable {
 
    /**
-    * 
+    *
     * 上级ID
     */
    @ApiModelProperty(name = "pid", value = "上级ID", required = true, example = "")
@@ -41,7 +39,7 @@ public class ArticleTableInput implements Serializable {
    private Long pid;
 
    /**
-    * 
+    *
     * 标签名称
     */
    @ApiModelProperty(name = "name", value = "标签名称", required = true, example = "")
@@ -49,14 +47,14 @@ public class ArticleTableInput implements Serializable {
    private String name;
 
    /**
-    * 
+    *
     * 原始数据标识
     */
    @ApiModelProperty(name = "data", value = "原始数据标识", required = false, example = "")
    private String data;
 
    /**
-    * 
+    *
     * 叶子节点，0：非叶子节点；1：叶子节点
     */
    @ApiModelProperty(name = "leaf", value = "叶子节点，0：非叶子节点；1：叶子节点", required = true, example = "")

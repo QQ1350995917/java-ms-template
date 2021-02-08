@@ -1,8 +1,7 @@
-package pwd.initializr.edu.api;
+package pwd.initializr.edu.api.admin;
 
 import io.swagger.annotations.Api;
 import java.util.LinkedHashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -13,10 +12,10 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pwd.initializr.edu.api.vo.ArticleTableInput;
-import pwd.initializr.edu.api.vo.ArticleTableOutput;
-import pwd.initializr.edu.business.ArticleTableService;
-import pwd.initializr.edu.business.bo.ArticleTableBO;
+import pwd.initializr.edu.api.admin.vo.ArticleContentInput;
+import pwd.initializr.edu.api.admin.vo.ArticleContentOutput;
+import pwd.initializr.edu.business.ArticleContentService;
+import pwd.initializr.edu.business.bo.ArticleContentBO;
 import pwd.initializr.common.web.api.vo.PageInput;
 import pwd.initializr.common.web.api.vo.PageOutput;
 import pwd.initializr.common.web.api.vo.ScopeInput;
@@ -29,7 +28,7 @@ import pwd.initializr.common.web.persistence.entity.EntityAble;
 /**
 * project-generator-test-20210204160711060@ms-web-initializr
 *
-* <h1>ArticleTable控制层接口实现</h1>
+* <h1>ArticleContent控制层接口实现</h1>
 *
 * date 2021-02-04 16:07
 *
@@ -38,28 +37,28 @@ import pwd.initializr.common.web.persistence.entity.EntityAble;
 * @since 0.0.1-SNAPSHOT
 */
 @Api(
-  tags = "ArticleTable信息结构",
-  value = "ArticleTableManageApi",
+  tags = "ArticleContent信息结构",
+  value = "ArticleContentManageApi",
   description = "[列表查询，详情查询，启/禁用，删除，新增，修改]"
 )
-@RestController(value = "ArticleTable")
-@RequestMapping(value = "/api/ArticleTable")
+@RestController(value = "ArticleContent")
+@RequestMapping(value = "/api/ArticleContent")
 @Slf4j
-public class ArticleTableController extends pwd.initializr.common.web.api.admin.AdminController implements ArticleTableApi {
+public class ArticleContentController extends pwd.initializr.common.web.api.admin.AdminController implements ArticleContentApi {
 
   @Autowired
-  private ArticleTableService service;
+  private ArticleContentService service;
 
   @Override
   public void list(String scopes, String sorts, String page) {
     PageInput pageInput = PageInput.parse(page);
     LinkedHashSet<ScopeBO> scopeBOS = ScopeInput.parse(scopes);
     LinkedHashSet<SortBO> sortBOS = SortInput.parse(sorts);
-    PageableQueryResult<ArticleTableBO> pageableQueryResult = service
+    PageableQueryResult<ArticleContentBO> pageableQueryResult = service
       .queryAllByCondition(scopeBOS, sortBOS, pageInput.getIndex(), pageInput.getSize());
-    PageOutput<ArticleTableOutput> result = new PageOutput<>();
+    PageOutput<ArticleContentOutput> result = new PageOutput<>();
     pageableQueryResult.getElements().forEach(bo -> {
-      ArticleTableOutput output = new ArticleTableOutput();
+      ArticleContentOutput output = new ArticleContentOutput();
       BeanUtils.copyProperties(bo, output);
       result.getElements().add(output);
     });
@@ -71,8 +70,8 @@ public class ArticleTableController extends pwd.initializr.common.web.api.admin.
 
   @Override
   public void detail(@Valid @NotNull(message = "参数不能为空") Long id) {
-    ArticleTableBO bo = service.queryById(id);
-    ArticleTableOutput output = new ArticleTableOutput();
+    ArticleContentBO bo = service.queryById(id);
+    ArticleContentOutput output = new ArticleContentOutput();
     BeanUtils.copyProperties(bo,output);
     outputData(output);
   }
@@ -114,32 +113,32 @@ public class ArticleTableController extends pwd.initializr.common.web.api.admin.
   }
 
   @Override
-  public void create(@Valid @NotNull(message = "参数不能为空") ArticleTableInput input) {
-    ArticleTableBO bo = new ArticleTableBO();
+  public void create(@Valid @NotNull(message = "参数不能为空") ArticleContentInput input) {
+    ArticleContentBO bo = new ArticleContentBO();
     BeanUtils.copyProperties(input,bo);
     Long id = service.insert(bo);
     outputData(200,id);
   }
 
   @Override
-  public void create(@Valid @NotNull(message = "参数不能为空") List<ArticleTableInput> input) {
-    List<ArticleTableBO> bos = input.stream().map(this::convertArticleTableInput2ArticleTableBO)
+  public void create(@Valid @NotNull(message = "参数不能为空") List<ArticleContentInput> input) {
+    List<ArticleContentBO> bos = input.stream().map(this::convertArticleContentInput2ArticleContentBO)
       .collect(Collectors.toList());
     service.insert(bos);
     outputData(200);
   }
 
   @Override
-  public void createOrReplace(@Valid @NotNull(message = "参数不能为空") ArticleTableInput input) {
-    ArticleTableBO bo = new ArticleTableBO();
+  public void createOrReplace(@Valid @NotNull(message = "参数不能为空") ArticleContentInput input) {
+    ArticleContentBO bo = new ArticleContentBO();
     BeanUtils.copyProperties(input,bo);
     Long id = service.insertOrReplace(bo);
     outputData(200,id);
   }
 
   @Override
-  public void createOrReplace(@Valid @NotNull(message = "参数不能为空") List<ArticleTableInput> input) {
-    List<ArticleTableBO> bos = input.stream().map(this::convertArticleTableInput2ArticleTableBO)
+  public void createOrReplace(@Valid @NotNull(message = "参数不能为空") List<ArticleContentInput> input) {
+    List<ArticleContentBO> bos = input.stream().map(this::convertArticleContentInput2ArticleContentBO)
       .collect(Collectors.toList());
     service.insertOrReplace(bos);
     outputData(200);
@@ -147,15 +146,15 @@ public class ArticleTableController extends pwd.initializr.common.web.api.admin.
 
   @Override
   public void update(@Valid @NotNull(message = "参数不能为空") Long id,
-  @Valid @NotNull(message = "参数不能为空") ArticleTableInput input) {
-    ArticleTableBO bo = new ArticleTableBO();
+  @Valid @NotNull(message = "参数不能为空") ArticleContentInput input) {
+    ArticleContentBO bo = new ArticleContentBO();
     BeanUtils.copyProperties(input,bo);
     Integer result = service.updateById(bo);
     outputData(200,result);
   }
 
-  private ArticleTableBO convertArticleTableInput2ArticleTableBO(ArticleTableInput input){
-    ArticleTableBO bo = new ArticleTableBO();
+  private ArticleContentBO convertArticleContentInput2ArticleContentBO(ArticleContentInput input){
+    ArticleContentBO bo = new ArticleContentBO();
     BeanUtils.copyProperties(input,bo);
     return bo;
   }

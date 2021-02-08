@@ -1,4 +1,4 @@
-package pwd.initializr.edu.api;
+package pwd.initializr.edu.api.admin;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import pwd.initializr.edu.api.vo.ArticleTableInput;
+import pwd.initializr.edu.api.admin.vo.ArticleTableInput;
 
 /**
  * project-generator-test-20210204160711060@ms-web-initializr

@@ -3,10 +3,8 @@ package pwd.initializr.storage.api.admin;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.io.InputStream;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,12 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 import pwd.initializr.common.web.api.admin.AdminController;
 import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.storage.business.StorageService;
 import pwd.initializr.storage.business.bo.StorageBO;
-import pwd.initializr.storage.rpc.RPCUploadErrorOutput;
 import pwd.initializr.storage.rpc.RPCUploadOutput;
 
 /**
