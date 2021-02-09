@@ -1,5 +1,7 @@
 package pwd.initializr.account.rpc;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson.serializer.ToStringSerializer;
 import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,7 +30,9 @@ public class RPCSession implements Serializable {
   /**
    * 用户ID
    */
+  @JSONField(serializeUsing = ToStringSerializer.class)
   private Long uid;
+
   /**
    * 用户名
    */
@@ -36,6 +40,7 @@ public class RPCSession implements Serializable {
   /**
    * 登录的账号ID
    */
+  @JSONField(serializeUsing = ToStringSerializer.class)
   private Long aid;
   /**
    * 登录账号名
@@ -48,6 +53,7 @@ public class RPCSession implements Serializable {
   /**
    * 登录时间戳
    */
+  @JSONField(serializeUsing = ToStringSerializer.class)
   private Long timestamp;
 
 }

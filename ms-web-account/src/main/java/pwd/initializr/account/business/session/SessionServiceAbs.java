@@ -2,6 +2,7 @@ package pwd.initializr.account.business.session;
 
 import com.alibaba.fastjson.JSON;
 import java.util.Random;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import pwd.initializr.account.business.session.bo.SessionBO;
@@ -24,6 +25,7 @@ import pwd.initializr.common.utils.Snowflake;
  * @version 1.0.0
  * @since DistributionVersion
  */
+@Slf4j
 public abstract class SessionServiceAbs implements SessionService {
 
   public abstract String getSessionPrefix();
@@ -53,7 +55,7 @@ public abstract class SessionServiceAbs implements SessionService {
   @Override
   public SessionBO createAnonymousSession() {
     SessionBO sessionBO = new SessionBO(SessionType.ANONYMOUS.getType(),0,null);
-    long uid = new Snowflake().nextId();
+    Long uid = new Snowflake().nextId();
     sessionBO.setUid(uid);
     sessionBO.setAid(-1L);
     sessionBO.setTimestamp(System.currentTimeMillis());

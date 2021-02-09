@@ -115,10 +115,7 @@ public class SessionController extends AdminController implements SessionApi {
     try {
       loginPwd = CryptographerRsa.decryptByRsa(loginPwd,adminKeyService.getPrivateKey());
     } catch (Exception e) {
-      log.error(e.getMessage());
-      SessionInitFailOutput sessionInitFailOutput = refreshSessionBOWhenLoginError(sessionBO);
-      outputException(400, "用户名或密码错误", sessionInitFailOutput);
-      return;
+      throw new RuntimeException("用户名或密码错误");
     }
 
     // 由于登录名唯一，密码加密长度较大，故密码不参与查询
@@ -246,7 +243,7 @@ public class SessionController extends AdminController implements SessionApi {
       SessionBO anonymousSession = sessionService.createAnonymousSession();
       SessionInitOutput sessionInitOutput = new SessionInitOutput();
       BeanUtils.copyProperties(anonymousSession,sessionInitOutput);
-      outputException(410, sessionInitOutput);
+      outputData(410, sessionInitOutput);
       return;
     }
 
@@ -264,6 +261,7 @@ public class SessionController extends AdminController implements SessionApi {
       sessionInitOutput.setCaptchaRequired(captchaRequired);
       // TODO 登录方式列表
       outputData(sessionInitOutput);
+      log.info("sessionBO != null" + JSON.toJSONString(sessionInitOutput));
       return;
     }
 
