@@ -42,7 +42,7 @@ import pwd.initializr.common.web.persistence.entity.EntityAble;
   description = "[列表查询，详情查询，启/禁用，删除，新增，修改]"
 )
 @RestController(value = "ArticleTable")
-@RequestMapping(value = "/api/ArticleTable")
+@RequestMapping(value = "/api/admin/article/table")
 @Slf4j
 public class ArticleTableController extends pwd.initializr.common.web.api.admin.AdminController implements ArticleTableApi {
 

@@ -35,7 +35,7 @@ import pwd.initializr.gateway.business.router.DynamicRouteServiceImpl;
  * @since DistributionVersion
  */
 @Configuration
-public class BeanConfiguration {
+public class GatewayConfiguration {
 
     @Value("${gateway.router.in.redis.sync.topic}")
     public String GATEWAY_ROUTES_IN_REDIS_SYNC_TOPIC;

@@ -37,7 +37,7 @@ import pwd.initializr.edu.api.admin.vo.ArticleContentInput;
   description = "[列表查询，详情查询，启/禁用，删除，新增，修改]"
 )
 @RestController(value = "ArticleContent")
-@RequestMapping(value = "/api/articlecontent")
+@RequestMapping(value = "/api/admin/article/content")
 public interface ArticleContentApi {
 
   /**
