@@ -7,10 +7,6 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
-import pwd.initializr.common.captcha.CaptchaArithmetic;
-import pwd.initializr.common.captcha.CaptchaHelper;
 
 /**
  * pwd.initializr.account@ms-web-initializr
@@ -26,7 +22,6 @@ import pwd.initializr.common.captcha.CaptchaHelper;
 @SpringBootApplication
 @EnableEurekaClient
 @EnableDiscoveryClient
-@RestController
 @EnableTransactionManagement
 @ComponentScan(basePackages = {"pwd.initializr.common.web", "pwd.initializr.account"})
 @MapperScan("pwd.initializr.account.persistence")
@@ -36,18 +31,4 @@ public class AccountApplication {
     SpringApplication.run(AccountApplication.class, args);
   }
 
-  @GetMapping(value = "")
-  public String index0() {
-    return "this is account 0 index";
-  }
-
-  @GetMapping(value = "/")
-  public String index1() {
-    return "this is account 1 index";
-  }
-
-  @GetMapping(value = "/account")
-  public String index2() {
-    return "this is account 2 index";
-  }
 }

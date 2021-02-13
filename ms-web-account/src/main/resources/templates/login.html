@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>ProjectGenerator</title>
+  <link rel="stylesheet" href="./static/css/login.css">
+  <style>
+    element {
+      visibility: visible;
+      animation-delay: 0.5s;
+      animation-name: pulse;
+    }
+    body {
+      background: #000;
+      overflow: auto;
+      color: #fff;
+    }
+
+    img {
+      vertical-align: middle;
+    }
+
+    #canvas {
+      width: 100%;
+      height: auto;
+      position: absolute;
+      top: 0;
+      z-index: -1;
+      display: inline-block;
+      vertical-align: baseline;
+    }
+    .canvasBgImage {
+      width: 100%;
+      height: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1;
+      filter: alpha(opacity=40);
+      -moz-opacity: 0.4;
+      -khtml-opacity: 0.4;
+      opacity: 0.4;
+      background: url(./static/background.jpg) no-repeat center center;
+      background-color: rgba(0, 0, 0, 0);
+      background-attachment: scroll;
+      background-size: auto;
+      background-attachment: fixed;
+      background-size: cover;
+      background-color: #000;
+    }
+    .container {
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
+    div.login-03 {
+      position: absolute;
+      left: 11px;
+      top: 157px;
+      width: 532px;
+      height: 529px;
+    }
+
+    .neiquanyuan {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      margin: auto;
+    }
+    .logologo_login {
+      width: 150px;
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      margin: auto;
+    }
+    .dayuanquanwaiyuan {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      margin: auto;
+    }
+
+    div.login-03 .gy {
+      position: absolute;
+      top: 100px;
+      right: -160px;
+      opacity: 0.75;
+    }
+
+    .neiyuanbg-img {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      margin: auto;
+      z-index: -99;
+    }
+
+    .neiquanyuanhuan {
+      width: 100px;
+      height: 100px;
+      border: solid 2px #53cbfd;
+      border-radius: 50%;
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      margin: auto;
+    }
+    div.login-06 {
+      position: absolute;
+      left: 816px;
+      top: 257px;
+      width: 383px;
+      height: 343px;
+      background-image: url(./static/login_frame.png);
+    }
+
+    div.login-08 {
+      position: absolute;
+      left: 543px;
+      top: 356px;
+      width: 273px;
+      height: 80px;
+    }
+
+    div.login-11 {
+      position: absolute;
+      left: 345px;
+      top: 541px;
+      width: 426px;
+      height: 243px;
+      background-image: url(./static/login_line_desc.png);
+      background-size: 100% 100%;
+    }
+
+  </style>
+</head>
+<body>
+<canvas id="canvas" width="1553" height="270" style="z-index: -1"></canvas>
+<div class="canvasBgImage"></div>
+
+<div class="container">
+  <div class="login-03">
+    <img class="an-xuanzhuan neiquanyuan" src="./static/login_quanquan_inner.png" alt="" width="532" height="532">
+    <img class="logologo_login wow pulse animated" data-wow-delay="0.5s" src="" alt="" style="visibility: visible; animation-delay: 0.5s; animation-name: pulse;">
+    <img class="dayuanquanwaiyuan an-xuanzhuan2" src="./static/login_quanquan_outter.png" alt="">
+    <img src="./static/login_quanquan_plant.png" class="gy">
+    <img class="neiyuanbg-img" src="./static/login_quanquan_ray.png">
+    <div class="neiquanyuanhuan hide">
+
+    </div>
+
+  </div>
+  <div class="login-06 wow  fadeInLeft animated" data-wow-delay="0.5s" style="visibility: visible; animation-delay: 0.5s; animation-name: fadeInLeft;">
+    <!--登录-->
+    <div class="loginDiv ">
+      <p class="header">用户登录</p>
+      <p>
+        <input type="text" placeholder="账号:" name="zn_account" id="account">
+      </p>
+      <p>
+        <input type="password" placeholder="密码:" name="zn_psw" id="psw">
+      </p>
+      <!---->
+
+      <p>
+      </p><div class="yzmInput">
+      <input type="text" class="pw555" name="zn_verify " id="verify" placeholder="验证码: " autocomplete="off ">
+
+    </div>
+      <div class="yzm"><img class="verifyimg reloadverify  " alt="点击切换 " src="./static/login_captcha.png"></div>
+      <div class="clear"></div>
+      <p></p>
+      <div class="btnDiv">
+        <button class="loginBt" onclick="login()">登&nbsp;&nbsp;&nbsp;&nbsp;录</button>
+      </div>
+    </div>
+  </div>
+  <div class="login-08">
+    <img src="./static/login_line_frame.png" alt="" width="273" height="80">
+  </div>
+  <div class="login-11">
+    <!--标题-->
+    <div class="name wow fadeInDown animated" data-wow-delay="0.7s" style="visibility: visible; animation-delay: 0.7s; animation-name: fadeInDown;">
+      <div class="head">xxx</div>
+      <div class="info">智能学习系统</div>
+    </div>
+  </div>
+</div>
+<div style="" class="weifaxinxijubao">
+  违法和不良信息举报电话:xxxx-xxx-xxxx
+</div>
+
+<div class="footer">
+  XICP备<a target="_blank" href="https://baidu.com">xxxxxxxx</a>号		</div>
+
+
+
+<script src="./static/star.js"></script>
+</body>
+</html>

@@ -1,0 +1,423 @@
+* {
+  margin: 0;
+  padding: 0;
+  font-family: "微软雅黑";
+}
+
+body {
+  background: #000;
+  overflow: auto;
+  color: #fff;
+}
+
+ul {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+img {
+  border: 0;
+}
+
+input {
+  outline: none;
+}
+
+
+/*遮罩层*/
+
+.mask {
+  position: absolute;
+  top: 0px;
+  filter: alpha(opacity=60);
+  background-color: #000;
+  z-index: 1000;
+  left: 0px;
+  opacity: 0.6;
+  -moz-opacity: 0.6;
+}
+
+#canvas {
+  width: 100%;
+  height: auto;
+  /*默认全屏显示 可自己设置高度640px*/
+  position: absolute;
+  top: 0;
+  z-index: -1;
+}
+
+.canvasBgImage {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  filter: alpha(opacity=40);
+  -moz-opacity: 0.4;
+  -khtml-opacity: 0.4;
+  opacity: 0.4;
+  background: url(../images/bg2.jpg) no-repeat center center;
+  /* 当内容高度大于图片高度时，背景图像的位置相对于viewport固定 ,此条属性必须设置否则可能无效*/
+  background-attachment: fixed;
+  /* 让背景图基于容器大小伸缩 */
+  background-size: cover;
+  /* 设置背景颜色，背景图加载过程中会显示背景色 */
+  background-color: #000;
+}
+
+.clear {
+  clear: both;
+}
+
+.container {
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+  /*设置文字不能被选中*/
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.footer {
+  height: 30px;
+  line-height: 30px;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  color: #ccc;
+  font-size: 12px;
+  z-index: 99;
+}
+
+.hide {
+  display: none;
+}
+
+.show {
+  display: block;
+}
+
+div.login-03 {
+  position: absolute;
+  left: 11px;
+  top: 157px;
+  width: 532px;
+  height: 529px;
+}
+
+div.login-06 {
+  position: absolute;
+  left: 816px;
+  top: 257px;
+  width: 383px;
+  height: 343px;
+  background-image: url(../images/login_06.png);
+}
+
+div.login-08 {
+  position: absolute;
+  left: 543px;
+  top: 356px;
+  width: 273px;
+  height: 80px;
+}
+
+div.login-11 {
+  position: absolute;
+  left: 345px;
+  top: 541px;
+  width: 426px;
+  height: 243px;
+  background-image: url(../images/login_11.png);
+  background-size: 100% 100%;
+}
+
+.loginDiv {
+  width: 250px;
+  position: absolute;
+  left: 63px;
+  top: 70px;
+}
+
+.loginDiv .header {
+  color: #327594;
+  font-weight: bolder;
+  text-align: center;
+  font-size: 16px;
+  height: 38px;
+}
+
+.loginDiv input {
+  font-size: 14px;
+  padding: 3px;
+  width: 100%;
+  height: 30px;
+  line-height: 30px;
+  background: transparent;
+  transition: all 0.30s ease-in-out;
+  -webkit-transition: all 0.30s ease-in-out;
+  -moz-transition: all 0.30s ease-in-out;
+  border: #327594 1px solid;
+  outline: none;
+  color: #fff;
+  margin-bottom: 15px;
+}
+
+.loginDiv input:focus {
+  box-shadow: 0 0 5px rgba(81, 203, 238, 1);
+  -webkit-box-shadow: 0 0 5px rgba(81, 203, 238, 1);
+  -moz-box-shadow: 0 0 5px rgba(81, 203, 238, 1);
+}
+
+.loginDiv .yzmInput {
+  width: 150px;
+  height: 25px;
+  float: left;
+}
+
+.loginDiv .yzm {
+  width: 70px;
+  height: 38px;
+  float: right;
+}
+
+.loginDiv .yzm img {
+  width: 100%;
+  height: 100%;
+}
+
+.loginDiv .btnDiv {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.loginDiv .btnDiv .loginBt {
+  font-size: 14px;
+  color: #fff;
+  font-weight: bold;
+  text-align: center;
+  width: 92px;
+  height: 30px;
+  background: transparent;
+  border: 0;
+  outline: none;
+  background-image: url(../images/login_10.png);
+  background-repeat: no-repeat;
+  background-position-y: 15px;
+  position: relative;
+  cursor: pointer;
+}
+
+.loginDiv .btnDiv .loginBt:active {
+  top: 2px;
+  /**向下偏移2px **/
+}
+
+.loginDiv ::-webkit-input-placeholder {
+  color: #fff;
+}
+
+.loginDiv :-moz-placeholder {
+  /* Firefox 18- */
+  color: #fff;
+}
+
+.loginDiv ::-moz-placeholder {
+  /* Firefox 19+ */
+  color: #fff;
+}
+
+.loginDiv :-ms-input-placeholder {
+  color: #fff;
+}
+
+.name {
+  color: #fff;
+  position: absolute;
+  right: 56px;
+  bottom: 42px;
+  text-shadow: 0px 0px 4px #fff, 0px 0px 8px #ffffff;
+}
+
+.name .head {
+  height: 30px;
+  line-height: 30px;
+  font-size: 22px;
+  letter-spacing: 5px;
+}
+
+.name .info {
+  height: 20px;
+  line-height: 20px;
+  font-size: 14px;
+  letter-spacing: 5px;
+  margin-top: 10px;
+}
+
+div.login-03 .gy {
+  position: absolute;
+  top: 100px;
+  right: -160px;
+  opacity: 0.75;
+}
+
+.container {
+  position: relative;
+}
+
+.layui-layer-lan .layui-layer-content {
+  color: black;
+}
+
+@-webkit-keyframes gogogo1 {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  50% {
+    -webkit-transform: rotate(360deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+.an-xuanzhuan {
+  animation: gogogo1 16.5s 2.15s linear infinite;
+  -moz-animation: gogogo1 16.5s 2.15s linear infinite;
+  /* Firefox */
+  -webkit-animation: gogogo1 16.5s 2.15s linear infinite;
+  /* Safari and Chrome */
+  -o-animation: gogogo1 16.5s 2.15s linear infinite;
+  /* Opera */
+}
+
+@-webkit-keyframes gogogo2 {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  50% {
+    -webkit-transform: rotate(-360deg);
+  }
+  100% {
+    -webkit-transform: rotate(-360deg);
+  }
+}
+
+.an-xuanzhuan2 {
+  animation: gogogo2 16.5s 2.15s linear infinite;
+  -moz-animation: gogogo2 16.5s 2.15s linear infinite;
+  /* Firefox */
+  -webkit-animation: gogogo2 16.5s 2.15s linear infinite;
+  /* Safari and Chrome */
+  -o-animation: gogogo2 16.5s 2.15s linear infinite;
+  /* Opera */
+}
+
+.logologo_login {
+  width: 150px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+}
+
+.dayuanquanwaiyuan {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+}
+
+.neiquanyuan {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+}
+
+.neiyuanbg-img {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  z-index: -99;
+}
+
+.neiquanyuanhuan {
+  width: 100px;
+  height: 100px;
+  border: solid 2px #53cbfd;
+  border-radius: 50%;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+}
+#login_ip{
+  background: initial;
+}
+
+#login_ip option{
+  background: initial;
+  color: black;
+
+}
+/* ========== */
+/* = 受限制弹窗 = */
+/* ========== */
+.zhanghushouxian-img {
+  width: 100px;
+}
+
+.shouxian-tishi-bbox {
+  text-align: center;
+}
+
+#page-zhanghushouxian {
+  width: 400px;
+}
+
+.qingtigongziliao {
+  background-color: #A3A3A3!important;
+  color: #333;
+  padding: 11px;
+  border-radius: 20px;
+}.jiechuxianzh-from-bbox{
+   padding: 5px;
+ }
+#g-zhanghushouxian-bbox{
+  padding: 50px;
+}
+.jiechuxianzh-from-bbox input{
+  margin-top: 10px;
+}
+
+.jiechuxianzhi-caozuos-bbox{
+  margin-top: 20px;
+}
+.weifaxinxijubao{
+  height: 30px;
+  line-height: 30px;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+  color: #ccc;
+  font-size: 12px;
+}
