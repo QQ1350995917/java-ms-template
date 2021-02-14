@@ -2,7 +2,9 @@ server.port=${projectPort}
 spring.application.name=${projectName}
 #################logger######################
 logging.level.root=INFO
+<#noparse>
 logging.path=./z-log/${spring.application.name}
+</#noparse>
 ################thymeleaf####################
 spring.thymeleaf.cache=false
 spring.thymeleaf.prefix=classpath:/templates/
@@ -19,8 +21,10 @@ eureka.client.enabled=false
 eureka.instance.hostname=localhost
 eureka.client.register-with-eureka=true
 eureka.client.fetch-registry=true
+<#noparse>
 eureka.client.service-url.defaultZone=http://${eureka.instance.hostname}:${eureka.instance.port}/eureka/
 eureka.instance.status-page-url=http://localhost:${server.port}/swagger-ui.html
+</#noparse>
 ################datasource####################
 spring.datasource.name=${databaseName}
 spring.datasource.url=${databaseUrl}

@@ -64,8 +64,8 @@
 </head>
 <body>
 <canvas id="canvas" width="1553" height="270" style="z-index: -1"></canvas>
-<div class="canvasBgImage"></div>
-<el-container id="container">
+<!--<div class="canvasBgImage"></div>-->
+<el-container id="container" >
   <el-header style="padding: 0px;height: 42px">
     <el-row>
       <el-col :span="12" :offset="6">
@@ -175,13 +175,13 @@
         tables: [],
         checkedTables: [],
         activeName: '0',
-        projectName: 'project-generator-test',
-        projectPackage: 'pwd.code.generator',
+        projectName: 'pwd-initializr-app',
+        projectPackage: 'pwd.initializr.app',
         projectVersion: '0.0.1-SNAPSHOT',
-        applicationName: 'CodeGeneratorApplication',
+        applicationName: 'Application',
         applicationPort: 80,
-        databaseName: 'test',
-        databaseUrl: 'jdbc:mysql://localhost:3306/test?characterEncoding=utf-8&autoReconnect=true&serverTimezone=GMT',
+        databaseName: 'initializr_app',
+        databaseUrl: 'jdbc:mysql://localhost:3306/initializr_app?characterEncoding=utf-8&autoReconnect=true&serverTimezone=GMT',
         databaseDriver: 'com.mysql.jdbc.Driver',
         databaseUser: 'root',
         databasePwd: 'root',
