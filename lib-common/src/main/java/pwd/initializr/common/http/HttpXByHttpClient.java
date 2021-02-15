@@ -64,8 +64,8 @@ public class HttpXByHttpClient extends HttpX {
 
   @Override
   public String get(String url, Map<String, String> headers, Map<String, String> params) {
-    StringBuilder stringBuilder = new StringBuilder();
     if (params != null) {
+      StringBuilder stringBuilder = new StringBuilder();
       for (String key : params.keySet()) {
         String value = params.get(key);
         stringBuilder.append(key);
@@ -74,8 +74,9 @@ public class HttpXByHttpClient extends HttpX {
         stringBuilder.append("&");
       }
       stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+      url = String.join("?", url, stringBuilder.toString());
     }
-    HttpGet httpGet = new HttpGet(String.join("?", url, stringBuilder.toString()));
+    HttpGet httpGet = new HttpGet(url);
     return get(httpGet, headers);
   }
 
