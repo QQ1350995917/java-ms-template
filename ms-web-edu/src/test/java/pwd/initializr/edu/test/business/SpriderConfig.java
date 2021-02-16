@@ -12,7 +12,8 @@ package pwd.initializr.edu.test.business;
  * @since DistributionVersion
  */
 public interface SpriderConfig {
-  String cookie = "tianjinandznyy_=i1ssm83cn6a822ij472h97mog6";
+  String cookie = "_walkthrough-introduction=0; tianjinandznyy_=f2lcu185v95skrmn0ovggjsnp0";
+  String UserAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:85.0) Gecko/20100101 Firefox/85.0";
 //  String fileStorage = "/Users/pwd/Documents/edu";
   String fileStorage = "e://data/edu";
 

@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pwd.initializr.edu.persistence.dao.WordTableDao">
+
+  <resultMap id="WordTableMap" type="pwd.initializr.edu.persistence.entity.WordTableEntity">
+    <result column="id" jdbcType="VARCHAR" property="id"/>
+    <result column="pid" jdbcType="VARCHAR" property="pid"/>
+    <result column="name" jdbcType="VARCHAR" property="name"/>
+    <result column="sys_org_code" jdbcType="VARCHAR" property="sysOrgCode"/>
+    <result column="sys_company_code" jdbcType="VARCHAR" property="sysCompanyCode"/>
+    <result column="bpm_status" jdbcType="VARCHAR" property="bpmStatus"/>
+    <result column="zindex" jdbcType="VARCHAR" property="zindex"/>
+    <result column="word_amount" jdbcType="VARCHAR" property="wordAmount"/>
+    <result column="sort" jdbcType="VARCHAR" property="sort"/>
+    <result column="leaf" jdbcType="INTEGER" property="leaf"/>
+    <result column="able" jdbcType="INTEGER" property="able"/>
+    <result column="del" jdbcType="INTEGER" property="del"/>
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+  </resultMap>
+
+  <!--根据主键查询查询-->
+  <select id="queryById" resultMap="WordTableMap">
+    SELECT
+      `id`,
+      `pid`,
+      `name`,
+      `sys_org_code`,
+      `sys_company_code`,
+      `bpm_status`,
+      `zindex`,
+      `word_amount`,
+      `sort`,
+      `leaf`,
+      `able`,
+      `del`,
+      `create_time`,
+      `update_time`
+    FROM
+      word_table
+    WHERE
+      id = #{id}
+  </select>
+
+  <!--查询指定行数据-->
+  <select id="countByCondition" resultType="java.lang.Long">
+    SELECT COUNT(*) FROM word_table
+    <include refid="pwd.initializr.common.web.persistence.entity.ScopeEntity.entityQueryScope"></include>
+  </select>
+
+  <!--通过实体作为筛选条件查询-->
+  <select id="queryByCondition" resultMap="WordTableMap">
+    SELECT
+      `id`,
+      `pid`,
+      `name`,
+      `sys_org_code`,
+      `sys_company_code`,
+      `bpm_status`,
+      `zindex`,
+      `word_amount`,
+      `sort`,
+      `leaf`,
+      `able`,
+      `del`,
+      `create_time`,
+      `update_time`
+    FROM
+      word_table
+    <include refid="pwd.initializr.common.web.persistence.entity.ScopeEntity.entityQueryScope"></include>
+    <include refid="pwd.initializr.common.web.persistence.entity.SortEntity.entityQuerySort"></include>
+    LIMIT
+      #{offset}, #{limit}
+  </select>
+
+  <!--新增所有列-->
+  <insert id="insert" keyProperty="id" useGeneratedKeys="true" parameterType="pwd.initializr.edu.persistence.entity.WordTableEntity">
+    INSERT INTO word_table
+      (
+        `id`,
+        `pid`,
+        `name`,
+        `sys_org_code`,
+        `sys_company_code`,
+        `bpm_status`,
+        `zindex`,
+        `word_amount`,
+        `sort`,
+        `leaf`,
+        `able`,
+        `del`,
+        `create_time`,
+        `update_time`
+      )
+    VALUES
+      (
+        #{entity.id},
+        #{entity.pid},
+        #{entity.name},
+        #{entity.sysOrgCode},
+        #{entity.sysCompanyCode},
+        #{entity.bpmStatus},
+        #{entity.zindex},
+        #{entity.wordAmount},
+        #{entity.sort},
+        #{entity.leaf},
+        #{entity.able},
+        #{entity.del},
+        #{entity.createTime},
+        #{entity.updateTime}
+      )
+  </insert>
+
+  <!--新增所有列（批量新增）-->
+  <insert id="insertByBatch" keyProperty="id" useGeneratedKeys="true" parameterType="pwd.initializr.edu.persistence.entity.WordTableEntity">
+    INSERT INTO word_table
+    (
+        `id`,
+        `pid`,
+        `name`,
+        `sys_org_code`,
+        `sys_company_code`,
+        `bpm_status`,
+        `zindex`,
+        `word_amount`,
+        `sort`,
+        `leaf`,
+        `able`,
+        `del`,
+        `create_time`,
+        `update_time`
+    )
+    VALUES
+    <foreach collection="entities" item="entity" separator=",">
+    (
+        #{entity.id},
+        #{entity.pid},
+        #{entity.name},
+        #{entity.sysOrgCode},
+        #{entity.sysCompanyCode},
+        #{entity.bpmStatus},
+        #{entity.zindex},
+        #{entity.wordAmount},
+        #{entity.sort},
+        #{entity.leaf},
+        #{entity.able},
+        #{entity.del},
+        #{entity.createTime},
+        #{entity.updateTime}
+    )
+    </foreach>
+  </insert>
+
+  <!--新增或者替换所有列-->
+  <insert id="insertOrReplace" keyProperty="id" useGeneratedKeys="true" parameterType="pwd.initializr.edu.persistence.entity.WordTableEntity">
+    REPLACE INTO word_table
+    (
+        `id`,
+        `pid`,
+        `name`,
+        `sys_org_code`,
+        `sys_company_code`,
+        `bpm_status`,
+        `zindex`,
+        `word_amount`,
+        `sort`,
+        `leaf`,
+        `able`,
+        `del`,
+        `create_time`,
+        `update_time`
+    )
+    VALUES
+    (
+        #{entity.id},
+        #{entity.pid},
+        #{entity.name},
+        #{entity.sysOrgCode},
+        #{entity.sysCompanyCode},
+        #{entity.bpmStatus},
+        #{entity.zindex},
+        #{entity.wordAmount},
+        #{entity.sort},
+        #{entity.leaf},
+        #{entity.able},
+        #{entity.del},
+        #{entity.createTime},
+        #{entity.updateTime}
+    )
+  </insert>
+
+  <!--新增或者替换所有列（批量新增或者替换）-->
+  <insert id="insertOrReplaceByBatch" keyProperty="id" useGeneratedKeys="true" parameterType="pwd.initializr.edu.persistence.entity.WordTableEntity">
+    REPLACE INTO word_table
+    (
+        `id`,
+        `pid`,
+        `name`,
+        `sys_org_code`,
+        `sys_company_code`,
+        `bpm_status`,
+        `zindex`,
+        `word_amount`,
+        `sort`,
+        `leaf`,
+        `able`,
+        `del`,
+        `create_time`,
+        `update_time`
+    )
+    VALUES
+    <foreach collection="entities" item="entity" separator=",">
+      (
+        #{entity.id},
+        #{entity.pid},
+        #{entity.name},
+        #{entity.sysOrgCode},
+        #{entity.sysCompanyCode},
+        #{entity.bpmStatus},
+        #{entity.zindex},
+        #{entity.wordAmount},
+        #{entity.sort},
+        #{entity.leaf},
+        #{entity.able},
+        #{entity.del},
+        #{entity.createTime},
+        #{entity.updateTime}
+      )
+    </foreach>
+  </insert>
+
+  <!--通过主键修改数据-->
+  <update id="updateById" parameterType="pwd.initializr.edu.persistence.entity.WordTableEntity">
+    UPDATE word_table
+    <set>
+      <if test="entity.id != null and entity.id != ''">
+        `id` = #{entity.id},
+      </if>
+      <if test="entity.pid != null and entity.pid != ''">
+        `pid` = #{entity.pid},
+      </if>
+      <if test="entity.name != null and entity.name != ''">
+        `name` = #{entity.name},
+      </if>
+      <if test="entity.sysOrgCode != null and entity.sysOrgCode != ''">
+        `sys_org_code` = #{entity.sysOrgCode},
+      </if>
+      <if test="entity.sysCompanyCode != null and entity.sysCompanyCode != ''">
+        `sys_company_code` = #{entity.sysCompanyCode},
+      </if>
+      <if test="entity.bpmStatus != null and entity.bpmStatus != ''">
+        `bpm_status` = #{entity.bpmStatus},
+      </if>
+      <if test="entity.zindex != null and entity.zindex != ''">
+        `zindex` = #{entity.zindex},
+      </if>
+      <if test="entity.wordAmount != null and entity.wordAmount != ''">
+        `word_amount` = #{entity.wordAmount},
+      </if>
+      <if test="entity.sort != null and entity.sort != ''">
+        `sort` = #{entity.sort},
+      </if>
+      <if test="entity.leaf != null and entity.leaf != ''">
+        `leaf` = #{entity.leaf},
+      </if>
+      <if test="entity.able != null and entity.able != ''">
+        `able` = #{entity.able},
+      </if>
+      <if test="entity.del != null and entity.del != ''">
+        `del` = #{entity.del},
+      </if>
+      <if test="entity.createTime != null and entity.createTime != ''">
+        `create_time` = #{entity.createTime},
+      </if>
+      <if test="entity.updateTime != null and entity.updateTime != ''">
+        `update_time` = #{entity.updateTime},
+      </if>
+    </set>
+    WHERE
+      id = #{entity.id}
+  </update>
+
+  <!--通过主键删除-->
+  <update id="deleteById">
+    UPDATE word_table
+    SET
+      del = 1,
+      update_time = #{date}
+    WHERE
+      id = #{id}
+  </update>
+
+  <!--通过主键批量删除-->
+  <update id="deleteByIds">
+    UPDATE word_table
+    SET
+      del = 1,
+      update_time = #{date}
+    WHERE
+      id in
+    <foreach close=")" collection="ids" index="index" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </update>
+
+  <!--通过主键启禁-->
+  <update id="ableById">
+    UPDATE word_table
+    SET
+      able = #{able},
+      update_time = #{date}
+    WHERE
+      id = #{id}
+  </update>
+
+  <!--通过主键批量启禁-->
+  <update id="ableByIds">
+    UPDATE word_table
+    SET
+      able = #{able},
+      update_time = #{date}
+    WHERE
+      id in
+    <foreach close=")" collection="ids" index="index" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </update>
+
+</mapper>
