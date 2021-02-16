@@ -1,0 +1,428 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pwd.initializr.edu.persistence.dao.GrammarBookExamDao">
+
+  <resultMap id="GrammarBookExamMap" type="pwd.initializr.edu.persistence.entity.GrammarBookExamEntity">
+    <result column="edition_id" jdbcType="BIGINT" property="editionId"/>
+    <result column="unit_id" jdbcType="BIGINT" property="unitId"/>
+    <result column="id" jdbcType="BIGINT" property="id"/>
+    <result column="bpm_status" jdbcType="VARCHAR" property="bpmStatus"/>
+    <result column="diff" jdbcType="VARCHAR" property="diff"/>
+    <result column="grade" jdbcType="VARCHAR" property="grade"/>
+    <result column="qus_title" jdbcType="VARCHAR" property="qusTitle"/>
+    <result column="category" jdbcType="VARCHAR" property="category"/>
+    <result column="comments" jdbcType="VARCHAR" property="comments"/>
+    <result column="remark" jdbcType="VARCHAR" property="remark"/>
+    <result column="bread" jdbcType="VARCHAR" property="bread"/>
+    <result column="topic" jdbcType="VARCHAR" property="topic"/>
+    <result column="answer_a" jdbcType="VARCHAR" property="answerA"/>
+    <result column="answer_b" jdbcType="VARCHAR" property="answerB"/>
+    <result column="answer_c" jdbcType="VARCHAR" property="answerC"/>
+    <result column="answer_d" jdbcType="VARCHAR" property="answerD"/>
+    <result column="right_answer" jdbcType="VARCHAR" property="rightAnswer"/>
+    <result column="able" jdbcType="INTEGER" property="able"/>
+    <result column="del" jdbcType="INTEGER" property="del"/>
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+  </resultMap>
+
+  <!--根据主键查询查询-->
+  <select id="queryById" resultMap="GrammarBookExamMap">
+    SELECT
+      `edition_id`,
+      `unit_id`,
+      `id`,
+      `bpm_status`,
+      `diff`,
+      `grade`,
+      `qus_title`,
+      `category`,
+      `comments`,
+      `remark`,
+      `bread`,
+      `topic`,
+      `answer_a`,
+      `answer_b`,
+      `answer_c`,
+      `answer_d`,
+      `right_answer`,
+      `able`,
+      `del`,
+      `create_time`,
+      `update_time`
+    FROM
+      grammar_book_exam
+    WHERE
+      id = #{id}
+  </select>
+
+  <!--查询指定行数据-->
+  <select id="countByCondition" resultType="java.lang.Long">
+    SELECT COUNT(*) FROM grammar_book_exam
+    <include refid="pwd.initializr.common.web.persistence.entity.ScopeEntity.entityQueryScope"></include>
+  </select>
+
+  <!--通过实体作为筛选条件查询-->
+  <select id="queryByCondition" resultMap="GrammarBookExamMap">
+    SELECT
+      `edition_id`,
+      `unit_id`,
+      `id`,
+      `bpm_status`,
+      `diff`,
+      `grade`,
+      `qus_title`,
+      `category`,
+      `comments`,
+      `remark`,
+      `bread`,
+      `topic`,
+      `answer_a`,
+      `answer_b`,
+      `answer_c`,
+      `answer_d`,
+      `right_answer`,
+      `able`,
+      `del`,
+      `create_time`,
+      `update_time`
+    FROM
+      grammar_book_exam
+    <include refid="pwd.initializr.common.web.persistence.entity.ScopeEntity.entityQueryScope"></include>
+    <include refid="pwd.initializr.common.web.persistence.entity.SortEntity.entityQuerySort"></include>
+    LIMIT
+      #{offset}, #{limit}
+  </select>
+
+  <!--新增所有列-->
+  <insert id="insert" keyProperty="id" useGeneratedKeys="true" parameterType="pwd.initializr.edu.persistence.entity.GrammarBookExamEntity">
+    INSERT INTO grammar_book_exam
+      (
+        `edition_id`,
+        `unit_id`,
+        `id`,
+        `bpm_status`,
+        `diff`,
+        `grade`,
+        `qus_title`,
+        `category`,
+        `comments`,
+        `remark`,
+        `bread`,
+        `topic`,
+        `answer_a`,
+        `answer_b`,
+        `answer_c`,
+        `answer_d`,
+        `right_answer`,
+        `able`,
+        `del`,
+        `create_time`,
+        `update_time`
+      )
+    VALUES
+      (
+        #{entity.editionId},
+        #{entity.unitId},
+        #{entity.id},
+        #{entity.bpmStatus},
+        #{entity.diff},
+        #{entity.grade},
+        #{entity.qusTitle},
+        #{entity.category},
+        #{entity.comments},
+        #{entity.remark},
+        #{entity.bread},
+        #{entity.topic},
+        #{entity.answerA},
+        #{entity.answerB},
+        #{entity.answerC},
+        #{entity.answerD},
+        #{entity.rightAnswer},
+        #{entity.able},
+        #{entity.del},
+        #{entity.createTime},
+        #{entity.updateTime}
+      )
+  </insert>
+
+  <!--新增所有列（批量新增）-->
+  <insert id="insertByBatch" keyProperty="id" useGeneratedKeys="true" parameterType="pwd.initializr.edu.persistence.entity.GrammarBookExamEntity">
+    INSERT INTO grammar_book_exam
+    (
+        `edition_id`,
+        `unit_id`,
+        `id`,
+        `bpm_status`,
+        `diff`,
+        `grade`,
+        `qus_title`,
+        `category`,
+        `comments`,
+        `remark`,
+        `bread`,
+        `topic`,
+        `answer_a`,
+        `answer_b`,
+        `answer_c`,
+        `answer_d`,
+        `right_answer`,
+        `able`,
+        `del`,
+        `create_time`,
+        `update_time`
+    )
+    VALUES
+    <foreach collection="entities" item="entity" separator=",">
+    (
+        #{entity.editionId},
+        #{entity.unitId},
+        #{entity.id},
+        #{entity.bpmStatus},
+        #{entity.diff},
+        #{entity.grade},
+        #{entity.qusTitle},
+        #{entity.category},
+        #{entity.comments},
+        #{entity.remark},
+        #{entity.bread},
+        #{entity.topic},
+        #{entity.answerA},
+        #{entity.answerB},
+        #{entity.answerC},
+        #{entity.answerD},
+        #{entity.rightAnswer},
+        #{entity.able},
+        #{entity.del},
+        #{entity.createTime},
+        #{entity.updateTime}
+    )
+    </foreach>
+  </insert>
+
+  <!--新增或者替换所有列-->
+  <insert id="insertOrReplace" keyProperty="id" useGeneratedKeys="true" parameterType="pwd.initializr.edu.persistence.entity.GrammarBookExamEntity">
+    REPLACE INTO grammar_book_exam
+    (
+        `edition_id`,
+        `unit_id`,
+        `id`,
+        `bpm_status`,
+        `diff`,
+        `grade`,
+        `qus_title`,
+        `category`,
+        `comments`,
+        `remark`,
+        `bread`,
+        `topic`,
+        `answer_a`,
+        `answer_b`,
+        `answer_c`,
+        `answer_d`,
+        `right_answer`,
+        `able`,
+        `del`,
+        `create_time`,
+        `update_time`
+    )
+    VALUES
+    (
+        #{entity.editionId},
+        #{entity.unitId},
+        #{entity.id},
+        #{entity.bpmStatus},
+        #{entity.diff},
+        #{entity.grade},
+        #{entity.qusTitle},
+        #{entity.category},
+        #{entity.comments},
+        #{entity.remark},
+        #{entity.bread},
+        #{entity.topic},
+        #{entity.answerA},
+        #{entity.answerB},
+        #{entity.answerC},
+        #{entity.answerD},
+        #{entity.rightAnswer},
+        #{entity.able},
+        #{entity.del},
+        #{entity.createTime},
+        #{entity.updateTime}
+    )
+  </insert>
+
+  <!--新增或者替换所有列（批量新增或者替换）-->
+  <insert id="insertOrReplaceByBatch" keyProperty="id" useGeneratedKeys="true" parameterType="pwd.initializr.edu.persistence.entity.GrammarBookExamEntity">
+    REPLACE INTO grammar_book_exam
+    (
+        `edition_id`,
+        `unit_id`,
+        `id`,
+        `bpm_status`,
+        `diff`,
+        `grade`,
+        `qus_title`,
+        `category`,
+        `comments`,
+        `remark`,
+        `bread`,
+        `topic`,
+        `answer_a`,
+        `answer_b`,
+        `answer_c`,
+        `answer_d`,
+        `right_answer`,
+        `able`,
+        `del`,
+        `create_time`,
+        `update_time`
+    )
+    VALUES
+    <foreach collection="entities" item="entity" separator=",">
+      (
+        #{entity.editionId},
+        #{entity.unitId},
+        #{entity.id},
+        #{entity.bpmStatus},
+        #{entity.diff},
+        #{entity.grade},
+        #{entity.qusTitle},
+        #{entity.category},
+        #{entity.comments},
+        #{entity.remark},
+        #{entity.bread},
+        #{entity.topic},
+        #{entity.answerA},
+        #{entity.answerB},
+        #{entity.answerC},
+        #{entity.answerD},
+        #{entity.rightAnswer},
+        #{entity.able},
+        #{entity.del},
+        #{entity.createTime},
+        #{entity.updateTime}
+      )
+    </foreach>
+  </insert>
+
+  <!--通过主键修改数据-->
+  <update id="updateById" parameterType="pwd.initializr.edu.persistence.entity.GrammarBookExamEntity">
+    UPDATE grammar_book_exam
+    <set>
+      <if test="entity.editionId != null and entity.editionId != ''">
+        `edition_id` = #{entity.editionId},
+      </if>
+      <if test="entity.unitId != null and entity.unitId != ''">
+        `unit_id` = #{entity.unitId},
+      </if>
+      <if test="entity.id != null and entity.id != ''">
+        `id` = #{entity.id},
+      </if>
+      <if test="entity.bpmStatus != null and entity.bpmStatus != ''">
+        `bpm_status` = #{entity.bpmStatus},
+      </if>
+      <if test="entity.diff != null and entity.diff != ''">
+        `diff` = #{entity.diff},
+      </if>
+      <if test="entity.grade != null and entity.grade != ''">
+        `grade` = #{entity.grade},
+      </if>
+      <if test="entity.qusTitle != null and entity.qusTitle != ''">
+        `qus_title` = #{entity.qusTitle},
+      </if>
+      <if test="entity.category != null and entity.category != ''">
+        `category` = #{entity.category},
+      </if>
+      <if test="entity.comments != null and entity.comments != ''">
+        `comments` = #{entity.comments},
+      </if>
+      <if test="entity.remark != null and entity.remark != ''">
+        `remark` = #{entity.remark},
+      </if>
+      <if test="entity.bread != null and entity.bread != ''">
+        `bread` = #{entity.bread},
+      </if>
+      <if test="entity.topic != null and entity.topic != ''">
+        `topic` = #{entity.topic},
+      </if>
+      <if test="entity.answerA != null and entity.answerA != ''">
+        `answer_a` = #{entity.answerA},
+      </if>
+      <if test="entity.answerB != null and entity.answerB != ''">
+        `answer_b` = #{entity.answerB},
+      </if>
+      <if test="entity.answerC != null and entity.answerC != ''">
+        `answer_c` = #{entity.answerC},
+      </if>
+      <if test="entity.answerD != null and entity.answerD != ''">
+        `answer_d` = #{entity.answerD},
+      </if>
+      <if test="entity.rightAnswer != null and entity.rightAnswer != ''">
+        `right_answer` = #{entity.rightAnswer},
+      </if>
+      <if test="entity.able != null and entity.able != ''">
+        `able` = #{entity.able},
+      </if>
+      <if test="entity.del != null and entity.del != ''">
+        `del` = #{entity.del},
+      </if>
+      <if test="entity.createTime != null and entity.createTime != ''">
+        `create_time` = #{entity.createTime},
+      </if>
+      <if test="entity.updateTime != null and entity.updateTime != ''">
+        `update_time` = #{entity.updateTime},
+      </if>
+    </set>
+    WHERE
+      id = #{entity.id}
+  </update>
+
+  <!--通过主键删除-->
+  <update id="deleteById">
+    UPDATE grammar_book_exam
+    SET
+      del = 1,
+      update_time = #{date}
+    WHERE
+      id = #{id}
+  </update>
+
+  <!--通过主键批量删除-->
+  <update id="deleteByIds">
+    UPDATE grammar_book_exam
+    SET
+      del = 1,
+      update_time = #{date}
+    WHERE
+      id in
+    <foreach close=")" collection="ids" index="index" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </update>
+
+  <!--通过主键启禁-->
+  <update id="ableById">
+    UPDATE grammar_book_exam
+    SET
+      able = #{able},
+      update_time = #{date}
+    WHERE
+      id = #{id}
+  </update>
+
+  <!--通过主键批量启禁-->
+  <update id="ableByIds">
+    UPDATE grammar_book_exam
+    SET
+      able = #{able},
+      update_time = #{date}
+    WHERE
+      id in
+    <foreach close=")" collection="ids" index="index" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </update>
+
+</mapper>
