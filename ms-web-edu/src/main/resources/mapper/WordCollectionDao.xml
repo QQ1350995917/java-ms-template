@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pwd.initializr.edu.persistence.dao.WordCollectionDao">
+
+  <resultMap id="WordCollectionMap" type="pwd.initializr.edu.persistence.entity.WordCollectionEntity">
+    <result column="id" jdbcType="BIGINT" property="id"/>
+    <result column="sys_org_code" jdbcType="VARCHAR" property="sysOrgCode"/>
+    <result column="sys_company_code" jdbcType="VARCHAR" property="sysCompanyCode"/>
+    <result column="bpm_status" jdbcType="VARCHAR" property="bpmStatus"/>
+    <result column="book_id" jdbcType="VARCHAR" property="bookId"/>
+    <result column="en_word" jdbcType="VARCHAR" property="enWord"/>
+    <result column="ch_word" jdbcType="VARCHAR" property="chWord"/>
+    <result column="en_radio" jdbcType="VARCHAR" property="enRadio"/>
+    <result column="en_radio_path" jdbcType="VARCHAR" property="enRadioPath"/>
+    <result column="detail" jdbcType="VARCHAR" property="detail"/>
+    <result column="en_example" jdbcType="VARCHAR" property="enExample"/>
+    <result column="ch_example" jdbcType="VARCHAR" property="chExample"/>
+    <result column="pronounce" jdbcType="VARCHAR" property="pronounce"/>
+    <result column="unit_id" jdbcType="VARCHAR" property="unitId"/>
+    <result column="old_ch_word" jdbcType="VARCHAR" property="oldChWord"/>
+    <result column="paixu" jdbcType="VARCHAR" property="paixu"/>
+    <result column="able" jdbcType="INTEGER" property="able"/>
+    <result column="del" jdbcType="INTEGER" property="del"/>
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+  </resultMap>
+
+  <!--根据主键查询查询-->
+  <select id="queryById" resultMap="WordCollectionMap">
+    SELECT
+      `id`,
+      `sys_org_code`,
+      `sys_company_code`,
+      `bpm_status`,
+      `book_id`,
+      `en_word`,
+      `ch_word`,
+      `en_radio`,
+      `en_radio_path`,
+      `detail`,
+      `en_example`,
+      `ch_example`,
+      `pronounce`,
+      `unit_id`,
+      `old_ch_word`,
+      `paixu`,
+      `able`,
+      `del`,
+      `create_time`,
+      `update_time`
+    FROM
+      word_collection
+    WHERE
+      id = #{id}
+  </select>
+
+  <!--查询指定行数据-->
+  <select id="countByCondition" resultType="java.lang.Long">
+    SELECT COUNT(*) FROM word_collection
+    <include refid="pwd.initializr.common.web.persistence.entity.ScopeEntity.entityQueryScope"></include>
+  </select>
+
+  <!--通过实体作为筛选条件查询-->
+  <select id="queryByCondition" resultMap="WordCollectionMap">
+    SELECT
+      `id`,
+      `sys_org_code`,
+      `sys_company_code`,
+      `bpm_status`,
+      `book_id`,
+      `en_word`,
+      `ch_word`,
+      `en_radio`,
+      `en_radio_path`,
+      `detail`,
+      `en_example`,
+      `ch_example`,
+      `pronounce`,
+      `unit_id`,
+      `old_ch_word`,
+      `paixu`,
+      `able`,
+      `del`,
+      `create_time`,
+      `update_time`
+    FROM
+      word_collection
+    <include refid="pwd.initializr.common.web.persistence.entity.ScopeEntity.entityQueryScope"></include>
+    <include refid="pwd.initializr.common.web.persistence.entity.SortEntity.entityQuerySort"></include>
+    LIMIT
+      #{offset}, #{limit}
+  </select>
+
+  <!--新增所有列-->
+  <insert id="insert" keyProperty="id" useGeneratedKeys="true" parameterType="pwd.initializr.edu.persistence.entity.WordCollectionEntity">
+    INSERT INTO word_collection
+      (
+        `id`,
+        `sys_org_code`,
+        `sys_company_code`,
+        `bpm_status`,
+        `book_id`,
+        `en_word`,
+        `ch_word`,
+        `en_radio`,
+        `en_radio_path`,
+        `detail`,
+        `en_example`,
+        `ch_example`,
+        `pronounce`,
+        `unit_id`,
+        `old_ch_word`,
+        `paixu`,
+        `able`,
+        `del`,
+        `create_time`,
+        `update_time`
+      )
+    VALUES
+      (
+        #{entity.id},
+        #{entity.sysOrgCode},
+        #{entity.sysCompanyCode},
+        #{entity.bpmStatus},
+        #{entity.bookId},
+        #{entity.enWord},
+        #{entity.chWord},
+        #{entity.enRadio},
+        #{entity.enRadioPath},
+        #{entity.detail},
+        #{entity.enExample},
+        #{entity.chExample},
+        #{entity.pronounce},
+        #{entity.unitId},
+        #{entity.oldChWord},
+        #{entity.paixu},
+        #{entity.able},
+        #{entity.del},
+        #{entity.createTime},
+        #{entity.updateTime}
+      )
+  </insert>
+
+  <!--新增所有列（批量新增）-->
+  <insert id="insertByBatch" keyProperty="id" useGeneratedKeys="true" parameterType="pwd.initializr.edu.persistence.entity.WordCollectionEntity">
+    INSERT INTO word_collection
+    (
+        `id`,
+        `sys_org_code`,
+        `sys_company_code`,
+        `bpm_status`,
+        `book_id`,
+        `en_word`,
+        `ch_word`,
+        `en_radio`,
+        `en_radio_path`,
+        `detail`,
+        `en_example`,
+        `ch_example`,
+        `pronounce`,
+        `unit_id`,
+        `old_ch_word`,
+        `paixu`,
+        `able`,
+        `del`,
+        `create_time`,
+        `update_time`
+    )
+    VALUES
+    <foreach collection="entities" item="entity" separator=",">
+    (
+        #{entity.id},
+        #{entity.sysOrgCode},
+        #{entity.sysCompanyCode},
+        #{entity.bpmStatus},
+        #{entity.bookId},
+        #{entity.enWord},
+        #{entity.chWord},
+        #{entity.enRadio},
+        #{entity.enRadioPath},
+        #{entity.detail},
+        #{entity.enExample},
+        #{entity.chExample},
+        #{entity.pronounce},
+        #{entity.unitId},
+        #{entity.oldChWord},
+        #{entity.paixu},
+        #{entity.able},
+        #{entity.del},
+        #{entity.createTime},
+        #{entity.updateTime}
+    )
+    </foreach>
+  </insert>
+
+  <!--新增或者替换所有列-->
+  <insert id="insertOrReplace" keyProperty="id" useGeneratedKeys="true" parameterType="pwd.initializr.edu.persistence.entity.WordCollectionEntity">
+    REPLACE INTO word_collection
+    (
+        `id`,
+        `sys_org_code`,
+        `sys_company_code`,
+        `bpm_status`,
+        `book_id`,
+        `en_word`,
+        `ch_word`,
+        `en_radio`,
+        `en_radio_path`,
+        `detail`,
+        `en_example`,
+        `ch_example`,
+        `pronounce`,
+        `unit_id`,
+        `old_ch_word`,
+        `paixu`,
+        `able`,
+        `del`,
+        `create_time`,
+        `update_time`
+    )
+    VALUES
+    (
+        #{entity.id},
+        #{entity.sysOrgCode},
+        #{entity.sysCompanyCode},
+        #{entity.bpmStatus},
+        #{entity.bookId},
+        #{entity.enWord},
+        #{entity.chWord},
+        #{entity.enRadio},
+        #{entity.enRadioPath},
+        #{entity.detail},
+        #{entity.enExample},
+        #{entity.chExample},
+        #{entity.pronounce},
+        #{entity.unitId},
+        #{entity.oldChWord},
+        #{entity.paixu},
+        #{entity.able},
+        #{entity.del},
+        #{entity.createTime},
+        #{entity.updateTime}
+    )
+  </insert>
+
+  <!--新增或者替换所有列（批量新增或者替换）-->
+  <insert id="insertOrReplaceByBatch" keyProperty="id" useGeneratedKeys="true" parameterType="pwd.initializr.edu.persistence.entity.WordCollectionEntity">
+    REPLACE INTO word_collection
+    (
+        `id`,
+        `sys_org_code`,
+        `sys_company_code`,
+        `bpm_status`,
+        `book_id`,
+        `en_word`,
+        `ch_word`,
+        `en_radio`,
+        `en_radio_path`,
+        `detail`,
+        `en_example`,
+        `ch_example`,
+        `pronounce`,
+        `unit_id`,
+        `old_ch_word`,
+        `paixu`,
+        `able`,
+        `del`,
+        `create_time`,
+        `update_time`
+    )
+    VALUES
+    <foreach collection="entities" item="entity" separator=",">
+      (
+        #{entity.id},
+        #{entity.sysOrgCode},
+        #{entity.sysCompanyCode},
+        #{entity.bpmStatus},
+        #{entity.bookId},
+        #{entity.enWord},
+        #{entity.chWord},
+        #{entity.enRadio},
+        #{entity.enRadioPath},
+        #{entity.detail},
+        #{entity.enExample},
+        #{entity.chExample},
+        #{entity.pronounce},
+        #{entity.unitId},
+        #{entity.oldChWord},
+        #{entity.paixu},
+        #{entity.able},
+        #{entity.del},
+        #{entity.createTime},
+        #{entity.updateTime}
+      )
+    </foreach>
+  </insert>
+
+  <!--通过主键修改数据-->
+  <update id="updateById" parameterType="pwd.initializr.edu.persistence.entity.WordCollectionEntity">
+    UPDATE word_collection
+    <set>
+      <if test="entity.id != null and entity.id != ''">
+        `id` = #{entity.id},
+      </if>
+      <if test="entity.sysOrgCode != null and entity.sysOrgCode != ''">
+        `sys_org_code` = #{entity.sysOrgCode},
+      </if>
+      <if test="entity.sysCompanyCode != null and entity.sysCompanyCode != ''">
+        `sys_company_code` = #{entity.sysCompanyCode},
+      </if>
+      <if test="entity.bpmStatus != null and entity.bpmStatus != ''">
+        `bpm_status` = #{entity.bpmStatus},
+      </if>
+      <if test="entity.bookId != null and entity.bookId != ''">
+        `book_id` = #{entity.bookId},
+      </if>
+      <if test="entity.enWord != null and entity.enWord != ''">
+        `en_word` = #{entity.enWord},
+      </if>
+      <if test="entity.chWord != null and entity.chWord != ''">
+        `ch_word` = #{entity.chWord},
+      </if>
+      <if test="entity.enRadio != null and entity.enRadio != ''">
+        `en_radio` = #{entity.enRadio},
+      </if>
+      <if test="entity.enRadioPath != null and entity.enRadioPath != ''">
+        `en_radio_path` = #{entity.enRadioPath},
+      </if>
+      <if test="entity.detail != null and entity.detail != ''">
+        `detail` = #{entity.detail},
+      </if>
+      <if test="entity.enExample != null and entity.enExample != ''">
+        `en_example` = #{entity.enExample},
+      </if>
+      <if test="entity.chExample != null and entity.chExample != ''">
+        `ch_example` = #{entity.chExample},
+      </if>
+      <if test="entity.pronounce != null and entity.pronounce != ''">
+        `pronounce` = #{entity.pronounce},
+      </if>
+      <if test="entity.unitId != null and entity.unitId != ''">
+        `unit_id` = #{entity.unitId},
+      </if>
+      <if test="entity.oldChWord != null and entity.oldChWord != ''">
+        `old_ch_word` = #{entity.oldChWord},
+      </if>
+      <if test="entity.paixu != null and entity.paixu != ''">
+        `paixu` = #{entity.paixu},
+      </if>
+      <if test="entity.able != null and entity.able != ''">
+        `able` = #{entity.able},
+      </if>
+      <if test="entity.del != null and entity.del != ''">
+        `del` = #{entity.del},
+      </if>
+      <if test="entity.createTime != null and entity.createTime != ''">
+        `create_time` = #{entity.createTime},
+      </if>
+      <if test="entity.updateTime != null and entity.updateTime != ''">
+        `update_time` = #{entity.updateTime},
+      </if>
+    </set>
+    WHERE
+      id = #{entity.id}
+  </update>
+
+  <!--通过主键删除-->
+  <update id="deleteById">
+    UPDATE word_collection
+    SET
+      del = 1,
+      update_time = #{date}
+    WHERE
+      id = #{id}
+  </update>
+
+  <!--通过主键批量删除-->
+  <update id="deleteByIds">
+    UPDATE word_collection
+    SET
+      del = 1,
+      update_time = #{date}
+    WHERE
+      id in
+    <foreach close=")" collection="ids" index="index" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </update>
+
+  <!--通过主键启禁-->
+  <update id="ableById">
+    UPDATE word_collection
+    SET
+      able = #{able},
+      update_time = #{date}
+    WHERE
+      id = #{id}
+  </update>
+  <update id="ableByIdAndBookId">
+    UPDATE word_collection
+    SET
+      able = #{able},
+      update_time = #{date}
+    WHERE
+      id = #{id} and  book_id = #{bookId}
+  </update>
+
+  <!--通过主键批量启禁-->
+  <update id="ableByIds">
+    UPDATE word_collection
+    SET
+      able = #{able},
+      update_time = #{date}
+    WHERE
+      id in
+    <foreach close=")" collection="ids" index="index" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </update>
+
+</mapper>

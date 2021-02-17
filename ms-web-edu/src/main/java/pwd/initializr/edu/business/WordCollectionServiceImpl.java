@@ -8,9 +8,9 @@ import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
-import pwd.initializr.edu.business.bo.WordTableBO;
-import pwd.initializr.edu.persistence.dao.WordTableDao;
-import pwd.initializr.edu.persistence.entity.WordTableEntity;
+import pwd.initializr.edu.business.bo.WordCollectionBO;
+import pwd.initializr.edu.persistence.dao.WordCollectionDao;
+import pwd.initializr.edu.persistence.entity.WordCollectionEntity;
 import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.common.web.business.bo.ScopeBO;
 import pwd.initializr.common.web.business.bo.SortBO;
@@ -18,20 +18,20 @@ import pwd.initializr.common.web.persistence.entity.EntityAble;
 import pwd.initializr.common.web.persistence.entity.EntityDel;
 
 /**
- * <h2>服务层逻辑接口封装：WordTableEntity信息服务接口</h2>
- * date 2021-02-16 15:23
+ * <h2>服务层逻辑接口封装：WordCollectionEntity信息服务接口</h2>
+ * date 2021-02-16 21:51
  *
  * @author Automatic[www.dingpengwei@foxmail.com]
  * @since 0.0.1-SNAPSHOT
  */
-@Service("WordTableService")
-public class WordTableServiceImpl implements WordTableService {
+@Service("WordCollectionService")
+public class WordCollectionServiceImpl implements WordCollectionService {
 
   @Resource
-  private WordTableDao dao;
+  private WordCollectionDao dao;
 
   @Override
-  public Integer ableById(String id, EntityAble able) {
+  public Integer ableById(Long id, EntityAble able) {
     return this.dao.ableById(id, able.getNumber(), new Date());
   }
 
@@ -51,47 +51,47 @@ public class WordTableServiceImpl implements WordTableService {
   }
 
   @Override
-  public String insert(WordTableBO bo) {
-    WordTableEntity entity = this.convertWordTableBO2WordTableEntity(bo);
+  public Long insert(WordCollectionBO bo) {
+    WordCollectionEntity entity = this.convertWordCollectionBO2WordCollectionEntity(bo);
     this.dao.insert(entity);
     return entity.getId();
   }
 
   @Override
-  public void insert(List<WordTableBO> bos) {
-    List<WordTableEntity> entities = bos.stream()
-      .map(this::convertWordTableBO2WordTableEntity).collect(Collectors.toList());
+  public void insert(List<WordCollectionBO> bos) {
+    List<WordCollectionEntity> entities = bos.stream()
+      .map(this::convertWordCollectionBO2WordCollectionEntity).collect(Collectors.toList());
     this.dao.insertByBatch(entities);
   }
 
   @Override
-  public String insertOrReplace(WordTableBO bo) {
-    WordTableEntity entity = this.convertWordTableBO2WordTableEntity(bo);
+  public Long insertOrReplace(WordCollectionBO bo) {
+    WordCollectionEntity entity = this.convertWordCollectionBO2WordCollectionEntity(bo);
     this.dao.insertOrReplace(entity);
     return entity.getId();
   }
 
   @Override
-  public void insertOrReplace(List<WordTableBO> bos) {
-    List<WordTableEntity> entities = bos.stream()
-      .map(this::convertWordTableBO2WordTableEntity).collect(Collectors.toList());
+  public void insertOrReplace(List<WordCollectionBO> bos) {
+    List<WordCollectionEntity> entities = bos.stream()
+      .map(this::convertWordCollectionBO2WordCollectionEntity).collect(Collectors.toList());
     this.dao.insertOrReplaceByBatch(entities);
   }
 
   @Override
-  public PageableQueryResult<WordTableBO> queryAllByCondition(LinkedHashSet<ScopeBO> scopes,
+  public PageableQueryResult<WordCollectionBO> queryAllByCondition(LinkedHashSet<ScopeBO> scopes,
     LinkedHashSet<SortBO> sorts, Long pageIndex, Long pageSize) {
-    PageableQueryResult<WordTableBO> result = new PageableQueryResult<>();
+    PageableQueryResult<WordCollectionBO> result = new PageableQueryResult<>();
     Long total = this.dao.countByCondition(scopes);
     if (total == null || total < 1) {
       return result;
     }
-    List<WordTableEntity> entities = this.dao.queryByCondition(scopes,sorts, pageIndex * pageSize, pageSize);
+    List<WordCollectionEntity> entities = this.dao.queryByCondition(scopes,sorts, pageIndex * pageSize, pageSize);
     if (entities == null) {
       return result;
     }
     entities.forEach(entity -> {
-      WordTableBO resultItem = new WordTableBO();
+      WordCollectionBO resultItem = new WordCollectionBO();
       BeanUtils.copyProperties(entity, resultItem);
       result.getElements().add(resultItem);
     });
@@ -102,26 +102,26 @@ public class WordTableServiceImpl implements WordTableService {
   }
 
   @Override
-  public WordTableBO queryById(Long id) {
-    WordTableEntity entity = this.dao.queryById(id);
+  public WordCollectionBO queryById(Long id) {
+    WordCollectionEntity entity = this.dao.queryById(id);
     if (entity == null) {
       return null;
     }
-    WordTableBO bo = new WordTableBO();
+    WordCollectionBO bo = new WordCollectionBO();
     BeanUtils.copyProperties(entity, bo);
     return bo;
   }
 
   @Override
-  public Integer updateById(WordTableBO bo){
-    WordTableEntity entity = new WordTableEntity();
+  public Integer updateById(WordCollectionBO bo){
+    WordCollectionEntity entity = new WordCollectionEntity();
     BeanUtils.copyProperties(bo, entity);
     entity.setUpdateTime(new Date());
     return this.dao.updateById(entity);
   }
 
-  public WordTableEntity convertWordTableBO2WordTableEntity(WordTableBO bo){
-    WordTableEntity entity = new WordTableEntity();
+  public WordCollectionEntity convertWordCollectionBO2WordCollectionEntity(WordCollectionBO bo){
+    WordCollectionEntity entity = new WordCollectionEntity();
     BeanUtils.copyProperties(bo, entity);
     entity.setAble(EntityAble.DISABLE.getNumber());
     entity.setDel(EntityDel.NO.getNumber());

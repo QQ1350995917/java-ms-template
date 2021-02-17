@@ -18,31 +18,31 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import pwd.initializr.edu.api.admin.vo.WordTableInput;
+import pwd.initializr.edu.api.admin.vo.WordCollectionInput;
 
 /**
- * pwd-initializr-app-20210216152305571@ms-web-initializr
+ * pwd-initializr-app-20210216215106880@ms-web-initializr
  *
- * <h1>WordTable控制层接口声明</h1>
+ * <h1>WordCollection控制层接口声明</h1>
  *
- * date 2021-02-16 15:23
+ * date 2021-02-16 21:51
  *
  * @author Automatic[dingpengwei@foxmail.com]
  * @version 0.0.1-SNAPSHOT
  * @since 0.0.1-SNAPSHOT
  */
 @Api(
-  tags = "WordTable信息结构",
-  value = "WordTableManageApi",
+  tags = "WordCollection信息结构",
+  value = "WordCollectionManageApi",
   description = "[列表查询，详情查询，启/禁用，删除，新增，修改]"
 )
-@RestController(value = "WordTable")
-@RequestMapping(value = "/api/wordtable")
-public interface WordTableApi {
+@RestController(value = "WordCollection")
+@RequestMapping(value = "/api/wordcollection")
+public interface WordCollectionApi {
 
   /**
    * <h2>根据分页信息以及分页条件以列表形式查询</h2>
-   * date 2021-02-16 15:23
+   * date 2021-02-16 21:51
    *
    * @param scopes 查询参数
    * @param sorts 排序信息
@@ -60,7 +60,7 @@ public interface WordTableApi {
 
   /**
    * <h2>根据ID查询详情</h2>
-   * date 2021-02-16 15:23
+   * date 2021-02-16 21:51
    *
    * @param id 请求参数
    * @return void
@@ -74,7 +74,7 @@ public interface WordTableApi {
 
   /**
    * <h2>启用</h2>
-   * date 2021-02-16 15:23
+   * date 2021-02-16 21:51
    *
    * @param id 请求参数
    * @return void
@@ -83,11 +83,11 @@ public interface WordTableApi {
    */
   @ApiOperation(value = "启用")
   @PutMapping(value = {"/enable/{id}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  void enable(@PathVariable("id") @Valid @NotNull(message = "参数不能为空") String id);
+  void enable(@PathVariable("id") @Valid @NotNull(message = "参数不能为空") Long id);
 
   /**
    * <h2>批量启用</h2>
-   * date 2021-02-16 15:23
+   * date 2021-02-16 21:51
    *
    * @param ids 请求参数
    * @return void
@@ -100,7 +100,7 @@ public interface WordTableApi {
 
   /**
    * <h2>禁用</h2>
-   * date 2021-02-16 15:23
+   * date 2021-02-16 21:51
    *
    * @param id 请求参数
    * @return void
@@ -109,11 +109,11 @@ public interface WordTableApi {
    */
   @ApiOperation(value = "禁用")
   @PutMapping(value = {"/disable/{id}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  void disable(@PathVariable("id") @Valid @NotNull(message = "参数不能为空") String id);
+  void disable(@PathVariable("id") @Valid @NotNull(message = "参数不能为空") Long id);
 
   /**
    * <h2>批量禁用</h2>
-   * date 2021-02-16 15:23
+   * date 2021-02-16 21:51
    *
    * @param ids 请求参数
    * @return void
@@ -126,7 +126,7 @@ public interface WordTableApi {
 
   /**
    * <h2>删除</h2>
-   * date 2021-02-16 15:23
+   * date 2021-02-16 21:51
    *
    * @param id 请求参数
    * @return void
@@ -139,7 +139,7 @@ public interface WordTableApi {
 
   /**
    * <h2>批量删除</h2>
-   * date 2021-02-16 15:23
+   * date 2021-02-16 21:51
    *
    * @param ids 请求参数
    * @return void
@@ -152,7 +152,7 @@ public interface WordTableApi {
 
   /**
    * <h2>新增</h2>
-   * date 2021-02-16 15:23
+   * date 2021-02-16 21:51
    *
    * @param input 请求参数
    * @return void
@@ -161,11 +161,11 @@ public interface WordTableApi {
    */
   @ApiOperation(value = "新增")
   @PostMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  void create(@RequestBody @Valid @NotNull(message = "参数不能为空") WordTableInput input);
+  void create(@RequestBody @Valid @NotNull(message = "参数不能为空") WordCollectionInput input);
 
   /**
    * <h2>新增（批量）</h2>
-   * date 2021-02-16 15:23
+   * date 2021-02-16 21:51
    *
    * @param input 请求参数
    * @return void
@@ -174,11 +174,11 @@ public interface WordTableApi {
    */
   @ApiOperation(value = "新增（批量）")
   @PostMapping(value = {"/batch"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  void create(@RequestBody @Valid @NotNull(message = "参数不能为空") List<WordTableInput> input);
+  void create(@RequestBody @Valid @NotNull(message = "参数不能为空") List<WordCollectionInput> input);
 
   /**
    * <h2>新增或替换</h2>
-   * date 2021-02-16 15:23
+   * date 2021-02-16 21:51
    *
    * @param input 请求参数
    * @return void
@@ -187,11 +187,11 @@ public interface WordTableApi {
    */
   @ApiOperation(value = "新增或替换")
   @PutMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  void createOrReplace(@RequestBody @Valid @NotNull(message = "参数不能为空") WordTableInput input);
+  void createOrReplace(@RequestBody @Valid @NotNull(message = "参数不能为空") WordCollectionInput input);
 
   /**
    * <h2>新增或替换（批量）</h2>
-   * date 2021-02-16 15:23
+   * date 2021-02-16 21:51
    *
    * @param input 请求参数
    * @return void
@@ -200,11 +200,12 @@ public interface WordTableApi {
    */
   @ApiOperation(value = "新增或替换（批量）")
   @PutMapping(value = {"/batch"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  void createOrReplace(@RequestBody @Valid @NotNull(message = "参数不能为空") List<WordTableInput> input);
+  void createOrReplace(
+      @RequestBody @Valid @NotNull(message = "参数不能为空") List<WordCollectionInput> input);
 
   /**
    * <h2>更新</h2>
-   * date 2021-02-16 15:23
+   * date 2021-02-16 21:51
    *
    * @param input 请求参数
    * @return void
@@ -214,6 +215,6 @@ public interface WordTableApi {
   @ApiOperation(value = "更新")
   @PatchMapping(value = {"/{id}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   void update(@PathVariable("id") @Valid @NotNull(message = "参数不能为空") Long id,
-      @RequestBody @Valid @NotNull(message = "参数不能为空") WordTableInput input);
+      @RequestBody @Valid @NotNull(message = "参数不能为空") WordCollectionInput input);
 
 }
