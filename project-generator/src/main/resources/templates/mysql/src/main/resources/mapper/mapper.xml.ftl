@@ -181,9 +181,15 @@
     <set>
   <#if columns?exists>
     <#list columns as column>
+      <#if (column.jdbcType == 'char') || (column.jdbcType == 'varchar') || (column.jdbcType == 'tinytext') || (column.jdbcType == 'text' || (column.jdbcType == 'mediumtext') || (column.jdbcType == 'longtext'))>
       <if test="entity.${column.javaName} != null and entity.${column.javaName} != ''">
         `${column.jdbcName}` = <#noparse>#{</#noparse>entity.${column.javaName}<#noparse>}</#noparse>,
       </if>
+      <#else>
+      <if test="entity.${column.javaName} != null">
+        `${column.jdbcName}` = <#noparse>#{</#noparse>entity.${column.javaName}<#noparse>}</#noparse>,
+      </if>
+      </#if>
     </#list>
   </#if>
     </set>
