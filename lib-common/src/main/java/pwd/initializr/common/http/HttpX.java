@@ -49,6 +49,14 @@ public abstract class HttpX {
 
   public abstract String putJson(String url, Map<String, String> headers, String body);
 
+  public abstract String postForm(String url, String body);
+
+  public abstract String postForm(String url, Map<String, String> headers, String body);
+
+  public abstract String putForm(String url, String body);
+
+  public abstract String putForm(String url, Map<String, String> headers, String body);
+
   // 编码中文和空格部分
   public static String urlEncode(String url){
     String resultURL = "";

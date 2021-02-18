@@ -12,8 +12,11 @@ package pwd.initializr.edu.test.business;
  * @since DistributionVersion
  */
 public interface SpriderConfig {
-  String cookie = "_walkthrough-introduction=0; tianjinandznyy_=f2lcu185v95skrmn0ovggjsnp0";
-  String UserAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:85.0) Gecko/20100101 Firefox/85.0";
+  String cookie = "tianjinandznyy_=0jvqdj2fu9i0pfluq1arj0pki3";
+  // Firefox
+//  String UserAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:85.0) Gecko/20100101 Firefox/85.0";
+  // Chrome
+  String UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.104 Safari/537.36";
 //  String fileStorage = "/Users/pwd/Documents/edu";
   String fileStorage = "e://data/edu";
 

@@ -8,7 +8,9 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
+import java.util.HashMap;
 import java.util.Map;
+import javax.swing.text.AbstractDocument.Content;
 import org.apache.http.Consts;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -177,38 +179,67 @@ public class HttpXByHttpClient extends HttpX {
 
   @Override
   public String postJson(String url, String body) {
-    return this.postJson(url, null, body);
+    Map<String, String> headers = new HashMap<>();
+    headers.put("Content-Type", "application/json; charset=UTF-8");
+    return this.postJson(url, headers, body);
   }
 
   @Override
   public String postJson(String url, Map<String, String> headers, String body) {
     HttpPost httpPost = new HttpPost(url);
-    return requestWithJsonBody(httpPost, headers, body);
+    return requestWithBody(httpPost, headers, body,ContentType.APPLICATION_JSON);
+  }
+
+  @Override
+  public String postForm(String url, String body) {
+    Map<String, String> headers = new HashMap<>();
+    headers.put("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+    return postForm(url,headers,body);
+  }
+
+  @Override
+  public String postForm(String url, Map<String, String> headers, String body) {
+    HttpPost httpPost = new HttpPost(url);
+    return requestWithBody(httpPost, headers, body, ContentType.APPLICATION_FORM_URLENCODED);
   }
 
   @Override
   public String putJson(String url, String body) {
-    return this.putJson(url, null, body);
+    Map<String, String> headers = new HashMap<>();
+    headers.put("Content-Type", "application/json; charset=UTF-8");
+    return this.putJson(url, headers, body);
   }
 
   @Override
   public String putJson(String url, Map<String, String> headers, String body) {
     HttpPut httpPut = new HttpPut(url);
-    return requestWithJsonBody(httpPut, headers, body);
+    return requestWithBody(httpPut, headers, body, ContentType.APPLICATION_JSON);
   }
 
-  private String requestWithJsonBody(HttpEntityEnclosingRequestBase request,
-      Map<String, String> headers, String body) {
+  @Override
+  public String putForm(String url, String body) {
+    Map<String, String> headers = new HashMap<>();
+    headers.put("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+    return putForm(url,headers,body);
+  }
+
+  @Override
+  public String putForm(String url, Map<String, String> headers, String body) {
+    HttpPut httpPut = new HttpPut(url);
+    return requestWithBody(httpPut, headers, body, ContentType.APPLICATION_FORM_URLENCODED);
+  }
+
+  private String requestWithBody(HttpEntityEnclosingRequestBase request,
+      Map<String, String> headers, String body,ContentType contentType) {
     if (headers != null) {
       for (String key : headers.keySet()) {
         String value = headers.get(key);
         request.setHeader(key, value);
       }
     }
-    StringEntity bodyEntity = new StringEntity(body, ContentType.APPLICATION_JSON);
+    StringEntity bodyEntity = new StringEntity(body, contentType);
     bodyEntity.setContentType(ContentType.APPLICATION_JSON.toString());
     bodyEntity.setContentEncoding("UTF-8");
-    request.setHeader(HTTP.CONTENT_TYPE, ContentType.APPLICATION_JSON.toString());
     request.setEntity(bodyEntity);
     try (CloseableHttpResponse response = httpXByHttpClientInit.getCloseableHttpClient()
         .execute(request)) {
