@@ -1,219 +1,961 @@
 {
-  "info": [
-    {
-      "id": "332",
-
-      "bpm_status": "1",
-      "reading_name": "\u7b2c1\u7bc7",
-      "content": "  One day Mr  and Mrs  White go shopping by car\uff0eThey stop their car near a store\uff0eThey buy a lot of things and they want to put the things in the car\uff0eBut Mr  White can't open the door of the car, so they ask a policeman to help them\uff0eThe policeman is very friendly to help them\uff0eJust then a man comes up and shouts(\u5927\u58f0\u8bf4): \"What are you doing with my car\"?\n    Mr and Mrs White take a look at the car's number and they are frozen there\uff0eIt isn't their car\uff0e",
-      "edu_level": null,
-      "level_id": "31",
-      "sort": "1",
-      "zuixiao": null,
-      "zuida": null,
-      "qus_count": "4",
-      "score": 0,
-      "open": 1
-    },
-    {
-      "id": "333",
-      "create_name": null,
-      "create_by": null,
-      "create_date": "2019-01-24 09:46:08",
-      "update_name": null,
-      "update_by": null,
-      "update_date": null,
-      "sys_org_code": null,
-      "sys_company_code": null,
-      "bpm_status": "1",
-      "reading_name": "\u7b2c2\u7bc7",
-      "content": " My family is not very large\uff0eThere are only three cats\uff0eI'm a white cat\uff0ePeople call me Snow-white\uff0eMy husband is a black cat\uff0e People call him Captain Black Cat(\u9ed1\u732b\u8b66\u957f)\uff0eWe have a beautiful daughter\uff0eHer name is Lily\uff0eShe is black and white\uff0eShe's only two years old\uff0eWe live a happy life\uff0e\n    From now on, we will work harder to catch the mice\uff0eWe must let people live in a happy life in this house\uff0e\n",
-      "edu_level": null,
-      "level_id": "31",
-      "sort": "2",
-      "zuixiao": null,
-      "zuida": null,
-      "qus_count": "5",
-      "score": 0,
-      "open": 0
-    },
-    {
-      "id": "334",
-      "create_name": null,
-      "create_by": null,
-      "create_date": "2019-01-24 09:46:08",
-      "update_name": null,
-      "update_by": null,
-      "update_date": null,
-      "sys_org_code": null,
-      "sys_company_code": null,
-      "bpm_status": "1",
-      "reading_name": "\u7b2c3\u7bc7",
-      "content": "I have six baskets\uff0eThree are big\uff0eAnd three are small\uff0eI have some apples and oranges\uff0eI put three apples in each (\u6bcf\u4e2a) small basket, and I put three oranges in each big basket and one orange in each small basket\uff0eThe number of the oranges is my age (\u5e74\u9f84)\uff0e",
-      "edu_level": null,
-      "level_id": "31",
-      "sort": "3",
-      "zuixiao": null,
-      "zuida": null,
-      "qus_count": "5",
-      "score": 0,
-      "open": 0
-    },
-    {
-      "id": "335",
-      "create_name": null,
-      "create_by": null,
-      "create_date": "2019-01-24 09:46:09",
-      "update_name": "xtgly1",
-      "update_by": "xtgly1",
-      "update_date": "2019-09-26 21:33:15",
-      "sys_org_code": null,
-      "sys_company_code": null,
-      "bpm_status": "1",
-      "reading_name": "\u7b2c4\u7bc7",
-      "content": " An old man died and left his son a lot of money\uff0eBut the son was a foolish(\u611a\u8822\u7684) young man, and he quickly spent all the money, so that soon he had nothing left\uff0eOf course, when that happened, all his friends left him\uff0eWhen he was quite poor and alone, he went to see Nasreddin, who was a kind, clever old man and often helped people when they had troubles(\u9ebb\u70e6)\uff0e\r\n    \"My money has finished and my friends have gone,\" said the young man\uff0e\"What will happen to me now\"?\r\n    \"Don't worry, young man,\" answered Nasreddin\uff0e\"Everything will soon be all right again\uff0eWait, and you will soon feel much happier\uff0e\"\r\nThe young man was very glad\uff0e\"Am I going to get rich again then\"? He asked Nasreddin\uff0e\r\n    \"No, I didn't mean that,\" said the old man\uff0e\"I meant that you would soon get used to being poor and to having no friends\uff0e\"\r\n",
-      "edu_level": "",
-      "level_id": "31",
-      "sort": "4",
-      "zuixiao": null,
-      "zuida": null,
-      "qus_count": "5",
-      "score": 0,
-      "open": 0
-    },
-    {
-      "id": "336",
-      "create_name": null,
-      "create_by": null,
-      "create_date": "2019-01-24 09:46:09",
-      "update_name": null,
-      "update_by": null,
-      "update_date": null,
-      "sys_org_code": null,
-      "sys_company_code": null,
-      "bpm_status": "1",
-      "reading_name": "\u7b2c5\u7bc7",
-      "content": "One day Bob took two of his friends into the mountains\uff0eThey put up their tents (\u5e10\u7bf7) and then rode off to a forest to see how the trees were growing\uff0eIn the afternoon when they were about ten kilometers from their camp(\u8425\u5730), it started to snow\uff0eMore and more snow fell\uff0eSoon Bob could hardly see his hands before his face\uff0eHe could not find the road\uff0eBob knew there were two roads\uff0eOne road went to the camp, and the other went to his house\uff0eBut all was white snow\uff0eEverything was the same\uff0eHow could he take his friends back to the camp? Bob had an idea\uff0eThe horses! Let the horses take them back! But what would happen if the horses took the road to his house? That would be a trip of thirty-five kilometers in such cold weather! It was getting late\uff0eThey rode on(\u4e00\u76f4\u9a91) and on\uff0eAt last the horses stopped\uff0eWhere were they? None of them could tell\uff0eJohn looked around\uff08\u73af\u987e\u56db\u5468\uff09\uff0eWhat was that under the tree? It was one of their tents!",
-      "edu_level": null,
-      "level_id": "31",
-      "sort": "5",
-      "zuixiao": null,
-      "zuida": null,
-      "qus_count": "5",
-      "score": 0,
-      "open": 0
-    },
-    {
-      "id": "337",
-      "create_name": null,
-      "create_by": null,
-      "create_date": "2019-01-24 09:46:10",
-      "update_name": null,
-      "update_by": null,
-      "update_date": null,
-      "sys_org_code": null,
-      "sys_company_code": null,
-      "bpm_status": "1",
-      "reading_name": "\u7b2c6\u7bc7",
-      "content": "American boys and girls love to watch television\uff0eSome children spend six hours a day in school and four to six hours a day in front of the television set\uff0eSome even watch television for eight hours or more on Saturday\uff0eTelevisions are like books or films\uff0eA child can learn bad things and good things from them\uff0eSome programs(\u8282\u76ee) help children to understand (\u7406\u89e3)the news, others show people and places from other countries or other time in history\uff0eWith television a child does not have to go to the zoo to see animals to the ocean to see a ship\uff0eBoys and girls can see a play, a concert or a game at home\uff0eTelevision brings many places and events into our homes\uff0eSome programs show crime(\u72af\u7f6a) and other things that are bad for children, so parents sometimes help them to find other interesting things to do\uff0e",
-      "edu_level": null,
-      "level_id": "31",
-      "sort": "6",
-      "zuixiao": null,
-      "zuida": null,
-      "qus_count": "5",
-      "score": 0,
-      "open": 0
-    },
-    {
-      "id": "338",
-      "create_name": null,
-      "create_by": null,
-      "create_date": "2019-01-24 09:46:10",
-      "update_name": null,
-      "update_by": null,
-      "update_date": null,
-      "sys_org_code": null,
-      "sys_company_code": null,
-      "bpm_status": "1",
-      "reading_name": "\u7b2c7\u7bc7",
-      "content": "Last Sunday was a funny day\uff0eLiu Tao came to my home in the morning\uff0eWe studied English together\uff0eWe read some funny English stories\uff0eAt about ten o'clock, we went to Chennan Park on foot\uff0eAnd we fished there\uff0eIt was very interesting\uff0eWe cooked lunch at about 12 o'clock and it was very nice\uff0eThen we cleaned the kitchen\uff0eWe watched TV after lunch\uff0eAt about 4 o'clock in the afternoon, we played pingpong\uff0e",
-      "edu_level": null,
-      "level_id": "31",
-      "sort": "7",
-      "zuixiao": null,
-      "zuida": null,
-      "qus_count": "5",
-      "score": 0,
-      "open": 0
-    },
-    {
-      "id": "339",
-      "create_name": null,
-      "create_by": null,
-      "create_date": "2019-01-24 09:46:10",
-      "update_name": null,
-      "update_by": null,
-      "update_date": null,
-      "sys_org_code": null,
-      "sys_company_code": null,
-      "bpm_status": "1",
-      "reading_name": "\u7b2c8\u7bc7",
-      "content": " Jane is only four and doesn't go to school\uff0eBut she is very clever and learns a lot from her grandpa\u2014\u2014an old teacher\uff0eOne day, Jane's mother, Mrs&#46; John takes her to a party \uff0eThe guests all praise (\u8868\u626c) a rich woman's boy\uff0eMrs&#46; John asks him a few questions, but all his answers are wrong\uff0eJane begins to laugh(\u5632\u7b11) at him\uff0eThe rich woman is angry\uff0eShe tells her friend\u2014\u2014a teacher to ask Jane some questions, but the girl answers all\uff0eThen she asks, \"There're 3 birds on a tree , how many will be left(\u7559\u4e0b)if kill one\"?\"One\" answers Jane\uff0e\"You're wrong\"!calls out the rich woman\uff0e\"All of them will fly away\"!\"Do you think a dead bird can fly\"? asks the little girl\uff0eThe guests begin to laugh and the woman's face turns red\uff0e",
-      "edu_level": null,
-      "level_id": "31",
-      "sort": "8",
-      "zuixiao": null,
-      "zuida": null,
-      "qus_count": "5",
-      "score": 0,
-      "open": 0
-    },
-    {
-      "id": "340",
-      "create_name": null,
-      "create_by": null,
-      "create_date": "2019-01-24 09:46:10",
-      "update_name": null,
-      "update_by": null,
-      "update_date": null,
-      "sys_org_code": null,
-      "sys_company_code": null,
-      "bpm_status": "1",
-      "reading_name": "\u7b2c9\u7bc7",
-      "content": "Last Saturday morning, Lucy went to a supermarket\uff0eShe wanted to buy a big cake for her mother's birthday\uff0eThere were many people in the supermarket\uff0eSuddenly, Lucy saw a beautiful wallet on the floor\uff0e\"Whose wallet is it\"? She asked, but nobody answered\uff0e \"Excuse me, is this wallet yours, sir\" She asked the man in front of her\uff0e\"No, it isn't\uff0e\" The man said, \"Perhaps it's hers\uff0e\" He pointed the woman in front of him\uff0e\"Is this wallet yours? \"She asked the woman\uff0e\"Let me have a look\uff0eOh, yes, it is\uff0eThank you very much\uff0e\"",
-      "edu_level": null,
-      "level_id": "31",
-      "sort": "9",
-      "zuixiao": null,
-      "zuida": null,
-      "qus_count": "4",
-      "score": 0,
-      "open": 0
-    },
-    {
-      "id": "341",
-      "create_name": null,
-      "create_by": null,
-      "create_date": "2019-01-24 09:46:11",
-      "update_name": null,
-      "update_by": null,
-      "update_date": null,
-      "sys_org_code": null,
-      "sys_company_code": null,
-      "bpm_status": "1",
-      "reading_name": "\u7b2c10\u7bc7",
-      "content": " Tom and Fred are students\uff0eThey are both twelve years old, and they are in the same class in their school\uff0eOne day ,they have a fight(\u6253\u67b6)in class, and their teacher becomes very angry\uff0eShe says to both of the boys, \"Stay here after school this afternoon, and write your names a hundred times\uff0e\" After the last lesson, all the other students go home, but Tom and Fred stay in the classroom\uff0eThey begin to write their names in their exercise books and wait for their teacher\uff0eWhen the teacher comes, Fred is crying\uff0eThe teacher looks at him and says, \"Why are you crying\"?\"Because his name is Tom King, and my name is Frederick Hollingsworth,\" Fred says with tears in his eyes\uff0e\"It is too bad that I have a very long name\"!",
-      "edu_level": null,
-      "level_id": "31",
-      "sort": "10",
-      "zuixiao": null,
-      "zuida": null,
-      "qus_count": "5",
-      "score": 0,
-      "open": 0
-    }
-  ],
-  "status": 1,
-  "url": ""
+  "info":{
+    "r_strongList":[
+      {
+        "id":"555",
+        "create_name":null,
+        "create_by":"zhangwei",
+        "create_date":"2019-11-24 17:18:20",
+        "update_name":null,
+        "update_by":null,
+        "update_date":null,
+        "sys_org_code":null,
+        "sys_company_code":null,
+        "bpm_status":"1",
+        "html_title":"<p>单选题</p>",
+        "paixu":"1",
+        "unit_id":"62",
+        "type":"2",
+        "detailList":[
+          {
+            "id":"1193",
+            "create_name":null,
+            "create_by":"zhangwei",
+            "create_date":"2019-11-24 17:18:20",
+            "update_name":null,
+            "update_by":null,
+            "update_date":null,
+            "sys_org_code":null,
+            "sys_company_code":null,
+            "bpm_status":"1",
+            "title":"<p style="text-align:justify">1. 请选出表示人的名词______。</p> ",
+            "success_tip":"A是铅笔，B是作业，C是鲍勃，D是中国，所以表示人的名词是C。",
+            "error_tip":"鲍勃",
+            "type":"1",
+            "study_id":"555",
+            "paixu":"1",
+            "unit_id":"62",
+            "qus":[
+              {
+                "data":[
+                  "pencil",
+                  "homework",
+                  "Bob",
+                  "China"
+                ],
+                "successIndex":[
+                  2
+                ],
+                "ID":"44c7f75b-8b8c-4b64-8be4-d88f81c4b2fe"
+              }
+            ]
+          },
+          {
+            "id":"1194",
+            "create_name":null,
+            "create_by":"zhangwei",
+            "create_date":"2019-11-24 17:18:20",
+            "update_name":null,
+            "update_by":null,
+            "update_date":null,
+            "sys_org_code":null,
+            "sys_company_code":null,
+            "bpm_status":"1",
+            "title":"<p style="text-align:justify">2. 请选出表示事物的名词______。</p> ",
+            "success_tip":"A是尺子，B是露西，C是英格兰，D是托尼，所以表示事物的名词是A。",
+            "error_tip":"尺子",
+            "type":"1",
+            "study_id":"555",
+            "paixu":"2",
+            "unit_id":"62",
+            "qus":[
+              {
+                "data":[
+                  "ruler",
+                  "Lucy",
+                  "England",
+                  "Tony"
+                ],
+                "successIndex":[
+                  0
+                ],
+                "ID":"d9c00eaa-4811-47e9-82d7-2c59f0adc1ad"
+              }
+            ]
+          },
+          {
+            "id":"1195",
+            "create_name":null,
+            "create_by":"zhangwei",
+            "create_date":"2019-11-24 17:18:20",
+            "update_name":null,
+            "update_by":null,
+            "update_date":null,
+            "sys_org_code":null,
+            "sys_company_code":null,
+            "bpm_status":"1",
+            "title":"<p>3. 请选出表示地点的名词______。</p> ",
+            "success_tip":"A是铅笔，B是作业，C是鲍勃，D是中国，所以表示地点的名词是D。",
+            "error_tip":"中国",
+            "type":"1",
+            "study_id":"555",
+            "paixu":"3",
+            "unit_id":"62",
+            "qus":[
+              {
+                "data":[
+                  "pencil",
+                  "homework",
+                  "Bob",
+                  "China"
+                ],
+                "successIndex":[
+                  3
+                ],
+                "ID":"ea320e66-4fc7-4d92-ac5f-89dddccecddc"
+              }
+            ]
+          },
+          {
+            "id":"1196",
+            "create_name":null,
+            "create_by":"zhangwei",
+            "create_date":"2019-11-24 17:18:20",
+            "update_name":null,
+            "update_by":null,
+            "update_date":null,
+            "sys_org_code":null,
+            "sys_company_code":null,
+            "bpm_status":"1",
+            "title":"<p>4. 请选出表示抽象概念的名词______。</p> ",
+            "success_tip":"A是建筑物，B是加拿大，C是幸福，D是计算机，所以表示抽象概念的名词是C。",
+            "error_tip":"幸福",
+            "type":"1",
+            "study_id":"555",
+            "paixu":"4",
+            "unit_id":"62",
+            "qus":[
+              {
+                "data":[
+                  "building",
+                  "Canada",
+                  "happiness",
+                  "computer"
+                ],
+                "successIndex":[
+                  2
+                ],
+                "ID":"76ff2c93-dfb3-4a4e-9e13-ee766cb4926c"
+              }
+            ]
+          },
+          {
+            "id":"1197",
+            "create_name":null,
+            "create_by":"zhangwei",
+            "create_date":"2019-11-24 17:18:20",
+            "update_name":null,
+            "update_by":null,
+            "update_date":null,
+            "sys_org_code":null,
+            "sys_company_code":null,
+            "bpm_status":"1",
+            "title":"<p>5. 能以数目计算的名词为______。</p> ",
+            "success_tip":"能以数目计算的名词为可数名词，所以选B。",
+            "error_tip":"可数名词定义",
+            "type":"1",
+            "study_id":"555",
+            "paixu":"5",
+            "unit_id":"62",
+            "qus":[
+              {
+                "data":[
+                  "不可数名词",
+                  "可数名词"
+                ],
+                "successIndex":[
+                  1
+                ],
+                "ID":"2bf799a2-5057-419a-a9c4-e985bdcf650e"
+              }
+            ]
+          },
+          {
+            "id":"1198",
+            "create_name":null,
+            "create_by":"zhangwei",
+            "create_date":"2019-11-24 17:18:20",
+            "update_name":null,
+            "update_by":null,
+            "update_date":null,
+            "sys_org_code":null,
+            "sys_company_code":null,
+            "bpm_status":"1",
+            "title":"<p>6. 不能以数目计算的名词为______。</p> ",
+            "success_tip":"不能以数目计算的名词为不可数名词，所以选A。",
+            "error_tip":"不可数名词定义",
+            "type":"1",
+            "study_id":"555",
+            "paixu":"6",
+            "unit_id":"62",
+            "qus":[
+              {
+                "data":[
+                  "不可数名词",
+                  "可数名词"
+                ],
+                "successIndex":[
+                  0
+                ],
+                "ID":"66d6aabb-4965-4d61-b631-fe48794487e3"
+              }
+            ]
+          },
+          {
+            "id":"1199",
+            "create_name":null,
+            "create_by":"zhangwei",
+            "create_date":"2019-11-24 17:18:20",
+            "update_name":null,
+            "update_by":null,
+            "update_date":null,
+            "sys_org_code":null,
+            "sys_company_code":null,
+            "bpm_status":"1",
+            "title":"<p>7. 选出可数名词______。</p> ",
+            "success_tip":"milk, water属于液体，chicken属于肉，均为不可数名词，所以可数名词是C。",
+            "error_tip":"非液体、肉类",
+            "type":"1",
+            "study_id":"555",
+            "paixu":"7",
+            "unit_id":"62",
+            "qus":[
+              {
+                "data":[
+                  "milk",
+                  "water",
+                  "flag",
+                  "chicken"
+                ],
+                "successIndex":[
+                  2
+                ],
+                "ID":"6181ae0d-566b-43e7-9b50-b62eb56439e9"
+              }
+            ]
+          },
+          {
+            "id":"1200",
+            "create_name":null,
+            "create_by":"zhangwei",
+            "create_date":"2019-11-24 17:18:20",
+            "update_name":null,
+            "update_by":null,
+            "update_date":null,
+            "sys_org_code":null,
+            "sys_company_code":null,
+            "bpm_status":"1",
+            "title":"<p style="text-align: justify;">8. 选出不可数名词______。</p> ",
+            "success_tip":"paper属于不可数名词，所以选B。",
+            "error_tip":"纸类文具",
+            "type":"1",
+            "study_id":"555",
+            "paixu":"8",
+            "unit_id":"62",
+            "qus":[
+              {
+                "data":[
+                  "boy",
+                  "paper",
+                  "game",
+                  "ball"
+                ],
+                "successIndex":[
+                  1
+                ],
+                "ID":"6e2ec6ff-4703-4395-a2dc-add0e31b64a6"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id":"556",
+        "create_name":null,
+        "create_by":"zhangwei",
+        "create_date":"2019-11-24 17:18:20",
+        "update_name":null,
+        "update_by":null,
+        "update_date":null,
+        "sys_org_code":null,
+        "sys_company_code":null,
+        "bpm_status":"1",
+        "html_title":"<p>多选题</p>",
+        "paixu":"2",
+        "unit_id":"62",
+        "type":"2",
+        "detailList":Array[4]
+      },
+      {
+        "id":"557",
+        "create_name":null,
+        "create_by":"zhangwei",
+        "create_date":"2019-11-24 17:18:20",
+        "update_name":null,
+        "update_by":null,
+        "update_date":null,
+        "sys_org_code":null,
+        "sys_company_code":null,
+        "bpm_status":"1",
+        "html_title":"",
+        "paixu":"3",
+        "unit_id":"62",
+        "type":"2",
+        "detailList":Array[2]
+      }
+    ],
+    "r_studyList":[
+      {
+        "id":"558",
+        "create_name":null,
+        "create_by":"zhangwei",
+        "create_date":"2019-11-24 17:18:20",
+        "update_name":null,
+        "update_by":null,
+        "update_date":null,
+        "sys_org_code":null,
+        "sys_company_code":null,
+        "bpm_status":"1",
+        "html_title":"<p>一、名词的定义</p><p>【观察】</p>",
+        "paixu":"1",
+        "unit_id":"62",
+        "type":"1",
+        "detailList":[
+          {
+            "id":"1207",
+            "create_name":null,
+            "create_by":"zhangwei",
+            "create_date":"2019-11-24 17:18:20",
+            "update_name":null,
+            "update_by":null,
+            "update_date":null,
+            "sys_org_code":null,
+            "sys_company_code":null,
+            "bpm_status":"1",
+            "title":"<p style="text-align: justify;">1. 上述图片中，Jam表示的是______，egg表示的是______。</p> ",
+            "success_tip":"",
+            "error_tip":"观察图片",
+            "type":"0",
+            "study_id":"558",
+            "paixu":"1",
+            "unit_id":"62",
+            "qus":[
+              {
+                "data":[
+                  "事物",
+                  "人"
+                ],
+                "successIndex":[
+                  1
+                ],
+                "ID":"769eba32-2bf2-4da2-aecc-3c05290cb430"
+              },
+              {
+                "data":[
+                  "人",
+                  "事物"
+                ],
+                "successIndex":[
+                  1
+                ],
+                "ID":"f868f2a2-0742-4f4a-93ce-2a522b48be76"
+              }
+            ]
+          },
+          {
+            "id":"1208",
+            "create_name":null,
+            "create_by":"zhangwei",
+            "create_date":"2019-11-24 17:18:20",
+            "update_name":null,
+            "update_by":null,
+            "update_date":null,
+            "sys_org_code":null,
+            "sys_company_code":null,
+            "bpm_status":"1",
+            "title":"<p>2. 上述图片中，zoo表示的是______，love表示的是______。</p> ",
+            "success_tip":"",
+            "error_tip":"观察图片",
+            "type":"0",
+            "study_id":"558",
+            "paixu":"2",
+            "unit_id":"62",
+            "qus":[
+              {
+                "data":[
+                  "地点",
+                  "人"
+                ],
+                "successIndex":[
+                  0
+                ],
+                "ID":"1916d021-1c6f-4f8d-a281-6a649c052800"
+              },
+              {
+                "data":[
+                  "地点",
+                  "抽象概念"
+                ],
+                "successIndex":[
+                  1
+                ],
+                "ID":"77910d12-e2f0-4be6-888b-7f7a107a6c43"
+              }
+            ]
+          },
+          {
+            "id":"1209",
+            "create_name":null,
+            "create_by":"zhangwei",
+            "create_date":"2019-11-24 17:18:21",
+            "update_name":null,
+            "update_by":null,
+            "update_date":null,
+            "sys_org_code":null,
+            "sys_company_code":null,
+            "bpm_status":"1",
+            "title":"<p style="text-align: justify;">3. 上述图片中，表示______的Jack, 表示______的egg, 表示______的zoo, 表示______的love。</p> ",
+            "success_tip":"",
+            "error_tip":"",
+            "type":"0",
+            "study_id":"558",
+            "paixu":"3",
+            "unit_id":"62",
+            "qus":[
+              {
+                "data":[
+                  "人",
+                  "事物"
+                ],
+                "successIndex":[
+                  0
+                ],
+                "ID":"15805994-0fcb-4dec-86bf-6bf52fa3e748"
+              },
+              {
+                "data":[
+                  "事物",
+                  "人"
+                ],
+                "successIndex":[
+                  0
+                ],
+                "ID":"c3f7a30f-a0d8-497f-a8fc-61555d7adc92"
+              },
+              {
+                "data":[
+                  "地点",
+                  "抽象概念"
+                ],
+                "successIndex":[
+                  0
+                ],
+                "ID":"8a8b1516-42aa-4a95-9466-92b76b33961e"
+              },
+              {
+                "data":[
+                  "抽象概念",
+                  "地点"
+                ],
+                "successIndex":[
+                  0
+                ],
+                "ID":"ee3bb894-2caf-4ab7-8ace-ab7862faff8e"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id":"559",
+        "create_name":null,
+        "create_by":"zhangwei",
+        "create_date":"2019-11-24 17:18:21",
+        "update_name":null,
+        "update_by":null,
+        "update_date":null,
+        "sys_org_code":null,
+        "sys_company_code":null,
+        "bpm_status":"1",
+        "html_title":"",
+        "paixu":"2",
+        "unit_id":"62",
+        "type":"1",
+        "detailList":Array[1]
+      },
+      {
+        "id":"560",
+        "create_name":null,
+        "create_by":"zhangwei",
+        "create_date":"2019-11-24 17:18:21",
+        "update_name":null,
+        "update_by":null,
+        "update_date":null,
+        "sys_org_code":null,
+        "sys_company_code":null,
+        "bpm_status":"1",
+        "html_title":"<p>二、名词的分类</p><p>【观察】</p><p><p style="text-align:center"><img alt="" height="267" src="http://document.i-wins.com/images/aigrammar/1575521733438203.png" width="581"></p> </p><p>【回答】</p>",
+      "paixu":"3",
+        "unit_id":"62",
+        "type":"1",
+        "detailList":[
+          {
+            "id":"1211",
+            "create_name":null,
+            "create_by":"zhangwei",
+            "create_date":"2019-11-24 17:18:21",
+            "update_name":null,
+            "update_by":null,
+            "update_date":null,
+            "sys_org_code":null,
+            "sys_company_code":null,
+            "bpm_status":"1",
+            "title":"<p>1. How many eggs in the picture?</p> ",
+            "success_tip":"",
+            "error_tip":"看图片",
+            "type":"1",
+            "study_id":"560",
+            "paixu":"1",
+            "unit_id":"62",
+            "qus":[
+              {
+                "data":[
+                  "two",
+                  "one"
+                ],
+                "successIndex":[
+                  1
+                ],
+                "ID":"ec88295b-5201-498e-814c-ee3db53019bc"
+              }
+            ]
+          },
+          {
+            "id":"1212",
+            "create_name":null,
+            "create_by":"zhangwei",
+            "create_date":"2019-11-24 17:18:21",
+            "update_name":null,
+            "update_by":null,
+            "update_date":null,
+            "sys_org_code":null,
+            "sys_company_code":null,
+            "bpm_status":"1",
+            "title":"<p style="text-align: justify;">2. How much milk in the glass? </p> ",
+            "success_tip":"",
+            "error_tip":"看图片",
+            "type":"1",
+            "study_id":"560",
+            "paixu":"2",
+            "unit_id":"62",
+            "qus":[
+              {
+                "data":[
+                  "I don't know",
+                  "four drops"
+                ],
+                "successIndex":[
+                  0
+                ],
+                "ID":"eac32daf-8874-4704-a7e9-03fd0bc2d8d0"
+              }
+            ]
+          },
+          {
+            "id":"1213",
+            "create_name":null,
+            "create_by":"zhangwei",
+            "create_date":"2019-11-24 17:18:21",
+            "update_name":null,
+            "update_by":null,
+            "update_date":null,
+            "sys_org_code":null,
+            "sys_company_code":null,
+            "bpm_status":"1",
+            "title":"<p>3. 上述图片中，egg______以数目来计算，milk______以数目来计算。</p> ",
+            "success_tip":"",
+            "error_tip":"图片中egg有一个，milk不知道几滴",
+            "type":"0",
+            "study_id":"560",
+            "paixu":"3",
+            "unit_id":"62",
+            "qus":[
+              {
+                "data":[
+                  "能",
+                  "不能"
+                ],
+                "successIndex":[
+                  0
+                ],
+                "ID":"8568bb1d-0a9a-4a7d-90ec-1011d4b45ff5"
+              },
+              {
+                "data":[
+                  "不能",
+                  "能"
+                ],
+                "successIndex":[
+                  0
+                ],
+                "ID":"2c0506c0-38a5-4743-bdd7-8cbfe55e1942"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id":"561",
+        "create_name":null,
+        "create_by":"zhangwei",
+        "create_date":"2019-11-24 17:18:21",
+        "update_name":null,
+        "update_by":null,
+        "update_date":null,
+        "sys_org_code":null,
+        "sys_company_code":null,
+        "bpm_status":"1",
+        "html_title":"",
+        "paixu":"4",
+        "unit_id":"62",
+        "type":"1",
+        "detailList":Array[5]
+      },
+      {
+        "id":"562",
+        "create_name":null,
+        "create_by":"zhangwei",
+        "create_date":"2019-11-24 17:18:21",
+        "update_name":null,
+        "update_by":null,
+        "update_date":null,
+        "sys_org_code":null,
+        "sys_company_code":null,
+        "bpm_status":"1",
+        "html_title":"<p>三、常见的不可数名词</p><p>【观察】</p><p><p style="text-align:center"><img alt="" height="248" src="http://document.i-wins.com/images/aigrammar/1575521733652215.png" width="772"></p>   </p><p>【回答】</p>",
+      "paixu":"5",
+        "unit_id":"62",
+        "type":"1",
+        "detailList":Array[1]
+      },
+      {
+        "id":"563",
+        "create_name":null,
+        "create_by":"zhangwei",
+        "create_date":"2019-11-24 17:18:21",
+        "update_name":null,
+        "update_by":null,
+        "update_date":null,
+        "sys_org_code":null,
+        "sys_company_code":null,
+        "bpm_status":"1",
+        "html_title":"<p>【观察】</p><p><p style="text-align:center"><img alt="" height="183" src="http://document.i-wins.com/images/aigrammar/1575521734117242.png" width="776"></p>   </p><p>【回答】</p>",
+      "paixu":"6",
+        "unit_id":"62",
+        "type":"1",
+        "detailList":Array[1]
+      },
+      {
+        "id":"564",
+        "create_name":null,
+        "create_by":"zhangwei",
+        "create_date":"2019-11-24 17:18:21",
+        "update_name":null,
+        "update_by":null,
+        "update_date":null,
+        "sys_org_code":null,
+        "sys_company_code":null,
+        "bpm_status":"1",
+        "html_title":"",
+        "paixu":"7",
+        "unit_id":"62",
+        "type":"1",
+        "detailList":[
+          {
+            "id":"1221",
+            "create_name":null,
+            "create_by":"zhangwei",
+            "create_date":"2019-11-24 17:18:21",
+            "update_name":null,
+            "update_by":null,
+            "update_date":null,
+            "sys_org_code":null,
+            "sys_company_code":null,
+            "bpm_status":"1",
+            "title":"1. 选出不可数名词______。",
+            "success_tip":"<p>bread、ink、beef分别属于上述知识点中的面类，部分文具类，液体类，为不可数名词，pencil为可数名词，所以选ACD。</p>",
+            "error_tip":"<p>参见常见的不可数名词</p>",
+            "type":"2",
+            "study_id":"564",
+            "paixu":"1",
+            "unit_id":"62",
+            "qus":[
+              {
+                "data":[
+                  "bread",
+                  "pencil",
+                  "ink",
+                  "beef"
+                ],
+                "successIndex":[
+                  0,
+                  2,
+                  3
+                ],
+                "ID":"579e9a73-02cd-456a-99a7-6f5c703d22dc"
+              }
+            ]
+          },
+          {
+            "id":"1222",
+            "create_name":null,
+            "create_by":"zhangwei",
+            "create_date":"2019-11-24 17:18:21",
+            "update_name":null,
+            "update_by":null,
+            "update_date":null,
+            "sys_org_code":null,
+            "sys_company_code":null,
+            "bpm_status":"1",
+            "title":"2. 选出不可数名词______。",
+            "success_tip":"<p>rice、salt、coffee分别属于上述知识点中的米类，调料类，液体类，为不可数名词，pen为可数名词，所以选BCD。</p>",
+            "error_tip":"<p>参见常见的不可数名词</p>",
+            "type":"2",
+            "study_id":"564",
+            "paixu":"2",
+            "unit_id":"62",
+            "qus":[
+              {
+                "data":[
+                  "pen",
+                  "rice",
+                  "salt",
+                  "coffee"
+                ],
+                "successIndex":[
+                  1,
+                  2,
+                  3
+                ],
+                "ID":"ea13d846-6357-498b-aecf-9866a73c5e6a"
+              }
+            ]
+          },
+          {
+            "id":"1223",
+            "create_name":null,
+            "create_by":"zhangwei",
+            "create_date":"2019-11-24 17:18:21",
+            "update_name":null,
+            "update_by":null,
+            "update_date":null,
+            "sys_org_code":null,
+            "sys_company_code":null,
+            "bpm_status":"1",
+            "title":"<p style="text-align:justify">3. I want _____.</p> ",
+            "success_tip":"paper不可数，不可数名词前无冠词a，所以选A。",
+            "error_tip":"paper不可数",
+            "type":"1",
+            "study_id":"564",
+            "paixu":"3",
+            "unit_id":"62",
+            "qus":[
+              {
+                "data":[
+                  "paper",
+                  "a paper"
+                ],
+                "successIndex":[
+                  0
+                ],
+                "ID":"bb75acdc-c5c1-4374-bda3-e157a48523a7"
+              }
+            ]
+          },
+          {
+            "id":"1224",
+            "create_name":null,
+            "create_by":"zhangwei",
+            "create_date":"2019-11-24 17:18:21",
+            "update_name":null,
+            "update_by":null,
+            "update_date":null,
+            "sys_org_code":null,
+            "sys_company_code":null,
+            "bpm_status":"1",
+            "title":"<p style="text-align:justify">4. Tim doesn't like too much______.</p> ",
+            "success_tip":"四个选项均为液体，不可数名词，没有复数，所以选B。",
+            "error_tip":"液体不可数，无复数",
+            "type":"1",
+            "study_id":"564",
+            "paixu":"4",
+            "unit_id":"62",
+            "qus":[
+              {
+                "data":[
+                  "oils",
+                  "oil",
+                  "waters",
+                  "teas"
+                ],
+                "successIndex":[
+                  1
+                ],
+                "ID":"77101214-cb12-462f-8564-e890ced52374"
+              }
+            ]
+          },
+          {
+            "id":"1225",
+            "create_name":null,
+            "create_by":"zhangwei",
+            "create_date":"2019-11-24 17:18:21",
+            "update_name":null,
+            "update_by":null,
+            "update_date":null,
+            "sys_org_code":null,
+            "sys_company_code":null,
+            "bpm_status":"1",
+            "title":"5. 选出属于肉类的不可数名词______。",
+            "success_tip":"<p>beef是牛肉，chicken是鸡肉，pork是猪肉，均属于肉类的不可数名词，所以选B,C,D。</p>",
+            "error_tip":"<p>bread为面类</p>",
+            "type":"2",
+            "study_id":"564",
+            "paixu":"5",
+            "unit_id":"62",
+            "qus":[
+              {
+                "data":[
+                  "bread",
+                  "beef",
+                  "chicken",
+                  "pork"
+                ],
+                "successIndex":[
+                  1,
+                  2,
+                  3
+                ],
+                "ID":"ab79f452-c60a-409e-978d-22d887bc2b10"
+              }
+            ]
+          },
+          {
+            "id":"1226",
+            "create_name":null,
+            "create_by":"zhangwei",
+            "create_date":"2019-11-24 17:18:21",
+            "update_name":null,
+            "update_by":null,
+            "update_date":null,
+            "sys_org_code":null,
+            "sys_company_code":null,
+            "bpm_status":"1",
+            "title":"6. 选出属于液体类的不可数名词______。",
+            "success_tip":"<p>water是水，juice是果汁，beer是啤酒，均属于液体类的不可数名词，所以选A,C,D。</p>",
+            "error_tip":"<p>paper不属于液体</p>",
+            "type":"2",
+            "study_id":"564",
+            "paixu":"6",
+            "unit_id":"62",
+            "qus":[
+              {
+                "data":[
+                  "water",
+                  "paper",
+                  "juice",
+                  "beer"
+                ],
+                "successIndex":[
+                  0,
+                  2,
+                  3
+                ],
+                "ID":"812a1ba4-d293-416f-8e99-13783c6a8869"
+              }
+            ]
+          },
+          {
+            "id":"1227",
+            "create_name":null,
+            "create_by":"zhangwei",
+            "create_date":"2019-11-24 17:18:21",
+            "update_name":null,
+            "update_by":null,
+            "update_date":null,
+            "sys_org_code":null,
+            "sys_company_code":null,
+            "bpm_status":"1",
+            "title":"<p>7. 选出属于文具类的不可数名词______。</p> ",
+            "success_tip":"ink为墨水，oil为油，meat为肉，wine为酒，只有A为文具类且不可数，所以选A。",
+            "error_tip":"ink为墨水",
+            "type":"1",
+            "study_id":"564",
+            "paixu":"7",
+            "unit_id":"62",
+            "qus":[
+              {
+                "data":[
+                  "ink",
+                  "oil",
+                  "meat",
+                  "wine"
+                ],
+                "successIndex":[
+                  0
+                ],
+                "ID":"34de07cb-7c70-4a93-ba9a-69151ad6233d"
+              }
+            ]
+          },
+          {
+            "id":"1228",
+            "create_name":null,
+            "create_by":"zhangwei",
+            "create_date":"2019-11-24 17:18:21",
+            "update_name":null,
+            "update_by":null,
+            "update_date":null,
+            "sys_org_code":null,
+            "sys_company_code":null,
+            "bpm_status":"1",
+            "title":"<p>8. 选出属于面类的不可数名词______。</p> ",
+            "success_tip":"paper为纸，bread为面包，oil为油，ink为墨水，只有B属于面类，所以选B。",
+            "error_tip":"bread为面包，属于面类",
+            "type":"1",
+            "study_id":"564",
+            "paixu":"8",
+            "unit_id":"62",
+            "qus":[
+              {
+                "data":[
+                  "paper",
+                  "bread",
+                  "oil",
+                  "ink"
+                ],
+                "successIndex":[
+                  1
+                ],
+                "ID":"cfa5ccfc-04b5-49f9-aff2-015f9b2a64c7"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "detailCount":22
+  },
+  "status":1,
+  "url":""
 }
