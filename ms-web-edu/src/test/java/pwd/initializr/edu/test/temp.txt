@@ -53,9 +53,6 @@ Cache-Control	max-age=0
 
 
 
-
-
-
 模拟考试 http://47.92.155.170/Web/AiExam/ajaxGetQus.html?examId=
 
 	GET /Web/AiExam/ajaxGetQus.html?examId= HTTP/1.1
@@ -87,6 +84,26 @@ Origin	http://47.92.155.170
 Connection	keep-alive
 Referer	http://47.92.155.170/Web/AiExam/exam/studyId/9/examType/0/studyTitle/%E5%B0%8F%E5%AD%A6.html
 Cookie	tianjinandznyy_=f2lcu185v95skrmn0ovggjsnp0
+
+body:
+examForm%5B0%5D%5Bid%5D=0&examForm%5B0%5D%5Bitem%5D=item2&examForm%5B0%5D%5Banswer%5D=C&examForm%5B0%5D%5Bqus%5D=3860&examForm%5B1%5D%5Bid%5D=1&examForm%5B1%5D%5Bitem%5D=item2&examForm%5B1%5D%5Banswer%5D=C&examForm%5B1%5D%5Bqus%5D=3859&examForm%5B2%5D%5Bid%5D=2&examForm%5B2%5D%5Bitem%5D=item3&examForm%5B2%5D%5Banswer%5D=D&examForm%5B2%5D%5Bqus%5D=3846&examType=0&studyId=9&jishiqi=31
+
+
+examForm[0][id]: 0
+examForm[0][item]: item2
+examForm[0][answer]: C
+examForm[0][qus]: 3860
+examForm[1][id]: 1
+examForm[1][item]: item2
+examForm[1][answer]: C
+examForm[1][qus]: 3859
+examForm[2][id]: 2
+examForm[2][item]: item3
+examForm[2][answer]: D
+examForm[2][qus]: 3846
+examType: 0
+studyId: 9
+jishiqi: 31
 
 响应
 

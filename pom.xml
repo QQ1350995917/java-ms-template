@@ -13,7 +13,7 @@
   <packaging>pom</packaging>
   <modules>
     <module>lib-common</module>
-    <module>lib-common-mw-minio</module>
+    <!--<module>lib-common-mw-minio</module>-->
     <!--<module>lib-common-mw-monitor</module>-->
     <!--<module>lib-common-mw-redis</module>-->
     <module>lib-common-web</module>
@@ -23,7 +23,7 @@
     <!--<module>lib-rpc-email</module>-->
     <!--<module>lib-rpc-monitor</module>-->
     <!--<module>lib-rpc-search</module>-->
-    <module>lib-rpc-storage</module>
+    <!--<module>lib-rpc-storage</module>-->
     <!--<module>ms-web-access</module>-->
     <!--<module>ms-web-account</module>-->
     <!--<module>ms-web-book</module>-->
@@ -39,9 +39,9 @@
     <!--<module>ms-web-registry</module>-->
     <!--<module>ms-web-schedule</module>-->
     <!--<module>ms-web-search</module>-->
-    <module>ms-web-storage</module>
+    <!--<module>ms-web-storage</module>-->
     <!--<module>ms-web-typeface</module>-->
-    <!--<module>project-generator</module>-->
+    <module>project-generator</module>
     <!--<module>widget-tool</module>-->
   </modules>
   <version>0.0.1-SNAPSHOT</version>
