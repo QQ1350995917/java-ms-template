@@ -89,7 +89,7 @@ public class FileController extends RobotController implements FileApi {
     @Override
     public void download(@PathVariable("id") String id) {
         StorageBO oneByUrl = storageService.findOneById(id);
-        String contentType = "application/octet-stream";
+        String contentType = oneByUrl.getFileType();
         String filename = oneByUrl.getFileName();
         String suffix = oneByUrl.getFileSuffix();
         try (InputStream inputStream = storageService.getObject(oneByUrl)) {

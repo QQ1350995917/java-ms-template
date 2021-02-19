@@ -5,7 +5,8 @@ import com.alibaba.fastjson.serializer.ToStringSerializer;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -26,7 +27,7 @@ import pwd.initializr.common.web.api.LogInterceptor;
 @Configuration
 public class CommonAutoConfiguration implements WebMvcConfigurer {
 
-    @Autowired
+    @Resource
     private LogInterceptor logInterceptor;
 
     @Override
@@ -44,5 +45,10 @@ public class CommonAutoConfiguration implements WebMvcConfigurer {
         fjc.setSerializeConfig(serializeConfig);
         fastJsonConverter.setFastJsonConfig(fjc);
         converters.add(fastJsonConverter);
+    }
+
+    @Bean
+    public LogInterceptor getLogInterceptor(){
+        return new LogInterceptor();
     }
 }

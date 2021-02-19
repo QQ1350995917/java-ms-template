@@ -3,7 +3,7 @@ package pwd.initializr.common.web.api;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.slf4j.MDC;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -18,7 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
  * @version 1.0.0
  * @since DistributionVersion
  */
-@Component
+@Configuration
 public class LogInterceptor implements HandlerInterceptor {
 
   @Override
