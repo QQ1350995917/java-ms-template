@@ -10,6 +10,7 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.sql.SQLException;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -27,11 +28,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pwd.initializr.common.utils.DateTimeUtil;
+import pwd.initializr.common.utils.StringUtils;
 import pwd.initializr.common.utils.ZipUtil;
 import pwd.initializr.common.web.api.admin.AdminController;
 import pwd.initializr.generator.api.vo.GeneratorInput;
 import pwd.initializr.generator.business.mysql.architecture.ArchitectureBoot;
 import pwd.initializr.generator.business.mysql.architecture.ProjectBO;
+import pwd.initializr.generator.business.mysql.architecture.SrcMainJavaPackageApiSwagger2;
+import pwd.initializr.generator.business.mysql.architecture.SrcMainResourcesTemplatesIndex;
 import pwd.initializr.generator.business.mysql.database.DataSourceBO;
 import pwd.initializr.generator.business.mysql.database.DataSourceTableColumn;
 import pwd.initializr.generator.business.mysql.database.DatabaseBoot;
@@ -93,18 +97,26 @@ public class GeneratorController extends AdminController {
 
         try {
             Set<String> tables = exec.keySet();
+            Set<String> classNames = new LinkedHashSet<>();
             for (String table : tables) {
                 String tableName = table;
                 String className = VariableName
                     .upperInitials(VariableName.underlineToHump(tableName));
+                classNames.add(StringUtils.toLowerCaseFirstLetter(className));
                 List<TableColumnBO> tableColumnBOList = (List<TableColumnBO>) exec.get(table);
                 DatabaseBoot databaseBoot = new DatabaseBoot();
                 databaseBoot.generateProjectSrc(projectBO, tableName, className, tableColumnBOList);
             }
+
+            new SrcMainResourcesTemplatesIndex(projectBO,classNames).createProjectFile();
+
         } catch (Exception e) {
+            log.error(e.getMessage());
             outputException(500);
             return;
         }
+
+
 
 
         String sourceDir = projectGeneratorStorage + File.separator + projectBO.getProjectName();

@@ -43,7 +43,7 @@ import pwd.initializr.common.web.persistence.entity.EntityAble;
   description = "[列表查询，详情查询，启/禁用，删除，新增，修改]"
 )
 @RestController(value = "${className}")
-@RequestMapping(value = "/api/${className}")
+@RequestMapping(value = "/api/${apiPath}")
 @Slf4j
 public class ${className}Controller extends pwd.initializr.common.web.api.admin.AdminController implements ${className}Api {
 

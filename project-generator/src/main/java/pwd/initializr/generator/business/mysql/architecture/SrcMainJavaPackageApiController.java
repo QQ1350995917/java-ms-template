@@ -14,25 +14,18 @@ import java.util.Map;
  * @version 1.0.0
  * @since DistributionVersion
  */
-public class SrcMainJavaPackageApiController extends SrcMainJavaPackage {
+public class SrcMainJavaPackageApiController extends SrcMainJavaPackageApi {
 
     private String className;
 
-    public SrcMainJavaPackageApiController(ProjectBO projectBO,String className) {
-        super(projectBO);
-        this.packagePath += File.separator + "api";
+    public SrcMainJavaPackageApiController(ProjectBO projectBO,String className,String apiPath) {
+        super(projectBO,className,apiPath);
         this.className = className;
     }
 
     @Override
     protected String getClassName() {
         return className + "Controller";
-    }
-
-    @Override
-    protected Map<String, Object> getData() {
-        this.data.put("className", this.className);
-        return this.data;
     }
 
     @Override

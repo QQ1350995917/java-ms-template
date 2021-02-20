@@ -28,10 +28,21 @@ public class ArchitectureBoot {
         projectFiles.add(new ProjectZip(projectBO));
         projectFiles.add(new ProjectStart(projectBO));
         projectFiles.add(new ProjectStop(projectBO));
+
+        // 处理跟目录-静态接口
         projectFiles.add(new SrcMainJavaPackageApplication(projectBO));
+
+        // 处理资源层目录-静态接口
         projectFiles.add(new SrcMainResourcesApplication(projectBO));
         projectFiles.add(new SrcMainResourcesApplicationDev(projectBO));
+        projectFiles.add(new SrcMainResourcesTemplatesCss(projectBO));
+        projectFiles.add(new SrcMainResourcesTemplatesJs(projectBO));
+        projectFiles.add(new SrcMainResourcesTemplatesMedia(projectBO));
         projectFiles.add(new SrcMainResourcesBanner(projectBO));
+
+        // 处理API层目录-静态接口
+        projectFiles.add(new SrcMainJavaPackageIndexApi(projectBO));
+        projectFiles.add(new SrcMainJavaPackageIndexController(projectBO));
         projectFiles.add(new SrcMainJavaPackageApiSwagger2(projectBO));
 
         projectFiles.forEach(obj -> {

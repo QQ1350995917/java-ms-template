@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pwd.initializr.organization.persistence.dao.OrganizationDao">
+
+  <resultMap id="OrganizationMap" type="pwd.initializr.organization.persistence.entity.OrganizationEntity">
+    <result column="id" jdbcType="BIGINT" property="id"/>
+    <result column="pid" jdbcType="BIGINT" property="pid"/>
+    <result column="name" jdbcType="VARCHAR" property="name"/>
+    <result column="logo" jdbcType="VARCHAR" property="logo"/>
+    <result column="description" jdbcType="VARCHAR" property="description"/>
+    <result column="slogan" jdbcType="VARCHAR" property="slogan"/>
+    <result column="level" jdbcType="INTEGER" property="level"/>
+    <result column="sort" jdbcType="INTEGER" property="sort"/>
+    <result column="members" jdbcType="INTEGER" property="members"/>
+    <result column="progress" jdbcType="INTEGER" property="progress"/>
+    <result column="able" jdbcType="INTEGER" property="able"/>
+    <result column="del" jdbcType="INTEGER" property="del"/>
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+  </resultMap>
+
+  <!--根据主键查询查询-->
+  <select id="queryById" resultMap="OrganizationMap">
+    SELECT
+      `id`,
+      `pid`,
+      `name`,
+      `logo`,
+      `description`,
+      `slogan`,
+      `level`,
+      `sort`,
+      `members`,
+      `progress`,
+      `able`,
+      `del`,
+      `create_time`,
+      `update_time`
+    FROM
+      organization
+    WHERE
+      id = #{id}
+  </select>
+
+  <!--查询指定行数据-->
+  <select id="countByCondition" resultType="java.lang.Long">
+    SELECT COUNT(*) FROM organization
+    <include refid="pwd.initializr.common.web.persistence.entity.ScopeEntity.entityQueryScope"></include>
+  </select>
+
+  <!--通过实体作为筛选条件查询-->
+  <select id="queryByCondition" resultMap="OrganizationMap">
+    SELECT
+      `id`,
+      `pid`,
+      `name`,
+      `logo`,
+      `description`,
+      `slogan`,
+      `level`,
+      `sort`,
+      `members`,
+      `progress`,
+      `able`,
+      `del`,
+      `create_time`,
+      `update_time`
+    FROM
+      organization
+    <include refid="pwd.initializr.common.web.persistence.entity.ScopeEntity.entityQueryScope"></include>
+    <include refid="pwd.initializr.common.web.persistence.entity.SortEntity.entityQuerySort"></include>
+    LIMIT
+      #{offset}, #{limit}
+  </select>
+
+  <!--新增所有列-->
+  <insert id="insert" keyProperty="id" useGeneratedKeys="true" parameterType="pwd.initializr.organization.persistence.entity.OrganizationEntity">
+    INSERT INTO organization
+      (
+        `id`,
+        `pid`,
+        `name`,
+        `logo`,
+        `description`,
+        `slogan`,
+        `level`,
+        `sort`,
+        `members`,
+        `progress`,
+        `able`,
+        `del`,
+        `create_time`,
+        `update_time`
+      )
+    VALUES
+      (
+        #{entity.id},
+        #{entity.pid},
+        #{entity.name},
+        #{entity.logo},
+        #{entity.description},
+        #{entity.slogan},
+        #{entity.level},
+        #{entity.sort},
+        #{entity.members},
+        #{entity.progress},
+        #{entity.able},
+        #{entity.del},
+        #{entity.createTime},
+        #{entity.updateTime}
+      )
+  </insert>
+
+  <!--新增所有列（批量新增）-->
+  <insert id="insertByBatch" keyProperty="id" useGeneratedKeys="true" parameterType="pwd.initializr.organization.persistence.entity.OrganizationEntity">
+    INSERT INTO organization
+    (
+        `id`,
+        `pid`,
+        `name`,
+        `logo`,
+        `description`,
+        `slogan`,
+        `level`,
+        `sort`,
+        `members`,
+        `progress`,
+        `able`,
+        `del`,
+        `create_time`,
+        `update_time`
+    )
+    VALUES
+    <foreach collection="entities" item="entity" separator=",">
+    (
+        #{entity.id},
+        #{entity.pid},
+        #{entity.name},
+        #{entity.logo},
+        #{entity.description},
+        #{entity.slogan},
+        #{entity.level},
+        #{entity.sort},
+        #{entity.members},
+        #{entity.progress},
+        #{entity.able},
+        #{entity.del},
+        #{entity.createTime},
+        #{entity.updateTime}
+    )
+    </foreach>
+  </insert>
+
+  <!--新增或者替换所有列-->
+  <insert id="insertOrReplace" keyProperty="id" useGeneratedKeys="true" parameterType="pwd.initializr.organization.persistence.entity.OrganizationEntity">
+    REPLACE INTO organization
+    (
+        `id`,
+        `pid`,
+        `name`,
+        `logo`,
+        `description`,
+        `slogan`,
+        `level`,
+        `sort`,
+        `members`,
+        `progress`,
+        `able`,
+        `del`,
+        `create_time`,
+        `update_time`
+    )
+    VALUES
+    (
+        #{entity.id},
+        #{entity.pid},
+        #{entity.name},
+        #{entity.logo},
+        #{entity.description},
+        #{entity.slogan},
+        #{entity.level},
+        #{entity.sort},
+        #{entity.members},
+        #{entity.progress},
+        #{entity.able},
+        #{entity.del},
+        #{entity.createTime},
+        #{entity.updateTime}
+    )
+  </insert>
+
+  <!--新增或者替换所有列（批量新增或者替换）-->
+  <insert id="insertOrReplaceByBatch" keyProperty="id" useGeneratedKeys="true" parameterType="pwd.initializr.organization.persistence.entity.OrganizationEntity">
+    REPLACE INTO organization
+    (
+        `id`,
+        `pid`,
+        `name`,
+        `logo`,
+        `description`,
+        `slogan`,
+        `level`,
+        `sort`,
+        `members`,
+        `progress`,
+        `able`,
+        `del`,
+        `create_time`,
+        `update_time`
+    )
+    VALUES
+    <foreach collection="entities" item="entity" separator=",">
+      (
+        #{entity.id},
+        #{entity.pid},
+        #{entity.name},
+        #{entity.logo},
+        #{entity.description},
+        #{entity.slogan},
+        #{entity.level},
+        #{entity.sort},
+        #{entity.members},
+        #{entity.progress},
+        #{entity.able},
+        #{entity.del},
+        #{entity.createTime},
+        #{entity.updateTime}
+      )
+    </foreach>
+  </insert>
+
+  <!--通过主键修改数据-->
+  <update id="updateById" parameterType="pwd.initializr.organization.persistence.entity.OrganizationEntity">
+    UPDATE organization
+    <set>
+      <if test="entity.id != null">
+        `id` = #{entity.id},
+      </if>
+      <if test="entity.pid != null">
+        `pid` = #{entity.pid},
+      </if>
+      <if test="entity.name != null and entity.name != ''">
+        `name` = #{entity.name},
+      </if>
+      <if test="entity.logo != null and entity.logo != ''">
+        `logo` = #{entity.logo},
+      </if>
+      <if test="entity.description != null and entity.description != ''">
+        `description` = #{entity.description},
+      </if>
+      <if test="entity.slogan != null and entity.slogan != ''">
+        `slogan` = #{entity.slogan},
+      </if>
+      <if test="entity.level != null">
+        `level` = #{entity.level},
+      </if>
+      <if test="entity.sort != null">
+        `sort` = #{entity.sort},
+      </if>
+      <if test="entity.members != null">
+        `members` = #{entity.members},
+      </if>
+      <if test="entity.progress != null">
+        `progress` = #{entity.progress},
+      </if>
+      <if test="entity.able != null">
+        `able` = #{entity.able},
+      </if>
+      <if test="entity.del != null">
+        `del` = #{entity.del},
+      </if>
+      <if test="entity.createTime != null">
+        `create_time` = #{entity.createTime},
+      </if>
+      <if test="entity.updateTime != null">
+        `update_time` = #{entity.updateTime},
+      </if>
+    </set>
+    WHERE
+      id = #{entity.id}
+  </update>
+
+  <!--通过主键删除-->
+  <update id="deleteById">
+    UPDATE organization
+    SET
+      del = 1,
+      update_time = #{date}
+    WHERE
+      id = #{id}
+  </update>
+
+  <!--通过主键批量删除-->
+  <update id="deleteByIds">
+    UPDATE organization
+    SET
+      del = 1,
+      update_time = #{date}
+    WHERE
+      id in
+    <foreach close=")" collection="ids" index="index" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </update>
+
+  <!--通过主键启禁-->
+  <update id="ableById">
+    UPDATE organization
+    SET
+      able = #{able},
+      update_time = #{date}
+    WHERE
+      id = #{id}
+  </update>
+
+  <!--通过主键批量启禁-->
+  <update id="ableByIds">
+    UPDATE organization
+    SET
+      able = #{able},
+      update_time = #{date}
+    WHERE
+      id in
+    <foreach close=")" collection="ids" index="index" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </update>
+
+</mapper>

@@ -3,7 +3,6 @@ package ${projectPackage};
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -18,7 +17,6 @@ import org.springframework.web.servlet.ModelAndView;
  * @version ${projectVersion}
  * @since ${projectVersion}
  */
-@Controller
 @SpringBootApplication
 @ComponentScan(basePackages = {"pwd.initializr.common.web", "${projectPackage}"})
 public class ${applicationName} {
@@ -27,9 +25,4 @@ public class ${applicationName} {
     SpringApplication.run(${applicationName}.class, args);
   }
 
-  @GetMapping("")
-  public ModelAndView index(){
-  ModelAndView modelAndView = new ModelAndView("redirect:/swagger-ui.html");
-    return modelAndView;
-  }
 }

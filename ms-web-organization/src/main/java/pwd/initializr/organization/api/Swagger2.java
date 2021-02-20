@@ -7,36 +7,34 @@ import springfox.documentation.swagger.web.UiConfigurationBuilder;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
- * pwd.initializr.account.api@ms-web-initializr
- *
- * <h1>TODO what you want to do?</h1>
- *
- * date 2019-09-14 21:10
- *
- * @author DingPengwei[www.dingpengwei@foxmail.com]
- * @version 1.0.0
- * @since DistributionVersion
- */
+* pwd-initializr-organization-20210220185831978@ms-web-initializr
+*
+* <h1>pwd-initializr-organization-20210220185831978接口文档声明</h1>
+*
+* date 2021-02-20 18:58
+*
+* @author Automatic[www.dingpengwei@foxmail.com]
+* @version 0.0.1-SNAPSHOT
+* @since 0.0.1-SNAPSHOT
+*/
 @Configuration
 @EnableSwagger2
 @ComponentScan(basePackages = "pwd.initializr.organization.api")
 public class Swagger2 extends ApiSwagger2 {
 
-  final String appName = "organization";
-
   @Override
   protected Customer adminApiCustomer() {
-    return new Customer("AdminApi", "AdminApi", "管理接口", "pwd.initializr." + appName + ".api.admin");
+    return new Customer("AdminApi", "AdminApi", "管理接口", "pwd.initializr.organization.api");
   }
 
   @Override
   protected Customer robotApiCustomer() {
-    return new Customer("RobotApi", "RobotApi", "机器接口", "pwd.initializr." + appName + ".api.robot");
+    return new Customer("RobotApi", "RobotApi", "机器接口", "pwd.initializr.organization.api");
   }
 
   @Override
   protected Customer userApiCustomer() {
-    return new Customer("UserApi", "UserApi", "用户接口", "pwd.initializr." + appName + ".api.user");
+    return new Customer("UserApi", "UserApi", "用户接口", "pwd.initializr.organization.api");
   }
 
   @Override

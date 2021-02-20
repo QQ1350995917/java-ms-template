@@ -15,6 +15,7 @@ import pwd.initializr.generator.business.mysql.architecture.SrcMainJavaPackageBu
 import pwd.initializr.generator.business.mysql.architecture.SrcMainJavaPackagePersistenceDao;
 import pwd.initializr.generator.business.mysql.architecture.SrcMainJavaPackagePersistenceEntity;
 import pwd.initializr.generator.business.mysql.architecture.SrcMainResourcesMapper;
+import pwd.initializr.generator.business.mysql.architecture.SrcMainResourcesTemplatesHtml;
 
 /**
  * pwd.initializr.generator.business.mysql.database@ms-web-initializr
@@ -46,18 +47,28 @@ public class DatabaseBoot {
     }
 
     public void generateProjectSrc(ProjectBO projectBO,String tableName,String className,List<TableColumnBO> tableColumnBOList) throws Exception {
-        new SrcMainResourcesMapper(projectBO, tableName, className,
-            tableColumnBOList).createProjectFile();
-        new SrcMainJavaPackagePersistenceDao(projectBO, tableName, className).createProjectFile();
-        new SrcMainJavaPackagePersistenceEntity(projectBO, tableName, className,
-            tableColumnBOList).createProjectFile();
-        new SrcMainJavaPackageBusinessBO(projectBO,className).createProjectFile();
+        String apiPath = tableName.replace("_","/").toLowerCase();
+        // 处理resource目录-Mapper
+        new SrcMainResourcesMapper(projectBO, tableName, className, tableColumnBOList).createProjectFile();
 
+        // 处理resource目录-Templates
+        new SrcMainResourcesTemplatesHtml(projectBO, tableName, className, tableColumnBOList).createProjectFile();
+
+
+        // 处理持久层目录
+        new SrcMainJavaPackagePersistenceDao(projectBO, tableName, className).createProjectFile();
+        new SrcMainJavaPackagePersistenceEntity(projectBO, tableName, className, tableColumnBOList).createProjectFile();
+
+        // 处理业务层目录
+        new SrcMainJavaPackageBusinessBO(projectBO,className).createProjectFile();
         new SrcMainJavaPackageBusinessService(projectBO,className).createProjectFile();
         new SrcMainJavaPackageBusinessServiceImpl(projectBO,className).createProjectFile();
+
+        // 处理API层目录
         new SrcMainJavaPackageApiInput(projectBO,className, tableColumnBOList).createProjectFile();
         new SrcMainJavaPackageApiOutput(projectBO,className, tableColumnBOList).createProjectFile();
-        new SrcMainJavaPackageApi(projectBO,className).createProjectFile();
-        new SrcMainJavaPackageApiController(projectBO,className).createProjectFile();
+        new SrcMainJavaPackageApi(projectBO,className,apiPath).createProjectFile();
+        new SrcMainJavaPackageApiController(projectBO,className,apiPath).createProjectFile();
+
     }
 }
