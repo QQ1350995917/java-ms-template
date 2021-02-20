@@ -14,6 +14,187 @@
 
 </head>
 <body>
+<el-container id="container">
+  <el-header style="padding: 0px;height: 42px">
+    <el-row>
+      <el-col :span="2" :offset="3">
+        <el-button @click="onCreateDialogOpen()">Create</el-button>
+      </el-col>
+      <el-col :span="16">
+        <div>
+          <el-input placeholder="请输入内容" v-model="search" class="input-with-select">
+            <el-select v-model="select" slot="prepend" placeholder="请选择">
+              <el-option label="餐厅名" value="1"></el-option>
+              <el-option label="订单号" value="2"></el-option>
+              <el-option label="用户电话" value="3"></el-option>
+            </el-select>
+            <el-button slot="append" icon="el-icon-search"></el-button>
+          </el-input>
+        </div>
+      </el-col>
+    </el-row>
+  </el-header>
+  <el-main style="padding: 0px;height: 650px">
+    <el-row>
+      <el-col :span="18" :offset="3">
+        <el-table
+            :data="list"
+            style="width: 100%;"
+            max-height="600">
+          <el-table-column
+              prop="id"
+              label="ID"
+              width="180">
+          </el-table-column>
+          <el-table-column
+              prop="fileName"
+              label="FileName"
+              width="180">
+          </el-table-column>
+          <el-table-column
+              prop="fileSuffix"
+              label="Suffix"
+              width="180">
+          </el-table-column>
+          <el-table-column
+              prop="url"
+              label="Url"
+              width="340">
+          </el-table-column>
+          <el-table-column
+              prop="createTime"
+              label="CreateTime"
+              width="120">
+          </el-table-column>
+          <el-table-column
+              fixed="right"
+              label="Operations"
+              width="180">
+            <template slot-scope="scope">
+              <el-button
+                  @click.native.prevent="onUpdateDialogOpen(scope.row)"
+                  icon="el-icon-setting"
+                  size="small"
+              >
+              </el-button>
+              <el-button
+                  @click.native.prevent="onAbleButtonClick(scope.row.id)"
+                  icon="el-icon-view"
+                  size="small"
+              >
+              </el-button>
+              <el-button
+                  @click.native.prevent="onDelButtonClick(scope.row.id)"
+                  icon="el-icon-delete"
+                  size="small"
+              >
+              </el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+        <div class="block">
+          <el-pagination
+              layout="prev, pager, next"
+              @current-change="onRequestForList"
+              :page-size="pageSize"
+              :total="total">
+          </el-pagination>
+        </div>
+      </el-col>
+      <el-dialog
+          :title="dialogTitle"
+          :visible.sync="dialogVisible"
+          width="45%"
+          :before-close="onDialogClose">
 
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="dialogVisible = false">取 消</el-button>
+          <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+        </span>
+      </el-dialog>
+    </el-row>
+  </el-main>
+  <el-footer>
+    <el-row>
+      <el-col :span="12" :offset="6">
+        <p>Powered by www.dingpengwei@foxmail.com</p>
+        <p>copyright©2020</p>
+      </el-col>
+    </el-row>
+  </el-footer>
+</el-container>
+
+<script>
+  new Vue({
+    el: '#container',
+    data: function () {
+      return {
+        list: [],
+        pageIndex: 1,
+        pageSize: 12,
+        total: 0,
+        search: '',
+        select: '',
+        dialogVisible: false,
+        dialogTitle: ''
+      };
+    },
+    created() {
+      this.onRequestForList(this.pageIndex);
+    },
+    methods: {
+      onRequestForList(pageIndex) {
+        this.$http.get('/api/organization').then(
+            function (res) {
+              var body = res.body;
+              var meta = body.meta;
+              var code = meta.code;
+              var data = body.data;
+              var elements = data.elements;
+              if (elements == undefined || elements.length == 0) {
+                this.$message({
+                  message: 'No Date',
+                  type: 'warning'
+                });
+              } else {
+                this.list = data.elements;
+                this.total = Number(data.total);
+              }
+            }, function (e) {
+              var body = e.body;
+              var meta = body.meta;
+              var code = meta.code;
+              if (code == 400) {
+                this.$message.error('Request params error');
+              } else if (code == 500) {
+                this.$message.error('Server error');
+              } else {
+                this.$message.error('Unknown error');
+              }
+            });
+      },
+      onCreateDialogOpen() {
+        this.dialogTitle = 'Create'
+        this.dialogVisible = true
+      },
+      onUpdateDialogOpen(item) {
+        this.dialogTitle = 'Update'
+        this.dialogVisible = true
+      },
+      onAbleButtonClick(item) {
+
+      },
+      onDelButtonClick(item) {
+
+      },
+      onDialogClose(done) {
+        this.$confirm('Confirm？')
+        .then(_ => {
+          done();
+        }).catch(_ => {});
+      }
+    }
+  });
+</script>
 </body>
 </html>
