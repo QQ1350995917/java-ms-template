@@ -18,15 +18,26 @@
   <el-header style="padding: 0px;height: 42px">
     <el-row>
       <el-col :span="2" :offset="3">
-        <el-button @click="onCreateDialogOpen()">Create</el-button>
+        <el-button @click="onCreateDialogOpen({})">Create</el-button>
       </el-col>
       <el-col :span="16">
         <div>
           <el-input placeholder="请输入内容" v-model="search" class="input-with-select">
             <el-select v-model="select" slot="prepend" placeholder="请选择">
-              <el-option label="餐厅名" value="1"></el-option>
-              <el-option label="订单号" value="2"></el-option>
-              <el-option label="用户电话" value="3"></el-option>
+              <el-option label="id" value="id"></el-option>
+              <el-option label="pid" value="pid"></el-option>
+              <el-option label="name" value="name"></el-option>
+              <el-option label="logo" value="logo"></el-option>
+              <el-option label="description" value="description"></el-option>
+              <el-option label="slogan" value="slogan"></el-option>
+              <el-option label="level" value="level"></el-option>
+              <el-option label="sort" value="sort"></el-option>
+              <el-option label="members" value="members"></el-option>
+              <el-option label="progress" value="progress"></el-option>
+              <el-option label="able" value="able"></el-option>
+              <el-option label="del" value="del"></el-option>
+              <el-option label="createTime" value="create_time"></el-option>
+              <el-option label="updateTime" value="update_time"></el-option>
             </el-select>
             <el-button slot="append" icon="el-icon-search"></el-button>
           </el-input>
@@ -43,28 +54,59 @@
             max-height="600">
           <el-table-column
               prop="id"
-              label="ID"
-              width="180">
+              label="id">
           </el-table-column>
           <el-table-column
-              prop="fileName"
-              label="FileName"
-              width="180">
+              prop="pid"
+              label="pid">
           </el-table-column>
           <el-table-column
-              prop="fileSuffix"
-              label="Suffix"
-              width="180">
+              prop="name"
+              label="name">
           </el-table-column>
           <el-table-column
-              prop="url"
-              label="Url"
-              width="340">
+              prop="logo"
+              label="logo">
           </el-table-column>
           <el-table-column
-              prop="createTime"
-              label="CreateTime"
-              width="120">
+              prop="description"
+              label="description">
+          </el-table-column>
+          <el-table-column
+              prop="slogan"
+              label="slogan">
+          </el-table-column>
+          <el-table-column
+              prop="level"
+              label="level">
+          </el-table-column>
+          <el-table-column
+              prop="sort"
+              label="sort">
+          </el-table-column>
+          <el-table-column
+              prop="members"
+              label="members">
+          </el-table-column>
+          <el-table-column
+              prop="progress"
+              label="progress">
+          </el-table-column>
+          <el-table-column
+              prop="able"
+              label="able">
+          </el-table-column>
+          <el-table-column
+              prop="del"
+              label="del">
+          </el-table-column>
+          <el-table-column
+              prop="create_time"
+              label="createTime">
+          </el-table-column>
+          <el-table-column
+              prop="update_time"
+              label="updateTime">
           </el-table-column>
           <el-table-column
               fixed="right"
@@ -102,14 +144,84 @@
         </div>
       </el-col>
       <el-dialog
-          :title="dialogTitle"
+          :title="dialogName"
           :visible.sync="dialogVisible"
           width="45%"
-          :before-close="onDialogClose">
-
+          :before-close="onDetailDialogClose">
+        <div>
+          <el-input placeholder="请输入内容" v-model="item.id">
+            <template slot="prepend">id</template>
+          </el-input>
+        </div>
+        <div>
+          <el-input placeholder="请输入内容" v-model="item.pid">
+            <template slot="prepend">pid</template>
+          </el-input>
+        </div>
+        <div>
+          <el-input placeholder="请输入内容" v-model="item.name">
+            <template slot="prepend">name</template>
+          </el-input>
+        </div>
+        <div>
+          <el-input placeholder="请输入内容" v-model="item.logo">
+            <template slot="prepend">logo</template>
+          </el-input>
+        </div>
+        <div>
+          <el-input placeholder="请输入内容" v-model="item.description">
+            <template slot="prepend">description</template>
+          </el-input>
+        </div>
+        <div>
+          <el-input placeholder="请输入内容" v-model="item.slogan">
+            <template slot="prepend">slogan</template>
+          </el-input>
+        </div>
+        <div>
+          <el-input placeholder="请输入内容" v-model="item.level">
+            <template slot="prepend">level</template>
+          </el-input>
+        </div>
+        <div>
+          <el-input placeholder="请输入内容" v-model="item.sort">
+            <template slot="prepend">sort</template>
+          </el-input>
+        </div>
+        <div>
+          <el-input placeholder="请输入内容" v-model="item.members">
+            <template slot="prepend">members</template>
+          </el-input>
+        </div>
+        <div>
+          <el-input placeholder="请输入内容" v-model="item.progress">
+            <template slot="prepend">progress</template>
+          </el-input>
+        </div>
+        <div>
+          <el-input placeholder="请输入内容" v-model="item.able">
+            <template slot="prepend">able</template>
+          </el-input>
+        </div>
+        <div>
+          <el-input placeholder="请输入内容" v-model="item.del">
+            <template slot="prepend">del</template>
+          </el-input>
+        </div>
+        <div>
+          <el-input placeholder="请输入内容" v-model="item.create_time">
+            <template slot="prepend">createTime</template>
+          </el-input>
+        </div>
+        <div>
+          <el-input placeholder="请输入内容" v-model="item.update_time">
+            <template slot="prepend">updateTime</template>
+          </el-input>
+        </div>
         <span slot="footer" class="dialog-footer">
           <el-button @click="dialogVisible = false">取 消</el-button>
-          <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+          <el-button v-if="'Create' == dialogName" type="primary" @click="onRequestForCreate">Create</el-button>
+          <el-button v-if="'Update' == dialogName" type="primary" @click="onRequestForUpdate">Update</el-button>
         </span>
       </el-dialog>
     </el-row>
@@ -130,13 +242,15 @@
     data: function () {
       return {
         list: [],
+        item: {},
         pageIndex: 1,
         pageSize: 12,
         total: 0,
         search: '',
         select: '',
         dialogVisible: false,
-        dialogTitle: ''
+        dialogName: '',
+        dialogConfirm: ''
       };
     },
     created() {
@@ -173,13 +287,31 @@
               }
             });
       },
-      onCreateDialogOpen() {
-        this.dialogTitle = 'Create'
+      onCreateDialogOpen(item) {
+        this.item = item
+        this.dialogName = 'Create'
         this.dialogVisible = true
+
       },
       onUpdateDialogOpen(item) {
-        this.dialogTitle = 'Update'
+        this.item = item
+        this.dialogName = 'Update'
         this.dialogVisible = true
+      },
+      onRequestForCreate(){
+        console.log("Create")
+
+        this.dialogVisible = false
+      },
+      onRequestForUpdate(){
+        console.log("Update")
+        this.dialogVisible = false
+      },
+      onDetailDialogClose(done) {
+        this.$confirm('Confirm？')
+        .then(_ => {
+          done();
+      }).catch(_ => {});
       },
       onAbleButtonClick(item) {
 
@@ -187,12 +319,6 @@
       onDelButtonClick(item) {
 
       },
-      onDialogClose(done) {
-        this.$confirm('Confirm？')
-        .then(_ => {
-          done();
-        }).catch(_ => {});
-      }
     }
   });
 </script>

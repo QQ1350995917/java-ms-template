@@ -52,7 +52,7 @@ public class DatabaseBoot {
         new SrcMainResourcesMapper(projectBO, tableName, className, tableColumnBOList).createProjectFile();
 
         // 处理resource目录-Templates
-        new SrcMainResourcesTemplatesHtml(projectBO, tableName, className, tableColumnBOList).createProjectFile();
+        new SrcMainResourcesTemplatesHtml(projectBO, tableName, className, tableColumnBOList,apiPath).createProjectFile();
 
 
         // 处理持久层目录

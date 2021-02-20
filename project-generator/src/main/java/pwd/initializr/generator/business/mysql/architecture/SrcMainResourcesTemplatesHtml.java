@@ -19,37 +19,44 @@ import pwd.initializr.generator.business.mysql.database.TableColumnBO;
  */
 public class SrcMainResourcesTemplatesHtml extends SrcMainResourcesTemplate {
 
-    private String tableName;
-    private String className;
-    private List<TableColumnBO> tableColumnBOList;
-    public SrcMainResourcesTemplatesHtml(ProjectBO projectBO, String tableName,
-        String className,
-        List<TableColumnBO> tableColumnBOList) {
-        super(projectBO);
-        this.filePath += File.separator + "static";
-        this.tableName = tableName;
-        this.className = className;
-        this.tableColumnBOList = tableColumnBOList;
-    }
+  private String tableName;
+  private String className;
+  private String apiPath;
+  private List<TableColumnBO> tableColumnBOList;
 
-    @Override
-    protected Map<String, Object> getData() {
-        this.data.put("className", this.className);
-        this.data.put("tableName", this.tableName);
-        this.data.put("columns", tableColumnBOList);
-        return this.data;
-    }
+  public SrcMainResourcesTemplatesHtml(ProjectBO projectBO, String tableName,
+      String className, List<TableColumnBO> tableColumnBOList,String apiPath) {
+    super(projectBO);
+    this.filePath += File.separator + "static";
+    this.tableName = tableName;
+    this.className = className;
+    this.tableColumnBOList = tableColumnBOList;
+    this.apiPath = apiPath;
+  }
 
+  @Override
+  protected Map<String, Object> getData() {
+    this.data.put("className", this.className);
+    this.data.put("tableName", this.tableName);
+    // TODO 所有的可展示项
+    this.data.put("columns", tableColumnBOList);
+    // TODO 搜索条件可选项
+    this.data.put("searchKey", tableColumnBOList);
+    // API PATH
+    this.data.put("apiPath", apiPath);
 
-    @Override
-    protected String getTemplate() {
-        return "mysql/src/main/resources/templates/static/template.html.ftl";
-    }
+    return this.data;
+  }
 
-    @Override
-    protected String getResourceName(){
-        return StringUtils.toLowerCaseFirstLetter(this.className) + ".html";
-    }
+  @Override
+  protected String getTemplate() {
+    return "mysql/src/main/resources/templates/static/template.html.ftl";
+  }
+
+  @Override
+  protected String getResourceName() {
+    return StringUtils.toLowerCaseFirstLetter(this.className) + ".html";
+  }
 
 
 }

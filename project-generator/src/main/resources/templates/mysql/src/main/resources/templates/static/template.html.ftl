@@ -17,59 +17,62 @@
 <el-container id="container">
   <el-header style="padding: 0px;height: 42px">
     <el-row>
-      <el-col :span="12" :offset="6">
-        <el-button @click="uploadDialogVisible = true">upload</el-button>
+      <el-col :span="2" :offset="3">
+        <el-button @click="onCreateDialogOpen({})">Create</el-button>
+      </el-col>
+      <el-col :span="16">
+        <div>
+          <el-input placeholder="请输入内容" v-model="search" class="input-with-select">
+            <el-select v-model="select" slot="prepend" placeholder="请选择">
+            <#if columns?exists>
+              <#list columns as column>
+              <el-option label="${column.javaName}" value="${column.jdbcName}"></el-option>
+              </#list>
+            </#if>
+            </el-select>
+            <el-button slot="append" icon="el-icon-search"></el-button>
+          </el-input>
+        </div>
       </el-col>
     </el-row>
   </el-header>
   <el-main style="padding: 0px;height: 650px">
     <el-row>
-      <el-col :span="12" :offset="6">
+      <el-col :span="18" :offset="3">
         <el-table
-            :data="files"
+            :data="list"
             style="width: 100%;"
             max-height="600">
+        <#if columns?exists>
+          <#list columns as column>
           <el-table-column
-              prop="id"
-              label="ID"
-              width="180">
+              prop="${column.jdbcName}"
+              label="${column.javaName}">
           </el-table-column>
-          <el-table-column
-              prop="fileName"
-              label="FileName"
-              width="180">
-          </el-table-column>
-          <el-table-column
-              prop="fileSuffix"
-              label="Suffix"
-              width="180">
-          </el-table-column>
-          <el-table-column
-              prop="url"
-              label="Url"
-              width="340">
-          </el-table-column>
-          <el-table-column
-              prop="createTime"
-              label="CreateTime"
-              width="120">
-          </el-table-column>
+          </#list>
+        </#if>
           <el-table-column
               fixed="right"
               label="Operations"
-              width="140">
+              width="180">
             <template slot-scope="scope">
               <el-button
-                  @click.native.prevent="onBrowse(scope.row.url)"
-                  type="text"
-                  size="small">
-                Browse
+                  @click.native.prevent="onUpdateDialogOpen(scope.row)"
+                  icon="el-icon-setting"
+                  size="small"
+              >
               </el-button>
               <el-button
-                  @click.native.prevent="onDownload(scope.row.id)"
-                  type="text"
-                  size="small">
-                Download
+                  @click.native.prevent="onAbleButtonClick(scope.row.id)"
+                  icon="el-icon-view"
+                  size="small"
+              >
+              </el-button>
+              <el-button
+                  @click.native.prevent="onDelButtonClick(scope.row.id)"
+                  icon="el-icon-delete"
+                  size="small"
+              >
               </el-button>
             </template>
           </el-table-column>
@@ -77,29 +80,30 @@
         <div class="block">
           <el-pagination
               layout="prev, pager, next"
-              @current-change="onRequestForFiles"
+              @current-change="onRequestForList"
               :page-size="pageSize"
-              :total="filesTotal">
+              :total="total">
           </el-pagination>
         </div>
       </el-col>
       <el-dialog
-          title="提示"
-          :visible.sync="uploadDialogVisible"
-          width="30%"
-          :before-close="onUploadClose">
-        <el-upload
-            class="upload-demo"
-            drag
-            action="/api/admin/file/test/test"
-            multiple
-        >
-          <i class="el-icon-upload"></i>
-          <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-        </el-upload>
+          :title="dialogName"
+          :visible.sync="dialogVisible"
+          width="45%"
+          :before-close="onDetailDialogClose">
+        <#if columns?exists>
+          <#list columns as column>
+        <div>
+          <el-input placeholder="请输入内容" v-model="item.${column.jdbcName}">
+            <template slot="prepend">${column.javaName}</template>
+          </el-input>
+        </div>
+          </#list>
+        </#if>
         <span slot="footer" class="dialog-footer">
-          <el-button @click="uploadDialogVisible = false">取 消</el-button>
-          <el-button type="primary" @click="uploadDialogVisible = false">确 定</el-button>
+          <el-button @click="dialogVisible = false">取 消</el-button>
+          <el-button v-if="'Create' == dialogName" type="primary" @click="onRequestForCreate">Create</el-button>
+          <el-button v-if="'Update' == dialogName" type="primary" @click="onRequestForUpdate">Update</el-button>
         </span>
       </el-dialog>
     </el-row>
@@ -119,19 +123,24 @@
     el: '#container',
     data: function () {
       return {
-        files: [],
+        list: [],
+        item: {},
         pageIndex: 1,
         pageSize: 12,
-        filesTotal: 0,
-        uploadDialogVisible: false
+        total: 0,
+        search: '',
+        select: '',
+        dialogVisible: false,
+        dialogName: '',
+        dialogConfirm: ''
       };
     },
     created() {
-      this.onRequestForFiles(this.pageIndex);
+      this.onRequestForList();
     },
     methods: {
-      onRequestForFiles(pageIndex) {
-        this.$http.get('/api/admin/file/' + (pageIndex - 1) + '/' + this.pageSize).then(
+      onRequestForList() {
+        this.$http.get('/api/${apiPath}').then(
             function (res) {
               var body = res.body;
               var meta = body.meta;
@@ -140,40 +149,102 @@
               var elements = data.elements;
               if (elements == undefined || elements.length == 0) {
                 this.$message({
-                  message: '没有找到数据表',
+                  message: 'No Date',
                   type: 'warning'
                 });
               } else {
-                this.files = data.elements;
-                this.filesTotal = data.total;
+                this.list = data.elements;
+                this.total = Number(data.total);
               }
             }, function (e) {
               var body = e.body;
               var meta = body.meta;
               var code = meta.code;
               if (code == 400) {
-                this.$message.error('参数错误');
+                this.$message.error('Request params error');
               } else if (code == 500) {
-                this.$message.error('服务异常');
+                this.$message.error('Server error');
               } else {
-                this.$message.error('未知异常');
+                this.$message.error('Unknown error');
               }
             });
       },
-      onBrowse(url) {
-        window.open(url, '_blank');
+      onCreateDialogOpen(item) {
+        this.item = item
+        this.dialogName = 'Create'
+        this.dialogVisible = true
       },
-      onDownload(id) {
-        window.open('/api/admin/file/' + id, '_blank');
+      onUpdateDialogOpen(item) {
+        this.item = item
+        this.dialogName = 'Update'
+        this.dialogVisible = true
       },
-      onUploadClose(done) {
-        // this.$confirm('确认关闭？')
-        // .then(_ => {
-        //   done();
-        // })
-        // .catch(_ => {});
-        done();
-      }
+      onRequestForCreate(){
+        this.$http.post('/api/${apiPath}',this.item).then(
+            function (res) {
+              var body = res.body;
+              var meta = body.meta;
+              var code = meta.code;
+              var message = meta.message;
+              if (200 == code) {
+                this.dialogVisible = false
+                this.onRequestForList()
+              } else {
+                this.$message.error(code + ':' + message);
+              }
+            }, function (e) {
+              var body = e.body;
+              var meta = body.meta;
+              var code = meta.code;
+              var message = meta.message;
+              if (code == 400) {
+                this.$message.error('Request params error:' + message);
+              } else if (code == 500) {
+                this.$message.error('Server error:' + message);
+              } else {
+                this.$message.error('Unknown error:' + message);
+              }
+            });
+      },
+      onRequestForUpdate(){
+        this.$http.put('/api/${apiPath}',this.item).then(
+            function (res) {
+              var body = res.body;
+              var meta = body.meta;
+              var code = meta.code;
+              var message = meta.message;
+              if (200 == code) {
+                this.dialogVisible = false
+                this.onRequestForList()
+              } else {
+                this.$message.error(code + ':' + message);
+              }
+            }, function (e) {
+              var body = e.body;
+              var meta = body.meta;
+              var code = meta.code;
+              var message = meta.message;
+              if (code == 400) {
+                this.$message.error('Request params error:' + message);
+              } else if (code == 500) {
+                this.$message.error('Server error:' + message);
+              } else {
+                this.$message.error('Unknown error:' + message);
+              }
+            });
+      },
+      onDetailDialogClose(done) {
+        this.$confirm('Confirm？')
+        .then(_ => {
+          done();
+      }).catch(_ => {});
+      },
+      onAbleButtonClick(item) {
+
+      },
+      onDelButtonClick(item) {
+
+      },
     }
   });
 </script>
