@@ -7,11 +7,11 @@ import springfox.documentation.swagger.web.UiConfigurationBuilder;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
-* pwd-initializr-organization-20210220185831978@ms-web-initializr
+* pwd-initializr-organization@ms-web-initializr
 *
-* <h1>pwd-initializr-organization-20210220185831978接口文档声明</h1>
+* <h1>pwd-initializr-organization接口文档声明</h1>
 *
-* date 2021-02-20 18:58
+* date 2021-02-20 22:30
 *
 * @author Automatic[www.dingpengwei@foxmail.com]
 * @version 0.0.1-SNAPSHOT

@@ -19,16 +19,10 @@ import java.util.Map;
 public abstract class SrcMainResources extends ProjectFile {
 
     protected String filePath;
-    protected Map<String, Object> data = new LinkedHashMap<>();
 
     public SrcMainResources(ProjectBO projectBO) {
-        this.data.put("projectPackage", projectBO.getPackageName());
-        this.data.put("projectName", projectBO.getProjectName());
-        this.data.put("projectVersion", projectBO.getProjectVersion());
-        this.data.put("applicationName", projectBO.getApplicationName());
-
-        this.filePath = projectBO.getExportDir()
-            + File.separator + projectBO.getProjectName()
+        super(projectBO);
+        this.filePath = this.fileDir
             + File.separator + "src"
             + File.separator + "main"
             + File.separator + "resources"
@@ -36,7 +30,7 @@ public abstract class SrcMainResources extends ProjectFile {
     }
 
     @Override
-    protected File getOutputFile() throws IOException {
+    protected File getOutputFile() {
         File fileDir = new File(this.filePath);
         if (!fileDir.exists()) {
             fileDir.mkdirs();

@@ -18,13 +18,10 @@ import java.util.Map;
  */
 public class ProjectStart extends ProjectFile {
 
-    private Map<String, Object> data = new LinkedHashMap<>();
-    private String fileDir;
 
     public ProjectStart(ProjectBO projectBO) {
-        this.data.put("projectName", projectBO.getProjectName());
-        this.data.put("projectVersion", projectBO.getProjectVersion());
-        this.fileDir = projectBO.getExportDir() + File.separator + projectBO.getProjectName() + File.separator + "sh";
+        super(projectBO);
+        this.fileDir = this.fileDir + File.separator + "sh";
     }
 
     @Override

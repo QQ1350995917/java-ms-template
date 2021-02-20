@@ -18,15 +18,8 @@ import java.util.Map;
  */
 public class ProjectPom extends ProjectFile {
 
-    private Map<String, Object> data = new LinkedHashMap<>();
-    private String fileDir;
-
     public ProjectPom(ProjectBO projectBO) {
-        this.data.put("projectName", projectBO.getProjectName());
-        this.data.put("projectVersion", projectBO.getProjectVersion());
-        this.data.put("projectPackage", projectBO.getPackageName());
-        this.data.put("applicationName", projectBO.getApplicationName());
-        this.fileDir = projectBO.getExportDir() + File.separator + projectBO.getProjectName();
+        super(projectBO);
     }
 
     @Override

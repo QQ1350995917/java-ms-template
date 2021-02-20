@@ -14,11 +14,11 @@ import lombok.ToString;
 import org.hibernate.validator.constraints.Length;
 
 /**
- * pwd-initializr-organization-20210220185831978@ms-web-initializr
+ * pwd-initializr-organization@ms-web-initializr
  *
  * <h1>请求参数封装</h1>
  *
- * date 2021-02-20 18:58
+ * date 2021-02-20 22:30
  *
  * @author Automatic[www.dingpengwei@foxmail.com]
  * @version 0.0.1-SNAPSHOT
@@ -34,70 +34,70 @@ public class OrganizationInput implements Serializable {
 
    /**
     * 
-    * 上级组织
+    * …œº∂◊È÷Ø
     */
-   @ApiModelProperty(name = "pid", value = "上级组织", required = true, example = "0")
+   @ApiModelProperty(name = "pid", value = "…œº∂◊È÷Ø", required = true, example = "0")
    @Digits(integer = 19, fraction = 0, message = "pid须为整数")
    private Long pid;
 
    /**
     * 
-    * 组织名称
+    * ◊È÷Ø√˚≥∆
     */
-   @ApiModelProperty(name = "name", value = "组织名称", required = true, example = "")
+   @ApiModelProperty(name = "name", value = "◊È÷Ø√˚≥∆", required = true, example = "")
    @NotBlank(message = "name不能为空")
    private String name;
 
    /**
     * 
-    * 组织logo
+    * ◊È÷Ølogo
     */
-   @ApiModelProperty(name = "logo", value = "组织logo", required = false, example = "")
+   @ApiModelProperty(name = "logo", value = "◊È÷Ølogo", required = false, example = "")
    private String logo;
 
    /**
     * 
-    * 组织描述
+    * ◊È÷Ø√Ë ˆ
     */
-   @ApiModelProperty(name = "description", value = "组织描述", required = false, example = "")
+   @ApiModelProperty(name = "description", value = "◊È÷Ø√Ë ˆ", required = false, example = "")
    private String description;
 
    /**
     * 
-    * 组织slogan
+    * ◊È÷Øslogan
     */
-   @ApiModelProperty(name = "slogan", value = "组织slogan", required = false, example = "")
+   @ApiModelProperty(name = "slogan", value = "◊È÷Øslogan", required = false, example = "")
    private String slogan;
 
    /**
     * 
-    * 组织等级
+    * ◊È÷Øµ»º∂
     */
-   @ApiModelProperty(name = "level", value = "组织等级", required = true, example = "0")
+   @ApiModelProperty(name = "level", value = "◊È÷Øµ»º∂", required = true, example = "0")
    @Digits(integer = 10, fraction = 0, message = "level须为整数")
    private Integer level;
 
    /**
     * 
-    * 组织排序
+    * ◊È÷Ø≈≈–Ú
     */
-   @ApiModelProperty(name = "sort", value = "组织排序", required = true, example = "0")
+   @ApiModelProperty(name = "sort", value = "◊È÷Ø≈≈–Ú", required = true, example = "0")
    @Digits(integer = 10, fraction = 0, message = "sort须为整数")
    private Integer sort;
 
    /**
     * 
-    * 组织成员数量
+    * ◊È÷Ø≥…‘± ˝¡ø
     */
-   @ApiModelProperty(name = "members", value = "组织成员数量", required = true, example = "1")
+   @ApiModelProperty(name = "members", value = "◊È÷Ø≥…‘± ˝¡ø", required = true, example = "1")
    @Digits(integer = 10, fraction = 0, message = "members须为整数")
    private Integer members;
 
    /**
     * 
-    * 组织审核进度
+    * ◊È÷Ø…Û∫ÀΩ¯∂»
     */
-   @ApiModelProperty(name = "progress", value = "组织审核进度", required = true, example = "0")
+   @ApiModelProperty(name = "progress", value = "◊È÷Ø…Û∫ÀΩ¯∂»", required = true, example = "0")
    @Digits(integer = 10, fraction = 0, message = "progress须为整数")
    private Integer progress;
 

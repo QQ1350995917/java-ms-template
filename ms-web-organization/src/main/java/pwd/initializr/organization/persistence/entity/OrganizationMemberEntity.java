@@ -10,7 +10,7 @@ import lombok.ToString;
 
 /**
  * <h2>organization_member数据表实体类</h2>
- * date 2021-02-20 18:58
+ * date 2021-02-20 22:30
  *
  * @author Automatic[www.dingpengwei@foxmail.com]
  * @since 0.0.1-SNAPSHOT
@@ -25,37 +25,37 @@ public class OrganizationMemberEntity implements Serializable {
   private static final long serialVersionUID = 1L;
   /**
     * 主键
-    * 外键，组织ID
+    * Õ‚º¸£¨◊È÷ØID
     */
   private Long orgId;
   /**
     * 主键
-    * 外键，成员ID
+    * Õ‚º¸£¨≥…‘±ID
     */
   private Long memId;
   /**
     * 
-    * 排序
+    * ≈≈–Ú
     */
   private Integer sort;
   /**
     * 
-    * 状态，0禁用，1可用
+    * ◊¥Ã¨£¨0Ω˚”√£¨1ø…”√
     */
   private Integer able;
   /**
     * 
-    * 状态，0正常，1删除
+    * ◊¥Ã¨£¨0’˝≥££¨1…æ≥˝
     */
   private Integer del;
   /**
     * 
-    * 首次创建时间
+    *  ◊¥Œ¥¥Ω® ±º‰
     */
   private Date createTime;
   /**
     * 
-    * 最近修改时间
+    * ◊ÓΩ¸–ﬁ∏ƒ ±º‰
     */
   private Date updateTime;
 

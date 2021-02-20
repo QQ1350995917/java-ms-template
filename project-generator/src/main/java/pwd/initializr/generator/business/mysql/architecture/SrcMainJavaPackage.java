@@ -20,19 +20,13 @@ import java.util.Map;
  */
 public abstract class SrcMainJavaPackage extends ProjectFile {
 
-    private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("YYYY-MM-dd HH:mm");
+
     protected String packagePath;
-    protected Map<String, Object> data = new LinkedHashMap<>();
 
     public SrcMainJavaPackage(ProjectBO projectBO) {
-        this.data.put("projectPackage", projectBO.getPackageName());
-        this.data.put("projectName", projectBO.getProjectName());
-        this.data.put("projectVersion", projectBO.getProjectVersion());
-        this.data.put("projectCreateDate", simpleDateFormat.format(new Date()));
-        this.data.put("applicationName", projectBO.getApplicationName());
+        super(projectBO);
 
-        this.packagePath = projectBO.getExportDir()
-            + File.separator + projectBO.getProjectName()
+        this.packagePath = this.fileDir
             + File.separator + "src"
             + File.separator + "main"
             + File.separator + "java"

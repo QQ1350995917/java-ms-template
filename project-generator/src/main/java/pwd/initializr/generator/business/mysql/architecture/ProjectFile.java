@@ -7,6 +7,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -22,11 +25,30 @@ import java.util.Map;
  */
 public abstract class ProjectFile {
 
+
+
     static Configuration configuration = new Configuration(Configuration.VERSION_2_3_28);
 
     static {
         // 设置加载的目录
         configuration.setClassForTemplateLoading(ArchitectureBoot.class, "/templates");
+    }
+
+    protected static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("YYYY-MM-dd HH:mm");
+
+    protected ProjectBO projectBO;
+    protected Map<String, Object> data = new LinkedHashMap<>();
+    protected String fileDir;
+
+    public ProjectFile(ProjectBO projectBO) {
+        this.projectBO = projectBO;
+        this.data.put("projectName", projectBO.getProjectName());
+        this.data.put("projectVersion", projectBO.getProjectVersion());
+        this.data.put("projectPackage", projectBO.getPackageName());
+        this.data.put("applicationName", projectBO.getApplicationName());
+        this.data.put("projectCreateDate", simpleDateFormat.format(new Date()));
+
+        this.fileDir = projectBO.getExportDir() + File.separator + projectBO.getProjectDir();
     }
 
     protected abstract Map<String, Object> getData();

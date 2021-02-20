@@ -10,7 +10,7 @@ import lombok.ToString;
 
 /**
  * <h2>organization数据表实体类</h2>
- * date 2021-02-20 18:58
+ * date 2021-02-20 22:30
  *
  * @author Automatic[www.dingpengwei@foxmail.com]
  * @since 0.0.1-SNAPSHOT
@@ -25,72 +25,72 @@ public class OrganizationEntity implements Serializable {
   private static final long serialVersionUID = 1L;
   /**
     * 主键
-    * 主键
+    * ÷˜º¸
     */
   private Long id;
   /**
     * 
-    * 上级组织
+    * …œº∂◊È÷Ø
     */
   private Long pid;
   /**
     * 
-    * 组织名称
+    * ◊È÷Ø√˚≥∆
     */
   private String name;
   /**
     * 
-    * 组织logo
+    * ◊È÷Ølogo
     */
   private String logo;
   /**
     * 
-    * 组织描述
+    * ◊È÷Ø√Ë ˆ
     */
   private String description;
   /**
     * 
-    * 组织slogan
+    * ◊È÷Øslogan
     */
   private String slogan;
   /**
     * 
-    * 组织等级
+    * ◊È÷Øµ»º∂
     */
   private Integer level;
   /**
     * 
-    * 组织排序
+    * ◊È÷Ø≈≈–Ú
     */
   private Integer sort;
   /**
     * 
-    * 组织成员数量
+    * ◊È÷Ø≥…‘± ˝¡ø
     */
   private Integer members;
   /**
     * 
-    * 组织审核进度
+    * ◊È÷Ø…Û∫ÀΩ¯∂»
     */
   private Integer progress;
   /**
     * 
-    * 状态，0禁用，1可用
+    * ◊¥Ã¨£¨0Ω˚”√£¨1ø…”√
     */
   private Integer able;
   /**
     * 
-    * 状态，0正常，1删除
+    * ◊¥Ã¨£¨0’˝≥££¨1…æ≥˝
     */
   private Integer del;
   /**
     * 
-    * 首次创建时间
+    *  ◊¥Œ¥¥Ω® ±º‰
     */
   private Date createTime;
   /**
     * 
-    * 最近修改时间
+    * ◊ÓΩ¸–ﬁ∏ƒ ±º‰
     */
   private Date updateTime;
 

@@ -18,11 +18,8 @@ import java.util.Map;
  */
 public class ProjectZip extends ProjectFile {
 
-    private Map<String, Object> data = new LinkedHashMap<>();
-    private String fileDir;
-
     public ProjectZip(ProjectBO projectBO) {
-        this.fileDir = projectBO.getExportDir() + File.separator + projectBO.getProjectName();
+        super(projectBO);
     }
 
     @Override

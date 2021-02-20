@@ -16,34 +16,31 @@ import java.util.Map;
  * @version 1.0.0
  * @since DistributionVersion
  */
-public class ProjectStop extends ProjectFile {
+public class ProjectStop extends ProjectStart {
 
-    private Map<String, Object> data = new LinkedHashMap<>();
-    private String fileDir;
+  public ProjectStop(ProjectBO projectBO) {
+    super(projectBO);
+  }
 
-    public ProjectStop(ProjectBO projectBO) {
-        this.fileDir = projectBO.getExportDir() + File.separator + projectBO.getProjectName() + File.separator + "sh";
+  @Override
+  protected Map<String, Object> getData() {
+    return this.data;
+  }
+
+  @Override
+  protected String getTemplate() {
+    return "mysql/bin/stop.sh.ftl";
+  }
+
+  @Override
+  protected File getOutputFile() throws IOException {
+
+    File fileDir = new File(this.fileDir);
+    if (!fileDir.exists()) {
+      fileDir.mkdirs();
     }
 
-    @Override
-    protected Map<String, Object> getData() {
-        return this.data;
-    }
-
-    @Override
-    protected String getTemplate() {
-        return "mysql/bin/stop.sh.ftl";
-    }
-
-    @Override
-    protected File getOutputFile() throws IOException {
-
-        File fileDir = new File(this.fileDir);
-        if (!fileDir.exists()) {
-            fileDir.mkdirs();
-        }
-
-        String filePath = this.fileDir + File.separator + "stop.sh";
-        return new File(filePath);
-    }
+    String filePath = this.fileDir + File.separator + "stop.sh";
+    return new File(filePath);
+  }
 }

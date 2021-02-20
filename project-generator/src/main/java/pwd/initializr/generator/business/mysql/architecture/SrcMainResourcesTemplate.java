@@ -20,8 +20,7 @@ public abstract class SrcMainResourcesTemplate extends SrcMainResources {
 
     public SrcMainResourcesTemplate(ProjectBO projectBO) {
         super(projectBO);
-        this.filePath = projectBO.getExportDir()
-            + File.separator + projectBO.getProjectName()
+        this.filePath = this.fileDir
             + File.separator + "src"
             + File.separator + "main"
             + File.separator + "resources"

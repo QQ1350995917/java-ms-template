@@ -13,11 +13,11 @@ import lombok.ToString;
 import org.hibernate.validator.constraints.Length;
 
 /**
- * pwd-initializr-organization-20210220185831978@ms-web-initializr
+ * pwd-initializr-organization@ms-web-initializr
  *
  * <h1>响应参数封装</h1>
  *
- * date 2021-02-20 18:58
+ * date 2021-02-20 22:30
  *
  * @author Automatic[www.dingpengwei@foxmail.com]
  * @version 0.0.1-SNAPSHOT
@@ -33,51 +33,51 @@ public class OrganizationMemberOutput implements Serializable {
 
   /**
    * 主键
-   * 外键，组织ID
+   * Õ‚º¸£¨◊È÷ØID
    */
-  @ApiModelProperty(name = "orgId", value = "外键，组织ID", required = true, example = "")
+  @ApiModelProperty(name = "orgId", value = "Õ‚º¸£¨◊È÷ØID", required = true, example = "")
    @NotBlank(message = "orgId不能为空")
   private Long orgId;
   /**
    * 主键
-   * 外键，成员ID
+   * Õ‚º¸£¨≥…‘±ID
    */
-  @ApiModelProperty(name = "memId", value = "外键，成员ID", required = true, example = "")
+  @ApiModelProperty(name = "memId", value = "Õ‚º¸£¨≥…‘±ID", required = true, example = "")
    @NotBlank(message = "memId不能为空")
   private Long memId;
   /**
    * 
-   * 排序
+   * ≈≈–Ú
    */
-  @ApiModelProperty(name = "sort", value = "排序", required = true, example = "0")
+  @ApiModelProperty(name = "sort", value = "≈≈–Ú", required = true, example = "0")
    @NotBlank(message = "sort不能为空")
   private Integer sort;
   /**
    * 
-   * 状态，0禁用，1可用
+   * ◊¥Ã¨£¨0Ω˚”√£¨1ø…”√
    */
-  @ApiModelProperty(name = "able", value = "状态，0禁用，1可用", required = true, example = "0")
+  @ApiModelProperty(name = "able", value = "◊¥Ã¨£¨0Ω˚”√£¨1ø…”√", required = true, example = "0")
    @NotBlank(message = "able不能为空")
   private Integer able;
   /**
    * 
-   * 状态，0正常，1删除
+   * ◊¥Ã¨£¨0’˝≥££¨1…æ≥˝
    */
-  @ApiModelProperty(name = "del", value = "状态，0正常，1删除", required = true, example = "0")
+  @ApiModelProperty(name = "del", value = "◊¥Ã¨£¨0’˝≥££¨1…æ≥˝", required = true, example = "0")
    @NotBlank(message = "del不能为空")
   private Integer del;
   /**
    * 
-   * 首次创建时间
+   *  ◊¥Œ¥¥Ω® ±º‰
    */
-  @ApiModelProperty(name = "createTime", value = "首次创建时间", required = true, example = "")
+  @ApiModelProperty(name = "createTime", value = " ◊¥Œ¥¥Ω® ±º‰", required = true, example = "")
    @NotBlank(message = "createTime不能为空")
   private Date createTime;
   /**
    * 
-   * 最近修改时间
+   * ◊ÓΩ¸–ﬁ∏ƒ ±º‰
    */
-  @ApiModelProperty(name = "updateTime", value = "最近修改时间", required = true, example = "")
+  @ApiModelProperty(name = "updateTime", value = "◊ÓΩ¸–ﬁ∏ƒ ±º‰", required = true, example = "")
    @NotBlank(message = "updateTime不能为空")
   private Date updateTime;
 }

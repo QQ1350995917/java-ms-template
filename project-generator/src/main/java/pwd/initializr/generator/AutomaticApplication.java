@@ -4,10 +4,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
 
 /**
  * pwd.initializr.account@ms-web-initializr
@@ -21,7 +17,6 @@ import org.springframework.web.servlet.ModelAndView;
  * @since DistributionVersion
  */
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
-@Controller
 @ComponentScan(basePackages = {"pwd.initializr.common.web", "pwd.initializr.generator"})
 public class AutomaticApplication {
 
@@ -29,9 +24,4 @@ public class AutomaticApplication {
         SpringApplication.run(AutomaticApplication.class, args);
     }
 
-//    @GetMapping("")
-//    public ModelAndView index(){
-//        ModelAndView modelAndView = new ModelAndView("redirect:/swagger-ui.html");
-//        return modelAndView;
-//    }
 }

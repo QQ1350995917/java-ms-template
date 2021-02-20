@@ -2,20 +2,13 @@ package pwd.initializr.generator.api;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.sql.SQLException;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import javax.activation.MimetypesFileTypeMap;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -34,7 +27,6 @@ import pwd.initializr.common.web.api.admin.AdminController;
 import pwd.initializr.generator.api.vo.GeneratorInput;
 import pwd.initializr.generator.business.mysql.architecture.ArchitectureBoot;
 import pwd.initializr.generator.business.mysql.architecture.ProjectBO;
-import pwd.initializr.generator.business.mysql.architecture.SrcMainJavaPackageApiSwagger2;
 import pwd.initializr.generator.business.mysql.architecture.SrcMainResourcesTemplatesIndex;
 import pwd.initializr.generator.business.mysql.database.DataSourceBO;
 import pwd.initializr.generator.business.mysql.database.DataSourceTableColumn;
@@ -63,85 +55,82 @@ import pwd.initializr.generator.util.VariableName;
 @Slf4j
 public class GeneratorController extends AdminController {
 
-    @Value("${project.generator.storage}")
-    private String projectGeneratorStorage;
+  @Value("${project.generator.storage}")
+  private String projectGeneratorStorage;
 
-    @ApiOperation(value = "工程代码生成")
-    @PostMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public void generate(@RequestBody @NotNull(message = "参数不能为空") GeneratorInput input) {
-        String yyyyMMddHHmmssSSS = DateTimeUtil.getCurrent("yyyyMMddHHmmssSSS");
-        ProjectBO projectBO = new ProjectBO();
-        BeanUtils.copyProperties(input, projectBO);
-        projectBO.setProjectName(projectBO.getProjectName() + "-" + yyyyMMddHHmmssSSS);
-        projectBO.setExportDir(projectGeneratorStorage);
-        projectBO.setProjectPort(80);
-        ArchitectureBoot architectureBoot = new ArchitectureBoot();
-        architectureBoot.generateProjectArchitecture(projectBO);
+  @ApiOperation(value = "工程代码下载")
+  @GetMapping(value = {"/{filename}"})
+  public void download(@PathVariable("filename") @NotNull(message = "参数不能为空") String filename) {
+    File file = new File(projectGeneratorStorage + File.separator + filename + ".zip");
+    try {
+      this.outputAttachmentFile(file);
+    } catch (Exception e) {
+      e.printStackTrace();
+      outputException(500);
+    }
+  }
 
-        DataSourceBO dataSourceBO = new DataSourceBO();
-        BeanUtils.copyProperties(input, dataSourceBO);
-        DataSourceTableColumn dataSourceTableColumn = new DataSourceTableColumn(dataSourceBO,
-            input.getName(), input.getTables());
-        Map<String, Object> exec = null;
-        try {
-            exec = dataSourceTableColumn.exec();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            outputException(500);
-            return;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            outputException(500);
-            return;
-        }
+  @ApiOperation(value = "工程代码生成")
+  @PostMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  public void generate(@RequestBody @NotNull(message = "参数不能为空") GeneratorInput input) {
+    String yyyyMMddHHmmssSSS = DateTimeUtil.getCurrent("yyyyMMddHHmmssSSS");
+    ProjectBO projectBO = new ProjectBO();
+    BeanUtils.copyProperties(input, projectBO);
+    projectBO.setProjectDir(projectBO.getProjectName() + "-" + yyyyMMddHHmmssSSS);
+    projectBO.setExportDir(projectGeneratorStorage);
+    projectBO.setProjectPort(80);
+    ArchitectureBoot architectureBoot = new ArchitectureBoot();
+    architectureBoot.generateProjectArchitecture(projectBO);
 
-        try {
-            Set<String> tables = exec.keySet();
-            Set<String> classNames = new LinkedHashSet<>();
-            for (String table : tables) {
-                String tableName = table;
-                String className = VariableName
-                    .upperInitials(VariableName.underlineToHump(tableName));
-                classNames.add(StringUtils.toLowerCaseFirstLetter(className));
-                List<TableColumnBO> tableColumnBOList = (List<TableColumnBO>) exec.get(table);
-                DatabaseBoot databaseBoot = new DatabaseBoot();
-                databaseBoot.generateProjectSrc(projectBO, tableName, className, tableColumnBOList);
-            }
-
-            new SrcMainResourcesTemplatesIndex(projectBO,classNames).createProjectFile();
-
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            outputException(500);
-            return;
-        }
-
-
-
-
-        String sourceDir = projectGeneratorStorage + File.separator + projectBO.getProjectName();
-        String fileName = projectBO.getProjectName();
-        String fullFileName = fileName + ".zip";
-        String targetFile = projectGeneratorStorage + File.separator + fullFileName;
-        try {
-            ZipUtil.zip(sourceDir, targetFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-            outputException(500);
-            return;
-        }
-        outputData(200,fileName);
+    DataSourceBO dataSourceBO = new DataSourceBO();
+    BeanUtils.copyProperties(input, dataSourceBO);
+    DataSourceTableColumn dataSourceTableColumn = new DataSourceTableColumn(dataSourceBO,
+        input.getName(), input.getTables());
+    Map<String, Object> exec = null;
+    try {
+      exec = dataSourceTableColumn.exec();
+    } catch (ClassNotFoundException e) {
+      e.printStackTrace();
+      outputException(500);
+      return;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      outputException(500);
+      return;
     }
 
-    @ApiOperation(value = "工程代码下载")
-    @GetMapping(value = {"/{filename}"})
-    public void download(@PathVariable("filename") @NotNull(message = "参数不能为空") String filename) {
-        File file = new File(projectGeneratorStorage + File.separator + filename + ".zip");
-        try {
-            this.outputAttachmentFile(file);
-        } catch (Exception e) {
-            e.printStackTrace();
-            outputException(500);
-        }
+    try {
+      Set<String> tables = exec.keySet();
+      Set<String> classNames = new LinkedHashSet<>();
+      for (String table : tables) {
+        String tableName = table;
+        String className = VariableName
+            .upperInitials(VariableName.underlineToHump(tableName));
+        classNames.add(StringUtils.toLowerCaseFirstLetter(className));
+        List<TableColumnBO> tableColumnBOList = (List<TableColumnBO>) exec.get(table);
+        DatabaseBoot databaseBoot = new DatabaseBoot();
+        databaseBoot.generateProjectSrc(projectBO, tableName, className, tableColumnBOList);
+      }
+
+      new SrcMainResourcesTemplatesIndex(projectBO, classNames).createProjectFile();
+
+    } catch (Exception e) {
+      log.error(e.getMessage());
+      outputException(500);
+      return;
     }
+
+    String sourceDir = projectGeneratorStorage + File.separator + projectBO.getProjectDir();
+    String fileName = projectBO.getProjectDir();
+    String fullFileName = fileName + ".zip";
+    String targetFile = projectGeneratorStorage + File.separator + fullFileName;
+    try {
+      ZipUtil.zip(sourceDir, targetFile);
+    } catch (IOException e) {
+      e.printStackTrace();
+      outputException(500);
+      return;
+    }
+    outputData(200, fileName);
+  }
 }

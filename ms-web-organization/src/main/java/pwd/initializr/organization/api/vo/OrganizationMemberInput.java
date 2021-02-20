@@ -14,11 +14,11 @@ import lombok.ToString;
 import org.hibernate.validator.constraints.Length;
 
 /**
- * pwd-initializr-organization-20210220185831978@ms-web-initializr
+ * pwd-initializr-organization@ms-web-initializr
  *
  * <h1>请求参数封装</h1>
  *
- * date 2021-02-20 18:58
+ * date 2021-02-20 22:30
  *
  * @author Automatic[www.dingpengwei@foxmail.com]
  * @version 0.0.1-SNAPSHOT
@@ -34,9 +34,9 @@ public class OrganizationMemberInput implements Serializable {
 
    /**
     * 
-    * 排序
+    * ≈≈–Ú
     */
-   @ApiModelProperty(name = "sort", value = "排序", required = true, example = "0")
+   @ApiModelProperty(name = "sort", value = "≈≈–Ú", required = true, example = "0")
    @Digits(integer = 10, fraction = 0, message = "sort须为整数")
    private Integer sort;
 

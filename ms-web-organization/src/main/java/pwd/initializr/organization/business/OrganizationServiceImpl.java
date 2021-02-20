@@ -19,7 +19,7 @@ import pwd.initializr.common.web.persistence.entity.EntityDel;
 
 /**
  * <h2>服务层逻辑接口封装：OrganizationEntity信息服务接口</h2>
- * date 2021-02-20 18:58
+ * date 2021-02-20 22:30
  *
  * @author Automatic[www.dingpengwei@foxmail.com]
  * @since 0.0.1-SNAPSHOT

@@ -27,11 +27,11 @@ import pwd.initializr.common.web.business.bo.SortBO;
 import pwd.initializr.common.web.persistence.entity.EntityAble;
 
 /**
-* pwd-initializr-organization-20210220185831978@ms-web-initializr
+* pwd-initializr-organization@ms-web-initializr
 *
 * <h1>OrganizationMember控制层接口实现</h1>
 *
-* date 2021-02-20 18:58
+* date 2021-02-20 22:30
 *
 * @author Automatic[dingpengwei@foxmail.com]
 * @version 0.0.1-SNAPSHOT
