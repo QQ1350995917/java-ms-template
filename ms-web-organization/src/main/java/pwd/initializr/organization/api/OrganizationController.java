@@ -150,6 +150,7 @@ public class OrganizationController extends pwd.initializr.common.web.api.admin.
   @Valid @NotNull(message = "参数不能为空") OrganizationInput input) {
     OrganizationBO bo = new OrganizationBO();
     BeanUtils.copyProperties(input,bo);
+    bo.setId(id);
     Integer result = service.updateById(bo);
     outputData(200,result);
   }
