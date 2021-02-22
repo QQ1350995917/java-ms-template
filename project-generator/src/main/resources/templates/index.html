@@ -16,6 +16,7 @@
       top: 0;
       z-index: -1;
     }
+
     .canvasBgImage {
       width: 100%;
       height: 100%;
@@ -65,7 +66,7 @@
 <body>
 <canvas id="canvas" width="1553" height="270" style="z-index: -1"></canvas>
 <!--<div class="canvasBgImage"></div>-->
-<el-container id="container" >
+<el-container id="container">
   <el-header style="padding: 0px;height: 42px">
     <el-row>
       <el-col :span="12" :offset="6">
@@ -169,7 +170,7 @@
 <script>
   new Vue({
     el: '#container',
-    data: function () {
+    data: function() {
       return {
         tableOptions: [],
         tables: [],
@@ -198,8 +199,9 @@
         this.$http.get(
             '/api/admin/database?name=' + this.databaseName + '&url=' + this.databaseUrl
             + '&driver='
-            + this.databaseDriver + '&user=' + this.databaseUser + '&pwd=' + encodeURIComponent(this.databasePwd)).then(
-            function (res) {
+            + this.databaseDriver + '&user=' + this.databaseUser + '&pwd=' + encodeURIComponent(
+            this.databasePwd)).then(
+            function(res) {
               var body = res.body;
               var meta = body.meta;
               var code = meta.code;
@@ -214,7 +216,7 @@
                 this.tables = data.tables;
               }
 
-            }, function (e) {
+            }, function(e) {
               var body = e.body;
               var meta = body.meta;
               var code = meta.code;
@@ -227,7 +229,7 @@
               }
             });
       },
-      onCodeClick(){
+      onCodeClick() {
         if (this.filename === '') {
           this.onCodeGenerator();
         } else {
@@ -246,21 +248,22 @@
               packageName: this.projectPackage,
               projectVersion: this.projectVersion,
               applicationName: this.applicationName,
+              applicationPort: this.applicationPort,
               tables: this.checkedTables
             }, {
               header: {
                 'Content-Type': 'application/json;charset=UTF-8'
-              },
+              }
               // emulateJSON: true
             }).then(
-            function (res) {
+            function(res) {
               var body = res.body;
               var meta = body.meta;
               var code = meta.code;
               this.tagName = '下载';
               this.filename = body.data;
 
-            }, function (e) {
+            }, function(e) {
               var body = e.body;
               var meta = body.meta;
               var code = meta.code;
@@ -275,9 +278,9 @@
       },
       onCodeDownload() {
         this.$http.get('/api/admin/generator/' + this.filename).then(
-            function (res) {
+            function(res) {
               var body = res.body;
-            }, function (e) {
+            }, function(e) {
               var body = e.body;
               var meta = body.meta;
               var code = meta.code;

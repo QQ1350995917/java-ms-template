@@ -16,25 +16,25 @@ import java.util.Map;
  */
 public class SrcMainJavaPackageIndexApi extends SrcMainJavaPackage {
 
-    public SrcMainJavaPackageIndexApi(
-        ProjectBO projectBO) {
-        super(projectBO);
-        this.packagePath += File.separator + "api";
-    }
+  public SrcMainJavaPackageIndexApi(
+      ProjectBO projectBO) {
+    super(projectBO);
+    this.packagePath += File.separator + "api";
+  }
 
-    @Override
-    protected String getClassName() {
-        return "IndexApi";
-    }
+  @Override
+  protected String getClassName() {
+    return "IndexApi";
+  }
 
-    @Override
-    protected Map<String, Object> getData() {
-        return this.data;
-    }
+  @Override
+  protected String getTemplate() {
+    return "mysql/src/main/java/IndexApi.java.ftl";
+  }
 
-    @Override
-    protected String getTemplate() {
-        return "mysql/src/main/java/IndexApi.java.ftl";
-    }
+  @Override
+  protected Map<String, Object> getData() {
+    return this.data;
+  }
 
 }

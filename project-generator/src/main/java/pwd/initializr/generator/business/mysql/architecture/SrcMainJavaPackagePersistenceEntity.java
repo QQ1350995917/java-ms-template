@@ -18,37 +18,37 @@ import pwd.initializr.generator.business.mysql.database.TableColumnBO;
  */
 public class SrcMainJavaPackagePersistenceEntity extends SrcMainJavaPackage {
 
-    private String tableName;
-    private String className;
-    private List<TableColumnBO> tableColumnBOList;
+  private String tableName;
+  private String className;
+  private List<TableColumnBO> tableColumnBOList;
 
-    public SrcMainJavaPackagePersistenceEntity(ProjectBO projectBO, String tableName,
-        String className,
-        List<TableColumnBO> tableColumnBOList) {
-        super(projectBO);
-        this.packagePath += File.separator + "persistence" + File.separator + "entity";
-        this.tableName = tableName;
-        this.className = className;
-        this.tableColumnBOList = tableColumnBOList;
-    }
+  public SrcMainJavaPackagePersistenceEntity(ProjectBO projectBO, String tableName,
+      String className,
+      List<TableColumnBO> tableColumnBOList) {
+    super(projectBO);
+    this.packagePath += File.separator + "persistence" + File.separator + "entity";
+    this.tableName = tableName;
+    this.className = className;
+    this.tableColumnBOList = tableColumnBOList;
+  }
 
-    @Override
-    protected Map<String, Object> getData() {
-        this.data.put("className", this.className);
-        this.data.put("tableName", this.tableName);
-        this.data.put("columns", tableColumnBOList);
-        return this.data;
-    }
+  @Override
+  protected String getClassName() {
+    return className + "Entity";
+  }
 
-    @Override
-    protected String getTemplate() {
-        return "mysql/src/main/java/PersistenceEntity.java.ftl";
-    }
+  @Override
+  protected String getTemplate() {
+    return "mysql/src/main/java/PersistenceEntity.java.ftl";
+  }
 
-    @Override
-    protected String getClassName() {
-        return className + "Entity";
-    }
+  @Override
+  protected Map<String, Object> getData() {
+    this.data.put("className", this.className);
+    this.data.put("tableName", this.tableName);
+    this.data.put("columns", tableColumnBOList);
+    return this.data;
+  }
 
 
 }

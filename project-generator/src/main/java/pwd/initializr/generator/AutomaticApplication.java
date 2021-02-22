@@ -20,8 +20,8 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan(basePackages = {"pwd.initializr.common.web", "pwd.initializr.generator"})
 public class AutomaticApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(AutomaticApplication.class, args);
-    }
+  public static void main(String[] args) {
+    SpringApplication.run(AutomaticApplication.class, args);
+  }
 
 }

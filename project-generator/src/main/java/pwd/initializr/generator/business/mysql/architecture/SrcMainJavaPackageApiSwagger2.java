@@ -16,23 +16,23 @@ import java.util.Map;
  */
 public class SrcMainJavaPackageApiSwagger2 extends SrcMainJavaPackage {
 
-    public SrcMainJavaPackageApiSwagger2(ProjectBO projectBO) {
-        super(projectBO);
-        this.packagePath += File.separator + "api";
-    }
+  public SrcMainJavaPackageApiSwagger2(ProjectBO projectBO) {
+    super(projectBO);
+    this.packagePath += File.separator + "api";
+  }
 
-    @Override
-    protected String getClassName() {
-        return "Swagger2";
-    }
+  @Override
+  protected String getClassName() {
+    return "Swagger2";
+  }
 
-    @Override
-    protected Map<String, Object> getData() {
-        return this.data;
-    }
+  @Override
+  protected String getTemplate() {
+    return "mysql/src/main/java/ApiSwagger2.java.ftl";
+  }
 
-    @Override
-    protected String getTemplate() {
-        return "mysql/src/main/java/ApiSwagger2.java.ftl";
-    }
+  @Override
+  protected Map<String, Object> getData() {
+    return this.data;
+  }
 }

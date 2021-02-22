@@ -23,28 +23,28 @@ import org.apache.tomcat.util.http.fileupload.IOUtils;
  */
 public class Zip {
 
-    public static void main(String[] args) {
-
+  public static void decompressZipfile(String file, String outputDir) throws IOException {
+    if (!new File(outputDir).exists()) {
+      new File(outputDir).mkdirs();
     }
-
-    public static void decompressZipfile(String file, String outputDir) throws IOException {
-        if (!new File(outputDir).exists()) {
-            new File(outputDir).mkdirs();
-        }
-        ZipFile zipFile = new ZipFile(file);
-        Enumeration<? extends ZipEntry> entries = zipFile.entries();
-        while (entries.hasMoreElements()) {
-            ZipEntry entry = entries.nextElement();
-            File entryDestination = new File(outputDir, entry.getName());
-            if (entry.isDirectory()) {
-                entryDestination.mkdirs();
-            } else {
-                InputStream in = zipFile.getInputStream(entry);
-                OutputStream out = new FileOutputStream(entryDestination);
-                IOUtils.copy(in, out);
-                IOUtils.closeQuietly(in);
-                IOUtils.closeQuietly(out);
-            }
-        }
+    ZipFile zipFile = new ZipFile(file);
+    Enumeration<? extends ZipEntry> entries = zipFile.entries();
+    while (entries.hasMoreElements()) {
+      ZipEntry entry = entries.nextElement();
+      File entryDestination = new File(outputDir, entry.getName());
+      if (entry.isDirectory()) {
+        entryDestination.mkdirs();
+      } else {
+        InputStream in = zipFile.getInputStream(entry);
+        OutputStream out = new FileOutputStream(entryDestination);
+        IOUtils.copy(in, out);
+        IOUtils.closeQuietly(in);
+        IOUtils.closeQuietly(out);
+      }
     }
+  }
+
+  public static void main(String[] args) {
+
+  }
 }

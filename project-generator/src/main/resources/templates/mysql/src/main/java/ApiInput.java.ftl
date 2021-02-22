@@ -1,20 +1,20 @@
 package ${projectPackage}.api.vo;
 
 <#if columns?exists>
- <#list columns as column>
-  <#if (column.javaType?lower_case = 'date')>
-   <#assign importDate="import java.util.Date;"/>
-  </#if>
-  <#if (column.javaType?lower_case = 'bigdecimal')>
-   <#assign importBigDecimal="import java.math.BigDecimal;"/>
-  </#if>
- </#list>
+  <#list columns as column>
+    <#if (column.javaType?lower_case = 'date')>
+      <#assign importDate="import java.util.Date;"/>
+    </#if>
+    <#if (column.javaType?lower_case = 'bigdecimal')>
+      <#assign importBigDecimal="import java.math.BigDecimal;"/>
+    </#if>
+  </#list>
 </#if>
 <#if (importBigDecimal)??>
-${importBigDecimal!''}
+  ${importBigDecimal!''}
 </#if>
 <#if (importDate)??>
-${importDate!''}
+  ${importDate!''}
 </#if>
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -48,38 +48,38 @@ import org.hibernate.validator.constraints.Length;
 public class ${className}Input implements Serializable {
 
 <#if columns?exists>
- <#list columns as column>
-  <#if (column.key || column.javaName = 'createTime' || column.javaName = 'updateTime' || column.javaName = 'able' || column.javaName = 'del' || column.javaName = 'version')>
-  <#else>
+  <#list columns as column>
+    <#if (column.key || column.javaName = 'createTime' || column.javaName = 'updateTime' || column.javaName = 'able' || column.javaName = 'del' || column.javaName = 'version')>
+    <#else>
    /**
     * <#if (column.key)>主键<#assign hasKey=true/><#assign keyName='${column.javaName}'/></#if>
     * ${column.comment!}
     */
    @ApiModelProperty(name = "${column.javaName}", value = "${column.comment!}", <#if column.nullable == 'NO'>required = true<#else>required = false</#if>, example = "${column.defaultValue!}")
-   <#if (column.nullable == 'NO' && column.javaType = "String")>
+      <#if (column.nullable == 'NO' && column.javaType = "String")>
    @NotBlank(message = "${column.javaName}不能为空")
-   </#if>
-   <#if (column.nullable == 'NO' && column.javaType = "Long")>
+      </#if>
+      <#if (column.nullable == 'NO' && column.javaType = "Long")>
    @Digits(integer = 19, fraction = 0, message = "${column.javaName}须为整数")
-   </#if>
-   <#if (column.nullable == 'NO' && column.javaType = "Integer")>
+      </#if>
+      <#if (column.nullable == 'NO' && column.javaType = "Integer")>
    @Digits(integer = 10, fraction = 0, message = "${column.javaName}须为整数")
-   </#if>
-   <#if (column.nullable == 'NO' && column.javaType = "Short")>
+      </#if>
+      <#if (column.nullable == 'NO' && column.javaType = "Short")>
    @Digits(integer = 5, fraction = 0, message = "${column.javaName}须为整数")
-   </#if>
-   <#if (column.nullable == 'NO' && column.javaType = "Byte")>
+      </#if>
+      <#if (column.nullable == 'NO' && column.javaType = "Byte")>
    @Digits(integer = 3, fraction = 0, message = "${column.javaName}须为整数")
-   </#if>
-   <#if (column.nullable == 'NO' && column.javaType = "Double")>
+      </#if>
+      <#if (column.nullable == 'NO' && column.javaType = "Double")>
    @Digits(integer = 19, fraction = 16, message = "${column.javaName}须为小数")
-   </#if>
-   <#if (column.nullable == 'NO' && column.javaType = "Float")>
+      </#if>
+      <#if (column.nullable == 'NO' && column.javaType = "Float")>
    @Digits(integer = 10, fraction = 6, message = "${column.javaName}须为小数")
-   </#if>
+      </#if>
    private ${column.javaType} ${column.javaName};
 
-  </#if>
- </#list>
+    </#if>
+  </#list>
 </#if>
 }

@@ -39,20 +39,20 @@ import pwd.initializr.generator.business.mysql.database.DataSourceTable;
 @Slf4j
 public class DatabaseController extends AdminController {
 
-    @ApiOperation(value = "连接测试同时获取表名")
-    @GetMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public void getTables(@Valid @NotNull(message = "参数不能为空") DatabaseInput input) {
-        DataSourceBO dataSourceBO = new DataSourceBO();
-        BeanUtils.copyProperties(input, dataSourceBO);
-        DataSourceComponent dataSourceComponent = new DataSourceTable(dataSourceBO,
-            input.getName());
-        try {
-            Map<String, Object> exec = dataSourceComponent.exec();
-            outputData(exec);
-        } catch (ClassNotFoundException e) {
-            outputException(401, e.toString());
-        } catch (SQLException e) {
-            outputException(401, e.getCause().getMessage());
-        }
+  @ApiOperation(value = "连接测试同时获取表名")
+  @GetMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  public void getTables(@Valid @NotNull(message = "参数不能为空") DatabaseInput input) {
+    DataSourceBO dataSourceBO = new DataSourceBO();
+    BeanUtils.copyProperties(input, dataSourceBO);
+    DataSourceComponent dataSourceComponent = new DataSourceTable(dataSourceBO,
+        input.getName());
+    try {
+      Map<String, Object> exec = dataSourceComponent.exec();
+      outputData(exec);
+    } catch (ClassNotFoundException e) {
+      outputException(401, e.toString());
+    } catch (SQLException e) {
+      outputException(401, e.getCause().getMessage());
     }
+  }
 }

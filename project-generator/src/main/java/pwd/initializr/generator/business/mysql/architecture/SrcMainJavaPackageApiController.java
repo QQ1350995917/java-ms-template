@@ -1,8 +1,5 @@
 package pwd.initializr.generator.business.mysql.architecture;
 
-import java.io.File;
-import java.util.Map;
-
 /**
  * pwd.initializr.generator.business.mysql.architecture@ms-web-initializr
  *
@@ -16,20 +13,20 @@ import java.util.Map;
  */
 public class SrcMainJavaPackageApiController extends SrcMainJavaPackageApi {
 
-    private String className;
+  private String className;
 
-    public SrcMainJavaPackageApiController(ProjectBO projectBO,String className,String apiPath) {
-        super(projectBO,className,apiPath);
-        this.className = className;
-    }
+  public SrcMainJavaPackageApiController(ProjectBO projectBO, String className, String apiPath) {
+    super(projectBO, className, apiPath);
+    this.className = className;
+  }
 
-    @Override
-    protected String getClassName() {
-        return className + "Controller";
-    }
+  @Override
+  protected String getClassName() {
+    return className + "Controller";
+  }
 
-    @Override
-    protected String getTemplate() {
-        return "mysql/src/main/java/ApiController.java.ftl";
-    }
+  @Override
+  protected String getTemplate() {
+    return "mysql/src/main/java/ApiController.java.ftl";
+  }
 }

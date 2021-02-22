@@ -10,10 +10,8 @@
     <result column="logo" jdbcType="VARCHAR" property="logo"/>
     <result column="description" jdbcType="VARCHAR" property="description"/>
     <result column="slogan" jdbcType="VARCHAR" property="slogan"/>
-    <result column="level" jdbcType="INTEGER" property="level"/>
     <result column="sort" jdbcType="INTEGER" property="sort"/>
     <result column="members" jdbcType="INTEGER" property="members"/>
-    <result column="progress" jdbcType="INTEGER" property="progress"/>
     <result column="able" jdbcType="INTEGER" property="able"/>
     <result column="del" jdbcType="INTEGER" property="del"/>
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
@@ -29,10 +27,8 @@
       `logo`,
       `description`,
       `slogan`,
-      `level`,
       `sort`,
       `members`,
-      `progress`,
       `able`,
       `del`,
       `create_time`,
@@ -58,10 +54,8 @@
       `logo`,
       `description`,
       `slogan`,
-      `level`,
       `sort`,
       `members`,
-      `progress`,
       `able`,
       `del`,
       `create_time`,
@@ -84,10 +78,8 @@
         `logo`,
         `description`,
         `slogan`,
-        `level`,
         `sort`,
         `members`,
-        `progress`,
         `able`,
         `del`,
         `create_time`,
@@ -101,10 +93,8 @@
         #{entity.logo},
         #{entity.description},
         #{entity.slogan},
-        #{entity.level},
         #{entity.sort},
         #{entity.members},
-        #{entity.progress},
         #{entity.able},
         #{entity.del},
         #{entity.createTime},
@@ -122,10 +112,8 @@
         `logo`,
         `description`,
         `slogan`,
-        `level`,
         `sort`,
         `members`,
-        `progress`,
         `able`,
         `del`,
         `create_time`,
@@ -140,10 +128,8 @@
         #{entity.logo},
         #{entity.description},
         #{entity.slogan},
-        #{entity.level},
         #{entity.sort},
         #{entity.members},
-        #{entity.progress},
         #{entity.able},
         #{entity.del},
         #{entity.createTime},
@@ -162,10 +148,8 @@
         `logo`,
         `description`,
         `slogan`,
-        `level`,
         `sort`,
         `members`,
-        `progress`,
         `able`,
         `del`,
         `create_time`,
@@ -179,10 +163,8 @@
         #{entity.logo},
         #{entity.description},
         #{entity.slogan},
-        #{entity.level},
         #{entity.sort},
         #{entity.members},
-        #{entity.progress},
         #{entity.able},
         #{entity.del},
         #{entity.createTime},
@@ -200,10 +182,8 @@
         `logo`,
         `description`,
         `slogan`,
-        `level`,
         `sort`,
         `members`,
-        `progress`,
         `able`,
         `del`,
         `create_time`,
@@ -218,10 +198,8 @@
         #{entity.logo},
         #{entity.description},
         #{entity.slogan},
-        #{entity.level},
         #{entity.sort},
         #{entity.members},
-        #{entity.progress},
         #{entity.able},
         #{entity.del},
         #{entity.createTime},
@@ -252,17 +230,11 @@
       <if test="entity.slogan != null and entity.slogan != ''">
         `slogan` = #{entity.slogan},
       </if>
-      <if test="entity.level != null">
-        `level` = #{entity.level},
-      </if>
       <if test="entity.sort != null">
         `sort` = #{entity.sort},
       </if>
       <if test="entity.members != null">
         `members` = #{entity.members},
-      </if>
-      <if test="entity.progress != null">
-        `progress` = #{entity.progress},
       </if>
       <if test="entity.able != null">
         `able` = #{entity.able},

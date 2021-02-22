@@ -25,13 +25,23 @@ public class SrcMainResourcesTemplatesHtml extends SrcMainResourcesTemplate {
   private List<TableColumnBO> tableColumnBOList;
 
   public SrcMainResourcesTemplatesHtml(ProjectBO projectBO, String tableName,
-      String className, List<TableColumnBO> tableColumnBOList,String apiPath) {
+      String className, List<TableColumnBO> tableColumnBOList, String apiPath) {
     super(projectBO);
     this.filePath += File.separator + "static";
     this.tableName = tableName;
     this.className = className;
     this.tableColumnBOList = tableColumnBOList;
     this.apiPath = apiPath;
+  }
+
+  @Override
+  protected String getResourceName() {
+    return StringUtils.toLowerCaseFirstLetter(this.className) + ".html";
+  }
+
+  @Override
+  protected String getTemplate() {
+    return "mysql/src/main/resources/templates/static/template.html.ftl";
   }
 
   @Override
@@ -46,16 +56,6 @@ public class SrcMainResourcesTemplatesHtml extends SrcMainResourcesTemplate {
     this.data.put("apiPath", apiPath);
 
     return this.data;
-  }
-
-  @Override
-  protected String getTemplate() {
-    return "mysql/src/main/resources/templates/static/template.html.ftl";
-  }
-
-  @Override
-  protected String getResourceName() {
-    return StringUtils.toLowerCaseFirstLetter(this.className) + ".html";
   }
 
 

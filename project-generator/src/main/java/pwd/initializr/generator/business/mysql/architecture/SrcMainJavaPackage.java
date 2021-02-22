@@ -2,10 +2,6 @@ package pwd.initializr.generator.business.mysql.architecture;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 /**
  * pwd.initializr.automatic.business.mysql.project@ms-web-initializr
@@ -21,33 +17,33 @@ import java.util.Map;
 public abstract class SrcMainJavaPackage extends ProjectFile {
 
 
-    protected String packagePath;
+  protected String packagePath;
 
-    public SrcMainJavaPackage(ProjectBO projectBO) {
-        super(projectBO);
+  public SrcMainJavaPackage(ProjectBO projectBO) {
+    super(projectBO);
 
-        this.packagePath = this.fileDir
-            + File.separator + "src"
-            + File.separator + "main"
-            + File.separator + "java"
-        ;
+    this.packagePath = this.fileDir
+        + File.separator + "src"
+        + File.separator + "main"
+        + File.separator + "java"
+    ;
 
-        String packageName = projectBO.getPackageName();
-        String[] split = packageName.split("\\.");
-        for (String s : split) {
-            this.packagePath += File.separator + s;
-        }
+    String packageName = projectBO.getPackageName();
+    String[] split = packageName.split("\\.");
+    for (String s : split) {
+      this.packagePath += File.separator + s;
     }
+  }
 
-    @Override
-    protected File getOutputFile() throws IOException {
-        File fileDir = new File(this.packagePath);
-        if (!fileDir.exists()) {
-            fileDir.mkdirs();
-        }
-        String filePath = this.packagePath + File.separator + getClassName() + ".java";
-        return new File(filePath);
+  @Override
+  protected File getOutputFile() throws IOException {
+    File fileDir = new File(this.packagePath);
+    if (!fileDir.exists()) {
+      fileDir.mkdirs();
     }
+    String filePath = this.packagePath + File.separator + getClassName() + ".java";
+    return new File(filePath);
+  }
 
-    protected abstract String getClassName();
+  protected abstract String getClassName();
 }

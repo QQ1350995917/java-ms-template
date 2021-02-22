@@ -17,7 +17,7 @@ import org.hibernate.validator.constraints.Length;
  *
  * <h1>响应参数封装</h1>
  *
- * date 2021-02-20 22:30
+ * date 2021-02-22 21:33
  *
  * @author Automatic[www.dingpengwei@foxmail.com]
  * @version 0.0.1-SNAPSHOT
@@ -33,97 +33,83 @@ public class OrganizationOutput implements Serializable {
 
   /**
    * 主键
-   * ÷˜º¸
+   * 主键
    */
-  @ApiModelProperty(name = "id", value = "÷˜º¸", required = true, example = "")
+  @ApiModelProperty(name = "id", value = "主键", required = true, example = "")
    @NotBlank(message = "id不能为空")
   private Long id;
   /**
    * 
-   * …œº∂◊È÷Ø
+   * 上级组织
    */
-  @ApiModelProperty(name = "pid", value = "…œº∂◊È÷Ø", required = true, example = "0")
+  @ApiModelProperty(name = "pid", value = "上级组织", required = true, example = "0")
    @NotBlank(message = "pid不能为空")
   private Long pid;
   /**
    * 
-   * ◊È÷Ø√˚≥∆
+   * 组织名称
    */
-  @ApiModelProperty(name = "name", value = "◊È÷Ø√˚≥∆", required = true, example = "")
+  @ApiModelProperty(name = "name", value = "组织名称", required = true, example = "")
    @NotBlank(message = "name不能为空")
   private String name;
   /**
    * 
-   * ◊È÷Ølogo
+   * 组织logo
    */
-  @ApiModelProperty(name = "logo", value = "◊È÷Ølogo", required = false, example = "")
+  @ApiModelProperty(name = "logo", value = "组织logo", required = false, example = "")
   private String logo;
   /**
    * 
-   * ◊È÷Ø√Ë ˆ
+   * 组织描述
    */
-  @ApiModelProperty(name = "description", value = "◊È÷Ø√Ë ˆ", required = false, example = "")
+  @ApiModelProperty(name = "description", value = "组织描述", required = false, example = "")
   private String description;
   /**
    * 
-   * ◊È÷Øslogan
+   * 组织slogan
    */
-  @ApiModelProperty(name = "slogan", value = "◊È÷Øslogan", required = false, example = "")
+  @ApiModelProperty(name = "slogan", value = "组织slogan", required = false, example = "")
   private String slogan;
   /**
    * 
-   * ◊È÷Øµ»º∂
+   * 组织排序
    */
-  @ApiModelProperty(name = "level", value = "◊È÷Øµ»º∂", required = true, example = "0")
-   @NotBlank(message = "level不能为空")
-  private Integer level;
-  /**
-   * 
-   * ◊È÷Ø≈≈–Ú
-   */
-  @ApiModelProperty(name = "sort", value = "◊È÷Ø≈≈–Ú", required = true, example = "0")
+  @ApiModelProperty(name = "sort", value = "组织排序", required = true, example = "0")
    @NotBlank(message = "sort不能为空")
   private Integer sort;
   /**
    * 
-   * ◊È÷Ø≥…‘± ˝¡ø
+   * 组织成员数量
    */
-  @ApiModelProperty(name = "members", value = "◊È÷Ø≥…‘± ˝¡ø", required = true, example = "1")
+  @ApiModelProperty(name = "members", value = "组织成员数量", required = true, example = "1")
    @NotBlank(message = "members不能为空")
   private Integer members;
   /**
    * 
-   * ◊È÷Ø…Û∫ÀΩ¯∂»
+   * 状态，0禁用，1可用
    */
-  @ApiModelProperty(name = "progress", value = "◊È÷Ø…Û∫ÀΩ¯∂»", required = true, example = "0")
-   @NotBlank(message = "progress不能为空")
-  private Integer progress;
-  /**
-   * 
-   * ◊¥Ã¨£¨0Ω˚”√£¨1ø…”√
-   */
-  @ApiModelProperty(name = "able", value = "◊¥Ã¨£¨0Ω˚”√£¨1ø…”√", required = true, example = "0")
+  @ApiModelProperty(name = "able", value = "状态，0禁用，1可用", required = true, example = "0")
    @NotBlank(message = "able不能为空")
   private Integer able;
   /**
    * 
-   * ◊¥Ã¨£¨0’˝≥££¨1…æ≥˝
+   * 状态，0正常，1删除
    */
-  @ApiModelProperty(name = "del", value = "◊¥Ã¨£¨0’˝≥££¨1…æ≥˝", required = true, example = "0")
+  @ApiModelProperty(name = "del", value = "状态，0正常，1删除", required = true, example = "0")
    @NotBlank(message = "del不能为空")
   private Integer del;
   /**
    * 
-   *  ◊¥Œ¥¥Ω® ±º‰
+   * 首次创建时间
    */
-  @ApiModelProperty(name = "createTime", value = " ◊¥Œ¥¥Ω® ±º‰", required = true, example = "")
+  @ApiModelProperty(name = "createTime", value = "首次创建时间", required = true, example = "")
    @NotBlank(message = "createTime不能为空")
   private Date createTime;
   /**
    * 
-   * ◊ÓΩ¸–ﬁ∏ƒ ±º‰
+   * 最近修改时间
    */
-  @ApiModelProperty(name = "updateTime", value = "◊ÓΩ¸–ﬁ∏ƒ ±º‰", required = true, example = "")
+  @ApiModelProperty(name = "updateTime", value = "最近修改时间", required = true, example = "")
    @NotBlank(message = "updateTime不能为空")
   private Date updateTime;
 }

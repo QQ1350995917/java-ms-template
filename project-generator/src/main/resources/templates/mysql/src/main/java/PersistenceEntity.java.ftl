@@ -11,10 +11,10 @@ package ${projectPackage}.persistence.entity;
   </#list>
 </#if>
 <#if (importBigDecimal)??>
-${importBigDecimal!''}
+  ${importBigDecimal!''}
 </#if>
 <#if (importDate)??>
-${importDate!''}
+  ${importDate!''}
 </#if>
 import java.io.Serializable;
 import lombok.AllArgsConstructor;
@@ -57,25 +57,25 @@ public class ${className}Entity implements Serializable {
     if (!(obj instanceof ${className}Entity)) {
       return false;
     }
-  <#if hasKey>
-    ${className}Entity entity = (${className}Entity) obj;
+<#if hasKey>
+  ${className}Entity entity = (${className}Entity) obj;
     if (entity.get${keyName?cap_first}() == null || !(entity.get${keyName?cap_first}().equals(this.get${keyName?cap_first}()))) {
       return false;
     } else {
       return true;
     }
-  <#else>
+<#else>
     return super.equals(obj);
-  </#if>
+</#if>
   }
 
   @Override
   public int hashCode() {
     // fixme: 视情况而定是否修改或删除hashCode
-  <#if hasKey>
+<#if hasKey>
     return this.get${keyName?cap_first}().hashCode();
-  <#else>
+<#else>
     return super.hashCode();
-  </#if>
+</#if>
   }
 }

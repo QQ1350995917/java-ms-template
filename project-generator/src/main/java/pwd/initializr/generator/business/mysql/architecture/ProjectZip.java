@@ -2,7 +2,6 @@ package pwd.initializr.generator.business.mysql.architecture;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -18,27 +17,27 @@ import java.util.Map;
  */
 public class ProjectZip extends ProjectFile {
 
-    public ProjectZip(ProjectBO projectBO) {
-        super(projectBO);
-    }
+  public ProjectZip(ProjectBO projectBO) {
+    super(projectBO);
+  }
 
-    @Override
-    protected Map<String, Object> getData() {
-        return this.data;
-    }
+  @Override
+  protected Map<String, Object> getData() {
+    return this.data;
+  }
 
-    @Override
-    protected String getTemplate() {
-        return "mysql/zip.xml.ftl";
-    }
+  @Override
+  protected String getTemplate() {
+    return "mysql/zip.xml.ftl";
+  }
 
-    @Override
-    protected File getOutputFile() throws IOException {
-        File fileDir = new File(this.fileDir);
-        if (!fileDir.exists()) {
-            fileDir.mkdirs();
-        }
-        String filePath = this.fileDir + File.separator + "zip.xml";
-        return new File(filePath);
+  @Override
+  protected File getOutputFile() throws IOException {
+    File fileDir = new File(this.fileDir);
+    if (!fileDir.exists()) {
+      fileDir.mkdirs();
     }
+    String filePath = this.fileDir + File.separator + "zip.xml";
+    return new File(filePath);
+  }
 }

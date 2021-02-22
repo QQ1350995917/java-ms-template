@@ -15,24 +15,25 @@ import java.util.Map;
  */
 public class SrcMainJavaPackageApplication extends SrcMainJavaPackage {
 
-    private String applicationName;
-    public SrcMainJavaPackageApplication(ProjectBO projectBO) {
-        super(projectBO);
-        this.applicationName = projectBO.getApplicationName();
-    }
+  private String applicationName;
 
-    @Override
-    protected Map<String, Object> getData() {
-        return this.data;
-    }
+  public SrcMainJavaPackageApplication(ProjectBO projectBO) {
+    super(projectBO);
+    this.applicationName = projectBO.getApplicationName();
+  }
 
-    @Override
-    protected String getTemplate() {
-        return "mysql/src/main/java/Application.java.ftl";
-    }
+  @Override
+  protected String getClassName() {
+    return applicationName;
+  }
 
-    @Override
-    protected String getClassName() {
-        return applicationName;
-    }
+  @Override
+  protected String getTemplate() {
+    return "mysql/src/main/java/Application.java.ftl";
+  }
+
+  @Override
+  protected Map<String, Object> getData() {
+    return this.data;
+  }
 }

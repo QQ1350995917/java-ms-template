@@ -16,27 +16,27 @@ import java.util.Map;
  */
 public class SrcMainJavaPackageBusinessBO extends SrcMainJavaPackage {
 
-    private String className;
+  private String className;
 
-    public SrcMainJavaPackageBusinessBO(ProjectBO projectBO,String className) {
-        super(projectBO);
-        this.packagePath += File.separator + "business" + File.separator + "bo";
-        this.className = className;
-    }
+  public SrcMainJavaPackageBusinessBO(ProjectBO projectBO, String className) {
+    super(projectBO);
+    this.packagePath += File.separator + "business" + File.separator + "bo";
+    this.className = className;
+  }
 
-    @Override
-    protected String getClassName() {
-        return className + "BO";
-    }
+  @Override
+  protected String getClassName() {
+    return className + "BO";
+  }
 
-    @Override
-    protected Map<String, Object> getData() {
-        this.data.put("className", this.className);
-        return this.data;
-    }
+  @Override
+  protected String getTemplate() {
+    return "mysql/src/main/java/BusinessBO.java.ftl";
+  }
 
-    @Override
-    protected String getTemplate() {
-        return "mysql/src/main/java/BusinessBO.java.ftl";
-    }
+  @Override
+  protected Map<String, Object> getData() {
+    this.data.put("className", this.className);
+    return this.data;
+  }
 }

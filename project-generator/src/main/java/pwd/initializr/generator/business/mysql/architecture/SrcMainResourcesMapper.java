@@ -18,34 +18,36 @@ import pwd.initializr.generator.business.mysql.database.TableColumnBO;
  */
 public class SrcMainResourcesMapper extends SrcMainResources {
 
-    private String tableName;
-    private String className;
-    private List<TableColumnBO> tableColumnBOList;
-    public SrcMainResourcesMapper(ProjectBO projectBO, String tableName,
-        String className,
-        List<TableColumnBO> tableColumnBOList) {
-        super(projectBO);
-        this.filePath += File.separator + "mapper";
-        this.tableName = tableName;
-        this.className = className;
-        this.tableColumnBOList = tableColumnBOList;
-    }
-    @Override
-    protected Map<String, Object> getData() {
-        this.data.put("className", this.className);
-        this.data.put("tableName", this.tableName);
-        this.data.put("columns", tableColumnBOList);
-        return this.data;
-    }
+  private String tableName;
+  private String className;
+  private List<TableColumnBO> tableColumnBOList;
 
-    @Override
-    protected String getTemplate() {
-        return "mysql/src/main/resources/mapper/mapper.xml.ftl";
-    }
+  public SrcMainResourcesMapper(ProjectBO projectBO, String tableName,
+      String className,
+      List<TableColumnBO> tableColumnBOList) {
+    super(projectBO);
+    this.filePath += File.separator + "mapper";
+    this.tableName = tableName;
+    this.className = className;
+    this.tableColumnBOList = tableColumnBOList;
+  }
 
-    @Override
-    protected String getResourceName(){
-        return className + "Dao.xml";
-    }
+  @Override
+  protected String getResourceName() {
+    return className + "Dao.xml";
+  }
+
+  @Override
+  protected String getTemplate() {
+    return "mysql/src/main/resources/mapper/mapper.xml.ftl";
+  }
+
+  @Override
+  protected Map<String, Object> getData() {
+    this.data.put("className", this.className);
+    this.data.put("tableName", this.tableName);
+    this.data.put("columns", tableColumnBOList);
+    return this.data;
+  }
 
 }

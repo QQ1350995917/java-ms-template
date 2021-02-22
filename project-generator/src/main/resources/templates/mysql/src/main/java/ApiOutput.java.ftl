@@ -1,20 +1,20 @@
 package ${projectPackage}.api.vo;
 
 <#if columns?exists>
- <#list columns as column>
-  <#if (column.javaType?lower_case = 'date')>
-   <#assign importDate="import java.util.Date;"/>
-  </#if>
-  <#if (column.javaType?lower_case = 'bigdecimal')>
-   <#assign importBigDecimal="import java.math.BigDecimal;"/>
-  </#if>
- </#list>
+  <#list columns as column>
+    <#if (column.javaType?lower_case = 'date')>
+      <#assign importDate="import java.util.Date;"/>
+    </#if>
+    <#if (column.javaType?lower_case = 'bigdecimal')>
+      <#assign importBigDecimal="import java.math.BigDecimal;"/>
+    </#if>
+  </#list>
 </#if>
 <#if (importBigDecimal)??>
- ${importBigDecimal!''}
+  ${importBigDecimal!''}
 </#if>
 <#if (importDate)??>
- ${importDate!''}
+  ${importDate!''}
 </#if>
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -47,16 +47,16 @@ import org.hibernate.validator.constraints.Length;
 public class ${className}Output implements Serializable {
 
 <#if columns?exists>
- <#list columns as column>
+  <#list columns as column>
   /**
    * <#if (column.key)>主键<#assign hasKey=true/><#assign keyName='${column.javaName}'/></#if>
    * ${column.comment!}
    */
   @ApiModelProperty(name = "${column.javaName}", value = "${column.comment!}", <#if column.nullable == 'NO'>required = true<#else>required = false</#if>, example = "${column.defaultValue!}")
-  <#if column.nullable == 'NO'>
+    <#if column.nullable == 'NO'>
    @NotBlank(message = "${column.javaName}不能为空")
-  </#if>
+    </#if>
   private ${column.javaType} ${column.javaName};
- </#list>
+  </#list>
 </#if>
 }

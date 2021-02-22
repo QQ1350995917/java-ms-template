@@ -16,23 +16,23 @@ import java.util.Map;
  */
 public class SrcMainResourcesTemplatesCss extends SrcMainResourcesTemplate {
 
-    public SrcMainResourcesTemplatesCss(ProjectBO projectBO) {
-        super(projectBO);
-        this.filePath += File.separator + "static" + File.separator + "css";
-    }
+  public SrcMainResourcesTemplatesCss(ProjectBO projectBO) {
+    super(projectBO);
+    this.filePath += File.separator + "static" + File.separator + "css";
+  }
 
-    @Override
-    protected Map<String, Object> getData() {
-        return this.data;
-    }
+  @Override
+  protected String getResourceName() {
+    return "template.css";
+  }
 
-    @Override
-    protected String getTemplate() {
-        return "mysql/src/main/resources/templates/static/css/template.css.ftl";
-    }
+  @Override
+  protected String getTemplate() {
+    return "mysql/src/main/resources/templates/static/css/template.css.ftl";
+  }
 
-    @Override
-    protected String getResourceName(){
-        return "template.css";
-    }
+  @Override
+  protected Map<String, Object> getData() {
+    return this.data;
+  }
 }

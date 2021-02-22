@@ -14,7 +14,7 @@
 
 </head>
 <body>
-<el-container id="container" >
+<el-container id="container">
   <el-header style="padding: 0px;height: 42px">
     <el-row>
       <el-col :span="12" :offset="6">
@@ -26,10 +26,11 @@
       </el-col>
     </el-row>
   </el-header>
-  <el-main style="padding: 0px 10px 0px 0px; margin-top: 10px; background-color: transparent; height: 666px">
+  <el-main
+      style="padding: 0px 10px 0px 0px; margin-top: 10px; background-color: transparent; height: 666px">
     <el-row class="row-bg" style="background-color: transparent">
       <el-col :span="12" :offset="6" style="background-color: transparent">
-      <el-button type="primary" @click="onSwaggerButtonClick()">swagger</el-button>
+        <el-button type="primary" @click="onSwaggerButtonClick()">swagger</el-button>
       <#if classNames?exists>
         <#list classNames as className>
           <el-button type="primary" @click="onButtonClick('${className}')">${className}</el-button>
@@ -50,18 +51,18 @@
 <script>
   new Vue({
     el: '#container',
-    data: function () {
+    data: function() {
       return {
         activeName: '0'
       };
     },
     methods: {
-      onSwaggerButtonClick () {
-        window.open("./swagger", '_blank');
+      onSwaggerButtonClick() {
+        window.open('./swagger', '_blank');
       },
-      onButtonClick(className){
+      onButtonClick(className) {
         // window.location.href="./static/" + className + ".html"
-        window.open("./static/" + className + ".html", '_blank');
+        window.open('./static/' + className + '.html', '_blank');
       }
     }
   });

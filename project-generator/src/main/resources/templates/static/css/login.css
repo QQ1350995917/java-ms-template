@@ -26,7 +26,6 @@ input {
   outline: none;
 }
 
-
 /*遮罩层*/
 
 .mask {
@@ -370,15 +369,17 @@ div.login-03 .gy {
   bottom: 0;
   margin: auto;
 }
-#login_ip{
+
+#login_ip {
   background: initial;
 }
 
-#login_ip option{
+#login_ip option {
   background: initial;
   color: black;
 
 }
+
 /* ========== */
 /* = 受限制弹窗 = */
 /* ========== */
@@ -395,24 +396,29 @@ div.login-03 .gy {
 }
 
 .qingtigongziliao {
-  background-color: #A3A3A3!important;
+  background-color: #A3A3A3 !important;
   color: #333;
   padding: 11px;
   border-radius: 20px;
-}.jiechuxianzh-from-bbox{
-   padding: 5px;
- }
-#g-zhanghushouxian-bbox{
+}
+
+.jiechuxianzh-from-bbox {
+  padding: 5px;
+}
+
+#g-zhanghushouxian-bbox {
   padding: 50px;
 }
-.jiechuxianzh-from-bbox input{
+
+.jiechuxianzh-from-bbox input {
   margin-top: 10px;
 }
 
-.jiechuxianzhi-caozuos-bbox{
+.jiechuxianzhi-caozuos-bbox {
   margin-top: 20px;
 }
-.weifaxinxijubao{
+
+.weifaxinxijubao {
   height: 30px;
   line-height: 30px;
   bottom: 0;

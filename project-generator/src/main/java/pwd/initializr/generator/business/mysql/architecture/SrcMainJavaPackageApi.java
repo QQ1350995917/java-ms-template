@@ -16,31 +16,31 @@ import java.util.Map;
  */
 public class SrcMainJavaPackageApi extends SrcMainJavaPackage {
 
-    private String className;
-    private String apiPath;
+  private String className;
+  private String apiPath;
 
-    public SrcMainJavaPackageApi(ProjectBO projectBO,String className,String apiPath) {
-        super(projectBO);
-        this.packagePath += File.separator + "api";
-        this.className = className;
-        this.apiPath = apiPath;
-    }
+  public SrcMainJavaPackageApi(ProjectBO projectBO, String className, String apiPath) {
+    super(projectBO);
+    this.packagePath += File.separator + "api";
+    this.className = className;
+    this.apiPath = apiPath;
+  }
 
-    @Override
-    protected String getClassName() {
-        return className + "Api";
-    }
+  @Override
+  protected String getClassName() {
+    return className + "Api";
+  }
 
-    @Override
-    protected Map<String, Object> getData() {
-        this.data.put("className", this.className);
-        this.data.put("apiPath", this.apiPath);
-        return this.data;
-    }
+  @Override
+  protected String getTemplate() {
+    return "mysql/src/main/java/Api.java.ftl";
+  }
 
-    @Override
-    protected String getTemplate() {
-        return "mysql/src/main/java/Api.java.ftl";
-    }
+  @Override
+  protected Map<String, Object> getData() {
+    this.data.put("className", this.className);
+    this.data.put("apiPath", this.apiPath);
+    return this.data;
+  }
 
 }

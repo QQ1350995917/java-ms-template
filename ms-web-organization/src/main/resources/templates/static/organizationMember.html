@@ -177,7 +177,7 @@
         scopesTemplate: [{
           hit: '指定查询方式[EM:精确,ENM:精确非,AL:前后模糊,LL:左模糊,RL:右模糊,SM:范围',
           fieldName: '指定查询字段',
-          fieldValue: '指定查询目标'
+          fieldValue: '指定查询目标',
           start: '范围查询起始值，区间包含',
           end: '范围查询结束值，区间包含'
         }],
@@ -328,13 +328,14 @@
             });
       },
       onDetailDialogClose(done) {
-        this.$confirm('Confirm？')
-        .then(_ = > {
-          done();
-      }).
-        catch(_ = > {};
-      )
-        ;
+        //   this.$confirm('Confirm？')
+        //   .then(_ = > {
+        //     done();
+        // }).
+        //   catch(_ = > {};
+        // )
+        //   ;
+        done();
       },
       onEnableButtonClick(id) {
         this.$http.put('/api/organization/member/enable/' + id).then(

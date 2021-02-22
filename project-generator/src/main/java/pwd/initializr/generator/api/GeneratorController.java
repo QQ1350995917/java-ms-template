@@ -78,7 +78,7 @@ public class GeneratorController extends AdminController {
     BeanUtils.copyProperties(input, projectBO);
     projectBO.setProjectDir(projectBO.getProjectName() + "-" + yyyyMMddHHmmssSSS);
     projectBO.setExportDir(projectGeneratorStorage);
-    projectBO.setProjectPort(80);
+    projectBO.setProjectPort(input.getApplicationPort());
     ArchitectureBoot architectureBoot = new ArchitectureBoot();
     architectureBoot.generateProjectArchitecture(projectBO);
 

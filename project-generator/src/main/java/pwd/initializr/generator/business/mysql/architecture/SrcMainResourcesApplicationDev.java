@@ -15,29 +15,29 @@ import java.util.Map;
  */
 public class SrcMainResourcesApplicationDev extends SrcMainResources {
 
-    public SrcMainResourcesApplicationDev(ProjectBO projectBO) {
-        super(projectBO);
-        this.data.put("projectPort",projectBO.getProjectPort());
-        this.data.put("databaseName",projectBO.getName());
-        this.data.put("databaseUrl",projectBO.getUrl());
-        this.data.put("databaseUser",projectBO.getUser());
-        this.data.put("databasePwd",projectBO.getPwd());
-        this.data.put("databaseDriver",projectBO.getDriver());
-    }
+  public SrcMainResourcesApplicationDev(ProjectBO projectBO) {
+    super(projectBO);
+    this.data.put("projectPort", String.valueOf(projectBO.getProjectPort()));
+    this.data.put("databaseName", projectBO.getName());
+    this.data.put("databaseUrl", projectBO.getUrl());
+    this.data.put("databaseUser", projectBO.getUser());
+    this.data.put("databasePwd", projectBO.getPwd());
+    this.data.put("databaseDriver", projectBO.getDriver());
+  }
 
-    @Override
-    protected Map<String, Object> getData() {
-        return this.data;
-    }
+  @Override
+  protected String getResourceName() {
+    return "application-dev.properties";
+  }
 
-    @Override
-    protected String getTemplate() {
-        return "mysql/src/main/resources/application-dev.properties.ftl";
-    }
+  @Override
+  protected String getTemplate() {
+    return "mysql/src/main/resources/application-dev.properties.ftl";
+  }
 
-    @Override
-    protected String getResourceName(){
-        return "application-dev.properties";
-    }
+  @Override
+  protected Map<String, Object> getData() {
+    return this.data;
+  }
 
 }

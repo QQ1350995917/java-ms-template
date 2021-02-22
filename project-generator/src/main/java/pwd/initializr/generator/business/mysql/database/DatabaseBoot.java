@@ -30,45 +30,49 @@ import pwd.initializr.generator.business.mysql.architecture.SrcMainResourcesTemp
  */
 public class DatabaseBoot {
 
-    public static void main(String[] args) throws Exception {
-        DataSourceBO dataSourceBO = new DataSourceBO();
-        Set<String> tables = new HashSet<>();
-        tables.add("admin_account");
-        DataSourceComponent dataSourceComponent = new DataSourceTableColumn(dataSourceBO,dataSourceBO.getName(),tables);
-        Map<String, Object> exec = dataSourceComponent.exec();
-        List<TableColumnBO> tableColumnBOList = (List<TableColumnBO>)exec.get("admin_account");
-        ProjectBO projectBO = new ProjectBO();
-        String tableName = "admin_account";
-        String className = "AdminAccount";
+  public static void main(String[] args) throws Exception {
+    DataSourceBO dataSourceBO = new DataSourceBO();
+    Set<String> tables = new HashSet<>();
+    tables.add("admin_account");
+    DataSourceComponent dataSourceComponent = new DataSourceTableColumn(dataSourceBO,
+        dataSourceBO.getName(), tables);
+    Map<String, Object> exec = dataSourceComponent.exec();
+    List<TableColumnBO> tableColumnBOList = (List<TableColumnBO>) exec.get("admin_account");
+    ProjectBO projectBO = new ProjectBO();
+    String tableName = "admin_account";
+    String className = "AdminAccount";
 
-        DatabaseBoot databaseBoot = new DatabaseBoot();
-        databaseBoot.generateProjectSrc(projectBO,tableName,className,tableColumnBOList);
+    DatabaseBoot databaseBoot = new DatabaseBoot();
+    databaseBoot.generateProjectSrc(projectBO, tableName, className, tableColumnBOList);
 
-    }
+  }
 
-    public void generateProjectSrc(ProjectBO projectBO,String tableName,String className,List<TableColumnBO> tableColumnBOList) throws Exception {
-        String apiPath = tableName.replace("_","/").toLowerCase();
-        // 处理resource目录-Mapper
-        new SrcMainResourcesMapper(projectBO, tableName, className, tableColumnBOList).createProjectFile();
+  public void generateProjectSrc(ProjectBO projectBO, String tableName, String className,
+      List<TableColumnBO> tableColumnBOList) throws Exception {
+    String apiPath = tableName.replace("_", "/").toLowerCase();
+    // 处理resource目录-Mapper
+    new SrcMainResourcesMapper(projectBO, tableName, className, tableColumnBOList)
+        .createProjectFile();
 
-        // 处理resource目录-Templates
-        new SrcMainResourcesTemplatesHtml(projectBO, tableName, className, tableColumnBOList,apiPath).createProjectFile();
+    // 处理resource目录-Templates
+    new SrcMainResourcesTemplatesHtml(projectBO, tableName, className, tableColumnBOList, apiPath)
+        .createProjectFile();
 
+    // 处理持久层目录
+    new SrcMainJavaPackagePersistenceDao(projectBO, tableName, className).createProjectFile();
+    new SrcMainJavaPackagePersistenceEntity(projectBO, tableName, className, tableColumnBOList)
+        .createProjectFile();
 
-        // 处理持久层目录
-        new SrcMainJavaPackagePersistenceDao(projectBO, tableName, className).createProjectFile();
-        new SrcMainJavaPackagePersistenceEntity(projectBO, tableName, className, tableColumnBOList).createProjectFile();
+    // 处理业务层目录
+    new SrcMainJavaPackageBusinessBO(projectBO, className).createProjectFile();
+    new SrcMainJavaPackageBusinessService(projectBO, className).createProjectFile();
+    new SrcMainJavaPackageBusinessServiceImpl(projectBO, className).createProjectFile();
 
-        // 处理业务层目录
-        new SrcMainJavaPackageBusinessBO(projectBO,className).createProjectFile();
-        new SrcMainJavaPackageBusinessService(projectBO,className).createProjectFile();
-        new SrcMainJavaPackageBusinessServiceImpl(projectBO,className).createProjectFile();
+    // 处理API层目录
+    new SrcMainJavaPackageApiInput(projectBO, className, tableColumnBOList).createProjectFile();
+    new SrcMainJavaPackageApiOutput(projectBO, className, tableColumnBOList).createProjectFile();
+    new SrcMainJavaPackageApi(projectBO, className, apiPath).createProjectFile();
+    new SrcMainJavaPackageApiController(projectBO, className, apiPath).createProjectFile();
 
-        // 处理API层目录
-        new SrcMainJavaPackageApiInput(projectBO,className, tableColumnBOList).createProjectFile();
-        new SrcMainJavaPackageApiOutput(projectBO,className, tableColumnBOList).createProjectFile();
-        new SrcMainJavaPackageApi(projectBO,className,apiPath).createProjectFile();
-        new SrcMainJavaPackageApiController(projectBO,className,apiPath).createProjectFile();
-
-    }
+  }
 }

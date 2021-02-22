@@ -15,22 +15,22 @@ import java.util.Map;
  */
 public class SrcMainResourcesBanner extends SrcMainResources {
 
-    public SrcMainResourcesBanner(ProjectBO projectBO) {
-        super(projectBO);
-    }
+  public SrcMainResourcesBanner(ProjectBO projectBO) {
+    super(projectBO);
+  }
 
-    @Override
-    protected Map<String, Object> getData() {
-        return this.data;
-    }
+  @Override
+  protected String getResourceName() {
+    return "banner.txt";
+  }
 
-    @Override
-    protected String getTemplate() {
-        return "mysql/src/main/resources/banner.txt.ftl";
-    }
+  @Override
+  protected String getTemplate() {
+    return "mysql/src/main/resources/banner.txt.ftl";
+  }
 
-    @Override
-    protected String getResourceName(){
-        return "banner.txt";
-    }
+  @Override
+  protected Map<String, Object> getData() {
+    return this.data;
+  }
 }

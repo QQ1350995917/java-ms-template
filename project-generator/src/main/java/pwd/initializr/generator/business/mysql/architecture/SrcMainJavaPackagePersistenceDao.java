@@ -16,31 +16,31 @@ import java.util.Map;
  */
 public class SrcMainJavaPackagePersistenceDao extends SrcMainJavaPackage {
 
-    private String tableName;
-    private String className;
+  private String tableName;
+  private String className;
 
-    public SrcMainJavaPackagePersistenceDao(ProjectBO projectBO, String tableName,
-        String className) {
-        super(projectBO);
-        this.packagePath += File.separator + "persistence" + File.separator + "dao";
-        this.tableName = tableName;
-        this.className = className;
-    }
+  public SrcMainJavaPackagePersistenceDao(ProjectBO projectBO, String tableName,
+      String className) {
+    super(projectBO);
+    this.packagePath += File.separator + "persistence" + File.separator + "dao";
+    this.tableName = tableName;
+    this.className = className;
+  }
 
-    @Override
-    protected Map<String, Object> getData() {
-        this.data.put("className", this.className);
-        this.data.put("tableName", this.tableName);
-        return this.data;
-    }
+  @Override
+  protected String getClassName() {
+    return className + "Dao";
+  }
 
-    @Override
-    protected String getTemplate() {
-        return "mysql/src/main/java/PersistenceDao.java.ftl";
-    }
+  @Override
+  protected String getTemplate() {
+    return "mysql/src/main/java/PersistenceDao.java.ftl";
+  }
 
-    @Override
-    protected String getClassName() {
-        return className + "Dao";
-    }
+  @Override
+  protected Map<String, Object> getData() {
+    this.data.put("className", this.className);
+    this.data.put("tableName", this.tableName);
+    return this.data;
+  }
 }

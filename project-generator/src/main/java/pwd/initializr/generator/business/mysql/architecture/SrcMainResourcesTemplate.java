@@ -1,9 +1,6 @@
 package pwd.initializr.generator.business.mysql.architecture;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 /**
  * pwd.initializr.automatic.business.mysql.project@ms-web-initializr
@@ -18,13 +15,13 @@ import java.util.Map;
  */
 public abstract class SrcMainResourcesTemplate extends SrcMainResources {
 
-    public SrcMainResourcesTemplate(ProjectBO projectBO) {
-        super(projectBO);
-        this.filePath = this.fileDir
-            + File.separator + "src"
-            + File.separator + "main"
-            + File.separator + "resources"
-            + File.separator + "templates"
-        ;
-    }
+  public SrcMainResourcesTemplate(ProjectBO projectBO) {
+    super(projectBO);
+    this.filePath = this.fileDir
+        + File.separator + "src"
+        + File.separator + "main"
+        + File.separator + "resources"
+        + File.separator + "templates"
+    ;
+  }
 }

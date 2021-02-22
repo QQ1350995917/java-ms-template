@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 var canvas = document.getElementById('canvas'),
 
     ctx = canvas.getContext('2d'),
@@ -47,7 +47,7 @@ ctx2.fill();
 
 function random(min, max) {
 
-  if(arguments.length < 2) {
+  if (arguments.length < 2) {
 
     max = min;
 
@@ -55,7 +55,7 @@ function random(min, max) {
 
   }
 
-  if(min > max) {
+  if (min > max) {
 
     var hold = max;
 
@@ -99,7 +99,7 @@ var Star = function() {
 
   stars[count] = this;
 
-}
+};
 
 Star.prototype.draw = function() {
 
@@ -109,11 +109,11 @@ Star.prototype.draw = function() {
 
       twinkle = random(10);
 
-  if(twinkle === 1 && this.alpha > 0) {
+  if (twinkle === 1 && this.alpha > 0) {
 
     this.alpha -= 0.05;
 
-  } else if(twinkle === 2 && this.alpha < 1) {
+  } else if (twinkle === 2 && this.alpha < 1) {
 
     this.alpha += 0.05;
 
@@ -121,13 +121,14 @@ Star.prototype.draw = function() {
 
   ctx.globalAlpha = this.alpha;
 
-  ctx.drawImage(canvas2, x - this.radius / 2, y - this.radius / 2, this.radius, this.radius);
+  ctx.drawImage(canvas2, x - this.radius / 2, y - this.radius / 2, this.radius,
+      this.radius);
 
   this.timePassed += this.speed;
 
-}
+};
 
-for(var i = 0; i < maxStars; i++) {
+for (var i = 0; i < maxStars; i++) {
 
   new Star();
 
@@ -141,7 +142,7 @@ function animation() {
 
   //ctx.fillStyle = 'hsla(' + hue + ', 64%, 6%, 1)';
   ctx.fillStyle = 'rgba(0, 0, 0, 1)';
-  ctx.fillRect(0, 0, w, h)
+  ctx.fillRect(0, 0, w, h);
 
   /*var pic = new Image();
   pic.src="./images/bg2.jpg";
@@ -149,11 +150,12 @@ function animation() {
 
   ctx.globalCompositeOperation = 'lighter';
 
-  for(var i = 1, l = stars.length; i < l; i++) {
+  for (var i = 1, l = stars.length; i < l; i++) {
 
     stars[i].draw();
 
-  };
+  }
+  ;
 
   window.requestAnimationFrame(animation);
 

@@ -25,11 +25,11 @@ import pwd.initializr.generator.business.mysql.database.DataSourceBO;
 @ToString
 public class ProjectBO extends DataSourceBO {
 
-    private String exportDir;
-    private String projectName = "pwd-initializr-app";
-    private String projectDir = "pwd-initializr-app" + System.currentTimeMillis();
-    private String packageName = "pwd.initializr.app";
-    private String projectVersion = "0.0.1-SNAPSHOT";
-    private String applicationName = "AppApplication";
-    private Integer projectPort = 80;
+  private String exportDir;
+  private String projectName = "pwd-initializr-app";
+  private String projectDir = "pwd-initializr-app" + System.currentTimeMillis();
+  private String packageName = "pwd.initializr.app";
+  private String projectVersion = "0.0.1-SNAPSHOT";
+  private String applicationName = "AppApplication";
+  private Integer projectPort = 80;
 }

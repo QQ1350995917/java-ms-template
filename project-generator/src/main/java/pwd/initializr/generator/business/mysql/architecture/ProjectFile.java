@@ -26,47 +26,45 @@ import java.util.Map;
 public abstract class ProjectFile {
 
 
+  protected static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("YYYY-MM-dd HH:mm");
+  static Configuration configuration = new Configuration(Configuration.VERSION_2_3_28);
 
-    static Configuration configuration = new Configuration(Configuration.VERSION_2_3_28);
+  static {
+    // 设置加载的目录
+    configuration.setClassForTemplateLoading(ArchitectureBoot.class, "/templates");
+  }
 
-    static {
-        // 设置加载的目录
-        configuration.setClassForTemplateLoading(ArchitectureBoot.class, "/templates");
-    }
+  protected ProjectBO projectBO;
+  protected Map<String, Object> data = new LinkedHashMap<>();
+  protected String fileDir;
 
-    protected static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("YYYY-MM-dd HH:mm");
+  public ProjectFile(ProjectBO projectBO) {
+    this.projectBO = projectBO;
+    this.data.put("projectName", projectBO.getProjectName());
+    this.data.put("projectVersion", projectBO.getProjectVersion());
+    this.data.put("projectPackage", projectBO.getPackageName());
+    this.data.put("applicationName", projectBO.getApplicationName());
+    this.data.put("projectCreateDate", simpleDateFormat.format(new Date()));
 
-    protected ProjectBO projectBO;
-    protected Map<String, Object> data = new LinkedHashMap<>();
-    protected String fileDir;
+    this.fileDir = projectBO.getExportDir() + File.separator + projectBO.getProjectDir();
+  }
 
-    public ProjectFile(ProjectBO projectBO) {
-        this.projectBO = projectBO;
-        this.data.put("projectName", projectBO.getProjectName());
-        this.data.put("projectVersion", projectBO.getProjectVersion());
-        this.data.put("projectPackage", projectBO.getPackageName());
-        this.data.put("applicationName", projectBO.getApplicationName());
-        this.data.put("projectCreateDate", simpleDateFormat.format(new Date()));
+  public void createProjectFile() throws IOException, TemplateException {
+    // 得到模板对象
+    Template template = configuration.getTemplate(getTemplate());
+    // 2.创建数据
+    Map<String, Object> data = getData();
+    // 3.产生输出
+    OutputStreamWriter outputStreamWriter = new OutputStreamWriter(
+        new FileOutputStream(getOutputFile()));
+    template.process(data, outputStreamWriter);
+    outputStreamWriter.flush();
+    outputStreamWriter.close();
+  }
 
-        this.fileDir = projectBO.getExportDir() + File.separator + projectBO.getProjectDir();
-    }
+  protected abstract String getTemplate();
 
-    protected abstract Map<String, Object> getData();
+  protected abstract Map<String, Object> getData();
 
-    protected abstract String getTemplate();
-
-    protected abstract File getOutputFile() throws IOException;
-
-    public void createProjectFile() throws IOException, TemplateException {
-        // 得到模板对象
-        Template template = configuration.getTemplate(getTemplate());
-        // 2.创建数据
-        Map<String, Object> data = getData();
-        // 3.产生输出
-        OutputStreamWriter outputStreamWriter = new OutputStreamWriter(
-            new FileOutputStream(getOutputFile()));
-        template.process(data, outputStreamWriter);
-        outputStreamWriter.flush();
-        outputStreamWriter.close();
-    }
+  protected abstract File getOutputFile() throws IOException;
 }

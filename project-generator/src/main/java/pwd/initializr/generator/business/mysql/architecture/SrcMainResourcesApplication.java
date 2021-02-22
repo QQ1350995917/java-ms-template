@@ -15,23 +15,23 @@ import java.util.Map;
  */
 public class SrcMainResourcesApplication extends SrcMainResources {
 
-    public SrcMainResourcesApplication(ProjectBO projectBO) {
-        super(projectBO);
-    }
+  public SrcMainResourcesApplication(ProjectBO projectBO) {
+    super(projectBO);
+  }
 
-    @Override
-    protected Map<String, Object> getData() {
-        return this.data;
-    }
+  @Override
+  protected String getResourceName() {
+    return "application.properties";
+  }
 
-    @Override
-    protected String getTemplate() {
-        return "mysql/src/main/resources/application.properties.ftl";
-    }
+  @Override
+  protected String getTemplate() {
+    return "mysql/src/main/resources/application.properties.ftl";
+  }
 
-    @Override
-    protected String getResourceName(){
-        return "application.properties";
-    }
+  @Override
+  protected Map<String, Object> getData() {
+    return this.data;
+  }
 
 }

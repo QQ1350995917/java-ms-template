@@ -6,7 +6,8 @@
   <resultMap id="${className}Map" type="${projectPackage}.persistence.entity.${className}Entity">
 <#if columns?exists>
   <#list columns as column>
-    <result column="${column.jdbcName}" jdbcType="${column.mybatisType?upper_case}" property="${column.javaName}"/>
+    <result column="${column.jdbcName}" jdbcType="${column.mybatisType?upper_case}"
+            property="${column.javaName}"/>
   </#list>
 </#if>
   </resultMap>
@@ -24,7 +25,7 @@
   </#list>
 </#if>
     FROM
-      ${tableName}
+  ${tableName}
     <#noparse>
     WHERE
       id = #{id}
@@ -34,7 +35,8 @@
   <!--查询指定行数据-->
   <select id="countByCondition" resultType="java.lang.Long">
     SELECT COUNT(*) FROM ${tableName}
-    <include refid="pwd.initializr.common.web.persistence.entity.ScopeEntity.entityQueryScope"></include>
+    <include
+        refid="pwd.initializr.common.web.persistence.entity.ScopeEntity.entityQueryScope"></include>
   </select>
 
   <!--通过实体作为筛选条件查询-->
@@ -50,9 +52,11 @@
   </#list>
 </#if>
     FROM
-      ${tableName}
-    <include refid="pwd.initializr.common.web.persistence.entity.ScopeEntity.entityQueryScope"></include>
-    <include refid="pwd.initializr.common.web.persistence.entity.SortEntity.entityQuerySort"></include>
+  ${tableName}
+    <include
+        refid="pwd.initializr.common.web.persistence.entity.ScopeEntity.entityQueryScope"></include>
+    <include
+        refid="pwd.initializr.common.web.persistence.entity.SortEntity.entityQuerySort"></include>
     <#noparse>
     LIMIT
       #{offset}, #{limit}
@@ -60,9 +64,10 @@
   </select>
 
   <!--新增所有列-->
-  <insert id="insert" keyProperty="id" useGeneratedKeys="true" parameterType="${projectPackage}.persistence.entity.${className}Entity">
+  <insert id="insert" keyProperty="id" useGeneratedKeys="true"
+          parameterType="${projectPackage}.persistence.entity.${className}Entity">
     INSERT INTO ${tableName}
-      (
+    (
   <#if columns?exists>
     <#list columns as column>
       <#if column_index == (columns?size -1)>
@@ -72,9 +77,9 @@
       </#if>
     </#list>
   </#if>
-      )
+    )
     VALUES
-      (
+    (
   <#if columns?exists>
     <#list columns as column>
       <#if column_index == (columns?size -1)>
@@ -84,11 +89,12 @@
       </#if>
     </#list>
   </#if>
-      )
+    )
   </insert>
 
   <!--新增所有列（批量新增）-->
-  <insert id="insertByBatch" keyProperty="id" useGeneratedKeys="true" parameterType="${projectPackage}.persistence.entity.${className}Entity">
+  <insert id="insertByBatch" keyProperty="id" useGeneratedKeys="true"
+          parameterType="${projectPackage}.persistence.entity.${className}Entity">
     INSERT INTO ${tableName}
     (
   <#if columns?exists>
@@ -103,7 +109,7 @@
     )
     VALUES
     <foreach collection="entities" item="entity" separator=",">
-    (
+      (
   <#if columns?exists>
     <#list columns as column>
       <#if column_index == (columns?size -1)>
@@ -113,12 +119,13 @@
       </#if>
     </#list>
   </#if>
-    )
+      )
     </foreach>
   </insert>
 
   <!--新增或者替换所有列-->
-  <insert id="insertOrReplace" keyProperty="id" useGeneratedKeys="true" parameterType="${projectPackage}.persistence.entity.${className}Entity">
+  <insert id="insertOrReplace" keyProperty="id" useGeneratedKeys="true"
+          parameterType="${projectPackage}.persistence.entity.${className}Entity">
     REPLACE INTO ${tableName}
     (
   <#if columns?exists>
@@ -146,7 +153,8 @@
   </insert>
 
   <!--新增或者替换所有列（批量新增或者替换）-->
-  <insert id="insertOrReplaceByBatch" keyProperty="id" useGeneratedKeys="true" parameterType="${projectPackage}.persistence.entity.${className}Entity">
+  <insert id="insertOrReplaceByBatch" keyProperty="id" useGeneratedKeys="true"
+          parameterType="${projectPackage}.persistence.entity.${className}Entity">
     REPLACE INTO ${tableName}
     (
   <#if columns?exists>
@@ -183,38 +191,40 @@
     <#list columns as column>
       <#if (column.jdbcType == 'char') || (column.jdbcType == 'varchar') || (column.jdbcType == 'tinytext') || (column.jdbcType == 'text' || (column.jdbcType == 'mediumtext') || (column.jdbcType == 'longtext'))>
       <if test="entity.${column.javaName} != null and entity.${column.javaName} != ''">
-        `${column.jdbcName}` = <#noparse>#{</#noparse>entity.${column.javaName}<#noparse>}</#noparse>,
+        `${column.jdbcName}` = <#noparse>#{</#noparse>entity.${column.javaName}<#noparse>
+        }</#noparse>,
       </if>
       <#else>
       <if test="entity.${column.javaName} != null">
-        `${column.jdbcName}` = <#noparse>#{</#noparse>entity.${column.javaName}<#noparse>}</#noparse>,
+        `${column.jdbcName}` = <#noparse>#{</#noparse>entity.${column.javaName}<#noparse>
+        }</#noparse>,
       </if>
       </#if>
     </#list>
   </#if>
     </set>
     WHERE
-      id = <#noparse>#{entity.id}</#noparse>
+    id = <#noparse>#{entity.id}</#noparse>
   </update>
 
   <!--通过主键删除-->
   <update id="deleteById">
     UPDATE ${tableName}
     SET
-      del = 1,
-      update_time = <#noparse>#{date}</#noparse>
+    del = 1,
+    update_time = <#noparse>#{date}</#noparse>
     WHERE
-      id = <#noparse>#{id}</#noparse>
+    id = <#noparse>#{id}</#noparse>
   </update>
 
   <!--通过主键批量删除-->
   <update id="deleteByIds">
     UPDATE ${tableName}
     SET
-      del = 1,
-      update_time = <#noparse>#{date}</#noparse>
+    del = 1,
+    update_time = <#noparse>#{date}</#noparse>
     WHERE
-      id in
+    id in
     <foreach close=")" collection="ids" index="index" item="id" open="(" separator=",">
     <#noparse>
       #{id}

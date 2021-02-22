@@ -35,7 +35,7 @@
     <!--<module>ms-web-gateway</module>-->
     <!--<module>ms-web-logger</module>-->
     <!--<module>ms-web-monitor</module>-->
-    <!--<module>ms-web-organization</module>-->
+    <module>ms-web-organization</module>
     <!--<module>ms-web-registry</module>-->
     <!--<module>ms-web-schedule</module>-->
     <!--<module>ms-web-search</module>-->

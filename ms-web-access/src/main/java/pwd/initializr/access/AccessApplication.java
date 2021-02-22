@@ -2,25 +2,27 @@ package pwd.initializr.access;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
- * pwd.initializr.account@ms-web-initializr
+ * pwd-initializr-access@ms-web-initializr
  *
- * <h1>TODO what you want to do?</h1>
+ * <h1>pwd-initializr-access启动</h1>
  *
- * date 2019-09-13 22:48
+ * date 2021-02-22 22:48
  *
- * @author DingPengwei[www.dingpengwei@foxmail.com]
- * @version 1.0.0
- * @since DistributionVersion
+ * @author Automatic[www.dingpengwei@foxmail.com]
+ * @version 0.0.1-SNAPSHOT
+ * @since 0.0.1-SNAPSHOT
  */
 @SpringBootApplication
-@EnableEurekaClient
-@EnableDiscoveryClient
+@ComponentScan(basePackages = {"pwd.initializr.common.web", "pwd.initializr.access"})
 public class AccessApplication {
-    public static void main(String[] args) {
-        SpringApplication.run(AccessApplication.class, args);
-    }
+
+  public static void main(String[] args) {
+    SpringApplication.run(AccessApplication.class, args);
+  }
+
 }

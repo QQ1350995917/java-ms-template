@@ -30,10 +30,8 @@
               <el-option label="logo" value="logo"></el-option>
               <el-option label="description" value="description"></el-option>
               <el-option label="slogan" value="slogan"></el-option>
-              <el-option label="level" value="level"></el-option>
               <el-option label="sort" value="sort"></el-option>
               <el-option label="members" value="members"></el-option>
-              <el-option label="progress" value="progress"></el-option>
               <el-option label="able" value="able"></el-option>
               <el-option label="del" value="del"></el-option>
               <el-option label="createTime" value="create_time"></el-option>
@@ -77,20 +75,12 @@
               label="slogan">
           </el-table-column>
           <el-table-column
-              prop="level"
-              label="level">
-          </el-table-column>
-          <el-table-column
               prop="sort"
               label="sort">
           </el-table-column>
           <el-table-column
               prop="members"
               label="members">
-          </el-table-column>
-          <el-table-column
-              prop="progress"
-              label="progress">
           </el-table-column>
           <el-table-column
               prop="able"
@@ -102,13 +92,11 @@
           </el-table-column>
           <el-table-column
               prop="create_time"
-              label="createTime"
-              value-format="yyyy-MM-dd HH:mm:ss">
+              label="createTime">
           </el-table-column>
           <el-table-column
               prop="update_time"
-              label="updateTime"
-              value-format="yyyy-MM-dd HH:mm:ss">
+              label="updateTime">
           </el-table-column>
           <el-table-column
               fixed="right"
@@ -173,11 +161,6 @@
           </el-input>
         </div>
         <div>
-          <el-input placeholder="请输入内容" v-model="item.level">
-            <template slot="prepend">level</template>
-          </el-input>
-        </div>
-        <div>
           <el-input placeholder="请输入内容" v-model="item.sort">
             <template slot="prepend">sort</template>
           </el-input>
@@ -185,11 +168,6 @@
         <div>
           <el-input placeholder="请输入内容" v-model="item.members">
             <template slot="prepend">members</template>
-          </el-input>
-        </div>
-        <div>
-          <el-input placeholder="请输入内容" v-model="item.progress">
-            <template slot="prepend">progress</template>
           </el-input>
         </div>
         <div>
@@ -400,13 +378,13 @@
             });
       },
       onDetailDialogClose(done) {
-      //   this.$confirm('Confirm？')
-      //   .then(_ = > {
-      //     done();
-      // }).
-      //   catch(_ = > {};
-      // )
-      //   ;
+        //   this.$confirm('Confirm？')
+        //   .then(_ = > {
+        //     done();
+        // }).
+        //   catch(_ = > {};
+        // )
+        //   ;
         done();
       },
       onEnableButtonClick(id) {

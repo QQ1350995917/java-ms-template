@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pwd.initializr.access.persistence.dao.RoleDao">
+
+  <resultMap id="RoleMap" type="pwd.initializr.access.persistence.entity.RoleEntity">
+    <result column="id" jdbcType="BIGINT" property="id"/>
+    <result column="pid" jdbcType="BIGINT" property="pid"/>
+    <result column="name" jdbcType="VARCHAR" property="name"/>
+    <result column="summary" jdbcType="VARCHAR" property="summary"/>
+    <result column="order" jdbcType="INTEGER" property="order"/>
+    <result column="able" jdbcType="INTEGER" property="able"/>
+    <result column="del" jdbcType="INTEGER" property="del"/>
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    <result column="version" jdbcType="BIGINT" property="version"/>
+  </resultMap>
+
+  <!--根据主键查询查询-->
+  <select id="queryById" resultMap="RoleMap">
+    SELECT
+      `id`,
+      `pid`,
+      `name`,
+      `summary`,
+      `order`,
+      `able`,
+      `del`,
+      `create_time`,
+      `update_time`,
+      `version`
+    FROM
+      role
+    WHERE
+      id = #{id}
+  </select>
+
+  <!--查询指定行数据-->
+  <select id="countByCondition" resultType="java.lang.Long">
+    SELECT COUNT(*) FROM role
+    <include refid="pwd.initializr.common.web.persistence.entity.ScopeEntity.entityQueryScope"></include>
+  </select>
+
+  <!--通过实体作为筛选条件查询-->
+  <select id="queryByCondition" resultMap="RoleMap">
+    SELECT
+      `id`,
+      `pid`,
+      `name`,
+      `summary`,
+      `order`,
+      `able`,
+      `del`,
+      `create_time`,
+      `update_time`,
+      `version`
+    FROM
+      role
+    <include refid="pwd.initializr.common.web.persistence.entity.ScopeEntity.entityQueryScope"></include>
+    <include refid="pwd.initializr.common.web.persistence.entity.SortEntity.entityQuerySort"></include>
+    LIMIT
+      #{offset}, #{limit}
+  </select>
+
+  <!--新增所有列-->
+  <insert id="insert" keyProperty="id" useGeneratedKeys="true" parameterType="pwd.initializr.access.persistence.entity.RoleEntity">
+    INSERT INTO role
+      (
+        `id`,
+        `pid`,
+        `name`,
+        `summary`,
+        `order`,
+        `able`,
+        `del`,
+        `create_time`,
+        `update_time`,
+        `version`
+      )
+    VALUES
+      (
+        #{entity.id},
+        #{entity.pid},
+        #{entity.name},
+        #{entity.summary},
+        #{entity.order},
+        #{entity.able},
+        #{entity.del},
+        #{entity.createTime},
+        #{entity.updateTime},
+        #{entity.version}
+      )
+  </insert>
+
+  <!--新增所有列（批量新增）-->
+  <insert id="insertByBatch" keyProperty="id" useGeneratedKeys="true" parameterType="pwd.initializr.access.persistence.entity.RoleEntity">
+    INSERT INTO role
+    (
+        `id`,
+        `pid`,
+        `name`,
+        `summary`,
+        `order`,
+        `able`,
+        `del`,
+        `create_time`,
+        `update_time`,
+        `version`
+    )
+    VALUES
+    <foreach collection="entities" item="entity" separator=",">
+    (
+        #{entity.id},
+        #{entity.pid},
+        #{entity.name},
+        #{entity.summary},
+        #{entity.order},
+        #{entity.able},
+        #{entity.del},
+        #{entity.createTime},
+        #{entity.updateTime},
+        #{entity.version}
+    )
+    </foreach>
+  </insert>
+
+  <!--新增或者替换所有列-->
+  <insert id="insertOrReplace" keyProperty="id" useGeneratedKeys="true" parameterType="pwd.initializr.access.persistence.entity.RoleEntity">
+    REPLACE INTO role
+    (
+        `id`,
+        `pid`,
+        `name`,
+        `summary`,
+        `order`,
+        `able`,
+        `del`,
+        `create_time`,
+        `update_time`,
+        `version`
+    )
+    VALUES
+    (
+        #{entity.id},
+        #{entity.pid},
+        #{entity.name},
+        #{entity.summary},
+        #{entity.order},
+        #{entity.able},
+        #{entity.del},
+        #{entity.createTime},
+        #{entity.updateTime},
+        #{entity.version}
+    )
+  </insert>
+
+  <!--新增或者替换所有列（批量新增或者替换）-->
+  <insert id="insertOrReplaceByBatch" keyProperty="id" useGeneratedKeys="true" parameterType="pwd.initializr.access.persistence.entity.RoleEntity">
+    REPLACE INTO role
+    (
+        `id`,
+        `pid`,
+        `name`,
+        `summary`,
+        `order`,
+        `able`,
+        `del`,
+        `create_time`,
+        `update_time`,
+        `version`
+    )
+    VALUES
+    <foreach collection="entities" item="entity" separator=",">
+      (
+        #{entity.id},
+        #{entity.pid},
+        #{entity.name},
+        #{entity.summary},
+        #{entity.order},
+        #{entity.able},
+        #{entity.del},
+        #{entity.createTime},
+        #{entity.updateTime},
+        #{entity.version}
+      )
+    </foreach>
+  </insert>
+
+  <!--通过主键修改数据-->
+  <update id="updateById" parameterType="pwd.initializr.access.persistence.entity.RoleEntity">
+    UPDATE role
+    <set>
+      <if test="entity.id != null">
+        `id` = #{entity.id},
+      </if>
+      <if test="entity.pid != null">
+        `pid` = #{entity.pid},
+      </if>
+      <if test="entity.name != null and entity.name != ''">
+        `name` = #{entity.name},
+      </if>
+      <if test="entity.summary != null and entity.summary != ''">
+        `summary` = #{entity.summary},
+      </if>
+      <if test="entity.order != null">
+        `order` = #{entity.order},
+      </if>
+      <if test="entity.able != null">
+        `able` = #{entity.able},
+      </if>
+      <if test="entity.del != null">
+        `del` = #{entity.del},
+      </if>
+      <if test="entity.createTime != null">
+        `create_time` = #{entity.createTime},
+      </if>
+      <if test="entity.updateTime != null">
+        `update_time` = #{entity.updateTime},
+      </if>
+      <if test="entity.version != null">
+        `version` = #{entity.version},
+      </if>
+    </set>
+    WHERE
+      id = #{entity.id}
+  </update>
+
+  <!--通过主键删除-->
+  <update id="deleteById">
+    UPDATE role
+    SET
+      del = 1,
+      update_time = #{date}
+    WHERE
+      id = #{id}
+  </update>
+
+  <!--通过主键批量删除-->
+  <update id="deleteByIds">
+    UPDATE role
+    SET
+      del = 1,
+      update_time = #{date}
+    WHERE
+      id in
+    <foreach close=")" collection="ids" index="index" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </update>
+
+  <!--通过主键启禁-->
+  <update id="ableById">
+    UPDATE role
+    SET
+      able = #{able},
+      update_time = #{date}
+    WHERE
+      id = #{id}
+  </update>
+
+  <!--通过主键批量启禁-->
+  <update id="ableByIds">
+    UPDATE role
+    SET
+      able = #{able},
+      update_time = #{date}
+    WHERE
+      id in
+    <foreach close=")" collection="ids" index="index" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </update>
+
+</mapper>

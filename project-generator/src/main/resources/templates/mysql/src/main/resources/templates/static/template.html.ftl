@@ -191,14 +191,14 @@
             message: 'Must select filed',
             type: 'warning'
           });
-          return
+          return;
         }
         if (this.search === '' || this.search === undefined) {
           this.$message({
             message: 'Must input search',
             type: 'warning'
           });
-          return
+          return;
         }
         this.scopes = [];
         this.scopes.push({

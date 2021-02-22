@@ -22,35 +22,35 @@ import java.util.Set;
  */
 public class DataSourceTable extends DataSourceComponent {
 
-    private String databaseName;
+  private String databaseName;
 
-    public DataSourceTable(DataSourceBO config, String databaseName) {
-        super(config);
-        this.databaseName = databaseName;
-    }
+  public DataSourceTable(DataSourceBO config, String databaseName) {
+    super(config);
+    this.databaseName = databaseName;
+  }
 
-    @Override
-    protected Map<String, Object> getResult(ResultSet resultSet) throws Exception {
-        Map<String, Object> result = new HashMap();
-        while (resultSet.next()) {
-            // 通过字段检索
-            String tableName = resultSet.getString("TABLE_NAME");
-            List<String> tables = (List<String>) result.get("tables");
-            if (tables == null) {
-                tables = new LinkedList<>();
-                result.put("tables", tables);
-            }
-            tables.add(tableName);
-        }
-        return result;
+  @Override
+  protected Map<String, Object> getResult(ResultSet resultSet) throws Exception {
+    Map<String, Object> result = new HashMap();
+    while (resultSet.next()) {
+      // 通过字段检索
+      String tableName = resultSet.getString("TABLE_NAME");
+      List<String> tables = (List<String>) result.get("tables");
+      if (tables == null) {
+        tables = new LinkedList<>();
+        result.put("tables", tables);
+      }
+      tables.add(tableName);
     }
+    return result;
+  }
 
-    @Override
-    protected Set<String> getSqls() {
-        LinkedHashSet<String> sqls = new LinkedHashSet<>();
-        String sql = "select TABLE_NAME from information_schema.columns where table_schema ='"
-            + this.databaseName + "'  group by TABLE_NAME;";
-        sqls.add(sql);
-        return sqls;
-    }
+  @Override
+  protected Set<String> getSqls() {
+    LinkedHashSet<String> sqls = new LinkedHashSet<>();
+    String sql = "select TABLE_NAME from information_schema.columns where table_schema ='"
+        + this.databaseName + "'  group by TABLE_NAME;";
+    sqls.add(sql);
+    return sqls;
+  }
 }

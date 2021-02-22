@@ -25,7 +25,7 @@ import pwd.initializr.organization.api.vo.OrganizationMemberInput;
  *
  * <h1>OrganizationMember控制层接口声明</h1>
  *
- * date 2021-02-20 22:30
+ * date 2021-02-22 21:33
  *
  * @author Automatic[dingpengwei@foxmail.com]
  * @version 0.0.1-SNAPSHOT
@@ -42,7 +42,7 @@ public interface OrganizationMemberApi {
 
   /**
    * <h2>根据分页信息以及分页条件以列表形式查询</h2>
-   * date 2021-02-20 22:30
+   * date 2021-02-22 21:33
    *
    * @param scopes 查询参数
    * @param sorts 排序信息
@@ -60,7 +60,7 @@ public interface OrganizationMemberApi {
 
   /**
    * <h2>根据ID查询详情</h2>
-   * date 2021-02-20 22:30
+   * date 2021-02-22 21:33
    *
    * @param id 请求参数
    * @return void
@@ -74,7 +74,7 @@ public interface OrganizationMemberApi {
 
   /**
    * <h2>启用</h2>
-   * date 2021-02-20 22:30
+   * date 2021-02-22 21:33
    *
    * @param id 请求参数
    * @return void
@@ -87,7 +87,7 @@ public interface OrganizationMemberApi {
 
   /**
    * <h2>批量启用</h2>
-   * date 2021-02-20 22:30
+   * date 2021-02-22 21:33
    *
    * @param ids 请求参数
    * @return void
@@ -100,7 +100,7 @@ public interface OrganizationMemberApi {
 
   /**
    * <h2>禁用</h2>
-   * date 2021-02-20 22:30
+   * date 2021-02-22 21:33
    *
    * @param id 请求参数
    * @return void
@@ -113,7 +113,7 @@ public interface OrganizationMemberApi {
 
   /**
    * <h2>批量禁用</h2>
-   * date 2021-02-20 22:30
+   * date 2021-02-22 21:33
    *
    * @param ids 请求参数
    * @return void
@@ -126,7 +126,7 @@ public interface OrganizationMemberApi {
 
   /**
    * <h2>删除</h2>
-   * date 2021-02-20 22:30
+   * date 2021-02-22 21:33
    *
    * @param id 请求参数
    * @return void
@@ -139,7 +139,7 @@ public interface OrganizationMemberApi {
 
   /**
    * <h2>批量删除</h2>
-   * date 2021-02-20 22:30
+   * date 2021-02-22 21:33
    *
    * @param ids 请求参数
    * @return void
@@ -152,7 +152,7 @@ public interface OrganizationMemberApi {
 
   /**
    * <h2>新增</h2>
-   * date 2021-02-20 22:30
+   * date 2021-02-22 21:33
    *
    * @param input 请求参数
    * @return void
@@ -165,7 +165,7 @@ public interface OrganizationMemberApi {
 
   /**
    * <h2>新增（批量）</h2>
-   * date 2021-02-20 22:30
+   * date 2021-02-22 21:33
    *
    * @param input 请求参数
    * @return void
@@ -178,7 +178,7 @@ public interface OrganizationMemberApi {
 
   /**
    * <h2>新增或替换</h2>
-   * date 2021-02-20 22:30
+   * date 2021-02-22 21:33
    *
    * @param input 请求参数
    * @return void
@@ -191,7 +191,7 @@ public interface OrganizationMemberApi {
 
   /**
    * <h2>新增或替换（批量）</h2>
-   * date 2021-02-20 22:30
+   * date 2021-02-22 21:33
    *
    * @param input 请求参数
    * @return void
@@ -204,7 +204,7 @@ public interface OrganizationMemberApi {
 
   /**
    * <h2>更新</h2>
-   * date 2021-02-20 22:30
+   * date 2021-02-22 21:33
    *
    * @param input 请求参数
    * @return void

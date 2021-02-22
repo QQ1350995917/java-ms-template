@@ -16,42 +16,42 @@ import java.util.List;
  */
 public class ArchitectureBoot {
 
-    public static void main(String[] args) throws Exception {
-        ProjectBO projectBO = new ProjectBO();
-        ArchitectureBoot architectureBoot = new ArchitectureBoot();
-        architectureBoot.generateProjectArchitecture(projectBO);
-    }
+  public static void main(String[] args) throws Exception {
+    ProjectBO projectBO = new ProjectBO();
+    ArchitectureBoot architectureBoot = new ArchitectureBoot();
+    architectureBoot.generateProjectArchitecture(projectBO);
+  }
 
-    public void generateProjectArchitecture(ProjectBO projectBO) {
-        List<ProjectFile> projectFiles = new LinkedList<>();
-        projectFiles.add(new ProjectPom(projectBO));
-        projectFiles.add(new ProjectZip(projectBO));
-        projectFiles.add(new ProjectStart(projectBO));
-        projectFiles.add(new ProjectStop(projectBO));
+  public void generateProjectArchitecture(ProjectBO projectBO) {
+    List<ProjectFile> projectFiles = new LinkedList<>();
+    projectFiles.add(new ProjectPom(projectBO));
+    projectFiles.add(new ProjectZip(projectBO));
+    projectFiles.add(new ProjectStart(projectBO));
+    projectFiles.add(new ProjectStop(projectBO));
 
-        // 处理跟目录-静态接口
-        projectFiles.add(new SrcMainJavaPackageApplication(projectBO));
+    // 处理跟目录-静态接口
+    projectFiles.add(new SrcMainJavaPackageApplication(projectBO));
 
-        // 处理资源层目录-静态接口
-        projectFiles.add(new SrcMainResourcesApplication(projectBO));
-        projectFiles.add(new SrcMainResourcesApplicationDev(projectBO));
-        projectFiles.add(new SrcMainResourcesTemplatesCss(projectBO));
-        projectFiles.add(new SrcMainResourcesTemplatesJs(projectBO));
-        projectFiles.add(new SrcMainResourcesTemplatesMedia(projectBO));
-        projectFiles.add(new SrcMainResourcesBanner(projectBO));
+    // 处理资源层目录-静态接口
+    projectFiles.add(new SrcMainResourcesApplication(projectBO));
+    projectFiles.add(new SrcMainResourcesApplicationDev(projectBO));
+    projectFiles.add(new SrcMainResourcesTemplatesCss(projectBO));
+    projectFiles.add(new SrcMainResourcesTemplatesJs(projectBO));
+    projectFiles.add(new SrcMainResourcesTemplatesMedia(projectBO));
+    projectFiles.add(new SrcMainResourcesBanner(projectBO));
 
-        // 处理API层目录-静态接口
-        projectFiles.add(new SrcMainJavaPackageIndexApi(projectBO));
-        projectFiles.add(new SrcMainJavaPackageIndexController(projectBO));
-        projectFiles.add(new SrcMainJavaPackageApiSwagger2(projectBO));
+    // 处理API层目录-静态接口
+    projectFiles.add(new SrcMainJavaPackageIndexApi(projectBO));
+    projectFiles.add(new SrcMainJavaPackageIndexController(projectBO));
+    projectFiles.add(new SrcMainJavaPackageApiSwagger2(projectBO));
 
-        projectFiles.forEach(obj -> {
-            try {
-                obj.createProjectFile();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-    }
+    projectFiles.forEach(obj -> {
+      try {
+        obj.createProjectFile();
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+    });
+  }
 
 }

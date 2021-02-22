@@ -23,75 +23,76 @@ import java.util.Set;
  */
 public abstract class DataSourceComponent {
 
-    private DataSourceBO config;
+  private DataSourceBO config;
 
-    public DataSourceComponent(DataSourceBO config) {
-        this.config = config;
+  public DataSourceComponent(DataSourceBO config) {
+    this.config = config;
+  }
+
+  public Map<String, Object> exec() throws ClassNotFoundException, SQLException {
+    Map<String, Object> result = new HashMap();
+    Connection connection = getConnection();
+    Statement statement = null;
+    try {
+      statement = connection.createStatement();
+      Set<String> sqls = getSqls();
+      for (String sql : sqls) {
+        ResultSet resultSet = statement.executeQuery(sql);
+        result.putAll(getResult(resultSet));
+        resultSet.close();
+      }
+      statement.close();
+      connection.close();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    } catch (Exception e) {
+      e.printStackTrace();
+    } finally {
+      close(connection, statement);
     }
+    return result;
+  }
 
-    protected Connection getConnection() throws ClassNotFoundException, SQLException {
-        Class.forName(this.config.getDriver());
-        return DriverManager.getConnection(this.config.getUrl(), this.config.getUser(), this.config.getPwd());
+  protected Connection getConnection() throws ClassNotFoundException, SQLException {
+    Class.forName(this.config.getDriver());
+    return DriverManager
+        .getConnection(this.config.getUrl(), this.config.getUser(), this.config.getPwd());
+  }
+
+  protected abstract Set<String> getSqls();
+
+  protected abstract Map<String, Object> getResult(ResultSet resultSet) throws Exception;
+
+  protected void close(Connection connection, Statement statement) {
+    this.close(connection, statement, null);
+  }
+
+  protected void close(Connection connection, Statement statement, ResultSet resultSet) {
+    try {
+      if (resultSet != null && !resultSet.isClosed()) {
+        resultSet.close();
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
     }
-
-    public Map<String, Object> exec() throws ClassNotFoundException,SQLException {
-        Map<String, Object> result = new HashMap();
-        Connection connection = getConnection();
-        Statement statement = null;
-        try {
-            statement = connection.createStatement();
-            Set<String> sqls = getSqls();
-            for (String sql : sqls) {
-                ResultSet resultSet = statement.executeQuery(sql);
-                result.putAll(getResult(resultSet));
-                resultSet.close();
-            }
-            statement.close();
-            connection.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            close(connection, statement);
-        }
-        return result;
+    try {
+      if (statement != null && !statement.isClosed()) {
+        statement.close();
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
     }
-
-    protected void close(Connection connection) {
-        this.close(connection, null);
+    try {
+      if (connection != null && !connection.isClosed()) {
+        connection.close();
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
     }
+  }
 
-    protected void close(Connection connection, Statement statement) {
-        this.close(connection, statement, null);
-    }
-
-    protected void close(Connection connection, Statement statement, ResultSet resultSet) {
-        try {
-            if (resultSet != null && !resultSet.isClosed()) {
-                resultSet.close();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        try {
-            if (statement != null && !statement.isClosed()) {
-                statement.close();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        try {
-            if (connection != null && !connection.isClosed()) {
-                connection.close();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    protected abstract Map<String, Object> getResult(ResultSet resultSet) throws Exception;
-
-    protected abstract Set<String> getSqls();
+  protected void close(Connection connection) {
+    this.close(connection, null);
+  }
 
 }
