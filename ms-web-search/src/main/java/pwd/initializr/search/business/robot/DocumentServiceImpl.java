@@ -51,8 +51,8 @@ public class DocumentServiceImpl implements DocumentService {
   private static final List<String> fields = Arrays.asList("esTitle", "esContent");
   @Autowired
   private ElasticsearchTemplate elasticsearchTemplate;
-  @Value("${search.book.key.word.max.length}")
-  private Integer keyWorldMaxLength = 12;
+  @Value("${search.query.key.word.max.length:120}")
+  private Integer queryKeyWorldMaxLength;
 
   @Override
   public int create(String index, DocumentBO documentBO) {
@@ -88,8 +88,8 @@ public class DocumentServiceImpl implements DocumentService {
     if (keyword == null) {
       return null;
     }
-    if (keyword.length() > keyWorldMaxLength) {
-      keyword = keyword.substring(0, keyWorldMaxLength);
+    if (keyword.length() > queryKeyWorldMaxLength) {
+      keyword = keyword.substring(0, queryKeyWorldMaxLength);
     }
     final String KEY_WORD = keyword;
 
