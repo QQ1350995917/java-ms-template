@@ -18,7 +18,7 @@ import pwd.initializr.search.business.admin.bo.MappingBO;
  */
 public interface MetadataService {
 
-    PageableQueryResult<IndexBO> list();
+    PageableQueryResult<IndexBO> listIndex();
 
     boolean create(String index);
 

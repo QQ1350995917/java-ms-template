@@ -8,14 +8,14 @@ import java.util.Optional;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 import org.elasticsearch.action.admin.indices.get.GetIndexResponse;
-import org.elasticsearch.action.admin.indices.mapping.put.PutMappingResponse;
+import org.elasticsearch.action.support.master.AcknowledgedResponse;
 import org.elasticsearch.cluster.metadata.MappingMetaData;
 import org.elasticsearch.common.collect.ImmutableOpenMap;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
+import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import org.springframework.stereotype.Service;
 import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.search.business.admin.bo.IndexBO;
@@ -37,13 +37,14 @@ import pwd.initializr.search.business.admin.bo.MappingFieldBO;
 public class MetadataServiceImpl implements MetadataService {
 
     @Autowired
-    private ElasticsearchTemplate elasticsearchTemplate;
-
+    private ElasticsearchRestTemplate elasticsearchRestTemplate;
+    // https://blog.csdn.net/chengyuqiang/article/details/102938266?utm_medium=distribute.pc_relevant.none-task-blog-baidujs_title-2&spm=1001.2101.3001.4242
     @Override
-    public PageableQueryResult<IndexBO> list() {
+    public PageableQueryResult<IndexBO> listIndex() {
         PageableQueryResult<IndexBO> indexBOPageableQueryResult = new PageableQueryResult<>();
-        GetIndexResponse getIndexResponse = elasticsearchTemplate.getClient().admin().indices()
-            .prepareGetIndex().get();
+//        GetIndexResponse getIndexResponse = elasticsearchRestTemplate.getClient().indices()
+//            .prepareGetIndex().get();
+        GetIndexResponse getIndexResponse = null;
         String[] indices = getIndexResponse.getIndices();
         ImmutableOpenMap<String, Settings> settings = getIndexResponse.getSettings();
         ImmutableOpenMap<String, ImmutableOpenMap<String, MappingMetaData>> mappings = getIndexResponse
@@ -119,14 +120,14 @@ public class MetadataServiceImpl implements MetadataService {
 
             builder.endObject().endObject();
 
-            PutMappingResponse putMappingResponse = elasticsearchTemplate.getClient().admin()
-                .indices()
-                .preparePutMapping(index)
-                .setType(index)
-                .setSource(builder)
-                .get();
-
-            return putMappingResponse.isAcknowledged();
+//            AcknowledgedResponse acknowledgedResponse = elasticsearchRestTemplate.getClient().admin()
+//                .indices()
+//                .preparePutMapping(index)
+//                .setType(index)
+//                .setSource(builder)
+//                .get();
+            AcknowledgedResponse acknowledgedResponse = null;
+            return acknowledgedResponse.isAcknowledged();
 
         } catch (IOException e) {
             throw new RuntimeException(e);

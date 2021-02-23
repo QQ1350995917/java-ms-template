@@ -49,8 +49,8 @@ import pwd.initializr.search.business.robot.bo.SearchInputBO;
 public class DocumentServiceImpl implements DocumentService {
 
   private static final List<String> fields = Arrays.asList("esTitle", "esContent");
-  @Autowired
-  private ElasticsearchTemplate elasticsearchTemplate;
+//  @Autowired
+//  private ElasticsearchTemplate elasticsearchTemplate;
   @Value("${search.query.key.word.max.length:120}")
   private Integer queryKeyWorldMaxLength;
 
@@ -67,15 +67,16 @@ public class DocumentServiceImpl implements DocumentService {
           .field("esUpdateTime", documentBO.getEsUpdateTime())
           .endObject();
 
-      IndexResponse indexResponse = elasticsearchTemplate.getClient()
-          .prepareIndex(index, index)
-          .setId(documentBO.getEsId())
-          .setSource(builder).get();
+//      IndexResponse indexResponse = elasticsearchTemplate.getClient()
+//          .prepareIndex(index, index)
+//          .setId(documentBO.getEsId())
+//          .setSource(builder).get();
 //      String jsonString = JSONObject.toJSONString(documentBO);
 //      client.prepareIndex(index, index, documentBO.getEsId())
 //          .setSource(jsonString, XContentType.JSON).get();
 
-      return indexResponse.getResult().ordinal();
+//      return indexResponse.getResult().ordinal();
+      return 0;
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -107,7 +108,8 @@ public class DocumentServiceImpl implements DocumentService {
   private PageableQueryResult<SearchBodyVOBO> search(QueryBuilder query, Integer pageIndex,
       Integer pageSize,
       String... indices) {
-    Client client = elasticsearchTemplate.getClient();
+//    Client client = elasticsearchTemplate.getClient();
+    Client client = null;
     ScoreSortBuilder sort = SortBuilders.scoreSort().order(SortOrder.DESC);
     SearchResponse searchResponse = client.prepareSearch(indices)
 //            .setTypes(index)
