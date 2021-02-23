@@ -28,7 +28,7 @@ public class MetadataController extends RobotController implements MetadataApi {
 
     @Override
     public void listIndices() {
-        PageableQueryResult<IndexBO> list = metadataService.list();
+        PageableQueryResult<IndexBO> list = metadataService.listIndex();
         super.outputData(list);
     }
 

@@ -32,13 +32,13 @@ public class MetadataServiceTest {
 
     @Test
     public void create() {
-        metadataService.create("book");
-        metadataService.create("article");
+        metadataService.createIndex("book");
+        metadataService.createIndex("article");
     }
 
     @Test
     public void createByCustomMapping() {
-        metadataService.create("book", metadataService.getDefaultMapping());
-        metadataService.create("article", metadataService.getDefaultMapping());
+        metadataService.createIndex("book", metadataService.getDefaultMapping());
+        metadataService.createIndex("article", metadataService.getDefaultMapping());
     }
 }

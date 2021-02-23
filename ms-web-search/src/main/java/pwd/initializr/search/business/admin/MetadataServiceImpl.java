@@ -9,6 +9,7 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 import org.elasticsearch.action.admin.indices.get.GetIndexResponse;
 import org.elasticsearch.action.support.master.AcknowledgedResponse;
+import org.elasticsearch.client.IndicesClient;
 import org.elasticsearch.cluster.metadata.MappingMetaData;
 import org.elasticsearch.common.collect.ImmutableOpenMap;
 import org.elasticsearch.common.settings.Settings;
@@ -42,8 +43,10 @@ public class MetadataServiceImpl implements MetadataService {
     @Override
     public PageableQueryResult<IndexBO> listIndex() {
         PageableQueryResult<IndexBO> indexBOPageableQueryResult = new PageableQueryResult<>();
+        IndicesClient indices = elasticsearchRestTemplate.getClient().indices();
 //        GetIndexResponse getIndexResponse = elasticsearchRestTemplate.getClient().indices()
 //            .prepareGetIndex().get();
+
         GetIndexResponse getIndexResponse = null;
         String[] indices = getIndexResponse.getIndices();
         ImmutableOpenMap<String, Settings> settings = getIndexResponse.getSettings();
@@ -91,12 +94,12 @@ public class MetadataServiceImpl implements MetadataService {
     }
 
     @Override
-    public boolean create(String index) {
-        return create(index, getDefaultMapping());
+    public boolean createIndex(String index) {
+        return createIndex(index, getDefaultMapping());
     }
 
     @Override
-    public boolean create(String index, List<MappingBO> mappingBOS) {
+    public boolean createIndex(String index, List<MappingBO> mappingBOS) {
         try {
             XContentBuilder builder = XContentFactory.jsonBuilder().startObject()
                 .startObject("properties");
