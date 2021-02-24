@@ -27,18 +27,27 @@ public class MetadataServiceTest {
 
     @Test
     public void list(){
-        metadataService.list();
+//        metadataService.list();
     }
 
     @Test
     public void create() {
-        metadataService.createIndex("book");
-        metadataService.createIndex("article");
+        String indexName = "book";
+        if (metadataService.existIndex(indexName)) {
+            throw new RuntimeException("exist " + indexName);
+        } else {
+            metadataService.createIndex(indexName);
+        }
     }
 
     @Test
     public void createByCustomMapping() {
-        metadataService.createIndex("book", metadataService.getDefaultMapping());
-        metadataService.createIndex("article", metadataService.getDefaultMapping());
+        String indexName = "book";
+        if (metadataService.existIndex(indexName)) {
+           throw new RuntimeException("exist " + indexName);
+        } else {
+            metadataService.createIndex("book", metadataService.getDefaultMapping());
+        }
+
     }
 }

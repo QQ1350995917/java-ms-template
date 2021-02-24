@@ -2,7 +2,6 @@ package pwd.initializr.search.rpc;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -21,6 +20,6 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class RPCSearchOutput extends RPCSearchBodyVO {
+public class RPCSearchOutput extends RPCSearchBody {
 
 }

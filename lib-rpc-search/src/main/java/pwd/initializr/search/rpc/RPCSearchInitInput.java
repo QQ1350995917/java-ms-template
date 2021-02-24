@@ -30,9 +30,9 @@ public class RPCSearchInitInput implements Serializable {
     private static final long serialVersionUID = -1659590069838613585L;
 
     @ApiModelProperty(name = "esHead", value = "esHead", required = false, example = "esHead", dataType = "java.lang.Object")
-    private RPCSearchHeadVO esHead;
+    private RPCSearchHead esHead;
 
     @ApiModelProperty(name = "esBody", value = "esBody", required = false, example = "esBody", dataType = "java.util.List")
-    private List<RPCSearchBodyVO> esBody;
+    private List<RPCSearchBody> esBody;
 
 }

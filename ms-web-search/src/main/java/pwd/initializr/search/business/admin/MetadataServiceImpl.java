@@ -1,14 +1,17 @@
 package pwd.initializr.search.business.admin;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.elasticsearch.action.admin.indices.get.GetIndexResponse;
-import org.elasticsearch.action.support.master.AcknowledgedResponse;
 import org.elasticsearch.client.IndicesClient;
 import org.elasticsearch.cluster.metadata.MappingMetaData;
 import org.elasticsearch.common.collect.ImmutableOpenMap;
@@ -33,6 +36,44 @@ import pwd.initializr.search.business.admin.bo.MappingFieldBO;
  * @author DingPengwei[dingpengwei@foxmail.com]
  * @version 1.0.0
  * @since DistributionVersion
+ *
+ *                 XContentBuilder builder = XContentFactory.jsonBuilder();
+ *                 builder.startObject();
+ *                 {
+ *                     builder.startObject("properties");
+ *                     {
+ *                         builder.startObject("name");
+ *                         {
+ *                             builder.field("type", "text");
+ *                             builder.field("analyzer", "ik_smart");
+ *                         }
+ *                         builder.endObject();
+ *                     }
+ *                     {
+ *                         builder.startObject("age");
+ *                         {
+ *                             builder.field("type", "keyword");
+ *                         }
+ *                         builder.endObject();
+ *                     }
+ *                     {
+ *                         builder.startObject("desc");
+ *                         {
+ *                             builder.field("type", "text");
+ *                             builder.field("analyzer", "ik_smart");
+ *                         }
+ *                         builder.endObject();
+ *                     }
+ *                     {
+ *                         builder.startObject("id");
+ *                         {
+ *                                 builder.field("type", "integer");
+ *                         }
+ *                         builder.endObject();
+ *                 }
+ *                 builder.endObject();
+ *                 }
+ *                 builder.endObject();
  */
 @Service
 public class MetadataServiceImpl implements MetadataService {
@@ -43,9 +84,11 @@ public class MetadataServiceImpl implements MetadataService {
     @Override
     public PageableQueryResult<IndexBO> listIndex() {
         PageableQueryResult<IndexBO> indexBOPageableQueryResult = new PageableQueryResult<>();
-        IndicesClient indices = elasticsearchRestTemplate.getClient().indices();
+//        IndicesClient indices = elasticsearchRestTemplate.getClient().indices();
 //        GetIndexResponse getIndexResponse = elasticsearchRestTemplate.getClient().indices()
 //            .prepareGetIndex().get();
+
+        IndicesClient indices1 = elasticsearchRestTemplate.getClient().indices();
 
         GetIndexResponse getIndexResponse = null;
         String[] indices = getIndexResponse.getIndices();
@@ -73,16 +116,16 @@ public class MetadataServiceImpl implements MetadataService {
                     List<MappingBO> mappingBOS = new LinkedList<>();
                     propertiesMap.forEach((key,value) -> {
                         Map<String, String> valueMap = (Map<String, String>) value;
-                        List<MappingFieldBO> mappingFieldBOS = new LinkedList<>();
+                        Set<MappingFieldBO> mappingFieldBOS = new HashSet<>();
                         valueMap.forEach((fieldKey,fieldValue) ->{
                             MappingFieldBO mappingFieldBO = new MappingFieldBO();
-                            mappingFieldBO.setName(fieldKey);
+                            mappingFieldBO.setKey(fieldKey);
                             mappingFieldBO.setValue(fieldValue);
                             mappingFieldBOS.add(mappingFieldBO);
                         });
                         MappingBO mappingBO = new MappingBO();
-                        mappingBO.setName(key);
-                        mappingBO.setFields(mappingFieldBOS);
+                        mappingBO.setFieldName(key);
+                        mappingBO.setFieldTypes(mappingFieldBOS);
                         mappingBOS.add(mappingBO);
                     });
                     indexBO.setProperties(mappingBOS);
@@ -94,22 +137,27 @@ public class MetadataServiceImpl implements MetadataService {
     }
 
     @Override
-    public boolean createIndex(String index) {
-        return createIndex(index, getDefaultMapping());
+    public boolean existIndex(String indexName) {
+        return elasticsearchRestTemplate.indexExists(indexName);
     }
 
     @Override
-    public boolean createIndex(String index, List<MappingBO> mappingBOS) {
+    public boolean createIndex(String indexName) {
+        return createIndex(indexName, getDefaultMapping());
+    }
+
+    @Override
+    public boolean createIndex(String indexName, List<MappingBO> mappingBOS) {
         try {
             XContentBuilder builder = XContentFactory.jsonBuilder().startObject()
                 .startObject("properties");
             Optional.ofNullable(mappingBOS).orElseGet(LinkedList::new).forEach(mappingBO -> {
                 try {
-                    builder.startObject(mappingBO.getName());
-                    Optional.ofNullable(mappingBO.getFields()).orElseGet(LinkedList::new)
+                    builder.startObject(mappingBO.getFieldName());
+                    Optional.ofNullable(mappingBO.getFieldTypes()).orElseGet(HashSet::new)
                         .forEach(field -> {
                                 try {
-                                    builder.field(field.getName(), field.getValue());
+                                    builder.field(field.getKey(), field.getValue());
                                 } catch (IOException e) {
                                     throw new RuntimeException(e);
                                 }
@@ -120,74 +168,33 @@ public class MetadataServiceImpl implements MetadataService {
                     throw new RuntimeException(e);
                 }
             });
-
             builder.endObject().endObject();
+            boolean index = elasticsearchRestTemplate.createIndex(indexName);
+            boolean mapping = elasticsearchRestTemplate.putMapping(indexName, indexName, builder);
+            if (!mapping) {
+                deleteIndex(indexName);
+            }
+            return index && mapping;
 
-//            AcknowledgedResponse acknowledgedResponse = elasticsearchRestTemplate.getClient().admin()
-//                .indices()
-//                .preparePutMapping(index)
-//                .setType(index)
-//                .setSource(builder)
-//                .get();
-            AcknowledgedResponse acknowledgedResponse = null;
-            return acknowledgedResponse.isAcknowledged();
-
-        } catch (IOException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public List<MappingBO> getDefaultMapping() {
-        List<MappingBO> mappingBOS = new LinkedList<>();
-
-        MappingBO esIdMappingBO = new MappingBO();
-        esIdMappingBO.setName("esId");
-        List<MappingFieldBO> esIdFields = new LinkedList<>();
-        esIdFields.add(new MappingFieldBO("type", "keyword"));
-        esIdMappingBO.setFields(esIdFields);
-        mappingBOS.add(esIdMappingBO);
-
-        MappingBO esVisibilityMappingBO = new MappingBO();
-        esVisibilityMappingBO.setName("esVisibility");
-        List<MappingFieldBO> esVisibilityFields = new LinkedList<>();
-        esVisibilityFields.add(new MappingFieldBO("type", "keyword"));
-        esVisibilityMappingBO.setFields(esVisibilityFields);
-        mappingBOS.add(esVisibilityMappingBO);
-
-        MappingBO esTitleMappingBO = new MappingBO();
-        esTitleMappingBO.setName("esTitle");
-        List<MappingFieldBO> esTitleFields = new LinkedList<>();
-        esTitleFields.add(new MappingFieldBO("type", "text"));
-        esTitleFields.add(new MappingFieldBO("analyzer", "ik_max_word"));
-        esTitleMappingBO.setFields(esTitleFields);
-        mappingBOS.add(esTitleMappingBO);
-
-        MappingBO esContentMappingBO = new MappingBO();
-        esContentMappingBO.setName("esContent");
-        List<MappingFieldBO> esContentFields = new LinkedList<>();
-        esContentFields.add(new MappingFieldBO("type", "text"));
-        esContentFields.add(new MappingFieldBO("analyzer", "ik_max_word"));
-        esContentMappingBO.setFields(esContentFields);
-        mappingBOS.add(esContentMappingBO);
-
-        MappingBO esLinkToMappingBO = new MappingBO();
-        esLinkToMappingBO.setName("esLinkTo");
-        List<MappingFieldBO> esLinkToFields = new LinkedList<>();
-        esLinkToFields.add(new MappingFieldBO("type", "keyword"));
-        esLinkToMappingBO.setFields(esLinkToFields);
-        mappingBOS.add(esLinkToMappingBO);
-
-        MappingBO esUpdateTimeMappingBO = new MappingBO();
-        esUpdateTimeMappingBO.setName("esUpdateTime");
-        List<MappingFieldBO> esUpdateTimeFields = new LinkedList<>();
-//    esUpdateTimeFields.add(new MappingFieldBO("type", "date"));
-        esUpdateTimeFields.add(new MappingFieldBO("type", "keyword"));
-//    esUpdateTimeFields.add(new MappingFieldBO("format", "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis"));
-        esUpdateTimeMappingBO.setFields(esUpdateTimeFields);
-        mappingBOS.add(esUpdateTimeMappingBO);
-
-        return mappingBOS;
+    public boolean deleteIndex(String indexName) {
+        return elasticsearchRestTemplate.deleteIndex(indexName);
     }
 
+    @Override
+    public List<MappingBO> getDefaultMapping() {
+        List<MappingBO> mappingBOS = new LinkedList<>();
+        mappingBOS.add(new MappingBO("esId", Arrays.asList(new MappingFieldBO("type","keyword")).stream().collect(Collectors.toSet())));
+        mappingBOS.add(new MappingBO("esVisibility", Arrays.asList(new MappingFieldBO("type","keyword")).stream().collect(Collectors.toSet())));
+        mappingBOS.add(new MappingBO("esTitle", Arrays.asList(new MappingFieldBO("type","text"),new MappingFieldBO("analyzer","ik_max_word")).stream().collect(Collectors.toSet())));
+        mappingBOS.add(new MappingBO("esContent", Arrays.asList(new MappingFieldBO("type","text"),new MappingFieldBO("analyzer","ik_max_word")).stream().collect(Collectors.toSet())));
+        mappingBOS.add(new MappingBO("esLinkTo", Arrays.asList(new MappingFieldBO("type","keyword")).stream().collect(Collectors.toSet())));
+        mappingBOS.add(new MappingBO("esUpdateTime", Arrays.asList(new MappingFieldBO("type","date"),new MappingFieldBO("format","yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis")).stream().collect(Collectors.toSet())));
+        return mappingBOS;
+    }
 }

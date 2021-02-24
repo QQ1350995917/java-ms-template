@@ -1,9 +1,10 @@
-package pwd.initializr.search.business.robot;
+package pwd.initializr.search.business;
 
+import java.util.List;
 import pwd.initializr.common.web.business.bo.PageableQueryResult;
-import pwd.initializr.search.business.robot.bo.DocumentBO;
-import pwd.initializr.search.business.robot.bo.SearchInputBO;
-import pwd.initializr.search.business.robot.bo.SearchBodyVOBO;
+import pwd.initializr.search.business.bo.DocumentBO;
+import pwd.initializr.search.business.bo.SearchInputBO;
+import pwd.initializr.search.business.bo.SearchBodyVOBO;
 
 /**
  * pwd.initializr.search.business@ms-web-initializr
@@ -18,7 +19,7 @@ import pwd.initializr.search.business.robot.bo.SearchBodyVOBO;
  */
 public interface DocumentService {
 
-  int create(String index, DocumentBO documentBO);
+  int create(String indexName, List<DocumentBO> documentBOS);
 
   PageableQueryResult<SearchBodyVOBO> search(SearchInputBO searchInputBO);
 }

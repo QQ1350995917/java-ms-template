@@ -1,4 +1,4 @@
-package pwd.initializr.search.test.business;
+package pwd.initializr.search.test;
 
 import org.springframework.beans.BeanUtils;
 import pwd.initializr.search.api.robot.vo.DocumentIntoSearchInputVO;
@@ -14,7 +14,7 @@ import pwd.initializr.search.api.robot.vo.DocumentIntoSearchInputVO;
  * @version 1.0.0
  * @since DistributionVersion
  */
-public class MainTest {
+public class SearchApplicationMainTest {
 
   public static void main(String[] args) {
 

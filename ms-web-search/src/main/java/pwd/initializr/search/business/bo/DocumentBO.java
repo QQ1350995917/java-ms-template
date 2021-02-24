@@ -1,7 +1,6 @@
-package pwd.initializr.search.business.robot.bo;
+package pwd.initializr.search.business.bo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,7 +9,7 @@ import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
- * pwd.initializr.search.business.robot.bo@ms-web-initializr
+ * pwd.initializr.search.business.bo@ms-web-initializr
  *
  * <h1>TODO what you want to do?</h1>
  *

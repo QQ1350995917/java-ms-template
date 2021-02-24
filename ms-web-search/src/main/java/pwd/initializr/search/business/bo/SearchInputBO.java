@@ -1,4 +1,4 @@
-package pwd.initializr.search.business.robot.bo;
+package pwd.initializr.search.business.bo;
 
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -8,7 +8,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * pwd.initializr.search.business.robot.bo@ms-web-initializr
+ * pwd.initializr.search.business.bo@ms-web-initializr
  *
  * <h1>TODO what you want to do?</h1>
  *
@@ -29,6 +29,8 @@ public class SearchInputBO {
     private String keyword;
     private Integer index = 0;
     private Integer size = 12;
+    private String preTags = "<strong>";
+    private String postTags = "</strong>";
 
 
 }

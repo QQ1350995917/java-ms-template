@@ -25,7 +25,7 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class RPCSearchBodyVO implements Serializable {
+public class RPCSearchBody implements Serializable {
 
   private static final long serialVersionUID = -1659590069838613585L;
 

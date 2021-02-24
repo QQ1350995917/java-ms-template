@@ -20,9 +20,13 @@ public interface MetadataService {
 
     PageableQueryResult<IndexBO> listIndex();
 
-    boolean createIndex(String index);
+    boolean existIndex(String indexName);
 
-    boolean createIndex(String index, List<MappingBO> mappingBOS);
+    boolean createIndex(String indexName);
+
+    boolean createIndex(String indexName, List<MappingBO> mappingBOS);
+
+    boolean deleteIndex(String indexName);
 
     List<MappingBO> getDefaultMapping();
 }

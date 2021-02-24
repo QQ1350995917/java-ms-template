@@ -1,4 +1,4 @@
-package pwd.initializr.search.api.robot;
+package pwd.initializr.search.api.user;
 
 import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,14 +19,12 @@ import pwd.initializr.search.api.robot.vo.SearchInputVo;
  */
 @Api(
     tags = "信息写入与搜索",
-    value = "documentApi",
-    description = "信息写入与搜索API"
+    value = "searchApi",
+    description = "信息搜索API"
 )
-@RestController(value = "documentApi")
-@RequestMapping(value = "/api/robot/search")
+@RestController(value = "searchApi")
+@RequestMapping(value = "/api/search")
 public interface DocumentApi {
-
-    void postOrPut(DocumentIntoSearchInputVO input);
 
     void search(SearchInputVo input);
 

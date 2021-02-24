@@ -28,8 +28,8 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 @Setter
 @Getter
 @ToString
-//@Document(indexName = "book", type = "book")
-public class MetadataDocument implements Serializable {
+//@Document(indexName = "metadata", type = "metadata", shards = 3, replicas = 1,createIndex = false)
+public class MetadataEntity implements Serializable {
 
   private static final long serialVersionUID = 3025999016837937935L;
 
