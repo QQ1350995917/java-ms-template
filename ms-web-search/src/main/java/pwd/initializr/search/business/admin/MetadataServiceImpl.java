@@ -11,8 +11,12 @@ import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.elasticsearch.action.DocWriteResponse.Result;
+import org.elasticsearch.action.admin.indices.get.GetIndexRequest;
 import org.elasticsearch.action.admin.indices.get.GetIndexResponse;
+import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.client.IndicesClient;
+import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.cluster.metadata.MappingMetaData;
 import org.elasticsearch.common.collect.ImmutableOpenMap;
 import org.elasticsearch.common.settings.Settings;
@@ -88,9 +92,16 @@ public class MetadataServiceImpl implements MetadataService {
 //        GetIndexResponse getIndexResponse = elasticsearchRestTemplate.getClient().indices()
 //            .prepareGetIndex().get();
 
-        IndicesClient indices1 = elasticsearchRestTemplate.getClient().indices();
+        GetIndexRequest getIndexRequest = new GetIndexRequest();
 
         GetIndexResponse getIndexResponse = null;
+        try {
+            getIndexResponse = elasticsearchRestTemplate.getClient().indices().get(getIndexRequest,
+                RequestOptions.DEFAULT);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         String[] indices = getIndexResponse.getIndices();
         ImmutableOpenMap<String, Settings> settings = getIndexResponse.getSettings();
         ImmutableOpenMap<String, ImmutableOpenMap<String, MappingMetaData>> mappings = getIndexResponse
