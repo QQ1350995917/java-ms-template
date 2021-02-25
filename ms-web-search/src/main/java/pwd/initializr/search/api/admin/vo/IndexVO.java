@@ -1,5 +1,12 @@
 package pwd.initializr.search.api.admin.vo;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+import pwd.initializr.search.business.admin.bo.IndexBO;
+
 /**
  * pwd.initializr.search.api.admin.vo@ms-web-initializr
  *
@@ -11,6 +18,10 @@ package pwd.initializr.search.api.admin.vo;
  * @version 1.0.0
  * @since DistributionVersion
  */
-public class IndexVO {
+@AllArgsConstructor
+@Setter
+@Getter
+@ToString
+public class IndexVO extends IndexBO {
 
 }

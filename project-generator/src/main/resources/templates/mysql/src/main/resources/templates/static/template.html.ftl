@@ -22,7 +22,7 @@
       </el-col>
       <el-col :span="16">
         <div>
-          <el-input placeholder="请输入内容" v-model="search" class="input-with-select">
+          <el-input placeholder="请输入内容" v-model="keyword" class="input-with-select">
             <el-select v-model="select" slot="prepend" placeholder="请选择" style="width: 320px;">
             <#if columns?exists>
               <#list columns as column>
@@ -123,7 +123,7 @@
         pageSize: 12,
         total: 0,
         select: '',
-        search: '',
+        keyword: '',
         dialogVisible: false,
         dialogName: '',
         scopesTemplate: [{
@@ -193,9 +193,9 @@
           });
           return;
         }
-        if (this.search === '' || this.search === undefined) {
+        if (this.keyword === '' || this.keyword === undefined) {
           this.$message({
-            message: 'Must input search',
+            message: 'Must input keyword',
             type: 'warning'
           });
           return;
@@ -204,7 +204,7 @@
         this.scopes.push({
           hit: 'AL',
           fieldName: this.select,
-          fieldValue: this.search
+          fieldValue: this.keyword
         });
         this.list = [];
         this.item = {};

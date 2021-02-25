@@ -43,7 +43,7 @@ import pwd.initializr.search.rpc.RPCDocument;
     description = "信息写入与搜索API"
 )
 @RestController(value = "documentApi")
-@RequestMapping(value = "/api/robot")
+@RequestMapping(value = "/api/robot/document")
 public class DocumentController extends RobotController implements DocumentApi {
 
   @Resource
@@ -58,8 +58,8 @@ public class DocumentController extends RobotController implements DocumentApi {
       BeanUtils.copyProperties(documentVO, documentBO);
       documentBOS.add(documentBO);
     });
-    documentService.replace(indexName, documentBOS);
-    outputData(200);
+    int replace = documentService.replace(indexName, documentBOS);
+    outputData(replace);
   }
 
   @Override

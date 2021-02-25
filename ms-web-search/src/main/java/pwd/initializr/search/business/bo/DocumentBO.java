@@ -29,7 +29,7 @@ public class DocumentBO extends RPCDocument {
   private String index;
 
   public DocumentBO(String id, String able, String title,
-      List<String> content, String linkTo, String updateTime, Long version) {
-    super(id, able, title, content, linkTo, updateTime, version);
+      List<String> content, String linkTo, String updateTime) {
+    super(id, able, title, content, linkTo, updateTime);
   }
 }

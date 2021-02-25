@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
@@ -46,18 +47,22 @@ import pwd.initializr.search.business.bo.SearchInputBO;
  * @version 1.0.0
  * @since DistributionVersion
  */
-@Service
+@Service("DocumentService")
 @Slf4j
 public class DocumentServiceImpl implements DocumentService {
 
-  private static final List<String> fields = Arrays.asList("esTitle", "esContent");
-  @Autowired
+  private static final List<String> fields = Arrays.asList("title", "content");
+  @Resource
   private ElasticsearchRestTemplate elasticsearchRestTemplate;
+
   @Value("${search.query.key.word.max.length:120}")
   private Integer queryKeyWorldMaxLength;
 
   @Override
   public int replace(String indexName, List<DocumentBO> documentBOS) {
+    if (documentBOS == null) {
+      return 0;
+    }
     try {
       List<IndexQuery> queries = documentBOS.stream().map(item->{
           IndexQuery query = new IndexQuery();
@@ -65,15 +70,13 @@ public class DocumentServiceImpl implements DocumentService {
           query.setIndexName(indexName);
           query.setType(indexName);
           query.setSource(JSON.toJSONString(item));
-          query.setVersion(item.getVersion());
           return query;
       }).collect(Collectors.toList());
       elasticsearchRestTemplate.bulkIndex(queries);
-      elasticsearchRestTemplate.refresh(indexName);
-      return 0;
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
+    return documentBOS.size();
   }
 
 
@@ -178,8 +181,6 @@ public class DocumentServiceImpl implements DocumentService {
           searchResultBO.setLinkTo(source.get("linkTo") == null ? null : source.get("linkTo").toString());
           searchResultBO.setUpdateTime(source.get("updateTime") == null ? null
             : source.get("updateTime").toString());
-          searchResultBO.setVersion(source.get("version") == null ? 0L
-              : Long.parseLong(source.get("version").toString()));
           searchResultBOPageableQueryResult.getElements().add(searchResultBO);
         }
         searchResultBOPageableQueryResult.setIndex(pageIndex.longValue());

@@ -10,7 +10,7 @@
   <script src="https://unpkg.zhimg.com/vue/dist/vue.js"></script>
   <script src="https://unpkg.zhimg.com/element-ui/lib/index.js"></script>
   <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
-  <script src="./static/js/template.js"></script>
+  <script src="js/template.js"></script>
 
 </head>
 <body>
@@ -32,7 +32,42 @@
   <el-main style="padding: 0px 10px 0px 0px; margin-top: 10px; background-color: transparent; height: 666px">
     <el-row class="row-bg" style="background-color: transparent">
       <el-col :span="12" :offset="6" style="background-color: transparent">
-
+        <el-select v-model="indexName" placeholder="indexName" style="width: 100%">
+          <el-option
+              v-for="item in indies"
+              :key="item.name"
+              :label="item.name"
+              :value="item.name">
+          </el-option>
+        </el-select>
+        <div style="margin-top: 10px">
+          <el-input placeholder="input id" v-model="element.id">
+            <template slot="prepend">ID</template>
+          </el-input>
+        </div>
+        <div style="margin-top: 10px">
+          <el-input placeholder="input title" v-model="element.title">
+            <template slot="prepend">Title</template>
+          </el-input>
+        </div>
+        <div style="margin-top: 10px">
+          <el-input placeholder="input content" v-model="content" type="textarea">
+            <template slot="prepend">Content</template>
+          </el-input>
+        </div>
+        <div style="margin-top: 10px">
+          <el-input placeholder="input linkTo" v-model="element.linkTo">
+            <template slot="prepend">LinkTo</template>
+          </el-input>
+        </div>
+        <div style="margin-top: 10px">
+          <el-input placeholder="input updateTime" v-model="element.updateTime">
+            <template slot="prepend">UpdateTime</template>
+          </el-input>
+        </div>
+      </el-col>
+      <el-col :span="12" :offset="6" style="margin-top: 10px">
+        <el-button type="primary" @click="onCommitButtonClick" style="width: 100%">提交</el-button>
       </el-col>
     </el-row>
   </el-main>
@@ -50,10 +85,11 @@
     el: '#container',
     data: function () {
       return {
-        activeName: 'metadata',
-        index: 0,
-        size: 12,
-        total: 0,
+        activeName: 'document',
+        indies: [],
+        indexName: '',
+        content: '',
+        element: {id: '',title:'',content:[],linkTo:'',updateTime:''},
         elements: []
       };
     },
@@ -62,10 +98,12 @@
     },
     methods: {
       onTabClick(tab, event) {
-        if ("swagger" === tab.name) {
-          window.open("./swagger", '_self');
+        if ("0" === tab.name) {
+          window.open("/", '_self');
+        } else if ("swagger" === tab.name) {
+          window.open("/swagger", '_self');
         } else {
-          window.open("./static/" + tab.name + ".html", '_self');
+          window.open("/static/" + tab.name + ".html", '_self');
         }
       },
       requestForIndices(){
@@ -105,7 +143,51 @@
               }
             });
       },
-
+      onCommitButtonClick(){
+        if (this.indexName === '' || this.indexName === undefined) {
+          this.$message({
+            message: 'Must select index name',
+            type: 'warning'
+          });
+          return
+        }
+        this.element.content.push(this.content)
+        this.elements = []
+        this.elements.push(this.element)
+        this.requestForCreateDocument()
+      },
+      requestForCreateDocument(){
+        this.$http.post('/api/robot/document/' + this.indexName, JSON.stringify(this.elements))
+        .then(
+            function(res) {
+              var body = res.body;
+              var meta = body.meta;
+              var code = meta.code;
+              var data = body.data;
+              if (code == 200) {
+                this.$message({
+                  message: meta.message,
+                  type: 'success'
+                });
+              } else {
+                this.$message({
+                  message: meta.message,
+                  type: 'warning'
+                });
+              }
+            }, function(e) {
+              var body = e.body;
+              var meta = body.meta;
+              var code = meta.code;
+              if (code == 400) {
+                this.$message.error('Request params error');
+              } else if (code == 500) {
+                this.$message.error('Server error');
+              } else {
+                this.$message.error('Unknown error');
+              }
+            });
+      },
     }
   });
 </script>

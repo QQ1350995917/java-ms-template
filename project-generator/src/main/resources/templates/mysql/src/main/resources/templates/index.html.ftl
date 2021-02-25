@@ -19,8 +19,9 @@
     <el-row>
       <el-col :span="12" :offset="6">
         <template>
-          <el-tabs v-model="activeName" type="card">
+          <el-tabs v-model="activeName" type="card" @tab-click="onTabClick">
             <el-tab-pane label="${projectName}" name="0"></el-tab-pane>
+            <el-tab-pane label="swagger" name="swagger">swagger</el-tab-pane>
           </el-tabs>
         </template>
       </el-col>
@@ -30,10 +31,9 @@
       style="padding: 0px 10px 0px 0px; margin-top: 10px; background-color: transparent; height: 666px">
     <el-row class="row-bg" style="background-color: transparent">
       <el-col :span="12" :offset="6" style="background-color: transparent">
-        <el-button type="primary" @click="onSwaggerButtonClick()">swagger</el-button>
       <#if classNames?exists>
         <#list classNames as className>
-          <el-button type="primary" @click="onButtonClick('${className}')">${className}</el-button>
+        <el-button type="primary" @click="onButtonClick('${className}')">${className}</el-button>
         </#list>
       </#if>
       </el-col>
@@ -57,12 +57,14 @@
       };
     },
     methods: {
-      onSwaggerButtonClick() {
-        window.open('./swagger', '_blank');
+      onTabClick(tab, event) {
+        if ("swagger" === tab.name) {
+          window.open("/swagger", '_self');
+        }
       },
       onButtonClick(className) {
         // window.location.href="./static/" + className + ".html"
-        window.open('./static/' + className + '.html', '_blank');
+        window.open('/static/' + className + '.html', '_blank');
       }
     }
   });

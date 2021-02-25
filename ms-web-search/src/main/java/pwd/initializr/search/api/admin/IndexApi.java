@@ -1,4 +1,4 @@
-package pwd.initializr.organization.api;
+package pwd.initializr.search.api.admin;
 
 import io.swagger.annotations.Api;
 import org.springframework.stereotype.Controller;

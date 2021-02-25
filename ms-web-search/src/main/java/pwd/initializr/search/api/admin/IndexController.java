@@ -1,4 +1,4 @@
-package pwd.initializr.organization.api;
+package pwd.initializr.search.api.admin;
 
 import io.swagger.annotations.Api;
 import org.springframework.stereotype.Controller;
@@ -22,7 +22,6 @@ import org.springframework.web.servlet.ModelAndView;
     value = "IndexPage",
     description = "[界面]"
 )
-
 @Controller(value = "Index")
 @RequestMapping(value = "")
 public class IndexController {

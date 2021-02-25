@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>pwd-initializr-organization</title>
+  <title>pwd-initializr-search</title>
 
   <link rel="stylesheet" href="https://unpkg.zhimg.com/element-ui/lib/theme-chalk/index.css">
   <link rel="stylesheet" href="./static/css/template.css">
@@ -10,28 +10,67 @@
   <script src="https://unpkg.zhimg.com/vue/dist/vue.js"></script>
   <script src="https://unpkg.zhimg.com/element-ui/lib/index.js"></script>
   <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
-  <script src="./static/js/template.js"></script>
+  <script src="/static/js/template.js"></script>
 
 </head>
 <body>
-<el-container id="container" >
-  <el-header style="padding: 0px;height: 42px">
+<el-container id="container">
+  <el-header style="padding: 0px; height: 90px">
     <el-row>
       <el-col :span="12" :offset="6">
         <template>
-          <el-tabs v-model="activeName" type="card">
-            <el-tab-pane label="pwd-initializr-organization" name="0"></el-tab-pane>
+          <el-tabs v-model="activeName" type="card" @tab-click="onTabClick">
+            <el-tab-pane label="pwd-initializr-search" name="0"></el-tab-pane>
+            <el-tab-pane label="swagger" name="swagger">swagger</el-tab-pane>
+            <el-tab-pane label="metadata" name="metadata">metadata</el-tab-pane>
+            <el-tab-pane label="document" name="document">document</el-tab-pane>
           </el-tabs>
         </template>
       </el-col>
     </el-row>
+    <el-row>
+      <el-col :span="12" :offset="6">
+        <div>
+          <el-input placeholder="请输入内容" v-model="keyword" class="input-with-select">
+            <el-select v-model="select" slot="prepend" placeholder="请选择" style="width: 120px;">
+              <el-option label="*" value="*"></el-option>
+              </el-option>
+              <el-option  v-for="index in indies"
+                          :key="index.name"
+                          :label="index.name"
+                          :value="index.name">
+              </el-option>
+            </el-select>
+            <el-button slot="append" icon="el-icon-search" @click="onSearchButtonClick"></el-button>
+          </el-input>
+        </div>
+      </el-col>
+    </el-row>
   </el-header>
-  <el-main style="padding: 0px 10px 0px 0px; margin-top: 10px; background-color: transparent; height: 666px">
-    <el-row class="row-bg" style="background-color: transparent">
-      <el-col :span="12" :offset="6" style="background-color: transparent">
-      <el-button type="primary" @click="onSwaggerButtonClick()">swagger</el-button>
-          <el-button type="primary" @click="onButtonClick('organizationMember')">organizationMember</el-button>
-          <el-button type="primary" @click="onButtonClick('organization')">organization</el-button>
+  <el-main style="padding: 0px 10px 0px 0px; margin-top: 10px; height: 666px;">
+    <el-row>
+      <el-col :span="12" :offset="6" v-for="element in elements">
+        <h3>
+          <a :href="element.linkTo">
+            <span class="text item book" v-html="element.title"></span>
+            -
+            <span>xx</span>
+          </a>
+        </h3>
+        <span v-html="contentItem" v-for="contentItem in element.content"></span>
+        <el-divider></el-divider>
+      </el-col>
+    </el-row>
+    <el-row>
+      <el-col :span="12" :offset="6" >
+        <div class="block">
+          <el-pagination
+              layout="prev, pager, next"
+              @current-change="requestForSearch"
+              :page-size="pageSize"
+              :total="total">
+          </el-pagination>
+        </div>
       </el-col>
     </el-row>
   </el-main>
@@ -49,16 +88,115 @@
     el: '#container',
     data: function () {
       return {
-        activeName: '0'
+        activeName: '0',
+        indies: [],
+        select: '',
+        keyword: '',
+        pageIndex: 0,
+        pageSize: 12,
+        total: 0,
+        elements: []
       };
     },
+    created() {
+      this.requestForIndices();
+    },
     methods: {
-      onSwaggerButtonClick () {
-        window.open("./swagger", '_blank');
+      onTabClick(tab, event) {
+        if ("swagger" === tab.name) {
+          window.open("/swagger", '_self');
+        } else {
+          window.open("/static/" + tab.name + ".html", '_self');
+        }
       },
-      onButtonClick(className){
-        // window.location.href="./static/" + className + ".html"
-        window.open("./static/" + className + ".html", '_blank');
+      requestForIndices(){
+        this.$http.get('/api/admin/metadata/indices')
+        .then(
+            function(res) {
+              var body = res.body;
+              var meta = body.meta;
+              var code = meta.code;
+              var data = body.data;
+              if (code == 200) {
+                var elements = data.elements;
+                if (elements == undefined || elements.length == 0) {
+                  this.$message({
+                    message: 'No Date',
+                    type: 'warning'
+                  });
+                } else {
+                  this.indies = data.elements;
+                }
+              } else {
+                this.$message({
+                  message: meta.message,
+                  type: 'warning'
+                });
+              }
+            }, function(e) {
+              var body = e.body;
+              var meta = body.meta;
+              var code = meta.code;
+              if (code == 400) {
+                this.$message.error('Request params error');
+              } else if (code == 500) {
+                this.$message.error('Server error');
+              } else {
+                this.$message.error('Unknown error');
+              }
+            });
+      },
+      onSearchButtonClick() {
+        if (this.select === '' || this.select === undefined) {
+          this.select = '*';
+        }
+        if (this.keyword === '' || this.keyword === undefined) {
+          this.$message({
+            message: 'Must input keyword',
+            type: 'warning'
+          });
+          return
+        }
+        this.requestForSearch()
+      },
+      requestForSearch() {
+        this.$http.get('http://localhost:12070/api/search?index=' + this.pageIndex + '&indices=' + this.select + '&keyword=' + encodeURIComponent(this.keyword))
+        .then(
+            function(res) {
+              var body = res.body;
+              var meta = body.meta;
+              var code = meta.code;
+              var data = body.data;
+              if (code == 200) {
+                var elements = data.elements;
+                if (elements == undefined || elements.length == 0) {
+                  this.$message({
+                    message: 'No Date',
+                    type: 'warning'
+                  });
+                } else {
+                  this.$message.success('List Success');
+                  this.elements = data.elements;
+                  this.total = Number(data.total);
+                }
+              } else {
+                this.$message({
+                  message: meta.message,
+                  type: 'warning'
+                });
+              }
+            }, function(e) {
+              var body = e.body;
+              var meta = body.meta;
+              var code = meta.code;
+              if (code == 400) {
+                this.$message.error('Request params error');
+              } else if (code == 500) {
+                this.$message.error('Server error');
+              } else {
+                this.$message.error('Unknown error');
+              }
+            });
       }
     }
   });

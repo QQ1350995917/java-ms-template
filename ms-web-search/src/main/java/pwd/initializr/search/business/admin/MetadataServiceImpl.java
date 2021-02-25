@@ -11,20 +11,15 @@ import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import org.elasticsearch.action.DocWriteResponse.Result;
-import org.elasticsearch.action.index.IndexRequest;
-import org.elasticsearch.action.index.IndexResponse;
-import org.elasticsearch.client.IndicesClient;
+import javax.annotation.Resource;
 import org.elasticsearch.client.RequestOptions;
+import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.client.indices.GetIndexRequest;
 import org.elasticsearch.client.indices.GetIndexResponse;
 import org.elasticsearch.cluster.metadata.MappingMetaData;
-import org.elasticsearch.common.collect.ImmutableOpenMap;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
-import org.elasticsearch.rest.RestStatus;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import org.springframework.stereotype.Service;
 import pwd.initializr.common.web.business.bo.PageableQueryResult;
@@ -81,32 +76,22 @@ import pwd.initializr.search.business.admin.bo.MappingFieldBO;
  *                 }
  *                 builder.endObject();
  */
-@Service
+@Service("MetadataService")
 public class MetadataServiceImpl implements MetadataService {
 
-    @Autowired
+    @Resource
     private ElasticsearchRestTemplate elasticsearchRestTemplate;
-    // https://blog.csdn.net/chengyuqiang/article/details/102938266?utm_medium=distribute.pc_relevant.none-task-blog-baidujs_title-2&spm=1001.2101.3001.4242
+
     @Override
-    public PageableQueryResult<IndexBO> listIndex() {
+    public PageableQueryResult<IndexBO> listIndex(String indexName) {
         PageableQueryResult<IndexBO> indexBOPageableQueryResult = new PageableQueryResult<>();
-//        IndicesClient indices = elasticsearchRestTemplate.getClient().indices();
-//        GetIndexResponse getIndexResponse = elasticsearchRestTemplate.getClient().indices()
-//            .prepareGetIndex().get();
-
-
         try {
-            GetIndexRequest getIndexRequest = new GetIndexRequest();
-            GetIndexResponse getIndexResponse = elasticsearchRestTemplate.getClient().indices().get(getIndexRequest,
-                RequestOptions.DEFAULT);
-
-            IndexRequest indexRequest = new IndexRequest();
-
-
-
+            GetIndexRequest getIndexRequest = new GetIndexRequest(indexName);
+            RestHighLevelClient client = elasticsearchRestTemplate.getClient();
+            GetIndexResponse getIndexResponse = client.indices().get(getIndexRequest,RequestOptions.DEFAULT);
             String[] indices = getIndexResponse.getIndices();
-            Map<String, Settings> settings = getIndexResponse.getSettings();
             Map<String, MappingMetaData> mappings = getIndexResponse.getMappings();
+            Map<String, Settings> settings = getIndexResponse.getSettings();
 
             Stream.of(Optional.ofNullable(indices).orElseGet(new Supplier<String[]>() {
                 @Override
@@ -146,11 +131,9 @@ public class MetadataServiceImpl implements MetadataService {
                     indexBOPageableQueryResult.getElements().add(indexBO);
                 }
             });
-
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
-
         return indexBOPageableQueryResult;
     }
 
@@ -195,6 +178,7 @@ public class MetadataServiceImpl implements MetadataService {
             return index && mapping;
 
         } catch (Exception e) {
+            deleteIndex(indexName);
             throw new RuntimeException(e);
         }
     }
@@ -207,13 +191,12 @@ public class MetadataServiceImpl implements MetadataService {
     @Override
     public List<MappingBO> getDefaultMapping() {
         List<MappingBO> mappingBOS = new LinkedList<>();
-        mappingBOS.add(new MappingBO("id", Arrays.asList(new MappingFieldBO("type","Keyword")).stream().collect(Collectors.toSet())));
-        mappingBOS.add(new MappingBO("able", Arrays.asList(new MappingFieldBO("type","Keyword")).stream().collect(Collectors.toSet())));
-        mappingBOS.add(new MappingBO("title", Arrays.asList(new MappingFieldBO("type","Text"),new MappingFieldBO("analyzer","ik_max_word")).stream().collect(Collectors.toSet())));
-        mappingBOS.add(new MappingBO("content", Arrays.asList(new MappingFieldBO("type","Text"),new MappingFieldBO("analyzer","ik_max_word")).stream().collect(Collectors.toSet())));
-        mappingBOS.add(new MappingBO("linkTo", Arrays.asList(new MappingFieldBO("type","Keyword")).stream().collect(Collectors.toSet())));
-        mappingBOS.add(new MappingBO("updateTime", Arrays.asList(new MappingFieldBO("type","Date"),new MappingFieldBO("format","yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis")).stream().collect(Collectors.toSet())));
-        mappingBOS.add(new MappingBO("version", Arrays.asList(new MappingFieldBO("type","Long")).stream().collect(Collectors.toSet())));
+        mappingBOS.add(new MappingBO("id", Arrays.asList(new MappingFieldBO("type","keyword")).stream().collect(Collectors.toSet())));
+        mappingBOS.add(new MappingBO("able", Arrays.asList(new MappingFieldBO("type","keyword")).stream().collect(Collectors.toSet())));
+        mappingBOS.add(new MappingBO("title", Arrays.asList(new MappingFieldBO("type","text"),new MappingFieldBO("analyzer","ik_max_word")).stream().collect(Collectors.toSet())));
+        mappingBOS.add(new MappingBO("content", Arrays.asList(new MappingFieldBO("type","text"),new MappingFieldBO("analyzer","ik_max_word")).stream().collect(Collectors.toSet())));
+        mappingBOS.add(new MappingBO("linkTo", Arrays.asList(new MappingFieldBO("type","keyword")).stream().collect(Collectors.toSet())));
+        mappingBOS.add(new MappingBO("updateTime", Arrays.asList(new MappingFieldBO("type","date"),new MappingFieldBO("format","yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis")).stream().collect(Collectors.toSet())));
         return mappingBOS;
     }
 }

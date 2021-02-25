@@ -5,8 +5,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.common.web.api.FullPathNameGenerator;
 
 /**
@@ -23,27 +21,13 @@ import pwd.initializr.common.web.api.FullPathNameGenerator;
 @SpringBootApplication
 @EnableEurekaClient
 @EnableDiscoveryClient
-@RestController
 @ComponentScan(nameGenerator = FullPathNameGenerator.class)
+@ComponentScan(basePackages = {"pwd.initializr.common.web", "pwd.initializr.search"})
 public class SearchApplication {
 
   public static void main(String[] args) {
     SpringApplication.run(SearchApplication.class, args);
   }
 
-  @GetMapping(value = "")
-  public String index0() {
-    return "this is search 0 index";
-  }
-
-  @GetMapping(value = "/")
-  public String index1() {
-    return "this is search 1 index";
-  }
-
-  @GetMapping(value = "/logger")
-  public String index2() {
-    return "this is search 2 index";
-  }
 
 }

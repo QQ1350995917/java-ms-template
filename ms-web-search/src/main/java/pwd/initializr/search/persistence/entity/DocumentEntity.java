@@ -1,6 +1,7 @@
 package pwd.initializr.search.persistence.entity;
 
 import java.io.Serializable;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -40,12 +41,10 @@ public class DocumentEntity implements Serializable {
   @Field(type = FieldType.Text, analyzer = "ik_max_word", searchAnalyzer = "ik_max_word")
   private String title;
   @Field(type = FieldType.Text, analyzer = "ik_max_word", searchAnalyzer = "ik_max_word")
-  private String content;
+  private List<String> content;
   @Field(type = FieldType.Keyword)
   private String linkTo;
   @Field(type = FieldType.Text, analyzer = "ik_max_word", searchAnalyzer = "ik_max_word")
   private String updateTime;
-  @Field(type = FieldType.Long)
-  private Long version;
 
 }

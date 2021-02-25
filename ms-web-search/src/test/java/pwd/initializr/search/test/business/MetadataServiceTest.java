@@ -27,18 +27,18 @@ import pwd.initializr.search.business.admin.bo.IndexBO;
 @Slf4j
 public class MetadataServiceTest {
 
+    private static final String indexName = "book";
     @Autowired
     private MetadataService metadataService;
 
     @Test
     public void listIndex(){
-        PageableQueryResult<IndexBO> indexBOPageableQueryResult = metadataService.listIndex();
+        PageableQueryResult<IndexBO> indexBOPageableQueryResult = metadataService.listIndex("*");
         log.info(JSON.toJSONString(indexBOPageableQueryResult));
     }
 
     @Test
     public void createIndex() {
-        String indexName = "book";
         if (metadataService.existIndex(indexName)) {
             throw new RuntimeException("exist " + indexName);
         } else {
@@ -48,12 +48,16 @@ public class MetadataServiceTest {
 
     @Test
     public void createIndexByCustomMapping() {
-        String indexName = "book";
         if (metadataService.existIndex(indexName)) {
            throw new RuntimeException("exist " + indexName);
         } else {
-            metadataService.createIndex("book", metadataService.getDefaultMapping());
+            metadataService.createIndex(indexName, metadataService.getDefaultMapping());
         }
-
     }
+
+    @Test
+    public void deleteIndex() {
+        metadataService.deleteIndex(indexName);
+    }
+
 }

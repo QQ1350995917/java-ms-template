@@ -1,8 +1,13 @@
 package pwd.initializr.search.api.admin;
 
+import javax.annotation.Resource;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import pwd.initializr.common.utils.StringUtils;
 import pwd.initializr.common.web.api.robot.RobotController;
 import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.search.business.admin.MetadataService;
@@ -23,27 +28,32 @@ import pwd.initializr.search.business.admin.bo.IndexBO;
 @RequestMapping(value = "/api/admin/metadata")
 public class MetadataController extends RobotController implements MetadataApi {
 
-    @Autowired
+    @Resource
     private MetadataService metadataService;
 
     @Override
-    public void listIndices() {
-        PageableQueryResult<IndexBO> list = metadataService.listIndex();
-        super.outputData(list);
+    public void listIndices(String indexName) {
+        PageableQueryResult<IndexBO> indexBOPageableQueryResult = metadataService
+            .listIndex(StringUtils.isBlank(indexName) ? "*" : indexName);
+        outputData(indexBOPageableQueryResult);
     }
 
     @Override
-    public void postIndex() {
-
+    public void createIndex(@Valid @NotNull(message = "参数不能为空") String indexName) {
+        boolean index = metadataService.createIndex(indexName);
+        if (index) {
+            outputData(200);
+        } else {
+            outputException(500);
+        }
     }
 
     @Override
-    public void putIndex() {
-
-    }
-
-    @Override
-    public void deleteIndices() {
-
+    public void deleteIndices(@Valid @NotNull(message = "参数不能为空") String indexName) {
+        if (metadataService.deleteIndex(indexName)) {
+            outputData(200);
+        } else {
+            outputException(500);
+        }
     }
 }
