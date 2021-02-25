@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import pwd.initializr.search.rpc.RPCSearchInput;
 
 /**
  * pwd.initializr.search.business.bo@ms-web-initializr
@@ -19,18 +20,9 @@ import lombok.ToString;
  * @since DistributionVersion
  */
 @AllArgsConstructor
-@NoArgsConstructor
 @Setter
 @Getter
 @ToString
-public class SearchInputBO {
-
-    private List<String> indices;
-    private String keyword;
-    private Integer index = 0;
-    private Integer size = 12;
-    private String preTags = "<strong>";
-    private String postTags = "</strong>";
-
+public class SearchInputBO extends RPCSearchInput {
 
 }

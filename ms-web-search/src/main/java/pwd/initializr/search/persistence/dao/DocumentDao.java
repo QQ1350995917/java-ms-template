@@ -1,9 +1,5 @@
 package pwd.initializr.search.persistence.dao;
 
-import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
-import org.springframework.stereotype.Component;
-import pwd.initializr.search.persistence.entity.MetadataEntity;
-
 /**
  * pwd.initializr.search.persistence.dao@ms-web-initializr
  *
@@ -16,6 +12,6 @@ import pwd.initializr.search.persistence.entity.MetadataEntity;
  * @since DistributionVersion
  */
 //@Component
-//public interface MetadataDao extends ElasticsearchRepository<MetadataEntity, String> {
+//public interface DocumentDao extends ElasticsearchRepository<DocumentEntity, String> {
 //
 //}

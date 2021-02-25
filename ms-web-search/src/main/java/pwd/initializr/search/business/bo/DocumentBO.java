@@ -1,12 +1,12 @@
 package pwd.initializr.search.business.bo;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.springframework.format.annotation.DateTimeFormat;
+import pwd.initializr.search.rpc.RPCDocument;
 
 /**
  * pwd.initializr.search.business.bo@ms-web-initializr
@@ -24,15 +24,12 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Setter
 @Getter
 @ToString
-public class DocumentBO {
+public class DocumentBO extends RPCDocument {
 
-  private String esId;
-  private String esVisibility;
-  private String esTitle;
-  private String esContent;
-  private String esLinkTo;
-  @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-  private String esUpdateTime;
+  private String index;
 
+  public DocumentBO(String id, String able, String title,
+      List<String> content, String linkTo, String updateTime, Long version) {
+    super(id, able, title, content, linkTo, updateTime, version);
+  }
 }

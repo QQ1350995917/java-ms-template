@@ -20,7 +20,7 @@ import pwd.initializr.search.business.admin.bo.IndexBO;
  * @since DistributionVersion
  */
 @RestController(value = "metadataApi")
-@RequestMapping(value = "/api/admin/search/metadata")
+@RequestMapping(value = "/api/admin/metadata")
 public class MetadataController extends RobotController implements MetadataApi {
 
     @Autowired

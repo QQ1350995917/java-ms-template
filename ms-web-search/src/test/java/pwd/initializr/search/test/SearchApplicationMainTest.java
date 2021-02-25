@@ -1,8 +1,5 @@
 package pwd.initializr.search.test;
 
-import org.springframework.beans.BeanUtils;
-import pwd.initializr.search.api.robot.vo.DocumentIntoSearchInputVO;
-
 /**
  * pwd.initializr.search.test.business@ms-web-initializr
  *

@@ -12,7 +12,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.search.business.DocumentService;
 import pwd.initializr.search.business.bo.DocumentBO;
-import pwd.initializr.search.business.bo.SearchBodyVOBO;
 import pwd.initializr.search.business.bo.SearchInputBO;
 
 /**
@@ -37,14 +36,14 @@ public class DocumentServiceTest {
   @Test
   public void create() {
     LinkedList<DocumentBO> documentBOS = new LinkedList<>();
-    documentBOS.add(new DocumentBO("1","1","xxx","xxxxxx","http://www.xxx.com","20200506"));
-    documentBOS.add(new DocumentBO("1","1","三国演义","xxx三国演义xxx","http://www.sanguoyanyi.com","20200501"));
-    documentBOS.add(new DocumentBO("1","1","水浒传","xxx水浒传xxx","http://www.shuihuzhuan.com","20200502"));
-    documentBOS.add(new DocumentBO("1","1","水浒","xxx水浒xxx","http://www.shuihuzhuan.com","20200502"));
-    documentBOS.add(new DocumentBO("1","1","西游记","xxx西游记xxx","http://www.xiyouji.com","20200503"));
-    documentBOS.add(new DocumentBO("1","1","红楼梦","xxx红楼梦xxx","http://www.hongloumeng.com","20200504"));
-    documentBOS.add(new DocumentBO("1","1","四大名著","xxx三国演义xxx，xxx水浒传xxx，xxx西游记xxx，xxx红楼梦xxx","http://www.sidamingzhu.com","20200505"));
-    documentService.create("book", documentBOS);
+    documentBOS.add(new DocumentBO("2","1","aaa",Arrays.asList("xxxxxx"),"http://www.xxx.com","20200506",0L));
+    documentBOS.add(new DocumentBO("1","1","三国演义",Arrays.asList("xxx三国演义xxx"),"http://www.sanguoyanyi.com","20200501",0L));
+    documentBOS.add(new DocumentBO("1","1","水浒传",Arrays.asList("xxx水浒传xxx"),"http://www.shuihuzhuan.com","20200502",0L));
+    documentBOS.add(new DocumentBO("1","1","水浒",Arrays.asList("xxx水浒xxx"),"http://www.shuihuzhuan.com","20200502",0L));
+    documentBOS.add(new DocumentBO("1","1","西游记",Arrays.asList("xxx西游记xxx"),"http://www.xiyouji.com","20200503",0L));
+    documentBOS.add(new DocumentBO("1","1","红楼梦",Arrays.asList("xxx红楼梦xxx"),"http://www.hongloumeng.com","20200504",0L));
+    documentBOS.add(new DocumentBO("1","1","四大名著",Arrays.asList("xxx三国演义xxx，xxx水浒传xxx，xxx西游记xxx，xxx红楼梦xxx"),"http://www.sidamingzhu.com","20200505",0L));
+    documentService.replace("book", documentBOS);
   }
 
   @Test
@@ -54,7 +53,7 @@ public class DocumentServiceTest {
     searchInputBO.setSize(12);
     searchInputBO.setKeyword("水浒传");
     searchInputBO.setIndices(Arrays.asList("book"));
-    PageableQueryResult<SearchBodyVOBO> searchBodyVOBOPageableQueryResult = documentService.search(searchInputBO);
+    PageableQueryResult<DocumentBO> searchBodyVOBOPageableQueryResult = documentService.search(searchInputBO);
     log.info(JSON.toJSONString(searchBodyVOBOPageableQueryResult));
   }
 

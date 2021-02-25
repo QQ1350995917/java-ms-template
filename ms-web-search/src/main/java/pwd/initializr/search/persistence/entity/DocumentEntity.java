@@ -1,13 +1,12 @@
 package pwd.initializr.search.persistence.entity;
 
-import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
-import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
@@ -28,22 +27,25 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 @Setter
 @Getter
 @ToString
-//@Document(indexName = "metadata", type = "metadata", shards = 3, replicas = 1,createIndex = false)
-public class MetadataEntity implements Serializable {
+//@Document(indexName = "document", type = "document", shards = 3, replicas = 1,createIndex = false)
+//@Document(indexName = "book", type = "book", createIndex = false)
+public class DocumentEntity implements Serializable {
 
   private static final long serialVersionUID = 3025999016837937935L;
 
+  @Id
+  private String id;
   @Field(type = FieldType.Keyword)
-  private String esId;
+  private String able;
+  @Field(type = FieldType.Text, analyzer = "ik_max_word", searchAnalyzer = "ik_max_word")
+  private String title;
+  @Field(type = FieldType.Text, analyzer = "ik_max_word", searchAnalyzer = "ik_max_word")
+  private String content;
   @Field(type = FieldType.Keyword)
-  private String esVisibility;
+  private String linkTo;
   @Field(type = FieldType.Text, analyzer = "ik_max_word", searchAnalyzer = "ik_max_word")
-  private String esTitle;
-  @Field(type = FieldType.Text, analyzer = "ik_max_word", searchAnalyzer = "ik_max_word")
-  private String esContent;
-  @Field(type = FieldType.Keyword)
-  private String esLinkTo;
-  @Field(type = FieldType.Text, analyzer = "ik_max_word", searchAnalyzer = "ik_max_word")
-  private String esUpdateTime;
+  private String updateTime;
+  @Field(type = FieldType.Long)
+  private Long version;
 
 }

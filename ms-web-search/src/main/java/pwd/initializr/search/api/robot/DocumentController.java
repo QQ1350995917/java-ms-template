@@ -6,6 +6,9 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import javax.annotation.Resource;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -16,13 +19,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.common.web.api.robot.RobotController;
 import pwd.initializr.common.web.business.bo.PageableQueryResult;
-import pwd.initializr.search.api.robot.vo.DocumentIntoSearchInputVO;
-import pwd.initializr.search.api.robot.vo.SearchBody;
+import pwd.initializr.search.api.robot.vo.DocumentVO;
 import pwd.initializr.search.api.robot.vo.SearchInputVo;
 import pwd.initializr.search.business.DocumentService;
 import pwd.initializr.search.business.bo.DocumentBO;
 import pwd.initializr.search.business.bo.SearchInputBO;
-import pwd.initializr.search.rpc.RPCSearchBody;
+import pwd.initializr.search.rpc.RPCDocument;
 
 /**
  * pwd.initializr.search.api.robot@ms-web-initializr
@@ -41,48 +43,41 @@ import pwd.initializr.search.rpc.RPCSearchBody;
     description = "信息写入与搜索API"
 )
 @RestController(value = "documentApi")
-@RequestMapping(value = "/api/robot/search")
+@RequestMapping(value = "/api/robot")
 public class DocumentController extends RobotController implements DocumentApi {
 
-  @Autowired
+  @Resource
   private DocumentService documentService;
 
-  @ApiOperation(value = "向ES中写入数据")
-  @PostMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
-  public void postOrPut(@RequestBody DocumentIntoSearchInputVO input) {
-    DocumentBO documentBO = new DocumentBO();
-    Optional.ofNullable(input.getEsBody()).orElseGet(LinkedList::new).forEach(documentVO -> {
+  public void replace(@Valid @NotNull(message = "参数不能为空") String indexName,
+      @Valid @NotNull(message = "参数不能为空") List<DocumentVO> input) {
+    LinkedList<DocumentBO> documentBOS = new LinkedList<>();
+    Optional.ofNullable(input).orElseGet(LinkedList::new).forEach(documentVO -> {
+      DocumentBO documentBO = new DocumentBO();
       BeanUtils.copyProperties(documentVO, documentBO);
-      StringBuilder stringBuilder = new StringBuilder();
-      Optional.ofNullable(documentVO.getEsContent()).orElseGet(LinkedList::new).forEach(content ->
-        stringBuilder.append(content).append(" ")
-      );
-      documentBO.setEsContent(stringBuilder.toString());
-      documentService.create(input.getEsHead().getEsIndex(), Arrays.asList(documentBO));
+      documentBOS.add(documentBO);
     });
+    documentService.replace(indexName, documentBOS);
     outputData(200);
   }
 
-  @ApiOperation(value = "根据关键字搜索")
-  @GetMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @Override
-  public void search(SearchInputVo input) {
+  public void search(@Valid @NotNull(message = "参数不能为空") SearchInputVo input) {
     SearchInputBO searchInputBO = new SearchInputBO();
     BeanUtils.copyProperties(input, searchInputBO);
     outputData(search0(documentService.search(searchInputBO)));
   }
 
-
-  private PageableQueryResult<SearchBody> search0(PageableQueryResult<? extends RPCSearchBody> search) {
-    PageableQueryResult<SearchBody> result = new PageableQueryResult<>();
+  private PageableQueryResult<DocumentVO> search0(PageableQueryResult<? extends RPCDocument> search) {
+    PageableQueryResult<DocumentVO> result = new PageableQueryResult<>();
     if (search != null) {
       result.setSize(search.getSize());
       result.setIndex(search.getIndex());
       result.setTotal(search.getTotal());
-      List<SearchBody> elements = new LinkedList<>();
+      List<DocumentVO> elements = new LinkedList<>();
       search.getElements().forEach(articleBO -> {
-        SearchBody searchOutputVO = new SearchBody();
+        DocumentVO searchOutputVO = new DocumentVO();
         BeanUtils.copyProperties(articleBO, searchOutputVO);
         elements.add(searchOutputVO);
       });

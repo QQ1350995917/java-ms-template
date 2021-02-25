@@ -21,12 +21,12 @@ import org.springframework.web.bind.annotation.RestController;
  * @since DistributionVersion
  */
 @Api(
-    tags = "元数据",
+    tags = "元数据管理",
     value = "metadataApi",
     description = "元数据API"
 )
 @RestController(value = "metadataApi")
-@RequestMapping(value = "/api/admin/search/metadata")
+@RequestMapping(value = "/api/admin/metadata")
 public interface MetadataApi {
 
     @GetMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

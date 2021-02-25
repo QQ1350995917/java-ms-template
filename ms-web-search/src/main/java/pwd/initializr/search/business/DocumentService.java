@@ -4,7 +4,6 @@ import java.util.List;
 import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.search.business.bo.DocumentBO;
 import pwd.initializr.search.business.bo.SearchInputBO;
-import pwd.initializr.search.business.bo.SearchBodyVOBO;
 
 /**
  * pwd.initializr.search.business@ms-web-initializr
@@ -19,7 +18,7 @@ import pwd.initializr.search.business.bo.SearchBodyVOBO;
  */
 public interface DocumentService {
 
-  int create(String indexName, List<DocumentBO> documentBOS);
+  int replace(String indexName, List<DocumentBO> documentBOS);
 
-  PageableQueryResult<SearchBodyVOBO> search(SearchInputBO searchInputBO);
+  PageableQueryResult<DocumentBO> search(SearchInputBO searchInputBO);
 }

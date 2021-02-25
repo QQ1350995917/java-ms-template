@@ -12,16 +12,18 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.elasticsearch.action.DocWriteResponse.Result;
-import org.elasticsearch.action.admin.indices.get.GetIndexRequest;
-import org.elasticsearch.action.admin.indices.get.GetIndexResponse;
+import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.client.IndicesClient;
 import org.elasticsearch.client.RequestOptions;
+import org.elasticsearch.client.indices.GetIndexRequest;
+import org.elasticsearch.client.indices.GetIndexResponse;
 import org.elasticsearch.cluster.metadata.MappingMetaData;
 import org.elasticsearch.common.collect.ImmutableOpenMap;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
+import org.elasticsearch.rest.RestStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import org.springframework.stereotype.Service;
@@ -92,58 +94,63 @@ public class MetadataServiceImpl implements MetadataService {
 //        GetIndexResponse getIndexResponse = elasticsearchRestTemplate.getClient().indices()
 //            .prepareGetIndex().get();
 
-        GetIndexRequest getIndexRequest = new GetIndexRequest();
 
-        GetIndexResponse getIndexResponse = null;
         try {
-            getIndexResponse = elasticsearchRestTemplate.getClient().indices().get(getIndexRequest,
+            GetIndexRequest getIndexRequest = new GetIndexRequest();
+            GetIndexResponse getIndexResponse = elasticsearchRestTemplate.getClient().indices().get(getIndexRequest,
                 RequestOptions.DEFAULT);
+
+            IndexRequest indexRequest = new IndexRequest();
+
+
+
+            String[] indices = getIndexResponse.getIndices();
+            Map<String, Settings> settings = getIndexResponse.getSettings();
+            Map<String, MappingMetaData> mappings = getIndexResponse.getMappings();
+
+            Stream.of(Optional.ofNullable(indices).orElseGet(new Supplier<String[]>() {
+                @Override
+                public String[] get() {
+                    return new String[0];
+                }
+            })).forEach(index -> {
+                IndexBO indexBO = new IndexBO();
+                indexBO.setUuid(settings.get(index).get("index.uuid"));
+                indexBO.setName(settings.get(index).get("index.provided_name"));
+                indexBO.setReplicas(settings.get(index).get("index.number_of_replicas"));
+                indexBO.setShards(settings.get(index).get("index.number_of_shards"));
+                indexBO.setDate(settings.get(index).get("index.creation_date"));
+                indexBO.setVersion(settings.get(index).get("index.version.created"));
+                MappingMetaData mappingMetaData = mappings.get(index);
+                if (mappingMetaData != null) {
+                    Object properties = mappingMetaData.getSourceAsMap().get("properties");
+                    if (properties != null && properties instanceof Map) {
+                        Map<String,Object> propertiesMap = (Map<String,Object>) properties;
+                        List<MappingBO> mappingBOS = new LinkedList<>();
+                        propertiesMap.forEach((key,value) -> {
+                            Map<String, String> valueMap = (Map<String, String>) value;
+                            Set<MappingFieldBO> mappingFieldBOS = new HashSet<>();
+                            valueMap.forEach((fieldKey,fieldValue) ->{
+                                MappingFieldBO mappingFieldBO = new MappingFieldBO();
+                                mappingFieldBO.setKey(fieldKey);
+                                mappingFieldBO.setValue(fieldValue);
+                                mappingFieldBOS.add(mappingFieldBO);
+                            });
+                            MappingBO mappingBO = new MappingBO();
+                            mappingBO.setFieldName(key);
+                            mappingBO.setFieldTypes(mappingFieldBOS);
+                            mappingBOS.add(mappingBO);
+                        });
+                        indexBO.setProperties(mappingBOS);
+                    }
+                    indexBOPageableQueryResult.getElements().add(indexBO);
+                }
+            });
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-        String[] indices = getIndexResponse.getIndices();
-        ImmutableOpenMap<String, Settings> settings = getIndexResponse.getSettings();
-        ImmutableOpenMap<String, ImmutableOpenMap<String, MappingMetaData>> mappings = getIndexResponse
-            .getMappings();
-        Stream.of(Optional.ofNullable(indices).orElseGet(new Supplier<String[]>() {
-            @Override
-            public String[] get() {
-                return new String[0];
-            }
-        })).forEach(index -> {
-            IndexBO indexBO = new IndexBO();
-            indexBO.setUuid(settings.get(index).get("index.uuid"));
-            indexBO.setName(settings.get(index).get("index.provided_name"));
-            indexBO.setReplicas(settings.get(index).get("index.number_of_replicas"));
-            indexBO.setShards(settings.get(index).get("index.number_of_shards"));
-            indexBO.setDate(settings.get(index).get("index.creation_date"));
-            indexBO.setVersion(settings.get(index).get("index.version.created"));
-            MappingMetaData mappingMetaData = mappings.get(index).get(index);
-            if (mappingMetaData != null) {
-                Object properties = mappingMetaData.getSourceAsMap().get("properties");
-                if (properties != null && properties instanceof Map) {
-                    Map<String,Object> propertiesMap = (Map<String,Object>) properties;
-                    List<MappingBO> mappingBOS = new LinkedList<>();
-                    propertiesMap.forEach((key,value) -> {
-                        Map<String, String> valueMap = (Map<String, String>) value;
-                        Set<MappingFieldBO> mappingFieldBOS = new HashSet<>();
-                        valueMap.forEach((fieldKey,fieldValue) ->{
-                            MappingFieldBO mappingFieldBO = new MappingFieldBO();
-                            mappingFieldBO.setKey(fieldKey);
-                            mappingFieldBO.setValue(fieldValue);
-                            mappingFieldBOS.add(mappingFieldBO);
-                        });
-                        MappingBO mappingBO = new MappingBO();
-                        mappingBO.setFieldName(key);
-                        mappingBO.setFieldTypes(mappingFieldBOS);
-                        mappingBOS.add(mappingBO);
-                    });
-                    indexBO.setProperties(mappingBOS);
-                }
-                indexBOPageableQueryResult.getElements().add(indexBO);
-            }
-        });
+
         return indexBOPageableQueryResult;
     }
 
@@ -200,12 +207,13 @@ public class MetadataServiceImpl implements MetadataService {
     @Override
     public List<MappingBO> getDefaultMapping() {
         List<MappingBO> mappingBOS = new LinkedList<>();
-        mappingBOS.add(new MappingBO("esId", Arrays.asList(new MappingFieldBO("type","keyword")).stream().collect(Collectors.toSet())));
-        mappingBOS.add(new MappingBO("esVisibility", Arrays.asList(new MappingFieldBO("type","keyword")).stream().collect(Collectors.toSet())));
-        mappingBOS.add(new MappingBO("esTitle", Arrays.asList(new MappingFieldBO("type","text"),new MappingFieldBO("analyzer","ik_max_word")).stream().collect(Collectors.toSet())));
-        mappingBOS.add(new MappingBO("esContent", Arrays.asList(new MappingFieldBO("type","text"),new MappingFieldBO("analyzer","ik_max_word")).stream().collect(Collectors.toSet())));
-        mappingBOS.add(new MappingBO("esLinkTo", Arrays.asList(new MappingFieldBO("type","keyword")).stream().collect(Collectors.toSet())));
-        mappingBOS.add(new MappingBO("esUpdateTime", Arrays.asList(new MappingFieldBO("type","date"),new MappingFieldBO("format","yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis")).stream().collect(Collectors.toSet())));
+        mappingBOS.add(new MappingBO("id", Arrays.asList(new MappingFieldBO("type","Keyword")).stream().collect(Collectors.toSet())));
+        mappingBOS.add(new MappingBO("able", Arrays.asList(new MappingFieldBO("type","Keyword")).stream().collect(Collectors.toSet())));
+        mappingBOS.add(new MappingBO("title", Arrays.asList(new MappingFieldBO("type","Text"),new MappingFieldBO("analyzer","ik_max_word")).stream().collect(Collectors.toSet())));
+        mappingBOS.add(new MappingBO("content", Arrays.asList(new MappingFieldBO("type","Text"),new MappingFieldBO("analyzer","ik_max_word")).stream().collect(Collectors.toSet())));
+        mappingBOS.add(new MappingBO("linkTo", Arrays.asList(new MappingFieldBO("type","Keyword")).stream().collect(Collectors.toSet())));
+        mappingBOS.add(new MappingBO("updateTime", Arrays.asList(new MappingFieldBO("type","Date"),new MappingFieldBO("format","yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis")).stream().collect(Collectors.toSet())));
+        mappingBOS.add(new MappingBO("version", Arrays.asList(new MappingFieldBO("type","Long")).stream().collect(Collectors.toSet())));
         return mappingBOS;
     }
 }

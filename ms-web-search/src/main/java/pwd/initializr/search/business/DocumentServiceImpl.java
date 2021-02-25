@@ -1,26 +1,19 @@
 package pwd.initializr.search.business;
 
 import com.alibaba.fastjson.JSON;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import org.elasticsearch.action.bulk.BulkRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.client.Client;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.text.Text;
 import org.elasticsearch.common.unit.DistanceUnit;
-import org.elasticsearch.common.xcontent.XContentBuilder;
-import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.rest.RestStatus;
 import org.elasticsearch.search.SearchHit;
@@ -35,13 +28,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
-import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.core.query.IndexQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.stereotype.Service;
 import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.search.business.bo.DocumentBO;
-import pwd.initializr.search.business.bo.SearchBodyVOBO;
 import pwd.initializr.search.business.bo.SearchInputBO;
 
 /**
@@ -56,6 +47,7 @@ import pwd.initializr.search.business.bo.SearchInputBO;
  * @since DistributionVersion
  */
 @Service
+@Slf4j
 public class DocumentServiceImpl implements DocumentService {
 
   private static final List<String> fields = Arrays.asList("esTitle", "esContent");
@@ -65,17 +57,19 @@ public class DocumentServiceImpl implements DocumentService {
   private Integer queryKeyWorldMaxLength;
 
   @Override
-  public int create(String indexName, List<DocumentBO> documentBOS) {
+  public int replace(String indexName, List<DocumentBO> documentBOS) {
     try {
       List<IndexQuery> queries = documentBOS.stream().map(item->{
           IndexQuery query = new IndexQuery();
+          query.setId(item.getId());
           query.setIndexName(indexName);
           query.setType(indexName);
           query.setSource(JSON.toJSONString(item));
+          query.setVersion(item.getVersion());
           return query;
       }).collect(Collectors.toList());
-
       elasticsearchRestTemplate.bulkIndex(queries);
+      elasticsearchRestTemplate.refresh(indexName);
       return 0;
     } catch (Exception e) {
       throw new RuntimeException(e);
@@ -84,128 +78,124 @@ public class DocumentServiceImpl implements DocumentService {
 
 
   @Override
-    public PageableQueryResult<SearchBodyVOBO> search(SearchInputBO searchInputBO) {
-      // 查询条件
-      String keyword = searchInputBO.getKeyword();
-      if (keyword == null) {
-          return null;
-      }
-      if (keyword.length() > queryKeyWorldMaxLength) {
-          keyword = keyword.substring(0, queryKeyWorldMaxLength);
-      }
-      final String KEY_WORD = keyword;
-      BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-      // should相当于or关系; filter过滤;must相当于and关系; mustNot不包含
-      // termQuery的机制是：直接去匹配token。
-      // .should(QueryBuilders.termQuery("", "")
-      // matchQuery的机制是：先检查字段类型是否是analyzed，如果是，则先分词，再去去匹配；如果不是，则直接去匹配
-      fields.forEach(field -> boolQueryBuilder.should(QueryBuilders.matchQuery(field, KEY_WORD)));
-
-      // 查询排序
-      ScoreSortBuilder scoreSortBuilder = SortBuilders.scoreSort().order(SortOrder.DESC);
-
-      // 查询分页
-      Integer pageIndex = searchInputBO.getIndex();
-      Integer pageSize = searchInputBO.getSize();
-      if (pageIndex <= 0) {
-          pageIndex = 0;
-      }
-
-      // 查询生成高亮查询器
-      HighlightBuilder highlightBuilder = new HighlightBuilder();
-      //高亮查询字段
-      fields.forEach(field -> highlightBuilder.field(field));
-      //如果要多个字段高亮,这项要为false
-      highlightBuilder.requireFieldMatch(false);
-      //高亮设置
-      highlightBuilder.preTags(searchInputBO.getPreTags()).postTags(searchInputBO.getPostTags());
-      //最大高亮分片数
-//    highlightBuilder.fragmentSize(80);
-      //从第一个分片获取高亮片段
-//    highlightBuilder.numOfFragments(0);
-//    highlightBuilder.noMatchSize(100);
-
-
-      SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-      // 设置查询条件
-      searchSourceBuilder.query(boolQueryBuilder);
-      // 设置排序条件
-      searchSourceBuilder.sort(scoreSortBuilder);
-      // 设置查询分页
-      searchSourceBuilder.from((pageIndex) * pageSize);
-      searchSourceBuilder.size(pageSize);
-      // 避免分页之后相关性乱了
-      searchSourceBuilder.trackScores(true);
-      // 设置查询高亮
-      searchSourceBuilder.highlighter(highlightBuilder);
-
-
-
-
-      try {
-          SearchRequest searchRequest = new SearchRequest(searchInputBO.getIndices().toArray(new String[]{}),searchSourceBuilder);
-          RestHighLevelClient highLevelClient = elasticsearchRestTemplate.getClient();
-          PageableQueryResult<SearchBodyVOBO> searchResultBOPageableQueryResult = new PageableQueryResult<>();
-          SearchResponse searchResponse = highLevelClient.search(searchRequest, RequestOptions.DEFAULT);
-          if (searchResponse.status() == RestStatus.OK) {
-              SearchHits searchHits = searchResponse.getHits();
-              for (SearchHit hit : searchHits) {
-                  Map<String, HighlightField> highlightFields = hit.getHighlightFields();
-                  Map<String, Object> source = hit.getSourceAsMap();
-                  LinkedList<String> esContent = new LinkedList<>();
-                  HighlightField highlightESTitle = highlightFields.get("esTitle");
-                  if (highlightESTitle != null) {
-                      Text[] fragments = highlightESTitle.fragments();
-                      StringBuilder esTitleFragmentsStringBuilder = new StringBuilder();
-                      for (Text text : fragments) {
-                          esTitleFragmentsStringBuilder.append(text);
-                      }
-                      if (esTitleFragmentsStringBuilder.length() > 0) {
-                          source.put("esTitle",esTitleFragmentsStringBuilder.toString());
-                      }
-                  }
-
-                  HighlightField highlightESContent = highlightFields.get("esContent");
-                  if (highlightESContent != null) {
-                      Text[] fragments = highlightESContent.fragments();
-                      for (Text text : fragments) {
-                          if (esContent.size() < 5) {
-                              esContent.add("..." + text + "...");
-                          } else {
-                              break;
-                          }
-                      }
-                  }
-                  SearchBodyVOBO searchResultBO = new SearchBodyVOBO();
-                  searchResultBO.setEsIndex(hit.getIndex());
-                  searchResultBO.setEsId(hit.getId());
-                  searchResultBO.setEsVisibility(
-                      source.get("esVisibility") == null ? null : source.get("esVisibility").toString());
-                  searchResultBO
-                      .setEsTitle(source.get("esTitle") == null ? null : source.get("esTitle").toString());
-                  searchResultBO.setEsContent(esContent);
-                  searchResultBO
-                      .setEsLinkTo(source.get("esLinkTo") == null ? null : source.get("esLinkTo").toString());
-                  searchResultBO.setEsUpdateTime(source.get("esUpdateTime") == null ? null
-                      : source.get("esUpdateTime").toString());
-                  searchResultBOPageableQueryResult.getElements().add(searchResultBO);
-              }
-              searchResultBOPageableQueryResult.setIndex(pageIndex.longValue());
-              searchResultBOPageableQueryResult.setSize(pageSize.longValue());
-              searchResultBOPageableQueryResult.setTotal(searchHits.getTotalHits());
-          } else {
-              System.out.println(searchResponse.status());
-          }
-          return searchResultBOPageableQueryResult;
-      } catch (IOException e) {
-          e.printStackTrace();
-      }
-      return null;
+  public PageableQueryResult<DocumentBO> search(SearchInputBO searchInputBO) {
+    // 查询条件
+    String keyword = searchInputBO.getKeyword();
+    if (keyword == null) {
+        return null;
     }
+    if (keyword.length() > queryKeyWorldMaxLength) {
+        keyword = keyword.substring(0, queryKeyWorldMaxLength);
+    }
+    final String KEY_WORD = keyword;
+    BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+    // should相当于or关系; filter过滤;must相当于and关系; mustNot不包含
+    // termQuery的机制是：直接去匹配token。
+    // .should(QueryBuilders.termQuery("", "")
+    // matchQuery的机制是：先检查字段类型是否是analyzed，如果是，则先分词，再去去匹配；如果不是，则直接去匹配
+    fields.forEach(field -> boolQueryBuilder.should(QueryBuilders.matchQuery(field, KEY_WORD)));
+
+    // 查询排序
+    ScoreSortBuilder scoreSortBuilder = SortBuilders.scoreSort().order(SortOrder.DESC);
+
+    // 查询分页
+    Integer pageIndex = searchInputBO.getIndex();
+    Integer pageSize = searchInputBO.getSize();
+    if (pageIndex <= 0) {
+        pageIndex = 0;
+    }
+
+    // 查询生成高亮查询器
+    HighlightBuilder highlightBuilder = new HighlightBuilder();
+    //高亮查询字段
+    fields.forEach(field -> highlightBuilder.field(field));
+    //如果要多个字段高亮,这项要为false
+    highlightBuilder.requireFieldMatch(false);
+    //高亮设置
+    highlightBuilder.preTags(searchInputBO.getPreTags()).postTags(searchInputBO.getPostTags());
+    //最大高亮分片数
+//  highlightBuilder.fragmentSize(80);
+    //从第一个分片获取高亮片段
+//  highlightBuilder.numOfFragments(0);
+//  highlightBuilder.noMatchSize(100);
+
+    SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+    // 设置查询条件
+    searchSourceBuilder.query(boolQueryBuilder);
+    // 设置排序条件
+    searchSourceBuilder.sort(scoreSortBuilder);
+    // 设置查询分页
+    searchSourceBuilder.from((pageIndex) * pageSize);
+    searchSourceBuilder.size(pageSize);
+    // 避免分页之后相关性乱了
+    searchSourceBuilder.trackScores(true);
+    // 设置查询高亮
+    searchSourceBuilder.highlighter(highlightBuilder);
+
+    try {
+      SearchRequest searchRequest = new SearchRequest(searchInputBO.getIndices().toArray(new String[]{}),searchSourceBuilder);
+      RestHighLevelClient highLevelClient = elasticsearchRestTemplate.getClient();
+      PageableQueryResult<DocumentBO> searchResultBOPageableQueryResult = new PageableQueryResult<>();
+      SearchResponse searchResponse = highLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+      if (searchResponse.status() == RestStatus.OK) {
+        SearchHits searchHits = searchResponse.getHits();
+        for (SearchHit hit : searchHits) {
+          Map<String, HighlightField> highlightFields = hit.getHighlightFields();
+          Map<String, Object> source = hit.getSourceAsMap();
+          LinkedList<String> content = new LinkedList<>();
+          HighlightField highlightESTitle = highlightFields.get("title");
+          if (highlightESTitle != null) {
+            Text[] fragments = highlightESTitle.fragments();
+            StringBuilder esTitleFragmentsStringBuilder = new StringBuilder();
+            for (Text text : fragments) {
+                esTitleFragmentsStringBuilder.append(text);
+            }
+            if (esTitleFragmentsStringBuilder.length() > 0) {
+                source.put("title",esTitleFragmentsStringBuilder.toString());
+            }
+          }
+
+          HighlightField highlightESContent = highlightFields.get("content");
+          if (highlightESContent != null) {
+            Text[] fragments = highlightESContent.fragments();
+            for (Text text : fragments) {
+                if (content.size() < 5) {
+                    content.add("..." + text + "...");
+                } else {
+                    break;
+                }
+            }
+          }
+
+          DocumentBO searchResultBO = new DocumentBO();
+          searchResultBO.setIndex(hit.getIndex());
+          searchResultBO.setId(hit.getId());
+          searchResultBO.setAble(
+            source.get("able") == null ? null : source.get("able").toString());
+          searchResultBO
+            .setTitle(source.get("title") == null ? null : source.get("title").toString());
+          searchResultBO.setContent(content);
+          searchResultBO.setLinkTo(source.get("linkTo") == null ? null : source.get("linkTo").toString());
+          searchResultBO.setUpdateTime(source.get("updateTime") == null ? null
+            : source.get("updateTime").toString());
+          searchResultBO.setVersion(source.get("version") == null ? 0L
+              : Long.parseLong(source.get("version").toString()));
+          searchResultBOPageableQueryResult.getElements().add(searchResultBO);
+        }
+        searchResultBOPageableQueryResult.setIndex(pageIndex.longValue());
+        searchResultBOPageableQueryResult.setSize(pageSize.longValue());
+        searchResultBOPageableQueryResult.setTotal(searchHits.getTotalHits());
+      } else {
+          log.error(searchResponse.status() + "");
+      }
+      return searchResultBOPageableQueryResult;
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
+  }
 
 
   private void search2(String keyword, Integer pageIndex, Integer pageSize) {
-
     NativeSearchQueryBuilder queryBuilder = new NativeSearchQueryBuilder();
     BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
     queryBuilder.withQuery(boolQuery);
