@@ -133,7 +133,7 @@ public class DocumentServiceImpl implements DocumentService {
     highlightBuilder.numOfFragments(highlightFragmentNumber);
     // 命中的每个分片最大长度
     highlightBuilder.fragmentSize(highlightFragmentLength);
-    highlightBuilder.noMatchSize(10);
+    highlightBuilder.noMatchSize(highlightFragmentLength);
 
     SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
     // 设置查询条件
