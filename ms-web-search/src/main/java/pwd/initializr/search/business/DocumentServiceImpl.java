@@ -61,6 +61,15 @@ public class DocumentServiceImpl implements DocumentService {
 
   @Value("${search.result.highlight.fragment.number:12}")
   private Integer highlightFragmentNumber;
+  @Value("${search.result.highlight.fragment.length:120}")
+  private Integer highlightFragmentLength;
+
+  @Value("${search.result.title.max.length:120}")
+  private Integer searchResultTitleMaxLength;
+  @Value("${search.result.tags.max.length:60}")
+  private Integer searchResultTagsMaxLength;
+  @Value("${search.result.contents.max.length:360}")
+  private Integer searchResultContentsMaxLength;
 
   @Override
   public int replace(String indexName, List<DocumentBO> documentBOS) {
@@ -120,11 +129,11 @@ public class DocumentServiceImpl implements DocumentService {
     highlightBuilder.requireFieldMatch(false);
     //高亮设置
     highlightBuilder.preTags(searchInputBO.getPreTags()).postTags(searchInputBO.getPostTags());
-    //最大高亮分片数
-//  highlightBuilder.fragmentSize(80);
-    //从第一个分片获取高亮片段
-//  highlightBuilder.numOfFragments(0);
-//  highlightBuilder.noMatchSize(100);
+    // 命中的分片数量
+    highlightBuilder.numOfFragments(highlightFragmentNumber);
+    // 命中的每个分片最大长度
+    highlightBuilder.fragmentSize(highlightFragmentLength);
+    highlightBuilder.noMatchSize(10);
 
     SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
     // 设置查询条件
@@ -154,7 +163,6 @@ public class DocumentServiceImpl implements DocumentService {
           LinkedList<String> highlightTagsBuilder = hitHighlightField(highlightFields.get(DocumentEntity.DOCUMENT_PROPERTIES_TAGS));
           LinkedList<String> highlightContentsBuilder = hitHighlightField(highlightFields.get(DocumentEntity.DOCUMENT_PROPERTIES_CONTENTS));
 
-
           DocumentBO searchResultBO = new DocumentBO();
           searchResultBO.setIndex(hit.getIndex());
           searchResultBO.setId(hit.getId());
@@ -183,8 +191,26 @@ public class DocumentServiceImpl implements DocumentService {
           }
 
           if (highlightContentsBuilder == null || highlightContentsBuilder.isEmpty()) {
-            Object contetsObject = source.get(DocumentEntity.DOCUMENT_PROPERTIES_TAGS);
-            searchResultBO.setContents(contetsObject == null ? null : ((List<String>) contetsObject));
+            Object contentsObject = source.get(DocumentEntity.DOCUMENT_PROPERTIES_CONTENTS);
+            if (contentsObject != null) {
+              List<String> sourceContents = (List<String>) contentsObject;
+              List<String> contents = new LinkedList<>();
+              int lengthCounter = 0;
+              for (String sourceContent : sourceContents) {
+                int leftCounter = searchResultContentsMaxLength - lengthCounter;
+                int endPosition = Math.min(sourceContent.length(),leftCounter);
+                String content = sourceContent.substring(0, endPosition);
+                contents.add(content);
+                lengthCounter = lengthCounter + content.length();
+                if (lengthCounter >= searchResultContentsMaxLength) {
+                  contents.add("...");
+                  break;
+                }
+              }
+              searchResultBO.setContents(contents);
+            } else {
+              // contents为空，不赋值
+            }
           } else {
             searchResultBO.setContents(highlightContentsBuilder);
           }

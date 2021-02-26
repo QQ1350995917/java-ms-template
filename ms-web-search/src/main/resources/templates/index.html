@@ -50,16 +50,15 @@
   <el-main style="padding: 0px 10px 0px 0px; margin-top: 10px; height: 666px;">
     <el-row>
       <el-col :span="12" :offset="6" v-for="element in elements">
-        <h3>
-          <a :href="element.link">
-            <span class="text item book" v-html="element.title"></span>
-            -
-            <span v-html="element.source"></span>
-          </a>
-        </h3>
+        <a :href="element.link" target="_blank">
+          <span class="text item book" v-html="element.title" style="color: #606266;"></span>
+          -
+          <span>{{element.source}}</span>
+        </a>
+        <br><br>
         <span v-html="contentItem" v-for="contentItem in element.contents"></span>
         <br><br>
-        <span v-html="element.time" style="color: #606266;"></span>
+        <span style="color: #606266;">{{element.time}}</span>
         <el-divider></el-divider>
       </el-col>
     </el-row>
