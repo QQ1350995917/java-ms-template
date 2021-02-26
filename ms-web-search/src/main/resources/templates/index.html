@@ -53,8 +53,10 @@
         <a :href="element.link" target="_blank">
           <span class="text item book" v-html="element.title" style="color: #606266;"></span>
           -
-          <span>{{element.source}}</span>
+          <span style="color: #606266;">{{element.source}}</span>
         </a>
+        <br><br>
+        <el-tag v-html="tagItem" effect="plain" v-for="tagItem in element.tags" type="info"></el-tag>
         <br><br>
         <span v-html="contentItem" v-for="contentItem in element.contents"></span>
         <br><br>
