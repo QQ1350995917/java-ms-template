@@ -194,9 +194,11 @@ public class MetadataServiceImpl implements MetadataService {
         mappingBOS.add(new MappingBO("id", Arrays.asList(new MappingFieldBO("type","keyword")).stream().collect(Collectors.toSet())));
         mappingBOS.add(new MappingBO("able", Arrays.asList(new MappingFieldBO("type","keyword")).stream().collect(Collectors.toSet())));
         mappingBOS.add(new MappingBO("title", Arrays.asList(new MappingFieldBO("type","text"),new MappingFieldBO("analyzer","ik_max_word")).stream().collect(Collectors.toSet())));
-        mappingBOS.add(new MappingBO("content", Arrays.asList(new MappingFieldBO("type","text"),new MappingFieldBO("analyzer","ik_max_word")).stream().collect(Collectors.toSet())));
-        mappingBOS.add(new MappingBO("linkTo", Arrays.asList(new MappingFieldBO("type","keyword")).stream().collect(Collectors.toSet())));
-        mappingBOS.add(new MappingBO("updateTime", Arrays.asList(new MappingFieldBO("type","date"),new MappingFieldBO("format","yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis")).stream().collect(Collectors.toSet())));
+        mappingBOS.add(new MappingBO("source", Arrays.asList(new MappingFieldBO("type","keyword")).stream().collect(Collectors.toSet())));
+        mappingBOS.add(new MappingBO("tags", Arrays.asList(new MappingFieldBO("type","text"),new MappingFieldBO("analyzer","ik_max_word")).stream().collect(Collectors.toSet())));
+        mappingBOS.add(new MappingBO("contents", Arrays.asList(new MappingFieldBO("type","text"),new MappingFieldBO("analyzer","ik_max_word")).stream().collect(Collectors.toSet())));
+        mappingBOS.add(new MappingBO("link", Arrays.asList(new MappingFieldBO("type","keyword")).stream().collect(Collectors.toSet())));
+        mappingBOS.add(new MappingBO("time", Arrays.asList(new MappingFieldBO("type","date"),new MappingFieldBO("format","yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis")).stream().collect(Collectors.toSet())));
         return mappingBOS;
     }
 }

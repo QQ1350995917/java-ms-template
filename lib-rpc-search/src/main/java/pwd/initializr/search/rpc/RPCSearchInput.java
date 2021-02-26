@@ -1,5 +1,6 @@
 package pwd.initializr.search.rpc;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -24,6 +25,7 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
+@ApiModel
 public class RPCSearchInput {
 
     private static final long serialVersionUID = -4291776028708567323L;

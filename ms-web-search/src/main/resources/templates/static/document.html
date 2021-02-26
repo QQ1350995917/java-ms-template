@@ -89,7 +89,7 @@
         indies: [],
         indexName: '',
         content: '',
-        element: {id: '',title:'',content:[],linkTo:'',updateTime:''},
+        element: {id: '',title:'',contents:[],link:'',time: new Date()},
         elements: []
       };
     },
@@ -151,7 +151,7 @@
           });
           return
         }
-        this.element.content.push(this.content)
+        this.element.contents.push(this.content)
         this.elements = []
         this.elements.push(this.element)
         this.requestForCreateDocument()

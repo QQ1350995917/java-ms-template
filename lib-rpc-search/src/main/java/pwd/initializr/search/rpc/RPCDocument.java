@@ -1,9 +1,11 @@
 package pwd.initializr.search.rpc;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,6 +29,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Setter
 @Getter
 @ToString
+@ApiModel
 public class RPCDocument implements Serializable {
 
   private static final long serialVersionUID = -1659590069838613585L;
@@ -37,12 +40,16 @@ public class RPCDocument implements Serializable {
   private String able;
   @ApiModelProperty(name = "title", value = "title", required = false, example = "title", dataType = "java.lang.String")
   private String title;
-  @ApiModelProperty(name = "content", value = "content", required = false, example = "content", dataType = "java.util.List")
-  private List<String> content;
-  @ApiModelProperty(name = "linkTo", value = "linkTo", required = false, example = "linkTo", dataType = "java.lang.String")
-  private String linkTo;
-  @ApiModelProperty(name = "updateTime", value = "updateTime", required = false, example = "updateTime", dataType = "java.lang.Date")
+  @ApiModelProperty(name = "source", value = "source", required = false, example = "source", dataType = "java.lang.String")
+  private String source;
+  @ApiModelProperty(name = "tags", value = "tags", required = false, example = "tags", dataType = "java.util.List")
+  private Set<String> tags;
+  @ApiModelProperty(name = "contents", value = "contents", required = false, example = "contents", dataType = "java.util.List")
+  private List<String> contents;
+  @ApiModelProperty(name = "link", value = "link", required = false, example = "link", dataType = "java.lang.String")
+  private String link;
+  @ApiModelProperty(name = "time", value = "time", required = false, example = "time", dataType = "java.lang.Date")
   @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-  private String updateTime;
+  private String time;
 }

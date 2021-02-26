@@ -35,6 +35,7 @@ import org.springframework.stereotype.Service;
 import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.search.business.bo.DocumentBO;
 import pwd.initializr.search.business.bo.SearchInputBO;
+import pwd.initializr.search.persistence.entity.DocumentEntity;
 
 /**
  * pwd.initializr.search.business.robot@ms-web-initializr
@@ -51,12 +52,15 @@ import pwd.initializr.search.business.bo.SearchInputBO;
 @Slf4j
 public class DocumentServiceImpl implements DocumentService {
 
-  private static final List<String> fields = Arrays.asList("title", "content");
+
   @Resource
   private ElasticsearchRestTemplate elasticsearchRestTemplate;
 
   @Value("${search.query.key.word.max.length:120}")
   private Integer queryKeyWorldMaxLength;
+
+  @Value("${search.result.highlight.fragment.number:12}")
+  private Integer highlightFragmentNumber;
 
   @Override
   public int replace(String indexName, List<DocumentBO> documentBOS) {
@@ -96,7 +100,7 @@ public class DocumentServiceImpl implements DocumentService {
     // termQuery的机制是：直接去匹配token。
     // .should(QueryBuilders.termQuery("", "")
     // matchQuery的机制是：先检查字段类型是否是analyzed，如果是，则先分词，再去去匹配；如果不是，则直接去匹配
-    fields.forEach(field -> boolQueryBuilder.should(QueryBuilders.matchQuery(field, KEY_WORD)));
+    DocumentEntity.FULL_TEXT_SEARCH_PROPERTIES.forEach(field -> boolQueryBuilder.should(QueryBuilders.matchQuery(field, KEY_WORD)));
 
     // 查询排序
     ScoreSortBuilder scoreSortBuilder = SortBuilders.scoreSort().order(SortOrder.DESC);
@@ -111,7 +115,7 @@ public class DocumentServiceImpl implements DocumentService {
     // 查询生成高亮查询器
     HighlightBuilder highlightBuilder = new HighlightBuilder();
     //高亮查询字段
-    fields.forEach(field -> highlightBuilder.field(field));
+    DocumentEntity.FULL_TEXT_SEARCH_PROPERTIES.forEach(field -> highlightBuilder.field(field));
     //如果要多个字段高亮,这项要为false
     highlightBuilder.requireFieldMatch(false);
     //高亮设置
@@ -145,8 +149,8 @@ public class DocumentServiceImpl implements DocumentService {
         for (SearchHit hit : searchHits) {
           Map<String, HighlightField> highlightFields = hit.getHighlightFields();
           Map<String, Object> source = hit.getSourceAsMap();
-          LinkedList<String> content = new LinkedList<>();
-          HighlightField highlightESTitle = highlightFields.get("title");
+
+          HighlightField highlightESTitle = highlightFields.get(DocumentEntity.DOCUMENT_PROPERTIES_TITLE);
           if (highlightESTitle != null) {
             Text[] fragments = highlightESTitle.fragments();
             StringBuilder esTitleFragmentsStringBuilder = new StringBuilder();
@@ -154,16 +158,17 @@ public class DocumentServiceImpl implements DocumentService {
                 esTitleFragmentsStringBuilder.append(text);
             }
             if (esTitleFragmentsStringBuilder.length() > 0) {
-                source.put("title",esTitleFragmentsStringBuilder.toString());
+                source.put(DocumentEntity.DOCUMENT_PROPERTIES_TITLE,esTitleFragmentsStringBuilder.toString());
             }
           }
 
-          HighlightField highlightESContent = highlightFields.get("content");
+          LinkedList<String> contents = new LinkedList<>();
+          HighlightField highlightESContent = highlightFields.get(DocumentEntity.DOCUMENT_PROPERTIES_CONTENTS);
           if (highlightESContent != null) {
             Text[] fragments = highlightESContent.fragments();
             for (Text text : fragments) {
-                if (content.size() < 5) {
-                    content.add("..." + text + "...");
+                if (contents.size() < highlightFragmentNumber) {
+                    contents.add("..." + text + "...");
                 } else {
                     break;
                 }
@@ -173,14 +178,17 @@ public class DocumentServiceImpl implements DocumentService {
           DocumentBO searchResultBO = new DocumentBO();
           searchResultBO.setIndex(hit.getIndex());
           searchResultBO.setId(hit.getId());
-          searchResultBO.setAble(
-            source.get("able") == null ? null : source.get("able").toString());
-          searchResultBO
-            .setTitle(source.get("title") == null ? null : source.get("title").toString());
-          searchResultBO.setContent(content);
-          searchResultBO.setLinkTo(source.get("linkTo") == null ? null : source.get("linkTo").toString());
-          searchResultBO.setUpdateTime(source.get("updateTime") == null ? null
-            : source.get("updateTime").toString());
+          Object ableObject = source.get(DocumentEntity.DOCUMENT_PROPERTIES_ABLE);
+          searchResultBO.setAble(ableObject == null ? null : ableObject.toString());
+          Object titleObject = source.get(DocumentEntity.DOCUMENT_PROPERTIES_TITLE);
+          searchResultBO.setTitle(titleObject == null ? null : titleObject.toString());
+          Object sourceObject = source.get(DocumentEntity.DOCUMENT_PROPERTIES_SOURCE);
+          searchResultBO.setSource(sourceObject == null ? null : sourceObject.toString());
+          searchResultBO.setContents(contents);
+          Object linkObject = source.get(DocumentEntity.DOCUMENT_PROPERTIES_LINK);
+          searchResultBO.setLink(linkObject == null ? null : linkObject.toString());
+          Object timeObject = source.get(DocumentEntity.DOCUMENT_PROPERTIES_TIME);
+          searchResultBO.setTime(timeObject == null ? null : timeObject.toString());
           searchResultBOPageableQueryResult.getElements().add(searchResultBO);
         }
         searchResultBOPageableQueryResult.setIndex(pageIndex.longValue());
@@ -201,7 +209,7 @@ public class DocumentServiceImpl implements DocumentService {
     BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
     queryBuilder.withQuery(boolQuery);
     queryBuilder.withHighlightFields(
-        new HighlightBuilder.Field("title"),
+        new HighlightBuilder.Field("titlex"),
         new HighlightBuilder.Field("subTitle"),
         new HighlightBuilder.Field("authorName"),
         new HighlightBuilder.Field("summary"),

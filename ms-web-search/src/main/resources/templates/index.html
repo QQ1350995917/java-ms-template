@@ -51,13 +51,13 @@
     <el-row>
       <el-col :span="12" :offset="6" v-for="element in elements">
         <h3>
-          <a :href="element.linkTo">
+          <a :href="element.link">
             <span class="text item book" v-html="element.title"></span>
             -
-            <span>xx</span>
+            <span v-html="element.title"></span>
           </a>
         </h3>
-        <span v-html="contentItem" v-for="contentItem in element.content"></span>
+        <span v-html="contentItem" v-for="contentItem in element.contents"></span>
         <el-divider></el-divider>
       </el-col>
     </el-row>
@@ -157,6 +157,8 @@
           });
           return
         }
+        this.elements = []
+        this.pageIndex = 0
         this.requestForSearch()
       },
       requestForSearch() {

@@ -1,6 +1,7 @@
 package pwd.initializr.search.business.bo;
 
 import java.util.List;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,8 +29,8 @@ public class DocumentBO extends RPCDocument {
 
   private String index;
 
-  public DocumentBO(String id, String able, String title,
-      List<String> content, String linkTo, String updateTime) {
-    super(id, able, title, content, linkTo, updateTime);
+  public DocumentBO(String id, String able, String title, String source,
+      Set<String> tags, List<String> contents, String link, String time) {
+    super(id, able, title, source, tags, contents, link, time);
   }
 }

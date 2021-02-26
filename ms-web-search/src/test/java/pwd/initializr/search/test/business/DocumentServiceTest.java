@@ -3,6 +3,7 @@ package pwd.initializr.search.test.business;
 import com.alibaba.fastjson.JSON;
 import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,7 +31,7 @@ import pwd.initializr.search.business.bo.SearchInputBO;
 @Slf4j
 public class DocumentServiceTest {
 
-  private static final String indexName = "article";
+  private static final String indexName = "book";
 
   @Autowired
   private DocumentService documentService;
@@ -38,13 +39,70 @@ public class DocumentServiceTest {
   @Test
   public void create() {
     LinkedList<DocumentBO> documentBOS = new LinkedList<>();
-    documentBOS.add(new DocumentBO("1","1","xxx",Arrays.asList("xxxxxx"),"http://www.xxx.com","20200506"));
-    documentBOS.add(new DocumentBO("2","1","三国演义",Arrays.asList("xxx三国演义xxx"),"http://www.sanguoyanyi.com","20200501"));
-    documentBOS.add(new DocumentBO("3","1","水浒传",Arrays.asList("xxx水浒传xxx"),"http://www.shuihuzhuan.com","20200502"));
-    documentBOS.add(new DocumentBO("4","1","水浒",Arrays.asList("xxx水浒xxx"),"http://www.shuihuzhuan.com","20200502"));
-    documentBOS.add(new DocumentBO("5","1","西游记",Arrays.asList("xxx西游记xxx"),"http://www.xiyouji.com","20200503"));
-    documentBOS.add(new DocumentBO("6","1","红楼梦",Arrays.asList("xxx红楼梦xxx"),"http://www.hongloumeng.com","20200504"));
-    documentBOS.add(new DocumentBO("7","1","四大名著",Arrays.asList("xxx三国演义xxx，xxx水浒传xxx，xxx西游记xxx，xxx红楼梦xxx"),"http://www.sidamingzhu.com","20200505"));
+    documentBOS.add(
+        new DocumentBO(
+            "1",
+            "1",
+            "xxx",
+            indexName,
+            Arrays.asList("xxxxxx").stream().collect(Collectors.toSet()),
+            Arrays.asList("xxxxxx"),"http://www.xxx.com","20200506")
+    );
+
+    documentBOS.add(
+        new DocumentBO(
+            "2",
+            "1",
+            "三国演义",
+            indexName,
+            Arrays.asList("罗贯中").stream().collect(Collectors.toSet()),
+            Arrays.asList("xxx三国演义xxx","xxx三国xxx"),"http://www.sanguoyanyi.com","20200501")
+    );
+    documentBOS.add(
+        new DocumentBO(
+            "3",
+            "1",
+            "水浒传",
+            indexName,
+            Arrays.asList("施耐庵").stream().collect(Collectors.toSet()),
+            Arrays.asList("xxx水浒传xxx","xxx水浒xxx"),"http://www.shuihuzhuan.com","20200502")
+    );
+    documentBOS.add(
+        new DocumentBO(
+            "4",
+            "1",
+            "水浒",
+            indexName,
+            Arrays.asList("施耐庵").stream().collect(Collectors.toSet()),
+            Arrays.asList("xxx水浒xxx","xxx水浒xxx"),"http://www.shuihuzhuan.com","20200502")
+    );
+    documentBOS.add(
+        new DocumentBO(
+            "5",
+            "1",
+            "西游记",
+            indexName,
+            Arrays.asList("吴承恩").stream().collect(Collectors.toSet()),
+            Arrays.asList("xxx西游记xxx","xxx西游记xxx"),"http://www.xiyouji.com","20200503")
+    );
+    documentBOS.add(
+        new DocumentBO(
+            "6",
+            "1",
+            "红楼梦",
+            indexName,
+            Arrays.asList("曹雪芹").stream().collect(Collectors.toSet()),
+            Arrays.asList("xxx红楼梦xxx","xxx红楼xxx"),"http://www.hongloumeng.com","20200504")
+    );
+    documentBOS.add(
+        new DocumentBO(
+            "7",
+            "1",
+            "四大名著",
+            indexName,
+            Arrays.asList("田丁").stream().collect(Collectors.toSet()),
+            Arrays.asList("xxx三国演义xxx","xxx水浒传xxx","xxx西游记xxx","xxx红楼梦xxx"),"http://www.sidamingzhu.com","20200505"))
+    ;
     documentService.replace(indexName, documentBOS);
   }
 

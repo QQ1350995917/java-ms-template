@@ -1,5 +1,6 @@
 package pwd.initializr.search.api.robot.vo;
 
+import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,6 +22,7 @@ import pwd.initializr.search.rpc.RPCDocument;
 @Setter
 @Getter
 @ToString
+@ApiModel
 public class DocumentVO extends RPCDocument {
 
 }
