@@ -238,11 +238,7 @@ public class DocumentServiceImpl implements DocumentService {
     if (highlightField != null) {
       Text[] fragments = highlightField.fragments();
       for (Text fragment : fragments) {
-        if (result.size() < highlightFragmentNumber) {
-          result.add(fragment.string());
-        } else {
-          break;
-        }
+        result.add(fragment.string());
       }
     }
     return result;
