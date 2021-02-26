@@ -150,9 +150,9 @@ public class DocumentServiceImpl implements DocumentService {
           Map<String, HighlightField> highlightFields = hit.getHighlightFields();
           Map<String, Object> source = hit.getSourceAsMap();
 
-          HighlightField highlightESTitle = highlightFields.get(DocumentEntity.DOCUMENT_PROPERTIES_TITLE);
-          if (highlightESTitle != null) {
-            Text[] fragments = highlightESTitle.fragments();
+          HighlightField highlightTitleField = highlightFields.get(DocumentEntity.DOCUMENT_PROPERTIES_TITLE);
+          if (highlightTitleField != null) {
+            Text[] fragments = highlightTitleField.fragments();
             StringBuilder esTitleFragmentsStringBuilder = new StringBuilder();
             for (Text text : fragments) {
                 esTitleFragmentsStringBuilder.append(text);
@@ -163,9 +163,9 @@ public class DocumentServiceImpl implements DocumentService {
           }
 
           LinkedList<String> contents = new LinkedList<>();
-          HighlightField highlightESContent = highlightFields.get(DocumentEntity.DOCUMENT_PROPERTIES_CONTENTS);
-          if (highlightESContent != null) {
-            Text[] fragments = highlightESContent.fragments();
+          HighlightField highlightContentField = highlightFields.get(DocumentEntity.DOCUMENT_PROPERTIES_CONTENTS);
+          if (highlightContentField != null) {
+            Text[] fragments = highlightContentField.fragments();
             for (Text text : fragments) {
                 if (contents.size() < highlightFragmentNumber) {
                     contents.add("..." + text + "...");
