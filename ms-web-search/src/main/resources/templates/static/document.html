@@ -46,25 +46,47 @@
           </el-input>
         </div>
         <div style="margin-top: 10px">
+          <el-input placeholder="input able" v-model="element.able">
+            <template slot="prepend">Able</template>
+          </el-input>
+        </div>
+        <div style="margin-top: 10px">
           <el-input placeholder="input title" v-model="element.title">
             <template slot="prepend">Title</template>
           </el-input>
         </div>
         <div style="margin-top: 10px">
-          <el-input placeholder="input content" v-model="content" type="textarea">
-            <template slot="prepend">Content</template>
+          <el-input placeholder="input source" v-model="element.source">
+            <template slot="prepend">Source</template>
           </el-input>
         </div>
         <div style="margin-top: 10px">
-          <el-input placeholder="input linkTo" v-model="element.linkTo">
-            <template slot="prepend">LinkTo</template>
+          <el-input placeholder="input tags" v-model="tag">
+            <template slot="prepend">Tags</template>
           </el-input>
         </div>
         <div style="margin-top: 10px">
-          <el-input placeholder="input updateTime" v-model="element.updateTime">
-            <template slot="prepend">UpdateTime</template>
+          <el-input placeholder="input contents" v-model="content" type="textarea">
+            <template slot="prepend">Contents</template>
           </el-input>
         </div>
+        <div style="margin-top: 10px">
+          <el-input placeholder="input link" v-model="element.link">
+            <template slot="prepend">Link</template>
+          </el-input>
+        </div>
+        <div style="margin-top: 10px">
+          <el-input placeholder="input time" v-model="element.time">
+            <template slot="prepend">time</template>
+          </el-input>
+        </div>
+        <!--<div class="block" style="margin-top: 10px">-->
+          <!--<el-date-picker-->
+              <!--v-model="element.time"-->
+              <!--type="date"-->
+              <!--placeholder="选择时间">-->
+          <!--</el-date-picker>-->
+        <!--</div>-->
       </el-col>
       <el-col :span="12" :offset="6" style="margin-top: 10px">
         <el-button type="primary" @click="onCommitButtonClick" style="width: 100%">提交</el-button>
@@ -88,8 +110,10 @@
         activeName: 'document',
         indies: [],
         indexName: '',
-        content: '',
-        element: {id: '',title:'',contents:[],link:'',time: new Date()},
+        tag: '默认测试标签',
+        content: '默认测试内容',
+        date: new Date(),
+        element: {id: Math.floor(Math.random() * (9999999999 - 9999) + 9999), able: '1', title:'默认测试标题', source:'默认测试数据源', tags:[], contents:[], link:'https://www.cnvd.org.cn/?params=params', time: this.getCurrentDate()},
         elements: []
       };
     },
@@ -151,6 +175,7 @@
           });
           return
         }
+        this.element.tags.push(this.tag)
         this.element.contents.push(this.content)
         this.elements = []
         this.elements.push(this.element)
@@ -188,6 +213,21 @@
               }
             });
       },
+      getCurrentDate() {
+        var date = new Date();
+        var separator = "-";
+        var year = date.getFullYear();
+        var month = date.getMonth() + 1;
+        var day = date.getDate();
+        if (month >= 1 && month <= 9) {
+          month = "0" + month;
+        }
+        if (day >= 0 && day <= 9) {
+          day = "0" + day;
+        }
+        var currentDate = year + separator + month + separator + day;
+        return currentDate;
+      }
     }
   });
 </script>
