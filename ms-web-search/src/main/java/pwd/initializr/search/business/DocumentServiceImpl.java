@@ -150,41 +150,45 @@ public class DocumentServiceImpl implements DocumentService {
           Map<String, HighlightField> highlightFields = hit.getHighlightFields();
           Map<String, Object> source = hit.getSourceAsMap();
 
-          HighlightField highlightTitleField = highlightFields.get(DocumentEntity.DOCUMENT_PROPERTIES_TITLE);
-          if (highlightTitleField != null) {
-            Text[] fragments = highlightTitleField.fragments();
-            StringBuilder esTitleFragmentsStringBuilder = new StringBuilder();
-            for (Text text : fragments) {
-                esTitleFragmentsStringBuilder.append(text);
-            }
-            if (esTitleFragmentsStringBuilder.length() > 0) {
-                source.put(DocumentEntity.DOCUMENT_PROPERTIES_TITLE,esTitleFragmentsStringBuilder.toString());
-            }
-          }
+          LinkedList<String> highlightTitleBuilder = hitHighlightField(highlightFields.get(DocumentEntity.DOCUMENT_PROPERTIES_TITLE));
+          LinkedList<String> highlightTagsBuilder = hitHighlightField(highlightFields.get(DocumentEntity.DOCUMENT_PROPERTIES_TAGS));
+          LinkedList<String> highlightContentsBuilder = hitHighlightField(highlightFields.get(DocumentEntity.DOCUMENT_PROPERTIES_CONTENTS));
 
-          LinkedList<String> contents = new LinkedList<>();
-          HighlightField highlightContentField = highlightFields.get(DocumentEntity.DOCUMENT_PROPERTIES_CONTENTS);
-          if (highlightContentField != null) {
-            Text[] fragments = highlightContentField.fragments();
-            for (Text text : fragments) {
-                if (contents.size() < highlightFragmentNumber) {
-                    contents.add("..." + text + "...");
-                } else {
-                    break;
-                }
-            }
-          }
 
           DocumentBO searchResultBO = new DocumentBO();
           searchResultBO.setIndex(hit.getIndex());
           searchResultBO.setId(hit.getId());
           Object ableObject = source.get(DocumentEntity.DOCUMENT_PROPERTIES_ABLE);
           searchResultBO.setAble(ableObject == null ? null : ableObject.toString());
-          Object titleObject = source.get(DocumentEntity.DOCUMENT_PROPERTIES_TITLE);
-          searchResultBO.setTitle(titleObject == null ? null : titleObject.toString());
+
+          if (highlightTitleBuilder == null || highlightTitleBuilder.isEmpty()) {
+            Object titleObject = source.get(DocumentEntity.DOCUMENT_PROPERTIES_TITLE);
+            searchResultBO.setTitle(titleObject == null ? null : titleObject.toString());
+          } else {
+            StringBuilder titleBuilder = new StringBuilder();
+            for (String titleFragment : highlightTitleBuilder) {
+              titleBuilder.append(titleFragment);
+            }
+            searchResultBO.setTitle(titleBuilder.toString());
+          }
+
           Object sourceObject = source.get(DocumentEntity.DOCUMENT_PROPERTIES_SOURCE);
           searchResultBO.setSource(sourceObject == null ? null : sourceObject.toString());
-          searchResultBO.setContents(contents);
+
+          if (highlightTagsBuilder == null || highlightTagsBuilder.isEmpty()) {
+            Object tagsObject = source.get(DocumentEntity.DOCUMENT_PROPERTIES_TAGS);
+            searchResultBO.setTags(tagsObject == null ? null : ((List<String>) tagsObject).stream().collect(Collectors.toSet()));
+          } else {
+            searchResultBO.setTags(highlightTagsBuilder.stream().collect(Collectors.toSet()));
+          }
+
+          if (highlightContentsBuilder == null || highlightContentsBuilder.isEmpty()) {
+            Object contetsObject = source.get(DocumentEntity.DOCUMENT_PROPERTIES_TAGS);
+            searchResultBO.setContents(contetsObject == null ? null : ((List<String>) contetsObject));
+          } else {
+            searchResultBO.setContents(highlightContentsBuilder);
+          }
+
           Object linkObject = source.get(DocumentEntity.DOCUMENT_PROPERTIES_LINK);
           searchResultBO.setLink(linkObject == null ? null : linkObject.toString());
           Object timeObject = source.get(DocumentEntity.DOCUMENT_PROPERTIES_TIME);
@@ -202,6 +206,23 @@ public class DocumentServiceImpl implements DocumentService {
       throw new RuntimeException(e);
     }
   }
+
+  private LinkedList<String> hitHighlightField (HighlightField highlightField){
+    LinkedList<String> result = new LinkedList<>();
+    if (highlightField != null) {
+      Text[] fragments = highlightField.fragments();
+      for (Text fragment : fragments) {
+        if (result.size() < highlightFragmentNumber) {
+          result.add(fragment.string());
+        } else {
+          break;
+        }
+      }
+    }
+    return result;
+  }
+
+
 
 
   private void search2(String keyword, Integer pageIndex, Integer pageSize) {
