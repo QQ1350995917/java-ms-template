@@ -36,6 +36,9 @@ spring.datasource.url=${databaseUrl}
 spring.datasource.username=${databaseUser}
 spring.datasource.password=${databasePwd}
 spring.datasource.driver-class-name=${databaseDriver}
+#################mybatis######################
+mybatis.mapper-locations=classpath:mapper/*.xml
+mybatis-plus.configuration.log-impl=org.apache.ibatis.logging.stdout.StdOutImpl
 ##################druid#######################
 spring.datasource.druid.initial-size=5
 spring.datasource.druid.min-idle=5

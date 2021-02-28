@@ -25,7 +25,7 @@
   </#list>
 </#if>
     FROM
-  ${tableName}
+      ${tableName}
     <#noparse>
     WHERE
       id = #{id}
@@ -52,7 +52,7 @@
   </#list>
 </#if>
     FROM
-  ${tableName}
+      ${tableName}
     <include
         refid="pwd.initializr.common.web.persistence.entity.ScopeEntity.entityQueryScope"></include>
     <include
@@ -71,9 +71,9 @@
   <#if columns?exists>
     <#list columns as column>
       <#if column_index == (columns?size -1)>
-        `${column.jdbcName}`
+      `${column.jdbcName}`
       <#else>
-        `${column.jdbcName}`,
+      `${column.jdbcName}`,
       </#if>
     </#list>
   </#if>
@@ -83,9 +83,9 @@
   <#if columns?exists>
     <#list columns as column>
       <#if column_index == (columns?size -1)>
-        <#noparse>#{</#noparse>entity.${column.javaName}<#noparse>}</#noparse>
+      <#noparse>#{</#noparse>entity.${column.javaName}<#noparse>}</#noparse>
       <#else>
-        <#noparse>#{</#noparse>entity.${column.javaName}<#noparse>}</#noparse>,
+      <#noparse>#{</#noparse>entity.${column.javaName}<#noparse>}</#noparse>,
       </#if>
     </#list>
   </#if>
@@ -100,26 +100,26 @@
   <#if columns?exists>
     <#list columns as column>
       <#if column_index == (columns?size -1)>
-        `${column.jdbcName}`
+      `${column.jdbcName}`
       <#else>
-        `${column.jdbcName}`,
+      `${column.jdbcName}`,
       </#if>
     </#list>
   </#if>
     )
     VALUES
     <foreach collection="entities" item="entity" separator=",">
-      (
+    (
   <#if columns?exists>
     <#list columns as column>
       <#if column_index == (columns?size -1)>
-        <#noparse>#{</#noparse>entity.${column.javaName}<#noparse>}</#noparse>
+      <#noparse>#{</#noparse>entity.${column.javaName}<#noparse>}</#noparse>
       <#else>
-        <#noparse>#{</#noparse>entity.${column.javaName}<#noparse>}</#noparse>,
+      <#noparse>#{</#noparse>entity.${column.javaName}<#noparse>}</#noparse>,
       </#if>
     </#list>
   </#if>
-      )
+    )
     </foreach>
   </insert>
 
@@ -131,9 +131,9 @@
   <#if columns?exists>
     <#list columns as column>
       <#if column_index == (columns?size -1)>
-        `${column.jdbcName}`
+      `${column.jdbcName}`
       <#else>
-        `${column.jdbcName}`,
+      `${column.jdbcName}`,
       </#if>
     </#list>
   </#if>
@@ -143,9 +143,9 @@
   <#if columns?exists>
     <#list columns as column>
       <#if column_index == (columns?size -1)>
-        <#noparse>#{</#noparse>entity.${column.javaName}<#noparse>}</#noparse>
+      <#noparse>#{</#noparse>entity.${column.javaName}<#noparse>}</#noparse>
       <#else>
-        <#noparse>#{</#noparse>entity.${column.javaName}<#noparse>}</#noparse>,
+      <#noparse>#{</#noparse>entity.${column.javaName}<#noparse>}</#noparse>,
       </#if>
     </#list>
   </#if>
@@ -160,26 +160,26 @@
   <#if columns?exists>
     <#list columns as column>
       <#if column_index == (columns?size -1)>
-        `${column.jdbcName}`
+      `${column.jdbcName}`
       <#else>
-        `${column.jdbcName}`,
+      `${column.jdbcName}`,
       </#if>
     </#list>
   </#if>
     )
     VALUES
     <foreach collection="entities" item="entity" separator=",">
-      (
+    (
   <#if columns?exists>
     <#list columns as column>
       <#if column_index == (columns?size -1)>
-        <#noparse>#{</#noparse>entity.${column.javaName}<#noparse>}</#noparse>
+      <#noparse>#{</#noparse>entity.${column.javaName}<#noparse>}</#noparse>
       <#else>
-        <#noparse>#{</#noparse>entity.${column.javaName}<#noparse>}</#noparse>,
+      <#noparse>#{</#noparse>entity.${column.javaName}<#noparse>}</#noparse>,
       </#if>
     </#list>
   </#if>
-      )
+    )
     </foreach>
   </insert>
 
@@ -191,40 +191,39 @@
     <#list columns as column>
       <#if (column.jdbcType == 'char') || (column.jdbcType == 'varchar') || (column.jdbcType == 'tinytext') || (column.jdbcType == 'text' || (column.jdbcType == 'mediumtext') || (column.jdbcType == 'longtext'))>
       <if test="entity.${column.javaName} != null and entity.${column.javaName} != ''">
-        `${column.jdbcName}` = <#noparse>#{</#noparse>entity.${column.javaName}<#noparse>
-        }</#noparse>,
+        `${column.jdbcName}` = <#noparse>#{</#noparse>entity.${column.javaName}<#noparse>}</#noparse>,
       </if>
       <#else>
       <if test="entity.${column.javaName} != null">
-        `${column.jdbcName}` = <#noparse>#{</#noparse>entity.${column.javaName}<#noparse>
-        }</#noparse>,
+        `${column.jdbcName}` = <#noparse>#{</#noparse>entity.${column.javaName}<#noparse>}</#noparse>,
       </if>
       </#if>
     </#list>
   </#if>
     </set>
     WHERE
-    id = <#noparse>#{entity.id}</#noparse>
+      id = <#noparse>#{entity.id}</#noparse>
   </update>
 
   <!--通过主键删除-->
   <update id="deleteById">
     UPDATE ${tableName}
     SET
-    del = 1,
-    update_time = <#noparse>#{date}</#noparse>
+      del = 1,
+      update_time = <#noparse>#{date}</#noparse>
     WHERE
-    id = <#noparse>#{id}</#noparse>
+      id = <#noparse>#{id}</#noparse>
   </update>
 
   <!--通过主键批量删除-->
   <update id="deleteByIds">
     UPDATE ${tableName}
     SET
-    del = 1,
-    update_time = <#noparse>#{date}</#noparse>
+      del = 1,
+      update_time = <#noparse>#{date}</#noparse>
     WHERE
-    id in
+      id
+    IN
     <foreach close=")" collection="ids" index="index" item="id" open="(" separator=",">
     <#noparse>
       #{id}
@@ -252,7 +251,8 @@
       able = #{able},
       update_time = #{date}
     WHERE
-      id in
+      id
+    IN
     <foreach close=")" collection="ids" index="index" item="id" open="(" separator=",">
       #{id}
     </foreach>

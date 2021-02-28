@@ -96,129 +96,124 @@ public interface ${className}Api {
    */
   @ApiOperation(value = "启用")
   @PutMapping(value = {"/enable"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  void enable(@RequestBody @Valid @NotNull(message = "参数不能为空") Set
-<Long> ids);
+  void enable(@RequestBody @Valid @NotNull(message = "参数不能为空") Set<Long> ids);
 
   /**
-  * <h2>禁用</h2>
-  * date ${projectCreateDate}
-  *
-  * @param id 请求参数
-  * @return void
-  * @author Automatic[www.dingpengwei@foxmail.com]
-  * @since ${projectVersion}
-  */
+   * <h2>禁用</h2>
+   * date ${projectCreateDate}
+   *
+   * @param id 请求参数
+   * @return void
+   * @author Automatic[www.dingpengwei@foxmail.com]
+   * @since ${projectVersion}
+   */
   @ApiOperation(value = "禁用")
   @PutMapping(value = {"/disable/{id}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   void disable(@PathVariable("id") @Valid @NotNull(message = "参数不能为空") Long id);
 
   /**
-  * <h2>批量禁用</h2>
-  * date ${projectCreateDate}
-  *
-  * @param ids 请求参数
-  * @return void
-  * @author Automatic[www.dingpengwei@foxmail.com]
-  * @since ${projectVersion}
-  */
+   * <h2>批量禁用</h2>
+   * date ${projectCreateDate}
+   *
+   * @param ids 请求参数
+   * @return void
+   * @author Automatic[www.dingpengwei@foxmail.com]
+   * @since ${projectVersion}
+   */
   @ApiOperation(value = "禁用")
   @PutMapping(value = {"/disable"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  void disable(@RequestBody @Valid @NotNull(message = "参数不能为空") Set
-  <Long> ids);
+  void disable(@RequestBody @Valid @NotNull(message = "参数不能为空") Set<Long> ids);
 
-    /**
-    * <h2>删除</h2>
-    * date ${projectCreateDate}
-    *
-    * @param id 请求参数
-    * @return void
-    * @author Automatic[www.dingpengwei@foxmail.com]
-    * @since ${projectVersion}
-    */
-    @ApiOperation(value = "删除")
-    @DeleteMapping(value = {"/{id}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    void delete(@PathVariable("id") @Valid @NotNull(message = "参数不能为空") Long id);
+  /**
+   * <h2>删除</h2>
+   * date ${projectCreateDate}
+   *
+   * @param id 请求参数
+   * @return void
+   * @author Automatic[www.dingpengwei@foxmail.com]
+   * @since ${projectVersion}
+   */
+  @ApiOperation(value = "删除")
+  @DeleteMapping(value = {"/{id}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  void delete(@PathVariable("id") @Valid @NotNull(message = "参数不能为空") Long id);
 
-    /**
-    * <h2>批量删除</h2>
-    * date ${projectCreateDate}
-    *
-    * @param ids 请求参数
-    * @return void
-    * @author Automatic[www.dingpengwei@foxmail.com]
-    * @since ${projectVersion}
-    */
-    @ApiOperation(value = "批量删除")
-    @DeleteMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    void delete(@RequestBody @Valid @NotNull(message = "参数不能为空") Set
-    <Long> ids);
+  /**
+   * <h2>批量删除</h2>
+   * date ${projectCreateDate}
+   *
+   * @param ids 请求参数
+   * @return void
+   * @author Automatic[www.dingpengwei@foxmail.com]
+   * @since ${projectVersion}
+   */
+  @ApiOperation(value = "批量删除")
+  @DeleteMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  void delete(@RequestBody @Valid @NotNull(message = "参数不能为空") Set<Long> ids);
 
-      /**
-      * <h2>新增</h2>
-      * date ${projectCreateDate}
-      *
-      * @param input 请求参数
-      * @return void
-      * @author Automatic[www.dingpengwei@foxmail.com]
-      * @since ${projectVersion}
-      */
-      @ApiOperation(value = "新增")
-      @PostMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-      void create(@RequestBody @Valid @NotNull(message = "参数不能为空") ${className}Input input);
+  /**
+   * <h2>新增</h2>
+   * date ${projectCreateDate}
+   *
+   * @param input 请求参数
+   * @return void
+   * @author Automatic[www.dingpengwei@foxmail.com]
+   * @since ${projectVersion}
+   */
+  @ApiOperation(value = "新增")
+  @PostMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  void create(@RequestBody @Valid @NotNull(message = "参数不能为空") ${className}Input input);
 
-      /**
-      * <h2>新增（批量）</h2>
-      * date ${projectCreateDate}
-      *
-      * @param input 请求参数
-      * @return void
-      * @author Automatic[www.dingpengwei@foxmail.com]
-      * @since ${projectVersion}
-      */
-      @ApiOperation(value = "新增（批量）")
-      @PostMapping(value = {"/batch"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-      void create(@RequestBody @Valid @NotNull(message = "参数不能为空") List<${className}Input> input);
+  /**
+   * <h2>新增（批量）</h2>
+   * date ${projectCreateDate}
+   *
+   * @param input 请求参数
+   * @return void
+   * @author Automatic[www.dingpengwei@foxmail.com]
+   * @since ${projectVersion}
+   */
+  @ApiOperation(value = "新增（批量）")
+  @PostMapping(value = {"/batch"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  void create(@RequestBody @Valid @NotNull(message = "参数不能为空") List<${className}Input> input);
 
-      /**
-      * <h2>新增或替换</h2>
-      * date ${projectCreateDate}
-      *
-      * @param input 请求参数
-      * @return void
-      * @author Automatic[www.dingpengwei@foxmail.com]
-      * @since ${projectVersion}
-      */
-      @ApiOperation(value = "新增或替换")
-      @PutMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-      void createOrReplace(@RequestBody @Valid @NotNull(message = "参数不能为空") ${className}Input
-      input);
+  /**
+   * <h2>新增或替换</h2>
+   * date ${projectCreateDate}
+   *
+   * @param input 请求参数
+   * @return void
+   * @author Automatic[www.dingpengwei@foxmail.com]
+   * @since ${projectVersion}
+   */
+  @ApiOperation(value = "新增或替换")
+  @PutMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  void createOrReplace(@RequestBody @Valid @NotNull(message = "参数不能为空") ${className}Input input);
 
-      /**
-      * <h2>新增或替换（批量）</h2>
-      * date ${projectCreateDate}
-      *
-      * @param input 请求参数
-      * @return void
-      * @author Automatic[www.dingpengwei@foxmail.com]
-      * @since ${projectVersion}
-      */
-      @ApiOperation(value = "新增或替换（批量）")
-      @PutMapping(value = {"/batch"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-      void createOrReplace(@RequestBody @Valid @NotNull(message = "参数不能为空") List<${className}Input>
-      input);
+  /**
+   * <h2>新增或替换（批量）</h2>
+   * date ${projectCreateDate}
+   *
+   * @param input 请求参数
+   * @return void
+   * @author Automatic[www.dingpengwei@foxmail.com]
+   * @since ${projectVersion}
+   */
+  @ApiOperation(value = "新增或替换（批量）")
+  @PutMapping(value = {"/batch"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  void createOrReplace(@RequestBody @Valid @NotNull(message = "参数不能为空") List<${className}Input> input);
 
-      /**
-      * <h2>更新</h2>
-      * date ${projectCreateDate}
-      *
-      * @param input 请求参数
-      * @return void
-      * @author Automatic[www.dingpengwei@foxmail.com]
-      * @since ${projectVersion}
-      */
-      @ApiOperation(value = "更新")
-      @PatchMapping(value = {"/{id}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-      void update(@PathVariable("id") @Valid @NotNull(message = "参数不能为空") Long id,
-      @RequestBody @Valid @NotNull(message = "参数不能为空") ${className}Input input);
+  /**
+   * <h2>更新</h2>
+   * date ${projectCreateDate}
+   *
+   * @param input 请求参数
+   * @return void
+   * @author Automatic[www.dingpengwei@foxmail.com]
+   * @since ${projectVersion}
+   */
+  @ApiOperation(value = "更新")
+  @PatchMapping(value = {"/{id}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  void update(@PathVariable("id") @Valid @NotNull(message = "参数不能为空") Long id,
+  @RequestBody @Valid @NotNull(message = "参数不能为空") ${className}Input input);
 
-      }
+}

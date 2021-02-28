@@ -27,16 +27,16 @@ import pwd.initializr.common.web.business.bo.SortBO;
 import pwd.initializr.common.web.persistence.entity.EntityAble;
 
 /**
-* ${projectName}@ms-web-initializr
-*
-* <h1>${className}控制层接口实现</h1>
-*
-* date ${projectCreateDate}
-*
-* @author Automatic[dingpengwei@foxmail.com]
-* @version ${projectVersion}
-* @since ${projectVersion}
-*/
+ * ${projectName}@ms-web-initializr
+ *
+ * <h1>${className}控制层接口实现</h1>
+ *
+ * date ${projectCreateDate}
+ *
+ * @author Automatic[dingpengwei@foxmail.com]
+ * @version ${projectVersion}
+ * @since ${projectVersion}
+ */
 @Api(
   tags = "${className}信息结构",
   value = "${className}ManageApi",
@@ -53,127 +53,112 @@ public class ${className}Controller extends pwd.initializr.common.web.api.admin.
   @Override
   public void list(String scopes, String sorts, String page) {
     PageInput pageInput = PageInput.parse(page);
-    LinkedHashSet
-<ScopeBO> scopeBOS = ScopeInput.parse(scopes);
-  LinkedHashSet
-  <SortBO> sortBOS = SortInput.parse(sorts);
-    PageableQueryResult
-    <${className}BO> pageableQueryResult = service
-      .queryAllByCondition(scopeBOS, sortBOS, pageInput.getIndex(), pageInput.getSize());
-      PageOutput
-      <${className}Output> result = new PageOutput<>();
-        pageableQueryResult.getElements().forEach(bo -> {
+    LinkedHashSet<ScopeBO> scopeBOS = ScopeInput.parse(scopes);
+    LinkedHashSet<SortBO> sortBOS = SortInput.parse(sorts);
+    PageableQueryResult<${className}BO> pageableQueryResult = service.queryAllByCondition(scopeBOS,
+      sortBOS, pageInput.getIndex(), pageInput.getSize());
+    PageOutput<${className}Output> result = new PageOutput<>();
+    pageableQueryResult.getElements().forEach(bo -> {
       ${className}Output output = new ${className}Output();
-        BeanUtils.copyProperties(bo, output);
-        result.getElements().add(output);
-        });
-        result.setTotal(pageableQueryResult.getTotal());
-        result.setIndex(pageableQueryResult.getIndex());
-        result.setSize(pageableQueryResult.getSize());
-        outputData(result);
-        }
+      BeanUtils.copyProperties(bo, output);
+      result.getElements().add(output);
+    });
+    result.setTotal(pageableQueryResult.getTotal());
+    result.setIndex(pageableQueryResult.getIndex());
+    result.setSize(pageableQueryResult.getSize());
+    outputData(result);
+  }
 
-        @Override
-        public void detail(@Valid @NotNull(message = "参数不能为空") Long id) {
-      ${className}BO bo = service.queryById(id);
-      ${className}Output output = new ${className}Output();
-        BeanUtils.copyProperties(bo,output);
-        outputData(output);
-        }
+  @Override
+  public void detail(@Valid @NotNull(message = "参数不能为空") Long id) {
+    ${className}BO bo = service.queryById(id);
+    ${className}Output output = new ${className}Output();
+    BeanUtils.copyProperties(bo,output);
+    outputData(output);
+  }
 
-        @Override
-        public void enable(@Valid @NotNull(message = "参数不能为空") Long id) {
-        Integer result = service.ableById(id, EntityAble.ENABLE);
-        outputData(200,result);
-        }
+  @Override
+  public void enable(@Valid @NotNull(message = "参数不能为空") Long id) {
+    Integer result = service.ableById(id, EntityAble.ENABLE);
+    outputData(200,result);
+  }
 
-        @Override
-        public void enable(@Valid @NotNull(message = "参数不能为空") Set
-        <Long> ids) {
-          Integer result = service.ableById(ids, EntityAble.ENABLE);
-          outputData(200,result);
-          }
+  @Override
+  public void enable(@Valid @NotNull(message = "参数不能为空") Set<Long> ids) {
+    Integer result = service.ableById(ids, EntityAble.ENABLE);
+    outputData(200,result);
+  }
 
-          @Override
-          public void disable(@Valid @NotNull(message = "参数不能为空") Long id) {
-          Integer result = service.ableById(id, EntityAble.DISABLE);
-          outputData(200,result);
-          }
+  @Override
+  public void disable(@Valid @NotNull(message = "参数不能为空") Long id) {
+    Integer result = service.ableById(id, EntityAble.DISABLE);
+    outputData(200,result);
+  }
 
-          @Override
-          public void disable(@Valid @NotNull(message = "参数不能为空") Set
-          <Long> ids) {
-            Integer result = service.ableById(ids, EntityAble.DISABLE);
-            outputData(200,result);
-            }
+  @Override
+  public void disable(@Valid @NotNull(message = "参数不能为空") Set<Long> ids) {
+    Integer result = service.ableById(ids, EntityAble.DISABLE);
+    outputData(200,result);
+  }
 
-            @Override
-            public void delete(@Valid @NotNull(message = "参数不能为空") Long id) {
-            Integer result = service.deleteById(id);
-            outputData(200,result);
-            }
+  @Override
+  public void delete(@Valid @NotNull(message = "参数不能为空") Long id) {
+    Integer result = service.deleteById(id);
+    outputData(200,result);
+  }
 
-            @Override
-            public void delete(@Valid @NotNull(message = "参数不能为空") Set
-            <Long> ids) {
-              Integer result = service.deleteById(ids);
-              outputData(200,result);
-              }
+  @Override
+  public void delete(@Valid @NotNull(message = "参数不能为空") Set<Long> ids) {
+    Integer result = service.deleteById(ids);
+    outputData(200,result);
+  }
 
-              @Override
-              public void create(@Valid @NotNull(message = "参数不能为空") ${className}Input input) {
-            ${className}BO bo = new ${className}BO();
-              BeanUtils.copyProperties(input,bo);
-              Long id = service.insert(bo);
-              outputData(200,id);
-              }
+  @Override
+  public void create(@Valid @NotNull(message = "参数不能为空") ${className}Input input) {
+    ${className}BO bo = new ${className}BO();
+    BeanUtils.copyProperties(input,bo);
+    Long id = service.insert(bo);
+    outputData(200,id);
+  }
 
-              @Override
-              public void create(@Valid @NotNull(message = "参数不能为空") List<${className}Input> input)
-              {
-              List
-              <${className}BO> bos = input.stream().map(this::convert${className}Input2${className}
-                BO)
-                .collect(Collectors.toList());
-                service.insert(bos);
-                outputData(200);
-                }
+  @Override
+  public void create(@Valid @NotNull(message = "参数不能为空") List<${className}Input> input) {
+  List<${className}BO> bos = input.stream().map(this::convert${className}Input2${className}BO)
+    .collect(Collectors.toList());
+    service.insert(bos);
+    outputData(200);
+  }
 
-                @Override
-                public void createOrReplace(@Valid @NotNull(message = "参数不能为空") ${className}Input
-                input) {
-              ${className}BO bo = new ${className}BO();
-                BeanUtils.copyProperties(input,bo);
-                Long id = service.insertOrReplace(bo);
-                outputData(200,id);
-                }
+  @Override
+  public void createOrReplace(@Valid @NotNull(message = "参数不能为空") ${className}Input input) {
+    ${className}BO bo = new ${className}BO();
+    BeanUtils.copyProperties(input,bo);
+    Long id = service.insertOrReplace(bo);
+    outputData(200,id);
+  }
 
-                @Override
-                public void createOrReplace(@Valid @NotNull(message = "参数不能为空")
-                List<${className}Input> input) {
-                List
-                <${className}BO> bos = input.stream().map(this::convert${className}
-                  Input2${className}BO)
-                  .collect(Collectors.toList());
-                  service.insertOrReplace(bos);
-                  outputData(200);
-                  }
+  @Override
+  public void createOrReplace(@Valid @NotNull(message = "参数不能为空") List<${className}Input> input) {
+  List<${className}BO> bos = input.stream().map(this::convert${className}Input2${className}BO)
+    .collect(Collectors.toList());
+    service.insertOrReplace(bos);
+    outputData(200);
+  }
 
-                  @Override
-                  public void update(@Valid @NotNull(message = "参数不能为空") Long id,
-                  @Valid @NotNull(message = "参数不能为空") ${className}Input input) {
-                ${className}BO bo = new ${className}BO();
-                  BeanUtils.copyProperties(input,bo);
-                  bo.setId(id);
-                  Integer result = service.updateById(bo);
-                  outputData(200,result);
-                  }
+  @Override
+  public void update(@Valid @NotNull(message = "参数不能为空") Long id,
+    @Valid @NotNull(message = "参数不能为空") ${className}Input input) {
+    ${className}BO bo = new ${className}BO();
+    BeanUtils.copyProperties(input,bo);
+    bo.setId(id);
+    Integer result = service.updateById(bo);
+    outputData(200,result);
+  }
 
-                  private ${className}BO convert${className}Input2${className}BO(${className}Input
-                  input){
-                ${className}BO bo = new ${className}BO();
-                  BeanUtils.copyProperties(input,bo);
-                  return bo;
-                  }
+  private ${className}BO convert${className}Input2${className}BO(${className}Input input){
+    ${className}BO bo = new ${className}BO();
+    BeanUtils.copyProperties(input,bo);
+    return bo;
+  }
 
-                  }
+}
