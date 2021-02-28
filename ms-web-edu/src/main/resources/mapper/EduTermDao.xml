@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pwd.initializr.edu.persistence.dao.EduTermDao">
+
+  <resultMap id="EduTermMap" type="pwd.initializr.edu.persistence.entity.EduTermEntity">
+    <result column="id" jdbcType="BIGINT"
+            property="id"/>
+    <result column="pid" jdbcType="BIGINT"
+            property="pid"/>
+    <result column="zhcn_name" jdbcType="VARCHAR"
+            property="zhcnName"/>
+    <result column="enus_name" jdbcType="VARCHAR"
+            property="enusName"/>
+    <result column="scholastic" jdbcType="INTEGER"
+            property="scholastic"/>
+    <result column="order" jdbcType="INTEGER"
+            property="order"/>
+    <result column="leaf" jdbcType="INTEGER"
+            property="leaf"/>
+    <result column="able" jdbcType="INTEGER"
+            property="able"/>
+    <result column="del" jdbcType="INTEGER"
+            property="del"/>
+    <result column="create_time" jdbcType="TIMESTAMP"
+            property="createTime"/>
+    <result column="update_time" jdbcType="TIMESTAMP"
+            property="updateTime"/>
+  </resultMap>
+
+  <!--根据主键查询查询-->
+  <select id="queryById" resultMap="EduTermMap">
+    SELECT
+      `id`,
+      `pid`,
+      `zhcn_name`,
+      `enus_name`,
+      `scholastic`,
+      `order`,
+      `leaf`,
+      `able`,
+      `del`,
+      `create_time`,
+      `update_time`
+    FROM
+      edu_term
+    WHERE
+      id = #{id}
+  </select>
+
+  <!--查询指定行数据-->
+  <select id="countByCondition" resultType="java.lang.Long">
+    SELECT COUNT(*) FROM edu_term
+    <include
+        refid="pwd.initializr.common.web.persistence.entity.ScopeEntity.entityQueryScope"></include>
+  </select>
+
+  <!--通过实体作为筛选条件查询-->
+  <select id="queryByCondition" resultMap="EduTermMap">
+    SELECT
+      `id`,
+      `pid`,
+      `zhcn_name`,
+      `enus_name`,
+      `scholastic`,
+      `order`,
+      `leaf`,
+      `able`,
+      `del`,
+      `create_time`,
+      `update_time`
+    FROM
+      edu_term
+    <include
+        refid="pwd.initializr.common.web.persistence.entity.ScopeEntity.entityQueryScope"></include>
+    <include
+        refid="pwd.initializr.common.web.persistence.entity.SortEntity.entityQuerySort"></include>
+    LIMIT
+      #{offset}, #{limit}
+  </select>
+
+  <!--新增所有列-->
+  <insert id="insert" keyProperty="id" useGeneratedKeys="true"
+          parameterType="pwd.initializr.edu.persistence.entity.EduTermEntity">
+    INSERT INTO edu_term
+    (
+      `id`,
+      `pid`,
+      `zhcn_name`,
+      `enus_name`,
+      `scholastic`,
+      `order`,
+      `leaf`,
+      `able`,
+      `del`,
+      `create_time`,
+      `update_time`
+    )
+    VALUES
+    (
+      #{entity.id},
+      #{entity.pid},
+      #{entity.zhcnName},
+      #{entity.enusName},
+      #{entity.scholastic},
+      #{entity.order},
+      #{entity.leaf},
+      #{entity.able},
+      #{entity.del},
+      #{entity.createTime},
+      #{entity.updateTime}
+    )
+  </insert>
+
+  <!--新增所有列（批量新增）-->
+  <insert id="insertByBatch" keyProperty="id" useGeneratedKeys="true"
+          parameterType="pwd.initializr.edu.persistence.entity.EduTermEntity">
+    INSERT INTO edu_term
+    (
+      `id`,
+      `pid`,
+      `zhcn_name`,
+      `enus_name`,
+      `scholastic`,
+      `order`,
+      `leaf`,
+      `able`,
+      `del`,
+      `create_time`,
+      `update_time`
+    )
+    VALUES
+    <foreach collection="entities" item="entity" separator=",">
+    (
+      #{entity.id},
+      #{entity.pid},
+      #{entity.zhcnName},
+      #{entity.enusName},
+      #{entity.scholastic},
+      #{entity.order},
+      #{entity.leaf},
+      #{entity.able},
+      #{entity.del},
+      #{entity.createTime},
+      #{entity.updateTime}
+    )
+    </foreach>
+  </insert>
+
+  <!--新增或者替换所有列-->
+  <insert id="insertOrReplace" keyProperty="id" useGeneratedKeys="true"
+          parameterType="pwd.initializr.edu.persistence.entity.EduTermEntity">
+    REPLACE INTO edu_term
+    (
+      `id`,
+      `pid`,
+      `zhcn_name`,
+      `enus_name`,
+      `scholastic`,
+      `order`,
+      `leaf`,
+      `able`,
+      `del`,
+      `create_time`,
+      `update_time`
+    )
+    VALUES
+    (
+      #{entity.id},
+      #{entity.pid},
+      #{entity.zhcnName},
+      #{entity.enusName},
+      #{entity.scholastic},
+      #{entity.order},
+      #{entity.leaf},
+      #{entity.able},
+      #{entity.del},
+      #{entity.createTime},
+      #{entity.updateTime}
+    )
+  </insert>
+
+  <!--新增或者替换所有列（批量新增或者替换）-->
+  <insert id="insertOrReplaceByBatch" keyProperty="id" useGeneratedKeys="true"
+          parameterType="pwd.initializr.edu.persistence.entity.EduTermEntity">
+    REPLACE INTO edu_term
+    (
+      `id`,
+      `pid`,
+      `zhcn_name`,
+      `enus_name`,
+      `scholastic`,
+      `order`,
+      `leaf`,
+      `able`,
+      `del`,
+      `create_time`,
+      `update_time`
+    )
+    VALUES
+    <foreach collection="entities" item="entity" separator=",">
+    (
+      #{entity.id},
+      #{entity.pid},
+      #{entity.zhcnName},
+      #{entity.enusName},
+      #{entity.scholastic},
+      #{entity.order},
+      #{entity.leaf},
+      #{entity.able},
+      #{entity.del},
+      #{entity.createTime},
+      #{entity.updateTime}
+    )
+    </foreach>
+  </insert>
+
+  <!--通过主键修改数据-->
+  <update id="updateById" parameterType="pwd.initializr.edu.persistence.entity.EduTermEntity">
+    UPDATE edu_term
+    <set>
+      <if test="entity.id != null">
+        `id` = #{entity.id},
+      </if>
+      <if test="entity.pid != null">
+        `pid` = #{entity.pid},
+      </if>
+      <if test="entity.zhcnName != null and entity.zhcnName != ''">
+        `zhcn_name` = #{entity.zhcnName},
+      </if>
+      <if test="entity.enusName != null and entity.enusName != ''">
+        `enus_name` = #{entity.enusName},
+      </if>
+      <if test="entity.scholastic != null and entity.scholastic != ''">
+        `scholastic` = #{entity.scholastic},
+      </if>
+      <if test="entity.order != null">
+        `order` = #{entity.order},
+      </if>
+      <if test="entity.leaf != null">
+        `leaf` = #{entity.leaf},
+      </if>
+      <if test="entity.able != null">
+        `able` = #{entity.able},
+      </if>
+      <if test="entity.del != null">
+        `del` = #{entity.del},
+      </if>
+      <if test="entity.createTime != null">
+        `create_time` = #{entity.createTime},
+      </if>
+      <if test="entity.updateTime != null">
+        `update_time` = #{entity.updateTime},
+      </if>
+    </set>
+    WHERE
+      id = #{entity.id}
+  </update>
+
+  <!--通过主键删除-->
+  <update id="deleteById">
+    UPDATE edu_term
+    SET
+      del = 1,
+      update_time = #{date}
+    WHERE
+      id = #{id}
+  </update>
+
+  <!--通过主键批量删除-->
+  <update id="deleteByIds">
+    UPDATE edu_term
+    SET
+      del = 1,
+      update_time = #{date}
+    WHERE
+      id
+    IN
+    <foreach close=")" collection="ids" index="index" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </update>
+
+  <!--通过主键启禁-->
+  <update id="ableById">
+    UPDATE edu_term
+    SET
+      able = #{able},
+      update_time = #{date}
+    WHERE
+      id = #{id}
+  </update>
+
+  <!--通过主键批量启禁-->
+  <update id="ableByIds">
+    UPDATE edu_term
+    SET
+      able = #{able},
+      update_time = #{date}
+    WHERE
+      id
+    IN
+    <foreach close=")" collection="ids" index="index" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </update>
+
+</mapper>
