@@ -6,8 +6,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import pwd.initializr.edu.business.EduTermCourseService;
+import pwd.initializr.edu.business.EduTermCourseTextbookService;
 import pwd.initializr.edu.business.EduTermService;
 import pwd.initializr.edu.business.bo.EduTermBO;
+import pwd.initializr.edu.business.bo.EduTermCourseBO;
+import pwd.initializr.edu.business.bo.EduTermCourseTextbookBO;
 
 /**
  * pwd.initializr.edu.test.business@ms-web-initializr
@@ -25,6 +29,12 @@ import pwd.initializr.edu.business.bo.EduTermBO;
 public class EduTermServiceTest {
   @Resource
   private EduTermService eduTermService;
+
+  @Resource
+  private EduTermCourseService eduTermCourseService;
+
+  @Resource
+  private EduTermCourseTextbookService eduTermCourseTextbookService;
 
   @Test
   public void initEduTermTable() {
@@ -50,7 +60,7 @@ public class EduTermServiceTest {
     EduTermBO eduTermBO600 = new EduTermBO(null,null,"高一","高一",1,0,0);
     EduTermBO eduTermBO601 = new EduTermBO(null,null,"高二","高二",1,1,0);
     EduTermBO eduTermBO602 = new EduTermBO(null,null,"高三","高三",1,2,0);
-    EduTermBO eduTermBO7 = new EduTermBO(null,0L,"考研","考研",0,7,1);
+
 
     LinkedList<EduTermBO> eduTermBOS = new LinkedList<>();
     eduTermBOS.add(eduTermBO00);
@@ -82,7 +92,6 @@ public class EduTermServiceTest {
     eduTermBOS.add(eduTermBO601);
     eduTermBOS.add(eduTermBO602);
 
-    eduTermBOS.add(eduTermBO7);
 
     Long rootLevelId = null;
     for (EduTermBO eduTermBO : eduTermBOS) {
@@ -94,13 +103,28 @@ public class EduTermServiceTest {
         if (eduTermBO.getLeaf() == 0) {
           EduTermBO term0 = new EduTermBO(null, gradeId, "上学期", "上学期",
               eduTermBO.getScholastic(), 0, 1);
+
           EduTermBO term1 = new EduTermBO(null, gradeId, "下学期", "下学期",
               eduTermBO.getScholastic(), 1, 1);
-          eduTermService.insert(term0);
-          eduTermService.insert(term1);
+          Long termId0 = eduTermService.insert(term0);
+          initEduTermCourseTable(termId0);
+          Long termId1 = eduTermService.insert(term1);
+          initEduTermCourseTable(termId1);
         }
       }
     }
+  }
+
+  public void initEduTermCourseTable(Long termId) {
+    EduTermCourseBO english = new EduTermCourseBO(null, termId, "英语", 0);
+    Long englishId = eduTermCourseService.insert(english);
+  }
+
+  public void initEduTermCourseTable(Long termId,Long courseId) {
+    EduTermCourseTextbookBO eduTermCourseTextbookBO = new EduTermCourseTextbookBO(null, courseId,
+        termId,"");
+    Long id = eduTermCourseTextbookService.insert(eduTermCourseTextbookBO);
+
   }
 
 }

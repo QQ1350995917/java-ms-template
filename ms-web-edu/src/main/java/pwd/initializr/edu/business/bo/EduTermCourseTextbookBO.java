@@ -1,5 +1,6 @@
 package pwd.initializr.edu.business.bo;
 
+import java.util.Date;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,4 +20,7 @@ import pwd.initializr.edu.persistence.entity.EduTermCourseTextbookEntity;
 @NoArgsConstructor
 public class EduTermCourseTextbookBO extends EduTermCourseTextbookEntity {
 
+    public EduTermCourseTextbookBO(Long id, Long cid, Long tid, String name) {
+        super(id, cid, tid, name, null, null, null, null, null, null);
+    }
 }

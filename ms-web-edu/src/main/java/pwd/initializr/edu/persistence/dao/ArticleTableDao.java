@@ -142,6 +142,8 @@ public interface ArticleTableDao {
     @Param("sorts") LinkedHashSet<? extends SortEntity> sorts,
     @Param("offset") Long offset, @Param("limit") Long limit);
 
+  List<ArticleTableEntity> queryBySql(@Param("sql")String sql);
+
   /**
    * <h2>根据主键进行查询</h2>
    * date 2021-02-04 16:07
@@ -164,4 +166,5 @@ public interface ArticleTableDao {
    * @since 0.0.1-SNAPSHOT
    */
   Integer updateById(@Param("entity") ArticleTableEntity entity);
+
 }

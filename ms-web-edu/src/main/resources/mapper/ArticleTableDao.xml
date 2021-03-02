@@ -59,6 +59,11 @@
       #{offset}, #{limit}
   </select>
 
+  <!--通过实体作为筛选条件查询-->
+  <select id="queryBySql" resultMap="ArticleTableMap">
+    ${sql}
+  </select>
+
   <!--新增所有列-->
   <insert id="insert" keyProperty="id" useGeneratedKeys="true" parameterType="pwd.initializr.edu.persistence.entity.ArticleTableEntity">
     INSERT INTO article_table
@@ -256,5 +261,7 @@
       #{id}
     </foreach>
   </update>
+
+
 
 </mapper>
