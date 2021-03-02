@@ -17,6 +17,8 @@ import pwd.initializr.edu.business.bo.EduTermBO;
  * date 2021-02-28 22:54
  *
  * @author DingPengwei[www.dingpengwei@foxmail.com]
+ * date 2021-03-02 14:34
+ *
  * @version 1.0.0
  * @since DistributionVersion
  */
@@ -27,7 +29,7 @@ public class EduTermCourseServiceTest {
   private EduTermService eduTermService;
 
   @Test
-  public void initEduTermTable() {
+  public void initEduTermCourseTable() {
     EduTermBO eduTermBO00 = new EduTermBO(null,0L,"幼儿园","幼儿园",0,0,0);
     EduTermBO eduTermBO0000 = new EduTermBO(null,null,"小班","小班",0,0,0);
     EduTermBO eduTermBO0001 = new EduTermBO(null,null,"中班","中班",0,1,0);
