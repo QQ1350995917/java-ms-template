@@ -19,7 +19,6 @@ import pwd.initializr.search.business.DocumentService;
 import pwd.initializr.search.business.bo.DocumentBO;
 import pwd.initializr.search.business.bo.SearchInputBO;
 import pwd.initializr.search.rpc.RPCDocument;
-import scala.MatchError;
 
 /**
  * pwd.initializr.search.api.robot@ms-web-initializr
