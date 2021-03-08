@@ -6,6 +6,7 @@ import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,6 +40,11 @@ public interface DocumentApi {
     @PostMapping(value = {"/{indexName}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     void replace(@PathVariable("indexName") @Valid @NotNull(message = "参数不能为空") String indexName,
         @RequestBody @Valid @NotNull(message = "参数不能为空") List<DocumentVO> input);
+
+    @ApiOperation(value = "向ES中指定的index删除数据")
+    @DeleteMapping(value = {"/{indexName}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    void delete(@PathVariable("indexName") @Valid @NotNull(message = "参数不能为空") String indexName,
+        @RequestBody @Valid @NotNull(message = "参数不能为空") List<String> input);
 
     @ApiOperation(value = "在ES中指定的index中根据关键字搜索")
     @GetMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

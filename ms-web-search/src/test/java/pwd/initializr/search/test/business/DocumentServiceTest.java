@@ -14,6 +14,7 @@ import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.search.business.DocumentService;
 import pwd.initializr.search.business.bo.DocumentBO;
 import pwd.initializr.search.business.bo.SearchInputBO;
+import pwd.initializr.search.rpc.RPCSearchOutput;
 
 /**
  * pwd.initializr.search.test.business@ms-web-initializr
@@ -120,7 +121,7 @@ public class DocumentServiceTest {
                 "作者简介　杨慈灯，年轻时曾是东北知名作家，上世纪四十年代共创作了11部中长篇小说。后来在党的指引下参加了革命。1946年在北平与姜德明、金野、陈思、戈更、吕平、王化兆等一批志同道合的青年共同创办了红色报纸《鲁迅晚报》，连续发表毛主席的《新民主主义论》、《论联合政府》等文章。为躲避国民党特务的追捕，更名为夏园，后被组织安排到解放区工作。文革时期遭受迫害，直到文革结束平反、离休、病逝。"
             ),"http://culture.gog.cn/system/2017/08/23/016027361.shtml","20070731"))
     ;
-    documentService.replace(indexName, documentBOS);
+    documentService.batchReplace(indexName, documentBOS);
   }
 
   @Test
@@ -131,7 +132,7 @@ public class DocumentServiceTest {
     searchInputBO.setKeyword("水浒传");
     searchInputBO.setIndices(Arrays.asList("book"));
 //    searchInputBO.setIndices(Arrays.asList("*"));
-    PageableQueryResult<DocumentBO> searchBodyVOBOPageableQueryResult = documentService.search(searchInputBO);
+    PageableQueryResult<RPCSearchOutput> searchBodyVOBOPageableQueryResult = documentService.search(searchInputBO);
     log.info(JSON.toJSONString(searchBodyVOBOPageableQueryResult));
   }
 

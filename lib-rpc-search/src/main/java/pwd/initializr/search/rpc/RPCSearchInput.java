@@ -25,7 +25,7 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-@ApiModel
+@ApiModel(value = "RPCSearchInput", description = "搜索输入数据模型")
 public class RPCSearchInput {
 
     private static final long serialVersionUID = -4291776028708567323L;

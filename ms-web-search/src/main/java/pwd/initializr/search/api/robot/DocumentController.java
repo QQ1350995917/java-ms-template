@@ -1,8 +1,6 @@
 package pwd.initializr.search.api.robot;
 
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -10,14 +8,10 @@ import javax.annotation.Resource;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.common.web.api.robot.RobotController;
+import pwd.initializr.common.web.api.vo.Meta;
 import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.search.api.robot.vo.DocumentVO;
 import pwd.initializr.search.api.robot.vo.SearchInputVo;
@@ -25,6 +19,7 @@ import pwd.initializr.search.business.DocumentService;
 import pwd.initializr.search.business.bo.DocumentBO;
 import pwd.initializr.search.business.bo.SearchInputBO;
 import pwd.initializr.search.rpc.RPCDocument;
+import scala.MatchError;
 
 /**
  * pwd.initializr.search.api.robot@ms-web-initializr
@@ -58,8 +53,15 @@ public class DocumentController extends RobotController implements DocumentApi {
       BeanUtils.copyProperties(documentVO, documentBO);
       documentBOS.add(documentBO);
     });
-    int replace = documentService.replace(indexName, documentBOS);
-    outputData(replace);
+    int replace = documentService.batchReplace(indexName, documentBOS);
+    outputData(String.valueOf(replace));
+  }
+
+  @Override
+  public void delete(@Valid @NotNull(message = "参数不能为空") String indexName,
+      @Valid @NotNull(message = "参数不能为空") List<String> input) {
+    int delete = documentService.batchDelete(indexName, input);
+    outputData(String.valueOf(delete));
   }
 
   @Override

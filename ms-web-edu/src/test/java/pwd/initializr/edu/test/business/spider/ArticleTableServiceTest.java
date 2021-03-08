@@ -276,7 +276,9 @@ public class ArticleTableServiceTest {
               if (!isMatchGrade || !isMatchStage) {
                 System.out.println(originName + ":" + JSON.toJSONString(tempEntity));
               } else {
-                System.out.println(JSON.toJSONString(tempEntity));
+                if (Pattern.matches("七年级|八年级|九年级", tempEntity.getGrade()) && !tempEntity.getTerm().equals("初中")) {
+                  System.err.println(JSON.toJSONString(tempEntity));
+                }
               }
             }
           }

@@ -29,13 +29,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
+import org.springframework.data.elasticsearch.core.query.DeleteQuery;
 import org.springframework.data.elasticsearch.core.query.IndexQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
+import org.springframework.data.elasticsearch.core.query.UpdateQuery;
 import org.springframework.stereotype.Service;
 import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.search.business.bo.DocumentBO;
 import pwd.initializr.search.business.bo.SearchInputBO;
 import pwd.initializr.search.persistence.entity.DocumentEntity;
+import pwd.initializr.search.rpc.RPCSearchOutput;
 
 /**
  * pwd.initializr.search.business.robot@ms-web-initializr
@@ -72,19 +75,14 @@ public class DocumentServiceImpl implements DocumentService {
   private Integer searchResultContentsMaxLength;
 
   @Override
-  public int replace(String indexName, List<DocumentBO> documentBOS) {
+  public int batchReplace(String indexName, List<DocumentBO> documentBOS) {
     if (documentBOS == null) {
       return 0;
     }
     try {
-      List<IndexQuery> queries = documentBOS.stream().map(item->{
-          IndexQuery query = new IndexQuery();
-          query.setId(item.getId());
-          query.setIndexName(indexName);
-          query.setType(indexName);
-          query.setSource(JSON.toJSONString(item));
-          return query;
-      }).collect(Collectors.toList());
+      List<IndexQuery> queries = documentBOS.stream()
+          .map((item) -> {return this.convertDocumentBOToIndexQuery(indexName,item);})
+          .collect(Collectors.toList());
       elasticsearchRestTemplate.bulkIndex(queries);
     } catch (Exception e) {
       throw new RuntimeException(e);
@@ -92,9 +90,30 @@ public class DocumentServiceImpl implements DocumentService {
     return documentBOS.size();
   }
 
+  private IndexQuery convertDocumentBOToIndexQuery(String indexName,DocumentBO documentBO) {
+    IndexQuery indexQuery = new IndexQuery();
+    indexQuery.setId(documentBO.getId());
+    indexQuery.setIndexName(indexName);
+    indexQuery.setType(indexName);
+    indexQuery.setSource(JSON.toJSONString(documentBO));
+    return indexQuery;
+  }
 
   @Override
-  public PageableQueryResult<DocumentBO> search(SearchInputBO searchInputBO) {
+  public int batchDelete(String indexName, List<String> ids) {
+    if (ids == null) {
+      return 0;
+    }
+    DeleteQuery deleteQuery = new DeleteQuery();
+    deleteQuery.setIndex(indexName);
+    deleteQuery.setType(indexName);
+    deleteQuery.setQuery(new BoolQueryBuilder().should(QueryBuilders.idsQuery(indexName).addIds(ids.toArray(new String[]{}))));
+    elasticsearchRestTemplate.delete(deleteQuery);
+    return ids.size();
+  }
+
+  @Override
+  public PageableQueryResult<RPCSearchOutput> search(SearchInputBO searchInputBO) {
     // 查询条件
     String keyword = searchInputBO.getKeyword();
     if (keyword == null) {
@@ -151,7 +170,7 @@ public class DocumentServiceImpl implements DocumentService {
     try {
       SearchRequest searchRequest = new SearchRequest(searchInputBO.getIndices().toArray(new String[]{}),searchSourceBuilder);
       RestHighLevelClient highLevelClient = elasticsearchRestTemplate.getClient();
-      PageableQueryResult<DocumentBO> searchResultBOPageableQueryResult = new PageableQueryResult<>();
+      PageableQueryResult<RPCSearchOutput> searchResultBOPageableQueryResult = new PageableQueryResult<>();
       SearchResponse searchResponse = highLevelClient.search(searchRequest, RequestOptions.DEFAULT);
       if (searchResponse.status() == RestStatus.OK) {
         SearchHits searchHits = searchResponse.getHits();
@@ -163,8 +182,8 @@ public class DocumentServiceImpl implements DocumentService {
           LinkedList<String> highlightTagsBuilder = hitHighlightField(highlightFields.get(DocumentEntity.DOCUMENT_PROPERTIES_TAGS));
           LinkedList<String> highlightContentsBuilder = hitHighlightField(highlightFields.get(DocumentEntity.DOCUMENT_PROPERTIES_CONTENTS));
 
-          DocumentBO searchResultBO = new DocumentBO();
-          searchResultBO.setIndex(hit.getIndex());
+          RPCSearchOutput searchResultBO = new RPCSearchOutput();
+          searchResultBO.setIndexName(hit.getIndex());
           searchResultBO.setId(hit.getId());
           Object ableObject = source.get(DocumentEntity.DOCUMENT_PROPERTIES_ABLE);
           searchResultBO.setAble(ableObject == null ? null : ableObject.toString());

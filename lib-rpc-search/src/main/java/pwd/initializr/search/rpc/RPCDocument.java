@@ -29,7 +29,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Setter
 @Getter
 @ToString
-@ApiModel
+@ApiModel(value = "RPCDocument", description = "文档输入数据模型")
 public class RPCDocument implements Serializable {
 
   private static final long serialVersionUID = -1659590069838613585L;

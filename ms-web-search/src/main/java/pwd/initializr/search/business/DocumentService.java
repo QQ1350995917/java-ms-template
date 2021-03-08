@@ -1,10 +1,10 @@
 package pwd.initializr.search.business;
 
 import java.util.List;
-import org.springframework.stereotype.Service;
 import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.search.business.bo.DocumentBO;
 import pwd.initializr.search.business.bo.SearchInputBO;
+import pwd.initializr.search.rpc.RPCSearchOutput;
 
 /**
  * pwd.initializr.search.business@ms-web-initializr
@@ -19,7 +19,9 @@ import pwd.initializr.search.business.bo.SearchInputBO;
  */
 public interface DocumentService {
 
-  int replace(String indexName, List<DocumentBO> documentBOS);
+  int batchReplace(String indexName, List<DocumentBO> documentBOS);
 
-  PageableQueryResult<DocumentBO> search(SearchInputBO searchInputBO);
+  int batchDelete(String indexName, List<String> ids);
+
+  PageableQueryResult<RPCSearchOutput> search(SearchInputBO searchInputBO);
 }

@@ -22,7 +22,7 @@ import pwd.initializr.search.rpc.RPCDocument;
 @Setter
 @Getter
 @ToString
-@ApiModel
+@ApiModel(value = "DocumentVO", description = "文档输入数据模型")
 public class DocumentVO extends RPCDocument {
 
 }

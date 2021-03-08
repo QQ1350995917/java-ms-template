@@ -21,13 +21,10 @@ import pwd.initializr.search.rpc.RPCDocument;
  * @since DistributionVersion
  */
 @AllArgsConstructor
-@NoArgsConstructor
 @Setter
 @Getter
 @ToString
 public class DocumentBO extends RPCDocument {
-
-  private String index;
 
   public DocumentBO(String id, String able, String title, String source,
       Set<String> tags, List<String> contents, String link, String time) {
