@@ -67,6 +67,11 @@
       #{offset}, #{limit}
   </select>
 
+  <!--通过实体作为筛选条件查询-->
+  <select id="queryBySql" resultType="java.util.HashMap">
+    ${sql}
+  </select>
+
   <!--新增所有列-->
   <insert id="insert" keyProperty="id" useGeneratedKeys="true"
           parameterType="pwd.initializr.edu.persistence.entity.EduTermCourseEntity">

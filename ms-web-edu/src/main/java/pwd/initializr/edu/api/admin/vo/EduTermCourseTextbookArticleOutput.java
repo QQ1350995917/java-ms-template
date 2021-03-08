@@ -1,6 +1,6 @@
 package pwd.initializr.edu.api.admin.vo;
 
- import java.util.Date;
+  import java.util.Date;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
@@ -13,11 +13,11 @@ import lombok.ToString;
 import org.hibernate.validator.constraints.Length;
 
 /**
- * pwd-initializr-edu-20210218151557967@ms-web-initializr
+ * pwd-initializr-app@ms-web-initializr
  *
  * <h1>响应参数封装</h1>
  *
- * date 2021-02-18 15:15
+ * date 2021-03-08 17:38
  *
  * @author Automatic[www.dingpengwei@foxmail.com]
  * @version 0.0.1-SNAPSHOT
@@ -28,66 +28,41 @@ import org.hibernate.validator.constraints.Length;
 @Getter
 @Setter
 @ToString
-@ApiModel(value = "ReadingQuestionInput", description = "ReadingQuestion响应参数")
-public class ReadingQuestionOutput implements Serializable {
+@ApiModel(value = "EduTermCourseTextbookArticleInput", description = "EduTermCourseTextbookArticle响应参数")
+public class EduTermCourseTextbookArticleOutput implements Serializable {
 
   /**
    * 主键
-   * ID
+   * 数据ID
    */
-  @ApiModelProperty(name = "id", value = "ID", required = true, example = "")
+  @ApiModelProperty(name = "id", value = "数据ID", required = true, example = "")
    @NotBlank(message = "id不能为空")
   private Long id;
   /**
    *
-   * 上级ID
+   * 外键，edu_term_course_textbook.id，图书ID
    */
-  @ApiModelProperty(name = "pid", value = "上级ID", required = true, example = "")
-   @NotBlank(message = "pid不能为空")
+  @ApiModelProperty(name = "pid", value = "外键，edu_term_course_textbook.id，图书ID", required = false, example = "")
   private Long pid;
   /**
    *
-   * 标签名称
+   * 标题
    */
-  @ApiModelProperty(name = "title", value = "标签名称", required = true, example = "")
-   @NotBlank(message = "title不能为空")
+  @ApiModelProperty(name = "title", value = "标题", required = false, example = "")
   private String title;
   /**
    *
-   * 正确答案
+   * 课文内容
    */
-  @ApiModelProperty(name = "a", value = "正确答案", required = false, example = "")
-  private String a;
+  @ApiModelProperty(name = "text", value = "课文内容", required = true, example = "")
+   @NotBlank(message = "text不能为空")
+  private String text;
   /**
    *
-   * 备选答案
+   * 存储路径
    */
-  @ApiModelProperty(name = "a1", value = "备选答案", required = false, example = "")
-  private String a1;
-  /**
-   *
-   * 备选答案
-   */
-  @ApiModelProperty(name = "a2", value = "备选答案", required = false, example = "")
-  private String a2;
-  /**
-   *
-   * 备选答案
-   */
-  @ApiModelProperty(name = "a3", value = "备选答案", required = false, example = "")
-  private String a3;
-  /**
-   *
-   * 备选答案
-   */
-  @ApiModelProperty(name = "a4", value = "备选答案", required = false, example = "")
-  private String a4;
-  /**
-   *
-   * 备选答案
-   */
-  @ApiModelProperty(name = "a5", value = "备选答案", required = false, example = "")
-  private String a5;
+  @ApiModelProperty(name = "mediaPath", value = "存储路径", required = false, example = "")
+  private String mediaPath;
   /**
    *
    * 可用性状态，0：不可用；1：可用；

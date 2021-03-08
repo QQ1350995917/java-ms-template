@@ -13,10 +13,10 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pwd.initializr.edu.api.admin.vo.GrammarContentInput;
-import pwd.initializr.edu.api.admin.vo.GrammarContentOutput;
-import pwd.initializr.edu.business.GrammarContentService;
-import pwd.initializr.edu.business.bo.GrammarContentBO;
+import pwd.initializr.edu.api.admin.vo.EduTermCourseTextbookArticleInput;
+import pwd.initializr.edu.api.admin.vo.EduTermCourseTextbookArticleOutput;
+import pwd.initializr.edu.business.EduTermCourseTextbookArticleService;
+import pwd.initializr.edu.business.bo.EduTermCourseTextbookArticleBO;
 import pwd.initializr.common.web.api.vo.PageInput;
 import pwd.initializr.common.web.api.vo.PageOutput;
 import pwd.initializr.common.web.api.vo.ScopeInput;
@@ -27,39 +27,39 @@ import pwd.initializr.common.web.business.bo.SortBO;
 import pwd.initializr.common.web.persistence.entity.EntityAble;
 
 /**
-* pwd-initializr-app-20210214213416272@ms-web-initializr
-*
-* <h1>GrammarContent控制层接口实现</h1>
-*
-* date 2021-02-14 21:34
-*
-* @author Automatic[dingpengwei@foxmail.com]
-* @version 0.0.1-SNAPSHOT
-* @since 0.0.1-SNAPSHOT
-*/
+ * pwd-initializr-app@ms-web-initializr
+ *
+ * <h1>EduTermCourseTextbookArticle控制层接口实现</h1>
+ *
+ * date 2021-03-08 17:38
+ *
+ * @author Automatic[dingpengwei@foxmail.com]
+ * @version 0.0.1-SNAPSHOT
+ * @since 0.0.1-SNAPSHOT
+ */
 @Api(
-  tags = "GrammarContent信息结构",
-  value = "GrammarContentManageApi",
+  tags = "EduTermCourseTextbookArticle信息结构",
+  value = "EduTermCourseTextbookArticleManageApi",
   description = "[列表查询，详情查询，启/禁用，删除，新增，修改]"
 )
-@RestController(value = "GrammarContent")
-@RequestMapping(value = "/api/GrammarContent")
+@RestController(value = "EduTermCourseTextbookArticle")
+@RequestMapping(value = "/api/edu/term/course/textbook/article")
 @Slf4j
-public class GrammarContentController extends pwd.initializr.common.web.api.admin.AdminController implements GrammarContentApi {
+public class EduTermCourseTextbookArticleController extends pwd.initializr.common.web.api.admin.AdminController implements EduTermCourseTextbookArticleApi {
 
   @Autowired
-  private GrammarContentService service;
+  private EduTermCourseTextbookArticleService service;
 
   @Override
   public void list(String scopes, String sorts, String page) {
     PageInput pageInput = PageInput.parse(page);
     LinkedHashSet<ScopeBO> scopeBOS = ScopeInput.parse(scopes);
     LinkedHashSet<SortBO> sortBOS = SortInput.parse(sorts);
-    PageableQueryResult<GrammarContentBO> pageableQueryResult = service
-      .queryAllByCondition(scopeBOS, sortBOS, pageInput.getIndex(), pageInput.getSize());
-    PageOutput<GrammarContentOutput> result = new PageOutput<>();
+    PageableQueryResult<EduTermCourseTextbookArticleBO> pageableQueryResult = service.queryAllByCondition(scopeBOS,
+      sortBOS, pageInput.getIndex(), pageInput.getSize());
+    PageOutput<EduTermCourseTextbookArticleOutput> result = new PageOutput<>();
     pageableQueryResult.getElements().forEach(bo -> {
-      GrammarContentOutput output = new GrammarContentOutput();
+      EduTermCourseTextbookArticleOutput output = new EduTermCourseTextbookArticleOutput();
       BeanUtils.copyProperties(bo, output);
       result.getElements().add(output);
     });
@@ -71,8 +71,8 @@ public class GrammarContentController extends pwd.initializr.common.web.api.admi
 
   @Override
   public void detail(@Valid @NotNull(message = "参数不能为空") Long id) {
-    GrammarContentBO bo = service.queryById(id);
-    GrammarContentOutput output = new GrammarContentOutput();
+    EduTermCourseTextbookArticleBO bo = service.queryById(id);
+    EduTermCourseTextbookArticleOutput output = new EduTermCourseTextbookArticleOutput();
     BeanUtils.copyProperties(bo,output);
     outputData(output);
   }
@@ -114,48 +114,49 @@ public class GrammarContentController extends pwd.initializr.common.web.api.admi
   }
 
   @Override
-  public void create(@Valid @NotNull(message = "参数不能为空") GrammarContentInput input) {
-    GrammarContentBO bo = new GrammarContentBO();
+  public void create(@Valid @NotNull(message = "参数不能为空") EduTermCourseTextbookArticleInput input) {
+    EduTermCourseTextbookArticleBO bo = new EduTermCourseTextbookArticleBO();
     BeanUtils.copyProperties(input,bo);
     Long id = service.insert(bo);
     outputData(200,id);
   }
 
   @Override
-  public void create(@Valid @NotNull(message = "参数不能为空") List<GrammarContentInput> input) {
-    List<GrammarContentBO> bos = input.stream().map(this::convertGrammarContentInput2GrammarContentBO)
-      .collect(Collectors.toList());
+  public void create(@Valid @NotNull(message = "参数不能为空") List<EduTermCourseTextbookArticleInput> input) {
+  List<EduTermCourseTextbookArticleBO> bos = input.stream().map(this::convertEduTermCourseTextbookArticleInput2EduTermCourseTextbookArticleBO)
+    .collect(Collectors.toList());
     service.insert(bos);
     outputData(200);
   }
 
   @Override
-  public void createOrReplace(@Valid @NotNull(message = "参数不能为空") GrammarContentInput input) {
-    GrammarContentBO bo = new GrammarContentBO();
+  public void createOrReplace(@Valid @NotNull(message = "参数不能为空") EduTermCourseTextbookArticleInput input) {
+    EduTermCourseTextbookArticleBO bo = new EduTermCourseTextbookArticleBO();
     BeanUtils.copyProperties(input,bo);
     Long id = service.insertOrReplace(bo);
     outputData(200,id);
   }
 
   @Override
-  public void createOrReplace(@Valid @NotNull(message = "参数不能为空") List<GrammarContentInput> input) {
-    List<GrammarContentBO> bos = input.stream().map(this::convertGrammarContentInput2GrammarContentBO)
-      .collect(Collectors.toList());
+  public void createOrReplace(@Valid @NotNull(message = "参数不能为空") List<EduTermCourseTextbookArticleInput> input) {
+  List<EduTermCourseTextbookArticleBO> bos = input.stream().map(this::convertEduTermCourseTextbookArticleInput2EduTermCourseTextbookArticleBO)
+    .collect(Collectors.toList());
     service.insertOrReplace(bos);
     outputData(200);
   }
 
   @Override
   public void update(@Valid @NotNull(message = "参数不能为空") Long id,
-  @Valid @NotNull(message = "参数不能为空") GrammarContentInput input) {
-    GrammarContentBO bo = new GrammarContentBO();
+    @Valid @NotNull(message = "参数不能为空") EduTermCourseTextbookArticleInput input) {
+    EduTermCourseTextbookArticleBO bo = new EduTermCourseTextbookArticleBO();
     BeanUtils.copyProperties(input,bo);
+    bo.setId(id);
     Integer result = service.updateById(bo);
     outputData(200,result);
   }
 
-  private GrammarContentBO convertGrammarContentInput2GrammarContentBO(GrammarContentInput input){
-    GrammarContentBO bo = new GrammarContentBO();
+  private EduTermCourseTextbookArticleBO convertEduTermCourseTextbookArticleInput2EduTermCourseTextbookArticleBO(EduTermCourseTextbookArticleInput input){
+    EduTermCourseTextbookArticleBO bo = new EduTermCourseTextbookArticleBO();
     BeanUtils.copyProperties(input,bo);
     return bo;
   }

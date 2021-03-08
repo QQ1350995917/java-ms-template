@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>EduTermCourseTextbook</title>
+  <title>EduTermCourseTextbookArticle</title>
 
   <link rel="stylesheet" href="https://unpkg.zhimg.com/element-ui/lib/theme-chalk/index.css">
   <link rel="stylesheet" href="css/template.css">
@@ -25,14 +25,10 @@
           <el-input placeholder="请输入内容" v-model="keyword" class="input-with-select">
             <el-select v-model="select" slot="prepend" placeholder="请选择" style="width: 320px;">
               <el-option label="id" value="id"></el-option>
-              <el-option label="cid" value="cid"></el-option>
-              <el-option label="tid" value="tid"></el-option>
-              <el-option label="name" value="name"></el-option>
-              <el-option label="publisher" value="publisher"></el-option>
-              <el-option label="year" value="year"></el-option>
-              <el-option label="isbn" value="isbn"></el-option>
-              <el-option label="version" value="version"></el-option>
-              <el-option label="summary" value="summary"></el-option>
+              <el-option label="pid" value="pid"></el-option>
+              <el-option label="title" value="title"></el-option>
+              <el-option label="text" value="text"></el-option>
+              <el-option label="mediaPath" value="media_path"></el-option>
               <el-option label="able" value="able"></el-option>
               <el-option label="del" value="del"></el-option>
               <el-option label="createTime" value="create_time"></el-option>
@@ -56,36 +52,20 @@
               label="id">
           </el-table-column>
           <el-table-column
-              prop="cid"
-              label="cid">
+              prop="pid"
+              label="pid">
           </el-table-column>
           <el-table-column
-              prop="tid"
-              label="tid">
+              prop="title"
+              label="title">
           </el-table-column>
           <el-table-column
-              prop="name"
-              label="name">
+              prop="text"
+              label="text">
           </el-table-column>
           <el-table-column
-              prop="publisher"
-              label="publisher">
-          </el-table-column>
-          <el-table-column
-              prop="year"
-              label="year">
-          </el-table-column>
-          <el-table-column
-              prop="isbn"
-              label="isbn">
-          </el-table-column>
-          <el-table-column
-              prop="version"
-              label="version">
-          </el-table-column>
-          <el-table-column
-              prop="summary"
-              label="summary">
+              prop="media_path"
+              label="mediaPath">
           </el-table-column>
           <el-table-column
               prop="able"
@@ -141,43 +121,23 @@
           </el-input>
         </div>
         <div>
-          <el-input placeholder="请输入内容" v-model="item.cid">
-            <template slot="prepend">cid</template>
+          <el-input placeholder="请输入内容" v-model="item.pid">
+            <template slot="prepend">pid</template>
           </el-input>
         </div>
         <div>
-          <el-input placeholder="请输入内容" v-model="item.tid">
-            <template slot="prepend">tid</template>
+          <el-input placeholder="请输入内容" v-model="item.title">
+            <template slot="prepend">title</template>
           </el-input>
         </div>
         <div>
-          <el-input placeholder="请输入内容" v-model="item.name">
-            <template slot="prepend">name</template>
+          <el-input placeholder="请输入内容" v-model="item.text">
+            <template slot="prepend">text</template>
           </el-input>
         </div>
         <div>
-          <el-input placeholder="请输入内容" v-model="item.publisher">
-            <template slot="prepend">publisher</template>
-          </el-input>
-        </div>
-        <div>
-          <el-input placeholder="请输入内容" v-model="item.year">
-            <template slot="prepend">year</template>
-          </el-input>
-        </div>
-        <div>
-          <el-input placeholder="请输入内容" v-model="item.isbn">
-            <template slot="prepend">isbn</template>
-          </el-input>
-        </div>
-        <div>
-          <el-input placeholder="请输入内容" v-model="item.version">
-            <template slot="prepend">version</template>
-          </el-input>
-        </div>
-        <div>
-          <el-input placeholder="请输入内容" v-model="item.summary">
-            <template slot="prepend">summary</template>
+          <el-input placeholder="请输入内容" v-model="item.media_path">
+            <template slot="prepend">mediaPath</template>
           </el-input>
         </div>
         <div>
@@ -253,7 +213,7 @@
     },
     methods: {
       onRequestForList() {
-        this.$http.get('/api/edu/term/course/textbook?scopes=' + encodeURIComponent(JSON.stringify(this.scopes))
+        this.$http.get('/api/edu/term/course/textbook/article?scopes=' + encodeURIComponent(JSON.stringify(this.scopes))
             + '&sorts=' + encodeURIComponent(JSON.stringify(this.sorts))
             + '&page=' + encodeURIComponent(JSON.stringify(this.page)))
         .then(
@@ -332,7 +292,7 @@
         this.dialogVisible = true;
       },
       onRequestForCreate() {
-        this.$http.post('/api/edu/term/course/textbook', this.item).then(
+        this.$http.post('/api/edu/term/course/textbook/article', this.item).then(
             function(res) {
               var body = res.body;
               var meta = body.meta;
@@ -360,7 +320,7 @@
             });
       },
       onRequestForUpdate() {
-        this.$http.patch('/api/edu/term/course/textbook/' + this.item.id, this.item).then(
+        this.$http.patch('/api/edu/term/course/textbook/article/' + this.item.id, this.item).then(
             function(res) {
               var body = res.body;
               var meta = body.meta;
@@ -398,7 +358,7 @@
         done();
       },
       onEnableButtonClick(id) {
-        this.$http.put('/api/edu/term/course/textbook/enable/' + id).then(
+        this.$http.put('/api/edu/term/course/textbook/article/enable/' + id).then(
             function(res) {
               var body = res.body;
               var meta = body.meta;
@@ -426,7 +386,7 @@
             });
       },
       onDisableButtonClick(id) {
-        this.$http.put('/api/edu/term/course/textbook/disable/' + id).then(
+        this.$http.put('/api/edu/term/course/textbook/article/disable/' + id).then(
             function(res) {
               var body = res.body;
               var meta = body.meta;
@@ -454,7 +414,7 @@
             });
       },
       onDelButtonClick(id) {
-        this.$http.delete('/api/edu/term/course/textbook/' + id).then(
+        this.$http.delete('/api/edu/term/course/textbook/article/' + id).then(
             function(res) {
               var body = res.body;
               var meta = body.meta;

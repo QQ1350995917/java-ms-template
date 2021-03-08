@@ -3,6 +3,7 @@ package pwd.initializr.edu.persistence.dao;
 import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -141,6 +142,8 @@ public interface EduTermCourseDao {
       @Param("scopes") LinkedHashSet<? extends ScopeEntity> scopes,
       @Param("sorts") LinkedHashSet<? extends SortEntity> sorts,
       @Param("offset") Long offset, @Param("limit") Long limit);
+
+  List<Map<String,Object>> queryBySql(@Param("sql")String sql);
 
   /**
    * <h2>根据主键进行查询</h2>

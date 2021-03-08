@@ -52,14 +52,14 @@ public class EduTermServiceTest {
     EduTermBO eduTermBO205 = new EduTermBO(null,null,"六年级","六年级",1,5,0);
     EduTermBO eduTermBO3 = new EduTermBO(null,0L,"小升初","小升初",0,3,1);
     EduTermBO eduTermBO4 = new EduTermBO(null,0L,"初中","初中",1,4,0);
-    EduTermBO eduTermBO400 = new EduTermBO(null,null,"初一","初一",1,0,0);
-    EduTermBO eduTermBO401 = new EduTermBO(null,null,"初二","初二",1,1,0);
-    EduTermBO eduTermBO402 = new EduTermBO(null,null,"初三","初三",1,2,0);
+    EduTermBO eduTermBO400 = new EduTermBO(null,null,"一年级","一年级",1,0,0);
+    EduTermBO eduTermBO401 = new EduTermBO(null,null,"二年级","二年级",1,1,0);
+    EduTermBO eduTermBO402 = new EduTermBO(null,null,"三年级","三年级",1,2,0);
     EduTermBO eduTermBO5 = new EduTermBO(null,0L,"初升高","初升高",0,5,1);
     EduTermBO eduTermBO6 = new EduTermBO(null,0L,"高中","高中",1,6,0);
-    EduTermBO eduTermBO600 = new EduTermBO(null,null,"高一","高一",1,0,0);
-    EduTermBO eduTermBO601 = new EduTermBO(null,null,"高二","高二",1,1,0);
-    EduTermBO eduTermBO602 = new EduTermBO(null,null,"高三","高三",1,2,0);
+    EduTermBO eduTermBO600 = new EduTermBO(null,null,"一年级","一年级",1,0,0);
+    EduTermBO eduTermBO601 = new EduTermBO(null,null,"二年级","二年级",1,1,0);
+    EduTermBO eduTermBO602 = new EduTermBO(null,null,"三年级","三年级",1,2,0);
 
 
     LinkedList<EduTermBO> eduTermBOS = new LinkedList<>();
@@ -120,11 +120,5 @@ public class EduTermServiceTest {
     Long englishId = eduTermCourseService.insert(english);
   }
 
-  public void initEduTermCourseTable(Long termId,Long courseId) {
-    EduTermCourseTextbookBO eduTermCourseTextbookBO = new EduTermCourseTextbookBO(null, courseId,
-        termId,"");
-    Long id = eduTermCourseTextbookService.insert(eduTermCourseTextbookBO);
-
-  }
 
 }

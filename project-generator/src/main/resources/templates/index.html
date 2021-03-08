@@ -192,6 +192,9 @@
         filename: ''
       };
     },
+    computed: {
+      //databaseUrl() {return `jdbc:mysql://localhost:3306/${this.databaseName}?characterEncoding=utf-8&autoReconnect=true&serverTimezone=GMT`}
+    },
     methods: {
       onDBConnect() {
         this.tagName = '提交';

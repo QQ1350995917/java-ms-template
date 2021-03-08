@@ -1,6 +1,6 @@
 package pwd.initializr.edu.persistence.entity;
 
-  import java.util.Date;
+import java.util.Date;
 import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,8 +9,8 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * <h2>edu_term_course_textbook数据表实体类</h2>
- * date 2021-03-08 16:17
+ * <h2>edu_term_course_textbook_article数据表实体类</h2>
+ * date 2021-03-08 17:38
  *
  * @author Automatic[www.dingpengwei@foxmail.com]
  * @since 0.0.1-SNAPSHOT
@@ -20,71 +20,51 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class EduTermCourseTextbookEntity implements Serializable {
+public class EduTermCourseTextbookArticleEntity implements Serializable {
 
   private static final long serialVersionUID = 1L;
   /**
     * 主键
-    * 
+    * 数据ID
     */
   private Long id;
   /**
-    * 
-    * 外键，course表
+    *
+    * 外键，edu_term_course_textbook.id，图书ID
     */
-  private Long cid;
+  private Long pid;
   /**
-    * 
-    * 外键，term表
+    *
+    * 标题
     */
-  private Long tid;
+  private String title;
   /**
-    * 
-    * 教材名称
+    *
+    * 课文内容
     */
-  private String name;
+  private String text;
   /**
-    * 
-    * 出版社名称
+    *
+    * 存储路径
     */
-  private String publisher;
+  private String mediaPath;
   /**
-    * 
-    * 出版年份
-    */
-  private String year;
-  /**
-    * 
-    * isbn号码
-    */
-  private String isbn;
-  /**
-    * 
-    * 教材版本
-    */
-  private String version;
-  /**
-    * 
-    * 简介
-    */
-  private String summary;
-  /**
-    * 
+    *
     * 可用性状态，0：不可用；1：可用；
     */
   private Integer able;
   /**
-    * 
+    *
     * 删除状态，0：未删除，1：已删除；
     */
   private Integer del;
   /**
-    * 
+    *
     * 创建时间
     */
   private Date createTime;
   /**
-    * 
+    *
     * 修改时间
     */
   private Date updateTime;
@@ -95,7 +75,7 @@ public class EduTermCourseTextbookEntity implements Serializable {
     if (obj == null) {
       return false;
     }
-    if (!(obj instanceof EduTermCourseTextbookEntity)) {
+    if (!(obj instanceof EduTermCourseTextbookArticleEntity)) {
       return false;
     }
     return super.equals(obj);

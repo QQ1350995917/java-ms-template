@@ -3,6 +3,7 @@ package pwd.initializr.edu.test.business.spider;
 import com.alibaba.fastjson.JSON;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 import javax.annotation.Resource;
 import lombok.AllArgsConstructor;
@@ -15,8 +16,17 @@ import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import pwd.initializr.common.utils.StringUtils;
+import pwd.initializr.edu.business.EduTermCourseService;
+import pwd.initializr.edu.business.EduTermCourseTextbookArticleService;
+import pwd.initializr.edu.business.EduTermCourseTextbookService;
+import pwd.initializr.edu.business.EduTermService;
+import pwd.initializr.edu.business.bo.EduTermCourseTextbookArticleBO;
+import pwd.initializr.edu.business.bo.EduTermCourseTextbookBO;
 import pwd.initializr.edu.persistence.dao.ArticleTableDao;
+import pwd.initializr.edu.persistence.dao.EduTermCourseDao;
+import pwd.initializr.edu.persistence.dao.EduTermDao;
 import pwd.initializr.edu.persistence.entity.ArticleTableEntity;
+import pwd.initializr.edu.persistence.entity.EduTermEntity;
 
 /**
  * pwd.initializr.edu.test.business.spider@ms-web-initializr
@@ -36,8 +46,79 @@ public class ArticleTableServiceTest {
   @Resource
   private ArticleTableDao dao;
 
+  @Resource
+  private EduTermDao eduTermDao;
+
+  @Resource
+  private EduTermCourseDao eduTermCourseDao;
+
+  @Resource
+  private EduTermCourseTextbookService eduTermCourseTextbookService;
+
+  @Resource
+  private EduTermCourseTextbookArticleService eduTermCourseTextbookArticleService;
+
   @Test
   public void articleTable() throws Exception {
+    List<TempEntity> tempEntities = articleTable0();
+    TempEntity tempEntity0 = null;
+    Long tempId = 0L;
+    for (TempEntity tempEntity : tempEntities) {
+//      System.out.println(JSON.toJSONString(tempEntity));
+      List<Map<String,Object>> eduTermEntities = eduTermDao.queryBySql(
+          "select A.id as aid,A.pid as apid,B.id as bid,B.pid as bpid,C.id as cid,C.pid as cpid,C.leaf as cleaf,A.zhcn_name as `term`, B.zhcn_name as `grade` ,C.zhcn_name as `stage` \n"
+              + "from edu_term A \n"
+              + "left join  edu_term  B  on A.id = B.pid \n"
+              + "left join  edu_term  C  on B.id = C.pid \n"
+              + "where \n"
+              + "A.zhcn_name = '" + tempEntity.getTerm() + "' \n"
+              + "and \n"
+              + "B.zhcn_name = '" + tempEntity.getGrade() + "'\n"
+              + "and \n"
+              + "C.zhcn_name = '" + tempEntity.getStage() + "';");
+      if (eduTermEntities == null || eduTermEntities.isEmpty() || eduTermEntities.size() > 1) {
+        System.err.println(JSON.toJSONString(tempEntity));
+      } else {
+        Map map = eduTermEntities.get(0);
+        Long tid = Long.parseLong(map.get("cid").toString());
+        List<Map<String,Object>> courses = eduTermCourseDao
+            .queryBySql("select * from edu_term_course where tid = '" + tid + "' and name = '英语'");
+        if (courses == null || courses.isEmpty() || courses.size() > 1) {
+          System.err.println(JSON.toJSONString(tempEntity));
+        } else {
+          Map course = courses.get(0);
+          Long cid = Long.valueOf(course.get("id").toString());
+          EduTermCourseTextbookBO eduTermCourseTextbookBO = new EduTermCourseTextbookBO();
+          eduTermCourseTextbookBO.setId(null);
+          eduTermCourseTextbookBO.setCid(cid);
+          eduTermCourseTextbookBO.setTid(tid);
+          eduTermCourseTextbookBO.setName(tempEntity.getBookName());
+
+//          eduTermCourseTextbookBO.setPublisher("publisher");
+//          eduTermCourseTextbookBO.setYear("year");
+//          eduTermCourseTextbookBO.setIsbn("isbn");
+//          eduTermCourseTextbookBO.setVersion("version");
+//          eduTermCourseTextbookBO.setSummary("summary");
+
+          if (tempEntity0 == null || !tempEntity.equals(tempEntity0)) {
+            tempId = eduTermCourseTextbookService.insert(eduTermCourseTextbookBO);
+            tempEntity0 = tempEntity;
+          }
+
+          EduTermCourseTextbookArticleBO eduTermCourseTextbookArticleBO = new EduTermCourseTextbookArticleBO();
+          eduTermCourseTextbookArticleBO.setId(Long.valueOf(tempEntity.getData()));
+          eduTermCourseTextbookArticleBO.setTitle(tempEntity.getUnitName());
+          eduTermCourseTextbookArticleBO.setPid(tempId);
+
+          eduTermCourseTextbookArticleService.updateById(eduTermCourseTextbookArticleBO);
+        }
+
+      }
+
+    }
+  }
+
+  public List<TempEntity> articleTable0() throws Exception {
     List<TempEntity> results = new LinkedList<>();
     List<ArticleTableEntity> tops0 = dao.queryBySql("select * from article_table where pid = 0");
     for (ArticleTableEntity top0 : tops0) {
@@ -276,15 +357,25 @@ public class ArticleTableServiceTest {
               if (!isMatchGrade || !isMatchStage) {
                 System.out.println(originName + ":" + JSON.toJSONString(tempEntity));
               } else {
-                if (Pattern.matches("七年级|八年级|九年级", tempEntity.getGrade()) && !tempEntity.getTerm().equals("初中")) {
-                  System.err.println(JSON.toJSONString(tempEntity));
+                if (Pattern.matches("七年级|八年级|九年级", tempEntity.getGrade()) && tempEntity.getTerm().equals("初中")) {
+                  //System.err.println("before:" + JSON.toJSONString(tempEntity));
+                  if ("七年级".equals(tempEntity.getGrade())) {
+                    tempEntity.setGrade("一年级");
+                  } else if ("八年级".equals(tempEntity.getGrade())) {
+                    tempEntity.setGrade("二年级");
+                  } else if ("九年级".equals(tempEntity.getGrade())) {
+                    tempEntity.setGrade("三年级");
+                  }
+                  //System.err.println("after:" + JSON.toJSONString(tempEntity));
                 }
               }
             }
+            results.add(tempEntity);
           }
         }
       }
     }
+    return results;
   }
 
   @AllArgsConstructor
@@ -302,5 +393,18 @@ public class ArticleTableServiceTest {
     private Long id;
     private String data;
 
+    @Override
+    public boolean equals(Object obj) {
+      TempEntity tempEntity = (TempEntity) obj;
+      if (
+          this.getTerm().equals(tempEntity.getTerm()) &&
+          this.getGrade().equals(tempEntity.getGrade()) &&
+              this.getStage().equals(tempEntity.getStage()) &&
+              this.getBookName().equals(tempEntity.getBookName())
+      ) {
+        return true;
+      }
+      return false;
+    }
   }
 }

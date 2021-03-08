@@ -14,8 +14,14 @@
             property="name"/>
     <result column="publisher" jdbcType="VARCHAR"
             property="publisher"/>
+    <result column="year" jdbcType="VARCHAR"
+            property="year"/>
+    <result column="isbn" jdbcType="VARCHAR"
+            property="isbn"/>
     <result column="version" jdbcType="VARCHAR"
             property="version"/>
+    <result column="summary" jdbcType="VARCHAR"
+            property="summary"/>
     <result column="able" jdbcType="INTEGER"
             property="able"/>
     <result column="del" jdbcType="INTEGER"
@@ -34,7 +40,10 @@
       `tid`,
       `name`,
       `publisher`,
+      `year`,
+      `isbn`,
       `version`,
+      `summary`,
       `able`,
       `del`,
       `create_time`,
@@ -60,7 +69,10 @@
       `tid`,
       `name`,
       `publisher`,
+      `year`,
+      `isbn`,
       `version`,
+      `summary`,
       `able`,
       `del`,
       `create_time`,
@@ -85,7 +97,10 @@
       `tid`,
       `name`,
       `publisher`,
+      `year`,
+      `isbn`,
       `version`,
+      `summary`,
       `able`,
       `del`,
       `create_time`,
@@ -98,7 +113,10 @@
       #{entity.tid},
       #{entity.name},
       #{entity.publisher},
+      #{entity.year},
+      #{entity.isbn},
       #{entity.version},
+      #{entity.summary},
       #{entity.able},
       #{entity.del},
       #{entity.createTime},
@@ -116,7 +134,10 @@
       `tid`,
       `name`,
       `publisher`,
+      `year`,
+      `isbn`,
       `version`,
+      `summary`,
       `able`,
       `del`,
       `create_time`,
@@ -130,7 +151,10 @@
       #{entity.tid},
       #{entity.name},
       #{entity.publisher},
+      #{entity.year},
+      #{entity.isbn},
       #{entity.version},
+      #{entity.summary},
       #{entity.able},
       #{entity.del},
       #{entity.createTime},
@@ -149,7 +173,10 @@
       `tid`,
       `name`,
       `publisher`,
+      `year`,
+      `isbn`,
       `version`,
+      `summary`,
       `able`,
       `del`,
       `create_time`,
@@ -162,7 +189,10 @@
       #{entity.tid},
       #{entity.name},
       #{entity.publisher},
+      #{entity.year},
+      #{entity.isbn},
       #{entity.version},
+      #{entity.summary},
       #{entity.able},
       #{entity.del},
       #{entity.createTime},
@@ -180,7 +210,10 @@
       `tid`,
       `name`,
       `publisher`,
+      `year`,
+      `isbn`,
       `version`,
+      `summary`,
       `able`,
       `del`,
       `create_time`,
@@ -194,7 +227,10 @@
       #{entity.tid},
       #{entity.name},
       #{entity.publisher},
+      #{entity.year},
+      #{entity.isbn},
       #{entity.version},
+      #{entity.summary},
       #{entity.able},
       #{entity.del},
       #{entity.createTime},
@@ -222,8 +258,17 @@
       <if test="entity.publisher != null and entity.publisher != ''">
         `publisher` = #{entity.publisher},
       </if>
+      <if test="entity.year != null and entity.year != ''">
+        `year` = #{entity.year},
+      </if>
+      <if test="entity.isbn != null and entity.isbn != ''">
+        `isbn` = #{entity.isbn},
+      </if>
       <if test="entity.version != null and entity.version != ''">
         `version` = #{entity.version},
+      </if>
+      <if test="entity.summary != null and entity.summary != ''">
+        `summary` = #{entity.summary},
       </if>
       <if test="entity.able != null">
         `able` = #{entity.able},

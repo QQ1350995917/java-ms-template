@@ -1,23 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="pwd.initializr.edu.persistence.dao.EduTermDao">
+<mapper namespace="pwd.initializr.edu.persistence.dao.EduTermCourseTextbookArticleDao">
 
-  <resultMap id="EduTermMap" type="pwd.initializr.edu.persistence.entity.EduTermEntity">
+  <resultMap id="EduTermCourseTextbookArticleMap" type="pwd.initializr.edu.persistence.entity.EduTermCourseTextbookArticleEntity">
     <result column="id" jdbcType="BIGINT"
             property="id"/>
     <result column="pid" jdbcType="BIGINT"
             property="pid"/>
-    <result column="zhcn_name" jdbcType="VARCHAR"
-            property="zhcnName"/>
-    <result column="enus_name" jdbcType="VARCHAR"
-            property="enusName"/>
-    <result column="scholastic" jdbcType="INTEGER"
-            property="scholastic"/>
-    <result column="order" jdbcType="INTEGER"
-            property="order"/>
-    <result column="leaf" jdbcType="INTEGER"
-            property="leaf"/>
+    <result column="title" jdbcType="VARCHAR"
+            property="title"/>
+    <result column="text" jdbcType="VARCHAR"
+            property="text"/>
+    <result column="media_path" jdbcType="VARCHAR"
+            property="mediaPath"/>
     <result column="able" jdbcType="INTEGER"
             property="able"/>
     <result column="del" jdbcType="INTEGER"
@@ -29,48 +25,44 @@
   </resultMap>
 
   <!--根据主键查询查询-->
-  <select id="queryById" resultMap="EduTermMap">
+  <select id="queryById" resultMap="EduTermCourseTextbookArticleMap">
     SELECT
       `id`,
       `pid`,
-      `zhcn_name`,
-      `enus_name`,
-      `scholastic`,
-      `order`,
-      `leaf`,
+      `title`,
+      `text`,
+      `media_path`,
       `able`,
       `del`,
       `create_time`,
       `update_time`
     FROM
-      edu_term
+      edu_term_course_textbook_article
     WHERE
       id = #{id}
   </select>
 
   <!--查询指定行数据-->
   <select id="countByCondition" resultType="java.lang.Long">
-    SELECT COUNT(*) FROM edu_term
+    SELECT COUNT(*) FROM edu_term_course_textbook_article
     <include
         refid="pwd.initializr.common.web.persistence.entity.ScopeEntity.entityQueryScope"></include>
   </select>
 
   <!--通过实体作为筛选条件查询-->
-  <select id="queryByCondition" resultMap="EduTermMap">
+  <select id="queryByCondition" resultMap="EduTermCourseTextbookArticleMap">
     SELECT
       `id`,
       `pid`,
-      `zhcn_name`,
-      `enus_name`,
-      `scholastic`,
-      `order`,
-      `leaf`,
+      `title`,
+      `text`,
+      `media_path`,
       `able`,
       `del`,
       `create_time`,
       `update_time`
     FROM
-      edu_term
+      edu_term_course_textbook_article
     <include
         refid="pwd.initializr.common.web.persistence.entity.ScopeEntity.entityQueryScope"></include>
     <include
@@ -79,24 +71,16 @@
       #{offset}, #{limit}
   </select>
 
-
-  <!--通过实体作为筛选条件查询-->
-  <select id="queryBySql" resultType="java.util.HashMap">
-    ${sql}
-  </select>
-
   <!--新增所有列-->
   <insert id="insert" keyProperty="id" useGeneratedKeys="true"
-          parameterType="pwd.initializr.edu.persistence.entity.EduTermEntity">
-    INSERT INTO edu_term
+          parameterType="pwd.initializr.edu.persistence.entity.EduTermCourseTextbookArticleEntity">
+    INSERT INTO edu_term_course_textbook_article
     (
       `id`,
       `pid`,
-      `zhcn_name`,
-      `enus_name`,
-      `scholastic`,
-      `order`,
-      `leaf`,
+      `title`,
+      `text`,
+      `media_path`,
       `able`,
       `del`,
       `create_time`,
@@ -106,11 +90,9 @@
     (
       #{entity.id},
       #{entity.pid},
-      #{entity.zhcnName},
-      #{entity.enusName},
-      #{entity.scholastic},
-      #{entity.order},
-      #{entity.leaf},
+      #{entity.title},
+      #{entity.text},
+      #{entity.mediaPath},
       #{entity.able},
       #{entity.del},
       #{entity.createTime},
@@ -120,16 +102,14 @@
 
   <!--新增所有列（批量新增）-->
   <insert id="insertByBatch" keyProperty="id" useGeneratedKeys="true"
-          parameterType="pwd.initializr.edu.persistence.entity.EduTermEntity">
-    INSERT INTO edu_term
+          parameterType="pwd.initializr.edu.persistence.entity.EduTermCourseTextbookArticleEntity">
+    INSERT INTO edu_term_course_textbook_article
     (
       `id`,
       `pid`,
-      `zhcn_name`,
-      `enus_name`,
-      `scholastic`,
-      `order`,
-      `leaf`,
+      `title`,
+      `text`,
+      `media_path`,
       `able`,
       `del`,
       `create_time`,
@@ -140,11 +120,9 @@
     (
       #{entity.id},
       #{entity.pid},
-      #{entity.zhcnName},
-      #{entity.enusName},
-      #{entity.scholastic},
-      #{entity.order},
-      #{entity.leaf},
+      #{entity.title},
+      #{entity.text},
+      #{entity.mediaPath},
       #{entity.able},
       #{entity.del},
       #{entity.createTime},
@@ -155,16 +133,14 @@
 
   <!--新增或者替换所有列-->
   <insert id="insertOrReplace" keyProperty="id" useGeneratedKeys="true"
-          parameterType="pwd.initializr.edu.persistence.entity.EduTermEntity">
-    REPLACE INTO edu_term
+          parameterType="pwd.initializr.edu.persistence.entity.EduTermCourseTextbookArticleEntity">
+    REPLACE INTO edu_term_course_textbook_article
     (
       `id`,
       `pid`,
-      `zhcn_name`,
-      `enus_name`,
-      `scholastic`,
-      `order`,
-      `leaf`,
+      `title`,
+      `text`,
+      `media_path`,
       `able`,
       `del`,
       `create_time`,
@@ -174,11 +150,9 @@
     (
       #{entity.id},
       #{entity.pid},
-      #{entity.zhcnName},
-      #{entity.enusName},
-      #{entity.scholastic},
-      #{entity.order},
-      #{entity.leaf},
+      #{entity.title},
+      #{entity.text},
+      #{entity.mediaPath},
       #{entity.able},
       #{entity.del},
       #{entity.createTime},
@@ -188,16 +162,14 @@
 
   <!--新增或者替换所有列（批量新增或者替换）-->
   <insert id="insertOrReplaceByBatch" keyProperty="id" useGeneratedKeys="true"
-          parameterType="pwd.initializr.edu.persistence.entity.EduTermEntity">
-    REPLACE INTO edu_term
+          parameterType="pwd.initializr.edu.persistence.entity.EduTermCourseTextbookArticleEntity">
+    REPLACE INTO edu_term_course_textbook_article
     (
       `id`,
       `pid`,
-      `zhcn_name`,
-      `enus_name`,
-      `scholastic`,
-      `order`,
-      `leaf`,
+      `title`,
+      `text`,
+      `media_path`,
       `able`,
       `del`,
       `create_time`,
@@ -208,11 +180,9 @@
     (
       #{entity.id},
       #{entity.pid},
-      #{entity.zhcnName},
-      #{entity.enusName},
-      #{entity.scholastic},
-      #{entity.order},
-      #{entity.leaf},
+      #{entity.title},
+      #{entity.text},
+      #{entity.mediaPath},
       #{entity.able},
       #{entity.del},
       #{entity.createTime},
@@ -222,8 +192,8 @@
   </insert>
 
   <!--通过主键修改数据-->
-  <update id="updateById" parameterType="pwd.initializr.edu.persistence.entity.EduTermEntity">
-    UPDATE edu_term
+  <update id="updateById" parameterType="pwd.initializr.edu.persistence.entity.EduTermCourseTextbookArticleEntity">
+    UPDATE edu_term_course_textbook_article
     <set>
       <if test="entity.id != null">
         `id` = #{entity.id},
@@ -231,20 +201,14 @@
       <if test="entity.pid != null">
         `pid` = #{entity.pid},
       </if>
-      <if test="entity.zhcnName != null and entity.zhcnName != ''">
-        `zhcn_name` = #{entity.zhcnName},
+      <if test="entity.title != null and entity.title != ''">
+        `title` = #{entity.title},
       </if>
-      <if test="entity.enusName != null and entity.enusName != ''">
-        `enus_name` = #{entity.enusName},
+      <if test="entity.text != null and entity.text != ''">
+        `text` = #{entity.text},
       </if>
-      <if test="entity.scholastic != null and entity.scholastic != ''">
-        `scholastic` = #{entity.scholastic},
-      </if>
-      <if test="entity.order != null">
-        `order` = #{entity.order},
-      </if>
-      <if test="entity.leaf != null">
-        `leaf` = #{entity.leaf},
+      <if test="entity.mediaPath != null and entity.mediaPath != ''">
+        `media_path` = #{entity.mediaPath},
       </if>
       <if test="entity.able != null">
         `able` = #{entity.able},
@@ -265,7 +229,7 @@
 
   <!--通过主键删除-->
   <update id="deleteById">
-    UPDATE edu_term
+    UPDATE edu_term_course_textbook_article
     SET
       del = 1,
       update_time = #{date}
@@ -275,7 +239,7 @@
 
   <!--通过主键批量删除-->
   <update id="deleteByIds">
-    UPDATE edu_term
+    UPDATE edu_term_course_textbook_article
     SET
       del = 1,
       update_time = #{date}
@@ -289,7 +253,7 @@
 
   <!--通过主键启禁-->
   <update id="ableById">
-    UPDATE edu_term
+    UPDATE edu_term_course_textbook_article
     SET
       able = #{able},
       update_time = #{date}
@@ -299,7 +263,7 @@
 
   <!--通过主键批量启禁-->
   <update id="ableByIds">
-    UPDATE edu_term
+    UPDATE edu_term_course_textbook_article
     SET
       able = #{able},
       update_time = #{date}

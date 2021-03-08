@@ -8,9 +8,9 @@ import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
-import pwd.initializr.edu.business.bo.EduTermCourseTextbookBO;
-import pwd.initializr.edu.persistence.dao.EduTermCourseTextbookDao;
-import pwd.initializr.edu.persistence.entity.EduTermCourseTextbookEntity;
+import pwd.initializr.edu.business.bo.EduTermCourseTextbookArticleBO;
+import pwd.initializr.edu.persistence.dao.EduTermCourseTextbookArticleDao;
+import pwd.initializr.edu.persistence.entity.EduTermCourseTextbookArticleEntity;
 import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.common.web.business.bo.ScopeBO;
 import pwd.initializr.common.web.business.bo.SortBO;
@@ -18,17 +18,17 @@ import pwd.initializr.common.web.persistence.entity.EntityAble;
 import pwd.initializr.common.web.persistence.entity.EntityDel;
 
 /**
- * <h2>服务层逻辑接口封装：EduTermCourseTextbookEntity信息服务接口</h2>
- * date 2021-03-08 16:17
+ * <h2>服务层逻辑接口封装：EduTermCourseTextbookArticleEntity信息服务接口</h2>
+ * date 2021-03-08 17:38
  *
  * @author Automatic[www.dingpengwei@foxmail.com]
  * @since 0.0.1-SNAPSHOT
  */
-@Service("EduTermCourseTextbookService")
-public class EduTermCourseTextbookServiceImpl implements EduTermCourseTextbookService {
+@Service("EduTermCourseTextbookArticleService")
+public class EduTermCourseTextbookArticleServiceImpl implements EduTermCourseTextbookArticleService {
 
   @Resource
-  private EduTermCourseTextbookDao dao;
+  private EduTermCourseTextbookArticleDao dao;
 
   @Override
   public Integer ableById(Long id, EntityAble able) {
@@ -51,47 +51,47 @@ public class EduTermCourseTextbookServiceImpl implements EduTermCourseTextbookSe
   }
 
   @Override
-  public Long insert(EduTermCourseTextbookBO bo) {
-    EduTermCourseTextbookEntity entity = this.convertEduTermCourseTextbookBO2EduTermCourseTextbookEntity(bo);
+  public Long insert(EduTermCourseTextbookArticleBO bo) {
+    EduTermCourseTextbookArticleEntity entity = this.convertEduTermCourseTextbookArticleBO2EduTermCourseTextbookArticleEntity(bo);
     this.dao.insert(entity);
     return entity.getId();
   }
 
   @Override
-  public void insert(List<EduTermCourseTextbookBO> bos) {
-    List<EduTermCourseTextbookEntity> entities = bos.stream()
-      .map(this::convertEduTermCourseTextbookBO2EduTermCourseTextbookEntity).collect(Collectors.toList());
+  public void insert(List<EduTermCourseTextbookArticleBO> bos) {
+    List<EduTermCourseTextbookArticleEntity> entities = bos.stream()
+      .map(this::convertEduTermCourseTextbookArticleBO2EduTermCourseTextbookArticleEntity).collect(Collectors.toList());
     this.dao.insertByBatch(entities);
   }
 
   @Override
-  public Long insertOrReplace(EduTermCourseTextbookBO bo) {EduTermCourseTextbookEntity entity = this.convertEduTermCourseTextbookBO2EduTermCourseTextbookEntity(bo);
+  public Long insertOrReplace(EduTermCourseTextbookArticleBO bo) {EduTermCourseTextbookArticleEntity entity = this.convertEduTermCourseTextbookArticleBO2EduTermCourseTextbookArticleEntity(bo);
     this.dao.insertOrReplace(entity);
     return entity.getId();
   }
 
   @Override
-  public void insertOrReplace(List<EduTermCourseTextbookBO> bos) {
-    List<EduTermCourseTextbookEntity> entities = bos.stream()
-      .map(this::convertEduTermCourseTextbookBO2EduTermCourseTextbookEntity).collect(Collectors.toList());
+  public void insertOrReplace(List<EduTermCourseTextbookArticleBO> bos) {
+    List<EduTermCourseTextbookArticleEntity> entities = bos.stream()
+      .map(this::convertEduTermCourseTextbookArticleBO2EduTermCourseTextbookArticleEntity).collect(Collectors.toList());
     this.dao.insertOrReplaceByBatch(entities);
   }
 
   @Override
-  public PageableQueryResult<EduTermCourseTextbookBO> queryAllByCondition(LinkedHashSet<ScopeBO> scopes,
+  public PageableQueryResult<EduTermCourseTextbookArticleBO> queryAllByCondition(LinkedHashSet<ScopeBO> scopes,
     LinkedHashSet<SortBO> sorts, Long pageIndex, Long pageSize) {
-    PageableQueryResult<EduTermCourseTextbookBO> result = new PageableQueryResult<>();
+    PageableQueryResult<EduTermCourseTextbookArticleBO> result = new PageableQueryResult<>();
     Long total = this.dao.countByCondition(scopes);
     if (total == null || total < 1) {
       return result;
     }
-    List<EduTermCourseTextbookEntity> entities = this.dao.queryByCondition(scopes,sorts,
+    List<EduTermCourseTextbookArticleEntity> entities = this.dao.queryByCondition(scopes,sorts,
       pageIndex * pageSize, pageSize);
     if (entities == null) {
       return result;
     }
     entities.forEach(entity -> {
-      EduTermCourseTextbookBO resultItem = new EduTermCourseTextbookBO();
+      EduTermCourseTextbookArticleBO resultItem = new EduTermCourseTextbookArticleBO();
       BeanUtils.copyProperties(entity, resultItem);
       result.getElements().add(resultItem);
     });
@@ -102,25 +102,25 @@ public class EduTermCourseTextbookServiceImpl implements EduTermCourseTextbookSe
   }
 
   @Override
-  public EduTermCourseTextbookBO queryById(Long id) {
-    EduTermCourseTextbookEntity entity = this.dao.queryById(id);
+  public EduTermCourseTextbookArticleBO queryById(Long id) {
+    EduTermCourseTextbookArticleEntity entity = this.dao.queryById(id);
     if (entity == null) {
       return null;
     }
-    EduTermCourseTextbookBO bo = new EduTermCourseTextbookBO();
+    EduTermCourseTextbookArticleBO bo = new EduTermCourseTextbookArticleBO();
     BeanUtils.copyProperties(entity, bo);
     return bo;
   }
 
   @Override
-  public Integer updateById(EduTermCourseTextbookBO bo){EduTermCourseTextbookEntity entity = new EduTermCourseTextbookEntity();
+  public Integer updateById(EduTermCourseTextbookArticleBO bo){EduTermCourseTextbookArticleEntity entity = new EduTermCourseTextbookArticleEntity();
     BeanUtils.copyProperties(bo, entity);
     entity.setUpdateTime(new Date());
     return this.dao.updateById(entity);
   }
 
-  public EduTermCourseTextbookEntity convertEduTermCourseTextbookBO2EduTermCourseTextbookEntity(EduTermCourseTextbookBO bo){
-    EduTermCourseTextbookEntity entity = new EduTermCourseTextbookEntity();
+  public EduTermCourseTextbookArticleEntity convertEduTermCourseTextbookArticleBO2EduTermCourseTextbookArticleEntity(EduTermCourseTextbookArticleBO bo){
+    EduTermCourseTextbookArticleEntity entity = new EduTermCourseTextbookArticleEntity();
     BeanUtils.copyProperties(bo, entity);
     entity.setAble(EntityAble.DISABLE.getNumber());
     entity.setDel(EntityDel.NO.getNumber());
