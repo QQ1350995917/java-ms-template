@@ -259,4 +259,11 @@
     </#noparse>
   </update>
 
+  <!--通过SQL查询-->
+  <select id="queryBySql" resultType="java.util.HashMap">
+    <#noparse>
+    ${sql}
+    </#noparse>
+  </select>
+
 </mapper>

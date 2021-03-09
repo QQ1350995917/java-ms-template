@@ -3,6 +3,7 @@ package ${projectPackage}.persistence.dao;
 import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -164,5 +165,16 @@ public interface ${className}Dao {
    * @since ${projectVersion}
    */
   Integer updateById(@Param("entity") ${className}Entity entity);
+
+  /**
+   * <h2>执行SQL查询，供单元测试验证，该接口不可向上层逻辑暴露</h2>
+   * date ${projectCreateDate}
+   *
+   * @param sql sql语句
+   * @return java.util.List 执行结果
+   * @author Automatic[www.dingpengwei@foxmail.com]
+   * @since ${projectVersion}
+   */
+  List<Map<String,Object>> queryBySql(@Param("sql")String sql);
 
 }
