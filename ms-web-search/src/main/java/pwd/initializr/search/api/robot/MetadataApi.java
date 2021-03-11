@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,8 +36,7 @@ public interface MetadataApi {
     void listIndices(@PathVariable(value = "indexName", required = false) String indexName);
 
     @PostMapping(value = {"/index"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    void createIndex(
-        @PathVariable(value = "indexName", required = true) @Valid @NotNull(message = "参数不能为空") String indexName);
+    void createIndex(@RequestBody @Valid @NotNull(message = "参数不能为空") String indexName);
 
     @DeleteMapping(value = {"/index/{indexName}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     void deleteIndices(

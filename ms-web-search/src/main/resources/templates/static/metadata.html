@@ -32,9 +32,68 @@
   <el-main style="padding: 0px 10px 0px 0px; margin-top: 10px; background-color: transparent; height: 666px">
     <el-row class="row-bg" style="background-color: transparent">
       <el-col :span="12" :offset="6" style="background-color: transparent">
-
+        <el-button type="primary" @click="dialogVisible = true" style="float: left">新增</el-button>
+        <!--<el-input placeholder="请输入内容" v-model="search" class="input-with-select" style="width: 80%;float: right">-->
+          <!--<el-button slot="append" icon="el-icon-search"></el-button>-->
+        <!--</el-input>-->
       </el-col>
     </el-row>
+    <el-row class="row-bg" style="background-color: transparent">
+      <el-col :span="12" :offset="6" style="background-color: transparent">
+        <el-table
+            :data="elements"
+            stripe
+            style="width: 100%">
+          <el-table-column
+              prop="name"
+              label="日期"
+              width="180">
+          </el-table-column>
+          <el-table-column
+              prop="date"
+              label="姓名"
+              width="180">
+          </el-table-column>
+          <el-table-column
+              prop="owner"
+              label="所属">
+          </el-table-column>
+          <el-table-column
+              label="操作"
+              width="100">
+            <template slot-scope="scope">
+              <el-button @click="onDeleteIndex(scope.row.name)" type="text" size="small">删除</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </el-col>
+    </el-row>
+    <el-row>
+      <el-col :span="12" :offset="6" >
+        <div class="block">
+          <el-pagination
+              layout="prev, pager, next"
+              @current-change="requestForIndices"
+              :page-size="pageSize"
+              :total="total">
+          </el-pagination>
+        </div>
+      </el-col>
+    </el-row>
+    <el-dialog
+        title="新建"
+        :visible.sync="dialogVisible"
+        width="30%">
+      <div>
+        <el-input placeholder="请输入IndexName" v-model="newIndexName">
+          <template slot="prepend">IndexName</template>
+        </el-input>
+      </div>
+      <span slot="footer" class="dialog-footer">
+    <el-button @click="dialogVisible = false">取 消</el-button>
+    <el-button type="primary" @click="onCreateIndex">确 定</el-button>
+  </span>
+    </el-dialog>
   </el-main>
   <el-footer>
     <el-row>
@@ -45,14 +104,22 @@
     </el-row>
   </el-footer>
 </el-container>
+<style>
+  .input-with-select {
+    background-color: #fff;
+  }
+</style>
 <script>
   new Vue({
     el: '#container',
     data: function () {
       return {
         activeName: 'metadata',
+        dialogVisible: false,
+        newIndexName: '',
+        search: '',
         index: 0,
-        size: 12,
+        pageSize: 12,
         total: 0,
         elements: []
       };
@@ -71,7 +138,7 @@
         }
       },
       requestForIndices(){
-        this.$http.get('/api/admin/metadata/indices')
+        this.$http.get('/api/robot/metadata/indices')
         .then(
             function(res) {
               var body = res.body;
@@ -86,8 +153,46 @@
                     type: 'warning'
                   });
                 } else {
-                  this.indies = data.elements;
+                  this.elements = data.elements;
                 }
+              } else {
+                this.$message({
+                  message: meta.message,
+                  type: 'warning'
+                });
+              }
+            }, function(e) {
+              var body = e.body;
+              var meta = body.meta;
+              var code = meta.code;
+              if (code == 400) {
+                this.$message.error('Exist IndexName');
+              } else if (code == 500) {
+                this.$message.error('Server error');
+              } else {
+                this.$message.error('Unknown error');
+              }
+            });
+      },
+      onCreateIndex(){
+        this.requestForCreateIndex(this.newIndexName);
+      },
+      requestForCreateIndex(indexName){
+        this.$http.post('/api/robot/metadata/index', indexName)
+        .then(
+            function(res) {
+              var body = res.body;
+              var meta = body.meta;
+              var code = meta.code;
+              var data = body.data;
+              if (code == 200) {
+                this.$message({
+                  message: meta.message,
+                  type: 'success'
+                });
+                this.dialogVisible = false
+                this.newIndexName = ''
+                this.requestForIndices()
               } else {
                 this.$message({
                   message: meta.message,
@@ -107,7 +212,38 @@
               }
             });
       },
-
+      onDeleteIndex(indexName) {
+        this.requestForDeleteIndex(indexName)
+      },
+      requestForDeleteIndex(indexName){
+        this.$http.delete('/api/robot/metadata/index/' + indexName)
+        .then(
+            function(res) {
+              var body = res.body;
+              var meta = body.meta;
+              var code = meta.code;
+              var data = body.data;
+              if (code == 200) {
+                this.requestForIndices()
+              } else {
+                this.$message({
+                  message: meta.message,
+                  type: 'warning'
+                });
+              }
+            }, function(e) {
+              var body = e.body;
+              var meta = body.meta;
+              var code = meta.code;
+              if (code == 400) {
+                this.$message.error('Request params error');
+              } else if (code == 500) {
+                this.$message.error('Server error');
+              } else {
+                this.$message.error('Unknown error');
+              }
+            });
+      }
     }
   });
 </script>

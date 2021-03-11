@@ -131,7 +131,7 @@
         }
       },
       requestForIndices(){
-        this.$http.get('/api/admin/metadata/indices')
+        this.$http.get('/api/robot/metadata/indices')
         .then(
             function(res) {
               var body = res.body;
