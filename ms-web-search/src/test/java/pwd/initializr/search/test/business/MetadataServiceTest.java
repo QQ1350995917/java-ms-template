@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import pwd.initializr.common.web.business.bo.PageableQueryResult;
-import pwd.initializr.search.business.admin.MetadataService;
-import pwd.initializr.search.business.admin.bo.IndexBO;
+import pwd.initializr.search.business.MetadataService;
+import pwd.initializr.search.business.bo.IndexBO;
 
 /**
  * pwd.initializr.search.test.business@ms-web-initializr

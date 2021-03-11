@@ -1,4 +1,4 @@
-package pwd.initializr.search.api.admin;
+package pwd.initializr.search.api.robot;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -22,8 +22,8 @@ import pwd.initializr.search.business.bo.IndexBO;
  * @version 1.0.0
  * @since DistributionVersion
  */
-@RestController(value = "metadataApi")
-@RequestMapping(value = "/api/admin/metadata")
+@RestController(value = "robotMetadataApi")
+@RequestMapping(value = "/api/robot/metadata")
 public class MetadataController extends RobotController implements MetadataApi {
 
     @Resource

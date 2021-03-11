@@ -1,6 +1,5 @@
-package pwd.initializr.search.business.admin.bo;
+package pwd.initializr.search.business.bo;
 
-import java.util.List;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

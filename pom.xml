@@ -22,7 +22,7 @@
     <module>lib-rpc-account</module>
     <!--<module>lib-rpc-email</module>-->
     <!--<module>lib-rpc-monitor</module>-->
-    <!--<module>lib-rpc-search</module>-->
+    <module>lib-rpc-search</module>
     <!--<module>lib-rpc-storage</module>-->
     <!--<module>ms-web-access</module>-->
     <module>ms-web-account</module>
@@ -38,7 +38,7 @@
     <!--<module>ms-web-organization</module>-->
     <module>ms-web-registry</module>
     <!--<module>ms-web-schedule</module>-->
-    <!--<module>ms-web-search</module>-->
+    <module>ms-web-search</module>
     <!--<module>ms-web-storage</module>-->
     <!--<module>ms-web-typeface</module>-->
     <module>project-generator</module>

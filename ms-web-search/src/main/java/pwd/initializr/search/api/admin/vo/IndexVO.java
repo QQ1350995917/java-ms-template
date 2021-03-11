@@ -2,10 +2,9 @@ package pwd.initializr.search.api.admin.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import pwd.initializr.search.business.admin.bo.IndexBO;
+import pwd.initializr.search.business.bo.IndexBO;
 
 /**
  * pwd.initializr.search.api.admin.vo@ms-web-initializr

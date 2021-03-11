@@ -1,4 +1,4 @@
-package pwd.initializr.search.business.admin;
+package pwd.initializr.search.business;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -23,9 +23,9 @@ import org.elasticsearch.common.xcontent.XContentFactory;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import org.springframework.stereotype.Service;
 import pwd.initializr.common.web.business.bo.PageableQueryResult;
-import pwd.initializr.search.business.admin.bo.IndexBO;
-import pwd.initializr.search.business.admin.bo.MappingBO;
-import pwd.initializr.search.business.admin.bo.MappingFieldBO;
+import pwd.initializr.search.business.bo.IndexBO;
+import pwd.initializr.search.business.bo.MappingBO;
+import pwd.initializr.search.business.bo.MappingFieldBO;
 
 /**
  * pwd.initializr.search.business.admin@ms-web-initializr

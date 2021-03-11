@@ -1,10 +1,9 @@
-package pwd.initializr.search.business.admin;
+package pwd.initializr.search.business;
 
 import java.util.List;
-import org.springframework.stereotype.Service;
 import pwd.initializr.common.web.business.bo.PageableQueryResult;
-import pwd.initializr.search.business.admin.bo.IndexBO;
-import pwd.initializr.search.business.admin.bo.MappingBO;
+import pwd.initializr.search.business.bo.IndexBO;
+import pwd.initializr.search.business.bo.MappingBO;
 
 /**
  * pwd.initializr.search.business.admin@ms-web-initializr
