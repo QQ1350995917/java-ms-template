@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>pwd-initializr-email</title>
+
+  <link rel="stylesheet" href="https://unpkg.zhimg.com/element-ui/lib/theme-chalk/index.css">
+  <link rel="stylesheet" href="./static/css/template.css">
+
+  <script src="https://unpkg.zhimg.com/vue/dist/vue.js"></script>
+  <script src="https://unpkg.zhimg.com/element-ui/lib/index.js"></script>
+  <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+  <script src="/static/js/template.js"></script>
+
+</head>
+<body>
+<el-container id="container">
+  <el-header style="padding: 0px; height: 50px">
+    <el-row>
+      <el-col :span="12" :offset="6">
+        <template>
+          <el-tabs v-model="activeName" type="card" @tab-click="onTabClick">
+            <el-tab-pane label="email" name="0"></el-tab-pane>
+            <el-tab-pane label="swagger" name="swagger"></el-tab-pane>
+          </el-tabs>
+        </template>
+      </el-col>
+    </el-row>
+  </el-header>
+  <el-main style="padding: 0px 10px 0px 0px; margin-top: 1px; height: 666px;">
+    <el-row>
+      <el-col :span="2" :offset="6">
+        <el-button @click="onCreateDialogOpen({})">Create</el-button>
+      </el-col>
+      <el-col :span="10">
+        <div>
+          <el-input placeholder="请输入内容" v-model="keyword" class="input-with-select">
+            <el-select v-model="select" slot="prepend" placeholder="请选择" style="width: 100px;">
+              <el-option label="x" value="x"></el-option>
+            </el-select>
+            <el-button slot="append" icon="el-icon-search" @click="onSearchButtonClick"></el-button>
+          </el-input>
+        </div>
+      </el-col>
+    </el-row>
+    <el-row>
+      <el-col :span="12" :offset="6">
+        <el-table
+            :data="emails"
+            style="width: 100%;"
+            max-height="600">
+          <el-table-column
+              prop="id"
+              label="id">
+          </el-table-column>
+          <el-table-column
+              prop="app"
+              label="app">
+          </el-table-column>
+          <el-table-column
+              prop="sent"
+              label="sent">
+          </el-table-column>
+          <el-table-column
+              prop="del"
+              label="del">
+          </el-table-column>
+          <el-table-column
+              prop="create_time"
+              label="createTime">
+          </el-table-column>
+          <el-table-column
+              prop="update_time"
+              label="updateTime">
+          </el-table-column>
+          <!--<el-table-column-->
+              <!--fixed="right"-->
+              <!--label="Operations"-->
+              <!--width="180">-->
+            <!--<template slot-scope="scope">-->
+              <!--<el-button @click.native.prevent="onUpdateDialogOpen(scope.row)"-->
+                         <!--icon="el-icon-setting" size="small"></el-button>-->
+              <!--<el-button v-if="0 == scope.row.able"-->
+                         <!--@click.native.prevent="onEnableButtonClick(scope.row.id)"-->
+                         <!--icon="el-icon-view" size="small"></el-button>-->
+              <!--<el-button v-if="1 == scope.row.able"-->
+                         <!--@click.native.prevent="onDisableButtonClick(scope.row.id)"-->
+                         <!--icon="el-icon-view" size="small"></el-button>-->
+              <!--<el-button @click.native.prevent="onDelButtonClick(scope.row.id)"-->
+                         <!--icon="el-icon-delete" size="small"></el-button>-->
+            <!--</template>-->
+          <!--</el-table-column>-->
+        </el-table>
+        <div class="block">
+          <el-pagination
+              layout="prev, pager, next"
+              @current-change="onRequestForEmails"
+              :page-size="pageSize"
+              :total="total">
+          </el-pagination>
+        </div>
+      </el-col>
+    </el-row>
+    <el-dialog
+        title="提示"
+        :visible.sync="createDialogVisible"
+        width="30%"
+        :before-close="handleClose">
+      <el-row>
+        <el-col :span="12" :offset="6">
+          <div>
+            <el-input placeholder="请输入收件人" v-model="email.tos">
+              <template slot="prepend">To</template>
+            </el-input>
+          </div>
+          <div>
+            <el-input placeholder="请输入抄送人" v-model="email.ccs">
+              <template slot="prepend">Cc</template>
+            </el-input>
+          </div>
+          <div>
+            <el-input placeholder="请输入密送人" v-model="email.bccs">
+              <template slot="prepend">Bcc</template>
+            </el-input>
+          </div>
+
+          <div>
+            <el-input placeholder="请输入标题" v-model="email.title">
+              <template slot="prepend">Title</template>
+            </el-input>
+          </div>
+          <div>
+            <el-input type="textarea" placeholder="请输入内容" v-model="email.content" maxlength="3000" show-word-limit>
+            </el-input>
+          </div>
+        </el-col>
+      </el-row>
+      <span slot="footer" class="dialog-footer">
+    <el-button @click="createDialogVisible = false">取消</el-button>
+    <el-button type="primary" @click="createDialogVisible = false">发送</el-button>
+  </span>
+    </el-dialog>
+  </el-main>
+  <el-footer>
+    <el-row>
+      <el-col :span="12" :offset="6">
+        <p>Powered by www.dingpengwei@foxmail.com</p>
+        <p>copyright©2020</p>
+      </el-col>
+    </el-row>
+  </el-footer>
+</el-container>
+<script>
+  new Vue({
+    el: '#container',
+    data: function () {
+      return {
+        activeName: '0',
+        emails: [],
+        createDialogVisible: false,
+        email: {
+          tos: [],
+          ccs: [],
+          bccs: [],
+          title: '',
+          content: ''
+        },
+        pageIndex: 1,
+        pageSize: 12,
+        total: 0,
+        select: '',
+        keyword: '',
+        scopesTemplate: [{
+          hit: '指定查询方式[EM:精确,ENM:精确非,AL:前后模糊,LL:左模糊,RL:右模糊,SM:范围',
+          fieldName: '指定查询字段',
+          fieldValue: '指定查询目标',
+          start: '范围查询起始值，区间包含',
+          end: '范围查询结束值，区间包含'
+        }],
+        sortsTemplate: [{fieldName: '指定排序字段', sort: '[desc|asc]'}],
+        pageTemplate: {index: 0, size: 12},
+        scopes: [],
+        sorts: [],
+        page: {}
+      };
+    },
+    created() {
+      this.onRequestForEmails();
+    },
+    methods: {
+      onTabClick(tab, event) {
+        if ("0" == tab.name) {
+          window.open("/", '_self');
+        } else if ("swagger" === tab.name) {
+          window.open("/swagger", '_self');
+        } else {
+          window.open("/static/" + tab.name + ".html", '_self');
+        }
+      },
+      onRequestForEmails(){
+        this.$http.get('/api/email?scopes=' + encodeURIComponent(JSON.stringify(this.scopes))
+            + '&sorts=' + encodeURIComponent(JSON.stringify(this.sorts))
+            + '&page=' + encodeURIComponent(JSON.stringify(this.page)))
+        .then(
+            function(res) {
+              var body = res.body;
+              var meta = body.meta;
+              var code = meta.code;
+              var data = body.data;
+              if (code == 200) {
+                var elements = data.elements;
+                if (elements == undefined || elements.length == 0) {
+                  this.$message({
+                    message: 'No Date',
+                    type: 'warning'
+                  });
+                } else {
+                  this.emails = data.elements;
+                }
+              } else {
+                this.$message({
+                  message: meta.message,
+                  type: 'warning'
+                });
+              }
+            }, function(e) {
+              var body = e.body;
+              var meta = body.meta;
+              var code = meta.code;
+              if (code == 400) {
+                this.$message.error('Params error');
+              } else if (code == 500) {
+                this.$message.error('Server error');
+              } else {
+                this.$message.error('Unknown error');
+              }
+            });
+      },
+      onCreateDialogOpen(){
+        this.email = {}
+        this.createDialogVisible = true
+      },
+      onSearchButtonClick(){},
+      onSendClick() {
+
+      },
+      handleClose(done) {
+        this.$confirm('确认关闭？')
+        .then(_ => {
+          done();
+        })
+        .catch(_ => {});
+      }
+    }
+  });
+</script>
+</body>
+</html>

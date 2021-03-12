@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.RestController;
 @SpringBootApplication
 @EnableEurekaClient
 @EnableDiscoveryClient
-@RestController
 @EnableTransactionManagement
 @ComponentScan(basePackages = {"pwd.initializr.common.web", "pwd.initializr.email"})
 public class EmailApplication {
@@ -33,18 +32,4 @@ public class EmailApplication {
     SpringApplication.run(EmailApplication.class, args);
   }
 
-  @GetMapping(value = "")
-  public String index0() {
-    return "this is email 0 index";
-  }
-
-  @GetMapping(value = "/")
-  public String index1() {
-    return "this is email 1 index";
-  }
-
-  @GetMapping(value = "/account")
-  public String index2() {
-    return "this is email 2 index";
-  }
 }

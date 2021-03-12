@@ -22,8 +22,8 @@ import org.springframework.context.annotation.Configuration;
  * @since DistributionVersion
  */
 @Configuration
-@AutoConfigureBefore(EmailScheduleSenderService.class)
-public class EmailScheduleSenderServiceConfigure {
+@AutoConfigureBefore(EmailSenderServiceImpl.class)
+public class EmailSenderServiceConfigure {
 
     @Value("${email.client.executor.queue.max.capacity}")
     private Integer queueMaxCapacity;

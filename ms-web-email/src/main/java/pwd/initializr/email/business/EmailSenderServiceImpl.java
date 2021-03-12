@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import pwd.initializr.common.email.Email;
 import pwd.initializr.common.email.EmailAttachment;
 import pwd.initializr.common.email.EmailClient;
@@ -40,14 +41,13 @@ import pwd.initializr.email.persistence.entity.EmailSendType;
  * @since DistributionVersion
  */
 @Slf4j
-@Component
-@EnableScheduling
-public class EmailScheduleSenderService {
+@Service("EmailSenderService")
+public class EmailSenderServiceImpl implements EmailSenderService{
 
     /**
      * 队列空闲容量超出总总量的1/3进行再次查询
      */
-    private final int boundaryDividerForQuery = 3;
+    private final int BOUNDARY_DIVIDER_FOR_QUERY = 3;
     @Value("${email.debug}")
     private Boolean emailDebug;
     @Value("${email.server.host}")
@@ -82,22 +82,17 @@ public class EmailScheduleSenderService {
     @Qualifier(value = "emailPostManThreadPool")
     private ThreadPoolExecutor emailPostManThreadPool;
 
-    @Scheduled(cron = "${email.client.auto.schedule.cron}")
-    public void schedule() {
-        if (autoEnable && isQueryAble()) {
-            run();
-        }
-    }
-
-    private boolean isQueryAble() {
+    @Override
+    public boolean isQueueRemainingCapacityAble() {
         int remainingCapacity = this.waitingForSendEmailQueue.remainingCapacity();
-        if (remainingCapacity >= this.queueMaxCapacity / this.boundaryDividerForQuery) {
+        if (remainingCapacity >= this.queueMaxCapacity / this.BOUNDARY_DIVIDER_FOR_QUERY) {
             return true;
         }
         return false;
     }
 
-    private void run() {
+    @Override
+    public Set<Long> send() {
         Integer remainingCapacity = this.waitingForSendEmailQueue.remainingCapacity();
         Set<Long> ids = emailWarpService.queryWaitingForSendEmail(remainingCapacity.longValue());
         if (ids != null && !ids.isEmpty()) {
@@ -105,6 +100,7 @@ public class EmailScheduleSenderService {
                 this.emailPostManThreadPool.execute(new EmailPostManRunnable(id));
             });
         }
+        return ids;
     }
 
     private class EmailPostManRunnable implements Runnable {
