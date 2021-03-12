@@ -165,7 +165,7 @@
         this.requestForSearch()
       },
       requestForSearch() {
-        this.$http.get('http://localhost:12070/api/search?index=' + this.pageIndex + '&indices=' + this.select + '&keyword=' + encodeURIComponent(this.keyword))
+        this.$http.get('/api/search?index=' + this.pageIndex + '&indices=' + this.select + '&keyword=' + encodeURIComponent(this.keyword))
         .then(
             function(res) {
               var body = res.body;
