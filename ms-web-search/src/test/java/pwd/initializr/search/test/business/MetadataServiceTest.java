@@ -27,7 +27,7 @@ import pwd.initializr.search.business.bo.IndexBO;
 @Slf4j
 public class MetadataServiceTest {
 
-    private static final String indexName = "book";
+    private static final String indexName = "v2";
     @Autowired
     private MetadataService metadataService;
 

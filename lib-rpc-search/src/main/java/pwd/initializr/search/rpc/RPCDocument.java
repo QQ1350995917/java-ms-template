@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -36,8 +37,6 @@ public class RPCDocument implements Serializable {
 
   @ApiModelProperty(name = "id", value = "id", required = false, example = "id", dataType = "java.lang.String")
   private String id;
-  @ApiModelProperty(name = "able", value = "able", required = false, example = "able", dataType = "java.lang.String")
-  private String able;
   @ApiModelProperty(name = "title", value = "title", required = false, example = "title", dataType = "java.lang.String")
   private String title;
   @ApiModelProperty(name = "source", value = "source", required = false, example = "source", dataType = "java.lang.String")
@@ -46,6 +45,8 @@ public class RPCDocument implements Serializable {
   private Set<String> tags;
   @ApiModelProperty(name = "contents", value = "contents", required = false, example = "contents", dataType = "java.util.List")
   private List<String> contents;
+  @ApiModelProperty(name = "exactly", value = "exactly", required = false, example = "exactly", dataType = "java.util.Map")
+  private Map<String,Object> exactly;
   @ApiModelProperty(name = "link", value = "link", required = false, example = "link", dataType = "java.lang.String")
   private String link;
   @ApiModelProperty(name = "time", value = "time", required = false, example = "time", dataType = "java.lang.Date")

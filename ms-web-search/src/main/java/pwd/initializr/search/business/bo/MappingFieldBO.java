@@ -28,7 +28,7 @@ public class MappingFieldBO {
   @NotNull
   private String key;
   @NotNull
-  private String value;
+  private Object value;
 
   @Override
   public boolean equals(Object obj) {

@@ -14,6 +14,53 @@ import lombok.ToString;
  *
  * <h1>TODO what you want to do?</h1>
  *
+ * {
+ *     "exactly":{
+ *         "must":[
+ *             {
+ *                 "fieldName":"key",
+ *                 "fieldValue":"value",
+ *                 "type":"term|range",
+ *                 "start":"",
+ *                 "end":"",
+ *                 "interval":"open|close"
+ *             }
+ *         ],
+ *         "should":[
+ *             {
+ *                 "fieldName":"key",
+ *                 "fieldValue":"value",
+ *                 "type":"term|range",
+ *                 "start":"",
+ *                 "end":"",
+ *                 "interval":"open|close"
+ *             }
+ *         ],
+ *         "must_not":[
+ *             {
+ *                 "fieldName":"key",
+ *                 "fieldValue":"value",
+ *                 "type":"term|range",
+ *                 "start":"",
+ *                 "end":"",
+ *                 "interval":"open|close"
+ *             }
+ *         ]
+ *     },
+ *     "search":[
+ *         {
+ *             "fieldName":"name",
+ *             "fieldValue":"value"
+ *         }
+ *     ],
+ *     "sort":[
+ *         {
+ *             "fieldName":"name",
+ *             "order":"ASC|DESC"
+ *         }
+ *     ]
+ * }
+ *
  * date 2020-05-19 14:34
  *
  * @author DingPengwei[dingpengwei@foxmail.com]
@@ -32,8 +79,15 @@ public class RPCSearchInput {
 
     @ApiModelProperty(name = "indices", value = "indexNames", required = false, example = "book,article", dataType = "java.util.List")
     private List<String> indices;
+    @Deprecated
     @ApiModelProperty(name = "keyword", value = "keyword", required = false, example = "万里江山", dataType = "java.lang.String")
     private String keyword = "*";
+    @ApiModelProperty(name = "exactly", value = "exactly", required = false, example = "为空则按照search属性查找", dataType = "pwd.initializr.search.rpc.RPCSearchFieldExactlyVO")
+    private RPCSearchFieldExactlyVO exactly;
+    @ApiModelProperty(name = "search", value = "search", required = false, example = "在exactly规则下查找", dataType = "pwd.initializr.search.rpc.RPCSearchFieldVO")
+    private List<RPCSearchFieldVO> search;
+    @ApiModelProperty(name = "sort", value = "sort", required = false, example = "默认按照评分从高到低排序", dataType = "pwd.initializr.search.rpc.RPCSearchFieldSortVO")
+    private List<RPCSearchFieldSortVO> sort;
     @ApiModelProperty(name = "index", value = "pageIndex", required = false, example = "0", dataType = "java.lang.Integer")
     private Integer index = 0;
     @ApiModelProperty(name = "size", value = "pageSize", required = false, example = "12", dataType = "java.lang.Integer")

@@ -26,6 +26,7 @@ import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.search.business.bo.IndexBO;
 import pwd.initializr.search.business.bo.MappingBO;
 import pwd.initializr.search.business.bo.MappingFieldBO;
+import pwd.initializr.search.persistence.entity.DocumentEntity;
 
 /**
  * pwd.initializr.search.business.admin@ms-web-initializr
@@ -113,7 +114,7 @@ public class MetadataServiceImpl implements MetadataService {
                         Map<String,Object> propertiesMap = (Map<String,Object>) properties;
                         List<MappingBO> mappingBOS = new LinkedList<>();
                         propertiesMap.forEach((key,value) -> {
-                            Map<String, String> valueMap = (Map<String, String>) value;
+                            Map<String, Object> valueMap = (Map<String, Object>) value;
                             Set<MappingFieldBO> mappingFieldBOS = new HashSet<>();
                             valueMap.forEach((fieldKey,fieldValue) ->{
                                 MappingFieldBO mappingFieldBO = new MappingFieldBO();
@@ -191,14 +192,14 @@ public class MetadataServiceImpl implements MetadataService {
     @Override
     public List<MappingBO> getDefaultMapping() {
         List<MappingBO> mappingBOS = new LinkedList<>();
-        mappingBOS.add(new MappingBO("id", Arrays.asList(new MappingFieldBO("type","keyword")).stream().collect(Collectors.toSet())));
-        mappingBOS.add(new MappingBO("able", Arrays.asList(new MappingFieldBO("type","keyword")).stream().collect(Collectors.toSet())));
-        mappingBOS.add(new MappingBO("title", Arrays.asList(new MappingFieldBO("type","text"),new MappingFieldBO("analyzer","ik_max_word")).stream().collect(Collectors.toSet())));
-        mappingBOS.add(new MappingBO("source", Arrays.asList(new MappingFieldBO("type","keyword")).stream().collect(Collectors.toSet())));
-        mappingBOS.add(new MappingBO("tags", Arrays.asList(new MappingFieldBO("type","text"),new MappingFieldBO("analyzer","ik_max_word")).stream().collect(Collectors.toSet())));
-        mappingBOS.add(new MappingBO("contents", Arrays.asList(new MappingFieldBO("type","text"),new MappingFieldBO("analyzer","ik_max_word")).stream().collect(Collectors.toSet())));
-        mappingBOS.add(new MappingBO("link", Arrays.asList(new MappingFieldBO("type","keyword")).stream().collect(Collectors.toSet())));
-        mappingBOS.add(new MappingBO("time", Arrays.asList(new MappingFieldBO("type","date"),new MappingFieldBO("format","yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis")).stream().collect(Collectors.toSet())));
+        mappingBOS.add(new MappingBO(DocumentEntity.DOCUMENT_PROPERTIES_ID, Arrays.asList(new MappingFieldBO("type","keyword")).stream().collect(Collectors.toSet())));
+        mappingBOS.add(new MappingBO(DocumentEntity.DOCUMENT_PROPERTIES_TITLE, Arrays.asList(new MappingFieldBO("type","text"),new MappingFieldBO("analyzer","ik_max_word")).stream().collect(Collectors.toSet())));
+        mappingBOS.add(new MappingBO(DocumentEntity.DOCUMENT_PROPERTIES_SOURCE, Arrays.asList(new MappingFieldBO("type","keyword")).stream().collect(Collectors.toSet())));
+        mappingBOS.add(new MappingBO(DocumentEntity.DOCUMENT_PROPERTIES_TAGS, Arrays.asList(new MappingFieldBO("type","text"),new MappingFieldBO("analyzer","ik_max_word")).stream().collect(Collectors.toSet())));
+        mappingBOS.add(new MappingBO(DocumentEntity.DOCUMENT_PROPERTIES_CONTENTS, Arrays.asList(new MappingFieldBO("type","text"),new MappingFieldBO("analyzer","ik_max_word")).stream().collect(Collectors.toSet())));
+        mappingBOS.add(new MappingBO(DocumentEntity.DOCUMENT_PROPERTIES_EXACTLY, Arrays.asList(new MappingFieldBO("type","object")).stream().collect(Collectors.toSet())));
+        mappingBOS.add(new MappingBO(DocumentEntity.DOCUMENT_PROPERTIES_LINK, Arrays.asList(new MappingFieldBO("type","keyword")).stream().collect(Collectors.toSet())));
+        mappingBOS.add(new MappingBO(DocumentEntity.DOCUMENT_PROPERTIES_TIME, Arrays.asList(new MappingFieldBO("type","date"),new MappingFieldBO("format","yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis")).stream().collect(Collectors.toSet())));
         return mappingBOS;
     }
 }

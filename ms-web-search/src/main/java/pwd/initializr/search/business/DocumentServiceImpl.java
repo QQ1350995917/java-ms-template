@@ -2,12 +2,14 @@ package pwd.initializr.search.business;
 
 import com.alibaba.fastjson.JSON;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.lucene.index.Terms;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
@@ -19,6 +21,9 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.rest.RestStatus;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
+import org.elasticsearch.search.aggregations.AggregationBuilder;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
@@ -113,6 +118,29 @@ public class DocumentServiceImpl implements DocumentService {
   }
 
   @Override
+  public PageableQueryResult<RPCSearchOutput> query(String sql) {
+    BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery()
+        .must(QueryBuilders.termQuery("exactly.pub","0"))
+        .must(QueryBuilders.termQuery("exactly.status","3"));
+
+    SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+    searchSourceBuilder.size(10);
+    SearchRequest searchRequest = new SearchRequest("v2");
+    searchRequest.source(searchSourceBuilder);
+    searchSourceBuilder.query(boolQueryBuilder);
+
+    try {
+      SearchResponse searchResponse = elasticsearchRestTemplate.getClient().search(searchRequest, RequestOptions.DEFAULT);
+      if (searchResponse.status() == RestStatus.OK) {
+        System.out.println();
+      }
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
+    return null;
+  }
+
+  @Override
   public PageableQueryResult<RPCSearchOutput> search(SearchInputBO searchInputBO) {
     // 查询条件
     String keyword = searchInputBO.getKeyword();
@@ -132,6 +160,7 @@ public class DocumentServiceImpl implements DocumentService {
 
     // 查询排序
     ScoreSortBuilder scoreSortBuilder = SortBuilders.scoreSort().order(SortOrder.DESC);
+
 
     // 查询分页
     Integer pageIndex = searchInputBO.getIndex();
@@ -157,6 +186,7 @@ public class DocumentServiceImpl implements DocumentService {
     SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
     // 设置查询条件
     searchSourceBuilder.query(boolQueryBuilder);
+
     // 设置排序条件
     searchSourceBuilder.sort(scoreSortBuilder);
     // 设置查询分页
@@ -185,8 +215,6 @@ public class DocumentServiceImpl implements DocumentService {
           RPCSearchOutput searchResultBO = new RPCSearchOutput();
           searchResultBO.setIndexName(hit.getIndex());
           searchResultBO.setId(hit.getId());
-          Object ableObject = source.get(DocumentEntity.DOCUMENT_PROPERTIES_ABLE);
-          searchResultBO.setAble(ableObject == null ? null : ableObject.toString());
 
           if (highlightTitleBuilder == null || highlightTitleBuilder.isEmpty()) {
             Object titleObject = source.get(DocumentEntity.DOCUMENT_PROPERTIES_TITLE);

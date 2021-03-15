@@ -23,5 +23,8 @@ public interface DocumentService {
 
   int batchDelete(String indexName, List<String> ids);
 
+  PageableQueryResult<RPCSearchOutput> query(String sql);
+
   PageableQueryResult<RPCSearchOutput> search(SearchInputBO searchInputBO);
+
 }

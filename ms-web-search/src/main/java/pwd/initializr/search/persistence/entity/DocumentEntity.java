@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
@@ -42,9 +43,6 @@ public class DocumentEntity implements Serializable {
   @Id
   private String id;
 
-  @Field(type = FieldType.Keyword)
-  private String able;
-
   @Field(type = FieldType.Text, analyzer = "ik_max_word", searchAnalyzer = "ik_max_word")
   private String title;
 
@@ -56,6 +54,9 @@ public class DocumentEntity implements Serializable {
 
   @Field(type = FieldType.Text, analyzer = "ik_max_word", searchAnalyzer = "ik_max_word")
   private List<String> contents;
+
+  @Field(type = FieldType.Object)
+  private Map<String,Object> exactly;
 
   @Field(type = FieldType.Keyword)
   private String link;
@@ -72,6 +73,7 @@ public class DocumentEntity implements Serializable {
   public static final String DOCUMENT_PROPERTIES_SOURCE = "source";
   public static final String DOCUMENT_PROPERTIES_TAGS = "tags";
   public static final String DOCUMENT_PROPERTIES_CONTENTS = "contents";
+  public static final String DOCUMENT_PROPERTIES_EXACTLY = "exactly";
   public static final String DOCUMENT_PROPERTIES_LINK = "link";
   public static final String DOCUMENT_PROPERTIES_TIME = "time";
 
@@ -80,7 +82,8 @@ public class DocumentEntity implements Serializable {
       Arrays.asList(
           DOCUMENT_PROPERTIES_TITLE,
           DOCUMENT_PROPERTIES_TAGS,
-          DOCUMENT_PROPERTIES_CONTENTS)
+          DOCUMENT_PROPERTIES_CONTENTS
+      )
       .stream().collect(Collectors.toSet());
 
 
