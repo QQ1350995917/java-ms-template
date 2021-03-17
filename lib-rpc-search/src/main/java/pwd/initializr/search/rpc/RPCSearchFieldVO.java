@@ -27,6 +27,11 @@ import lombok.ToString;
 @ApiModel(value = "RPCSearchFieldVO", description = "搜索输入数据属性模型")
 public class RPCSearchFieldVO {
 
+  public static final String TYPE_TERM = "term";
+  public static final String TYPE_RANGE = "range";
+  public static final String INTERVAL_OPEN = "open";
+  public static final String INTERVAL_CLOSE = "close";
+
   @ApiModelProperty(name = "fieldName", value = "fieldName", required = false, example = "exactly.status", dataType = "java.util.String")
   private String fieldName;
   @ApiModelProperty(name = "fieldValue", value = "fieldValue", required = false, example = "1", dataType = "java.util.String")

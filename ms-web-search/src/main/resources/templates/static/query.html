@@ -10,12 +10,12 @@
   <script src="https://unpkg.zhimg.com/vue/dist/vue.js"></script>
   <script src="https://unpkg.zhimg.com/element-ui/lib/index.js"></script>
   <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
-  <script src="js/template.js"></script>
+  <script src="/static/js/template.js"></script>
 
 </head>
 <body>
-<el-container id="container" >
-  <el-header style="padding: 0px;height: 42px">
+<el-container id="container">
+  <el-header style="padding: 0px; height: 150px">
     <el-row>
       <el-col :span="12" :offset="6">
         <template>
@@ -29,44 +29,47 @@
         </template>
       </el-col>
     </el-row>
-  </el-header>
-  <el-main style="padding: 0px 10px 0px 0px; margin-top: 10px; background-color: transparent; height: 666px">
-    <el-row class="row-bg" style="background-color: transparent">
-      <el-col :span="12" :offset="6" style="background-color: transparent">
-        <el-button type="primary" @click="dialogVisible = true" style="float: left">新增</el-button>
-        <!--<el-input placeholder="请输入内容" v-model="search" class="input-with-select" style="width: 80%;float: right">-->
-          <!--<el-button slot="append" icon="el-icon-search"></el-button>-->
-        <!--</el-input>-->
+    <el-row>
+      <el-col :span="12" :offset="6">
+        <div>
+          <el-input type="textarea" v-model="query"></el-input>
+        </div>
       </el-col>
     </el-row>
-    <el-row class="row-bg" style="background-color: transparent">
-      <el-col :span="12" :offset="6" style="background-color: transparent">
-        <el-table
-            :data="elements"
-            stripe
-            style="width: 100%">
-          <el-table-column
-              prop="name"
-              label="日期"
-              width="180">
-          </el-table-column>
-          <el-table-column
-              prop="date"
-              label="姓名"
-              width="180">
-          </el-table-column>
-          <el-table-column
-              prop="owner"
-              label="所属">
-          </el-table-column>
-          <el-table-column
-              label="操作"
-              width="100">
-            <template slot-scope="scope">
-              <el-button @click="onDeleteIndex(scope.row.name)" type="text" size="small">删除</el-button>
-            </template>
-          </el-table-column>
-        </el-table>
+    <el-row>
+      <el-col :span="12" :offset="6">
+        <div>
+          <el-input placeholder="请输入内容" v-model="keyword" class="input-with-select" clearable maxlength="120"  @keyup.enter.native="onSearchButtonClick">
+            <el-select v-model="select" slot="prepend" placeholder="请选择" style="width: 120px;">
+              <el-option label="*" value="*"></el-option>
+              </el-option>
+              <el-option  v-for="index in indies"
+                          :key="index.name"
+                          :label="index.name"
+                          :value="index.name">
+              </el-option>
+            </el-select>
+            <el-button slot="append" icon="el-icon-search" @click="onSearchButtonClick"></el-button>
+          </el-input>
+        </div>
+      </el-col>
+    </el-row>
+  </el-header>
+  <el-main style="padding: 0px 10px 0px 0px; margin-top: 10px; height: 666px;">
+    <el-row>
+      <el-col :span="12" :offset="6" v-for="element in elements">
+        <a :href="element.link" target="_blank">
+          <span class="text item book" v-html="element.title" style="color: #606266;"></span>
+          -
+          <span style="color: #606266;">{{element.source}}</span>
+        </a>
+        <br><br>
+        <el-tag v-html="tagItem" effect="plain" v-for="tagItem in element.tags" type="info"></el-tag>
+        <br><br>
+        <span v-html="contentItem" v-for="contentItem in element.contents"></span>
+        <br><br>
+        <span style="color: #606266;">{{element.time}}</span>
+        <el-divider></el-divider>
       </el-col>
     </el-row>
     <el-row>
@@ -74,27 +77,13 @@
         <div class="block">
           <el-pagination
               layout="prev, pager, next"
-              @current-change="requestForIndices"
+              @current-change="requestForSearch"
               :page-size="pageSize"
               :total="total">
           </el-pagination>
         </div>
       </el-col>
     </el-row>
-    <el-dialog
-        title="新建"
-        :visible.sync="dialogVisible"
-        width="30%">
-      <div>
-        <el-input placeholder="请输入IndexName" v-model="newIndexName">
-          <template slot="prepend">IndexName</template>
-        </el-input>
-      </div>
-      <span slot="footer" class="dialog-footer">
-    <el-button @click="dialogVisible = false">取 消</el-button>
-    <el-button type="primary" @click="onCreateIndex">确 定</el-button>
-  </span>
-    </el-dialog>
   </el-main>
   <el-footer>
     <el-row>
@@ -105,21 +94,17 @@
     </el-row>
   </el-footer>
 </el-container>
-<style>
-  .input-with-select {
-    background-color: #fff;
-  }
-</style>
 <script>
   new Vue({
     el: '#container',
     data: function () {
       return {
-        activeName: 'metadata',
-        dialogVisible: false,
-        newIndexName: '',
-        search: '',
-        index: 0,
+        activeName: 'query',
+        indies: [],
+        select: '',
+        query: '{"exactly":{"must":[{"fieldName":"key","fieldValue":"value","type":"term|range","start":"","end":"","interval":"open|close"}],"should":[{"fieldName":"key","fieldValue":"value","type":"term|range","start":"","end":"","interval":"open|close"}],"must_not":[{"fieldName":"key","fieldValue":"value","type":"term|range","start":"","end":"","interval":"open|close"}]},"search":[{"fieldName":"name","fieldValue":"value"}],"sort":[{"fieldName":"name","order":"ASC|DESC"}]}',
+        keyword: '',
+        pageIndex: 0,
         pageSize: 12,
         total: 0,
         elements: []
@@ -139,7 +124,7 @@
         }
       },
       requestForIndices(){
-        this.$http.get('/api/robot/metadata/indices')
+        this.$http.get('/api/admin/metadata/indices')
         .then(
             function(res) {
               var body = res.body;
@@ -154,46 +139,8 @@
                     type: 'warning'
                   });
                 } else {
-                  this.elements = data.elements;
+                  this.indies = data.elements;
                 }
-              } else {
-                this.$message({
-                  message: meta.message,
-                  type: 'warning'
-                });
-              }
-            }, function(e) {
-              var body = e.body;
-              var meta = body.meta;
-              var code = meta.code;
-              if (code == 400) {
-                this.$message.error('Exist IndexName');
-              } else if (code == 500) {
-                this.$message.error('Server error');
-              } else {
-                this.$message.error('Unknown error');
-              }
-            });
-      },
-      onCreateIndex(){
-        this.requestForCreateIndex(this.newIndexName);
-      },
-      requestForCreateIndex(indexName){
-        this.$http.post('/api/robot/metadata/index', indexName)
-        .then(
-            function(res) {
-              var body = res.body;
-              var meta = body.meta;
-              var code = meta.code;
-              var data = body.data;
-              if (code == 200) {
-                this.$message({
-                  message: meta.message,
-                  type: 'success'
-                });
-                this.dialogVisible = false
-                this.newIndexName = ''
-                this.requestForIndices()
               } else {
                 this.$message({
                   message: meta.message,
@@ -213,11 +160,23 @@
               }
             });
       },
-      onDeleteIndex(indexName) {
-        this.requestForDeleteIndex(indexName)
+      onSearchButtonClick() {
+        if (this.select === '' || this.select === undefined) {
+          this.select = '*';
+        }
+        if (this.keyword === '' || this.keyword === undefined) {
+          this.$message({
+            message: 'Must input keyword',
+            type: 'warning'
+          });
+          return
+        }
+        this.elements = []
+        this.pageIndex = 0
+        this.requestForSearch()
       },
-      requestForDeleteIndex(indexName){
-        this.$http.delete('/api/robot/metadata/index/' + indexName)
+      requestForSearch() {
+        this.$http.get('/api/search?index=' + this.pageIndex + '&indices=' + this.select + '&keyword=' + encodeURIComponent(this.keyword) + '&query=' + encodeURIComponent(this.query))
         .then(
             function(res) {
               var body = res.body;
@@ -225,7 +184,17 @@
               var code = meta.code;
               var data = body.data;
               if (code == 200) {
-                this.requestForIndices()
+                var elements = data.elements;
+                if (elements == undefined || elements.length == 0) {
+                  this.$message({
+                    message: 'No Date',
+                    type: 'warning'
+                  });
+                } else {
+                  this.$message.success('List Success');
+                  this.elements = data.elements;
+                  this.total = Number(data.total);
+                }
               } else {
                 this.$message({
                   message: meta.message,

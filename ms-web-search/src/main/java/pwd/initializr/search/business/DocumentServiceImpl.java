@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +18,7 @@ import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.text.Text;
 import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.rest.RestStatus;
 import org.elasticsearch.search.SearchHit;
@@ -27,7 +29,9 @@ import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
+import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.elasticsearch.search.sort.ScoreSortBuilder;
+import org.elasticsearch.search.sort.SortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,10 +43,14 @@ import org.springframework.data.elasticsearch.core.query.IndexQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.data.elasticsearch.core.query.UpdateQuery;
 import org.springframework.stereotype.Service;
+import pwd.initializr.common.utils.StringUtils;
 import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.search.business.bo.DocumentBO;
 import pwd.initializr.search.business.bo.SearchInputBO;
 import pwd.initializr.search.persistence.entity.DocumentEntity;
+import pwd.initializr.search.rpc.RPCSearchFieldExactlyVO;
+import pwd.initializr.search.rpc.RPCSearchFieldSortVO;
+import pwd.initializr.search.rpc.RPCSearchFieldVO;
 import pwd.initializr.search.rpc.RPCSearchOutput;
 
 /**
@@ -117,6 +125,7 @@ public class DocumentServiceImpl implements DocumentService {
     return ids.size();
   }
 
+  @Deprecated
   @Override
   public PageableQueryResult<RPCSearchOutput> query(String sql) {
     BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery()
@@ -143,24 +152,15 @@ public class DocumentServiceImpl implements DocumentService {
   @Override
   public PageableQueryResult<RPCSearchOutput> search(SearchInputBO searchInputBO) {
     // 查询条件
-    String keyword = searchInputBO.getKeyword();
-    if (keyword == null) {
-        return null;
-    }
-    if (keyword.length() > queryKeyWorldMaxLength) {
-        keyword = keyword.substring(0, queryKeyWorldMaxLength);
-    }
-    final String KEY_WORD = keyword;
     BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
     // should相当于or关系; filter过滤;must相当于and关系; mustNot不包含
     // termQuery的机制是：直接去匹配token。
     // .should(QueryBuilders.termQuery("", "")
     // matchQuery的机制是：先检查字段类型是否是analyzed，如果是，则先分词，再去去匹配；如果不是，则直接去匹配
-    DocumentEntity.FULL_TEXT_SEARCH_PROPERTIES.forEach(field -> boolQueryBuilder.should(QueryBuilders.matchQuery(field, KEY_WORD)));
-
+    searchExactly(boolQueryBuilder,searchInputBO);
+    search(boolQueryBuilder,searchInputBO);
     // 查询排序
-    ScoreSortBuilder scoreSortBuilder = SortBuilders.scoreSort().order(SortOrder.DESC);
-
+    List<? extends SortBuilder> sortBuilders = searchSort(boolQueryBuilder, searchInputBO);
 
     // 查询分页
     Integer pageIndex = searchInputBO.getIndex();
@@ -188,7 +188,8 @@ public class DocumentServiceImpl implements DocumentService {
     searchSourceBuilder.query(boolQueryBuilder);
 
     // 设置排序条件
-    searchSourceBuilder.sort(scoreSortBuilder);
+    sortBuilders.stream().forEach(sortBuilder -> searchSourceBuilder.sort(sortBuilder));
+
     // 设置查询分页
     searchSourceBuilder.from((pageIndex) * pageSize);
     searchSourceBuilder.size(pageSize);
@@ -279,6 +280,143 @@ public class DocumentServiceImpl implements DocumentService {
       throw new RuntimeException(e);
     }
   }
+
+
+
+  private void searchExactly(BoolQueryBuilder boolQueryBuilder, SearchInputBO searchInputBO){
+    if (boolQueryBuilder == null) {
+      return;
+    }
+
+    RPCSearchFieldExactlyVO exactly = searchInputBO.getExactly();
+    if (exactly == null) {
+      return;
+    }
+
+    Set<RPCSearchFieldVO> musts = exactly.getMust();
+    if (musts != null) {
+      musts.stream().forEach(must -> {
+        if (RPCSearchFieldVO.TYPE_TERM.equalsIgnoreCase(must.getType())) {
+          boolQueryBuilder.must(QueryBuilders.termQuery(must.getFieldName(),must.getFieldValue()));
+        } else if (RPCSearchFieldVO.TYPE_RANGE.equalsIgnoreCase(must.getType())) {
+          if (RPCSearchFieldVO.INTERVAL_OPEN.equalsIgnoreCase(must.getInterval())) {
+            if (must.getStart() != null) {
+              boolQueryBuilder.must(QueryBuilders.rangeQuery(must.getFieldName()).gt(must.getStart()));
+            }
+            if (must.getEnd() != null){
+              boolQueryBuilder.must(QueryBuilders.rangeQuery(must.getFieldName()).lt(must.getEnd()));
+            }
+          } else if (RPCSearchFieldVO.INTERVAL_CLOSE.equalsIgnoreCase(must.getInterval())) {
+            if (must.getStart() != null) {
+              boolQueryBuilder.must(QueryBuilders.rangeQuery(must.getFieldName()).gte(must.getStart()));
+            }
+            if (must.getEnd() != null){
+              boolQueryBuilder.must(QueryBuilders.rangeQuery(must.getFieldName()).lte(must.getEnd()));
+            }
+          }
+        }
+      });
+    }
+
+    Set<RPCSearchFieldVO> mustNots = exactly.getMustNot();
+    if (mustNots != null) {
+      mustNots.stream().forEach(mustNot -> {
+        if (RPCSearchFieldVO.TYPE_TERM.equalsIgnoreCase(mustNot.getType())) {
+          boolQueryBuilder.mustNot(QueryBuilders.termQuery(mustNot.getFieldName(),mustNot.getFieldValue()));
+        } else if (RPCSearchFieldVO.TYPE_RANGE.equalsIgnoreCase(mustNot.getType())) {
+          if (RPCSearchFieldVO.INTERVAL_OPEN.equalsIgnoreCase(mustNot.getInterval())) {
+            if (mustNot.getStart() != null) {
+              boolQueryBuilder.mustNot(QueryBuilders.rangeQuery(mustNot.getFieldName()).gt(mustNot.getStart()));
+            }
+            if (mustNot.getEnd() != null){
+              boolQueryBuilder.mustNot(QueryBuilders.rangeQuery(mustNot.getFieldName()).lt(mustNot.getEnd()));
+            }
+          } else if (RPCSearchFieldVO.INTERVAL_CLOSE.equalsIgnoreCase(mustNot.getInterval())) {
+            if (mustNot.getStart() != null) {
+              boolQueryBuilder.mustNot(QueryBuilders.rangeQuery(mustNot.getFieldName()).gte(mustNot.getStart()));
+            }
+            if (mustNot.getEnd() != null){
+              boolQueryBuilder.mustNot(QueryBuilders.rangeQuery(mustNot.getFieldName()).lte(mustNot.getEnd()));
+            }
+          }
+        }
+      });
+    }
+
+    Set<RPCSearchFieldVO> shoulds = exactly.getShould();
+    if (shoulds != null) {
+      shoulds.stream().forEach(should -> {
+        if (RPCSearchFieldVO.TYPE_TERM.equalsIgnoreCase(should.getType())) {
+          boolQueryBuilder.should(QueryBuilders.termQuery(should.getFieldName(),should.getFieldValue()));
+        } else if (RPCSearchFieldVO.TYPE_RANGE.equalsIgnoreCase(should.getType())) {
+          if (RPCSearchFieldVO.INTERVAL_OPEN.equalsIgnoreCase(should.getInterval())) {
+            if (should.getStart() != null) {
+              boolQueryBuilder.should(QueryBuilders.rangeQuery(should.getFieldName()).gt(should.getStart()));
+            }
+            if (should.getEnd() != null){
+              boolQueryBuilder.should(QueryBuilders.rangeQuery(should.getFieldName()).lt(should.getEnd()));
+            }
+          } else if (RPCSearchFieldVO.INTERVAL_CLOSE.equalsIgnoreCase(should.getInterval())) {
+            if (should.getStart() != null) {
+              boolQueryBuilder.should(QueryBuilders.rangeQuery(should.getFieldName()).gte(should.getStart()));
+            }
+            if (should.getEnd() != null){
+              boolQueryBuilder.should(QueryBuilders.rangeQuery(should.getFieldName()).lte(should.getEnd()));
+            }
+          }
+        }
+      });
+    }
+  }
+
+  private void search(BoolQueryBuilder boolQueryBuilder, SearchInputBO searchInputBO){
+    if (boolQueryBuilder == null) {
+      return;
+    }
+
+    List<RPCSearchFieldVO> searchFields = searchInputBO.getSearchField();
+    if (searchFields == null) {
+      String keyword = searchInputBO.getKeyword();
+      if (keyword == null) {
+        return;
+      }
+      if (keyword.length() > queryKeyWorldMaxLength) {
+        keyword = keyword.substring(0, queryKeyWorldMaxLength);
+      }
+      final String KEY_WORD = keyword;
+      DocumentEntity.FULL_TEXT_SEARCH_PROPERTIES.forEach(field -> boolQueryBuilder.should(QueryBuilders.matchQuery(field, KEY_WORD)));
+      return;
+    }
+
+    searchFields.stream().forEach(searchField -> {
+      boolQueryBuilder.should(QueryBuilders.matchQuery(searchField.getFieldName(), searchField.getFieldValue()));
+    });
+  }
+
+  private List<? extends SortBuilder> searchSort(BoolQueryBuilder boolQueryBuilder, SearchInputBO searchInputBO){
+    ScoreSortBuilder scoreSortBuilder = SortBuilders.scoreSort().order(SortOrder.DESC);
+    if (boolQueryBuilder == null) {
+      return Arrays.asList(scoreSortBuilder);
+    }
+
+    RPCSearchFieldExactlyVO exactly = searchInputBO.getExactly();
+    if (exactly == null) {
+      return Arrays.asList(scoreSortBuilder);
+    }
+
+    List<RPCSearchFieldSortVO> sorts = searchInputBO.getSort();
+    if (sorts == null) {
+      return Arrays.asList(scoreSortBuilder);
+
+    }
+
+    return sorts.stream().map(
+        sort -> SortBuilders.fieldSort(sort.getFieldName())
+            .order(SortOrder.valueOf(sort.getOrder().toUpperCase())))
+        .collect(Collectors.toList());
+  }
+
+
 
   private LinkedList<String> hitHighlightField (HighlightField highlightField){
     LinkedList<String> result = new LinkedList<>();
