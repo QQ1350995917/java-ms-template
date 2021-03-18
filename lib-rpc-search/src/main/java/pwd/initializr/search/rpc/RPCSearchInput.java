@@ -77,19 +77,19 @@ public class RPCSearchInput {
 
     private static final long serialVersionUID = -4291776028708567323L;
 
-    @ApiModelProperty(name = "indices", value = "indexNames", required = false, example = "book,article", dataType = "java.util.List")
+    @ApiModelProperty(name = "indices", value = "索引名称", required = false, example = "book,article", dataType = "java.util.List")
     private List<String> indices;
-    @ApiModelProperty(name = "keyword", value = "keyword", required = false, example = "万里江山", dataType = "java.lang.String")
+    @ApiModelProperty(name = "keyword", value = "全文检索关键字", required = false, example = "万里江山", dataType = "java.lang.String")
     private String keyword = "*";
-    @ApiModelProperty(name = "action", value = "action", required = false, example = "{\"exactly\":{\"must\":[{\"fieldName\":\"key\",\"fieldValue\":\"value\",\"type\":\"term|range\",\"start\":\"\",\"end\":\"\",\"interval\":\"open|close\"}],\"should\":[{\"fieldName\":\"key\",\"fieldValue\":\"value\",\"type\":\"term|range\",\"start\":\"\",\"end\":\"\",\"interval\":\"open|close\"}],\"must_not\":[{\"fieldName\":\"key\",\"fieldValue\":\"value\",\"type\":\"term|range\",\"start\":\"\",\"end\":\"\",\"interval\":\"open|close\"}]},\"search\":[{\"fieldName\":\"name\",\"fieldValue\":\"value\"}],\"sort\":[{\"fieldName\":\"name\",\"order\":\"ASC|DESC\"}]}", dataType = "java.lang.String")
+    @ApiModelProperty(name = "query", value = "{\"exactly\":{\"must\":[{\"fieldName\":\"key\",\"fieldValue\":\"value\",\"type\":\"term|range\",\"start\":\"\",\"end\":\"\",\"interval\":\"open|close\"}],\"should\":[{\"fieldName\":\"key\",\"fieldValue\":\"value\",\"type\":\"term|range\",\"start\":\"\",\"end\":\"\",\"interval\":\"open|close\"}],\"must_not\":[{\"fieldName\":\"key\",\"fieldValue\":\"value\",\"type\":\"term|range\",\"start\":\"\",\"end\":\"\",\"interval\":\"open|close\"}]},\"search\":[{\"fieldName\":\"name\",\"fieldValue\":\"value\"}],\"sort\":[{\"fieldName\":\"name\",\"order\":\"ASC|DESC\"}]}", required = false, example = "{\"exactly\":{\"must\":[{\"fieldName\":\"key\",\"fieldValue\":\"value\",\"type\":\"term|range\",\"start\":\"\",\"end\":\"\",\"interval\":\"open|close\"}],\"should\":[{\"fieldName\":\"key\",\"fieldValue\":\"value\",\"type\":\"term|range\",\"start\":\"\",\"end\":\"\",\"interval\":\"open|close\"}],\"must_not\":[{\"fieldName\":\"key\",\"fieldValue\":\"value\",\"type\":\"term|range\",\"start\":\"\",\"end\":\"\",\"interval\":\"open|close\"}]},\"search\":[{\"fieldName\":\"name\",\"fieldValue\":\"value\"}],\"sort\":[{\"fieldName\":\"name\",\"order\":\"ASC|DESC\"}]}", dataType = "java.lang.String")
     private String query;
-    @ApiModelProperty(name = "index", value = "pageIndex", required = false, example = "0", dataType = "java.lang.Integer")
+    @ApiModelProperty(name = "index", value = "页码", required = false, example = "0", dataType = "java.lang.Integer")
     private Integer index = 0;
-    @ApiModelProperty(name = "size", value = "pageSize", required = false, example = "12", dataType = "java.lang.Integer")
+    @ApiModelProperty(name = "size", value = "页容", required = false, example = "12", dataType = "java.lang.Integer")
     private Integer size = 12;
-    @ApiModelProperty(name = "preTags", value = "preTags", required = false, example = "<strong>", dataType = "java.lang.String")
+    @ApiModelProperty(name = "preTags", value = "高亮标记起始标签", required = false, example = "<strong>", dataType = "java.lang.String")
     private String preTags = "<strong>";
-    @ApiModelProperty(name = "postTags", value = "postTags", required = false, example = "</strong>", dataType = "java.lang.String")
+    @ApiModelProperty(name = "postTags", value = "高亮标记结束标签", required = false, example = "</strong>", dataType = "java.lang.String")
     private String postTags = "</strong>";
 
     public Integer getIndex() {

@@ -15,7 +15,7 @@
 </head>
 <body>
 <el-container id="container">
-  <el-header style="padding: 0px; height: 150px">
+  <el-header style="padding: 0px; height: 45px">
     <el-row>
       <el-col :span="12" :offset="6">
         <template>
@@ -29,11 +29,11 @@
         </template>
       </el-col>
     </el-row>
+  </el-header>
+  <el-main style="padding: 0px 10px 0px 0px; margin-top: 10px; height: 666px;">
     <el-row>
       <el-col :span="12" :offset="6">
-        <div>
-          <el-input type="textarea" v-model="query"></el-input>
-        </div>
+        <div type="info" plain @click="onExactlyViewClick" style="width: 100%;height: 100px">{{query}}</div>
       </el-col>
     </el-row>
     <el-row>
@@ -54,8 +54,6 @@
         </div>
       </el-col>
     </el-row>
-  </el-header>
-  <el-main style="padding: 0px 10px 0px 0px; margin-top: 10px; height: 666px;">
     <el-row>
       <el-col :span="12" :offset="6" v-for="element in elements">
         <a :href="element.link" target="_blank">
@@ -84,6 +82,22 @@
         </div>
       </el-col>
     </el-row>
+    <el-dialog
+        title="编辑"
+        :visible.sync="dialogVisible"
+        width="30%"
+        :before-close="handleClose">
+      <el-input
+          type="textarea"
+          :rows="25"
+          placeholder="请输入内容"
+          v-model="query">
+      </el-input>
+      <span slot="footer" class="dialog-footer">
+    <el-button @click="dialogVisible = false">取 消</el-button>
+    <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+  </span>
+    </el-dialog>
   </el-main>
   <el-footer>
     <el-row>
@@ -102,12 +116,34 @@
         activeName: 'query',
         indies: [],
         select: '',
-        query: '{"exactly":{"must":[{"fieldName":"key","fieldValue":"value","type":"term|range","start":"","end":"","interval":"open|close"}],"should":[{"fieldName":"key","fieldValue":"value","type":"term|range","start":"","end":"","interval":"open|close"}],"must_not":[{"fieldName":"key","fieldValue":"value","type":"term|range","start":"","end":"","interval":"open|close"}]},"search":[{"fieldName":"name","fieldValue":"value"}],"sort":[{"fieldName":"name","order":"ASC|DESC"}]}',
+        query: '{\n'
+            + '    "exactly":{\n'
+            + '        "must":[\n'
+            + '            {\n'
+            + '                "fieldName":"exactly.age",\n'
+            + '                "fieldValue":"30",\n'
+            + '                "type":"term"\n'
+            + '            },\n'
+            + '            {\n'
+            + '                "fieldName":"exactly.content.keyword",\n'
+            + '                "fieldValue":"一二三四五",\n'
+            + '                "type":"term"\n'
+            + '            }\n'
+            + '        ]\n'
+            + '    },\n'
+            + '    "sort":[\n'
+            + '        {\n'
+            + '            "fieldName":"exactly.age",\n'
+            + '            "order":"ASC"\n'
+            + '        }\n'
+            + '    ]\n'
+            + '}',
         keyword: '',
         pageIndex: 0,
         pageSize: 12,
         total: 0,
-        elements: []
+        elements: [],
+        dialogVisible: false
       };
     },
     created() {
@@ -160,16 +196,12 @@
               }
             });
       },
+      onExactlyViewClick(){
+        this.dialogVisible = true
+      },
       onSearchButtonClick() {
         if (this.select === '' || this.select === undefined) {
           this.select = '*';
-        }
-        if (this.keyword === '' || this.keyword === undefined) {
-          this.$message({
-            message: 'Must input keyword',
-            type: 'warning'
-          });
-          return
         }
         this.elements = []
         this.pageIndex = 0
@@ -213,6 +245,13 @@
                 this.$message.error('Unknown error');
               }
             });
+      },
+      handleClose(done) {
+        this.$confirm('确认关闭？')
+        .then(_ => {
+          done();
+        })
+        .catch(_ => {});
       }
     }
   });

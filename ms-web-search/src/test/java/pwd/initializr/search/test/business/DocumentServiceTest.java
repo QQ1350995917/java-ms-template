@@ -34,7 +34,7 @@ import pwd.initializr.search.rpc.RPCSearchOutput;
 @Slf4j
 public class DocumentServiceTest {
 
-  private static final String indexName = "v2";
+  private static final String indexName = "book";
 
   @Autowired
   private DocumentService documentService;
