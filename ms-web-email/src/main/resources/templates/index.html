@@ -27,7 +27,7 @@
       </el-col>
     </el-row>
   </el-header>
-  <el-main style="padding: 0px 10px 0px 0px; margin-top: 1px; height: 666px;">
+  <el-main style="padding: 0px 10px 0px 0px; margin-top: 1px; height: 698px;">
     <el-row>
       <el-col :span="2" :offset="6">
         <el-button @click="onCreateDialogOpen({})">Create</el-button>
@@ -36,7 +36,9 @@
         <div>
           <el-input placeholder="请输入内容" v-model="keyword" class="input-with-select">
             <el-select v-model="select" slot="prepend" placeholder="请选择" style="width: 100px;">
-              <el-option label="x" value="x"></el-option>
+              <el-option label="app" value="app"></el-option>
+              <el-option label="sent" value="sent"></el-option>
+              <el-option label="del" value="del"></el-option>
             </el-select>
             <el-button slot="append" icon="el-icon-search" @click="onSearchButtonClick"></el-button>
           </el-input>
@@ -48,10 +50,11 @@
         <el-table
             :data="emails"
             style="width: 100%;"
-            max-height="600">
+            max-height="630">
           <el-table-column
               prop="id"
-              label="id">
+              label="id"
+              width="80">
           </el-table-column>
           <el-table-column
               prop="app"
@@ -59,19 +62,33 @@
           </el-table-column>
           <el-table-column
               prop="sent"
-              label="sent">
+              label="sent"
+              width="80"
+              :formatter="sentFormatter"
+          >
           </el-table-column>
           <el-table-column
               prop="del"
-              label="del">
+              label="del"
+              width="80"
+              :formatter="delFormatter"
+          >
           </el-table-column>
           <el-table-column
-              prop="create_time"
-              label="createTime">
+              prop="createTime"
+              label="createTime"
+          >
+            <template slot-scope="scope">
+              <span>{{timeFormatter(scope.row.createTime)}}</span>
+            </template>
           </el-table-column>
           <el-table-column
-              prop="update_time"
-              label="updateTime">
+              prop="updateTime"
+              label="updateTime"
+          >
+            <template slot-scope="scope">
+              <span>{{timeFormatter(scope.row.updateTime)}}</span>
+            </template>
           </el-table-column>
           <!--<el-table-column-->
               <!--fixed="right"-->
@@ -109,35 +126,40 @@
       <el-row>
         <el-col :span="12" :offset="6">
           <div>
-            <el-input placeholder="请输入收件人" v-model="email.tos">
+            <el-input placeholder="请输入收件人" v-model="emailTemplate.to">
               <template slot="prepend">To</template>
             </el-input>
           </div>
           <div>
-            <el-input placeholder="请输入抄送人" v-model="email.ccs">
+            <el-input placeholder="请输入抄送人" v-model="emailTemplate.cc">
               <template slot="prepend">Cc</template>
             </el-input>
           </div>
           <div>
-            <el-input placeholder="请输入密送人" v-model="email.bccs">
+            <el-input placeholder="请输入密送人" v-model="emailTemplate.bcc">
               <template slot="prepend">Bcc</template>
             </el-input>
           </div>
 
           <div>
-            <el-input placeholder="请输入标题" v-model="email.title">
+            <el-input placeholder="请输入标题" v-model="emailTemplate.title">
               <template slot="prepend">Title</template>
             </el-input>
           </div>
           <div>
-            <el-input type="textarea" placeholder="请输入内容" v-model="email.content" maxlength="3000" show-word-limit>
+            <el-input type="textarea" placeholder="请输入内容" v-model="emailTemplate.content" maxlength="3000" show-word-limit>
+            </el-input>
+          </div>
+          <div>
+            <el-input placeholder="请输入附件链接" v-model="emailTemplate.attachment">
+              <template slot="prepend">Attachment</template>
             </el-input>
           </div>
         </el-col>
       </el-row>
       <span slot="footer" class="dialog-footer">
     <el-button @click="createDialogVisible = false">取消</el-button>
-    <el-button type="primary" @click="createDialogVisible = false">发送</el-button>
+    <el-button type="primary" @click="onSendClick">发送</el-button>
   </span>
     </el-dialog>
   </el-main>
@@ -158,12 +180,37 @@
         activeName: '0',
         emails: [],
         createDialogVisible: false,
+        emailTemplate: {
+          to:'www.dingpengwei@foxmail.com',
+          cc:'www.dingpengwei@foxmail.com',
+          bcc:'www.dingpengwei@foxmail.com',
+          title:'hello word hello email',
+          attachment:'',
+        },
         email: {
-          tos: [],
-          ccs: [],
-          bccs: [],
-          title: '',
-          content: ''
+          app: "demo",
+          // attachments: [
+          //   {
+          //     cid: "string",
+          //     contentType: "string",
+          //     fileName: "string",
+          //     url: "string"
+          //   }
+          // ],
+          box: {
+            bcc: [],
+            cc: [],
+            to: []
+          },
+          content: {
+            subject: '',
+            content: ''
+          },
+          // extend: {
+          //   key0: '',
+          //   key1: '',
+          //   key2: ''
+          // }
         },
         pageIndex: 1,
         pageSize: 12,
@@ -197,8 +244,13 @@
           window.open("/static/" + tab.name + ".html", '_self');
         }
       },
-      onRequestForEmails(){
-        this.$http.get('/api/email?scopes=' + encodeURIComponent(JSON.stringify(this.scopes))
+      onRequestForEmails(pageIndex){
+        if (pageIndex === undefined) {
+          pageIndex = this.pageIndex
+        }
+        this.page.index = pageIndex - 1
+        this.page.size = this.pageSize
+        this.$http.get('/api/robot/email?scopes=' + encodeURIComponent(JSON.stringify(this.scopes))
             + '&sorts=' + encodeURIComponent(JSON.stringify(this.sorts))
             + '&page=' + encodeURIComponent(JSON.stringify(this.page)))
         .then(
@@ -215,7 +267,8 @@
                     type: 'warning'
                   });
                 } else {
-                  this.emails = data.elements;
+                  this.emails = data.elements
+                  this.total = Number(data.total)
                 }
               } else {
                 this.$message({
@@ -237,12 +290,37 @@
             });
       },
       onCreateDialogOpen(){
-        this.email = {}
         this.createDialogVisible = true
       },
       onSearchButtonClick(){},
       onSendClick() {
-
+        this.email.box.to.push(this.emailTemplate.to)
+        this.email.box.cc.push(this.emailTemplate.cc)
+        this.email.box.bcc.push(this.emailTemplate.bcc)
+        this.email.content.subject = this.emailTemplate.title
+        this.email.content.content = this.emailTemplate.content
+        this.$http.post('/api/robot/email', this.email).then(
+            function (res) {
+              var body = res.body;
+              var meta = body.meta;
+              var code = meta.code;
+              var data = body.data;
+              if (code == 200) {
+                this.$message({
+                  message: 'Success',
+                  type: 'success'
+                });
+                this.createDialogVisible = false
+                this.onRequestForEmails(1)
+              } else {
+                this.$message({
+                  message: meta.message,
+                  type: 'warning'
+                });
+              }
+            }, function (e) {
+              this.$message.error('Create Exception');
+            });
       },
       handleClose(done) {
         this.$confirm('确认关闭？')
@@ -250,7 +328,60 @@
           done();
         })
         .catch(_ => {});
+      },
+      sentFormatter(row, column, cellValue, index) {
+        if(cellValue === 0) {
+          return '待发送'
+        } else if(cellValue === 1) {
+          return '发送中'
+        } else if(cellValue === 2) {
+          return '已发送'
+        } else if(cellValue === 3) {
+          return '发送失败'
+        } else {
+          return cellValue
+        }
+      },
+      delFormatter(row, column, cellValue, index) {
+        if(cellValue === 0) {
+          return '未删除'
+        } else if(cellValue === 1) {
+          return '已删除'
+        } else {
+          return cellValue
+        }
+      },
+      timeFormatter(date, fmt = "yyyy-MM-dd hh:mm:ss") {
+        if (!date) return date;
+        if (!(date instanceof Date)) {
+          date = new Date(date);
+        }
+        var o = {
+          "M+": date.getMonth() + 1, //月份
+          "d+": date.getDate(), //日
+          "h+": date.getHours(), //小时
+          "m+": date.getMinutes(), //分
+          "s+": date.getSeconds(), //秒
+          "q+": Math.floor((date.getMonth() + 3) / 3), //季度
+          S: date.getMilliseconds() //毫秒
+        };
+        if (/(y+)/.test(fmt)) {
+          fmt = fmt.replace(
+              RegExp.$1,
+              (date.getFullYear() + "").substr(4 - RegExp.$1.length)
+          );
+        }
+        for (var k in o) {
+          if (new RegExp("(" + k + ")").test(fmt)) {
+            fmt = fmt.replace(
+                RegExp.$1,
+                RegExp.$1.length == 1 ? o[k] : ("00" + o[k]).substr(("" + o[k]).length)
+            );
+          }
+        }
+        return fmt;
       }
+
     }
   });
 </script>
