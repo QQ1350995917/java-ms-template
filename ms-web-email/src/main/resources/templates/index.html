@@ -185,18 +185,18 @@
           cc:'www.dingpengwei@foxmail.com',
           bcc:'www.dingpengwei@foxmail.com',
           title:'hello word hello email',
-          attachment:'',
+          attachment:'http://192.168.105.25:9000/test/570322687185137664.doc',
         },
         email: {
           app: "demo",
-          // attachments: [
-          //   {
-          //     cid: "string",
-          //     contentType: "string",
-          //     fileName: "string",
-          //     url: "string"
-          //   }
-          // ],
+          attachments: [
+            {
+              cid: "0",
+              contentType: "application/msword",
+              fileName: "demo-attachment",
+              url: "string"
+            }
+          ],
           box: {
             bcc: [],
             cc: [],
@@ -299,6 +299,8 @@
         this.email.box.bcc.push(this.emailTemplate.bcc)
         this.email.content.subject = this.emailTemplate.title
         this.email.content.content = this.emailTemplate.content
+        this.email.attachments[0].url = this.emailTemplate.attachment
+
         this.$http.post('/api/robot/email', this.email).then(
             function (res) {
               var body = res.body;
