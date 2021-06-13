@@ -73,16 +73,16 @@ public class OrganizationInput implements Serializable {
     * 
     * 组织排序
     */
-   @ApiModelProperty(name = "sort", value = "组织排序", required = true, example = "0")
+   @ApiModelProperty(name = "sort", value = "组织排序", required = false, example = "0")
    @Digits(integer = 10, fraction = 0, message = "sort须为整数")
-   private Integer sort;
+   private Integer sort = 0;
 
    /**
     * 
     * 组织成员数量
     */
-   @ApiModelProperty(name = "members", value = "组织成员数量", required = true, example = "1")
+   @ApiModelProperty(name = "members", value = "组织成员数量", required = false, example = "1")
    @Digits(integer = 10, fraction = 0, message = "members须为整数")
-   private Integer members;
+   private Integer members = 0;
 
 }
