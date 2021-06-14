@@ -11,6 +11,7 @@ import javax.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.organization.api.vo.OrganizationMemberInput;
@@ -61,6 +62,7 @@ public class OrganizationMemberController extends pwd.initializr.common.web.api.
     pageableQueryResult.getElements().forEach(bo -> {
       OrganizationMemberOutput output = new OrganizationMemberOutput();
       BeanUtils.copyProperties(bo, output);
+      output.setMember(bo.getMember());
       result.getElements().add(output);
     });
     result.setTotal(pageableQueryResult.getTotal());
@@ -114,9 +116,12 @@ public class OrganizationMemberController extends pwd.initializr.common.web.api.
   }
 
   @Override
-  public void create(@Valid @NotNull(message = "参数不能为空") OrganizationMemberInput input) {
+  public void create(
+      @PathVariable("orgId") @Valid @NotNull(message = "参数不能为空") Long orgId,
+      @PathVariable("memId") @Valid @NotNull(message = "参数不能为空") Long memId) {
     OrganizationMemberBO bo = new OrganizationMemberBO();
-    BeanUtils.copyProperties(input,bo);
+    bo.setOrgId(orgId);
+    bo.setMemId(memId);
     Long id = service.insert(bo);
     outputData(200,id);
   }

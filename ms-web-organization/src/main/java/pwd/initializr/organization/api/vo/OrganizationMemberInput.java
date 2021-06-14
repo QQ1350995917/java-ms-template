@@ -36,8 +36,8 @@ public class OrganizationMemberInput implements Serializable {
     * 
     * 排序
     */
-   @ApiModelProperty(name = "sort", value = "排序", required = true, example = "0")
+   @ApiModelProperty(name = "sort", value = "排序", required = false, example = "0")
    @Digits(integer = 10, fraction = 0, message = "sort须为整数")
-   private Integer sort;
+   private Integer sort = 0;
 
 }

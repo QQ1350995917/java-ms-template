@@ -23,8 +23,18 @@
           id, pin, name, gender, emp_no, summary, able, del, create_time, update_time, version
         from user_user
         where id = #{id}
-    </select>
+  </select>
 
+  <!--查询单个-->
+  <select id="queryByIds" resultMap="UserUserMap">
+        select
+          id, pin, name, gender, emp_no, summary, able, del, create_time, update_time, version
+        from user_user
+        where id in
+        <foreach close=")" collection="ids" index="index" item="id" open="(" separator=",">
+          #{id}
+        </foreach>
+  </select>
 
   <!--通过实体作为筛选条件统计-->
   <select id="countAllByCondition" resultType="java.lang.Long">

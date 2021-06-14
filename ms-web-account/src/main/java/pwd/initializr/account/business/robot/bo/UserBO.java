@@ -22,7 +22,7 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class User {
+public class UserBO {
 
   private Long id;
   private String name;

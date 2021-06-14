@@ -101,6 +101,19 @@ public interface UserUserDao {
    */
   UserUserEntity queryById(Long id);
 
+
+  /**
+   * <h2>通过主键批量查询用户</h2>
+   * date 2021-06-14 14:18
+   *
+   * @param ids 用户主键集合
+   * @return int
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  List<UserUserEntity> queryByIds(@Param("ids") Long[] ids);
+
+
   /**
    * 修改数据
    *

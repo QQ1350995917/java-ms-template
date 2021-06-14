@@ -3,12 +3,16 @@ package pwd.initializr.organization.business;
 import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import pwd.initializr.account.rpc.RPCUser;
+import pwd.initializr.common.web.api.vo.Output;
 import pwd.initializr.organization.business.bo.OrganizationMemberBO;
+import pwd.initializr.organization.business.remote.OrganizationMemberClientService;
 import pwd.initializr.organization.persistence.dao.OrganizationMemberDao;
 import pwd.initializr.organization.persistence.entity.OrganizationMemberEntity;
 import pwd.initializr.common.web.business.bo.PageableQueryResult;
@@ -29,6 +33,8 @@ public class OrganizationMemberServiceImpl implements OrganizationMemberService 
 
   @Resource
   private OrganizationMemberDao dao;
+  @Resource
+  private OrganizationMemberClientService memberClientService;
 
   @Override
   public Integer ableById(Long id, EntityAble able) {
@@ -52,6 +58,9 @@ public class OrganizationMemberServiceImpl implements OrganizationMemberService 
 
   @Override
   public Long insert(OrganizationMemberBO bo) {
+    bo.setSort(0);
+    bo.setAble(0);
+    bo.setDel(0);
     OrganizationMemberEntity entity = this.convertOrganizationMemberBO2OrganizationMemberEntity(bo);
     this.dao.insert(entity);
     return entity.getMemId();
@@ -90,9 +99,14 @@ public class OrganizationMemberServiceImpl implements OrganizationMemberService 
     if (entities == null) {
       return result;
     }
+    Long[] ids = entities.stream().map(OrganizationMemberEntity::getMemId).toArray(Long[]::new);
+    Output<List<RPCUser>> response = memberClientService.findByIds(ids);
+    Map<Long, RPCUser> userMap = response.getData().stream()
+        .collect(Collectors.toMap(RPCUser::getId, user -> user));
     entities.forEach(entity -> {
       OrganizationMemberBO resultItem = new OrganizationMemberBO();
       BeanUtils.copyProperties(entity, resultItem);
+      resultItem.setMember(userMap.get(entity.getMemId()));
       result.getElements().add(resultItem);
     });
     result.setIndex(pageIndex);

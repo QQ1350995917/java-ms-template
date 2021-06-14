@@ -37,7 +37,7 @@ import pwd.initializr.account.api.user.vo.UserUpdateInput;
 @SpringBootTest
 @AutoConfigureMockMvc
 @Slf4j
-public class UserApiTest {
+public class UserBOApiTest {
 
     @Autowired
     private WebApplicationContext webApplicationContext;

@@ -29,7 +29,7 @@ import pwd.initializr.common.web.persistence.entity.SortEntity;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class AdminUserDaoTest {
+public class AdminUserBODaoTest {
 
     @Autowired
     private AdminUserDao adminUserDao;

@@ -2,6 +2,9 @@ package pwd.initializr.organization;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
 
 /**
@@ -16,6 +19,9 @@ import org.springframework.context.annotation.ComponentScan;
  * @since 0.0.1-SNAPSHOT
  */
 @SpringBootApplication
+@EnableEurekaClient
+@EnableDiscoveryClient
+@EnableFeignClients("pwd.initializr.organization.business")
 @ComponentScan(basePackages = {"pwd.initializr.common.web", "pwd.initializr.organization"})
 public class OrganizationApplication {
 

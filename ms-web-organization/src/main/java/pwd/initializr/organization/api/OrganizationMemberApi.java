@@ -154,14 +154,17 @@ public interface OrganizationMemberApi {
    * <h2>新增</h2>
    * date 2021-02-22 21:33
    *
-   * @param input 请求参数
+   * @param orgId 组织ID
+   * @param memId 成员ID
    * @return void
    * @author Automatic[www.dingpengwei@foxmail.com]
    * @since 0.0.1-SNAPSHOT
    */
   @ApiOperation(value = "新增")
-  @PostMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  void create(@RequestBody @Valid @NotNull(message = "参数不能为空") OrganizationMemberInput input);
+  @PostMapping(value = {"/{orgId}/{memId}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  void create(
+      @PathVariable("orgId") @Valid @NotNull(message = "参数不能为空") Long orgId,
+      @PathVariable("memId") @Valid @NotNull(message = "参数不能为空") Long memId);
 
   /**
    * <h2>新增（批量）</h2>

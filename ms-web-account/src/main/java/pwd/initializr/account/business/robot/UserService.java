@@ -2,7 +2,7 @@ package pwd.initializr.account.business.robot;
 
 import java.util.List;
 import org.springframework.stereotype.Service;
-import pwd.initializr.account.business.robot.bo.User;
+import pwd.initializr.account.business.robot.bo.UserBO;
 
 /**
  * pwd.initializr.account.business.robot@ms-web-initializr
@@ -18,5 +18,5 @@ import pwd.initializr.account.business.robot.bo.User;
 @Service
 public interface UserService {
 
-  List<User> listByUserId(Long[] userIds);
+  List<UserBO> listByUserId(Long[] userIds);
 }

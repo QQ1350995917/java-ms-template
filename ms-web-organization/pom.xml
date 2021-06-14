@@ -33,8 +33,21 @@
       <artifactId>spring-boot-starter-actuator</artifactId>
     </dependency>
     <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-starter-openfeign</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.github.openfeign</groupId>
+      <artifactId>feign-okhttp</artifactId>
+    </dependency>
+    <dependency>
       <groupId>pwd.initializr</groupId>
       <artifactId>lib-common-web</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>pwd.initializr</groupId>
+      <artifactId>lib-rpc-account</artifactId>
       <version>0.0.1-SNAPSHOT</version>
     </dependency>
     <dependency>

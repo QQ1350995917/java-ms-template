@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import pwd.initializr.account.rpc.RPCUser;
 import pwd.initializr.organization.persistence.entity.OrganizationMemberEntity;
 
 /**
@@ -19,4 +20,5 @@ import pwd.initializr.organization.persistence.entity.OrganizationMemberEntity;
 @NoArgsConstructor
 public class OrganizationMemberBO extends OrganizationMemberEntity {
 
+  private RPCUser member;
 }

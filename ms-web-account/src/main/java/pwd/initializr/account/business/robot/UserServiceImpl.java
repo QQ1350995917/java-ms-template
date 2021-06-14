@@ -2,8 +2,14 @@ package pwd.initializr.account.business.robot;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
+import javax.annotation.Resource;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
-import pwd.initializr.account.business.robot.bo.User;
+import pwd.initializr.account.business.robot.bo.UserBO;
+import pwd.initializr.account.business.user.bo.UserUserBO;
+import pwd.initializr.account.persistence.dao.UserUserDao;
+import pwd.initializr.account.persistence.entity.UserUserEntity;
 
 /**
  * pwd.initializr.account.business.robot@ms-web-initializr
@@ -19,18 +25,20 @@ import pwd.initializr.account.business.robot.bo.User;
 @Service
 public class UserServiceImpl implements UserService {
 
-//  @Autowired
-//  private UserMapperBak userMapper;
+  @Resource
+  private UserUserDao userUserDao;
 
   @Override
-  public List<User> listByUserId(Long[] userIds) {
-//    List<UserEntity> userEntities = userMapper.listUserByIds(userIds);
-    List<User> users = new LinkedList<>();
-//    for (UserEntity userEntity : userEntities) {
-//      UserBO user = new UserBO();
-//      BeanUtils.copyProperties(userEntity, user);
-//      users.add(user);
-//    }
-    return users;
+  public List<UserBO> listByUserId(Long[] userIds) {
+    List<UserUserEntity> userEntities = userUserDao.queryByIds(userIds);
+    List<UserBO> collect = userEntities.stream().map(this::convertUserEntity2UserBO)
+        .collect(Collectors.toList());
+    return collect;
+  }
+
+  private UserBO convertUserEntity2UserBO(UserUserEntity entity) {
+    UserBO user = new UserBO();
+    BeanUtils.copyProperties(entity, user);
+    return user;
   }
 }

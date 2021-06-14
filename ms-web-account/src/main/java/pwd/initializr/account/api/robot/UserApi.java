@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.account.api.robot.vo.ListUserInput;
 
@@ -31,5 +32,5 @@ public interface UserApi {
 
   @ApiOperation(value = "用户信息查询")
   @GetMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  void listById(ListUserInput input);
+  void listById(@RequestParam("ids") Long[] ids);
 }

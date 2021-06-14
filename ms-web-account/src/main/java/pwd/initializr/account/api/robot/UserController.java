@@ -1,16 +1,20 @@
 package pwd.initializr.account.api.robot;
 
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
+import net.bytebuddy.dynamic.scaffold.MethodGraph.Linked;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.account.api.robot.vo.ListUserInput;
 import pwd.initializr.account.business.robot.UserService;
-import pwd.initializr.account.business.robot.bo.User;
+import pwd.initializr.account.business.robot.bo.UserBO;
+import pwd.initializr.account.rpc.RPCUser;
+import rx.internal.util.LinkedArrayList;
 
 /**
  * pwd.initializr.account.api.robot@ms-web-initializr
@@ -37,8 +41,16 @@ public class UserController extends pwd.initializr.common.web.api.user.UserContr
   private UserService userService;
 
   @Override
-  public void listById(ListUserInput input) {
-    List<User> users = userService.listByUserId(input.getUserIds());
-    outputData(users);
+  public void listById(@RequestParam("ids") Long[] ids) {
+    List<UserBO> userBOS = userService.listByUserId(ids);
+    List<RPCUser> result = userBOS.stream().map(this::convertUserBO2RPC)
+        .collect(Collectors.toList());
+    outputData(result);
+  }
+
+  private RPCUser convertUserBO2RPC(UserBO bo){
+    RPCUser rpcUser = new RPCUser();
+    BeanUtils.copyProperties(bo,rpcUser);
+    return rpcUser;
   }
 }
