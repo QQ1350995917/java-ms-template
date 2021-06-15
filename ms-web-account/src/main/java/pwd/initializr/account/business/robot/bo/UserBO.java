@@ -25,9 +25,13 @@ import lombok.ToString;
 public class UserBO {
 
   private Long id;
+  private String pin;
   private String name;
-  private String phoneNumber;
-  private Integer status;
+  private String gender;
+  private String empNo;
+  private String summary;
+  private Integer able;
+  private Integer del;
   private Long createTime;
   private Long updateTime;
 }

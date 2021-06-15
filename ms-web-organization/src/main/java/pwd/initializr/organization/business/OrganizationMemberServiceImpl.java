@@ -13,7 +13,9 @@ import pwd.initializr.account.rpc.RPCUser;
 import pwd.initializr.common.web.api.vo.Output;
 import pwd.initializr.organization.business.bo.OrganizationMemberBO;
 import pwd.initializr.organization.business.remote.OrganizationMemberClientService;
+import pwd.initializr.organization.persistence.dao.OrganizationDao;
 import pwd.initializr.organization.persistence.dao.OrganizationMemberDao;
+import pwd.initializr.organization.persistence.entity.OrganizationEntity;
 import pwd.initializr.organization.persistence.entity.OrganizationMemberEntity;
 import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.common.web.business.bo.ScopeBO;
@@ -31,29 +33,32 @@ import pwd.initializr.common.web.persistence.entity.EntityDel;
 @Service("OrganizationMemberService")
 public class OrganizationMemberServiceImpl implements OrganizationMemberService {
 
+
   @Resource
-  private OrganizationMemberDao dao;
+  private OrganizationDao organizationDao;
+  @Resource
+  private OrganizationMemberDao organizationMemberDao;
   @Resource
   private OrganizationMemberClientService memberClientService;
 
   @Override
   public Integer ableById(Long id, EntityAble able) {
-    return this.dao.ableById(id, able.getNumber(), new Date());
+    return this.organizationMemberDao.ableById(id, able.getNumber(), new Date());
   }
 
   @Override
   public Integer ableById(Set<Long> ids, EntityAble able) {
-    return this.dao.ableByIds(ids, able.getNumber(), new Date());
+    return this.organizationMemberDao.ableByIds(ids, able.getNumber(), new Date());
   }
 
   @Override
   public Integer deleteById(Long id) {
-    return this.dao.deleteById(id, new Date());
+    return this.organizationMemberDao.deleteById(id, new Date());
   }
 
   @Override
   public Integer deleteById(Set<Long> ids) {
-    return this.dao.deleteByIds(ids, new Date());
+    return this.organizationMemberDao.deleteByIds(ids, new Date());
   }
 
   @Override
@@ -62,7 +67,7 @@ public class OrganizationMemberServiceImpl implements OrganizationMemberService 
     bo.setAble(0);
     bo.setDel(0);
     OrganizationMemberEntity entity = this.convertOrganizationMemberBO2OrganizationMemberEntity(bo);
-    this.dao.insert(entity);
+    this.organizationMemberDao.insert(entity);
     return entity.getMemId();
   }
 
@@ -70,13 +75,13 @@ public class OrganizationMemberServiceImpl implements OrganizationMemberService 
   public void insert(List<OrganizationMemberBO> bos) {
     List<OrganizationMemberEntity> entities = bos.stream()
       .map(this::convertOrganizationMemberBO2OrganizationMemberEntity).collect(Collectors.toList());
-    this.dao.insertByBatch(entities);
+    this.organizationMemberDao.insertByBatch(entities);
   }
 
   @Override
   public Long insertOrReplace(OrganizationMemberBO bo) {
     OrganizationMemberEntity entity = this.convertOrganizationMemberBO2OrganizationMemberEntity(bo);
-    this.dao.insertOrReplace(entity);
+    this.organizationMemberDao.insertOrReplace(entity);
     return entity.getOrgId();
   }
 
@@ -84,29 +89,40 @@ public class OrganizationMemberServiceImpl implements OrganizationMemberService 
   public void insertOrReplace(List<OrganizationMemberBO> bos) {
     List<OrganizationMemberEntity> entities = bos.stream()
       .map(this::convertOrganizationMemberBO2OrganizationMemberEntity).collect(Collectors.toList());
-    this.dao.insertOrReplaceByBatch(entities);
+    this.organizationMemberDao.insertOrReplaceByBatch(entities);
   }
 
   @Override
   public PageableQueryResult<OrganizationMemberBO> queryAllByCondition(LinkedHashSet<ScopeBO> scopes,
     LinkedHashSet<SortBO> sorts, Long pageIndex, Long pageSize) {
     PageableQueryResult<OrganizationMemberBO> result = new PageableQueryResult<>();
-    Long total = this.dao.countByCondition(scopes);
+    Long total = this.organizationMemberDao.countByCondition(scopes);
     if (total == null || total < 1) {
       return result;
     }
-    List<OrganizationMemberEntity> entities = this.dao.queryByCondition(scopes,sorts, pageIndex * pageSize, pageSize);
+    List<OrganizationMemberEntity> entities = this.organizationMemberDao
+        .queryByCondition(scopes,sorts, pageIndex * pageSize, pageSize);
     if (entities == null) {
       return result;
     }
-    Long[] ids = entities.stream().map(OrganizationMemberEntity::getMemId).toArray(Long[]::new);
-    Output<List<RPCUser>> response = memberClientService.findByIds(ids);
-    Map<Long, RPCUser> userMap = response.getData().stream()
+    // 查询组织信息
+    Long[] orgIds = entities.stream().map(OrganizationMemberEntity::getOrgId).toArray(Long[]::new);
+    List<OrganizationEntity> organizationEntities = organizationDao.queryByIds(orgIds);
+    Map<Long, String> orgMap = organizationEntities.stream()
+        .collect(Collectors.toMap(OrganizationEntity::getId, OrganizationEntity::getName));
+
+    // 查询成员信息
+    // FIXME: 熔断降级返回null，有空指针异常
+    Long[] memberIds = entities.stream().map(OrganizationMemberEntity::getMemId).toArray(Long[]::new);
+    Output<List<RPCUser>> response = memberClientService.findByIds(memberIds);
+    Map<Long, RPCUser> memberMap = response.getData().stream()
         .collect(Collectors.toMap(RPCUser::getId, user -> user));
+
     entities.forEach(entity -> {
       OrganizationMemberBO resultItem = new OrganizationMemberBO();
       BeanUtils.copyProperties(entity, resultItem);
-      resultItem.setMember(userMap.get(entity.getMemId()));
+      resultItem.setOrgName(orgMap.get(entity.getOrgId()));
+      resultItem.setMember(memberMap.get(entity.getMemId()));
       result.getElements().add(resultItem);
     });
     result.setIndex(pageIndex);
@@ -117,7 +133,7 @@ public class OrganizationMemberServiceImpl implements OrganizationMemberService 
 
   @Override
   public OrganizationMemberBO queryById(Long id) {
-    OrganizationMemberEntity entity = this.dao.queryById(id);
+    OrganizationMemberEntity entity = this.organizationMemberDao.queryById(id);
     if (entity == null) {
       return null;
     }
@@ -131,7 +147,7 @@ public class OrganizationMemberServiceImpl implements OrganizationMemberService 
     OrganizationMemberEntity entity = new OrganizationMemberEntity();
     BeanUtils.copyProperties(bo, entity);
     entity.setUpdateTime(new Date());
-    return this.dao.updateById(entity);
+    return this.organizationMemberDao.updateById(entity);
   }
 
   public OrganizationMemberEntity convertOrganizationMemberBO2OrganizationMemberEntity(OrganizationMemberBO bo){

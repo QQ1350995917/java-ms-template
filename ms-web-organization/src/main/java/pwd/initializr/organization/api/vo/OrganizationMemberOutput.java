@@ -47,6 +47,12 @@ public class OrganizationMemberOutput implements Serializable {
   @NotBlank(message = "memId不能为空")
   private Long memId;
   /**
+   * 组织名称
+   */
+  @ApiModelProperty(name = "orgName", value = "组织名称", required = true, example = "")
+  @NotBlank(message = "orgName不能为空")
+  private String orgName;
+  /**
    * 
    * 排序
    */

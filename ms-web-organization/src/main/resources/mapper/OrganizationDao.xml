@@ -39,6 +39,31 @@
       id = #{id}
   </select>
 
+  <!--根据主键查询查询-->
+  <select id="queryByIds" resultMap="OrganizationMap">
+    SELECT
+      `id`,
+      `pid`,
+      `name`,
+      `logo`,
+      `description`,
+      `slogan`,
+      `sort`,
+      `members`,
+      `able`,
+      `del`,
+      `create_time`,
+      `update_time`
+    FROM
+      organization
+    WHERE
+      id
+    in
+    <foreach close=")" collection="ids" index="index" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </select>
+
   <!--查询指定行数据-->
   <select id="countByCondition" resultType="java.lang.Long">
     SELECT COUNT(*) FROM organization

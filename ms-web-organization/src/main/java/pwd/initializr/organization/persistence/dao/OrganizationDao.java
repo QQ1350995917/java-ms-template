@@ -153,6 +153,17 @@ public interface OrganizationDao {
    */
   OrganizationEntity queryById(@Param("id") Long id);
 
+  /**
+   * <h2>根据主键进行批量查询</h2>
+   * date 2021-06-15 23:46
+   *
+   * @param ids 主键集合
+   * @return pwd.initializr.organization.persistence.entity.OrganizationEntity
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  List<OrganizationEntity> queryByIds(@Param("ids") Long[] ids);
+
 
   /**
    * <h2>通过主键更新数据</h2>

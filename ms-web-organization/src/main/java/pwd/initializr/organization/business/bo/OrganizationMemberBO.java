@@ -20,5 +20,6 @@ import pwd.initializr.organization.persistence.entity.OrganizationMemberEntity;
 @NoArgsConstructor
 public class OrganizationMemberBO extends OrganizationMemberEntity {
 
+  private String orgName;
   private RPCUser member;
 }
