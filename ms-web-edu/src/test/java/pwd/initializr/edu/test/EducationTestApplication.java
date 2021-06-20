@@ -1,5 +1,9 @@
 package pwd.initializr.edu.test;
 
+import org.junit.runner.RunWith;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
+
 /**
  * pwd.initializr.edu.test@ms-web-initializr
  *
@@ -11,6 +15,9 @@ package pwd.initializr.edu.test;
  * @version 1.0.0
  * @since DistributionVersion
  */
+@RunWith(SpringRunner.class)
+@SpringBootTest
 public class EducationTestApplication {
+
 
 }

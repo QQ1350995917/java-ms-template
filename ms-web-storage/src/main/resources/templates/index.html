@@ -18,7 +18,7 @@
       <el-col :span="2" :offset="3">
         <el-button @click="onCreateDialogOpen()">Create</el-button>
       </el-col>
-      <el-col :span="16">
+      <el-col :span="14">
         <div>
           <el-input placeholder="请输入内容" v-model="search" class="input-with-select">
             <el-select v-model="select" slot="prepend" placeholder="请选择">
@@ -29,6 +29,9 @@
             <el-button slot="append" icon="el-icon-search"></el-button>
           </el-input>
         </div>
+      </el-col>
+      <el-col :span="2" align="right">
+        <el-button @click="onSwaggerButtonClick()">Swagger</el-button>
       </el-col>
     </el-row>
   </el-header>
@@ -141,6 +144,9 @@
       this.onRequestForList(this.pageIndex);
     },
     methods: {
+      onSwaggerButtonClick() {
+        window.open("/swagger-ui.html", '_blank');
+      },
       onRequestForList(pageIndex) {
         this.$http.get('/api/organization').then(
             function (res) {

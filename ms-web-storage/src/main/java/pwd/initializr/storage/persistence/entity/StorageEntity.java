@@ -5,9 +5,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 
 /**
  * pwd.initializr.storage.persistence.entity@ms-web-initializr
@@ -25,12 +27,13 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @Setter
 @Getter
 @ToString
-@Document(collection = "storage")
+@Document(collection = "storage") /** FIXME: 动态化*/
 public class StorageEntity {
 
   @Id
   @Field("id")
-  private String id;
+  @MongoId
+  private ObjectId id;
   @Field("app")
   private String app;
   @Field("fn")
