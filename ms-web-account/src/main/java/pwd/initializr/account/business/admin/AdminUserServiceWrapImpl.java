@@ -1,11 +1,13 @@
 package pwd.initializr.account.business.admin;
 
 import java.util.List;
+import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pwd.initializr.account.business.admin.bo.AdminAccountBO;
 import pwd.initializr.account.business.admin.bo.AdminUserBO;
+import pwd.initializr.common.utils.CryptographerPbkdf;
 import pwd.initializr.common.web.persistence.entity.EntityAble;
 
 /**
@@ -63,4 +65,6 @@ public class AdminUserServiceWrapImpl implements AdminUserServiceWrap {
     adminAccountService.insert(adminAccountBO);
     return userId;
   }
+
+
 }

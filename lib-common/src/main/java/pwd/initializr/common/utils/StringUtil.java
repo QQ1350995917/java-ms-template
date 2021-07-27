@@ -14,7 +14,7 @@ import java.util.Date;
  * @since DistributionVersion
  */
 @Deprecated
-public class StringUtil {
+public class StringUtil extends org.apache.commons.lang.StringUtils {
     public StringUtil() {
     }
 

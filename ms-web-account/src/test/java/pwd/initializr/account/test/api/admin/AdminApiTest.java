@@ -26,6 +26,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import pwd.initializr.account.api.admin.vo.AdminAccountCreateInput;
 import pwd.initializr.account.api.admin.vo.AdminAccountInput;
 import pwd.initializr.account.api.admin.vo.AdminCreateInput;
 import pwd.initializr.account.api.admin.vo.AdminUserInput;
@@ -99,9 +100,8 @@ public class AdminApiTest {
         adminUserInput.setLevel(1);
         adminUserInput.setSummary(summaryBuilder.toString());
 
-        AdminAccountInput adminAccountInput = new AdminAccountInput();
+        AdminAccountCreateInput adminAccountInput = new AdminAccountCreateInput();
         adminAccountInput.setLoginName(accountName);
-        adminAccountInput.setLoginPwd(accountPwd);
 
         caocaoInput.setAccount(adminAccountInput);
         caocaoInput.setUser(adminUserInput);

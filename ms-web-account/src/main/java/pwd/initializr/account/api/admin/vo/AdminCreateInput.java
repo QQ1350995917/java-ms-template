@@ -37,5 +37,5 @@ public class AdminCreateInput implements Serializable {
   @ApiModelProperty(name = "account", value = "账号信息", required = true)
   @Valid
   @NotNull(message = "账户信息并不能为空")
-  private AdminAccountInput account;
+  private AdminAccountCreateInput account;
 }

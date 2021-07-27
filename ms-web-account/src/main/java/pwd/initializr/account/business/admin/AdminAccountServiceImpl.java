@@ -5,6 +5,7 @@ import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.Resource;
+import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import pwd.initializr.account.business.admin.bo.AdminAccountBO;
@@ -12,6 +13,7 @@ import pwd.initializr.account.persistence.dao.AdminAccountDao;
 import pwd.initializr.account.persistence.entity.AccountType;
 import pwd.initializr.account.persistence.entity.AdminAccountEntity;
 import pwd.initializr.account.persistence.entity.AdminAccountType;
+import pwd.initializr.common.utils.CryptographerPbkdf;
 import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.common.web.business.bo.ScopeBO;
 import pwd.initializr.common.web.business.bo.SortBO;
@@ -88,11 +90,16 @@ public class AdminAccountServiceImpl implements AdminAccountService {
     BeanUtils.copyProperties(adminAccountBO, adminAccountEntity);
     adminAccountEntity.setAble(EntityAble.DISABLE.getNumber());
     adminAccountEntity.setDel(EntityDel.NO.getNumber());
+    String defaultPassword = getDefaultPassword();
+    String defaultPasswordSalt = getDefaultLoginPwdSalt();
+    adminAccountEntity.setLoginPwd(getDefaultLoginPwd(defaultPassword,defaultPasswordSalt));
+    adminAccountEntity.setPwdSalt(defaultPasswordSalt);
     adminAccountEntity.setPwdTime(new Date());
     adminAccountEntity.setType(AdminAccountType.GRANT.getNumber());
     adminAccountEntity.setCreateTime(new Date());
     adminAccountEntity.setUpdateTime(new Date());
     this.adminAccountDao.insert(adminAccountEntity);
+    // TODO 发邮件
     return adminAccountEntity.getId();
   }
 
@@ -175,12 +182,26 @@ public class AdminAccountServiceImpl implements AdminAccountService {
   }
 
   @Override
-  public Integer resetPwd(Long id, Long uid, String defaultPassword, String salt) {
+  public Integer resetPwd(Long id, Long uid) {
+    String defaultPassword = getDefaultPassword();
+    String salt = getDefaultLoginPwdSalt();
     return this.adminAccountDao.updateLoginPwd(id,uid,defaultPassword,salt,new Date());
   }
 
   @Override
   public AdminAccountBO queryByTypeAndUserId(Long uid, AccountType accountType) {
     return null;
+  }
+
+  private String getDefaultPassword() {
+    return RandomStringUtils.random(6);
+  }
+
+  private String getDefaultLoginPwdSalt() {
+    return CryptographerPbkdf.randomSalt();
+  }
+
+  private String getDefaultLoginPwd(String password,String loginPwdSalt) {
+    return CryptographerPbkdf.encrypt(password,loginPwdSalt);
   }
 }

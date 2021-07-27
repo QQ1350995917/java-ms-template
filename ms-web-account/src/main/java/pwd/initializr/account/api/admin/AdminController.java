@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -67,8 +68,6 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
   private AdminAccountService adminAccountService;
   @Autowired
   private SessionService sessionService;
-  @Value("${account.admin.account.password.default}")
-  private String defaultPassword;
 
   @Override
   public void create(@Valid @NotNull(message = "参数不能为空") AdminCreateInput input) {
@@ -76,9 +75,6 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
     AdminAccountBO adminAccountBO = new AdminAccountBO();
     BeanUtils.copyProperties(input.getUser(), adminUserBO);
     BeanUtils.copyProperties(input.getAccount(), adminAccountBO);
-    String salt = getDefaultLoginPwdSalt();
-    adminAccountBO.setLoginPwd(getDefaultLoginPwd(salt));
-    adminAccountBO.setPwdSalt(salt);
     Long userId = adminUserServiceWrap.insert(adminUserBO, adminAccountBO);
     super.outputData(userId);
   }
@@ -238,20 +234,13 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
   @Override
   public void resetAccountPwd(@Valid @NotNull(message = "用户ID不能为空") Long uid,
       @Valid @NotNull(message = "账号ID不能为空") Long aid) {
-    String salt = getDefaultLoginPwdSalt();
-    Integer integer = adminAccountService.resetPwd(uid, aid, getDefaultLoginPwd(salt), salt);
+    Integer integer = adminAccountService.resetPwd(uid, aid);
     outputData(integer);
   }
 
-  private String getDefaultLoginPwdSalt(){
-    return CryptographerPbkdf.randomSalt();
-  }
 
-  private String getDefaultLoginPwd(String loginPwdSalt){
-    return CryptographerPbkdf.encrypt(defaultPassword,loginPwdSalt);
-  }
 
-  private AdminAccountOutput convertAdminAccountBO2VO(AdminAccountBO bo){
+  private AdminAccountOutput convertAdminAccountBO2VO(AdminAccountBO bo) {
     AdminAccountOutput vo = new AdminAccountOutput();
     BeanUtils.copyProperties(bo,vo);
     return vo;

@@ -179,11 +179,9 @@ public interface AdminAccountService {
    * 重置密码
    * @param uid 用户ID
    * @param aid 账户ID
-   * @param defaultPassword 默认密码
-   * @param salt 密码盐
    * @return 影响行数
    */
-  Integer resetPwd(Long uid, Long aid, String defaultPassword, String salt);
+  Integer resetPwd(Long uid, Long aid);
 
   /**
    * <h2>根据类型，查询用户名下的该类型的账号</h2>
