@@ -43,6 +43,8 @@ public class ApiGlobalException {
         message = violation.getMessage();
         break;
       }
+    } else if (exception instanceof org.springframework.dao.DuplicateKeyException) {
+      message = "发现不可重复键值";
     } else if (exception instanceof ConstraintDeclarationException) {
       ConstraintDeclarationException constraintDeclarationException = (ConstraintDeclarationException) exception;
       message = constraintDeclarationException.getMessage();

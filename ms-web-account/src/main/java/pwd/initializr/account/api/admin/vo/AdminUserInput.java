@@ -32,8 +32,7 @@ import org.hibernate.validator.constraints.Length;
 public class AdminUserInput implements Serializable {
 
   @ApiModelProperty(name = "pin", value = "身份证编号", required = false, example = "010010015501010000")
-  // TODO 要么为空不检验，要么符合长度
-//  @Length(min = 18, max = 18, message = "身份证编号长度应为18位")
+  @Length(min = 18, max = 18, message = "身份证编号长度应为18位")
   private String pin;
   @ApiModelProperty(name = "name", value = "姓名", required = true, example = "曹操")
   @NotNull(message = "姓名不能为空")
