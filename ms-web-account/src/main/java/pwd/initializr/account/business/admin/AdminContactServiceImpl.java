@@ -1,10 +1,16 @@
 package pwd.initializr.account.business.admin;
 
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.annotation.Resource;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import pwd.initializr.account.business.admin.bo.AdminContactBO;
 import pwd.initializr.account.persistence.dao.AdminContactDao;
 import pwd.initializr.account.persistence.entity.AdminContactEntity;
+import pwd.initializr.common.web.persistence.entity.EntityAble;
+import pwd.initializr.common.web.persistence.entity.EntityDel;
 
 /**
  * (AdminContactEntity)表服务实现类
@@ -36,9 +42,30 @@ public class AdminContactServiceImpl implements AdminContactService {
    * @return 实例对象
    */
   @Override
-  public AdminContactEntity insert(AdminContactEntity adminContact) {
+  public AdminContactBO insert(AdminContactBO adminContact) {
     this.adminContactDao.insert(adminContact);
     return adminContact;
+  }
+
+  /**
+   * 新增数据
+   *
+   * @param adminContacts 实例对象
+   * @return 实例对象
+   */
+  @Override
+  public Integer insertByBatch(List<AdminContactBO> adminContacts) {
+    adminContacts.forEach(adminContactBO -> {
+      adminContactBO.setAble(EntityAble.DISABLE.getNumber());
+      adminContactBO.setDel(EntityDel.NO.getNumber());
+      adminContactBO.setCreateTime(new Date());
+      adminContactBO.setUpdateTime(new Date());
+      adminContactBO.setVersion(1L);
+    });
+    int insertByBatch = this.adminContactDao.insertByBatch(
+        adminContacts.stream().map(this::convertAdminContactBOToAdminContactEntity)
+            .collect(Collectors.toList()));
+    return insertByBatch;
   }
 
   /**
@@ -49,7 +76,7 @@ public class AdminContactServiceImpl implements AdminContactService {
    * @return 对象列表
    */
   @Override
-  public List<AdminContactEntity> queryAllByLimit(int offset, int limit) {
+  public List<AdminContactBO> queryAllByLimit(int offset, int limit) {
 //    return this.adminContactDao.queryAllByLimit(offset, limit);
     return null;
   }
@@ -61,8 +88,15 @@ public class AdminContactServiceImpl implements AdminContactService {
    * @return 实例对象
    */
   @Override
-  public AdminContactEntity queryById(Long id) {
-    return this.adminContactDao.queryById(id);
+  public AdminContactBO queryById(Long id) {
+    return this.convertAdminContactEntityToAdminContactBO(this.adminContactDao.queryById(id));
+  }
+
+  @Override
+  public List<AdminContactBO> queryByUid(Long uid) {
+    List<AdminContactEntity> adminContactEntities = this.adminContactDao.queryAllByUid(uid);
+    return adminContactEntities.stream().map(this::convertAdminContactEntityToAdminContactBO).collect(Collectors
+        .toList());
   }
 
   /**
@@ -72,8 +106,20 @@ public class AdminContactServiceImpl implements AdminContactService {
    * @return 实例对象
    */
   @Override
-  public AdminContactEntity update(AdminContactEntity adminContact) {
+  public AdminContactBO update(AdminContactBO adminContact) {
     this.adminContactDao.update(adminContact);
     return this.queryById(adminContact.getId());
+  }
+
+  protected AdminContactBO convertAdminContactEntityToAdminContactBO (AdminContactEntity adminContactEntity) {
+    AdminContactBO adminContactBO = new AdminContactBO();
+    BeanUtils.copyProperties(adminContactEntity, adminContactBO);
+    return adminContactBO;
+  }
+
+  protected AdminContactEntity convertAdminContactBOToAdminContactEntity (AdminContactBO adminContactBO) {
+    AdminContactEntity adminContactEntity = new AdminContactEntity();
+    BeanUtils.copyProperties(adminContactBO, adminContactEntity);
+    return adminContactEntity;
   }
 }

@@ -1,13 +1,13 @@
 package pwd.initializr.account.business.admin;
 
 import java.util.List;
-import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pwd.initializr.account.business.admin.bo.AdminAccountBO;
+import pwd.initializr.account.business.admin.bo.AdminContactBO;
 import pwd.initializr.account.business.admin.bo.AdminUserBO;
-import pwd.initializr.common.utils.CryptographerPbkdf;
+import pwd.initializr.common.utils.StringUtils;
 import pwd.initializr.common.web.persistence.entity.EntityAble;
 
 /**
@@ -29,6 +29,9 @@ public class AdminUserServiceWrapImpl implements AdminUserServiceWrap {
 
   @Autowired
   private AdminAccountService adminAccountService;
+
+  @Autowired
+  private AdminContactService adminContactService;
 
   @Override
   @Transactional(rollbackFor = Exception.class)
@@ -59,10 +62,12 @@ public class AdminUserServiceWrapImpl implements AdminUserServiceWrap {
 
   @Override
   @Transactional(rollbackFor = Exception.class)
-  public Long insert(AdminUserBO adminUserBO, AdminAccountBO adminAccountBO) {
+  public Long insert(AdminUserBO adminUserBO, AdminAccountBO adminAccountBO, List<AdminContactBO> adminContactBOS) {
     Long userId = adminUserService.insert(adminUserBO);
     adminAccountBO.setUid(userId);
     adminAccountService.insert(adminAccountBO);
+    adminContactBOS.stream().forEach(obj -> obj.setUid(userId));
+    adminContactService.insertByBatch(adminContactBOS);
     return userId;
   }
 

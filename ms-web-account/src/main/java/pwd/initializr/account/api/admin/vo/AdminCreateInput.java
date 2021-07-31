@@ -3,6 +3,7 @@ package pwd.initializr.account.api.admin.vo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
+import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -27,7 +28,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-@ApiModel(value = "createAdminInput", description = "管理员创建请求参数")
+@ApiModel(value = "adminCreateInput", description = "创建管理员请求参数")
 public class AdminCreateInput implements Serializable {
 
   @ApiModelProperty(name = "user", value = "用户信息", required = true)
@@ -36,6 +37,10 @@ public class AdminCreateInput implements Serializable {
   private AdminUserInput user;
   @ApiModelProperty(name = "account", value = "账号信息", required = true)
   @Valid
-  @NotNull(message = "账户信息并不能为空")
+  @NotNull(message = "账户信息不能为空")
   private AdminAccountCreateInput account;
+  @ApiModelProperty(name = "contacts", value = "联系方式", required = true)
+  @Valid
+  @NotNull(message = "联系方式不能为空")
+  private List<AdminContactCreateInput> contacts;
 }

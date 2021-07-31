@@ -83,7 +83,27 @@
   <insert id="insert" keyProperty="id" useGeneratedKeys="true">
         insert into admin_contact(uid, type, value, mark, able, del, create_time, update_time)
         values (#{uid}, #{type}, #{value}, #{mark}, #{able}, #{del}, #{createTime}, #{updateTime})
-    </insert>
+  </insert>
+
+
+  <!--新增所有列-->
+  <insert id="insertByBatch" keyProperty="id" useGeneratedKeys="true">
+    insert into admin_contact(uid, type, value, mark, able, del, create_time, update_time)
+    values
+    <foreach collection="entities" item="entity" separator=",">
+      (
+      #{entity.uid},
+      #{entity.type},
+      #{entity.value},
+      #{entity.mark},
+      #{entity.able},
+      #{entity.del},
+      #{entity.createTime},
+      #{entity.updateTime}
+      )
+    </foreach>
+  </insert>
+
 
   <!--通过主键修改数据-->
   <update id="update">

@@ -3,6 +3,7 @@ package pwd.initializr.account.api.admin;
 import io.swagger.annotations.Api;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.account.api.admin.vo.AdminAccountInput;
 import pwd.initializr.account.api.admin.vo.AdminAccountOutput;
+import pwd.initializr.account.api.admin.vo.AdminContactCreateInput;
 import pwd.initializr.account.api.admin.vo.AdminCreateInput;
 import pwd.initializr.account.api.admin.vo.AdminUserInput;
 import pwd.initializr.account.api.admin.vo.AdminUserOutput;
@@ -22,9 +24,11 @@ import pwd.initializr.account.business.admin.AdminAccountService;
 import pwd.initializr.account.business.admin.AdminUserService;
 import pwd.initializr.account.business.admin.AdminUserServiceWrap;
 import pwd.initializr.account.business.admin.bo.AdminAccountBO;
+import pwd.initializr.account.business.admin.bo.AdminContactBO;
 import pwd.initializr.account.business.admin.bo.AdminUserBO;
 import pwd.initializr.account.business.session.SessionService;
 import pwd.initializr.account.persistence.entity.AccountType;
+import pwd.initializr.account.persistence.entity.AdminContactEntity;
 import pwd.initializr.common.web.api.vo.Meta;
 import pwd.initializr.common.web.api.vo.PageInput;
 import pwd.initializr.common.web.api.vo.PageOutput;
@@ -72,7 +76,7 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
     AdminAccountBO adminAccountBO = new AdminAccountBO();
     BeanUtils.copyProperties(input.getUser(), adminUserBO);
     BeanUtils.copyProperties(input.getAccount(), adminAccountBO);
-    Long userId = adminUserServiceWrap.insert(adminUserBO, adminAccountBO);
+    Long userId = adminUserServiceWrap.insert(adminUserBO, adminAccountBO,input.getContacts().stream().map(this::convertAdminContactVOToBO).collect(Collectors.toList()));
     super.outputData(userId);
   }
 
@@ -241,5 +245,12 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
     AdminAccountOutput vo = new AdminAccountOutput();
     BeanUtils.copyProperties(bo,vo);
     return vo;
+  }
+
+
+  protected AdminContactBO convertAdminContactVOToBO (AdminContactCreateInput input) {
+    AdminContactBO adminContactBO = new AdminContactBO();
+    BeanUtils.copyProperties(input, adminContactBO);
+    return adminContactBO;
   }
 }

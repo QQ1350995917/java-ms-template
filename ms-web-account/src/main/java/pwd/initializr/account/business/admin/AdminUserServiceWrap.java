@@ -2,6 +2,7 @@ package pwd.initializr.account.business.admin;
 
 import java.util.List;
 import pwd.initializr.account.business.admin.bo.AdminAccountBO;
+import pwd.initializr.account.business.admin.bo.AdminContactBO;
 import pwd.initializr.account.business.admin.bo.AdminUserBO;
 import pwd.initializr.common.web.persistence.entity.EntityAble;
 
@@ -68,9 +69,10 @@ public interface AdminUserServiceWrap {
    *
    * @param adminUserBO 用户对象
    * @param adminAccountBO 账户对象
+   * @param adminContactBOS 用户联系方式
    * @return pwd.initializr.account.business.admin.bo.AdminUserBO
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  Long insert(AdminUserBO adminUserBO, AdminAccountBO adminAccountBO);
+  Long insert(AdminUserBO adminUserBO, AdminAccountBO adminAccountBO, List<AdminContactBO> adminContactBOS);
 }

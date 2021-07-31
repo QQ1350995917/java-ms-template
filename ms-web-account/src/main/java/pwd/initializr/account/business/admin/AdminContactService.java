@@ -1,6 +1,7 @@
 package pwd.initializr.account.business.admin;
 
 import java.util.List;
+import pwd.initializr.account.business.admin.bo.AdminContactBO;
 import pwd.initializr.account.persistence.entity.AdminContactEntity;
 
 /**
@@ -22,10 +23,12 @@ public interface AdminContactService {
   /**
    * 新增数据
    *
-   * @param adminContact 实例对象
+   * @param adminContactBO 实例对象
    * @return 实例对象
    */
-  AdminContactEntity insert(AdminContactEntity adminContact);
+  AdminContactBO insert(AdminContactBO adminContactBO);
+
+  Integer insertByBatch(List<AdminContactBO> adminContacts);
 
   /**
    * 查询多条数据
@@ -34,7 +37,7 @@ public interface AdminContactService {
    * @param limit 查询条数
    * @return 对象列表
    */
-  List<AdminContactEntity> queryAllByLimit(int offset, int limit);
+  List<AdminContactBO> queryAllByLimit(int offset, int limit);
 
   /**
    * 通过ID查询单条数据
@@ -42,14 +45,25 @@ public interface AdminContactService {
    * @param id 主键
    * @return 实例对象
    */
-  AdminContactEntity queryById(Long id);
+  AdminContactBO queryById(Long id);
+
+  /**
+   * <h2>根据用户ID查询联系方式</h2>
+   * date 2021-07-30 22:26
+   *
+   * @param uid 用户ID
+   * @return java.util.List<pwd.initializr.account.persistence.entity.AdminContactEntity>
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  List<AdminContactBO> queryByUid(Long uid);
 
   /**
    * 修改数据
    *
-   * @param adminContact 实例对象
+   * @param adminContactBO 实例对象
    * @return 实例对象
    */
-  AdminContactEntity update(AdminContactEntity adminContact);
+  AdminContactBO update(AdminContactBO adminContactBO);
 
 }

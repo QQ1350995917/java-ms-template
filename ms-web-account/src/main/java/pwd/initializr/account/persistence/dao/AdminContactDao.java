@@ -45,6 +45,8 @@ public interface AdminContactDao {
    */
   int insert(AdminContactEntity adminContactEntity);
 
+  int insertByBatch(@Param("entities") List<AdminContactEntity> entities);
+
   /**
    * 通过实体作为筛选条件查询
    *
