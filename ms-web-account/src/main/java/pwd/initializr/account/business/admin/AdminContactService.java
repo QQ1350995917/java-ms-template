@@ -59,6 +59,17 @@ public interface AdminContactService {
   List<AdminContactBO> queryByUid(Long uid);
 
   /**
+   * <h2>TODO what you want to do</h2>
+   * date 2021-07-31 22:52
+   *
+   * @param uids
+   * @return java.util.List<pwd.initializr.account.business.admin.bo.AdminContactBO>
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  List<AdminContactBO> queryByUids(List<Long> uids);
+
+  /**
    * 修改数据
    *
    * @param adminContactBO 实例对象

@@ -48,7 +48,4 @@ public class AdminUserInput implements Serializable {
   private String empNo;
   @ApiModelProperty(name = "summary", value = "简介", required = false, example = "只教我负天下人,休教天下人负我")
   private String summary;
-  @ApiModelProperty(name = "level", value = "管理员等级", required = false, example = "1")
-  @Min(value = 1, message = "管理员等级最小为1")
-  private Integer level;
 }

@@ -1,7 +1,9 @@
 package pwd.initializr.account.business.admin;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import org.springframework.beans.BeanUtils;
@@ -94,9 +96,20 @@ public class AdminContactServiceImpl implements AdminContactService {
 
   @Override
   public List<AdminContactBO> queryByUid(Long uid) {
-    List<AdminContactEntity> adminContactEntities = this.adminContactDao.queryAllByUid(uid);
-    return adminContactEntities.stream().map(this::convertAdminContactEntityToAdminContactBO).collect(Collectors
-        .toList());
+    return Optional.ofNullable(this.adminContactDao.queryAllByUid(uid))
+        .orElseGet(() -> new ArrayList<>())
+        .stream()
+        .map(this::convertAdminContactEntityToAdminContactBO)
+        .collect(Collectors.toList());
+  }
+
+  @Override
+  public List<AdminContactBO> queryByUids(List<Long> uids) {
+    return Optional.ofNullable(this.adminContactDao.queryAllByUids(uids))
+        .orElseGet(() -> new ArrayList<>())
+        .stream()
+        .map(this::convertAdminContactEntityToAdminContactBO)
+        .collect(Collectors.toList());
   }
 
   /**

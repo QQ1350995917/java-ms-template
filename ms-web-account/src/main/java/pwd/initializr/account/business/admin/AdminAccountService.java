@@ -165,6 +165,17 @@ public interface AdminAccountService {
   List<AdminAccountBO> queryByUserId(Long userId);
 
   /**
+   * <h2>TODO what you want to do</h2>
+   * date 2021-07-31 22:39
+   *
+   * @param userIds
+   * @return java.util.List<pwd.initializr.account.business.admin.bo.AdminAccountBO>
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  List<AdminAccountBO> queryByUserIds(List<Long> userIds);
+
+  /**
    * 修改数据
    *
    * @param uid 用户ID

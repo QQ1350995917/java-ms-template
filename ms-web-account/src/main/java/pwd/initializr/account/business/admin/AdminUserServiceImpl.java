@@ -4,12 +4,16 @@ import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pwd.initializr.account.business.admin.bo.AdminUserBO;
+import pwd.initializr.account.persistence.dao.AdminAccountDao;
 import pwd.initializr.account.persistence.dao.AdminUserDao;
+import pwd.initializr.account.persistence.entity.AdminAccountEntity;
 import pwd.initializr.account.persistence.entity.AdminUserEntity;
 import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.common.web.business.bo.ScopeBO;
@@ -28,6 +32,8 @@ public class AdminUserServiceImpl implements AdminUserService {
 
   @Resource
   private AdminUserDao adminUserDao;
+  @Resource
+  private AdminAccountDao adminAccountDao;
 
   @Override
   public Integer ableById(List<Long> ids, EntityAble able) {

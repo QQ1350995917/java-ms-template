@@ -67,6 +67,8 @@ public interface AdminContactDao {
    */
   List<AdminContactEntity> queryAllByUid(@Param("uid") Long uid);
 
+  List<AdminContactEntity> queryAllByUids(@Param("uids") List<Long> uids);
+
   /**
    * 通过ID查询单条数据
    *

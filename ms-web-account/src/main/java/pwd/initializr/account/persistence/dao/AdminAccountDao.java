@@ -168,6 +168,17 @@ public interface AdminAccountDao {
   List<AdminAccountEntity> queryAllByUid(@Param("uid") Long uid);
 
   /**
+   * <h2>根据UID查询</h2>
+   * date 2021-07-31 12:12
+   *
+   * @param uids 用户ID集合
+   * @return java.util.List<pwd.initializr.account.persistence.entity.AdminAccountEntity>
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  List<AdminAccountEntity> queryAllByUids(@Param("uids") List<Long> uids);
+
+  /**
    * 通过ID查询单条数据
    *
    * @param id 主键

@@ -93,17 +93,16 @@ public class AdminApiTest {
         }
 
         AdminCreateInput caocaoInput = new AdminCreateInput();
-        AdminUserInput adminUserInput = new AdminUserInput();
-        adminUserInput.setName(userName);
-        adminUserInput.setGender("1");
-        adminUserInput.setLevel(1);
-        adminUserInput.setSummary(summaryBuilder.toString());
+        AdminUserInput adminUserVO = new AdminUserInput();
+        adminUserVO.setName(userName);
+        adminUserVO.setGender("1");
+        adminUserVO.setSummary(summaryBuilder.toString());
 
         AdminAccountCreateInput adminAccountInput = new AdminAccountCreateInput();
         adminAccountInput.setLoginName(accountName);
 
         caocaoInput.setAccount(adminAccountInput);
-        caocaoInput.setUser(adminUserInput);
+        caocaoInput.setUser(adminUserVO);
 
         MvcResult mvcResult = mockMvc.perform(
             MockMvcRequestBuilders.post("/api/admin/admin")

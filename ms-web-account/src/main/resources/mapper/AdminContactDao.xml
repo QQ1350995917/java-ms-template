@@ -47,6 +47,16 @@
     where uId = #{uid}
   </select>
 
+  <select id="queryAllByUids" resultMap="AdminContactMap">
+    select
+    id, uid, type, value, mark, able, del, create_time, update_time
+    from admin_contact
+    where uId IN
+    <foreach close=")" collection="uids" index="index" item="uid" open="(" separator=",">
+      #{uid}
+    </foreach>
+  </select>
+
   <sql id="countAndQueryAllByCondition">
     <where>
       <if test="adminContactEntity.id != null">

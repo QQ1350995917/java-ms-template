@@ -28,7 +28,7 @@ import org.hibernate.validator.constraints.Length;
 @Setter
 @ToString
 @ApiModel(value = "adminAccountInput", description = "管理员账户参数")
-public class AdminAccountInput implements Serializable {
+public class AdminAccountLoginInput implements Serializable {
 
   @ApiModelProperty(name = "loginName", value = "登录名称", required = true, example = "caocao")
   @NotBlank(message = "登录账号不能为空")

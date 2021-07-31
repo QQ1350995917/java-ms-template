@@ -1,9 +1,12 @@
 package pwd.initializr.account.business.admin;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.BeanUtils;
@@ -157,17 +160,20 @@ public class AdminAccountServiceImpl implements AdminAccountService {
 
   @Override
   public List<AdminAccountBO> queryByUserId(Long userId) {
-    List<AdminAccountEntity> adminAccountEntities = this.adminAccountDao.queryAllByUid(userId);
-    if (adminAccountEntities == null) {
-      return null;
-    }
-    LinkedList<AdminAccountBO> adminAccountBOS = new LinkedList<>();
-    adminAccountEntities.forEach(adminAccountEntity -> {
-      AdminAccountBO adminAccountBO = new AdminAccountBO();
-      BeanUtils.copyProperties(adminAccountEntity, adminAccountBO);
-      adminAccountBOS.add(adminAccountBO);
-    });
-    return adminAccountBOS;
+    return Optional.ofNullable(this.adminAccountDao.queryAllByUid(userId))
+        .orElseGet(() -> new ArrayList<>())
+        .stream()
+        .map(this::convertAdminAccontEntityToAdminAccontBO)
+        .collect(Collectors.toList());
+  }
+
+  @Override
+  public List<AdminAccountBO> queryByUserIds(List<Long> userIds) {
+    return Optional.ofNullable(this.adminAccountDao.queryAllByUids(userIds))
+        .orElseGet(() -> new ArrayList<>())
+        .stream()
+        .map(this::convertAdminAccontEntityToAdminAccontBO)
+        .collect(Collectors.toList());
   }
 
   /**
@@ -203,5 +209,11 @@ public class AdminAccountServiceImpl implements AdminAccountService {
 
   private String getDefaultLoginPwd(String password,String loginPwdSalt) {
     return CryptographerPbkdf.encrypt(password,loginPwdSalt);
+  }
+
+  protected AdminAccountBO convertAdminAccontEntityToAdminAccontBO(AdminAccountEntity adminAccountEntity) {
+    AdminAccountBO adminAccountBO = new AdminAccountBO();
+    BeanUtils.copyProperties(adminAccountEntity, adminAccountBO);
+    return adminAccountBO;
   }
 }

@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import pwd.initializr.account.api.admin.vo.AdminAccountInput;
+import pwd.initializr.account.api.admin.vo.AdminAccountLoginInput;
 import pwd.initializr.account.api.admin.vo.AdminCreateInput;
 import pwd.initializr.account.api.admin.vo.AdminUserInput;
 
@@ -122,14 +122,14 @@ public interface AdminApi {
   void updateAccount(
       @PathVariable("uid") @Valid @NotNull(message = "参数不能为空") Long uid,
       @PathVariable("aid") @Valid @NotNull(message = "参数不能为空") Long aid,
-      @RequestBody @Valid @NotNull(message = "参数不能为空") AdminAccountInput input);
+      @RequestBody @Valid @NotNull(message = "参数不能为空") AdminAccountLoginInput input);
   
   @ApiOperation(value = "更新账户密码")
   @PatchMapping(value = {"/{uid}/{aid}/pwd"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   void updateAccountPwd(
       @PathVariable("uid") @Valid @NotNull(message = "参数不能为空") Long uid,
       @PathVariable("aid") @Valid @NotNull(message = "参数不能为空") Long aid,
-      @RequestBody @Valid @NotNull(message = "参数不能为空") AdminAccountInput input);
+      @RequestBody @Valid @NotNull(message = "参数不能为空") AdminAccountLoginInput input);
 
   /**
    * <h2>根据普通用户ID查询该用户的账号信息</h2>

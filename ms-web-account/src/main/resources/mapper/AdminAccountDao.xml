@@ -58,6 +58,16 @@
     where uId = #{uid} and del = 0
   </select>
 
+  <select id="queryAllByUids" resultMap="AdminAccountMap">
+    select
+    id, uid, login_name, login_pwd, pwd_salt, pwd_time, type, able, del, create_time, update_time
+    from admin_account
+    where uId in
+    <foreach close=")" collection="uids" index="index" item="uid" open="(" separator=",">
+      #{uid}
+    </foreach>
+  </select>
+
   <!--新增所有列-->
   <insert id="insert" keyProperty="id" useGeneratedKeys="true">
         insert into admin_account(uid, login_name, login_pwd, pwd_salt, pwd_time, type, able, del, create_time, update_time)
