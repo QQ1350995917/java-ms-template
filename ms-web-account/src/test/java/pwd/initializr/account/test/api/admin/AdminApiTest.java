@@ -28,7 +28,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import pwd.initializr.account.api.admin.vo.AdminAccountCreateInput;
 import pwd.initializr.account.api.admin.vo.AdminCreateInput;
-import pwd.initializr.account.api.admin.vo.AdminUserInput;
+import pwd.initializr.account.api.admin.vo.AdminUserCreateInput;
 
 /**
  * pwd.initializr.account.test.api.admin@ms-web-initializr
@@ -93,7 +93,7 @@ public class AdminApiTest {
         }
 
         AdminCreateInput caocaoInput = new AdminCreateInput();
-        AdminUserInput adminUserVO = new AdminUserInput();
+        AdminUserCreateInput adminUserVO = new AdminUserCreateInput();
         adminUserVO.setName(userName);
         adminUserVO.setGender("1");
         adminUserVO.setSummary(summaryBuilder.toString());

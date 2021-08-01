@@ -2,6 +2,7 @@ package pwd.initializr.account.api.admin.vo;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import java.io.Serializable;
 import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -14,11 +15,11 @@ import lombok.ToString;
 /**
  * pwd.initializr.account.api.admin.vo@ms-web-initializr
  *
- * <h1>请求参数：用户响应参数</h1>
+ * <h1>TODO what you want to do?</h1>
  *
- * date 2020-07-27 16:39
+ * date 2021-08-01 11:40
  *
- * @author DingPengwei[dingpengwei@foxmail.com]
+ * @author DingPengwei[www.dingpengwei@foxmail.com]
  * @version 1.0.0
  * @since DistributionVersion
  */
@@ -27,19 +28,19 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-@ApiModel(value = "adminUserOutput", description = "管理员用户接口响应参数")
-public class AdminListOutput {
+@ApiModel(value = "adminUpdateInput", description = "修改管理员请求参数")
+public class AdminUpdateInput implements Serializable {
 
   @ApiModelProperty(name = "user", value = "用户信息", required = true)
   @Valid
   @NotNull(message = "用户信息不能为空")
-  private AdminUserCreateOutput user;
+  private AdminUserUpdateInput user;
   @ApiModelProperty(name = "account", value = "账号信息", required = true)
   @Valid
   @NotNull(message = "账户信息不能为空")
-  private AdminAccountCreateOutput account;
+  private AdminAccountUpdateInput account;
   @ApiModelProperty(name = "contacts", value = "联系方式", required = true)
   @Valid
   @NotNull(message = "联系方式不能为空")
-  private List<AdminContactCreateOutput> contacts;
+  private List<AdminContactUpdateInput> contacts;
 }

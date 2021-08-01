@@ -188,6 +188,11 @@ public class AdminAccountServiceImpl implements AdminAccountService {
   }
 
   @Override
+  public Integer updateLoginName(Long id, Long uid, String loginName) {
+    return this.adminAccountDao.updateLoginName(id,uid,loginName, new Date());
+  }
+
+  @Override
   public Integer resetPwd(Long id, Long uid) {
     String defaultPassword = getDefaultPassword();
     String salt = getDefaultLoginPwdSalt();

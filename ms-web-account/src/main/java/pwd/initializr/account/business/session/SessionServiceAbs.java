@@ -76,7 +76,11 @@ public abstract class SessionServiceAbs implements SessionService {
   @Override
   public Boolean deleteSession(Long uid) {
     String key = getSessionKeyInRedis(uid);
-    return redisClient.del(key) == 1;
+    if (StringUtils.isNotBlank(key)) {
+      return redisClient.del(key) == 1;
+    } else {
+      return true;
+    }
   }
 
   @Override

@@ -19,10 +19,12 @@ import lombok.ToString;
  * @since DistributionVersion
  */
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 @ToString
 @ApiModel(value = "adminContactCreateOutput", description = "创建管理员联系方式请求参数")
 public class AdminContactCreateOutput extends AdminContactCreateInput {
 
+  private Long id;
 }

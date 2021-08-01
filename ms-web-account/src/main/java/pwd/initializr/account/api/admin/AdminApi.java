@@ -13,13 +13,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.account.api.admin.vo.AdminAccountLoginInput;
 import pwd.initializr.account.api.admin.vo.AdminCreateInput;
-import pwd.initializr.account.api.admin.vo.AdminUserInput;
+import pwd.initializr.account.api.admin.vo.AdminUpdateInput;
+import pwd.initializr.account.api.admin.vo.AdminUserCreateInput;
 
 /**
  * pwd.initializr.account.api.admin@ms-web-initializr
@@ -45,6 +47,10 @@ public interface AdminApi {
   @PostMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   void create(@RequestBody @Valid @NotNull(message = "参数不能为空") AdminCreateInput input);
 
+  @ApiOperation(value = "创建管理员用户信息以及账户信息")
+  @PutMapping(value = {"/{uid}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  void edit(@RequestBody @Valid @NotNull(message = "参数不能为空") AdminUpdateInput input);
+
   @ApiOperation(value = "删除用户，同时删除其下所有账户")
   @DeleteMapping(value = {""}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   void delete(
@@ -61,7 +67,7 @@ public interface AdminApi {
   @ApiOperation(value = "更新用户信息")
   @PatchMapping(value = {"/{uid}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   void update(@PathVariable("uid") @Valid @NotNull(message = "参数不能为空") Long uid,
-      @RequestBody @Valid @NotNull(message = "参数不能为空") AdminUserInput input);
+      @RequestBody @Valid @NotNull(message = "参数不能为空") AdminUserCreateInput input);
 
   /**
    * <h2>根据分页信息以及分页条件查找用户</h2>

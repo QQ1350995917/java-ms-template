@@ -75,4 +75,17 @@ public interface AdminUserServiceWrap {
    * @since DistributionVersion
    */
   Long insert(AdminUserBO adminUserBO, AdminAccountBO adminAccountBO, List<AdminContactBO> adminContactBOS);
+
+  /**
+   * <h2>更新</h2>
+   * date 2021-08-01 11:01
+   *
+   * @param adminUserBO 用户对象
+   * @param adminAccountBO 账户对象
+   * @param adminContactBOS 用户联系方式
+   * @return java.lang.Long
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  Long update(AdminUserBO adminUserBO, AdminAccountBO adminAccountBO, List<AdminContactBO> adminContactBOS);
 }

@@ -24,8 +24,9 @@ import pwd.initializr.account.api.admin.vo.AdminContactCreateInput;
 import pwd.initializr.account.api.admin.vo.AdminContactCreateOutput;
 import pwd.initializr.account.api.admin.vo.AdminCreateInput;
 import pwd.initializr.account.api.admin.vo.AdminListOutput;
-import pwd.initializr.account.api.admin.vo.AdminUserInput;
-import pwd.initializr.account.api.admin.vo.AdminUserOutput;
+import pwd.initializr.account.api.admin.vo.AdminUpdateInput;
+import pwd.initializr.account.api.admin.vo.AdminUserCreateInput;
+import pwd.initializr.account.api.admin.vo.AdminUserCreateOutput;
 import pwd.initializr.account.business.admin.AdminAccountService;
 import pwd.initializr.account.business.admin.AdminContactService;
 import pwd.initializr.account.business.admin.AdminUserService;
@@ -35,6 +36,7 @@ import pwd.initializr.account.business.admin.bo.AdminContactBO;
 import pwd.initializr.account.business.admin.bo.AdminUserBO;
 import pwd.initializr.account.business.session.SessionService;
 import pwd.initializr.account.persistence.entity.AccountType;
+import pwd.initializr.common.utils.StringUtils;
 import pwd.initializr.common.web.api.vo.Meta;
 import pwd.initializr.common.web.api.vo.PageInput;
 import pwd.initializr.common.web.api.vo.PageOutput;
@@ -84,7 +86,22 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
     AdminAccountBO adminAccountBO = new AdminAccountBO();
     BeanUtils.copyProperties(input.getUser(), adminUserBO);
     BeanUtils.copyProperties(input.getAccount(), adminAccountBO);
-    Long userId = adminUserServiceWrap.insert(adminUserBO, adminAccountBO,input.getContacts().stream().map(this::convertAdminContactVOToBO).collect(Collectors.toList()));
+    List<AdminContactBO> adminContactBOS = input.getContacts().stream().map(this::convertAdminContactVOToBO)
+        .collect(Collectors.toList());
+    Long userId = adminUserServiceWrap.insert(adminUserBO, adminAccountBO,adminContactBOS);
+
+    super.outputData(userId);
+  }
+
+  @Override
+  public void edit(@Valid @NotNull(message = "参数不能为空") AdminUpdateInput input) {
+    AdminUserBO adminUserBO = new AdminUserBO();
+    AdminAccountBO adminAccountBO = new AdminAccountBO();
+    BeanUtils.copyProperties(input.getUser(), adminUserBO);
+    BeanUtils.copyProperties(input.getAccount(), adminAccountBO);
+    List<AdminContactBO> adminContactBOS = input.getContacts().stream().map(this::convertAdminContactVOToBO)
+        .collect(Collectors.toList());
+    Long userId = adminUserServiceWrap.update(adminUserBO, adminAccountBO,adminContactBOS);
     super.outputData(userId);
   }
 
@@ -92,7 +109,9 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
   public void delete(
       @Valid @NotNull(message = "参数不能为空") @Size(message = "参数不能为空") List<Long> ids) {
     // 同时移除 session
-    ids.forEach(id -> sessionService.deleteSession(id));
+    ids.stream()
+        .filter(id -> StringUtils.isNotBlank(id + ""))
+        .forEach(id -> sessionService.deleteSession(id));
     Integer del = adminUserServiceWrap.deleteByUserId(ids);
     outputData(del);
   }
@@ -112,7 +131,7 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
   }
 
   @Override
-  public void update(@PathVariable("uid") Long id, @RequestBody AdminUserInput input) {
+  public void update(@PathVariable("uid") Long id, @RequestBody AdminUserCreateInput input) {
     AdminUserBO adminUserBO = new AdminUserBO();
     BeanUtils.copyProperties(input, adminUserBO);
     adminUserBO.setId(id);
@@ -270,8 +289,8 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
     outputData(integer);
   }
 
-  private AdminUserOutput convertAdminUserBO2VO(AdminUserBO bo) {
-    AdminUserOutput vo = new AdminUserOutput();
+  private AdminUserCreateOutput convertAdminUserBO2VO(AdminUserBO bo) {
+    AdminUserCreateOutput vo = new AdminUserCreateOutput();
     BeanUtils.copyProperties(bo,vo);
     return vo;
   }

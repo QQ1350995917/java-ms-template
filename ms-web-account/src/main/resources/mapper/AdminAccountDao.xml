@@ -88,6 +88,17 @@
     where id = #{id} and uid = #{uid}
   </update>
 
+  <update id="updateLoginName">
+    update admin_account
+    <set>
+      <if test="loginName != null and loginName != ''">
+        login_name = #{loginName},
+        update_time = #{updateTime}
+      </if>
+    </set>
+    where id = #{id} and uid = #{uid}
+  </update>
+
 
   <!--通过主键删除-->
   <delete id="deleteById">

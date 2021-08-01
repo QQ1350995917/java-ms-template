@@ -7,7 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 import pwd.initializr.account.business.admin.bo.AdminAccountBO;
 import pwd.initializr.account.business.admin.bo.AdminContactBO;
 import pwd.initializr.account.business.admin.bo.AdminUserBO;
-import pwd.initializr.common.utils.StringUtils;
 import pwd.initializr.common.web.persistence.entity.EntityAble;
 
 /**
@@ -69,6 +68,20 @@ public class AdminUserServiceWrapImpl implements AdminUserServiceWrap {
     adminContactBOS.stream().forEach(obj -> obj.setUid(userId));
     adminContactService.insertByBatch(adminContactBOS);
     return userId;
+  }
+
+  @Override
+  @Transactional(rollbackFor = Exception.class)
+  public Long update(AdminUserBO adminUserBO, AdminAccountBO adminAccountBO, List<AdminContactBO> adminContactBOS) {
+    adminUserService.update(adminUserBO);
+    adminAccountBO.setUid(adminUserBO.getId());
+    adminAccountService.updateLoginName(adminAccountBO.getId(),adminAccountBO.getUid(),adminAccountBO.getLoginName());
+    adminContactBOS.stream().forEach(adminContactBO -> {
+          adminContactBO.setUid(adminUserBO.getId());
+          adminContactService.update(adminContactBO);
+        }
+    );
+    return 1L;
   }
 
 

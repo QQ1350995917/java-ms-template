@@ -29,7 +29,7 @@ import org.hibernate.validator.constraints.Length;
 @Setter
 @ToString
 @ApiModel(value = "adminUserInput", description = "管理员用户接口请求参数")
-public class AdminUserInput implements Serializable {
+public class AdminUserCreateInput implements Serializable {
 
   @ApiModelProperty(name = "pin", value = "身份证编号", required = false, example = "010010015501010000")
   // TODO 要么为空，要么格式合格

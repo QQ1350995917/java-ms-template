@@ -186,6 +186,8 @@ public interface AdminAccountService {
    */
   Integer updateLoginPwd(Long aid, Long uid, String previousPwd, String currentPwd);
 
+  Integer updateLoginName(Long aid, Long uid, String loginName);
+
   /**
    * 重置密码
    * @param uid 用户ID

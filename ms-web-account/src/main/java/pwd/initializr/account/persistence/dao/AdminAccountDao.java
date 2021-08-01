@@ -214,5 +214,23 @@ public interface AdminAccountDao {
       @Param("pwdSalt") String pwdSalt,
       @Param("updateTime") Date updateTime);
 
+  /**
+   * <h2>TODO what you want to do</h2>
+   * date 2021-08-01 11:22
+   *
+   * @param id
+   * @param uid
+   * @param loginName
+   * @param updateTime
+   * @return int
+   * @author DingPengwei[www.dingpengwei@foxmail.com]
+   * @since DistributionVersion
+   */
+  int updateLoginName(
+      @Param("id") Long id,
+      @Param("uid") Long uid,
+      @Param("loginName") String loginName,
+      @Param("updateTime") Date updateTime);
+
 
 }

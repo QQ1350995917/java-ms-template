@@ -12,7 +12,7 @@ import lombok.ToString;
  *
  * <h1>TODO what you want to do?</h1>
  *
- * date 2021-07-31 23:29
+ * date 2021-08-01 11:35
  *
  * @author DingPengwei[www.dingpengwei@foxmail.com]
  * @version 1.0.0
@@ -23,8 +23,8 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-@ApiModel(value = "adminAccountCreateOutput", description = "管理员账户参数")
-public class AdminAccountCreateOutput extends AdminAccountCreateInput {
+@ApiModel(value = "adminUserInput", description = "管理员用户接口请求参数")
+public class AdminUserUpdateInput extends AdminUserCreateInput {
 
   private Long id;
 }
