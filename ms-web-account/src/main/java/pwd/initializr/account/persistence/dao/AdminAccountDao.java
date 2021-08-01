@@ -68,7 +68,7 @@ public interface AdminAccountDao {
    * @author DingPengwei[www.dingpengwei@foxmail.com]
    * @since DistributionVersion
    */
-  Integer ableByUserIds(@Param("ids") List<Long> ids, @Param("able") int able, @Param("updateTime") Date updateTime);
+  Integer ableByUserIds(@Param("userIds") List<Long> ids, @Param("able") int able, @Param("updateTime") Date updateTime);
 
   /**
    * 查询指定行数据

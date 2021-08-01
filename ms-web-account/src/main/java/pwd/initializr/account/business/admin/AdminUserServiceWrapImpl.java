@@ -41,7 +41,9 @@ public class AdminUserServiceWrapImpl implements AdminUserServiceWrap {
   @Override
   @Transactional(rollbackFor = Exception.class)
   public Integer ableByUserId(List<Long> userIds, EntityAble entityAble) {
-    return 0;
+    Integer enableUser = this.adminUserService.ableById(userIds, entityAble);
+    this.adminAccountService.ableByUserIds(userIds,entityAble);
+    return enableUser;
   }
 
   @Override

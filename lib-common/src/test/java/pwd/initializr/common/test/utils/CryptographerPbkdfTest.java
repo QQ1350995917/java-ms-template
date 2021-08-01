@@ -18,8 +18,8 @@ public class CryptographerPbkdfTest {
 
   @Test
   public void gen() {
-    String s = CryptographerPbkdf.randomSalt();
-    String admin = CryptographerPbkdf.encrypt("admin", s);
+    String s = "e45932d307af4245009b2720de69d350";
+    String admin = CryptographerPbkdf.encrypt("n88nJE", s);
     System.out.println(s);
     System.out.println(admin);
   }

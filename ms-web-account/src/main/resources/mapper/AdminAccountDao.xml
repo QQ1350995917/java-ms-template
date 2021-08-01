@@ -148,8 +148,8 @@
 
   <!--通过用户外键启禁-->
   <update id="ableByUserIds">
-    update admin_account set able = #{able}, update_time = #{updateTime} where uid
-    where id in
+    update admin_account set able = #{able}, update_time = #{updateTime}
+    WHERE uid IN
     <foreach close=")" collection="userIds" index="index" item="userId" open="(" separator=",">
       #{userId}
     </foreach>
