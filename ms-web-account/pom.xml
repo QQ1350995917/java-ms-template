@@ -34,6 +34,19 @@
       <artifactId>spring-boot-starter-actuator</artifactId>
     </dependency>
     <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-starter-openfeign</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.github.openfeign</groupId>
+      <artifactId>feign-okhttp</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-starter-netflix-ribbon</artifactId>
+      <version>2.1.3.RELEASE</version>
+    </dependency>
+    <dependency>
       <groupId>pwd.initializr</groupId>
       <artifactId>lib-common-web</artifactId>
       <version>0.0.1-SNAPSHOT</version>
@@ -72,6 +85,11 @@
       <groupId>com.belerweb</groupId>
       <artifactId>pinyin4j</artifactId>
       <version>2.5.1</version>
+    </dependency>
+    <dependency>
+      <groupId>pwd.initializr</groupId>
+      <artifactId>lib-rpc-email</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
     </dependency>
   </dependencies>
 

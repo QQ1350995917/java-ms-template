@@ -189,10 +189,8 @@
     WHERE
     `id`
     IN
-    <foreach collection="ids" item="id" separator=",">
-      (
+    <foreach close=")" collection="ids" index="index" item="id" open="(" separator=",">
       #{id}
-      )
     </foreach>
   </update>
 

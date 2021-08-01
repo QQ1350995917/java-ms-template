@@ -78,7 +78,7 @@
   <update id="updateLoginPwd">
     update admin_account
     <set>
-      <if test="currentPwd != null and currentPwd != ''">
+      <if test="loginPwd != null and loginPwd != ''">
         login_pwd = #{loginPwd},
         pwd_salt = #{pwdSalt},
         pwd_time = #{updateTime},

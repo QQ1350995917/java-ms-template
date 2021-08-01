@@ -169,7 +169,7 @@ public class EmailClient {
                     if (StringUtils.isNotBlank(this.mailServerPort)) {
                         prop.setProperty("mail.port", this.mailServerPort);
                     }
-//          prop.put("mail.smtp.ssl.enable", "true");
+                    //prop.put("mail.smtp.ssl.enable", "false");
                     prop.put("mail.smtp.timeout", "3000");
                     prop.setProperty("mail.transport.protocol", this.mailServerProtocol);
                     prop.setProperty("mail.smtp.auth",

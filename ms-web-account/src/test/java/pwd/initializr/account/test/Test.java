@@ -1,6 +1,7 @@
 package pwd.initializr.account.test;
 
 import com.alibaba.fastjson.JSON;
+import org.apache.commons.lang.RandomStringUtils;
 import pwd.initializr.account.business.session.bo.SessionBO;
 
 /**
@@ -17,8 +18,6 @@ import pwd.initializr.account.business.session.bo.SessionBO;
 public class Test {
 
   public static void main(String[] args) {
-    String josn = "{\"aid\":-1,\"times\":0,\"timestamp\":1612692048438,\"token\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1NTU4NTI1ODIwNzAwMDU3NjBALTFAMTYxMjY5MjA0ODQzOCJ9.tOStxAIeDaM_YiY1-YwwrS6fHmSAkm16rLErlOqWcUs\",\"type\":0,\"uid\":555852582070005760}";
-    SessionBO sessionBO = JSON.parseObject(josn, SessionBO.class);
-    System.out.println();
+    System.out.println(RandomStringUtils.randomAlphanumeric(6));
   }
 }

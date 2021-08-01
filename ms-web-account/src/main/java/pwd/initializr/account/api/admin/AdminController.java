@@ -7,12 +7,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import javax.annotation.Resource;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,11 +34,13 @@ import pwd.initializr.account.business.admin.AdminAccountService;
 import pwd.initializr.account.business.admin.AdminContactService;
 import pwd.initializr.account.business.admin.AdminUserService;
 import pwd.initializr.account.business.admin.AdminUserServiceWrap;
+import pwd.initializr.account.business.admin.EmailService;
 import pwd.initializr.account.business.admin.bo.AdminAccountBO;
 import pwd.initializr.account.business.admin.bo.AdminContactBO;
 import pwd.initializr.account.business.admin.bo.AdminUserBO;
 import pwd.initializr.account.business.session.SessionService;
 import pwd.initializr.account.persistence.entity.AccountType;
+import pwd.initializr.common.utils.CryptographerPbkdf;
 import pwd.initializr.common.utils.StringUtils;
 import pwd.initializr.common.web.api.vo.Meta;
 import pwd.initializr.common.web.api.vo.PageInput;
@@ -46,6 +51,8 @@ import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.common.web.business.bo.ScopeBO;
 import pwd.initializr.common.web.business.bo.SortBO;
 import pwd.initializr.common.web.persistence.entity.EntityAble;
+import pwd.initializr.email.rpc.RPCEmailContentVO;
+import pwd.initializr.email.rpc.RPCEmailInput;
 
 /**
  * pwd.initializr.account.api.admin@ms-web-initializr
@@ -79,6 +86,10 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
   private AdminContactService adminContactService;
   @Autowired
   private SessionService sessionService;
+  @Resource
+  private EmailService emailService;
+  @Value("${spring.application.name}")
+  private String applicationName;
 
   @Override
   public void create(@Valid @NotNull(message = "参数不能为空") AdminCreateInput input) {
@@ -86,10 +97,22 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
     AdminAccountBO adminAccountBO = new AdminAccountBO();
     BeanUtils.copyProperties(input.getUser(), adminUserBO);
     BeanUtils.copyProperties(input.getAccount(), adminAccountBO);
+    String defaultPassword = getDefaultPassword();
+    String defaultPasswordSalt = getDefaultLoginPwdSalt();
+    adminAccountBO.setLoginPwd(getDefaultLoginPwd(defaultPassword,defaultPasswordSalt));
+    adminAccountBO.setPwdSalt(defaultPasswordSalt);
+
     List<AdminContactBO> adminContactBOS = input.getContacts().stream().map(this::convertAdminContactVOToBO)
         .collect(Collectors.toList());
     Long userId = adminUserServiceWrap.insert(adminUserBO, adminAccountBO,adminContactBOS);
-
+    // TODO 解耦合
+    RPCEmailInput rpcEmailInput = new RPCEmailInput();
+    rpcEmailInput.setApp(applicationName);
+    // TODO 埋了一个联系人集合的坑
+    rpcEmailInput.getBox().getTo().add(adminContactBOS.get(1).getValue());
+    // TODO 模板化
+    rpcEmailInput.setContent(new RPCEmailContentVO("初始登录密码" ,defaultPassword));
+    this.emailService.sendEmail(rpcEmailInput);
     super.outputData(userId);
   }
 
@@ -285,8 +308,38 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
   @Override
   public void resetAccountPwd(@Valid @NotNull(message = "用户ID不能为空") Long uid,
       @Valid @NotNull(message = "账号ID不能为空") Long aid) {
-    Integer integer = adminAccountService.resetPwd(uid, aid);
-    outputData(integer);
+    AdminAccountBO adminAccountBO = new AdminAccountBO();
+    adminAccountBO.setId(aid);
+    adminAccountBO.setUid(uid);
+    String defaultPassword = getDefaultPassword();
+    String defaultPasswordSalt = getDefaultLoginPwdSalt();
+    adminAccountBO.setLoginPwd(getDefaultLoginPwd(defaultPassword,defaultPasswordSalt));
+    adminAccountBO.setPwdSalt(defaultPasswordSalt);
+    // TODO 返回值异常
+    Integer integer = adminAccountService.resetPwd(adminAccountBO);
+
+    List<AdminContactBO> adminContactBOS = adminContactService.queryByUid(uid);
+    RPCEmailInput rpcEmailInput = new RPCEmailInput();
+    rpcEmailInput.setApp(applicationName);
+    // TODO 埋了一个联系人集合的坑
+    rpcEmailInput.getBox().getTo().add(adminContactBOS.get(1).getValue());
+    // TODO 模板化
+    rpcEmailInput.setContent(new RPCEmailContentVO("初始登录密码" ,defaultPassword));
+    this.emailService.sendEmail(rpcEmailInput);
+
+    outputData("" + integer);
+  }
+
+  private String getDefaultPassword() {
+    return RandomStringUtils.randomAlphanumeric(6);
+  }
+
+  private String getDefaultLoginPwdSalt() {
+    return CryptographerPbkdf.randomSalt();
+  }
+
+  private String getDefaultLoginPwd(String password,String loginPwdSalt) {
+    return CryptographerPbkdf.encrypt(password,loginPwdSalt);
   }
 
   private AdminUserCreateOutput convertAdminUserBO2VO(AdminUserBO bo) {

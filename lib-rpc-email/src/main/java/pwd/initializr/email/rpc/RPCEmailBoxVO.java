@@ -3,6 +3,7 @@ package pwd.initializr.email.rpc;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
+import java.util.LinkedHashSet;
 import java.util.Set;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
@@ -35,10 +36,10 @@ public class RPCEmailBoxVO implements Serializable {
 
     @ApiModelProperty(name = "to", value = "to", required = true, dataType = "java.util.Set<java.lang.String>")
     @NotEmpty(message = "邮件发送对象至少有一个")
-    private Set<String> to;
+    private Set<String> to = new LinkedHashSet<>();
     @ApiModelProperty(name = "cc", value = "cc", required = false, dataType = "java.util.Set<java.lang.String>")
-    private Set<String> cc;
+    private Set<String> cc = new LinkedHashSet<>();
     @ApiModelProperty(name = "bcc", value = "bcc", required = false, dataType = "java.util.Set<java.lang.String>")
-    private Set<String> bcc;
+    private Set<String> bcc = new LinkedHashSet<>();
 
 }

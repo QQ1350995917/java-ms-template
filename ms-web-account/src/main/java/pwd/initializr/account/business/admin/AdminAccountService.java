@@ -190,11 +190,10 @@ public interface AdminAccountService {
 
   /**
    * 重置密码
-   * @param uid 用户ID
-   * @param aid 账户ID
+   * @param bo 账户
    * @return 影响行数
    */
-  Integer resetPwd(Long uid, Long aid);
+  Integer resetPwd(AdminAccountBO bo);
 
   /**
    * <h2>根据类型，查询用户名下的该类型的账号</h2>

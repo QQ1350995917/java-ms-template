@@ -30,7 +30,7 @@ import lombok.ToString;
 @Getter
 @ToString
 @ApiModel("发送邮件请求参数")
-public class RPCEmailInput implements Serializable {
+public class  RPCEmailInput implements Serializable {
 
   private static final long serialVersionUID = -1659590069838613585L;
 
@@ -39,7 +39,7 @@ public class RPCEmailInput implements Serializable {
   private String app;
   @ApiModelProperty(name = "box", value = "收件箱", required = true, dataType = "pwd.initializr.email.rpc.RPCEmailBoxVO")
   @NotNull(message = "收件箱不能为空")
-  private RPCEmailBoxVO box;
+  private RPCEmailBoxVO box = new RPCEmailBoxVO();
   @ApiModelProperty(name = "content", value = "邮件内容", required = true, dataType = "pwd.initializr.email.rpc.RPCEmailContentVO")
   @NotNull(message = "content不能为空")
   private RPCEmailContentVO content;

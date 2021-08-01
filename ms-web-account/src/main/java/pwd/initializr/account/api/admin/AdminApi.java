@@ -171,7 +171,7 @@ public interface AdminApi {
   @PatchMapping(value = {"/{uid}/{aid}/pwd/reset"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   void resetAccountPwd(
       @PathVariable("uid") @Valid @NotNull(message = "用户ID不能为空") Long uid,
-      @PathVariable("uid") @Valid @NotNull(message = "账号ID不能为空") Long aid
+      @PathVariable("aid") @Valid @NotNull(message = "账号ID不能为空") Long aid
   );
 
 }

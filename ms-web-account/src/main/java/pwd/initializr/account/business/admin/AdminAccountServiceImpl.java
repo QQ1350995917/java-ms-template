@@ -3,12 +3,10 @@ package pwd.initializr.account.business.admin;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
-import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import pwd.initializr.account.business.admin.bo.AdminAccountBO;
@@ -16,12 +14,12 @@ import pwd.initializr.account.persistence.dao.AdminAccountDao;
 import pwd.initializr.account.persistence.entity.AccountType;
 import pwd.initializr.account.persistence.entity.AdminAccountEntity;
 import pwd.initializr.account.persistence.entity.AdminAccountType;
-import pwd.initializr.common.utils.CryptographerPbkdf;
 import pwd.initializr.common.web.business.bo.PageableQueryResult;
 import pwd.initializr.common.web.business.bo.ScopeBO;
 import pwd.initializr.common.web.business.bo.SortBO;
 import pwd.initializr.common.web.persistence.entity.EntityAble;
 import pwd.initializr.common.web.persistence.entity.EntityDel;
+import pwd.initializr.email.rpc.RPCEmailInput;
 
 /**
  * (AdminAccountEntity)表服务实现类
@@ -93,16 +91,11 @@ public class AdminAccountServiceImpl implements AdminAccountService {
     BeanUtils.copyProperties(adminAccountBO, adminAccountEntity);
     adminAccountEntity.setAble(EntityAble.DISABLE.getNumber());
     adminAccountEntity.setDel(EntityDel.NO.getNumber());
-    String defaultPassword = getDefaultPassword();
-    String defaultPasswordSalt = getDefaultLoginPwdSalt();
-    adminAccountEntity.setLoginPwd(getDefaultLoginPwd(defaultPassword,defaultPasswordSalt));
-    adminAccountEntity.setPwdSalt(defaultPasswordSalt);
     adminAccountEntity.setPwdTime(new Date());
     adminAccountEntity.setType(AdminAccountType.GRANT.getNumber());
     adminAccountEntity.setCreateTime(new Date());
     adminAccountEntity.setUpdateTime(new Date());
     this.adminAccountDao.insert(adminAccountEntity);
-    // TODO 发邮件
     return adminAccountEntity.getId();
   }
 
@@ -163,7 +156,7 @@ public class AdminAccountServiceImpl implements AdminAccountService {
     return Optional.ofNullable(this.adminAccountDao.queryAllByUid(userId))
         .orElseGet(() -> new ArrayList<>())
         .stream()
-        .map(this::convertAdminAccontEntityToAdminAccontBO)
+        .map(this::convertAdminAccountEntityToBO)
         .collect(Collectors.toList());
   }
 
@@ -172,7 +165,7 @@ public class AdminAccountServiceImpl implements AdminAccountService {
     return Optional.ofNullable(this.adminAccountDao.queryAllByUids(userIds))
         .orElseGet(() -> new ArrayList<>())
         .stream()
-        .map(this::convertAdminAccontEntityToAdminAccontBO)
+        .map(this::convertAdminAccountEntityToBO)
         .collect(Collectors.toList());
   }
 
@@ -193,10 +186,8 @@ public class AdminAccountServiceImpl implements AdminAccountService {
   }
 
   @Override
-  public Integer resetPwd(Long id, Long uid) {
-    String defaultPassword = getDefaultPassword();
-    String salt = getDefaultLoginPwdSalt();
-    return this.adminAccountDao.updateLoginPwd(id,uid,defaultPassword,salt,new Date());
+  public Integer resetPwd(AdminAccountBO bo) {
+    return this.adminAccountDao.updateLoginPwd(bo.getId(), bo.getUid(), bo.getLoginPwd(), bo.getPwdSalt(), new Date());
   }
 
   @Override
@@ -204,19 +195,7 @@ public class AdminAccountServiceImpl implements AdminAccountService {
     return null;
   }
 
-  private String getDefaultPassword() {
-    return RandomStringUtils.random(6);
-  }
-
-  private String getDefaultLoginPwdSalt() {
-    return CryptographerPbkdf.randomSalt();
-  }
-
-  private String getDefaultLoginPwd(String password,String loginPwdSalt) {
-    return CryptographerPbkdf.encrypt(password,loginPwdSalt);
-  }
-
-  protected AdminAccountBO convertAdminAccontEntityToAdminAccontBO(AdminAccountEntity adminAccountEntity) {
+  protected AdminAccountBO convertAdminAccountEntityToBO(AdminAccountEntity adminAccountEntity) {
     AdminAccountBO adminAccountBO = new AdminAccountBO();
     BeanUtils.copyProperties(adminAccountEntity, adminAccountBO);
     return adminAccountBO;

@@ -5,6 +5,7 @@ import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Properties;
+import org.junit.Test;
 import pwd.initializr.common.email.Email;
 import pwd.initializr.common.email.EmailAttachment;
 import pwd.initializr.common.email.EmailClient;
@@ -23,43 +24,67 @@ import pwd.initializr.common.utils.DateTimeUtil;
  */
 public class EmailClientTest {
 
-    // -Demail.server.user=xxx -Demail.server.password=xxx
-    private static final String EMAIL_SERVER_PASSWORD = "email.server.password";
-    private static final String EMAIL_SERVER_USER = "email.server.user";
+  // -Demail.server.user=xxx -Demail.server.password=xxx
+  private static final String EMAIL_SERVER_PASSWORD = "EMAIL_PASSWORD";
+  private static final String EMAIL_SERVER_USER = "EMAIL_USER";
 
-    public static void main(String[] args) throws Exception {
-        Properties env = System.getProperties();
-        // smtp.exmail.qq.com(使用SSL，端口号465)
-        String host = "smtp.exmail.qq.com";
-        String port = "465";
-        String protocol = "smtp";
-        String user = env.getProperty(EMAIL_SERVER_USER, null);
-        String password = env.getProperty(EMAIL_SERVER_PASSWORD, null);
+  @Test
+  public void testFor163() throws Exception {
+    Properties env = System.getProperties();
+    // smtp.exmail.qq.com(使用SSL，端口号465)
+    String host = "smtp.163.com";
+    String protocol = "smtp";
+//        String user = env.getProperty(EMAIL_SERVER_USER, null);
+//        String password = env.getProperty(EMAIL_SERVER_PASSWORD, null);
+    String user = "platformsupport@163.com";
+    String password = "填写授权码";
 
-        String current = DateTimeUtil.getCurrent();
+    String current = DateTimeUtil.getCurrent();
+    String subject = "hello word:" + current;
+    String content = "<h1>Hello Word: " + current;
 
-        String subject = "hello word:" + current;
-        String content =
-            "<h1>Hello Word: " + current + " </h1><p>显示图片<img src='cid:a'>1.jpg</p>";
+    HashSet<String> tos = new HashSet<>();
+    tos.add("www.dingpengwei@foxmail.com");
+    EmailClient emailClient = new EmailClient(true, host, null, protocol, true, user, password);
+    emailClient.send(new Email(user, tos, null, null, subject, content, null));
+    emailClient.destroyTransport();
 
-        LinkedList<EmailAttachment> attachments = new LinkedList<>();
-        //String file1 = "/Users/pwd/Documents/minio/xresources/thumb/351.png";
-        String file1 = "C:\\Users\\Administrator\\Pictures\\1.jpg";
-        attachments.add(
-            new EmailAttachment("快.jpg", "a", "image/jpeg", Files.readAllBytes(Paths.get(file1))));
-        //String file2 = "/Users/pwd/Documents/minio/xresources/thumb/345.png";
-        String file2 = "C:\\Users\\Administrator\\Pictures\\2.jpg";
-        attachments.add(
-            new EmailAttachment("必.jpg", "b", "image/jpeg", Files.readAllBytes(Paths.get(file2))));
-        //String file3 = "/Users/pwd/Documents/minio/xresources/thumb/392.png";
-        String file3 = "C:\\Users\\Administrator\\Pictures\\3.jpg";
-        attachments.add(
-            new EmailAttachment("达.jpg", "c", "image/jpeg", Files.readAllBytes(Paths.get(file3))));
+  }
 
-        HashSet<String> tos = new HashSet<>();
-        tos.add("www.dingpengwei@foxmail.com");
-        EmailClient emailClient = new EmailClient(true, host, port, protocol, true, user, password);
-        emailClient.send(new Email(user, tos, null, null, subject, content, attachments));
-        emailClient.destroyTransport();
-    }
+  @Test
+  public void testForFoxmai() throws Exception {
+    Properties env = System.getProperties();
+    // smtp.exmail.qq.com(使用SSL，端口号465)
+    String host = "smtp.exmail.qq.com";
+    String port = "465";
+    String protocol = "smtp";
+    String user = env.getProperty(EMAIL_SERVER_USER, null);
+    String password = env.getProperty(EMAIL_SERVER_PASSWORD, null);
+
+    String current = DateTimeUtil.getCurrent();
+
+    String subject = "hello word:" + current;
+    String content =
+        "<h1>Hello Word: " + current + " </h1><p>显示图片<img src='cid:a'>1.jpg</p>";
+
+    LinkedList<EmailAttachment> attachments = new LinkedList<>();
+    //String file1 = "/Users/pwd/Documents/minio/xresources/thumb/351.png";
+    String file1 = "C:\\Users\\Administrator\\Pictures\\1.jpg";
+    attachments.add(
+        new EmailAttachment("快.jpg", "a", "image/jpeg", Files.readAllBytes(Paths.get(file1))));
+    //String file2 = "/Users/pwd/Documents/minio/xresources/thumb/345.png";
+    String file2 = "C:\\Users\\Administrator\\Pictures\\2.jpg";
+    attachments.add(
+        new EmailAttachment("必.jpg", "b", "image/jpeg", Files.readAllBytes(Paths.get(file2))));
+    //String file3 = "/Users/pwd/Documents/minio/xresources/thumb/392.png";
+    String file3 = "C:\\Users\\Administrator\\Pictures\\3.jpg";
+    attachments.add(
+        new EmailAttachment("达.jpg", "c", "image/jpeg", Files.readAllBytes(Paths.get(file3))));
+
+    HashSet<String> tos = new HashSet<>();
+    tos.add("www.dingpengwei@foxmail.com");
+    EmailClient emailClient = new EmailClient(true, host, port, protocol, true, user, password);
+    emailClient.send(new Email(user, tos, null, null, subject, content, attachments));
+    emailClient.destroyTransport();
+  }
 }
