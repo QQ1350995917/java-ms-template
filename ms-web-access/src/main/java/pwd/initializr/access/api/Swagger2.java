@@ -11,7 +11,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 *
 * <h1>pwd-initializr-access接口文档声明</h1>
 *
-* date 2021-02-22 22:48
+* date 2021-08-08 15:20
 *
 * @author Automatic[www.dingpengwei@foxmail.com]
 * @version 0.0.1-SNAPSHOT

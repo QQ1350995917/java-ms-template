@@ -19,7 +19,7 @@ import pwd.initializr.common.web.persistence.entity.EntityDel;
 
 /**
  * <h2>服务层逻辑接口封装：RoleEntity信息服务接口</h2>
- * date 2021-02-22 22:48
+ * date 2021-08-08 16:34
  *
  * @author Automatic[www.dingpengwei@foxmail.com]
  * @since 0.0.1-SNAPSHOT
@@ -52,7 +52,7 @@ public class RoleServiceImpl implements RoleService {
 
   @Override
   public Long insert(RoleBO bo) {
-    RoleEntity entity = this.convertRoleBO2RoleEntity(bo);
+    RoleEntity entity = this.convertRoleBO2RoleEntityForCreate(bo);
     this.dao.insert(entity);
     return entity.getId();
   }
@@ -60,13 +60,12 @@ public class RoleServiceImpl implements RoleService {
   @Override
   public void insert(List<RoleBO> bos) {
     List<RoleEntity> entities = bos.stream()
-      .map(this::convertRoleBO2RoleEntity).collect(Collectors.toList());
+      .map(this::convertRoleBO2RoleEntityForCreate).collect(Collectors.toList());
     this.dao.insertByBatch(entities);
   }
 
   @Override
-  public Long insertOrReplace(RoleBO bo) {
-    RoleEntity entity = this.convertRoleBO2RoleEntity(bo);
+  public Long insertOrReplace(RoleBO bo) {RoleEntity entity = this.convertRoleBO2RoleEntityForCreate(bo);
     this.dao.insertOrReplace(entity);
     return entity.getId();
   }
@@ -74,7 +73,7 @@ public class RoleServiceImpl implements RoleService {
   @Override
   public void insertOrReplace(List<RoleBO> bos) {
     List<RoleEntity> entities = bos.stream()
-      .map(this::convertRoleBO2RoleEntity).collect(Collectors.toList());
+      .map(this::convertRoleBO2RoleEntityForCreate).collect(Collectors.toList());
     this.dao.insertOrReplaceByBatch(entities);
   }
 
@@ -86,7 +85,8 @@ public class RoleServiceImpl implements RoleService {
     if (total == null || total < 1) {
       return result;
     }
-    List<RoleEntity> entities = this.dao.queryByCondition(scopes,sorts, pageIndex * pageSize, pageSize);
+    List<RoleEntity> entities = this.dao.queryByCondition(scopes,sorts,
+      pageIndex * pageSize, pageSize);
     if (entities == null) {
       return result;
     }
@@ -113,20 +113,20 @@ public class RoleServiceImpl implements RoleService {
   }
 
   @Override
-  public Integer updateById(RoleBO bo){
-    RoleEntity entity = new RoleEntity();
+  public Integer updateById(RoleBO bo){RoleEntity entity = new RoleEntity();
     BeanUtils.copyProperties(bo, entity);
     entity.setUpdateTime(new Date());
     return this.dao.updateById(entity);
   }
 
-  public RoleEntity convertRoleBO2RoleEntity(RoleBO bo){
+  public RoleEntity convertRoleBO2RoleEntityForCreate(RoleBO bo){
     RoleEntity entity = new RoleEntity();
     BeanUtils.copyProperties(bo, entity);
     entity.setAble(EntityAble.DISABLE.getNumber());
     entity.setDel(EntityDel.NO.getNumber());
     entity.setCreateTime(new Date());
     entity.setUpdateTime(new Date());
+    entity.setVersion(0L);
     return entity;
   }
 }

@@ -27,16 +27,16 @@ import pwd.initializr.common.web.business.bo.SortBO;
 import pwd.initializr.common.web.persistence.entity.EntityAble;
 
 /**
-* pwd-initializr-access@ms-web-initializr
-*
-* <h1>UserRole控制层接口实现</h1>
-*
-* date 2021-02-22 22:48
-*
-* @author Automatic[dingpengwei@foxmail.com]
-* @version 0.0.1-SNAPSHOT
-* @since 0.0.1-SNAPSHOT
-*/
+ * pwd-initializr-access@ms-web-initializr
+ *
+ * <h1>UserRole控制层接口实现</h1>
+ *
+ * date 2021-08-08 15:20
+ *
+ * @author Automatic[dingpengwei@foxmail.com]
+ * @version 0.0.1-SNAPSHOT
+ * @since 0.0.1-SNAPSHOT
+ */
 @Api(
   tags = "UserRole信息结构",
   value = "UserRoleManageApi",
@@ -55,8 +55,8 @@ public class UserRoleController extends pwd.initializr.common.web.api.admin.Admi
     PageInput pageInput = PageInput.parse(page);
     LinkedHashSet<ScopeBO> scopeBOS = ScopeInput.parse(scopes);
     LinkedHashSet<SortBO> sortBOS = SortInput.parse(sorts);
-    PageableQueryResult<UserRoleBO> pageableQueryResult = service
-      .queryAllByCondition(scopeBOS, sortBOS, pageInput.getIndex(), pageInput.getSize());
+    PageableQueryResult<UserRoleBO> pageableQueryResult = service.queryAllByCondition(scopeBOS,
+      sortBOS, pageInput.getIndex(), pageInput.getSize());
     PageOutput<UserRoleOutput> result = new PageOutput<>();
     pageableQueryResult.getElements().forEach(bo -> {
       UserRoleOutput output = new UserRoleOutput();
@@ -123,8 +123,8 @@ public class UserRoleController extends pwd.initializr.common.web.api.admin.Admi
 
   @Override
   public void create(@Valid @NotNull(message = "参数不能为空") List<UserRoleInput> input) {
-    List<UserRoleBO> bos = input.stream().map(this::convertUserRoleInput2UserRoleBO)
-      .collect(Collectors.toList());
+  List<UserRoleBO> bos = input.stream().map(this::convertUserRoleInput2UserRoleBO)
+    .collect(Collectors.toList());
     service.insert(bos);
     outputData(200);
   }
@@ -139,17 +139,18 @@ public class UserRoleController extends pwd.initializr.common.web.api.admin.Admi
 
   @Override
   public void createOrReplace(@Valid @NotNull(message = "参数不能为空") List<UserRoleInput> input) {
-    List<UserRoleBO> bos = input.stream().map(this::convertUserRoleInput2UserRoleBO)
-      .collect(Collectors.toList());
+  List<UserRoleBO> bos = input.stream().map(this::convertUserRoleInput2UserRoleBO)
+    .collect(Collectors.toList());
     service.insertOrReplace(bos);
     outputData(200);
   }
 
   @Override
   public void update(@Valid @NotNull(message = "参数不能为空") Long id,
-  @Valid @NotNull(message = "参数不能为空") UserRoleInput input) {
+    @Valid @NotNull(message = "参数不能为空") UserRoleInput input) {
     UserRoleBO bo = new UserRoleBO();
     BeanUtils.copyProperties(input,bo);
+    bo.setRid(id);
     Integer result = service.updateById(bo);
     outputData(200,result);
   }

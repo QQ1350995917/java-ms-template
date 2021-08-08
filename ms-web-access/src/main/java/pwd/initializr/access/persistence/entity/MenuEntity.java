@@ -1,6 +1,6 @@
 package pwd.initializr.access.persistence.entity;
 
-import java.util.Date;
+  import java.util.Date;
 import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,7 +10,7 @@ import lombok.ToString;
 
 /**
  * <h2>menu数据表实体类</h2>
- * date 2021-02-22 22:48
+ * date 2021-08-08 15:20
  *
  * @author Automatic[www.dingpengwei@foxmail.com]
  * @since 0.0.1-SNAPSHOT

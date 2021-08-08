@@ -297,10 +297,12 @@
             });
       },
       handleCheckAllChange(val) {
+        this.tagName = '提交';
+        this.filename = '';
         this.checkedTables = val ? this.tableOptions : [];
         this.isIndeterminate = false;
       },
-      handleCheckedCitiesChange(value) {
+      handleTablesCheckedChange(value) {
         this.tagName = '提交';
         this.filename = '';
         var checkedCount = value.length;

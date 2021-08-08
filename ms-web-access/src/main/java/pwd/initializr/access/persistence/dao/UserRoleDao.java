@@ -3,6 +3,7 @@ package pwd.initializr.access.persistence.dao;
 import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -12,7 +13,7 @@ import pwd.initializr.common.web.persistence.entity.SortEntity;
 
 /**
  * <h2>user_role数据表操作</h2>
- * date 2021-02-22 22:48
+ * date 2021-08-08 15:20
  *
  * @author Automatic[www.dingpengwei@foxmail.com]
  * @since 0.0.1-SNAPSHOT
@@ -22,7 +23,7 @@ public interface UserRoleDao {
 
   /**
    * <h2>通过主键启用/禁用数据</h2>
-   * date 2021-02-22 22:48
+   * date 2021-08-08 15:20
    *
    * @param id 主键
    * @param able 业务数据
@@ -35,7 +36,7 @@ public interface UserRoleDao {
 
   /**
    * <h2>通过主键批量启用/禁用数据</h2>
-   * date 2021-02-22 22:48
+   * date 2021-08-08 15:20
    *
    * @param ids 主键集合
    * @param able 业务数据
@@ -48,7 +49,7 @@ public interface UserRoleDao {
 
   /**
    * <h2>统计指定条件下命中的数据行数</h2>
-   * date 2021-02-22 22:48
+   * date 2021-08-08 15:20
    *
    * @param scopes 查询条件集合
    * @return java.lang.Long 总行数
@@ -59,7 +60,7 @@ public interface UserRoleDao {
 
   /**
    * <h2>通过主键删除数据</h2>
-   * date 2021-02-22 22:48
+   * date 2021-08-08 15:20
    *
    * @param id 主键
    * @param date 更新时间
@@ -71,7 +72,7 @@ public interface UserRoleDao {
 
   /**
    * <h2>通过主键批量删除数据</h2>
-   * date 2021-02-22 22:48
+   * date 2021-08-08 15:20
    *
    * @param ids 主键集合
    * @param date 更新时间
@@ -83,7 +84,7 @@ public interface UserRoleDao {
 
   /**
    * <h2>新增数据</h2>
-   * date 2021-02-22 22:48
+   * date 2021-08-08 15:20
    *
    * @param entity 实例对象
    * @return java.lang.Integer 影响行数
@@ -94,7 +95,7 @@ public interface UserRoleDao {
 
   /**
    * <h2>新增数据（批量新增）</h2>
-   * date 2021-02-22 22:48
+   * date 2021-08-08 15:20
    *
    * @param entities 实例对象
    * @return java.lang.Integer 影响行数
@@ -105,7 +106,7 @@ public interface UserRoleDao {
 
   /**
    * <h2>新增或者替换数据</h2>
-   * date 2021-02-22 22:48
+   * date 2021-08-08 15:20
    *
    * @param entity 实例对象
    * @return java.lang.Integer 影响行数
@@ -116,7 +117,7 @@ public interface UserRoleDao {
 
   /**
    * <h2>新增或者替换数据（批量新增或者替换）</h2>
-   * date 2021-02-22 22:48
+   * date 2021-08-08 15:20
    *
    * @param entities 实例对象
    * @return java.lang.Integer 影响行数
@@ -127,7 +128,7 @@ public interface UserRoleDao {
 
   /**
    * <h2>在指定的条件下查询数据</h2>
-   * date 2021-02-22 22:48
+   * date 2021-08-08 15:20
    *
    * @param scopes 查询条件
    * @param sorts 排序条件
@@ -144,7 +145,7 @@ public interface UserRoleDao {
 
   /**
    * <h2>根据主键进行查询</h2>
-   * date 2021-02-22 22:48
+   * date 2021-08-08 15:20
    *
    * @param id 主键
    * @return UserRoleEntity
@@ -156,7 +157,7 @@ public interface UserRoleDao {
 
   /**
    * <h2>通过主键更新数据</h2>
-   * date 2021-02-22 22:48
+   * date 2021-08-08 15:20
    *
    * @param entity 实例对象
    * @return java.lang.Integer 影响行数
@@ -164,4 +165,16 @@ public interface UserRoleDao {
    * @since 0.0.1-SNAPSHOT
    */
   Integer updateById(@Param("entity") UserRoleEntity entity);
+
+  /**
+   * <h2>执行SQL查询，供单元测试验证，该接口不可向上层逻辑暴露</h2>
+   * date 2021-08-08 15:20
+   *
+   * @param sql sql语句
+   * @return java.util.List 执行结果
+   * @author Automatic[www.dingpengwei@foxmail.com]
+   * @since 0.0.1-SNAPSHOT
+   */
+  List<Map<String,Object>> queryBySql(@Param("sql") String sql);
+
 }

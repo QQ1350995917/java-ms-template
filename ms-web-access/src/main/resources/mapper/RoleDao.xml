@@ -4,16 +4,26 @@
 <mapper namespace="pwd.initializr.access.persistence.dao.RoleDao">
 
   <resultMap id="RoleMap" type="pwd.initializr.access.persistence.entity.RoleEntity">
-    <result column="id" jdbcType="BIGINT" property="id"/>
-    <result column="pid" jdbcType="BIGINT" property="pid"/>
-    <result column="name" jdbcType="VARCHAR" property="name"/>
-    <result column="summary" jdbcType="VARCHAR" property="summary"/>
-    <result column="order" jdbcType="INTEGER" property="order"/>
-    <result column="able" jdbcType="INTEGER" property="able"/>
-    <result column="del" jdbcType="INTEGER" property="del"/>
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
-    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
-    <result column="version" jdbcType="BIGINT" property="version"/>
+    <result column="id" jdbcType="BIGINT"
+            property="id"/>
+    <result column="pid" jdbcType="BIGINT"
+            property="pid"/>
+    <result column="name" jdbcType="VARCHAR"
+            property="name"/>
+    <result column="summary" jdbcType="VARCHAR"
+            property="summary"/>
+    <result column="order" jdbcType="INTEGER"
+            property="order"/>
+    <result column="able" jdbcType="INTEGER"
+            property="able"/>
+    <result column="del" jdbcType="INTEGER"
+            property="del"/>
+    <result column="create_time" jdbcType="TIMESTAMP"
+            property="createTime"/>
+    <result column="update_time" jdbcType="TIMESTAMP"
+            property="updateTime"/>
+    <result column="version" jdbcType="BIGINT"
+            property="version"/>
   </resultMap>
 
   <!--根据主键查询查询-->
@@ -38,7 +48,8 @@
   <!--查询指定行数据-->
   <select id="countByCondition" resultType="java.lang.Long">
     SELECT COUNT(*) FROM role
-    <include refid="pwd.initializr.common.web.persistence.entity.ScopeEntity.entityQueryScope"></include>
+    <include
+        refid="pwd.initializr.common.web.persistence.entity.ScopeEntity.entityQueryScope"></include>
   </select>
 
   <!--通过实体作为筛选条件查询-->
@@ -56,133 +67,139 @@
       `version`
     FROM
       role
-    <include refid="pwd.initializr.common.web.persistence.entity.ScopeEntity.entityQueryScope"></include>
-    <include refid="pwd.initializr.common.web.persistence.entity.SortEntity.entityQuerySort"></include>
+    <include
+        refid="pwd.initializr.common.web.persistence.entity.ScopeEntity.entityQueryScope"></include>
+    <include
+        refid="pwd.initializr.common.web.persistence.entity.SortEntity.entityQuerySort"></include>
     LIMIT
       #{offset}, #{limit}
   </select>
 
   <!--新增所有列-->
-  <insert id="insert" keyProperty="id" useGeneratedKeys="true" parameterType="pwd.initializr.access.persistence.entity.RoleEntity">
+  <insert id="insert" keyProperty="id" useGeneratedKeys="true"
+          parameterType="pwd.initializr.access.persistence.entity.RoleEntity">
     INSERT INTO role
-      (
-        `id`,
-        `pid`,
-        `name`,
-        `summary`,
-        `order`,
-        `able`,
-        `del`,
-        `create_time`,
-        `update_time`,
-        `version`
-      )
+    (
+      `id`,
+      `pid`,
+      `name`,
+      `summary`,
+      `order`,
+      `able`,
+      `del`,
+      `create_time`,
+      `update_time`,
+      `version`
+    )
     VALUES
-      (
-        #{entity.id},
-        #{entity.pid},
-        #{entity.name},
-        #{entity.summary},
-        #{entity.order},
-        #{entity.able},
-        #{entity.del},
-        #{entity.createTime},
-        #{entity.updateTime},
-        #{entity.version}
-      )
+    (
+      #{entity.id},
+      #{entity.pid},
+      #{entity.name},
+      #{entity.summary},
+      #{entity.order},
+      #{entity.able},
+      #{entity.del},
+      #{entity.createTime},
+      #{entity.updateTime},
+      #{entity.version}
+    )
   </insert>
 
   <!--新增所有列（批量新增）-->
-  <insert id="insertByBatch" keyProperty="id" useGeneratedKeys="true" parameterType="pwd.initializr.access.persistence.entity.RoleEntity">
+  <insert id="insertByBatch" keyProperty="id" useGeneratedKeys="true"
+          parameterType="pwd.initializr.access.persistence.entity.RoleEntity">
     INSERT INTO role
     (
-        `id`,
-        `pid`,
-        `name`,
-        `summary`,
-        `order`,
-        `able`,
-        `del`,
-        `create_time`,
-        `update_time`,
-        `version`
+      `id`,
+      `pid`,
+      `name`,
+      `summary`,
+      `order`,
+      `able`,
+      `del`,
+      `create_time`,
+      `update_time`,
+      `version`
     )
     VALUES
     <foreach collection="entities" item="entity" separator=",">
     (
-        #{entity.id},
-        #{entity.pid},
-        #{entity.name},
-        #{entity.summary},
-        #{entity.order},
-        #{entity.able},
-        #{entity.del},
-        #{entity.createTime},
-        #{entity.updateTime},
-        #{entity.version}
+      #{entity.id},
+      #{entity.pid},
+      #{entity.name},
+      #{entity.summary},
+      #{entity.order},
+      #{entity.able},
+      #{entity.del},
+      #{entity.createTime},
+      #{entity.updateTime},
+      #{entity.version}
     )
     </foreach>
   </insert>
 
   <!--新增或者替换所有列-->
-  <insert id="insertOrReplace" keyProperty="id" useGeneratedKeys="true" parameterType="pwd.initializr.access.persistence.entity.RoleEntity">
+  <insert id="insertOrReplace" keyProperty="id" useGeneratedKeys="true"
+          parameterType="pwd.initializr.access.persistence.entity.RoleEntity">
     REPLACE INTO role
     (
-        `id`,
-        `pid`,
-        `name`,
-        `summary`,
-        `order`,
-        `able`,
-        `del`,
-        `create_time`,
-        `update_time`,
-        `version`
+      `id`,
+      `pid`,
+      `name`,
+      `summary`,
+      `order`,
+      `able`,
+      `del`,
+      `create_time`,
+      `update_time`,
+      `version`
     )
     VALUES
     (
-        #{entity.id},
-        #{entity.pid},
-        #{entity.name},
-        #{entity.summary},
-        #{entity.order},
-        #{entity.able},
-        #{entity.del},
-        #{entity.createTime},
-        #{entity.updateTime},
-        #{entity.version}
+      #{entity.id},
+      #{entity.pid},
+      #{entity.name},
+      #{entity.summary},
+      #{entity.order},
+      #{entity.able},
+      #{entity.del},
+      #{entity.createTime},
+      #{entity.updateTime},
+      #{entity.version}
     )
   </insert>
 
   <!--新增或者替换所有列（批量新增或者替换）-->
-  <insert id="insertOrReplaceByBatch" keyProperty="id" useGeneratedKeys="true" parameterType="pwd.initializr.access.persistence.entity.RoleEntity">
+  <insert id="insertOrReplaceByBatch" keyProperty="id" useGeneratedKeys="true"
+          parameterType="pwd.initializr.access.persistence.entity.RoleEntity">
     REPLACE INTO role
     (
-        `id`,
-        `pid`,
-        `name`,
-        `summary`,
-        `order`,
-        `able`,
-        `del`,
-        `create_time`,
-        `update_time`,
-        `version`
+      `id`,
+      `pid`,
+      `name`,
+      `summary`,
+      `order`,
+      `able`,
+      `del`,
+      `create_time`,
+      `update_time`,
+      `version`
     )
     VALUES
     <foreach collection="entities" item="entity" separator=",">
-      (
-        #{entity.id},
-        #{entity.pid},
-        #{entity.name},
-        #{entity.summary},
-        #{entity.order},
-        #{entity.able},
-        #{entity.del},
-        #{entity.createTime},
-        #{entity.updateTime},
-        #{entity.version}
-      )
+    (
+      #{entity.id},
+      #{entity.pid},
+      #{entity.name},
+      #{entity.summary},
+      #{entity.order},
+      #{entity.able},
+      #{entity.del},
+      #{entity.createTime},
+      #{entity.updateTime},
+      #{entity.version}
+    )
     </foreach>
   </insert>
 
@@ -242,7 +259,8 @@
       del = 1,
       update_time = #{date}
     WHERE
-      id in
+      id
+    IN
     <foreach close=")" collection="ids" index="index" item="id" open="(" separator=",">
       #{id}
     </foreach>
@@ -265,10 +283,16 @@
       able = #{able},
       update_time = #{date}
     WHERE
-      id in
+      id
+    IN
     <foreach close=")" collection="ids" index="index" item="id" open="(" separator=",">
       #{id}
     </foreach>
   </update>
+
+  <!--通过SQL查询-->
+  <select id="queryBySql" resultType="java.util.HashMap">
+    ${sql}
+  </select>
 
 </mapper>

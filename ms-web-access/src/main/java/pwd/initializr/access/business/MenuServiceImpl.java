@@ -19,7 +19,7 @@ import pwd.initializr.common.web.persistence.entity.EntityDel;
 
 /**
  * <h2>服务层逻辑接口封装：MenuEntity信息服务接口</h2>
- * date 2021-02-22 22:48
+ * date 2021-08-08 16:34
  *
  * @author Automatic[www.dingpengwei@foxmail.com]
  * @since 0.0.1-SNAPSHOT
@@ -52,7 +52,7 @@ public class MenuServiceImpl implements MenuService {
 
   @Override
   public Long insert(MenuBO bo) {
-    MenuEntity entity = this.convertMenuBO2MenuEntity(bo);
+    MenuEntity entity = this.convertMenuBO2MenuEntityForCreate(bo);
     this.dao.insert(entity);
     return entity.getId();
   }
@@ -60,13 +60,12 @@ public class MenuServiceImpl implements MenuService {
   @Override
   public void insert(List<MenuBO> bos) {
     List<MenuEntity> entities = bos.stream()
-      .map(this::convertMenuBO2MenuEntity).collect(Collectors.toList());
+      .map(this::convertMenuBO2MenuEntityForCreate).collect(Collectors.toList());
     this.dao.insertByBatch(entities);
   }
 
   @Override
-  public Long insertOrReplace(MenuBO bo) {
-    MenuEntity entity = this.convertMenuBO2MenuEntity(bo);
+  public Long insertOrReplace(MenuBO bo) {MenuEntity entity = this.convertMenuBO2MenuEntityForCreate(bo);
     this.dao.insertOrReplace(entity);
     return entity.getId();
   }
@@ -74,7 +73,7 @@ public class MenuServiceImpl implements MenuService {
   @Override
   public void insertOrReplace(List<MenuBO> bos) {
     List<MenuEntity> entities = bos.stream()
-      .map(this::convertMenuBO2MenuEntity).collect(Collectors.toList());
+      .map(this::convertMenuBO2MenuEntityForCreate).collect(Collectors.toList());
     this.dao.insertOrReplaceByBatch(entities);
   }
 
@@ -86,7 +85,8 @@ public class MenuServiceImpl implements MenuService {
     if (total == null || total < 1) {
       return result;
     }
-    List<MenuEntity> entities = this.dao.queryByCondition(scopes,sorts, pageIndex * pageSize, pageSize);
+    List<MenuEntity> entities = this.dao.queryByCondition(scopes,sorts,
+      pageIndex * pageSize, pageSize);
     if (entities == null) {
       return result;
     }
@@ -113,20 +113,20 @@ public class MenuServiceImpl implements MenuService {
   }
 
   @Override
-  public Integer updateById(MenuBO bo){
-    MenuEntity entity = new MenuEntity();
+  public Integer updateById(MenuBO bo){MenuEntity entity = new MenuEntity();
     BeanUtils.copyProperties(bo, entity);
     entity.setUpdateTime(new Date());
     return this.dao.updateById(entity);
   }
 
-  public MenuEntity convertMenuBO2MenuEntity(MenuBO bo){
+  public MenuEntity convertMenuBO2MenuEntityForCreate(MenuBO bo){
     MenuEntity entity = new MenuEntity();
     BeanUtils.copyProperties(bo, entity);
     entity.setAble(EntityAble.DISABLE.getNumber());
     entity.setDel(EntityDel.NO.getNumber());
     entity.setCreateTime(new Date());
     entity.setUpdateTime(new Date());
+    entity.setVersion(0L);
     return entity;
   }
 }

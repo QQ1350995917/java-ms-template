@@ -52,7 +52,7 @@ public class ${className}ServiceImpl implements ${className}Service {
 
   @Override
   public Long insert(${className}BO bo) {
-    ${className}Entity entity = this.convert${className}BO2${className}Entity(bo);
+    ${className}Entity entity = this.convert${className}BO2${className}EntityForCreate(bo);
     this.dao.insert(entity);
     return entity.getId();
   }
@@ -60,12 +60,12 @@ public class ${className}ServiceImpl implements ${className}Service {
   @Override
   public void insert(List<${className}BO> bos) {
     List<${className}Entity> entities = bos.stream()
-      .map(this::convert${className}BO2${className}Entity).collect(Collectors.toList());
+      .map(this::convert${className}BO2${className}EntityForCreate).collect(Collectors.toList());
     this.dao.insertByBatch(entities);
   }
 
   @Override
-  public Long insertOrReplace(${className}BO bo) {${className}Entity entity = this.convert${className}BO2${className}Entity(bo);
+  public Long insertOrReplace(${className}BO bo) {${className}Entity entity = this.convert${className}BO2${className}EntityForCreate(bo);
     this.dao.insertOrReplace(entity);
     return entity.getId();
   }
@@ -73,7 +73,7 @@ public class ${className}ServiceImpl implements ${className}Service {
   @Override
   public void insertOrReplace(List<${className}BO> bos) {
     List<${className}Entity> entities = bos.stream()
-      .map(this::convert${className}BO2${className}Entity).collect(Collectors.toList());
+      .map(this::convert${className}BO2${className}EntityForCreate).collect(Collectors.toList());
     this.dao.insertOrReplaceByBatch(entities);
   }
 
@@ -119,13 +119,14 @@ public class ${className}ServiceImpl implements ${className}Service {
     return this.dao.updateById(entity);
   }
 
-  public ${className}Entity convert${className}BO2${className}Entity(${className}BO bo){
+  public ${className}Entity convert${className}BO2${className}EntityForCreate(${className}BO bo){
     ${className}Entity entity = new ${className}Entity();
     BeanUtils.copyProperties(bo, entity);
     entity.setAble(EntityAble.DISABLE.getNumber());
     entity.setDel(EntityDel.NO.getNumber());
     entity.setCreateTime(new Date());
     entity.setUpdateTime(new Date());
+    entity.setVersion(0L);
     return entity;
   }
 }

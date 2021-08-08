@@ -27,16 +27,16 @@ import pwd.initializr.common.web.business.bo.SortBO;
 import pwd.initializr.common.web.persistence.entity.EntityAble;
 
 /**
-* pwd-initializr-access@ms-web-initializr
-*
-* <h1>Menu控制层接口实现</h1>
-*
-* date 2021-02-22 22:48
-*
-* @author Automatic[dingpengwei@foxmail.com]
-* @version 0.0.1-SNAPSHOT
-* @since 0.0.1-SNAPSHOT
-*/
+ * pwd-initializr-access@ms-web-initializr
+ *
+ * <h1>Menu控制层接口实现</h1>
+ *
+ * date 2021-08-08 15:20
+ *
+ * @author Automatic[dingpengwei@foxmail.com]
+ * @version 0.0.1-SNAPSHOT
+ * @since 0.0.1-SNAPSHOT
+ */
 @Api(
   tags = "Menu信息结构",
   value = "MenuManageApi",
@@ -55,8 +55,8 @@ public class MenuController extends pwd.initializr.common.web.api.admin.AdminCon
     PageInput pageInput = PageInput.parse(page);
     LinkedHashSet<ScopeBO> scopeBOS = ScopeInput.parse(scopes);
     LinkedHashSet<SortBO> sortBOS = SortInput.parse(sorts);
-    PageableQueryResult<MenuBO> pageableQueryResult = service
-      .queryAllByCondition(scopeBOS, sortBOS, pageInput.getIndex(), pageInput.getSize());
+    PageableQueryResult<MenuBO> pageableQueryResult = service.queryAllByCondition(scopeBOS,
+      sortBOS, pageInput.getIndex(), pageInput.getSize());
     PageOutput<MenuOutput> result = new PageOutput<>();
     pageableQueryResult.getElements().forEach(bo -> {
       MenuOutput output = new MenuOutput();
@@ -123,8 +123,8 @@ public class MenuController extends pwd.initializr.common.web.api.admin.AdminCon
 
   @Override
   public void create(@Valid @NotNull(message = "参数不能为空") List<MenuInput> input) {
-    List<MenuBO> bos = input.stream().map(this::convertMenuInput2MenuBO)
-      .collect(Collectors.toList());
+  List<MenuBO> bos = input.stream().map(this::convertMenuInput2MenuBO)
+    .collect(Collectors.toList());
     service.insert(bos);
     outputData(200);
   }
@@ -139,15 +139,15 @@ public class MenuController extends pwd.initializr.common.web.api.admin.AdminCon
 
   @Override
   public void createOrReplace(@Valid @NotNull(message = "参数不能为空") List<MenuInput> input) {
-    List<MenuBO> bos = input.stream().map(this::convertMenuInput2MenuBO)
-      .collect(Collectors.toList());
+  List<MenuBO> bos = input.stream().map(this::convertMenuInput2MenuBO)
+    .collect(Collectors.toList());
     service.insertOrReplace(bos);
     outputData(200);
   }
 
   @Override
   public void update(@Valid @NotNull(message = "参数不能为空") Long id,
-  @Valid @NotNull(message = "参数不能为空") MenuInput input) {
+    @Valid @NotNull(message = "参数不能为空") MenuInput input) {
     MenuBO bo = new MenuBO();
     BeanUtils.copyProperties(input,bo);
     bo.setId(id);

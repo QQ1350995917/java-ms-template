@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pwd.initializr.access.persistence.dao.FunctionDao">
+
+  <resultMap id="FunctionMap" type="pwd.initializr.access.persistence.entity.FunctionEntity">
+    <result column="id" jdbcType="BIGINT"
+            property="id"/>
+    <result column="name" jdbcType="VARCHAR"
+            property="name"/>
+    <result column="uri" jdbcType="VARCHAR"
+            property="uri"/>
+    <result column="method" jdbcType="VARCHAR"
+            property="method"/>
+    <result column="summary" jdbcType="VARCHAR"
+            property="summary"/>
+    <result column="able" jdbcType="INTEGER"
+            property="able"/>
+    <result column="del" jdbcType="INTEGER"
+            property="del"/>
+    <result column="create_time" jdbcType="TIMESTAMP"
+            property="createTime"/>
+    <result column="update_time" jdbcType="TIMESTAMP"
+            property="updateTime"/>
+    <result column="version" jdbcType="BIGINT"
+            property="version"/>
+  </resultMap>
+
+  <!--根据主键查询查询-->
+  <select id="queryById" resultMap="FunctionMap">
+    SELECT
+      `id`,
+      `name`,
+      `uri`,
+      `method`,
+      `summary`,
+      `able`,
+      `del`,
+      `create_time`,
+      `update_time`,
+      `version`
+    FROM
+      function
+    WHERE
+      id = #{id}
+  </select>
+
+  <!--查询指定行数据-->
+  <select id="countByCondition" resultType="java.lang.Long">
+    SELECT COUNT(*) FROM function
+    <include
+        refid="pwd.initializr.common.web.persistence.entity.ScopeEntity.entityQueryScope"></include>
+  </select>
+
+  <!--通过实体作为筛选条件查询-->
+  <select id="queryByCondition" resultMap="FunctionMap">
+    SELECT
+      `id`,
+      `name`,
+      `uri`,
+      `method`,
+      `summary`,
+      `able`,
+      `del`,
+      `create_time`,
+      `update_time`,
+      `version`
+    FROM
+      function
+    <include
+        refid="pwd.initializr.common.web.persistence.entity.ScopeEntity.entityQueryScope"></include>
+    <include
+        refid="pwd.initializr.common.web.persistence.entity.SortEntity.entityQuerySort"></include>
+    LIMIT
+      #{offset}, #{limit}
+  </select>
+
+  <!--新增所有列-->
+  <insert id="insert" keyProperty="id" useGeneratedKeys="true"
+          parameterType="pwd.initializr.access.persistence.entity.FunctionEntity">
+    INSERT INTO function
+    (
+      `id`,
+      `name`,
+      `uri`,
+      `method`,
+      `summary`,
+      `able`,
+      `del`,
+      `create_time`,
+      `update_time`,
+      `version`
+    )
+    VALUES
+    (
+      #{entity.id},
+      #{entity.name},
+      #{entity.uri},
+      #{entity.method},
+      #{entity.summary},
+      #{entity.able},
+      #{entity.del},
+      #{entity.createTime},
+      #{entity.updateTime},
+      #{entity.version}
+    )
+  </insert>
+
+  <!--新增所有列（批量新增）-->
+  <insert id="insertByBatch" keyProperty="id" useGeneratedKeys="true"
+          parameterType="pwd.initializr.access.persistence.entity.FunctionEntity">
+    INSERT INTO function
+    (
+      `id`,
+      `name`,
+      `uri`,
+      `method`,
+      `summary`,
+      `able`,
+      `del`,
+      `create_time`,
+      `update_time`,
+      `version`
+    )
+    VALUES
+    <foreach collection="entities" item="entity" separator=",">
+    (
+      #{entity.id},
+      #{entity.name},
+      #{entity.uri},
+      #{entity.method},
+      #{entity.summary},
+      #{entity.able},
+      #{entity.del},
+      #{entity.createTime},
+      #{entity.updateTime},
+      #{entity.version}
+    )
+    </foreach>
+  </insert>
+
+  <!--新增或者替换所有列-->
+  <insert id="insertOrReplace" keyProperty="id" useGeneratedKeys="true"
+          parameterType="pwd.initializr.access.persistence.entity.FunctionEntity">
+    REPLACE INTO function
+    (
+      `id`,
+      `name`,
+      `uri`,
+      `method`,
+      `summary`,
+      `able`,
+      `del`,
+      `create_time`,
+      `update_time`,
+      `version`
+    )
+    VALUES
+    (
+      #{entity.id},
+      #{entity.name},
+      #{entity.uri},
+      #{entity.method},
+      #{entity.summary},
+      #{entity.able},
+      #{entity.del},
+      #{entity.createTime},
+      #{entity.updateTime},
+      #{entity.version}
+    )
+  </insert>
+
+  <!--新增或者替换所有列（批量新增或者替换）-->
+  <insert id="insertOrReplaceByBatch" keyProperty="id" useGeneratedKeys="true"
+          parameterType="pwd.initializr.access.persistence.entity.FunctionEntity">
+    REPLACE INTO function
+    (
+      `id`,
+      `name`,
+      `uri`,
+      `method`,
+      `summary`,
+      `able`,
+      `del`,
+      `create_time`,
+      `update_time`,
+      `version`
+    )
+    VALUES
+    <foreach collection="entities" item="entity" separator=",">
+    (
+      #{entity.id},
+      #{entity.name},
+      #{entity.uri},
+      #{entity.method},
+      #{entity.summary},
+      #{entity.able},
+      #{entity.del},
+      #{entity.createTime},
+      #{entity.updateTime},
+      #{entity.version}
+    )
+    </foreach>
+  </insert>
+
+  <!--通过主键修改数据-->
+  <update id="updateById" parameterType="pwd.initializr.access.persistence.entity.FunctionEntity">
+    UPDATE function
+    <set>
+      <if test="entity.id != null">
+        `id` = #{entity.id},
+      </if>
+      <if test="entity.name != null and entity.name != ''">
+        `name` = #{entity.name},
+      </if>
+      <if test="entity.uri != null and entity.uri != ''">
+        `uri` = #{entity.uri},
+      </if>
+      <if test="entity.method != null and entity.method != ''">
+        `method` = #{entity.method},
+      </if>
+      <if test="entity.summary != null and entity.summary != ''">
+        `summary` = #{entity.summary},
+      </if>
+      <if test="entity.able != null">
+        `able` = #{entity.able},
+      </if>
+      <if test="entity.del != null">
+        `del` = #{entity.del},
+      </if>
+      <if test="entity.createTime != null">
+        `create_time` = #{entity.createTime},
+      </if>
+      <if test="entity.updateTime != null">
+        `update_time` = #{entity.updateTime},
+      </if>
+      <if test="entity.version != null">
+        `version` = #{entity.version},
+      </if>
+    </set>
+    WHERE
+      id = #{entity.id}
+  </update>
+
+  <!--通过主键删除-->
+  <update id="deleteById">
+    UPDATE function
+    SET
+      del = 1,
+      update_time = #{date}
+    WHERE
+      id = #{id}
+  </update>
+
+  <!--通过主键批量删除-->
+  <update id="deleteByIds">
+    UPDATE function
+    SET
+      del = 1,
+      update_time = #{date}
+    WHERE
+      id
+    IN
+    <foreach close=")" collection="ids" index="index" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </update>
+
+  <!--通过主键启禁-->
+  <update id="ableById">
+    UPDATE function
+    SET
+      able = #{able},
+      update_time = #{date}
+    WHERE
+      id = #{id}
+  </update>
+
+  <!--通过主键批量启禁-->
+  <update id="ableByIds">
+    UPDATE function
+    SET
+      able = #{able},
+      update_time = #{date}
+    WHERE
+      id
+    IN
+    <foreach close=")" collection="ids" index="index" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </update>
+
+  <!--通过SQL查询-->
+  <select id="queryBySql" resultType="java.util.HashMap">
+    ${sql}
+  </select>
+
+</mapper>

@@ -27,16 +27,16 @@ import pwd.initializr.common.web.business.bo.SortBO;
 import pwd.initializr.common.web.persistence.entity.EntityAble;
 
 /**
-* pwd-initializr-access@ms-web-initializr
-*
-* <h1>Role控制层接口实现</h1>
-*
-* date 2021-02-22 22:48
-*
-* @author Automatic[dingpengwei@foxmail.com]
-* @version 0.0.1-SNAPSHOT
-* @since 0.0.1-SNAPSHOT
-*/
+ * pwd-initializr-access@ms-web-initializr
+ *
+ * <h1>Role控制层接口实现</h1>
+ *
+ * date 2021-08-08 15:20
+ *
+ * @author Automatic[dingpengwei@foxmail.com]
+ * @version 0.0.1-SNAPSHOT
+ * @since 0.0.1-SNAPSHOT
+ */
 @Api(
   tags = "Role信息结构",
   value = "RoleManageApi",
@@ -55,8 +55,8 @@ public class RoleController extends pwd.initializr.common.web.api.admin.AdminCon
     PageInput pageInput = PageInput.parse(page);
     LinkedHashSet<ScopeBO> scopeBOS = ScopeInput.parse(scopes);
     LinkedHashSet<SortBO> sortBOS = SortInput.parse(sorts);
-    PageableQueryResult<RoleBO> pageableQueryResult = service
-      .queryAllByCondition(scopeBOS, sortBOS, pageInput.getIndex(), pageInput.getSize());
+    PageableQueryResult<RoleBO> pageableQueryResult = service.queryAllByCondition(scopeBOS,
+      sortBOS, pageInput.getIndex(), pageInput.getSize());
     PageOutput<RoleOutput> result = new PageOutput<>();
     pageableQueryResult.getElements().forEach(bo -> {
       RoleOutput output = new RoleOutput();
@@ -123,8 +123,8 @@ public class RoleController extends pwd.initializr.common.web.api.admin.AdminCon
 
   @Override
   public void create(@Valid @NotNull(message = "参数不能为空") List<RoleInput> input) {
-    List<RoleBO> bos = input.stream().map(this::convertRoleInput2RoleBO)
-      .collect(Collectors.toList());
+  List<RoleBO> bos = input.stream().map(this::convertRoleInput2RoleBO)
+    .collect(Collectors.toList());
     service.insert(bos);
     outputData(200);
   }
@@ -139,15 +139,15 @@ public class RoleController extends pwd.initializr.common.web.api.admin.AdminCon
 
   @Override
   public void createOrReplace(@Valid @NotNull(message = "参数不能为空") List<RoleInput> input) {
-    List<RoleBO> bos = input.stream().map(this::convertRoleInput2RoleBO)
-      .collect(Collectors.toList());
+  List<RoleBO> bos = input.stream().map(this::convertRoleInput2RoleBO)
+    .collect(Collectors.toList());
     service.insertOrReplace(bos);
     outputData(200);
   }
 
   @Override
   public void update(@Valid @NotNull(message = "参数不能为空") Long id,
-  @Valid @NotNull(message = "参数不能为空") RoleInput input) {
+    @Valid @NotNull(message = "参数不能为空") RoleInput input) {
     RoleBO bo = new RoleBO();
     BeanUtils.copyProperties(input,bo);
     bo.setId(id);

@@ -1,6 +1,6 @@
 package pwd.initializr.access.api.vo;
 
-import java.util.Date;
+  import java.util.Date;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
@@ -18,7 +18,7 @@ import org.hibernate.validator.constraints.Length;
  *
  * <h1>请求参数封装</h1>
  *
- * date 2021-02-22 22:48
+ * date 2021-08-08 15:20
  *
  * @author Automatic[www.dingpengwei@foxmail.com]
  * @version 0.0.1-SNAPSHOT
@@ -39,6 +39,14 @@ public class RoleInput implements Serializable {
    @ApiModelProperty(name = "pid", value = "上级角色", required = true, example = "")
    @Digits(integer = 19, fraction = 0, message = "pid须为整数")
    private Long pid;
+
+   /**
+    *
+    * 角色名称，具有唯一性
+    */
+   @ApiModelProperty(name = "name", value = "角色名称，具有唯一性", required = true, example = "")
+   @NotBlank(message = "name不能为空")
+   private String name;
 
    /**
     * 

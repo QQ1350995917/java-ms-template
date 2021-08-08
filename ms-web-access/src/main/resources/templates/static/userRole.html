@@ -22,7 +22,7 @@
       </el-col>
       <el-col :span="16">
         <div>
-          <el-input placeholder="请输入内容" v-model="search" class="input-with-select">
+          <el-input placeholder="请输入内容" v-model="keyword" class="input-with-select">
             <el-select v-model="select" slot="prepend" placeholder="请选择" style="width: 320px;">
               <el-option label="uid" value="uid"></el-option>
               <el-option label="rid" value="rid"></el-option>
@@ -45,33 +45,40 @@
             :data="list"
             style="width: 100%;"
             max-height="600">
-          <el-table-column
-              prop="uid"
-              label="uid">
+          <el-table-column prop="uid" label="uid">
+              <template slot-scope="scope">
+                <span>{{ scope.row.uid}}</span>
+              </template>
           </el-table-column>
-          <el-table-column
-              prop="rid"
-              label="rid">
+          <el-table-column prop="rid" label="rid">
+              <template slot-scope="scope">
+                <span>{{ scope.row.rid}}</span>
+              </template>
           </el-table-column>
-          <el-table-column
-              prop="able"
-              label="able">
+          <el-table-column prop="able" label="able">
+              <template slot-scope="scope">
+                <span>{{ scope.row.able}}</span>
+              </template>
           </el-table-column>
-          <el-table-column
-              prop="del"
-              label="del">
+          <el-table-column prop="del" label="del">
+              <template slot-scope="scope">
+                <span>{{ scope.row.del}}</span>
+              </template>
           </el-table-column>
-          <el-table-column
-              prop="create_time"
-              label="createTime">
+          <el-table-column prop="create_time" label="createTime">
+              <template slot-scope="scope">
+                <span>{{ dateFormat(scope.row.createTime)}}</span>
+              </template>
           </el-table-column>
-          <el-table-column
-              prop="update_time"
-              label="updateTime">
+          <el-table-column prop="update_time" label="updateTime">
+              <template slot-scope="scope">
+                <span>{{ dateFormat(scope.row.updateTime)}}</span>
+              </template>
           </el-table-column>
-          <el-table-column
-              prop="version"
-              label="version">
+          <el-table-column prop="version" label="version">
+              <template slot-scope="scope">
+                <span>{{ scope.row.version}}</span>
+              </template>
           </el-table-column>
           <el-table-column
               fixed="right"
@@ -79,7 +86,7 @@
               width="180">
             <template slot-scope="scope">
               <el-button @click.native.prevent="onUpdateDialogOpen(scope.row)"
-                         icon="el-icon-setting" size="small"></el-button>
+                         icon="el-icon-edit" size="small"></el-button>
               <el-button v-if="0 == scope.row.able"
                          @click.native.prevent="onEnableButtonClick(scope.row.id)"
                          icon="el-icon-view" size="small"></el-button>
@@ -171,7 +178,7 @@
         pageSize: 12,
         total: 0,
         select: '',
-        search: '',
+        keyword: '',
         dialogVisible: false,
         dialogName: '',
         scopesTemplate: [{
@@ -239,20 +246,20 @@
             message: 'Must select filed',
             type: 'warning'
           });
-          return
+          return;
         }
-        if (this.search === '' || this.search === undefined) {
+        if (this.keyword === '' || this.keyword === undefined) {
           this.$message({
-            message: 'Must input search',
+            message: 'Must input keyword',
             type: 'warning'
           });
-          return
+          return;
         }
         this.scopes = [];
         this.scopes.push({
           hit: 'AL',
           fieldName: this.select,
-          fieldValue: this.search
+          fieldValue: this.keyword
         });
         this.list = [];
         this.item = {};
@@ -420,6 +427,17 @@
                 this.$message.error('Unknown error:' + message);
               }
             });
+      },
+      dateFormat:function(time) {
+        var date=new Date(time);
+        var year=date.getFullYear();
+        var month= date.getMonth()+1<10 ? "0"+(date.getMonth()+1) : date.getMonth()+1;
+        var day=date.getDate()<10 ? "0"+date.getDate() : date.getDate();
+        var hours=date.getHours()<10 ? "0"+date.getHours() : date.getHours();
+        var minutes=date.getMinutes()<10 ? "0"+date.getMinutes() : date.getMinutes();
+        var seconds=date.getSeconds()<10 ? "0"+date.getSeconds() : date.getSeconds();
+        // 拼接
+        return year+"-"+month+"-"+day+" "+hours+":"+minutes+":"+seconds;
       }
     }
   });

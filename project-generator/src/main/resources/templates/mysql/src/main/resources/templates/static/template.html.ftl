@@ -45,9 +45,20 @@
             max-height="600">
         <#if columns?exists>
           <#list columns as column>
-          <el-table-column
-              prop="${column.jdbcName}"
-              label="${column.javaName}">
+          <el-table-column prop="${column.jdbcName}" label="${column.javaName}">
+            <#if column.javaName == 'createTime'>
+              <template slot-scope="scope">
+                <span>{{ dateFormat(scope.row.${column.javaName})}}</span>
+              </template>
+            <#elseif column.javaName == 'updateTime'>
+              <template slot-scope="scope">
+                <span>{{ dateFormat(scope.row.${column.javaName})}}</span>
+              </template>
+            <#else>
+              <template slot-scope="scope">
+                <span>{{ scope.row.${column.javaName}}}</span>
+              </template>
+            </#if>
           </el-table-column>
           </#list>
         </#if>
@@ -57,7 +68,7 @@
               width="180">
             <template slot-scope="scope">
               <el-button @click.native.prevent="onUpdateDialogOpen(scope.row)"
-                         icon="el-icon-setting" size="small"></el-button>
+                         icon="el-icon-edit" size="small"></el-button>
               <el-button v-if="0 == scope.row.able"
                          @click.native.prevent="onEnableButtonClick(scope.row.id)"
                          icon="el-icon-view" size="small"></el-button>
@@ -372,6 +383,17 @@
                 this.$message.error('Unknown error:' + message);
               }
             });
+      },
+      dateFormat:function(time) {
+        var date=new Date(time);
+        var year=date.getFullYear();
+        var month= date.getMonth()+1<10 ? "0"+(date.getMonth()+1) : date.getMonth()+1;
+        var day=date.getDate()<10 ? "0"+date.getDate() : date.getDate();
+        var hours=date.getHours()<10 ? "0"+date.getHours() : date.getHours();
+        var minutes=date.getMinutes()<10 ? "0"+date.getMinutes() : date.getMinutes();
+        var seconds=date.getSeconds()<10 ? "0"+date.getSeconds() : date.getSeconds();
+        // 拼接
+        return year+"-"+month+"-"+day+" "+hours+":"+minutes+":"+seconds;
       }
     }
   });
