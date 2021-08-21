@@ -13,6 +13,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.RandomStringUtils;
+import org.checkerframework.checker.nullness.Opt;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,6 +28,7 @@ import pwd.initializr.account.api.admin.vo.AdminContactCreateInput;
 import pwd.initializr.account.api.admin.vo.AdminContactCreateOutput;
 import pwd.initializr.account.api.admin.vo.AdminCreateInput;
 import pwd.initializr.account.api.admin.vo.AdminListOutput;
+import pwd.initializr.account.api.admin.vo.AdminResetPwdInput;
 import pwd.initializr.account.api.admin.vo.AdminUpdateInput;
 import pwd.initializr.account.api.admin.vo.AdminUserCreateInput;
 import pwd.initializr.account.api.admin.vo.AdminUserCreateOutput;
@@ -216,6 +218,38 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
     outputData(adminListOutput);
   }
 
+
+  @Override
+  public void resetPwd(@Valid @NotNull(message = "参数不能为空") List<AdminResetPwdInput> input) {
+    // FIXME: 批量更新方式
+    long output = Optional.ofNullable(input).orElseGet(ArrayList::new).stream()
+        .filter(adminResetPwdInput -> {
+          AdminAccountBO adminAccountBO = new AdminAccountBO();
+          adminAccountBO.setId(adminResetPwdInput.getAid());
+          adminAccountBO.setUid(adminResetPwdInput.getUid());
+          String defaultPassword = getDefaultPassword();
+          String defaultPasswordSalt = getDefaultLoginPwdSalt();
+          adminAccountBO.setLoginPwd(getDefaultLoginPwd(defaultPassword, defaultPasswordSalt));
+          adminAccountBO.setPwdSalt(defaultPasswordSalt);
+          // TODO 返回值异常
+          Integer integer = adminAccountService.resetPwd(adminAccountBO);
+          if (integer == 1) {
+            // FIXME: 多级stream.filter传参问题
+            List<AdminContactBO> adminContactBOS = adminContactService
+                .queryByUid(adminResetPwdInput.getUid());
+            RPCEmailInput rpcEmailInput = new RPCEmailInput();
+            rpcEmailInput.setApp(applicationName);
+            // TODO 埋了一个联系人集合的坑
+            rpcEmailInput.getBox().getTo().add(adminContactBOS.get(1).getValue());
+            // TODO 模板化
+            rpcEmailInput.setContent(new RPCEmailContentVO("初始登录密码", defaultPassword));
+            this.emailService.sendEmail(rpcEmailInput);
+          }
+          return integer == 1;
+        }).count();
+    outputData("" + output);
+  }
+
   @Override
   public void resetPwd(@Valid @NotNull(message = "参数不能为空") Long uid) {
     AdminAccountBO adminAccountBO = adminAccountService
@@ -223,7 +257,9 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
     if (adminAccountBO == null) {
       outputException(400,"没有静态类型的账号");
     } else {
-      this.resetAccountPwd(uid,adminAccountBO.getId());
+      ArrayList<AdminResetPwdInput> inputs = new ArrayList<>(1);
+      inputs.add(new AdminResetPwdInput(uid,adminAccountBO.getId()));
+      this.resetPwd(inputs);
     }
   }
 
@@ -303,31 +339,6 @@ public class AdminController extends pwd.initializr.common.web.api.admin.AdminCo
       @Valid @NotNull(message = "参数不能为空") Long aid,
       @Valid @NotNull(message = "参数不能为空") AdminAccountLoginInput input) {
 
-  }
-
-  @Override
-  public void resetAccountPwd(@Valid @NotNull(message = "用户ID不能为空") Long uid,
-      @Valid @NotNull(message = "账号ID不能为空") Long aid) {
-    AdminAccountBO adminAccountBO = new AdminAccountBO();
-    adminAccountBO.setId(aid);
-    adminAccountBO.setUid(uid);
-    String defaultPassword = getDefaultPassword();
-    String defaultPasswordSalt = getDefaultLoginPwdSalt();
-    adminAccountBO.setLoginPwd(getDefaultLoginPwd(defaultPassword,defaultPasswordSalt));
-    adminAccountBO.setPwdSalt(defaultPasswordSalt);
-    // TODO 返回值异常
-    Integer integer = adminAccountService.resetPwd(adminAccountBO);
-
-    List<AdminContactBO> adminContactBOS = adminContactService.queryByUid(uid);
-    RPCEmailInput rpcEmailInput = new RPCEmailInput();
-    rpcEmailInput.setApp(applicationName);
-    // TODO 埋了一个联系人集合的坑
-    rpcEmailInput.getBox().getTo().add(adminContactBOS.get(1).getValue());
-    // TODO 模板化
-    rpcEmailInput.setContent(new RPCEmailContentVO("初始登录密码" ,defaultPassword));
-    this.emailService.sendEmail(rpcEmailInput);
-
-    outputData("" + integer);
   }
 
   private String getDefaultPassword() {

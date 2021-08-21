@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pwd.initializr.account.api.admin.vo.AdminAccountLoginInput;
 import pwd.initializr.account.api.admin.vo.AdminCreateInput;
+import pwd.initializr.account.api.admin.vo.AdminResetPwdInput;
 import pwd.initializr.account.api.admin.vo.AdminUpdateInput;
 import pwd.initializr.account.api.admin.vo.AdminUserCreateInput;
 
@@ -91,8 +92,12 @@ public interface AdminApi {
   @GetMapping(value = {"/{uid}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   void get(@PathVariable("uid") @Valid @NotNull(message = "参数不能为空") Long uid);
 
+  @ApiOperation(value = "密码重置，批量重置用户名下指定的静态登录账号的密码为默认密码")
+  @PatchMapping(value = {"/pwd/reset"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  void resetPwd(@RequestBody @Valid @NotNull(message = "参数不能为空") List<AdminResetPwdInput> input);
+
   @ApiOperation(value = "密码重置，重置用户名下静态登录账号的密码为默认密码")
-  @PatchMapping(value = {"/{uid}/pwd/reset"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @PatchMapping(value = {"/pwd/reset/{uid}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   void resetPwd(@PathVariable("uid") @Valid @NotNull(message = "参数不能为空") Long uid);
 
   @ApiOperation(value = "新增账户，同一种类型的账号只能创建一个")
@@ -167,11 +172,5 @@ public interface AdminApi {
       @PathVariable("uid") @Valid @NotNull(message = "账号ID不能为空") Long aid
   );
 
-  @ApiOperation(value = "密码重置，重置用户名下指定的静态登录账号的密码为默认密码")
-  @PatchMapping(value = {"/{uid}/{aid}/pwd/reset"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  void resetAccountPwd(
-      @PathVariable("uid") @Valid @NotNull(message = "用户ID不能为空") Long uid,
-      @PathVariable("aid") @Valid @NotNull(message = "账号ID不能为空") Long aid
-  );
 
 }
