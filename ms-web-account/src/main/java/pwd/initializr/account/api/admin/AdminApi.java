@@ -92,6 +92,13 @@ public interface AdminApi {
   @GetMapping(value = {"/{uid}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   void get(@PathVariable("uid") @Valid @NotNull(message = "参数不能为空") Long uid);
 
+  @ApiOperation(value = "更新账户密码")
+  @PatchMapping(value = {"/pwd/{uid}/{aid}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  void updateAccountPwd(
+      @PathVariable("uid") @Valid @NotNull(message = "参数不能为空") Long uid,
+      @PathVariable("aid") @Valid @NotNull(message = "参数不能为空") Long aid,
+      @RequestBody @Valid @NotNull(message = "参数不能为空") AdminAccountLoginInput input);
+
   @ApiOperation(value = "密码重置，批量重置用户名下指定的静态登录账号的密码为默认密码")
   @PatchMapping(value = {"/pwd/reset"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   void resetPwd(@RequestBody @Valid @NotNull(message = "参数不能为空") List<AdminResetPwdInput> input);
@@ -115,14 +122,14 @@ public interface AdminApi {
   );
 
   @ApiOperation(value = "禁用账户，最后一个可用账户不可被禁用")
-  @PatchMapping(value = {"/{uid}/{aid}/disable"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @PatchMapping(value = {"/disable/{uid}/{aid}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   void disableAccount(
       @RequestParam("uid") @Valid @NotNull(message = "参数不能为空") Long uid,
       @RequestParam("aid") @Valid @NotNull(message = "参数不能为空") Long aid
   );
 
   @ApiOperation(value = "启用账户")
-  @PatchMapping(value = {"/{uid}/{aid}/enable"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @PatchMapping(value = {"/enable/{uid}/{aid}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   void enableAccount(
       @RequestParam("uid") @Valid @NotNull(message = "参数不能为空") Long uid,
       @RequestParam("aid") @Valid @NotNull(message = "参数不能为空") Long aid
@@ -131,13 +138,6 @@ public interface AdminApi {
   @ApiOperation(value = "更新账户信息")
   @PatchMapping(value = {"/{uid}/{aid}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   void updateAccount(
-      @PathVariable("uid") @Valid @NotNull(message = "参数不能为空") Long uid,
-      @PathVariable("aid") @Valid @NotNull(message = "参数不能为空") Long aid,
-      @RequestBody @Valid @NotNull(message = "参数不能为空") AdminAccountLoginInput input);
-  
-  @ApiOperation(value = "更新账户密码")
-  @PatchMapping(value = {"/{uid}/{aid}/pwd"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  void updateAccountPwd(
       @PathVariable("uid") @Valid @NotNull(message = "参数不能为空") Long uid,
       @PathVariable("aid") @Valid @NotNull(message = "参数不能为空") Long aid,
       @RequestBody @Valid @NotNull(message = "参数不能为空") AdminAccountLoginInput input);
