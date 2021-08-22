@@ -16,6 +16,9 @@ import pwd.initializr.generator.business.mysql.architecture.SrcMainJavaPackagePe
 import pwd.initializr.generator.business.mysql.architecture.SrcMainJavaPackagePersistenceEntity;
 import pwd.initializr.generator.business.mysql.architecture.SrcMainResourcesMapper;
 import pwd.initializr.generator.business.mysql.architecture.SrcMainResourcesTemplatesHtml;
+import pwd.initializr.generator.business.mysql.architecture.SrcMainResourcesVueSrcApiIndex;
+import pwd.initializr.generator.business.mysql.architecture.SrcMainResourcesVueSrcStoreModulesIndex;
+import pwd.initializr.generator.business.mysql.architecture.SrcMainResourcesVueSrcViewsIndex;
 
 /**
  * pwd.initializr.generator.business.mysql.database@ms-web-initializr
@@ -57,6 +60,11 @@ public class DatabaseBoot {
     // 处理resource目录-Templates
     new SrcMainResourcesTemplatesHtml(projectBO, tableName, className, tableColumnBOList, apiPath)
         .createProjectFile();
+
+    // 处理VUE前端
+    new SrcMainResourcesVueSrcApiIndex(projectBO, tableName, className, tableColumnBOList).createProjectFile();
+    new SrcMainResourcesVueSrcStoreModulesIndex(projectBO, tableName, className, tableColumnBOList).createProjectFile();
+    new SrcMainResourcesVueSrcViewsIndex(projectBO, tableName, className, tableColumnBOList).createProjectFile();
 
     // 处理持久层目录
     new SrcMainJavaPackagePersistenceDao(projectBO, tableName, className).createProjectFile();
