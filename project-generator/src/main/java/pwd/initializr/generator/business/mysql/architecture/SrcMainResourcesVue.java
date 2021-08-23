@@ -36,7 +36,7 @@ public abstract class SrcMainResourcesVue extends SrcMainResources {
 
   @Override
   protected Map<String, Object> getData() {
-    this.data.put("serviceName","account");
+    this.data.put("serviceName","access");
     this.data.put("className", this.className);
     this.data.put("tableName", this.tableName);
     // TODO 所有的可展示项

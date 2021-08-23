@@ -37,7 +37,7 @@ import pwd.initializr.access.api.vo.MenuInput;
   description = "[列表查询，详情查询，启/禁用，删除，新增，修改]"
 )
 @RestController(value = "Menu")
-@RequestMapping(value = "/api/menu")
+@RequestMapping(value = "/api/api/menu")
 public interface MenuApi {
 
   /**

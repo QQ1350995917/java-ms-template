@@ -26,7 +26,7 @@ const actions = {
       create({
 <#if columns?exists>
   <#list columns as column>
-        ${column.javaName}: ${column.javaName}
+        ${column.javaName}: ${column.javaName},
   </#list>
 </#if>
       }).then(response => {
