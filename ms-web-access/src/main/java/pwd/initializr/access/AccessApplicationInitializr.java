@@ -6,8 +6,8 @@ import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import pwd.initializr.access.business.RoleService;
-import pwd.initializr.access.business.bo.RoleBO;
+import pwd.initializr.access.business.admin.RoleService;
+import pwd.initializr.access.business.admin.bo.RoleBO;
 import pwd.initializr.common.web.business.bo.PageableQueryResult;
 
 /**
