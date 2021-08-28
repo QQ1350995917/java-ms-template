@@ -33,7 +33,7 @@ public class SrcMainResourcesVueSrcViewsIndex extends SrcMainResourcesVue {
 
   @Override
   protected String getTemplate() {
-    return "mysql/vue/views/admin.index.vue.ftl";
+    return "mysql/vue/views/index.vue.ftl";
   }
 
 }

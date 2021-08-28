@@ -33,7 +33,7 @@ public class SrcMainResourcesVueSrcStoreModulesIndex extends SrcMainResourcesVue
 
   @Override
   protected String getTemplate() {
-    return "mysql/vue/store/modules/admin.index.js.ftl";
+    return "mysql/vue/store/modules/index.js.ftl";
   }
 
 }

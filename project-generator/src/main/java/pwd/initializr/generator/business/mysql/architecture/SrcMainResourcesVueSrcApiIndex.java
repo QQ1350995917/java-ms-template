@@ -33,7 +33,7 @@ public class SrcMainResourcesVueSrcApiIndex extends SrcMainResourcesVue {
 
   @Override
   protected String getTemplate() {
-    return "mysql/vue/api/admin.index.js.ftl";
+    return "mysql/vue/api/index.js.ftl";
   }
 
 
