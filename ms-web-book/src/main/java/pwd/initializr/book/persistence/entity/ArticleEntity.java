@@ -1,7 +1,7 @@
 package pwd.initializr.book.persistence.entity;
 
-import java.util.LinkedHashSet;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,7 +14,8 @@ import org.springframework.data.mongodb.core.mapping.Field;
 /**
  * pwd.initializr.book.persistence.entity@ms-web-initializr
  *
- * <h1>TODO what you want to do?</h1>
+ * <h1>文章对象</h1>
+ * 可独立描述一篇文章，不依托{@link BookEntity}。
  *
  * date 2019-12-14 20:32
  *
@@ -30,10 +31,8 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @Document(collection = "article")
 public class ArticleEntity extends BaseEntity {
 
-  @Field("book_id")
-  private Long bookId;
   @Field("paragraphs")
-  private LinkedList<String> paragraphs;
+  private List<String> paragraphs;
   @Field("from_url")
   private String fromUrl;
 

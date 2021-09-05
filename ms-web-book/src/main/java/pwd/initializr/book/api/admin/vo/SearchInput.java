@@ -10,7 +10,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import pwd.initializr.search.rpc.RPCSearchInput;
 
 /**
  * pwd.initializr.book.api.user.vo@ms-web-initializr

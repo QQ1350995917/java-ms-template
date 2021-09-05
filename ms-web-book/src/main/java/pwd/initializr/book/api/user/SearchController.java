@@ -42,10 +42,11 @@ public class SearchController extends UserController implements SearchApi {
     } else {
       tempSearchInput = input;
     }
+    Output<PageableQueryResult<SearchResultBO>> objectListOutput = new Output<>();
 
-    Output<PageableQueryResult<SearchResultBO>> objectListOutput = searchClientService
-        .search(Arrays.asList(new String[]{"book","article"}),tempSearchInput.getKeyword(), tempSearchInput.getIndex(),
-            tempSearchInput.getSize());
+//        Output<PageableQueryResult<SearchResultBO>> objectListOutput = searchClientService
+//        .search(Arrays.asList(new String[]{"book","article"}),tempSearchInput.getKeyword(), tempSearchInput.getIndex(),
+//            tempSearchInput.getSize());
 
     if (objectListOutput.getMeta() != null && (objectListOutput.getMeta().getCode() == HttpStatus.OK
         .value())) {
@@ -63,10 +64,10 @@ public class SearchController extends UserController implements SearchApi {
     } else {
       tempSearchInput = input;
     }
-
-    Output<PageableQueryResult<SearchResultBO>> objectListOutput = searchClientService
-        .search(Arrays.asList(new String[]{"article"}),tempSearchInput.getKeyword(), tempSearchInput.getIndex(),
-            tempSearchInput.getSize());
+    Output<PageableQueryResult<SearchResultBO>> objectListOutput = new Output<>();
+//        Output<PageableQueryResult<SearchResultBO>> objectListOutput = searchClientService
+//        .search(Arrays.asList(new String[]{"article"}),tempSearchInput.getKeyword(), tempSearchInput.getIndex(),
+//            tempSearchInput.getSize());
 
     if (objectListOutput.getMeta().getCode() == HttpStatus.OK.value()) {
       super.outputData(objectListOutput.getData());
@@ -84,9 +85,11 @@ public class SearchController extends UserController implements SearchApi {
       tempSearchInput = input;
     }
 
-    Output<PageableQueryResult<SearchResultBO>> objectListOutput = searchClientService
-        .search(Arrays.asList(new String[]{"book"}),tempSearchInput.getKeyword(), tempSearchInput.getIndex(),
-            tempSearchInput.getSize());
+    Output<PageableQueryResult<SearchResultBO>> objectListOutput = new Output<>();
+
+//        Output<PageableQueryResult<SearchResultBO>> objectListOutput = searchClientService
+//        .search(Arrays.asList(new String[]{"book"}),tempSearchInput.getKeyword(), tempSearchInput.getIndex(),
+//            tempSearchInput.getSize());
 
     if (objectListOutput.getMeta().getCode() == HttpStatus.OK.value()) {
       super.outputData(objectListOutput.getData());

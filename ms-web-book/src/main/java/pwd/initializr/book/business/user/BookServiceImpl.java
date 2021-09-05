@@ -41,9 +41,11 @@ public class BookServiceImpl implements BookService {
   @Override
   public PageableQueryResult<BookBO> listRecommendBooks(Long index, Long size) {
     Pageable pageable = PageRequest.of(index.intValue(), size.intValue());
-    Sort sort = new Sort(Direction.DESC, "update_time");
+//    Sort sort = new Sort(Direction.DESC, "update_time");
     Query query = new Query(Criteria.where("recommend").is(1).and("visibility").is(1))
-        .with(pageable).with(sort);
+        .with(pageable)
+//        .with(sort)
+        ;
     long count = mongoTemplate.count(query, BookEntity.class);
     List<BookEntity> bookEntities = mongoTemplate.find(query, BookEntity.class);
     List<BookBO> bookBOS = new LinkedList<>();
@@ -106,12 +108,12 @@ public class BookServiceImpl implements BookService {
 
     Query queryBefore = new BasicQuery(query, fieldsObject);
     queryBefore.addCriteria(Criteria.where("bookId").is(bookId).and("_id").lt(articleId));
-    queryBefore.with(new Sort(Direction.DESC, "_id"));
+//    queryBefore.with(new Sort(Direction.DESC, "_id"));
     ArticleEntity beforeArticleEntity = mongoTemplate.findOne(queryBefore, ArticleEntity.class);
 
     Query queryAfter = new BasicQuery(query, fieldsObject);
     queryAfter.addCriteria(Criteria.where("bookId").is(bookId).and("_id").gt(articleId));
-    queryAfter.with(new Sort(Direction.ASC, "_id"));
+//    queryAfter.with(new Sort(Direction.ASC, "_id"));
     ArticleEntity afterArticleEntity = mongoTemplate.findOne(queryAfter, ArticleEntity.class);
 
     ArticleAroundBO result = new ArticleAroundBO();

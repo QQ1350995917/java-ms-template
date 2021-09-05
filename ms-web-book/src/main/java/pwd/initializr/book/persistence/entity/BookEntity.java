@@ -1,6 +1,8 @@
 package pwd.initializr.book.persistence.entity;
 
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +14,8 @@ import org.springframework.data.mongodb.core.mapping.Field;
 /**
  * pwd.initializr.book.persistence.entity@ms-web-initializr
  *
- * <h1>TODO what you want to do?</h1>
+ * <h1>图书类</h1>
+ * 是{@link ArticleEntity}的集合。
  *
  * date 2019-12-14 20:39
  *
@@ -29,9 +32,9 @@ import org.springframework.data.mongodb.core.mapping.Field;
 public class BookEntity extends BaseEntity {
 
   /***
-   *0：待整理
-   *1：纸质书
-   *2：电子书
+   * 0：待整理
+   * 1：纸质书
+   * 2：电子书
    */
   @Field("type")
   private Integer type;
@@ -41,4 +44,8 @@ public class BookEntity extends BaseEntity {
   private LinkedHashSet<String> thumbs;
   @Field("publisher")
   private String publisher;
+  @Field("articles")
+  private LinkedHashMap<Long,String> articles;
+  @Field("tags")
+  private Set<String> tags;
 }

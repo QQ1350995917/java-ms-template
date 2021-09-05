@@ -12,7 +12,6 @@ import pwd.initializr.book.FeignConfig;
 import pwd.initializr.book.business.remote.bo.SearchResultBO;
 import pwd.initializr.common.web.api.vo.Output;
 import pwd.initializr.common.web.business.bo.PageableQueryResult;
-import pwd.initializr.search.rpc.RPCSearchInitInput;
 
 /**
  * pwd.initializr.book.business.admin@ms-web-initializr
@@ -29,13 +28,13 @@ import pwd.initializr.search.rpc.RPCSearchInitInput;
 @FeignClient(value = "search", configuration = FeignConfig.class, fallback = SearchClientServiceFallbackImpl.class)
 public interface SearchClientService {
 
-    @PostMapping(value = "/api/robot/search", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = {
-        MediaType.APPLICATION_JSON_UTF8_VALUE})
-    String postOrPut(@RequestBody RPCSearchInitInput rpcSearchInitInput);
-
-    @GetMapping(value = "/api/robot/search", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = {
-        MediaType.APPLICATION_JSON_UTF8_VALUE})
-    Output<PageableQueryResult<SearchResultBO>> search(@RequestParam("indices") List<String> indices,@RequestParam("keyword") String keyword,
-        @RequestParam("index") Integer index, @RequestParam("size") Integer size);
+//    @PostMapping(value = "/api/robot/search", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = {
+//        MediaType.APPLICATION_JSON_UTF8_VALUE})
+//    String postOrPut(@RequestBody RPCSearchInitInput rpcSearchInitInput);
+//
+//    @GetMapping(value = "/api/robot/search", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = {
+//        MediaType.APPLICATION_JSON_UTF8_VALUE})
+//    Output<PageableQueryResult<SearchResultBO>> search(@RequestParam("indices") List<String> indices,@RequestParam("keyword") String keyword,
+//        @RequestParam("index") Integer index, @RequestParam("size") Integer size);
 
 }

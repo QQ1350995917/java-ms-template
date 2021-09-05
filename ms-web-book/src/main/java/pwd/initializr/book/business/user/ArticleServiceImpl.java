@@ -60,7 +60,7 @@ public class ArticleServiceImpl implements ArticleService {
   @Override
   public PageableQueryResult<ArticleBO> listArticleByRange(Long index, Long size) {
     Pageable pageable = PageRequest.of(index.intValue(), size.intValue());
-    Sort sort = new Sort(Direction.DESC, "update_time");
+//    Sort sort = new Sort(Direction.DESC, "update_time");
     Query query = new Query(
 //            Criteria.where("status").gt("0")
     ).with(pageable)
@@ -89,9 +89,10 @@ public class ArticleServiceImpl implements ArticleService {
       tempSearchInputBO = searchInputBO;
     }
 
-    Output<PageableQueryResult<SearchResultBO>> objectListOutput = searchClientService
-        .search(Arrays.asList(new String[]{"article"}),tempSearchInputBO.getKeyword(), tempSearchInputBO.getIndex(),
-            tempSearchInputBO.getSize());
+    Output<PageableQueryResult<SearchResultBO>> objectListOutput = new Output<>();
+//    Output<PageableQueryResult<SearchResultBO>> objectListOutput = searchClientService
+//        .search(Arrays.asList(new String[]{"article"}),tempSearchInputBO.getKeyword(), tempSearchInputBO.getIndex(),
+//            tempSearchInputBO.getSize());
 
     if (objectListOutput.getMeta().getCode() == HttpStatus.OK.value()) {
       return objectListOutput.getData();

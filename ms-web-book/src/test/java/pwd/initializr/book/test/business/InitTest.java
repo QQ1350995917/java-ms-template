@@ -46,7 +46,6 @@ public class InitTest {
     String line;
     List<ArticleBO> articleEntities = new LinkedList<>();
     ArticleBO currentArticleEntity = new ArticleBO();
-    currentArticleEntity.setBookId(bookId);
     currentArticleEntity.setTitle("序");
     currentArticleEntity.setParagraphs(new LinkedList<>());
     articleEntities.add(currentArticleEntity);
@@ -64,7 +63,6 @@ public class InitTest {
       if (titles.contains(line)) {
         System.out.println(line);
         currentArticleEntity = new ArticleBO();
-        currentArticleEntity.setBookId(bookId);
         currentArticleEntity.setTitle(line.trim());
         currentArticleEntity.setParagraphs(new LinkedList<>());
         articleEntities.add(currentArticleEntity);

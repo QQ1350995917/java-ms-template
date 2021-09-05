@@ -34,6 +34,7 @@ public class AutoIncKeyEventListener extends AbstractMongoEventListener {
     Object source = event.getSource();
     if (source != null) {
       ReflectionUtils.doWithFields(source.getClass(), new ReflectionUtils.FieldCallback() {
+        @Override
         public void doWith(Field field) throws IllegalArgumentException, IllegalAccessException {
           ReflectionUtils.makeAccessible(field);
           // 如果字段添加了我们自定义的AutoIncKey注解

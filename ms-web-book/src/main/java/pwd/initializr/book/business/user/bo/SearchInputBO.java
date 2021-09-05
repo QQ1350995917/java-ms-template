@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import pwd.initializr.search.rpc.RPCSearchInput;
 
 /**
  * pwd.initializr.book.business.user.bo@ms-web-initializr
@@ -21,15 +20,15 @@ import pwd.initializr.search.rpc.RPCSearchInput;
 @Setter
 @Getter
 @ToString
-public class SearchInputBO extends RPCSearchInput {
+public class SearchInputBO {
 
-    @Override
-    public Integer getIndex() {
-        return super.getIndex() < 0 ? 0 : super.getIndex();
-    }
-
-    @Override
-    public Integer getSize() {
-        return super.getSize() < 1 ? 12 : super.getSize();
-    }
+//    @Override
+//    public Integer getIndex() {
+//        return super.getIndex() < 0 ? 0 : super.getIndex();
+//    }
+//
+//    @Override
+//    public Integer getSize() {
+//        return super.getSize() < 1 ? 12 : super.getSize();
+//    }
 }

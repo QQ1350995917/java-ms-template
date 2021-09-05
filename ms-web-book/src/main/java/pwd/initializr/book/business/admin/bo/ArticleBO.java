@@ -1,11 +1,10 @@
 package pwd.initializr.book.business.admin.bo;
 
-import java.util.LinkedList;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import pwd.initializr.book.persistence.entity.ArticleEntity;
 
 /**
  * pwd.initializr.book.business.user.bo@ms-web-initializr
@@ -19,13 +18,9 @@ import lombok.ToString;
  * @since DistributionVersion
  */
 @AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
 @ToString
-public class ArticleBO extends BaseBO {
+public class ArticleBO extends ArticleEntity {
 
-  private Long bookId;
-  private LinkedList<String> paragraphs;
-  private String fromUrl;
 }

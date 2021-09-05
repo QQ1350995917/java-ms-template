@@ -64,11 +64,6 @@ public class BaseEntity implements Serializable {
   @Field("visibility")
   private Integer visibility;
   /**
-   * 是否被推荐到首页 -1：不推荐 1：推荐
-   */
-  @Field("recommend")
-  private Integer recommend;
-  /**
    * 创建时间
    */
   @Field("create_time")

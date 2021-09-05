@@ -67,7 +67,6 @@ public class ArticleTest {
                   .replace(")", "");
               articleBO.setAuthorName(authorName);
             }
-            articleBO.setBookId(bookId);
             articleBO.setTitle(title);
             articleBO.setSubTitle(title);
             LinkedHashSet<String> objects = new LinkedHashSet<>();

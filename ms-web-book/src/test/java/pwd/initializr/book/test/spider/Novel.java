@@ -77,7 +77,6 @@ public class Novel {
     }
 
     ArticleBO articleBO = new ArticleBO();
-    articleBO.setBookId(bookId);
     articleBO.setTitle(title);
     articleBO.setParagraphs(ps);
     articleBO.setDelStatus(-1);

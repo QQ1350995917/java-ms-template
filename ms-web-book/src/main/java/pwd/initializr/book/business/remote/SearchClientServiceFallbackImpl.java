@@ -8,7 +8,6 @@ import pwd.initializr.book.business.remote.bo.SearchResultBO;
 import pwd.initializr.common.web.api.vo.Meta;
 import pwd.initializr.common.web.api.vo.Output;
 import pwd.initializr.common.web.business.bo.PageableQueryResult;
-import pwd.initializr.search.rpc.RPCSearchInitInput;
 
 /**
  * pwd.initializr.book.business.admin@ms-web-initializr
@@ -24,16 +23,16 @@ import pwd.initializr.search.rpc.RPCSearchInitInput;
 @Component
 public class SearchClientServiceFallbackImpl implements SearchClientService {
 
-    @Override
-    public String postOrPut(RPCSearchInitInput rpcSearchInitInput) {
-        return JSON.toJSONString(new Output(new Meta(504, "error")));
-    }
-
-
-    @Override
-    public Output<PageableQueryResult<SearchResultBO>> search(@RequestParam("indices") List<String> indices,
-        String keyword, Integer index,
-        Integer pageSize) {
-        return new Output<>();
-    }
+//    @Override
+//    public String postOrPut(RPCSearchInitInput rpcSearchInitInput) {
+//        return JSON.toJSONString(new Output(new Meta(504, "error")));
+//    }
+//
+//
+//    @Override
+//    public Output<PageableQueryResult<SearchResultBO>> search(@RequestParam("indices") List<String> indices,
+//        String keyword, Integer index,
+//        Integer pageSize) {
+//        return new Output<>();
+//    }
 }

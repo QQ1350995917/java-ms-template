@@ -81,9 +81,11 @@ public class BookServiceImpl implements BookService {
 
   @Override
   public PageableQueryResult<BookBO> listBook(Long pageIndex, Long pageSize) {
-    Sort sort = new Sort(Direction.DESC, "id");
+//    Sort sort = new Sort(Direction.DESC, "id");
     Query query = new Query()
-        .with(PageRequest.of(pageIndex.intValue(), pageSize.intValue())).with(sort);
+        .with(PageRequest.of(pageIndex.intValue(), pageSize.intValue()))
+//        .with(sort)
+        ;
 
     List<BookEntity> bookEntities = mongoTemplate.find(query, BookEntity.class);
     long count = mongoTemplate.count(query, BookEntity.class);
@@ -134,12 +136,12 @@ public class BookServiceImpl implements BookService {
 
     Query queryBefore = new BasicQuery(query, fieldsObject);
     queryBefore.addCriteria(Criteria.where("bookId").is(bookId).and("_id").lt(articleId));
-    queryBefore.with(new Sort(Direction.DESC, "_id"));
+//    queryBefore.with(new Sort(Direction.DESC, "_id"));
     ArticleEntity beforeArticleEntity = mongoTemplate.findOne(queryBefore, ArticleEntity.class);
 
     Query queryAfter = new BasicQuery(query, fieldsObject);
     queryAfter.addCriteria(Criteria.where("bookId").is(bookId).and("_id").gt(articleId));
-    queryAfter.with(new Sort(Direction.ASC, "_id"));
+//    queryAfter.with(new Sort(Direction.ASC, "_id"));
     ArticleEntity afterArticleEntity = mongoTemplate.findOne(queryAfter, ArticleEntity.class);
 
     ArticleAroundBO result = new ArticleAroundBO();
