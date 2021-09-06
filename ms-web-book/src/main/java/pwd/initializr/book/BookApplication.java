@@ -24,28 +24,12 @@ import pwd.initializr.common.web.api.FullPathNameGenerator;
 @SpringBootApplication
 @EnableEurekaClient
 @EnableDiscoveryClient
-@RestController
 @EnableFeignClients("pwd.initializr.book.business")
-@ComponentScan(nameGenerator = FullPathNameGenerator.class)
+@ComponentScan(basePackages = {"pwd.initializr.common.web", "pwd.initializr.book"})
 public class BookApplication {
 
   public static void main(String[] args) {
     SpringApplication.run(BookApplication.class, args);
-  }
-
-  @GetMapping(value = "")
-  public String index0() {
-    return "this is book 0 index";
-  }
-
-  @GetMapping(value = "/")
-  public String index1() {
-    return "this is book 1 index";
-  }
-
-  @GetMapping(value = "/logger")
-  public String index2() {
-    return "this is book 2 index";
   }
 
 }

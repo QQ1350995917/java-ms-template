@@ -17,7 +17,7 @@ import pwd.initializr.common.web.business.bo.PageableQueryResult;
  * @version 1.0.0
  * @since DistributionVersion
  */
-@Service
+@Service("userArticleService")
 public interface ArticleService {
 
   ArticleBO findArticleById(Long articleId);

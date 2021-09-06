@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>pwd-initializr-book</title>
+
+  <link rel="stylesheet" href="https://unpkg.zhimg.com/element-ui/lib/theme-chalk/index.css">
+  <link rel="stylesheet" href="./static/css/template.css">
+
+  <script src="https://unpkg.zhimg.com/vue/dist/vue.js"></script>
+  <script src="https://unpkg.zhimg.com/element-ui/lib/index.js"></script>
+  <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+  <script src="./static/js/template.js"></script>
+
+</head>
+<body>
+<el-container id="container">
+  <el-header style="padding: 0px;height: 42px">
+    <el-row>
+      <el-col :span="12" :offset="6">
+        <template>
+          <el-tabs v-model="activeName" type="card" @tab-click="onTabClick">
+            <el-tab-pane label="pwd-initializr-book" name="0"></el-tab-pane>
+            <el-tab-pane label="swagger" name="swagger">swagger</el-tab-pane>
+          </el-tabs>
+        </template>
+      </el-col>
+    </el-row>
+  </el-header>
+  <el-main
+      style="padding: 0px 10px 0px 0px; margin-top: 10px; background-color: transparent; height: 686px">
+    <el-row>
+      <el-col :span="12" :offset="6">
+        <el-table
+            :data="mainTableList"
+            style="width: 100%;"
+            max-height="600">
+          <el-table-column align="center" label="序号" type="index" width="100">
+            <template slot-scope="scope">
+              <span>{{scope.$index + pageIndex * pageSize + 1}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+              prop="title"
+              label="title">
+          </el-table-column>
+          <el-table-column
+              prop="authorName"
+              label="authorName"
+              width="100">
+          </el-table-column>
+          <el-table-column
+              prop="updateTime"
+              label="updateTime"
+              width="120">
+          </el-table-column>
+        </el-table>
+        <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleIndexChange"
+            :current-page="pageIndex + 1"
+            :page-sizes="[10,12,20,50,100]"
+            :page-size="pageSize"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="total" style="margin-top: 10px">
+        </el-pagination>
+      </el-col>
+    </el-row>
+  </el-main>
+  <el-footer>
+    <el-row>
+      <el-col :span="12" :offset="6">
+        <p>Powered by www.dingpengwei@foxmail.com</p>
+        <p>copyright©2020</p>
+      </el-col>
+    </el-row>
+  </el-footer>
+</el-container>
+<script>
+  new Vue({
+    el: '#container',
+    data: function() {
+      return {
+        activeName: '0',
+        pageIndex: 0,
+        pageSize: 12,
+        total: 0,
+        keyword: '',
+        scopesTemplate: [{
+          hit: '指定查询方式[EM:精确,ENM:精确非,AL:前后模糊,LL:左模糊,RL:右模糊,SM:范围',
+          fieldName: '指定查询字段',
+          fieldValue: '指定查询目标',
+          start: '范围查询起始值，区间包含',
+          end: '范围查询结束值，区间包含'
+        }],
+        sortsTemplate: [{fieldName: '指定排序字段', sort: '[desc|asc]'}],
+        pageTemplate: {index: 0, size: 12},
+        scopes: [],
+        sorts: [],
+        page: {},
+        mainTableList:[],
+      };
+    },
+    created() {
+      this.requestForMainTableList(this.pageIndex)
+    },
+    methods: {
+      onTabClick(tab, event) {
+        if ("swagger" === tab.name) {
+          window.open("/swagger", '_self');
+        }
+      },
+      onButtonClick(className) {
+        // window.location.href="./static/" + className + ".html"
+        window.open('/static/' + className + '.html', '_blank');
+      },
+      handleSizeChange(size) {
+        this.pageSize = size;
+        this.requestForMainTableList(this.pageIndex)
+      },
+      handleIndexChange(index) {
+        index = index - 1;
+        this.requestForMainTableList(index)
+      },
+      requestForMainTableList(pageIndex){
+        if (pageIndex === undefined) {
+          pageIndex = this.pageIndex
+        }
+        this.page.index = pageIndex
+        this.page.size = this.pageSize
+        this.$http.get('/api/book?scopes=' + encodeURIComponent(JSON.stringify(this.scopes))
+            + '&sorts=' + encodeURIComponent(JSON.stringify(this.sorts))
+            + '&page=' + encodeURIComponent(JSON.stringify(this.page)))
+        .then(
+            function(res) {
+              var body = res.body;
+              var meta = body.meta;
+              var code = meta.code;
+              var data = body.data;
+              if (code == 200) {
+                var elements = data.elements;
+                if (elements == undefined || elements.length == 0) {
+                  this.$message({
+                    message: 'No Date',
+                    type: 'warning'
+                  });
+                } else {
+                  this.mainTableList = data.elements
+                  this.total = Number(data.total)
+                }
+              } else {
+                this.$message({
+                  message: meta.message,
+                  type: 'warning'
+                });
+              }
+            }, function(e) {
+              var body = e.body;
+              var meta = body.meta;
+              var code = meta.code;
+              if (code == 400) {
+                this.$message.error('Params error');
+              } else if (code == 500) {
+                this.$message.error('Server error');
+              } else {
+                this.$message.error('Unknown error');
+              }
+            });
+      }
+    }
+  });
+</script>
+</body>
+</html>

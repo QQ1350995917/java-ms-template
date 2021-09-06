@@ -38,7 +38,7 @@ import pwd.initializr.common.web.business.bo.PageableQueryResult;
  * @version 1.0.0
  * @since DistributionVersion
  */
-@Service
+@Service("adminBookService")
 public class BookServiceImpl implements BookService {
 
   @Autowired

@@ -32,7 +32,7 @@ import pwd.initializr.common.web.business.bo.PageableQueryResult;
  * @version 1.0.0
  * @since DistributionVersion
  */
-@Service
+@Service("userBookService")
 public class BookServiceImpl implements BookService {
 
   @Autowired
@@ -40,13 +40,13 @@ public class BookServiceImpl implements BookService {
 
   @Override
   public PageableQueryResult<BookBO> listRecommendBooks(Long index, Long size) {
-    Pageable pageable = PageRequest.of(index.intValue(), size.intValue());
-//    Sort sort = new Sort(Direction.DESC, "update_time");
-    Query query = new Query(Criteria.where("recommend").is(1).and("visibility").is(1))
-        .with(pageable)
-//        .with(sort)
-        ;
+    Query query = new Query(Criteria.where("del_status").is(-1).and("visibility").is(1));
     long count = mongoTemplate.count(query, BookEntity.class);
+
+    Pageable pageable = PageRequest.of(index.intValue(), size.intValue());
+    Sort sort = Sort.by(Direction.DESC, "update_time");
+    query = query.with(pageable).with(sort);
+
     List<BookEntity> bookEntities = mongoTemplate.find(query, BookEntity.class);
     List<BookBO> bookBOS = new LinkedList<>();
     bookEntities.forEach(bookEntity -> {

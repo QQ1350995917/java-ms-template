@@ -17,7 +17,7 @@ import pwd.initializr.common.web.business.bo.PageableQueryResult;
  * @version 1.0.0
  * @since DistributionVersion
  */
-@Service
+@Service("adminArticleService")
 public interface ArticleService {
 
   ArticleBO createArticle(ArticleBO articleBO);

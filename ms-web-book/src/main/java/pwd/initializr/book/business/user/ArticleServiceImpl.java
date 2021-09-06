@@ -1,6 +1,5 @@
 package pwd.initializr.book.business.user;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import org.bson.Document;
@@ -8,8 +7,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.data.mongodb.core.query.Query;
@@ -34,7 +31,7 @@ import pwd.initializr.common.web.business.bo.PageableQueryResult;
  * @version 1.0.0
  * @since DistributionVersion
  */
-@Service
+@Service("userArticleService")
 public class ArticleServiceImpl implements ArticleService {
 
   @Autowired
