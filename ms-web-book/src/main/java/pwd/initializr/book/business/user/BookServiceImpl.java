@@ -75,28 +75,6 @@ public class BookServiceImpl implements BookService {
   }
 
   @Override
-  public PageableQueryResult<ArticleBO> listBookTable(Long bookId, Integer index, Integer size) {
-    Query query = new Query(Criteria.where("bookId").is(bookId))
-        .with(PageRequest.of(index, size)).with(Sort.by(Direction.ASC, "id"));
-    query.fields().include("id").include("bookId").include("title").include("subTitle");
-    long count = mongoTemplate.count(query, ArticleEntity.class);
-    List<ArticleEntity> articleEntities = mongoTemplate.find(query, ArticleEntity.class);
-    List<ArticleBO> articleBOS = new LinkedList<>();
-    articleEntities.forEach(articleEntity -> {
-      ArticleBO articleBO = new ArticleBO();
-      BeanUtils.copyProperties(articleEntity, articleBO);
-      articleBOS.add(articleBO);
-    });
-    PageableQueryResult<ArticleBO> result = new PageableQueryResult<>();
-    result.setElements(articleBOS);
-    result.setIndex(index.longValue());
-    result.setSize(size.longValue());
-    result.setTotal(count);
-    return result;
-  }
-
-
-  @Override
   public ArticleAroundBO listBookTableByAround(Long bookId, Long articleId) {
     Document query = new Document();
 

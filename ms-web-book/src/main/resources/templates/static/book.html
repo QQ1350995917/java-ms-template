@@ -2,15 +2,15 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>pwd-initializr-book-index</title>
+  <title>pwd-initializr-book</title>
 
   <link rel="stylesheet" href="https://unpkg.zhimg.com/element-ui/lib/theme-chalk/index.css">
-  <link rel="stylesheet" href="./static/css/template.css">
+  <link rel="stylesheet" href="css/template.css">
 
   <script src="https://unpkg.zhimg.com/vue/dist/vue.js"></script>
   <script src="https://unpkg.zhimg.com/element-ui/lib/index.js"></script>
   <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
-  <script src="./static/js/template.js"></script>
+  <script src="js/template.js"></script>
 
 </head>
 <body>
@@ -20,8 +20,7 @@
       <el-col :span="12" :offset="6">
         <template>
           <el-tabs v-model="activeName" type="card" @tab-click="onTabClick">
-            <el-tab-pane label="pwd-initializr-book" name="0"></el-tab-pane>
-            <el-tab-pane label="swagger" name="swagger">swagger</el-tab-pane>
+            <el-tab-pane :label="bookName" name="0"></el-tab-pane>
           </el-tabs>
         </template>
       </el-col>
@@ -37,34 +36,12 @@
             max-height="720"
             @row-click="onMainTableListRowClick">
           <el-table-column align="center" label="序号" type="index" width="100" :index="indexCalculator">
-            <!--<template slot-scope="scope">-->
-              <!--<span>{{scope.$index + pageIndex * pageSize + 1}}</span>-->
-            <!--</template>-->
           </el-table-column>
           <el-table-column
               prop="title"
               label="title">
           </el-table-column>
-          <el-table-column
-              prop="authorName"
-              label="authorName"
-              width="200">
-          </el-table-column>
-          <el-table-column
-              prop="updateTime"
-              label="updateTime"
-              width="120">
-          </el-table-column>
         </el-table>
-        <el-pagination
-            @size-change="handleSizeChange"
-            @current-change="handleIndexChange"
-            :current-page="this.page + 1"
-            :page-sizes="[10,12,20,50,100]"
-            :page-size="this.size"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="total" style="margin-top: 10px">
-        </el-pagination>
       </el-col>
     </el-row>
   </el-main>
@@ -83,7 +60,8 @@
     data: function() {
       return {
         activeName: '0',
-        keyword: '',
+        bookId: '',
+        bookName: '',
         scopesTemplate: [{
           hit: '指定查询方式[EM:精确,ENM:精确非,AL:前后模糊,LL:左模糊,RL:右模糊,SM:范围',
           fieldName: '指定查询字段',
@@ -95,12 +73,13 @@
         pageTemplate: {index: 0, size: 12},
         scopes: [],
         sorts: [],
-        page: {index:0, size:12},
+        page: {index:0, size:1200},
         mainTableList:[],
         total: 0,
       };
     },
     created() {
+      this.bookId = this.getUrlKey("id",window.location.href)
       this.requestForMainTableList(this.page.index)
     },
     methods: {
@@ -126,9 +105,7 @@
         this.requestForMainTableList()
       },
       requestForMainTableList(){
-        this.$http.get('/api/book?scopes=' + encodeURIComponent(JSON.stringify(this.scopes))
-            + '&sorts=' + encodeURIComponent(JSON.stringify(this.sorts))
-            + '&page=' + encodeURIComponent(JSON.stringify(this.page)))
+        this.$http.get('/api/book/' + this.bookId)
         .then(
             function(res) {
               var body = res.body;
@@ -136,14 +113,15 @@
               var code = meta.code;
               var data = body.data;
               if (code == 200) {
-                var elements = data.elements;
+                this.bookName = data.title;
+                var elements = data.articles;
                 if (elements == undefined || elements.length == 0) {
                   this.$message({
                     message: 'No Date',
                     type: 'warning'
                   });
                 } else {
-                  this.mainTableList = data.elements
+                  this.mainTableList = data.articles
                   this.total = Number(data.total)
                 }
               } else {
@@ -166,7 +144,10 @@
             });
       },
       onMainTableListRowClick(rowScope){
-        window.open('/static/book.html?id=' + rowScope.id, '_blank');
+        window.open('/static/article.html?id=' + rowScope.id, '_blank');
+      },
+      getUrlKey(name,url) {
+        return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(url) || [, ""])[1].replace(/\+/g, '%20')) || null
       }
     }
   });

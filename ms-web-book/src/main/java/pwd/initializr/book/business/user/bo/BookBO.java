@@ -1,12 +1,11 @@
 package pwd.initializr.book.business.user.bo;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import pwd.initializr.book.persistence.entity.BookEntity;
 
 /**
  * pwd.initializr.book.business.user.bo@ms-web-initializr
@@ -20,13 +19,9 @@ import lombok.ToString;
  * @since DistributionVersion
  */
 @AllArgsConstructor
-@NoArgsConstructor
 @Setter
 @Getter
 @ToString
-public class BookBO extends BaseBO {
+public class BookBO extends BookEntity {
 
-  private String isbn;
-  private LinkedHashSet<String> thumbs;
-  private String publisher;
 }

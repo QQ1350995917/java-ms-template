@@ -24,8 +24,6 @@ public interface BookService {
 
     BookBO findBookById(Long bookId);
 
-    PageableQueryResult<ArticleBO> listBookTable(Long bookId, Integer index, Integer size);
-
     ArticleAroundBO listBookTableByAround(Long bookId, Long tableId);
 
 }

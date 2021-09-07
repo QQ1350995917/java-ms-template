@@ -1,14 +1,10 @@
 package pwd.initializr.book.business.user.bo;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.springframework.data.mongodb.core.mapping.Field;
+import pwd.initializr.book.persistence.entity.ArticleEntity;
 
 /**
  * pwd.initializr.book.business.user.bo@ms-web-initializr
@@ -22,13 +18,9 @@ import org.springframework.data.mongodb.core.mapping.Field;
  * @since DistributionVersion
  */
 @AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
 @ToString
-public class ArticleBO extends BaseBO{
+public class ArticleBO extends ArticleEntity {
 
-  private Long bookId;
-  private LinkedList<String> paragraphs;
-  private String fromUrl;
 }

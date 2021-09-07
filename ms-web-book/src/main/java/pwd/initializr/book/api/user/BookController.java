@@ -1,6 +1,7 @@
 package pwd.initializr.book.api.user;
 
 import io.swagger.annotations.Api;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import org.springframework.beans.BeanUtils;
@@ -15,7 +16,11 @@ import pwd.initializr.book.business.user.bo.ArticleBO;
 import pwd.initializr.book.business.user.bo.BookBO;
 import pwd.initializr.common.web.api.user.UserController;
 import pwd.initializr.common.web.api.vo.PageInput;
+import pwd.initializr.common.web.api.vo.ScopeInput;
+import pwd.initializr.common.web.api.vo.SortInput;
 import pwd.initializr.common.web.business.bo.PageableQueryResult;
+import pwd.initializr.common.web.business.bo.ScopeBO;
+import pwd.initializr.common.web.business.bo.SortBO;
 
 /**
  * pwd.initializr.logger.api.user@ms-web-initializr
@@ -44,23 +49,8 @@ public class BookController extends UserController implements BookApi {
     BookBO bookBO = bookService.findBookById(bookId);
     BookVO bookVO = new BookVO();
     BeanUtils.copyProperties(bookBO, bookVO);
+    bookVO.setArticles(bookBO.getArticles());
     super.outputData(bookVO);
-  }
-
-  @Override
-  public void fetchBookTables(Long bookId, Integer pageIndex, Integer pageSize) {
-    PageableQueryResult<ArticleBO> articleBOPageableQueryResult = bookService
-        .listBookTable(bookId, pageIndex, pageSize);
-    PageableQueryResult<BookTableVO> result = new PageableQueryResult<>();
-    result.setSize(articleBOPageableQueryResult.getSize());
-    result.setTotal(articleBOPageableQueryResult.getTotal());
-    result.setIndex(articleBOPageableQueryResult.getIndex());
-    for (ArticleBO articleBO : articleBOPageableQueryResult.getElements()) {
-      BookTableVO bookTableVO = new BookTableVO();
-      BeanUtils.copyProperties(articleBO, bookTableVO);
-      result.getElements().add(bookTableVO);
-    }
-    super.outputData(result);
   }
 
   @Override
@@ -86,9 +76,13 @@ public class BookController extends UserController implements BookApi {
   }
 
   @Override
-  public void fetchRecommendBooks(PageInput input) {
+  public void fetchRecommendBooks(String scopes, String sorts, String page) {
+    PageInput pageInput = PageInput.parse(page);
+    LinkedHashSet<ScopeBO> scopeBOS = ScopeInput.parse(scopes);
+    LinkedHashSet<SortBO> sortBOS = SortInput.parse(sorts);
+
     PageableQueryResult<BookBO> bookBOPageableQueryResult = bookService
-        .listRecommendBooks(input.getIndex(), input.getSize());
+        .listRecommendBooks(pageInput.getIndex(), pageInput.getSize());
     PageableQueryResult<BookVO> result = new PageableQueryResult<>();
     if (bookBOPageableQueryResult != null) {
       List<BookVO> resultVOS = new LinkedList<>();
@@ -105,5 +99,6 @@ public class BookController extends UserController implements BookApi {
     }
     super.outputData(result);
   }
+
 }
 

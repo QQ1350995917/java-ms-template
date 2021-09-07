@@ -1,6 +1,7 @@
 package pwd.initializr.book.api.user;
 
 import io.swagger.annotations.Api;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import org.springframework.beans.BeanUtils;
@@ -11,7 +12,11 @@ import pwd.initializr.book.business.user.ArticleService;
 import pwd.initializr.book.business.user.bo.ArticleBO;
 import pwd.initializr.common.web.api.user.UserController;
 import pwd.initializr.common.web.api.vo.PageInput;
+import pwd.initializr.common.web.api.vo.ScopeInput;
+import pwd.initializr.common.web.api.vo.SortInput;
 import pwd.initializr.common.web.business.bo.PageableQueryResult;
+import pwd.initializr.common.web.business.bo.ScopeBO;
+import pwd.initializr.common.web.business.bo.SortBO;
 
 /**
  * pwd.initializr.book.api.user@ms-web-initializr
@@ -44,9 +49,13 @@ public class ArticleController extends UserController implements ArticleApi {
   }
 
   @Override
-  public void fetchArticles(PageInput input) {
+  public void fetchArticles(String scopes, String sorts, String page) {
+    PageInput pageInput = PageInput.parse(page);
+    LinkedHashSet<ScopeBO> scopeBOS = ScopeInput.parse(scopes);
+    LinkedHashSet<SortBO> sortBOS = SortInput.parse(sorts);
+
     PageableQueryResult<ArticleBO> articleBOPageableQueryResult = articleService
-        .listArticleByRange(input.getIndex(), input.getSize());
+        .listArticleByRange(pageInput.getIndex(), pageInput.getSize());
 
     PageableQueryResult<ArticleVO> result = new PageableQueryResult<>();
 

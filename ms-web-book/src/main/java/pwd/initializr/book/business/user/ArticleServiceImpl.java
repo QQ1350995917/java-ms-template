@@ -7,8 +7,11 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.BasicQuery;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -56,14 +59,13 @@ public class ArticleServiceImpl implements ArticleService {
 
   @Override
   public PageableQueryResult<ArticleBO> listArticleByRange(Long index, Long size) {
-    Pageable pageable = PageRequest.of(index.intValue(), size.intValue());
-//    Sort sort = new Sort(Direction.DESC, "update_time");
-    Query query = new Query(
-//            Criteria.where("status").gt("0")
-    ).with(pageable)
-//            .with(sort)
-        ;
+    Query query = new Query(Criteria.where("del_status").is(-1));
     long count = mongoTemplate.count(query, ArticleEntity.class);
+
+    Pageable pageable = PageRequest.of(index.intValue(), size.intValue());
+    Sort sort = Sort.by(Direction.DESC, "id");
+    query.with(pageable).with(sort);
+
     List<ArticleEntity> articleEntities = mongoTemplate.find(query, ArticleEntity.class);
     List<ArticleBO> articleBOS = new LinkedList<>();
     articleEntities.forEach(articleEntity -> {
