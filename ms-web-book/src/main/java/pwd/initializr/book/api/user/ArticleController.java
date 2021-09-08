@@ -45,6 +45,7 @@ public class ArticleController extends UserController implements ArticleApi {
     ArticleBO articleBO = articleService.findArticleById(articleId);
     ArticleVO articleVO = new ArticleVO();
     BeanUtils.copyProperties(articleBO, articleVO);
+    articleVO.setParagraphs(articleBO.getParagraphs());
     super.outputData(articleVO);
   }
 

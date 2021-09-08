@@ -6,8 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.Set;
+import java.util.List;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -75,7 +74,7 @@ public class ArticleVO implements Serializable {
   private String publicationTime;
   @ApiModelProperty(name = "paragraphs", value = "0", required = false, example = "9787229124410")
   @NotNull(message = "0")
-  private LinkedList<String> paragraphs;
+  private List<String> paragraphs;
   @ApiModelProperty(name = "status", value = "状态", required = true, example = "0")
   @NotNull(message = "0")
   private Integer status;

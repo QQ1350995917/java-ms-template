@@ -16,6 +16,7 @@ import lombok.Setter;
 import lombok.ToString;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.format.annotation.DateTimeFormat;
+import pwd.initializr.book.persistence.entity.ArticleEntity;
 
 /**
  * pwd.initializr.book.api.user.vo@ms-web-initializr
@@ -84,7 +85,7 @@ public class BookVO implements Serializable {
   @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
   private Date updateTime = new Date();
-  private LinkedHashMap<Long,String> articles;
+  private LinkedHashSet<ArticleEntity> articles;
   private Set<String> tags;
 
 }

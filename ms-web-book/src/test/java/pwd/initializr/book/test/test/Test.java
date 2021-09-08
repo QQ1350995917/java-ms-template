@@ -2,8 +2,10 @@ package pwd.initializr.book.test.test;
 
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import org.junit.runner.RunWith;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -13,6 +15,7 @@ import pwd.initializr.book.business.admin.ArticleService;
 import pwd.initializr.book.business.admin.BookService;
 import pwd.initializr.book.business.admin.bo.ArticleBO;
 import pwd.initializr.book.business.admin.bo.BookBO;
+import pwd.initializr.book.persistence.entity.ArticleEntity;
 
 /**
  * pwd.initializr.book.test.test@ms-web-initializr
@@ -40,33 +43,31 @@ public class Test {
   public void change() throws Exception {
     Query query = new Query();
 
-    List<LinkedHashMap> all = mongoTemplate.find(query, LinkedHashMap.class, "");
+    List<LinkedHashMap> all = mongoTemplate.find(query, LinkedHashMap.class, "book");
 
-    LinkedHashMap<String, BookBO> stringBookEntityLinkedHashMap = new LinkedHashMap<>();
-    for (LinkedHashMap o : all) {
-      if (stringBookEntityLinkedHashMap.get(o.get("bookName").toString()) == null) {
-        BookBO bookEntity = new BookBO();
-        bookEntity.setArticles(new LinkedHashMap<>());
-        bookEntity.setType(3);
-        HashSet<String> tags = new HashSet<>();
-        tags.add(o.get("typeName").toString());
-        bookEntity.setTags(tags);
-        bookEntity.setTitle(o.get("bookName").toString());
-        bookEntity.setAuthorName(o.get("authorName").toString());
-        stringBookEntityLinkedHashMap.put(o.get("bookName").toString(), bookEntity);
+    for (LinkedHashMap item : all) {
+      LinkedHashMap map = (LinkedHashMap)item.get("articles");
+      LinkedHashSet<ArticleEntity> articles = new LinkedHashSet<>();
+      for (Object o : map.keySet()) {
+        Long key = Long.parseLong((String)o);
+        String value = map.get(o).toString();
+        ArticleEntity articleEntity = new ArticleEntity();
+        articleEntity.setId(key);
+        articleEntity.setTitle(value);
+        articles.add(articleEntity);
       }
-      ArticleBO articleBO = new ArticleBO();
-      articleBO.setTitle(o.get("chapterName").toString());
-      articleBO.setParagraphs(((List) o.get("contents")));
-      ArticleBO article = articleService.createArticle(articleBO);
-      stringBookEntityLinkedHashMap.get(o.get("bookName").toString()).getArticles()
-          .put(article.getId(), o.get("chapterName").toString());
+
+      BookBO bookBO = new BookBO();
+      bookBO.setId((long)item.get("_id"));
+      bookBO.setTitle(item.get("title").toString());
+      bookBO.setAuthorName(item.get("author_name") == null ? "": item.get("author_name").toString());
+      bookBO.setDelStatus(-1);
+      bookBO.setVisibility(1);
+      bookBO.setArticles(articles);
+      System.out.println();
+      bookService.updateBook(bookBO);
     }
 
-    for (String s : stringBookEntityLinkedHashMap.keySet()) {
-      BookBO bookBO = stringBookEntityLinkedHashMap.get(s);
-      bookService.createBook(bookBO);
-    }
   }
 
 }

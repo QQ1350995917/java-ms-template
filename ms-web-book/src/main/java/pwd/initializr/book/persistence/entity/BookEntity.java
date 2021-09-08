@@ -2,6 +2,7 @@ package pwd.initializr.book.persistence.entity;
 
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -45,7 +46,8 @@ public class BookEntity extends BaseEntity {
   @Field("publisher")
   private String publisher;
   @Field("articles")
-  private LinkedHashMap<Long,String> articles;
+  private LinkedHashSet<ArticleEntity> articles;
   @Field("tags")
   private Set<String> tags;
+
 }

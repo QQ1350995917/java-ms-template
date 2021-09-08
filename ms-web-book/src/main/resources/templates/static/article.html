@@ -11,7 +11,12 @@
   <script src="https://unpkg.zhimg.com/element-ui/lib/index.js"></script>
   <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
   <script src="js/template.js"></script>
-
+  <style>
+    p {
+      text-indent: 2em;
+      margin-top: 5px;
+    }
+  </style>
 </head>
 <body>
 <el-container id="container">
@@ -20,17 +25,16 @@
       <el-col :span="12" :offset="6">
         <template>
           <el-tabs v-model="activeName" type="card" @tab-click="onTabClick">
-            <el-tab-pane label="pwd-initializr-book" name="0"></el-tab-pane>
-            <el-tab-pane label="swagger" name="swagger">swagger</el-tab-pane>
+            <el-tab-pane :label="articleName" name="0"></el-tab-pane>
           </el-tabs>
         </template>
       </el-col>
     </el-row>
   </el-header>
-  <el-main style="padding: 0px 10px 0px 0px; margin-top: 10px; background-color: transparent; height: 720px">
+  <el-main style="padding: 0px 10px 0px 0px; margin-top: 10px; background-color: transparent;">
     <el-row>
-      <el-col :span="12" :offset="6">
-
+      <el-col :span="12" :offset="6" v-for="(item,i) in mainTableList">
+        <p>{{ item }}</p>
       </el-col>
     </el-row>
   </el-main>
@@ -49,6 +53,8 @@
     data: function() {
       return {
         activeName: '0',
+        articleId: '',
+        articleName: '',
         keyword: '',
         scopesTemplate: [{
           hit: '指定查询方式[EM:精确,ENM:精确非,AL:前后模糊,LL:左模糊,RL:右模糊,SM:范围',
@@ -67,6 +73,7 @@
       };
     },
     created() {
+      this.articleId = this.getUrlKey("id",window.location.href)
       this.requestForMainTableList(this.page.index)
     },
     methods: {
@@ -92,9 +99,7 @@
         this.requestForMainTableList()
       },
       requestForMainTableList(){
-        this.$http.get('/api/book?scopes=' + encodeURIComponent(JSON.stringify(this.scopes))
-            + '&sorts=' + encodeURIComponent(JSON.stringify(this.sorts))
-            + '&page=' + encodeURIComponent(JSON.stringify(this.page)))
+        this.$http.get('/api/article/' + this.articleId)
         .then(
             function(res) {
               var body = res.body;
@@ -102,14 +107,15 @@
               var code = meta.code;
               var data = body.data;
               if (code == 200) {
-                var elements = data.elements;
+                var elements = data.title;
                 if (elements == undefined || elements.length == 0) {
                   this.$message({
                     message: 'No Date',
                     type: 'warning'
                   });
                 } else {
-                  this.mainTableList = data.elements
+                  this.articleName = data.title;
+                  this.mainTableList = data.paragraphs
                   this.total = Number(data.total)
                 }
               } else {
@@ -130,6 +136,9 @@
                 this.$message.error('Unknown error');
               }
             });
+      },
+      getUrlKey(name,url) {
+        return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(url) || [, ""])[1].replace(/\+/g, '%20')) || null
       }
     }
   });

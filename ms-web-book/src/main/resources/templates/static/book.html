@@ -27,7 +27,7 @@
     </el-row>
   </el-header>
   <el-main
-      style="padding: 0px 10px 0px 0px; margin-top: 10px; background-color: transparent; height: 720px">
+      style="padding: 0px 10px 0px 0px; margin-top: 10px; background-color: transparent; ">
     <el-row>
       <el-col :span="12" :offset="6">
         <el-table
@@ -35,8 +35,6 @@
             style="width: 100%;"
             max-height="720"
             @row-click="onMainTableListRowClick">
-          <el-table-column align="center" label="序号" type="index" width="100" :index="indexCalculator">
-          </el-table-column>
           <el-table-column
               prop="title"
               label="title">
