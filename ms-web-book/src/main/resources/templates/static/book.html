@@ -2,6 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0'>
+  <meta name='apple-mobile-web-app-capable' content='yes'>
+  <meta name='apple-mobile-web-app-status-bar-style' content='black'>
+  <meta name='format-detection' content='telephone=no'>
   <title>pwd-initializr-book</title>
 
   <link rel="stylesheet" href="https://unpkg.zhimg.com/element-ui/lib/theme-chalk/index.css">
@@ -17,7 +21,7 @@
 <el-container id="container">
   <el-header style="padding: 0px;height: 42px">
     <el-row>
-      <el-col :span="12" :offset="6">
+      <el-col :offset="viewOffset" :span="viewSpan">
         <template>
           <el-tabs v-model="activeName" type="card" @tab-click="onTabClick">
             <el-tab-pane :label="bookName" name="0"></el-tab-pane>
@@ -29,11 +33,11 @@
   <el-main
       style="padding: 0px 10px 0px 0px; margin-top: 10px; background-color: transparent; ">
     <el-row>
-      <el-col :span="12" :offset="6">
+      <el-col :offset="viewOffset" :span="viewSpan">
         <el-table
             :data="mainTableList"
             style="width: 100%;"
-            max-height="720"
+            :show-header="false"
             @row-click="onMainTableListRowClick">
           <el-table-column
               prop="title"
@@ -45,7 +49,7 @@
   </el-main>
   <el-footer>
     <el-row>
-      <el-col :span="12" :offset="6">
+      <el-col :offset="6" :span="12">
         <p>Powered by www.dingpengwei@foxmail.com</p>
         <p>copyright©2020</p>
       </el-col>
@@ -57,6 +61,8 @@
     el: '#container',
     data: function() {
       return {
+        viewOffset: '6',
+        viewSpan: '12',
         activeName: '0',
         bookId: '',
         bookName: '',
@@ -77,6 +83,13 @@
       };
     },
     created() {
+      if (this._isMobile()) {
+        this.viewOffset = 0;
+        this.viewSpan = 24;
+      } else {
+        this.viewOffset = 6;
+        this.viewSpan = 12;
+      }
       this.bookId = this.getUrlKey("id",window.location.href)
       this.requestForMainTableList(this.page.index)
     },
@@ -146,6 +159,10 @@
       },
       getUrlKey(name,url) {
         return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(url) || [, ""])[1].replace(/\+/g, '%20')) || null
+      },
+      _isMobile() {
+        var flag = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i);
+        return flag;
       }
     }
   });

@@ -2,6 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0'>
+  <meta name='apple-mobile-web-app-capable' content='yes'>
+  <meta name='apple-mobile-web-app-status-bar-style' content='black'>
+  <meta name='format-detection' content='telephone=no'>
   <title>pwd-initializr-book-index</title>
 
   <link rel="stylesheet" href="https://unpkg.zhimg.com/element-ui/lib/theme-chalk/index.css">
@@ -17,7 +21,7 @@
 <el-container id="container">
   <el-header style="padding: 0px;height: 42px">
     <el-row>
-      <el-col :span="12" :offset="6">
+      <el-col :offset="viewOffset" :span="viewSpan">
         <template>
           <el-tabs v-model="activeName" type="card" @tab-click="onTabClick">
             <el-tab-pane label="pwd-initializr-book" name="0"></el-tab-pane>
@@ -28,15 +32,14 @@
     </el-row>
   </el-header>
   <el-main
-      style="padding: 0px 10px 0px 0px; margin-top: 10px; background-color: transparent; height: 720px">
+      style="padding: 0px 10px 0px 0px; margin-top: 10px; background-color: transparent; ">
     <el-row>
-      <el-col :span="12" :offset="6">
+      <el-col :offset="viewOffset" :span="viewSpan">
         <el-table
             :data="mainTableList"
             style="width: 100%;"
-            max-height="720"
             @row-click="onMainTableListRowClick">
-          <el-table-column align="center" label="序号" type="index" width="100" :index="indexCalculator">
+          <el-table-column align="center" label="序号" type="index" :index="indexCalculator" >
             <!--<template slot-scope="scope">-->
               <!--<span>{{scope.$index + pageIndex * pageSize + 1}}</span>-->
             <!--</template>-->
@@ -47,13 +50,11 @@
           </el-table-column>
           <el-table-column
               prop="authorName"
-              label="authorName"
-              width="200">
+              label="authorName">
           </el-table-column>
           <el-table-column
               prop="updateTime"
-              label="updateTime"
-              width="120">
+              label="updateTime">
           </el-table-column>
         </el-table>
         <el-pagination
@@ -70,7 +71,7 @@
   </el-main>
   <el-footer>
     <el-row>
-      <el-col :span="12" :offset="6">
+      <el-col :offset="viewOffset" :span="viewSpan">
         <p>Powered by www.dingpengwei@foxmail.com</p>
         <p>copyright©2020</p>
       </el-col>
@@ -82,6 +83,9 @@
     el: '#container',
     data: function() {
       return {
+        viewOffset: '6',
+        viewSpan: '12',
+        isMobile: false,
         activeName: '0',
         keyword: '',
         scopesTemplate: [{
@@ -101,6 +105,15 @@
       };
     },
     created() {
+      if (this._isMobile()) {
+        this.viewOffset = 0;
+        this.viewSpan = 24;
+        this.isMobile = true;
+      } else {
+        this.viewOffset = 6;
+        this.viewSpan = 12;
+        this.isMobile = false;
+      }
       this.requestForMainTableList(this.page.index)
     },
     methods: {
@@ -167,6 +180,10 @@
       },
       onMainTableListRowClick(rowScope){
         window.open('/static/book.html?id=' + rowScope.id, '_blank');
+      },
+      _isMobile() {
+        var flag = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i);
+        return flag;
       }
     }
   });
