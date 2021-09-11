@@ -6,7 +6,7 @@ import {
   enable,
   disable,
   del
-} from '@/api/${serviceName}'
+} from '@/api/${serviceName}/${className}'
 
 const actions = {
   create(commit, state){
@@ -65,9 +65,9 @@ const actions = {
     })
   })
   },
-  detail(commit, uid){
+  detail(commit, id){
     return new Promise((resolve, reject) => {
-      detail(uid).then(response => {
+      detail(id).then(response => {
       const data = response
       resolve(data)
     }).catch(error => {
@@ -75,9 +75,9 @@ const actions = {
     })
   })
   },
-  enable(commit, uids){
+  enable(commit, ids){
     return new Promise((resolve, reject) => {
-      enable(uids).then(response => {
+      enable(ids).then(response => {
       if (response.meta.code == 200) {
       resolve(response.data)
     }
@@ -86,9 +86,9 @@ const actions = {
     })
   })
   },
-  disable(commit, uids){
+  disable(commit, ids){
     return new Promise((resolve, reject) => {
-      disable(uids).then(response => {
+      disable(ids).then(response => {
       const data = response
       resolve(data)
     }).catch(error => {
@@ -96,9 +96,9 @@ const actions = {
     })
   })
   },
-  del(commit, uids){
+  del(commit, ids){
     return new Promise((resolve, reject) => {
-      del(uids).then(response => {
+      del(ids).then(response => {
       const data = response
       resolve(data)
     }).catch(error => {

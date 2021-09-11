@@ -244,7 +244,7 @@
     },
     methods: {
       onRequestForList() {
-        this.$http.get('/api/menu?scopes=' + encodeURIComponent(JSON.stringify(this.scopes))
+        this.$http.get('/api/admin/menu?scopes=' + encodeURIComponent(JSON.stringify(this.scopes))
             + '&sorts=' + encodeURIComponent(JSON.stringify(this.sorts))
             + '&page=' + encodeURIComponent(JSON.stringify(this.page)))
         .then(
@@ -323,7 +323,7 @@
         this.dialogVisible = true;
       },
       onRequestForCreate() {
-        this.$http.post('/api/menu', this.item).then(
+        this.$http.post('/api/admin/menu', this.item).then(
             function(res) {
               var body = res.body;
               var meta = body.meta;
@@ -351,7 +351,7 @@
             });
       },
       onRequestForUpdate() {
-        this.$http.patch('/api/menu/' + this.item.id, this.item).then(
+        this.$http.patch('/api/admin/menu/' + this.item.id, this.item).then(
             function(res) {
               var body = res.body;
               var meta = body.meta;
@@ -389,7 +389,7 @@
         done();
       },
       onEnableButtonClick(id) {
-        this.$http.put('/api/menu/enable/' + id).then(
+        this.$http.put('/api/admin/menu/enable/' + id).then(
             function(res) {
               var body = res.body;
               var meta = body.meta;
@@ -417,7 +417,7 @@
             });
       },
       onDisableButtonClick(id) {
-        this.$http.put('/api/menu/disable/' + id).then(
+        this.$http.put('/api/admin/menu/disable/' + id).then(
             function(res) {
               var body = res.body;
               var meta = body.meta;
@@ -445,7 +445,7 @@
             });
       },
       onDelButtonClick(id) {
-        this.$http.delete('/api/menu/' + id).then(
+        this.$http.delete('/api/admin/menu/' + id).then(
             function(res) {
               var body = res.body;
               var meta = body.meta;

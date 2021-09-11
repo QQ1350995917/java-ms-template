@@ -28,7 +28,7 @@ public class SrcMainResourcesVueSrcApiIndex extends SrcMainResourcesVue {
 
   @Override
   protected String getResourceName() {
-    return "index.js";
+    return className + ".js";
   }
 
   @Override

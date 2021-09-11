@@ -294,7 +294,7 @@
         var _this = this;
         if (row.able == 0) {
           this.requestForUserEnable([row.id], function () {
-            row.user.able = 1;
+            row.able = 1;
             _this.$message({
               message: '启用成功',
               type: 'success'

@@ -18,10 +18,10 @@ import pwd.initializr.generator.business.mysql.database.TableColumnBO;
  */
 public abstract class SrcMainResourcesVue extends SrcMainResources {
 
-  private String tableName;
-  private String className;
-  private String apiPath;
-  private List<TableColumnBO> tableColumnBOList;
+  protected String tableName;
+  protected String className;
+  protected String apiPath;
+  protected List<TableColumnBO> tableColumnBOList;
 
   public SrcMainResourcesVue(ProjectBO projectBO,String tableName,
       String className, List<TableColumnBO> tableColumnBOList) {

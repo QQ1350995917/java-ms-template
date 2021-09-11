@@ -28,7 +28,7 @@ public class SrcMainResourcesVueSrcStoreModulesIndex extends SrcMainResourcesVue
 
   @Override
   protected String getResourceName() {
-    return "index.js";
+    return className + ".js";
   }
 
   @Override

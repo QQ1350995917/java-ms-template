@@ -28,7 +28,7 @@ public class SrcMainResourcesVueSrcViewsIndex extends SrcMainResourcesVue {
 
   @Override
   protected String getResourceName() {
-    return "index.vue";
+    return className + ".vue";
   }
 
   @Override
