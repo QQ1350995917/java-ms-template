@@ -63,6 +63,17 @@
           <target>1.8</target>
         </configuration>
       </plugin>
+      <!--<plugin>-->
+        <!--<groupId>org.springframework.boot</groupId>-->
+        <!--<artifactId>spring-boot-maven-plugin</artifactId>-->
+        <!--<executions>-->
+          <!--<execution>-->
+            <!--<goals>-->
+              <!--<goal>repackage</goal>-->
+            <!--</goals>-->
+          <!--</execution>-->
+        <!--</executions>-->
+      <!--</plugin>-->
       <!-- 将所依赖的第三方jar包打入target下的lib目录 -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -134,6 +145,8 @@
         <configuration>
           <descriptors>
             <descriptor>zip.xml</descriptor>
+            <descriptor>tar.gz.xml</descriptor>
+            <descriptor>jar.xml</descriptor>
           </descriptors>
         </configuration>
         <executions>
@@ -152,8 +165,8 @@
         <version>${docker-maven-plugin.version}</version>
         <configuration>
           <imageName>${docker.registry}/${project.groupId}/${project.artifactId}:${project.version}</imageName>
-          <pushImage>${docker.registry.push.image}</pushImage>
-          <pushImageTag>${docker.registry.push.image.tag}</pushImageTag>
+          <!--<pushImage>${docker.registry.push.image}</pushImage>-->
+          <!--<pushImageTag>${docker.registry.push.image.tag}</pushImageTag>-->
           <forceTags>true</forceTags>
           <dockerDirectory>${project.basedir}/src/main/docker</dockerDirectory>
           <imageTags>

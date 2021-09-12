@@ -1,0 +1,5 @@
+FROM java:8
+EXPOSE 8080
+ARG JAR_FILE
+ADD ms-web-registry-0.0.1-SNAPSHOT-bin.zip ms-web-registry-0.0.1-SNAPSHOT-bin.zip
+ENTRYPOINT ["java", "-jar","/niceyoo.jar"]
