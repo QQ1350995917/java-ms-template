@@ -2,6 +2,9 @@ package pwd.initializr.generator.api.vo;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
@@ -48,4 +51,7 @@ public class GeneratorInput extends DatabaseInput {
   @ApiModelProperty(name = "tables", value = "指定表名", required = true, example = "[]")
   @NotEmpty(message = "表名不能为空")
   private Set<String> tables;
+  @ApiModelProperty(name = "nullableMetaProperties", value = "表中可为空的元字段名", required = false, example = "[able,del,create_time,update_time,version]")
+  @NotEmpty(message = "表中可为空的元字段名")
+  private List<String> nullableMetaProperties = Arrays.asList("id","able","del","create_time","update_time","version");
 }

@@ -37,7 +37,7 @@ import pwd.initializr.access.api.admin.vo.AccessInput;
   description = "[列表查询，详情查询，启/禁用，删除，新增，修改]"
 )
 @RestController(value = "Access")
-@RequestMapping(value = "/api/access")
+@RequestMapping(value = "/api/admin/access")
 public interface AccessApi {
 
   /**
@@ -82,7 +82,7 @@ public interface AccessApi {
    * @since 0.0.1-SNAPSHOT
    */
   @ApiOperation(value = "启用")
-  @PutMapping(value = {"/enable/{id}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @PatchMapping(value = {"/enable/{id}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   void enable(@PathVariable("id") @Valid @NotNull(message = "参数不能为空") Long id);
 
   /**
@@ -95,7 +95,7 @@ public interface AccessApi {
    * @since 0.0.1-SNAPSHOT
    */
   @ApiOperation(value = "启用")
-  @PutMapping(value = {"/enable"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @PatchMapping(value = {"/enable"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   void enable(@RequestBody @Valid @NotNull(message = "参数不能为空") Set<Long> ids);
 
   /**
@@ -108,7 +108,7 @@ public interface AccessApi {
    * @since 0.0.1-SNAPSHOT
    */
   @ApiOperation(value = "禁用")
-  @PutMapping(value = {"/disable/{id}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @PatchMapping(value = {"/disable/{id}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   void disable(@PathVariable("id") @Valid @NotNull(message = "参数不能为空") Long id);
 
   /**
@@ -121,7 +121,7 @@ public interface AccessApi {
    * @since 0.0.1-SNAPSHOT
    */
   @ApiOperation(value = "禁用")
-  @PutMapping(value = {"/disable"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @PatchMapping(value = {"/disable"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   void disable(@RequestBody @Valid @NotNull(message = "参数不能为空") Set<Long> ids);
 
   /**

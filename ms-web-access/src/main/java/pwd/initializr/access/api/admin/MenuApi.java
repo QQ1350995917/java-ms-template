@@ -212,7 +212,7 @@ public interface MenuApi {
    * @since 0.0.1-SNAPSHOT
    */
   @ApiOperation(value = "更新")
-  @PatchMapping(value = {"/{id}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @PutMapping(value = {"/{id}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   void update(@PathVariable("id") @Valid @NotNull(message = "参数不能为空") Long id,
       @RequestBody @Valid @NotNull(message = "参数不能为空") MenuInput input);
 

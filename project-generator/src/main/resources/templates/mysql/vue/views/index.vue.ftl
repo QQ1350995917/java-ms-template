@@ -181,6 +181,9 @@
           <#list columns as column>
             ${column.javaName}:
           [
+          <#if (column.nullable!"YES") == "NO">
+            {required: true, message: '${column.jdbcName}', trigger: 'blur'},
+          </#if>
 //            {required: true, message: '请输入名称', trigger: 'blur'},
 //            {min: 4, max: 24, message: '长度在 M 到 N 个字符', trigger: 'blur'},
 //            {
@@ -216,7 +219,7 @@
         this.checkedList = val;
       },
       requestForMainTableList() {
-        this.$store.dispatch('${serviceName}Admin/list', this.query)
+        this.$store.dispatch('${serviceName}Admin${className}/list', this.query)
         .then((response) => {
           if (response.meta.code == 200) {
           this.query.page.index = parseInt(response.data.index);
@@ -313,13 +316,13 @@
         }
       },
       requestForUserEnable(ids, successCallback){
-        this.$store.dispatch('${serviceName}Admin/enable', ids)
+        this.$store.dispatch('${serviceName}Admin${className}/enable', ids)
         .then(successCallback()).catch((error) => {
           this.$message.error(error);
       })
       },
       requestForUserDisable(ids, successCallback){
-        this.$store.dispatch('${serviceName}Admin/disable', ids)
+        this.$store.dispatch('${serviceName}Admin${className}/disable', ids)
         .then(successCallback()).catch((error) => {
           this.$message.error(error);
       })
@@ -335,7 +338,7 @@
         this.requestForDelete([row.id]);
       },
       requestForDelete(ids){
-        this.$store.dispatch('${serviceName}Admin/del', ids)
+        this.$store.dispatch('${serviceName}Admin${className}/del', ids)
         .then(() => {
           this.$message({
           message: '删除成功',
@@ -351,6 +354,7 @@
       },
       onCreateButtonClick() {
         this.createDialogTitle = this.createDialogTitleCreate;
+        this.createDialogForm = this.createDialogFormInit;
         this.createDialogVisible = true;
       },
       onCreateDialogResetClick(formName) {
@@ -371,7 +375,7 @@
       requestForCreateMember(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            this.$store.dispatch('${serviceName}Admin/create', this.createDialogForm)
+            this.$store.dispatch('${serviceName}Admin${className}/create', this.createDialogForm)
             .then((response) => {
               if (response.meta.code == 200) {
                 this.$message({
@@ -390,7 +394,7 @@
       requestForEditMember(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            this.$store.dispatch('${serviceName}Admin/edit', this.createDialogForm)
+            this.$store.dispatch('${serviceName}Admin${className}/edit', this.createDialogForm)
             .then((response) => {
               if (response.meta.code == 200) {
                 this.$message({

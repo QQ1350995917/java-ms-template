@@ -11,7 +11,7 @@ export function create(params) {
 export function edit(params) {
   return request({
     url: '/service/${serviceName}/api/admin/${tableName}/' + params.id,
-    method: 'put',
+    method: 'patch',
     data: params
   })
 }
@@ -30,27 +30,27 @@ export function detail(id) {
   })
 }
 
-export function enable(uids) {
+export function enable(ids) {
   return request({
     url: '/service/${serviceName}/api/admin/${tableName}/enable',
     method: 'patch',
-    data: uids
+    data: ids
   })
 }
 
-export function disable(uids) {
+export function disable(ids) {
   return request({
     url: '/service/${serviceName}/api/admin/${tableName}/disable',
     method: 'patch',
-    data: uids
+    data: ids
   })
 }
 
-export function del(uids) {
+export function del(ids) {
   return request({
     url: '/service/${serviceName}/api/admin/${tableName}',
     method: 'delete',
-    data: uids
+    data: ids
   })
 }
 

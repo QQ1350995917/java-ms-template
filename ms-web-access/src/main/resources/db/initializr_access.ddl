@@ -24,7 +24,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `access`;
 CREATE TABLE `access` (
-  `id` bigint(20) NOT NULL COMMENT '主键',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `type` bigint(20) NOT NULL COMMENT '权限类型',
   `name` varchar(255) NOT NULL COMMENT '权限名称',
   `able` int(4) NOT NULL DEFAULT '0' COMMENT '可用状态：0:不可用；1:可用',
@@ -85,7 +85,7 @@ CREATE TABLE `access_storage` (
 -- ----------------------------
 DROP TABLE IF EXISTS `function`;
 CREATE TABLE `function` (
-  `id` bigint(20) NOT NULL COMMENT '主键',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `name` varchar(255) NOT NULL COMMENT '权限名称',
   `uri` varchar(255) NOT NULL COMMENT '资源URI',
   `method` varchar(16) NOT NULL COMMENT '请求方式',
